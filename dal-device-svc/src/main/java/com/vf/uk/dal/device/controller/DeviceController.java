@@ -126,6 +126,7 @@ public class DeviceController {
 			@RequestParam(value = JOURNEY_TYPE, required = false) String journeyType,
 			@RequestParam(value = OFFER_CODE, required = false) String offerCode) {
 		DeviceDetails deviceDetails;
+		LogHelper.info(this, ":::::::Test Logger for VSTS migration And Validate Pipeline Validation::::::::");
 		if (StringUtils.isNotBlank(deviceId)) {
 			deviceDetails = deviceService.getDeviceDetails(deviceId, journeyType, offerCode);
 		} else {
