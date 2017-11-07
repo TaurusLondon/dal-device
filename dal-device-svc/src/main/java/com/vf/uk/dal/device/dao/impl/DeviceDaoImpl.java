@@ -570,7 +570,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		CommercialProduct commercialProduct = commercialProductRepository.get(deviceId);
 		DeviceDetails deviceDetails;
 		CommercialBundleRepository commercialBundleRepository = new CommercialBundleRepository();
-
+		LogHelper.info(this, ":::::::Test Logger for VSTS migration And Validate Pipeline Validation::::::::");
 		if (commercialProduct != null && commercialProduct.getId() != null && commercialProduct.getIsDeviceProduct()
 				&& (commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)
 						|| commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_DATA_DEVICE))) {
@@ -610,7 +610,6 @@ public class DeviceDaoImpl implements DeviceDao {
 			LogHelper.error(this, "No data found for given Device Id :" + deviceId);
 			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID);
 		}
-
 		return deviceDetails;
 	}
 
