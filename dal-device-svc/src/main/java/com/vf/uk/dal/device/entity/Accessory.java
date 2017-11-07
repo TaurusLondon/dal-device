@@ -1,0 +1,242 @@
+package com.vf.uk.dal.device.entity;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import javax.validation.Valid;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.vf.uk.dal.utility.entity.PriceForAccessory;
+
+/**
+ * Accessory
+ */
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-09-04T15:01:47.933Z")
+
+public class Accessory   {
+  @JsonProperty("skuId")
+  private String skuId = null;
+
+  @JsonProperty("name")
+  private String name = null;
+
+  @JsonProperty("colour")
+  private String colour = null;
+
+  @JsonProperty("description")
+  private String description = null;
+
+  @JsonProperty("merchandisingMedia")
+  private List<MediaLink> merchandisingMedia = null;
+
+  @JsonProperty("deviceCost")
+  private PriceForAccessory deviceCost = null;
+
+  @JsonProperty("attributes")
+  private List<Attributes> attributes = null;
+
+  public Accessory skuId(String skuId) {
+    this.skuId = skuId;
+    return this;
+  }
+
+   /**
+   * Unique Accessory id as available from the product catalogue
+   * @return skuId
+  **/
+
+
+  public String getSkuId() {
+    return skuId;
+  }
+
+  public void setSkuId(String skuId) {
+    this.skuId = skuId;
+  }
+
+  public Accessory name(String name) {
+    this.name = name;
+    return this;
+  }
+
+   /**
+   * Name of the Accessory as provided in the product catalogue
+   * @return name
+  **/
+
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public Accessory colour(String colour) {
+    this.colour = colour;
+    return this;
+  }
+
+   /**
+   * Colour of the Accessory as provided in the product catalogue
+   * @return colour
+  **/
+
+
+  public String getColour() {
+    return colour;
+  }
+
+  public void setColour(String colour) {
+    this.colour = colour;
+  }
+
+  public Accessory description(String description) {
+    this.description = description;
+    return this;
+  }
+
+   /**
+   * Description of the Accessory as provided in the product catalogue
+   * @return description
+  **/
+
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public Accessory merchandisingMedia(List<MediaLink> merchandisingMedia) {
+    this.merchandisingMedia = merchandisingMedia;
+    return this;
+  }
+
+  public Accessory addMerchandisingMediaItem(MediaLink merchandisingMediaItem) {
+    if (this.merchandisingMedia == null) {
+      this.merchandisingMedia = new ArrayList<MediaLink>();
+    }
+    this.merchandisingMedia.add(merchandisingMediaItem);
+    return this;
+  }
+
+   /**
+   * Get merchandisingMedia
+   * @return merchandisingMedia
+  **/
+
+  @Valid
+
+  public List<MediaLink> getMerchandisingMedia() {
+    return merchandisingMedia;
+  }
+
+  public void setMerchandisingMedia(List<MediaLink> merchandisingMedia) {
+    this.merchandisingMedia = merchandisingMedia;
+  }
+
+  public Accessory deviceCost(PriceForAccessory deviceCost) {
+    this.deviceCost = deviceCost;
+    return this;
+  }
+
+   /**
+   * Get deviceCost
+   * @return deviceCost
+  **/
+
+  @Valid
+
+  public PriceForAccessory getDeviceCost() {
+    return deviceCost;
+  }
+
+  public void setDeviceCost(PriceForAccessory deviceCost) {
+    this.deviceCost = deviceCost;
+  }
+
+  public Accessory attributes(List<Attributes> attributes) {
+    this.attributes = attributes;
+    return this;
+  }
+
+  public Accessory addAttributesItem(Attributes attributesItem) {
+    if (this.attributes == null) {
+      this.attributes = new ArrayList<Attributes>();
+    }
+    this.attributes.add(attributesItem);
+    return this;
+  }
+
+   /**
+   * Get attributes
+   * @return attributes
+  **/
+
+  @Valid
+
+  public List<Attributes> getAttributes() {
+    return attributes;
+  }
+
+  public void setAttributes(List<Attributes> attributes) {
+    this.attributes = attributes;
+  }
+
+
+  @Override
+  public boolean equals(java.lang.Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Accessory accessory = (Accessory) o;
+    return Objects.equals(this.skuId, accessory.skuId) &&
+        Objects.equals(this.name, accessory.name) &&
+        Objects.equals(this.colour, accessory.colour) &&
+        Objects.equals(this.description, accessory.description) &&
+        Objects.equals(this.merchandisingMedia, accessory.merchandisingMedia) &&
+        Objects.equals(this.deviceCost, accessory.deviceCost) &&
+        Objects.equals(this.attributes, accessory.attributes);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(skuId, name, colour, description, merchandisingMedia, deviceCost, attributes);
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("class Accessory {\n");
+    
+    sb.append("    skuId: ").append(toIndentedString(skuId)).append("\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    colour: ").append(toIndentedString(colour)).append("\n");
+    sb.append("    description: ").append(toIndentedString(description)).append("\n");
+    sb.append("    merchandisingMedia: ").append(toIndentedString(merchandisingMedia)).append("\n");
+    sb.append("    deviceCost: ").append(toIndentedString(deviceCost)).append("\n");
+    sb.append("    attributes: ").append(toIndentedString(attributes)).append("\n");
+    sb.append("}");
+    return sb.toString();
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(java.lang.Object o) {
+    if (o == null) {
+      return "null";
+    }
+    return o.toString().replace("\n", "\n    ");
+  }
+}
+

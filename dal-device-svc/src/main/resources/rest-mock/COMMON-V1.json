@@ -1,0 +1,21 @@
+{
+  "id": "c1a42269-6562-4c96-b3be-1ca2a6681d57",
+  "username": "newcodg_postpay_con4_et_simoflex_LC1od6b2v",
+  "contextMSISDN": "07003145001",
+  "journeyData": {
+    "name": "upgrade",
+    "state": "INPROGRESS",
+    "customerPartyID": "7003145001",
+    "ssoCreatedDate": "20140713210247",
+    "ownedCustomerPartyIDs": null,
+    "offerID": null,
+    "offerCommunicationID": null,
+    "upgradeEligibilityType": "simoflex",
+    "commitmentEndDate": "20151229",
+    "earlyUpgradeFeeNet": null,
+    "earlyUpgradeFeeGross": null,
+    "accountRoles": [
+      "Owner"
+    ]
+  }
+}

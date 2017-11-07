@@ -1,0 +1,68 @@
+spring:
+  application:
+    name: DEVICES-V1
+
+server:
+  contextPath: /devices/catalogue
+  port: 8080
+  ssl:
+    enabled: true
+    key-store: classpath:keystore.jks
+    key-store-password: password
+    key-password: password
+    trust-store: classpath:alblowerkeystore.jks
+    trust-store-password: tib123  
+endpoints:
+  enabled: false
+  health:
+    enabled: true
+
+management:
+  health:
+      solr:
+        enabled: false
+icp:
+  env:
+    kafka:
+      host: kafka
+      port: 9092
+      logTopic: logs
+ 
+  config:
+    jdbcUrl: jdbc:oracle:thin:@100.66.65.206:1521:oradb
+    jdbcUserName: daluser
+    jdbcUserPwd: simple4u
+    
+  service:  
+    defaultPageSize: 1000
+    defaultPageNumber: 0  
+  
+---
+
+spring:
+  profiles: local
+  application:
+    name: DEVICES-V1
+
+server:
+  contextPath: /devices/catalogue
+  port: 2238
+  ssl:
+    trust-store: classpath:alblowerkeystore.jks
+    trust-store-password: tib123 
+icp:
+  config:
+    jdbcUrl: jdbc:oracle:thin:@100.66.65.206:1521:oradb
+    jdbcUserName: daluser
+    jdbcUserPwd: simple4u
+  service:  
+    defaultPageSize: 1000
+    defaultPageNumber: 0  
+  restclient:
+    mock: 
+      enabled: true
+  
+  env:
+    enableLogStreaming: false
+  security:
+    enabled: true
