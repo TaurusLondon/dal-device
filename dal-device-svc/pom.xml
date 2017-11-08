@@ -201,7 +201,7 @@
 		<dependency>
 			<groupId>com.vf.uk.dal.coh</groupId>
 			<artifactId>coherence-logging-utility</artifactId>
-			<version>6.1.0</version>
+			<version>6.2.0</version>
 		</dependency>
 		<!-- LoggingUtility uses slf4j-ext and json-simple jar -->
 		<dependency>
