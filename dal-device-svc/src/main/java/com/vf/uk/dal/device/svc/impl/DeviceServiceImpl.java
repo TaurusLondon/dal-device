@@ -31,6 +31,7 @@ import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.common.registry.client.RegistryClient;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.entity.Accessory;
+import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.entity.Device;
@@ -250,10 +251,10 @@ public class DeviceServiceImpl implements DeviceService {
 	 */
 
 	@Override
-	public List<Accessory> getAccessoriesOfDevice(String deviceId,String journeyType) {
-		List<Accessory> listOfAccessory;
-		listOfAccessory = deviceDao.getAccessoriesOfDevice(deviceId,journeyType);
-		return listOfAccessory;
+	public List<AccessoryTileGroup> getAccessoriesOfDevice(String deviceId,String journeyType) {
+		List<AccessoryTileGroup> listOfAccessoryTileGroup;
+		listOfAccessoryTileGroup = deviceDao.getAccessoriesOfDevice(deviceId,journeyType);
+		return listOfAccessoryTileGroup;
 	}
 
 

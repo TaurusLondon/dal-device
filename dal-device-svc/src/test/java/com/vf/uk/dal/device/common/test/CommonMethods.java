@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.vf.uk.dal.common.registry.client.Utility;
 import com.vf.uk.dal.device.entity.Accessory;
+import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.BundlePrice;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.entity.Device;
@@ -1307,6 +1308,14 @@ public class CommonMethods {
 		return bundle;
 	}
 
+	public static List<AccessoryTileGroup> getAccessoriesTileGroup(String deviceId){
+		List<AccessoryTileGroup> tileGroup = new ArrayList<>();
+		AccessoryTileGroup tile = new AccessoryTileGroup();
+		tile.setGroupName("Apple AirPods");
+		tile.setAccessories(getAccessoriesOfDevice(deviceId));
+		return tileGroup;
+	}
+	
 	public static List<Accessory> getAccessoriesOfDevice(String deviceId) {
 		List<Accessory> accessoryList = new ArrayList<Accessory>();
 		Accessory accessory = new Accessory();

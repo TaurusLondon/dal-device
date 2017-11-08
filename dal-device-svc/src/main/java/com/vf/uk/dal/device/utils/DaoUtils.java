@@ -530,31 +530,28 @@ public class DaoUtils {
 		return productGroupList;
 	}
 
-	public static Accessory convertCoherenceAccesoryToAccessory(CommercialProduct commercialProduct,PriceForProduct priceForProduct,String journeyType) {
+	public static Accessory convertCoherenceAccesoryToAccessory(CommercialProduct commercialProduct,PriceForAccessory priceForAccessory,String journeyType) {
 		Accessory accessory = null;
 		List<MediaLink> merchandisingMedia = new ArrayList<>();
-		if (commercialProduct != null && priceForProduct != null) {
-			 
-				for (PriceForAccessory priceForAccessory : priceForProduct.getPriceForAccessoryes()) {
-					com.vf.uk.dal.utility.entity.HardwarePrice hardwarePrice = priceForAccessory.getHardwarePrice();
-					if (priceForAccessory != null && hardwarePrice != null && hardwarePrice.getHardwareId().equalsIgnoreCase(commercialProduct.getId())) {
-						List<MediaLink> mediList = setPriceMerchandisingPromotion(hardwarePrice);
-						if(mediList!=null && !mediList.isEmpty()){
-							merchandisingMedia.addAll(mediList);
-						}
-						
-						if(Double.valueOf(hardwarePrice.getOneOffPrice().getGross())>0)
-						{	
-							accessory = new Accessory();
-							accessory.setDeviceCost(priceForAccessory);
-							accessory.setSkuId(commercialProduct.getId());
-							accessory.setName(commercialProduct.getDisplayName());
-							accessory.setDescription(commercialProduct.getPreDesc());
-							
-							break;
-						}
-					}
+		if (commercialProduct != null && priceForAccessory != null) {
+			
+			com.vf.uk.dal.utility.entity.HardwarePrice hardwarePrice = priceForAccessory.getHardwarePrice();
+			if (hardwarePrice != null && hardwarePrice.getHardwareId().equalsIgnoreCase(commercialProduct.getId())) {
+				List<MediaLink> mediList = setPriceMerchandisingPromotion(hardwarePrice);
+				if(mediList!=null && !mediList.isEmpty()){
+					merchandisingMedia.addAll(mediList);
 				}
+				
+				if(Double.valueOf(hardwarePrice.getOneOffPrice().getGross())>0)
+				{	
+					accessory = new Accessory();
+					accessory.setDeviceCost(priceForAccessory);
+					accessory.setSkuId(commercialProduct.getId());
+					accessory.setName(commercialProduct.getDisplayName());
+					accessory.setDescription(commercialProduct.getPreDesc());
+				}
+			}
+				
 			 
 			if(accessory!=null){
 				List<com.vodafone.product.pojo.Group> listOfSpecificationGroups = commercialProduct
