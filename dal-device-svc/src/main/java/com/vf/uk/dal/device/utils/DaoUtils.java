@@ -642,7 +642,7 @@ public class DaoUtils {
 						&& commercialProduct.getProductControl().isIsDisplayableRet()){
 					return accessory;
 				}
-			}else if(commercialProduct.getProductControl()!=null && commercialProduct.getProductControl().isIsDisplayableAcq()
+			}else if( !(Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)) && commercialProduct.getProductControl()!=null && commercialProduct.getProductControl().isIsDisplayableAcq()
 					&& commercialProduct.getProductControl().isIsSellableAcq()) {
 				return accessory;
 			}
@@ -738,7 +738,7 @@ public class DaoUtils {
 						&& insuranceProduct.getProductControl().isIsDisplayableRet()){
 					insuranceList.add(insurance);
 				}
-			}else if(insuranceProduct.getProductControl()!=null && insuranceProduct.getProductControl().isIsDisplayableAcq()
+			}else if(!(Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)) && insuranceProduct.getProductControl()!=null && insuranceProduct.getProductControl().isIsDisplayableAcq()
 					&& insuranceProduct.getProductControl().isIsSellableAcq()) {
 				insuranceList.add(insurance);
 			}
