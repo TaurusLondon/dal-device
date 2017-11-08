@@ -72,5 +72,8 @@ public class ExceptionMessages
 	
 	public static final String PRICING_API_EXCEPTION = "Pricing API throwing Exception While calling";
 	public static final String BAZARVOICE_SERVICE_EXCEPTION = "Exception Occured While calling BazarVoice";
+
+	//Sprint 6.3
+	public static final String NULL_VALUES_FROM_PRICING_API = "Null value received from Pricing API";
 }
 

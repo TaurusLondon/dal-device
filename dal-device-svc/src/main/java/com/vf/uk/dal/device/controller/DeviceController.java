@@ -25,6 +25,7 @@ import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.common.urlparams.FilterCriteria;
 import com.vf.uk.dal.common.urlparams.PaginationCriteria;
 import com.vf.uk.dal.device.entity.Accessory;
+import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.entity.DeviceDetails;
 import com.vf.uk.dal.device.entity.DeviceTile;
@@ -193,20 +194,20 @@ public class DeviceController {
 	 * @return List<Accessory>
 	 **/
 	@RequestMapping(value = "/accessory/queries/byDeviceId/", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
-	public List<Accessory> getAccessoriesOfDevice(@RequestParam Map<String, String> queryParams) {
+	public List<AccessoryTileGroup> getAccessoriesOfDevice(@RequestParam Map<String, String> queryParams) {
 
 		if (!queryParams.isEmpty() && Validator.validateDeviceId(queryParams)) {
-			List<Accessory> listOfAccessory;
+			List<AccessoryTileGroup> listOfAccessoryTileGroup;
 
 			String deviceId = queryParams.containsKey(DEVICE_ID) ? queryParams.get(DEVICE_ID) : null;
 			String journeyType = queryParams.containsKey(JOURNEY_TYPE)?queryParams.get(JOURNEY_TYPE) : null;
 			if (StringUtils.isNotBlank(deviceId)) {
-				listOfAccessory = deviceService.getAccessoriesOfDevice(deviceId,journeyType);
+				listOfAccessoryTileGroup = deviceService.getAccessoriesOfDevice(deviceId,journeyType);
 			} else {
 				LogHelper.error(this, DEVICE_ID_IS_EMPTY);
 				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
 			}
-			return listOfAccessory;
+			return listOfAccessoryTileGroup;
 		} else
 			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
 	}
