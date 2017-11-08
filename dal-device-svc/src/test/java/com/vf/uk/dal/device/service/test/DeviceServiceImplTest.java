@@ -33,6 +33,7 @@ import com.vf.uk.dal.device.beans.test.DeviceTestBeans;
 import com.vf.uk.dal.device.common.test.CommonMethods;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.entity.Accessory;
+import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.Asset;
 import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
 import com.vf.uk.dal.device.entity.DeviceDetails;
@@ -124,7 +125,7 @@ public class DeviceServiceImplTest
 		given(this.deviceDAOMock.getDeviceDetails("83921","upgrade","34543")).willReturn(CommonMethods.getDevice("83921"));
 		given(this.deviceDAOMock.getDeviceDetails("83921","Upgrade","W_HH_PAYM_OC_02")).willReturn(CommonMethods.getDevice("83921"));
 		given(this.deviceDAOMock.getDeviceDetails("83929","upgrade","34543")).willReturn(null);
-		given(this.deviceDAOMock.getAccessoriesOfDevice("93353","Upgrade")).willReturn(CommonMethods.getAccessoriesOfDevice("93353"));
+		given(this.deviceDAOMock.getAccessoriesOfDevice("93353","Upgrade")).willReturn(CommonMethods.getAccessoriesTileGroup("93353"));
 		given(this.deviceDAOMock.getAccessoriesOfDevice("93354","Upgrade")).willReturn(null);
 		given(this.deviceDAOMock.getAccessoriesOfDevice(null,null)).willReturn(null);
 		//given(this.deviceDAOMock.getDeviceList("HANDSET","apple", "iPhone-7","DEVICE_PAYM", "Priority", 1, 2,"32 GB","White","iOS","Great Camera")).willReturn(CommonMethods.getFacetedDevice("HANDSET","apple", "iPhone 7", "DEVICE_PAYM", "asc", 1, 2,"123"));
@@ -254,13 +255,13 @@ public class DeviceServiceImplTest
 	}
 	@Test
 	public void notNullTestForGetAccessoriesOfDevice() {
-		List<Accessory> accessory=new ArrayList<Accessory>();
+		List<AccessoryTileGroup> accessory=new ArrayList<>();
 		accessory=deviceService.getAccessoriesOfDevice("93353","Upgrade");
 		Assert.assertNotNull(accessory); 
 	}
 	@Test
 	public void nullTestForGetAccessoriesOfDevice() {
-		List<Accessory> accessory=new ArrayList<Accessory>();
+		List<AccessoryTileGroup> accessory=new ArrayList<>();
 		try{
 		accessory=deviceService.getAccessoriesOfDevice(null,null);
 		}

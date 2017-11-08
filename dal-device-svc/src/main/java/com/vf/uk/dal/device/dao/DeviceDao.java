@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
-import com.vf.uk.dal.device.entity.Accessory;
+import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.entity.DeviceDetails;
@@ -35,7 +35,7 @@ public interface DeviceDao {
 	public DeviceDetails getDeviceDetails(String deviceId,String journeyType,String offerCode);
 	public List<DeviceTile> getDeviceTileById(String id, String offerCode, String journeyType);
 	public List<ProductGroup> getProductGroupByGroupTypeGroupName(String groupType, String groupName);
-	public List<Accessory> getAccessoriesOfDevice(String deviceId,String journeyType);
+	public List<AccessoryTileGroup> getAccessoriesOfDevice(String deviceId,String journeyType);
 	//public FacetedDevice getDeviceList(String productClass,String make,String model,String groupType,String sortCriteria,int pageNumber,int pageSize,String capacity,String colour,String operatingSystem,String mustHaveFeatures);
 	//public Insurances getInsuranceById(String deviceId);
 	//public List<ProductGroupForDeviceListing> getDeviceListFromPricing(String grouptype);

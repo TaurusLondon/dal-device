@@ -1,7 +1,6 @@
 package com.vf.uk.dal.device.controller.test;
 
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doThrow;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,6 +41,7 @@ import com.vf.uk.dal.device.common.test.CommonMethods;
 import com.vf.uk.dal.device.controller.DeviceController;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.entity.Accessory;
+import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.entity.DeviceDetails;
@@ -131,7 +131,7 @@ public class DeviceControllerTest {
 		given(this.deviceDAOMock.getDeviceDetails("83929", "upgrade", "34543")).willReturn(null);
 		given(this.deviceDAOMock.getDeviceDetails(null, null, null)).willReturn(null);
 		given(this.deviceDAOMock.getAccessoriesOfDevice("93353","Upgrade"))
-				.willReturn(CommonMethods.getAccessoriesOfDevice("93353"));
+				.willReturn(CommonMethods.getAccessoriesTileGroup("93353"));
 		given(this.deviceDAOMock.getAccessoriesOfDevice("93354",null)).willReturn(null);
 		given(this.deviceDAOMock.getAccessoriesOfDevice(null,null)).willReturn(null);
 		// given(this.deviceDAOMock.getDeviceList("HANDSET","Apple", "iPhone-7",
@@ -532,7 +532,7 @@ public class DeviceControllerTest {
 	@Test
 	public void notNullTestForGetAccessoriesOfDevice() {
 		try {
-			List<Accessory> accessoryDetails = new ArrayList<Accessory>();
+			List<AccessoryTileGroup> accessoryDetails = new ArrayList<>();
 			accessoryDetails = deviceController.getAccessoriesOfDevice(CommonMethods.getQueryParamsMap("93353"));
 			Assert.assertNotNull(accessoryDetails);
 			accessoryDetails = deviceController.getAccessoriesOfDevice(CommonMethods.getInvalidQueryParamsMap("93353"));
@@ -543,7 +543,7 @@ public class DeviceControllerTest {
 
 	@Test
 	public void nullTestForGetAccessoriesOfDevice() {
-		List<Accessory> accessoryDetails = new ArrayList<Accessory>();
+		List<AccessoryTileGroup> accessoryDetails = new ArrayList<>();
 		Map<String, String> queryparams = new HashMap<String, String>();
 		queryparams.put("deviceId", "93354");
 		queryparams.put("journeyType", null);
@@ -553,7 +553,7 @@ public class DeviceControllerTest {
 
 	@Test
 	public void nullValueTestForGetAccessoriesOfDevice() {
-		List<Accessory> accessoryDetails = new ArrayList<Accessory>();
+		List<AccessoryTileGroup> accessoryDetails = new ArrayList<>();
 		try {
 			Map<String, String> queryparams = new HashMap<String, String>();
 			queryparams.put("deviceId", null);
@@ -1353,7 +1353,8 @@ public class DeviceControllerTest {
 	
 	@Test
 	public void convertCoherenceAccesoryToAccessory() {
-		DaoUtils.convertCoherenceAccesoryToAccessory(CommonMethods.getCommercialProduct(), CommonMethods.GetPriceforproduct(),"Upgrade");
+		DaoUtils.convertCoherenceAccesoryToAccessory(CommonMethods.getCommercialProduct(), 
+													 CommonMethods.GetPriceforproduct().getPriceForAccessoryes().get(0),"Upgrade");
 	}
 
 	
