@@ -191,6 +191,7 @@ public class DeviceDaoImpl implements DeviceDao {
 								entityMember.setPriority(String.valueOf(member.getPriority()));
 								listOfDeviceGroupMember.add(entityMember);
 								CommercialProduct commercialProduct = commerProdMemMap.get(member.getId());
+								//Begin User Story 9116
 								if (StringUtils.isNotBlank(journeyType)
 										&& Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
 										&& commercialProduct.getProductControl() != null
@@ -203,6 +204,7 @@ public class DeviceDaoImpl implements DeviceDao {
 										&& commercialProduct.getProductControl().isIsSellableAcq()) {
 									commercialProductsMatchedMemList.add(commercialProduct);
 								}
+								//End User Story 9116
 								if (StringUtils.isNotBlank(bundleId)
 										&& commercialProduct.getListOfCompatiblePlanIds().contains(bundleId)) {
 									bundleIdMap.put(commercialProduct.getId(), true);
@@ -685,7 +687,7 @@ public class DeviceDaoImpl implements DeviceDao {
 			listOfDeviceTile = new ArrayList<>();
 			DeviceTile deviceTile = new DeviceTile();
 			List<DeviceSummary> listOfDeviceSummary = new ArrayList<>();
-			DeviceSummary deviceSummary;
+			DeviceSummary deviceSummary=new DeviceSummary();
 			deviceTile.setDeviceId(id);
 			String avarageOverallRating = getDeviceReviewRating(new ArrayList<>(Arrays.asList(id))).get(
 					CommonUtility.appendPrefixString(id));
@@ -734,14 +736,27 @@ public class DeviceDaoImpl implements DeviceDao {
 			CommercialBundle comBundle = commercialBundleRepository.get(leadPlanId);
 			// Media Link from merchandising Promotion
 			List<OfferPacks> listOfOfferPacks = new ArrayList<>();
+			
 			if (comBundle != null) {
 
 				listOfOfferPacks.addAll(offerPacksMediaListForBundleDetails(comBundle));
 			}
 			listOfOfferPacks.addAll(offerPacksMediaListForDeviceDetails(commercialProduct));
-
-			deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile(memberPriority, commercialProduct, comBundle,
-					listOfPriceForBundleAndHardware, listOfOfferPacks, null, false);
+			if (StringUtils.isNotBlank(journeyType)
+					&& Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
+					&& commercialProduct.getProductControl() != null
+					&& commercialProduct.getProductControl().isIsSellableRet()
+					&& commercialProduct.getProductControl().isIsDisplayableRet()) {
+				deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile(memberPriority, commercialProduct, comBundle,
+						listOfPriceForBundleAndHardware, listOfOfferPacks, null, false);
+			} else if (!Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
+					&& commercialProduct.getProductControl() != null
+					&& commercialProduct.getProductControl().isIsDisplayableAcq()
+					&& commercialProduct.getProductControl().isIsSellableAcq()) {
+				deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile(memberPriority, commercialProduct, comBundle,
+						listOfPriceForBundleAndHardware, listOfOfferPacks, null, false);
+			}
+			
 			listOfDeviceSummary.add(deviceSummary);
 			deviceTile.setDeviceSummary(listOfDeviceSummary);
 			listOfDeviceTile.add(deviceTile);
@@ -830,7 +845,9 @@ public class DeviceDaoImpl implements DeviceDao {
 				// HashMap for groupName and list of accessories ID
 				Map<String, List<String>> mapForGroupName = new LinkedHashMap<>();
 				
-				Collection<Group> listOfProductGroup = productGroupRepository.getAll(listOfDeviceGroupName);
+				List<Group> listOfProductGroup = new ArrayList<Group>(productGroupRepository.getAll(listOfDeviceGroupName));
+				listOfProductGroup = getGroupBasedOnPriority(listOfProductGroup);
+				
 				for(Group productGroup : listOfProductGroup)
 				{
 					List<Member> listOfAccesoriesMembers = new ArrayList<>();
@@ -1530,7 +1547,7 @@ public class DeviceDaoImpl implements DeviceDao {
 
 		return listOfDeviceGroupMember;
 	}
-
+ 
 	class SortedAccessoryPriorityList implements Comparator<Member> {
 
 		@Override
@@ -1542,6 +1559,34 @@ public class DeviceDaoImpl implements DeviceDao {
 				} else
 					return 1;
 
+			}
+
+			else
+				return -1;
+		}
+
+	}
+	
+	/**
+	 * 
+	 * @param collectionOfGroup
+	 * @return collectionOfGroup(sorted based on priority)
+	 */
+	
+	public static List<Group> getGroupBasedOnPriority(List<Group> listOfGroup) {
+		Collections.sort(listOfGroup, new SortedExtrasGroupPriorityList());
+
+		return listOfGroup;
+	} 
+	static class SortedExtrasGroupPriorityList implements Comparator<Group> {
+
+		@Override
+		public int compare(Group member1, Group member2) {
+			if (member1.getGroupPriority() != null && member2.getGroupPriority() != null) {
+				if (member1.getGroupPriority() < member2.getGroupPriority()) {
+					return -1;
+				} else
+					return 1;
 			}
 
 			else

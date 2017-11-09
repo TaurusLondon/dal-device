@@ -178,7 +178,7 @@ public  class CommonUtility {
 		 client=restTemplate.postForObject("http://PRICE-V1/price/product" ,bundleDeviceAndProductsList,PriceForProduct.class);
 		}catch(Exception e){
 			LogHelper.error(CommonUtility.class, "getAccessoryPriceDetails API Exception---------------"+e);
-			throw new ApplicationException(e.getLocalizedMessage());
+			throw new ApplicationException(ExceptionMessages.PRICING_API_EXCEPTION);
 		}
  		ObjectMapper mapper = new ObjectMapper();
 		return mapper.convertValue(client, new TypeReference<PriceForProduct>(){});
