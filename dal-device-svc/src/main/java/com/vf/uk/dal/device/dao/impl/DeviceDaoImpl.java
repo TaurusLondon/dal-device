@@ -191,7 +191,20 @@ public class DeviceDaoImpl implements DeviceDao {
 								entityMember.setPriority(String.valueOf(member.getPriority()));
 								listOfDeviceGroupMember.add(entityMember);
 								CommercialProduct commercialProduct = commerProdMemMap.get(member.getId());
-								commercialProductsMatchedMemList.add(commercialProduct);
+								//Begin User Story 9116
+								if (StringUtils.isNotBlank(journeyType)
+										&& Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
+										&& commercialProduct.getProductControl() != null
+										&& commercialProduct.getProductControl().isIsSellableRet()
+										&& commercialProduct.getProductControl().isIsDisplayableRet()) {
+									commercialProductsMatchedMemList.add(commercialProduct);
+								} else if (!Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
+										&& commercialProduct.getProductControl() != null
+										&& commercialProduct.getProductControl().isIsDisplayableAcq()
+										&& commercialProduct.getProductControl().isIsSellableAcq()) {
+									commercialProductsMatchedMemList.add(commercialProduct);
+								}
+								//End User Story 9116
 								if (StringUtils.isNotBlank(bundleId)
 										&& commercialProduct.getListOfCompatiblePlanIds().contains(bundleId)) {
 									bundleIdMap.put(commercialProduct.getId(), true);
@@ -566,7 +579,7 @@ public class DeviceDaoImpl implements DeviceDao {
 
 		CommercialProductRepository commercialProductRepository = new CommercialProductRepository();
 		CommercialProduct commercialProduct = commercialProductRepository.get(deviceId);
-		DeviceDetails deviceDetails;
+		DeviceDetails deviceDetails = new DeviceDetails();
 		CommercialBundleRepository commercialBundleRepository = new CommercialBundleRepository();
 		if (commercialProduct != null && commercialProduct.getId() != null && commercialProduct.getIsDeviceProduct()
 				&& (commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)
@@ -595,9 +608,20 @@ public class DeviceDaoImpl implements DeviceDao {
 				listOfOfferPacks.addAll(offerPacksMediaListForBundleDetails(commercialBundle));
 			}
 			listOfOfferPacks.addAll(offerPacksMediaListForDeviceDetails(commercialProduct));
-
-			deviceDetails = DaoUtils.convertCoherenceDeviceToDeviceDetails(commercialProduct,
-					listOfPriceForBundleAndHardware, listOfOfferPacks);
+			if (StringUtils.isNotBlank(journeyType)
+					&& Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
+					&& commercialProduct.getProductControl() != null
+					&& commercialProduct.getProductControl().isIsSellableRet()
+					&& commercialProduct.getProductControl().isIsDisplayableRet()) {
+				deviceDetails = DaoUtils.convertCoherenceDeviceToDeviceDetails(commercialProduct,
+						listOfPriceForBundleAndHardware, listOfOfferPacks);
+			} else if (!Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
+					&& commercialProduct.getProductControl() != null
+					&& commercialProduct.getProductControl().isIsDisplayableAcq()
+					&& commercialProduct.getProductControl().isIsSellableAcq()) {
+				deviceDetails = DaoUtils.convertCoherenceDeviceToDeviceDetails(commercialProduct,
+						listOfPriceForBundleAndHardware, listOfOfferPacks);
+			}
 			
 			if(StringUtils.isNotEmpty(offerCode) && StringUtils.isNotEmpty(journeyType)) {
 				deviceDetails.setValidOffer(validateOfferValidForDevice(commercialProduct,journeyType,offerCode));
@@ -663,7 +687,7 @@ public class DeviceDaoImpl implements DeviceDao {
 			listOfDeviceTile = new ArrayList<>();
 			DeviceTile deviceTile = new DeviceTile();
 			List<DeviceSummary> listOfDeviceSummary = new ArrayList<>();
-			DeviceSummary deviceSummary;
+			DeviceSummary deviceSummary=new DeviceSummary();
 			deviceTile.setDeviceId(id);
 			String avarageOverallRating = getDeviceReviewRating(new ArrayList<>(Arrays.asList(id))).get(
 					CommonUtility.appendPrefixString(id));
@@ -712,14 +736,27 @@ public class DeviceDaoImpl implements DeviceDao {
 			CommercialBundle comBundle = commercialBundleRepository.get(leadPlanId);
 			// Media Link from merchandising Promotion
 			List<OfferPacks> listOfOfferPacks = new ArrayList<>();
+			
 			if (comBundle != null) {
 
 				listOfOfferPacks.addAll(offerPacksMediaListForBundleDetails(comBundle));
 			}
 			listOfOfferPacks.addAll(offerPacksMediaListForDeviceDetails(commercialProduct));
-
-			deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile(memberPriority, commercialProduct, comBundle,
-					listOfPriceForBundleAndHardware, listOfOfferPacks, null, false);
+			if (StringUtils.isNotBlank(journeyType)
+					&& Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
+					&& commercialProduct.getProductControl() != null
+					&& commercialProduct.getProductControl().isIsSellableRet()
+					&& commercialProduct.getProductControl().isIsDisplayableRet()) {
+				deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile(memberPriority, commercialProduct, comBundle,
+						listOfPriceForBundleAndHardware, listOfOfferPacks, null, false);
+			} else if (!Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
+					&& commercialProduct.getProductControl() != null
+					&& commercialProduct.getProductControl().isIsDisplayableAcq()
+					&& commercialProduct.getProductControl().isIsSellableAcq()) {
+				deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile(memberPriority, commercialProduct, comBundle,
+						listOfPriceForBundleAndHardware, listOfOfferPacks, null, false);
+			}
+			
 			listOfDeviceSummary.add(deviceSummary);
 			deviceTile.setDeviceSummary(listOfDeviceSummary);
 			listOfDeviceTile.add(deviceTile);
