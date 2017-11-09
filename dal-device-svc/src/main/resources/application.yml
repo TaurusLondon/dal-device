@@ -10,8 +10,8 @@ server:
     key-store: classpath:keystore.jks
     key-store-password: password
     key-password: password
-    trust-store: classpath:alblowerkeystore.jks
-    trust-store-password: tib123  
+    trust-store: classpath:myTrustStore.jks
+    trust-store-password: password  
 endpoints:
   enabled: false
   health:
