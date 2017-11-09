@@ -845,7 +845,9 @@ public class DeviceDaoImpl implements DeviceDao {
 				// HashMap for groupName and list of accessories ID
 				Map<String, List<String>> mapForGroupName = new LinkedHashMap<>();
 				
-				Collection<Group> listOfProductGroup = productGroupRepository.getAll(listOfDeviceGroupName);
+				List<Group> listOfProductGroup = new ArrayList<Group>(productGroupRepository.getAll(listOfDeviceGroupName));
+				listOfProductGroup = getGroupBasedOnPriority(listOfProductGroup);
+				
 				for(Group productGroup : listOfProductGroup)
 				{
 					List<Member> listOfAccesoriesMembers = new ArrayList<>();
@@ -1545,7 +1547,7 @@ public class DeviceDaoImpl implements DeviceDao {
 
 		return listOfDeviceGroupMember;
 	}
-
+ 
 	class SortedAccessoryPriorityList implements Comparator<Member> {
 
 		@Override
@@ -1557,6 +1559,34 @@ public class DeviceDaoImpl implements DeviceDao {
 				} else
 					return 1;
 
+			}
+
+			else
+				return -1;
+		}
+
+	}
+	
+	/**
+	 * 
+	 * @param collectionOfGroup
+	 * @return collectionOfGroup(sorted based on priority)
+	 */
+	
+	public static List<Group> getGroupBasedOnPriority(List<Group> listOfGroup) {
+		Collections.sort(listOfGroup, new SortedExtrasGroupPriorityList());
+
+		return listOfGroup;
+	} 
+	static class SortedExtrasGroupPriorityList implements Comparator<Group> {
+
+		@Override
+		public int compare(Group member1, Group member2) {
+			if (member1.getGroupPriority() != null && member2.getGroupPriority() != null) {
+				if (member1.getGroupPriority() < member2.getGroupPriority()) {
+					return -1;
+				} else
+					return 1;
 			}
 
 			else
