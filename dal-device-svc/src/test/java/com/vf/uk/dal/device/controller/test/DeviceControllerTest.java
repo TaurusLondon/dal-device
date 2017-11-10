@@ -471,9 +471,13 @@ public class DeviceControllerTest {
 
 	@Test
 	public void nullTestgetDeviceTileById() {
+		try{
 		List<DeviceTile> deviceTileList = new ArrayList<DeviceTile>();
 		deviceTileList = deviceController.getDeviceTileById(CommonMethods.getQueryParamsMap("83987"));
-		Assert.assertNull(deviceTileList);
+		}
+		catch(Exception e){
+			Assert.assertEquals("com.vf.uk.dal.common.exception.ApplicationException: Invalid Device Id Sent In Request", e.toString());
+		}
 	}
 	
 	public void nullTestgetDeviceTileByIdForException() {
