@@ -1000,14 +1000,14 @@ public class DeviceServiceImpl implements DeviceService {
 			}
 		} else {
 			LogHelper.error(this, "No data found for given Device Id :" + deviceId);
-			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID);
+			throw new ApplicationException(ExceptionMessages.NULL_COMPATIBLE_INSURANCES_FOR_DEVICE_ID);
 		}
 		if (insurance != null && !insurance.getInsuranceList().isEmpty()) {
 			getFormattedPriceForGetCompatibleInsurances(insurance);
 			insurance.setMinCost(FormatPrice(insurance.getMinCost()));
 		} else {
-			LogHelper.error(this, "No Compatible Accessories found for given device Id:" + deviceId);
-			throw new ApplicationException(ExceptionMessages.NULL_COMPATIBLE_VALUE_FOR_DEVICE_ID);
+			LogHelper.error(this, "No Compatible Insurances found for given device Id" + deviceId);
+			throw new ApplicationException(ExceptionMessages.NULL_COMPATIBLE_INSURANCES_FOR_DEVICE_ID);
 		}
 		return insurance;
 	}

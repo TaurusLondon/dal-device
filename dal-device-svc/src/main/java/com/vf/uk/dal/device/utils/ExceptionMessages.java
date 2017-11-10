@@ -75,5 +75,6 @@ public class ExceptionMessages
 
 	//Sprint 6.3
 	public static final String NULL_VALUES_FROM_PRICING_API = "Null value received from Pricing API";
+	public static final String NULL_COMPATIBLE_INSURANCES_FOR_DEVICE_ID = "No Compatible Insurances found for given device Id";
 }
 
