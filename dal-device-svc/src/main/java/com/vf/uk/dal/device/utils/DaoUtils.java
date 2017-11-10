@@ -658,13 +658,6 @@ public class DaoUtils {
 			insurance = new Insurance();
 			insurance.setId(insuranceProduct.getId());
 			insurance.setName(insuranceProduct.getDisplayName());
-			Price price = new Price();
-			minPrice.add(insuranceProduct.getPriceDetail().getPriceGross());
-			price.setGross(String.valueOf(insuranceProduct.getPriceDetail().getPriceGross()));
-			price.setVat(String.valueOf(insuranceProduct.getPriceDetail().getPriceVAT()));
-			price.setNet(String.valueOf(insuranceProduct.getPriceDetail().getPriceNet()));
-			insurance.setPrice(price);
-			
 			List<MediaLink> merchandisingMedia = new ArrayList<>();
 			MediaLink mediaLink;
 			if (insuranceProduct.getListOfimageURLs() != null) {
@@ -733,10 +726,22 @@ public class DaoUtils {
 			if(StringUtils.isNotBlank(journeyType) && Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)) {
 				if(insuranceProduct.getProductControl()!=null && insuranceProduct.getProductControl().isIsSellableRet() 
 						&& insuranceProduct.getProductControl().isIsDisplayableRet()){
+					Price price = new Price();
+					minPrice.add(insuranceProduct.getPriceDetail().getPriceGross());
+					price.setGross(String.valueOf(insuranceProduct.getPriceDetail().getPriceGross()));
+					price.setVat(String.valueOf(insuranceProduct.getPriceDetail().getPriceVAT()));
+					price.setNet(String.valueOf(insuranceProduct.getPriceDetail().getPriceNet()));
+					insurance.setPrice(price);
 					insuranceList.add(insurance);
 				}
 			}else if(!(Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)) && insuranceProduct.getProductControl()!=null && insuranceProduct.getProductControl().isIsDisplayableAcq()
 					&& insuranceProduct.getProductControl().isIsSellableAcq()) {
+				Price price = new Price();
+				minPrice.add(insuranceProduct.getPriceDetail().getPriceGross());
+				price.setGross(String.valueOf(insuranceProduct.getPriceDetail().getPriceGross()));
+				price.setVat(String.valueOf(insuranceProduct.getPriceDetail().getPriceVAT()));
+				price.setNet(String.valueOf(insuranceProduct.getPriceDetail().getPriceNet()));
+				insurance.setPrice(price);
 				insuranceList.add(insurance);
 			}
 			//UserStory-6715 End
