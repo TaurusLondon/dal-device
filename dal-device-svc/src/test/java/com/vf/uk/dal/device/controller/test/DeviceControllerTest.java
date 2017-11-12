@@ -1345,7 +1345,7 @@ public class DeviceControllerTest {
 			PaginationCriteria paginationCriteria = new PaginationCriteria(9, 0);
 			ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
 			deviceController.getDeviceList(CommonMethods.getQueryParamsMap("Apple", "iPhone-7", "DEVICE_PAYG",
-					"HANDSET", "32 GB", "White", "iOS", "Great Camera", "test", null));
+					"HANDSET", "32 GB", "White", "iOS", "Great Camera", "",null));
 
 		} catch (Exception e) {
 			Assert.assertEquals(
