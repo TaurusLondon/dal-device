@@ -66,12 +66,12 @@ public class Validator {
 	}
 	
 	
-/*	public static boolean validateJourneyType(String journeyType)
+	public static boolean validateJourneyType(String journeyType)
 	{
 		List<String> journeyList = Arrays.asList("acquisition", "upgrade", "secondline");
 		if(journeyList.contains(journeyType.toLowerCase()))
 			return true;
 		else
 			return false;
-	}*/
+	}
 }

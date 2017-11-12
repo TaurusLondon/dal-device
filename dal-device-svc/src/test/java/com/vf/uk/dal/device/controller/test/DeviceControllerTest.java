@@ -343,7 +343,7 @@ public class DeviceControllerTest {
 
 			ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
 			given(deviceDAOMock.getProductGroupsWithFacets(Matchers.anyObject(), Matchers.anyObject(),
-					Matchers.anyObject(), Matchers.anyObject(), Matchers.anyObject(), Matchers.anyObject()))
+					Matchers.anyObject(), Matchers.anyObject(), Matchers.anyObject(), Matchers.anyObject(),""))
 							.willReturn(CommonMethods.getProductGroupFacetModel1());
 			given(deviceDAOMock.getProductGroupsWithFacets(Matchers.anyObject()))
 					.willReturn(CommonMethods.getProductGroupFacetModel1());

@@ -849,11 +849,11 @@ public class DeviceServiceImplTest
 		ProductGroupFacetModel productGroupFacetModel = CommonMethods.getProductGroupFacetModel();
 		productGroupFacetModel.setListOfProductGroups(CommonMethods.getProductGroupModel());
 		given(this.deviceDAOMock.getProductGroupsWithFacets(Matchers.any(), Matchers.any(), Matchers.any(),
-				Matchers.any(), Matchers.any(), Matchers.any())).willReturn(productGroupFacetModel);
+				Matchers.any(), Matchers.any(), Matchers.any(),"")).willReturn(productGroupFacetModel);
 		given(this.deviceDAOMock.getProductGroupsWithFacets(Matchers.any())).willReturn(CommonMethods.getProductGroupFacetModel1());
 		try
 		{
-			deviceService.getDeviceListForConditionalAccept("HANDSET", "make", "model", "DEVICE_PAYM", "Order", 5, 6, "12", "red", "os", "somefeature", (float) 500.00);
+			deviceService.getDeviceListForConditionalAccept("HANDSET", "make", "model", "DEVICE_PAYM", "Order", 5, 6, "12", "red", "os", "somefeature", (float) 500.00,"");
 		}
 		catch(Exception e)
 		{
@@ -1038,7 +1038,7 @@ public class DeviceServiceImplTest
 	@Test
 	public void nullTestForGetDeviceListForGroupTypeWithOutConditionalAcceptance() {
 		given(deviceDAOMock.getProductGroupsWithFacets(Matchers.any(), Matchers.any(), Matchers.any(),
-				Matchers.any(), Matchers.any(), Matchers.any())).willReturn(CommonMethods.getProductGroupFacetModel1());
+				Matchers.any(), Matchers.any(), Matchers.any(),"")).willReturn(CommonMethods.getProductGroupFacetModel1());
 		given(deviceDAOMock.getProductGroupsWithFacets(Filters.HANDSET)).willReturn(CommonMethods.getProductGroupFacetModel1());
 		given(deviceDAOMock.getProductModel(Matchers.anyList())).willReturn(CommonMethods.getProductModel());
 		
@@ -1056,7 +1056,7 @@ public class DeviceServiceImplTest
 	@Test
 	public void nullTestForGetDeviceListForGroupTypeWithOutConditionalAcceptance1() {
 		given(deviceDAOMock.getProductGroupsWithFacets(Matchers.any(), Matchers.any(), Matchers.any(),
-				Matchers.any(), Matchers.any(), Matchers.any())).willReturn(CommonMethods.getProductGroupFacetModel1());
+				Matchers.any(), Matchers.any(), Matchers.any(),"")).willReturn(CommonMethods.getProductGroupFacetModel1());
 		given(deviceDAOMock.getProductGroupsWithFacets(Filters.HANDSET)).willReturn(CommonMethods.getProductGroupFacetModel1());
 		given(deviceDAOMock.getProductModel(Matchers.anyList())).willReturn(CommonMethods.getProductModel());
 		given(deviceDAOMock.getBundleAndHardwarePriceFromSolr(Matchers.anyList(),Matchers.anyString())).willReturn(CommonMethods.getOfferAppliedPriceModel());
