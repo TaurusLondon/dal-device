@@ -974,6 +974,7 @@ public class DeviceServiceImpl implements DeviceService {
 						insuranceGroupName = productGroup.getProductGroupName();
 					}
 				}
+				LogHelper.info(this, "::::: Insurance GroupName " + insuranceGroupName + " :::::");
 				if (StringUtils.isNotBlank(insuranceGroupName)) {
 					Group productGroup = deviceDao.getGroupByProdGroupName(insuranceGroupName);
 					if (productGroup != null && productGroup.getGroupType() != null && productGroup.getGroupType()
@@ -1910,6 +1911,7 @@ public class DeviceServiceImpl implements DeviceService {
 	 * @return flag 
 	 */
 	public Boolean dateValidationForOffers(String startDateTime, String endDateTime, String strDateFormat) {
+		
 		boolean flag = false;
 		SimpleDateFormat dateFormat = new SimpleDateFormat(strDateFormat);
 		Date currentDate = new Date();
@@ -1929,6 +1931,7 @@ public class DeviceServiceImpl implements DeviceService {
 		try {
 			if (startDateTime != null) {
 				startDate = dateFormat.parse(startDateTime);
+				LogHelper.info(this, "::::: StartDate " + startDate + " :::::");
 			}
 			
 		} catch (ParseException | DateTimeParseException e) {
@@ -1938,6 +1941,7 @@ public class DeviceServiceImpl implements DeviceService {
 		try{
 			if (endDateTime != null) {
 				endDate = dateFormat.parse(endDateTime);
+				LogHelper.info(this, "::::: EndDate " + endDate + " :::::");
 			}
 		}catch (ParseException | DateTimeParseException e) {
 			LogHelper.error(this, "ParseException: " + e);

@@ -594,8 +594,10 @@ public class DeviceDaoImpl implements DeviceDao {
 			String leadPlanId = null;
 			if (commercialProduct.getLeadPlanId() != null) {
 				leadPlanId = commercialProduct.getLeadPlanId();
+				LogHelper.info(this, "::::: LeadPlanId " + leadPlanId + " :::::");	
 			} else if (bundleAndHardwareTupleList != null && !bundleAndHardwareTupleList.isEmpty()) {
 				leadPlanId = bundleAndHardwareTupleList.get(0).getBundleId();
+				LogHelper.info(this, "::::: LeadPlanId " + leadPlanId + " :::::");	
 			}
 			CommercialBundle commercialBundle = commercialBundleRepository.get(leadPlanId);
 			List<OfferPacks> listOfOfferPacks = new ArrayList<>();
@@ -1249,19 +1251,41 @@ public class DeviceDaoImpl implements DeviceDao {
 		boolean flag = false;
 		SimpleDateFormat dateFormat = new SimpleDateFormat(strDateFormat);
 		Date currentDate = new Date();
+		
+		String currentDateStr = dateFormat.format(currentDate);		
+		
+		try {
+			currentDate = dateFormat.parse(currentDateStr);
+			
+		} catch (ParseException | DateTimeParseException e) {
+			LogHelper.error(this, "ParseException: " + e);
+		}	
+		
 		Date startDate = null;
 		Date endDate = null;
-		if (startDateTime != null && endDateTime != null) {
-			try {
+
+		try {
+			if (startDateTime != null) {
 				startDate = dateFormat.parse(startDateTime);
-				endDate = dateFormat.parse(endDateTime);
-				if ((currentDate.after(startDate) || currentDate.equals(startDate))
-						&& (currentDate.before(endDate) || currentDate.equals(endDate))) {
-					flag = true;
-				}
-			} catch (ParseException | DateTimeParseException e) {
-				LogHelper.error(this, e + "");
+				LogHelper.info(this, "::::: startDate " + startDate + " :::::");
 			}
+			
+		} catch (ParseException | DateTimeParseException e) {
+			LogHelper.error(this, "ParseException: " + e);
+		}	
+		
+		try{
+			if (endDateTime != null) {
+				endDate = dateFormat.parse(endDateTime);
+				LogHelper.info(this, "::::: EndDate " + endDate + " :::::");
+			}
+		}catch (ParseException | DateTimeParseException e) {
+			LogHelper.error(this, "ParseException: " + e);
+		}
+
+		if (startDate != null && endDate != null && ((currentDate.after(startDate) || currentDate.equals(startDate))
+				&& (currentDate.before(endDate) || currentDate.equals(endDate)))) {			
+				flag = true;			
 		}
 		if (startDate == null && endDate != null && currentDate.before(endDate)) {
 			flag = true;
@@ -1272,6 +1296,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		if (startDate == null && endDate == null) {
 			flag = true;
 		}
+
 		return flag;
 	}
 
