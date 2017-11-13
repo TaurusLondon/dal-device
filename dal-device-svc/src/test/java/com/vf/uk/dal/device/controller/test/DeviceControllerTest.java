@@ -343,7 +343,7 @@ public class DeviceControllerTest {
 
 			ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
 			given(deviceDAOMock.getProductGroupsWithFacets(Matchers.anyObject(), Matchers.anyObject(),
-					Matchers.anyObject(), Matchers.anyObject(), Matchers.anyObject(), Matchers.anyObject()))
+					Matchers.anyObject(), Matchers.anyObject(), Matchers.anyObject(), Matchers.anyObject(),""))
 							.willReturn(CommonMethods.getProductGroupFacetModel1());
 			given(deviceDAOMock.getProductGroupsWithFacets(Matchers.anyObject()))
 					.willReturn(CommonMethods.getProductGroupFacetModel1());
@@ -471,9 +471,13 @@ public class DeviceControllerTest {
 
 	@Test
 	public void nullTestgetDeviceTileById() {
+		try{
 		List<DeviceTile> deviceTileList = new ArrayList<DeviceTile>();
 		deviceTileList = deviceController.getDeviceTileById(CommonMethods.getQueryParamsMap("83987"));
-		Assert.assertNull(deviceTileList);
+		}
+		catch(Exception e){
+			Assert.assertEquals("com.vf.uk.dal.common.exception.ApplicationException: Invalid Device Id Sent In Request", e.toString());
+		}
 	}
 	
 	public void nullTestgetDeviceTileByIdForException() {
@@ -1341,7 +1345,7 @@ public class DeviceControllerTest {
 			PaginationCriteria paginationCriteria = new PaginationCriteria(9, 0);
 			ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
 			deviceController.getDeviceList(CommonMethods.getQueryParamsMap("Apple", "iPhone-7", "DEVICE_PAYG",
-					"HANDSET", "32 GB", "White", "iOS", "Great Camera", "test", null));
+					"HANDSET", "32 GB", "White", "iOS", "Great Camera", "",null));
 
 		} catch (Exception e) {
 			Assert.assertEquals(

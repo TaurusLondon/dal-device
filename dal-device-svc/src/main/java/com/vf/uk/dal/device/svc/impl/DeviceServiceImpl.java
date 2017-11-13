@@ -300,12 +300,11 @@ public class DeviceServiceImpl implements DeviceService {
 			LogHelper.error(this, "Invalid Group Type");
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_GROUP_TYPE);
 		}
-		/*
 		if (StringUtils.isNotBlank(journeyType) && !Validator.validateJourneyType(journeyType)) {
 			LogHelper.info(this, "Received JourneyType is invalid.");
 			throw new ApplicationException(ExceptionMessages.INVALID_JOURNEY_TYPE);
 
-		}		
+		}/*		
 		if (offerCode != null && (StringUtils.isBlank(journeyType)
 				|| (StringUtils.isNotBlank(journeyType) && !Validator.validateJourneyType(journeyType)))) {
 
@@ -344,7 +343,7 @@ public class DeviceServiceImpl implements DeviceService {
 			if (creditLimit != null) {
 				LogHelper.info(this, "Getting devices for conditional Accept, with credit limit :" + creditLimit);
 				facetedDevice = getDeviceListForConditionalAccept(productClass, make, model, groupType, sortCriteria,
-						pageNumber, pageSize, capacity, colour, operatingSystem, mustHaveFeatures, creditLimit);
+						pageNumber, pageSize, capacity, colour, operatingSystem, mustHaveFeatures, creditLimit,journeyType);
 			} else {
 				facetedDevice = getDeviceListofFacetedDevice(productClass, make, model, groupType, sortCriteria, pageNumber, pageSize,
 						capacity, colour, operatingSystem, mustHaveFeatures,journeyType,offerCode);
@@ -525,11 +524,11 @@ public class DeviceServiceImpl implements DeviceService {
 		sortBy = criteriaOfSort.get(1);
 		if (groupType.equals(Constants.STRING_DEVICE_PAYG)) {
 			productGroupFacetModel = deviceDao.getProductGroupsWithFacets(Filters.HANDSET_PAYG, filterCriteria, sortBy,
-					sortOption, pageNumber, pageSize);
+					sortOption, pageNumber, pageSize, journeyType);
 			productGroupFacetModelForFacets = deviceDao.getProductGroupsWithFacets(Filters.HANDSET_PAYG);
 		} else {
 			productGroupFacetModel = deviceDao.getProductGroupsWithFacets(Filters.HANDSET, filterCriteria, sortBy,
-					sortOption, pageNumber, pageSize);
+					sortOption, pageNumber, pageSize, journeyType);
 			productGroupFacetModelForFacets = deviceDao.getProductGroupsWithFacets(Filters.HANDSET);
 
 		}
@@ -666,7 +665,7 @@ public class DeviceServiceImpl implements DeviceService {
 	@Override
 	public FacetedDevice getDeviceListForConditionalAccept(String productClass, String make, String model,
 			String groupType, String sortCriteria, int pageNumber, int pageSize, String capacity, String colour,
-			String operatingSystem, String mustHaveFeatures, Float creditLimit) {
+			String operatingSystem, String mustHaveFeatures, Float creditLimit,String journeyType) {
 		LogHelper.info(DaoUtils.class, "Entering getDeviceListForConditionalAccept ");
 
 		FacetedDevice facetedDevice;
@@ -690,11 +689,11 @@ public class DeviceServiceImpl implements DeviceService {
 		sortBy = criteriaOfSort.get(1);
 		if (groupType.equals(Constants.STRING_DEVICE_PAYG)) {
 			productGroupFacetModel = deviceDao.getProductGroupsWithFacets(Filters.HANDSET_PAYG, filterCriteria, sortBy,
-					sortOption, pageNumber, pageSize);
+					sortOption, pageNumber, pageSize, journeyType);
 			productGroupFacetModelForFacets = deviceDao.getProductGroupsWithFacets(Filters.HANDSET_PAYG);
 		} else {
 			productGroupFacetModel = deviceDao.getProductGroupsWithFacets(Filters.HANDSET, filterCriteria, sortBy,
-					sortOption, pageNumber, pageSize);
+					sortOption, pageNumber, pageSize, journeyType);
 			productGroupFacetModelForFacets = deviceDao.getProductGroupsWithFacets(Filters.HANDSET);
 
 		}

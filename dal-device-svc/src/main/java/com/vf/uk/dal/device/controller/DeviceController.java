@@ -159,6 +159,10 @@ public class DeviceController {
 				throw new ApplicationException(ExceptionMessages.REQUIRED_JOURNEY_TYPE);
 			}	*/
 			if (deviceId != null) {
+				if(!deviceId.matches("[0-9]{6}")) {
+					LogHelper.error(this, "DeviceId is Invalid");
+					throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
+				}
 				listOfDeviceTile = deviceService.getDeviceTileById(deviceId,offerCode,journeyType);
 			} else {
 				LogHelper.error(this, DEVICE_ID_IS_EMPTY);

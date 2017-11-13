@@ -64,6 +64,7 @@ import com.vf.uk.dal.utility.entity.PriceForAccessory;
 import com.vf.uk.dal.utility.entity.PriceForProduct;
 import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
 import com.vodafone.business.service.RequestManager;
+import com.vodafone.business.service.VodafoneConstants;
 import com.vodafone.common.Filters;
 import com.vodafone.dal.bundle.pojo.CommercialBundle;
 import com.vodafone.dal.domain.bazaarvoice.BazaarVoice;
@@ -1838,14 +1839,19 @@ public class DeviceDaoImpl implements DeviceDao {
 	 */
 	@Override
 	public ProductGroupFacetModel getProductGroupsWithFacets(Filters filterKey, String filterCriteria, String sortBy,
-			String sortOption, Integer pageNumber, Integer pageSize) {
+			String sortOption, Integer pageNumber, Integer pageSize,String journeyType) {
 		ProductGroupFacetModel productGroupFacetModel = null;
 		try {
 			if (requestManager == null) {
 				requestManager = SolrConnectionProvider.getSolrConnection();
 			}
+			if(StringUtils.isNotBlank(journeyType) && journeyType.equalsIgnoreCase("upgrade")){
+				productGroupFacetModel = requestManager.getProductGroupsWithFacetsByJourneyType(filterKey, filterCriteria, sortBy,
+						sortOption, pageNumber, pageSize,Arrays.asList(VodafoneConstants.UPGRADE));
+			}else{
 			productGroupFacetModel = requestManager.getProductGroupsWithFacets(filterKey, filterCriteria, sortBy,
 					sortOption, pageNumber, pageSize);
+			}
 		} catch (org.apache.solr.common.SolrException solrExcp) {
 			SolrConnectionProvider.closeSolrConnection();
 			LogHelper.error(this, "SolrException: " + solrExcp);

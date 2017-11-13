@@ -50,7 +50,7 @@ public interface DeviceService {
 	Boolean validateMemeber1(String memberId);
 	FacetedDevice getDeviceListForConditionalAccept(String productClass, String make, String model, String groupType,
 			String sortCriteria, int pageNumber, int pageSize, String capacity, String colour, String operatingSystem,
-			String mustHaveFeatures, Float creditLimit);
+			String mustHaveFeatures, Float creditLimit,String journeyType);
 	String getFilterForDeviceList(String filter, String parameter);
 	public String getLeadPlanIdForDeviceId(String deviceId);
 	public Boolean validateMemeber(String memberId);
