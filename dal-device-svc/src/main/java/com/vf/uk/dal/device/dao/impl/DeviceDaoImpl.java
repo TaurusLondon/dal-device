@@ -1,5 +1,7 @@
 package com.vf.uk.dal.device.dao.impl;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -22,6 +24,7 @@ import java.util.UUID;
 import javax.sql.DataSource;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -29,6 +32,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vf.uk.dal.common.configuration.ConfigHelper;
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
@@ -152,13 +157,12 @@ public class DeviceDaoImpl implements DeviceDao {
 				|| groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG)
 				|| groupType.equalsIgnoreCase(Constants.STRING_DEVICE_NEARLY_NEW)) {
 			listOfCommercialProducts = commercialProductRepository.getByMakeANDModel(make, model);
-
+			
 		} else {
 			LogHelper.error(this, Constants.NO_DATA_FOUND_FOR_GROUP_TYPE + groupType);
 			throw new ApplicationException(ExceptionMessages.NULL_VALUE_GROUP_TYPE);
 		}
 		List<Group> listOfProductGroup = productGroupRepository.getProductGroupsByType(groupType);
-
 		List<CommercialProduct> commercialProductsMatchedMemList = new ArrayList<>();
 		Map<String, CommercialProduct> commerProdMemMap = new HashMap<>();
 		List<BundleAndHardwareTuple> bundleAndHardwareTupleList = new ArrayList<>();
@@ -185,10 +189,9 @@ public class DeviceDaoImpl implements DeviceDao {
 					// End User Story 9116
 				}
 			});
-
 			if (listOfProductGroup != null && !listOfProductGroup.isEmpty()) {
 				for (Group productGroup : listOfProductGroup) {
-
+					//productGroup=listOfProductGroup.get(26);
 					// productGroup.getGroupType()
 					if (productGroup.getMembers() != null && !productGroup.getMembers().isEmpty()) {
 						for (Member member : productGroup.getMembers()) {
@@ -199,7 +202,7 @@ public class DeviceDaoImpl implements DeviceDao {
 								entityMember.setPriority(String.valueOf(member.getPriority()));
 								listOfDeviceGroupMember.add(entityMember);
 								CommercialProduct commercialProduct = commerProdMemMap.get(member.getId());
-
+								commercialProductsMatchedMemList.add(commercialProduct);
 								if (StringUtils.isNotBlank(bundleId)
 										&& commercialProduct.getListOfCompatiblePlanIds().contains(bundleId)) {
 									bundleIdMap.put(commercialProduct.getId(), true);
@@ -1852,14 +1855,14 @@ public class DeviceDaoImpl implements DeviceDao {
 			if (requestManager == null) {
 				requestManager = SolrConnectionProvider.getSolrConnection();
 			}
-			if (StringUtils.isNotBlank(journeyType) && journeyType.equalsIgnoreCase("upgrade")) {
+			/*if (StringUtils.isNotBlank(journeyType) && journeyType.equalsIgnoreCase("upgrade")) {
 				productGroupFacetModel = requestManager.getProductGroupsWithFacetsByJourneyType(filterKey,
 						filterCriteria, sortBy, sortOption, pageNumber, pageSize,
 						Arrays.asList(VodafoneConstants.UPGRADE));
-			} else {
+			} else {*/
 				productGroupFacetModel = requestManager.getProductGroupsWithFacets(filterKey, filterCriteria, sortBy,
 						sortOption, pageNumber, pageSize);
-			}
+			//}
 		} catch (org.apache.solr.common.SolrException solrExcp) {
 			SolrConnectionProvider.closeSolrConnection();
 			LogHelper.error(this, "SolrException: " + solrExcp);
