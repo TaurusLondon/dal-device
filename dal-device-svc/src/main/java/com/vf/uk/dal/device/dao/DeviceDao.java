@@ -50,7 +50,7 @@ public interface DeviceDao {
 	public StockAvailability getStockAvailabilityByMemberId(String memberId);
 	public void movePreCalcDataToSolr(List<DevicePreCalculatedData> preCalcPlanList);
 	public ProductGroupFacetModel getProductGroupsWithFacets(Filters filterKey,String filterCriteria,
-			String sortBy,String sortOption,Integer pageNumber,Integer pageSize);
+			String sortBy,String sortOption,Integer pageNumber,Integer pageSize,String journeyType);
 	public ProductGroupFacetModel getProductGroupsWithFacets(Filters filterKey);
 	public List<ProductModel> getProductModel(List<String> listOfProducts);
 	public List<BundleModel> getBundleDetails(List<String> listOfLeadPlanId);

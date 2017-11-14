@@ -300,8 +300,7 @@ public class DeviceServiceImpl implements DeviceService {
 			LogHelper.error(this, "Invalid Group Type");
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_GROUP_TYPE);
 		}
-		/*
-		if (StringUtils.isNotBlank(journeyType) && !Validator.validateJourneyType(journeyType)) {
+		/*if (StringUtils.isNotBlank(journeyType) && !Validator.validateJourneyType(journeyType)) {
 			LogHelper.info(this, "Received JourneyType is invalid.");
 			throw new ApplicationException(ExceptionMessages.INVALID_JOURNEY_TYPE);
 
@@ -316,7 +315,7 @@ public class DeviceServiceImpl implements DeviceService {
 			
 			List<MerchandisingPromotionModel> listOfMerchandisingPromotions = new ArrayList<>();
 			
-			if(journeyType.equalsIgnoreCase(Constants.JOURNEY_TYPE_UPGRADE)){		
+			/*if(journeyType.equalsIgnoreCase(Constants.JOURNEY_TYPE_UPGRADE)){		
 			listOfMerchandisingPromotions = deviceDao.getJourneyTypeCompatibleOfferCodes(Constants.JOURNEY_TYPE_UPGRADE);
 			}
 			if(journeyType.equalsIgnoreCase(Constants.JOURNEY_TYPE_SECONDLINE)){		
@@ -330,7 +329,7 @@ public class DeviceServiceImpl implements DeviceService {
 			if(merchandisingPromotionModel==null) {
 				LogHelper.info(this, "OfferCode is not compatible with JourneyId");
 				throw new ApplicationException(ExceptionMessages.INVALID_JOURNEY_TYPE_AND_OFFER_CODE_COMBINATION);
-			}	
+			}	*/
 		
 	} 
 		
@@ -344,7 +343,7 @@ public class DeviceServiceImpl implements DeviceService {
 			if (creditLimit != null) {
 				LogHelper.info(this, "Getting devices for conditional Accept, with credit limit :" + creditLimit);
 				facetedDevice = getDeviceListForConditionalAccept(productClass, make, model, groupType, sortCriteria,
-						pageNumber, pageSize, capacity, colour, operatingSystem, mustHaveFeatures, creditLimit);
+						pageNumber, pageSize, capacity, colour, operatingSystem, mustHaveFeatures, creditLimit,journeyType);
 			} else {
 				facetedDevice = getDeviceListofFacetedDevice(productClass, make, model, groupType, sortCriteria, pageNumber, pageSize,
 						capacity, colour, operatingSystem, mustHaveFeatures,journeyType,offerCode);
@@ -525,11 +524,11 @@ public class DeviceServiceImpl implements DeviceService {
 		sortBy = criteriaOfSort.get(1);
 		if (groupType.equals(Constants.STRING_DEVICE_PAYG)) {
 			productGroupFacetModel = deviceDao.getProductGroupsWithFacets(Filters.HANDSET_PAYG, filterCriteria, sortBy,
-					sortOption, pageNumber, pageSize);
+					sortOption, pageNumber, pageSize, journeyType);
 			productGroupFacetModelForFacets = deviceDao.getProductGroupsWithFacets(Filters.HANDSET_PAYG);
 		} else {
 			productGroupFacetModel = deviceDao.getProductGroupsWithFacets(Filters.HANDSET, filterCriteria, sortBy,
-					sortOption, pageNumber, pageSize);
+					sortOption, pageNumber, pageSize, journeyType);
 			productGroupFacetModelForFacets = deviceDao.getProductGroupsWithFacets(Filters.HANDSET);
 
 		}
@@ -666,7 +665,7 @@ public class DeviceServiceImpl implements DeviceService {
 	@Override
 	public FacetedDevice getDeviceListForConditionalAccept(String productClass, String make, String model,
 			String groupType, String sortCriteria, int pageNumber, int pageSize, String capacity, String colour,
-			String operatingSystem, String mustHaveFeatures, Float creditLimit) {
+			String operatingSystem, String mustHaveFeatures, Float creditLimit,String journeyType) {
 		LogHelper.info(DaoUtils.class, "Entering getDeviceListForConditionalAccept ");
 
 		FacetedDevice facetedDevice;
@@ -690,11 +689,11 @@ public class DeviceServiceImpl implements DeviceService {
 		sortBy = criteriaOfSort.get(1);
 		if (groupType.equals(Constants.STRING_DEVICE_PAYG)) {
 			productGroupFacetModel = deviceDao.getProductGroupsWithFacets(Filters.HANDSET_PAYG, filterCriteria, sortBy,
-					sortOption, pageNumber, pageSize);
+					sortOption, pageNumber, pageSize, journeyType);
 			productGroupFacetModelForFacets = deviceDao.getProductGroupsWithFacets(Filters.HANDSET_PAYG);
 		} else {
 			productGroupFacetModel = deviceDao.getProductGroupsWithFacets(Filters.HANDSET, filterCriteria, sortBy,
-					sortOption, pageNumber, pageSize);
+					sortOption, pageNumber, pageSize, journeyType);
 			productGroupFacetModelForFacets = deviceDao.getProductGroupsWithFacets(Filters.HANDSET);
 
 		}
@@ -975,6 +974,7 @@ public class DeviceServiceImpl implements DeviceService {
 						insuranceGroupName = productGroup.getProductGroupName();
 					}
 				}
+				LogHelper.info(this, "::::: Insurance GroupName " + insuranceGroupName + " :::::");
 				if (StringUtils.isNotBlank(insuranceGroupName)) {
 					Group productGroup = deviceDao.getGroupByProdGroupName(insuranceGroupName);
 					if (productGroup != null && productGroup.getGroupType() != null && productGroup.getGroupType()
@@ -1911,6 +1911,7 @@ public class DeviceServiceImpl implements DeviceService {
 	 * @return flag 
 	 */
 	public Boolean dateValidationForOffers(String startDateTime, String endDateTime, String strDateFormat) {
+		
 		boolean flag = false;
 		SimpleDateFormat dateFormat = new SimpleDateFormat(strDateFormat);
 		Date currentDate = new Date();
@@ -1930,6 +1931,7 @@ public class DeviceServiceImpl implements DeviceService {
 		try {
 			if (startDateTime != null) {
 				startDate = dateFormat.parse(startDateTime);
+				LogHelper.info(this, "::::: StartDate " + startDate + " :::::");
 			}
 			
 		} catch (ParseException | DateTimeParseException e) {
@@ -1939,6 +1941,7 @@ public class DeviceServiceImpl implements DeviceService {
 		try{
 			if (endDateTime != null) {
 				endDate = dateFormat.parse(endDateTime);
+				LogHelper.info(this, "::::: EndDate " + endDate + " :::::");
 			}
 		}catch (ParseException | DateTimeParseException e) {
 			LogHelper.error(this, "ParseException: " + e);
