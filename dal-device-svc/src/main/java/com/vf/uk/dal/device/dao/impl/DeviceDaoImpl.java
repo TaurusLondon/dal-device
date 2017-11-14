@@ -1,5 +1,7 @@
 package com.vf.uk.dal.device.dao.impl;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -22,6 +24,7 @@ import java.util.UUID;
 import javax.sql.DataSource;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -29,6 +32,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vf.uk.dal.common.configuration.ConfigHelper;
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
@@ -152,13 +157,12 @@ public class DeviceDaoImpl implements DeviceDao {
 				|| groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG)
 				|| groupType.equalsIgnoreCase(Constants.STRING_DEVICE_NEARLY_NEW)) {
 			listOfCommercialProducts = commercialProductRepository.getByMakeANDModel(make, model);
-
+			
 		} else {
 			LogHelper.error(this, Constants.NO_DATA_FOUND_FOR_GROUP_TYPE + groupType);
 			throw new ApplicationException(ExceptionMessages.NULL_VALUE_GROUP_TYPE);
 		}
 		List<Group> listOfProductGroup = productGroupRepository.getProductGroupsByType(groupType);
-
 		List<CommercialProduct> commercialProductsMatchedMemList = new ArrayList<>();
 		Map<String, CommercialProduct> commerProdMemMap = new HashMap<>();
 		List<BundleAndHardwareTuple> bundleAndHardwareTupleList = new ArrayList<>();
@@ -185,10 +189,9 @@ public class DeviceDaoImpl implements DeviceDao {
 					// End User Story 9116
 				}
 			});
-
 			if (listOfProductGroup != null && !listOfProductGroup.isEmpty()) {
 				for (Group productGroup : listOfProductGroup) {
-
+					//productGroup=listOfProductGroup.get(26);
 					// productGroup.getGroupType()
 					if (productGroup.getMembers() != null && !productGroup.getMembers().isEmpty()) {
 						for (Member member : productGroup.getMembers()) {
@@ -199,7 +202,7 @@ public class DeviceDaoImpl implements DeviceDao {
 								entityMember.setPriority(String.valueOf(member.getPriority()));
 								listOfDeviceGroupMember.add(entityMember);
 								CommercialProduct commercialProduct = commerProdMemMap.get(member.getId());
-
+								commercialProductsMatchedMemList.add(commercialProduct);
 								if (StringUtils.isNotBlank(bundleId)
 										&& commercialProduct.getListOfCompatiblePlanIds().contains(bundleId)) {
 									bundleIdMap.put(commercialProduct.getId(), true);
@@ -594,8 +597,10 @@ public class DeviceDaoImpl implements DeviceDao {
 			String leadPlanId = null;
 			if (commercialProduct.getLeadPlanId() != null) {
 				leadPlanId = commercialProduct.getLeadPlanId();
+				LogHelper.info(this, "::::: LeadPlanId " + leadPlanId + " :::::");	
 			} else if (bundleAndHardwareTupleList != null && !bundleAndHardwareTupleList.isEmpty()) {
 				leadPlanId = bundleAndHardwareTupleList.get(0).getBundleId();
+				LogHelper.info(this, "::::: LeadPlanId " + leadPlanId + " :::::");	
 			}
 			CommercialBundle commercialBundle = commercialBundleRepository.get(leadPlanId);
 			List<OfferPacks> listOfOfferPacks = new ArrayList<>();
@@ -835,6 +840,12 @@ public class DeviceDaoImpl implements DeviceDao {
 					if (productGroup.getProductGroupRole().equalsIgnoreCase(Constants.STRING_COMPATIBLE_ACCESSORIES)) {
 						listOfDeviceGroupName.add(productGroup.getProductGroupName());
 					}
+				}
+				
+				if(listOfDeviceGroupName.isEmpty())
+				{
+					LogHelper.error(this, "No Compatible Accessories found for given device Id:" + deviceId);
+					throw new ApplicationException(ExceptionMessages.NULL_COMPATIBLE_VALUE_FOR_DEVICE_ID);
 				}
 
 				// HashMap for groupName and list of accessories ID
@@ -1249,19 +1260,41 @@ public class DeviceDaoImpl implements DeviceDao {
 		boolean flag = false;
 		SimpleDateFormat dateFormat = new SimpleDateFormat(strDateFormat);
 		Date currentDate = new Date();
+		
+		String currentDateStr = dateFormat.format(currentDate);		
+		
+		try {
+			currentDate = dateFormat.parse(currentDateStr);
+			
+		} catch (ParseException | DateTimeParseException e) {
+			LogHelper.error(this, "ParseException: " + e);
+		}	
+		
 		Date startDate = null;
 		Date endDate = null;
-		if (startDateTime != null && endDateTime != null) {
-			try {
+
+		try {
+			if (startDateTime != null) {
 				startDate = dateFormat.parse(startDateTime);
-				endDate = dateFormat.parse(endDateTime);
-				if ((currentDate.after(startDate) || currentDate.equals(startDate))
-						&& (currentDate.before(endDate) || currentDate.equals(endDate))) {
-					flag = true;
-				}
-			} catch (ParseException | DateTimeParseException e) {
-				LogHelper.error(this, e + "");
+				LogHelper.info(this, "::::: startDate " + startDate + " :::::");
 			}
+			
+		} catch (ParseException | DateTimeParseException e) {
+			LogHelper.error(this, "ParseException: " + e);
+		}	
+		
+		try{
+			if (endDateTime != null) {
+				endDate = dateFormat.parse(endDateTime);
+				LogHelper.info(this, "::::: EndDate " + endDate + " :::::");
+			}
+		}catch (ParseException | DateTimeParseException e) {
+			LogHelper.error(this, "ParseException: " + e);
+		}
+
+		if (startDate != null && endDate != null && ((currentDate.after(startDate) || currentDate.equals(startDate))
+				&& (currentDate.before(endDate) || currentDate.equals(endDate)))) {			
+				flag = true;			
 		}
 		if (startDate == null && endDate != null && currentDate.before(endDate)) {
 			flag = true;
@@ -1272,6 +1305,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		if (startDate == null && endDate == null) {
 			flag = true;
 		}
+
 		return flag;
 	}
 
@@ -1827,14 +1861,14 @@ public class DeviceDaoImpl implements DeviceDao {
 			if (requestManager == null) {
 				requestManager = SolrConnectionProvider.getSolrConnection();
 			}
-			if (StringUtils.isNotBlank(journeyType) && journeyType.equalsIgnoreCase("upgrade")) {
+			/*if (StringUtils.isNotBlank(journeyType) && journeyType.equalsIgnoreCase("upgrade")) {
 				productGroupFacetModel = requestManager.getProductGroupsWithFacetsByJourneyType(filterKey,
 						filterCriteria, sortBy, sortOption, pageNumber, pageSize,
 						Arrays.asList(VodafoneConstants.UPGRADE));
-			} else {
+			} else {*/
 				productGroupFacetModel = requestManager.getProductGroupsWithFacets(filterKey, filterCriteria, sortBy,
 						sortOption, pageNumber, pageSize);
-			}
+			//}
 		} catch (org.apache.solr.common.SolrException solrExcp) {
 			SolrConnectionProvider.closeSolrConnection();
 			LogHelper.error(this, "SolrException: " + solrExcp);
