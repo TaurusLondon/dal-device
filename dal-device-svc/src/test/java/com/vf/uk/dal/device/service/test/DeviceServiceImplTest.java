@@ -879,7 +879,10 @@ public class DeviceServiceImplTest
 		commercialProduct.setLeadPlanId(null);
 		given(this.deviceDAOMock.getCommercialProductRepositoryByLeadMemberId(Matchers.any())).willReturn(commercialProduct);
 		String jsonString=new String(Utility.readFile("\\rest-mock\\BUNDLES-V1.json"));
-		BundleDetailsForAppSrv obj=new ObjectMapper().readValue(jsonString, BundleDetailsForAppSrv.class);  
+		ObjectMapper mapper1=new ObjectMapper();
+		mapper1.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+		mapper1.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
+		BundleDetailsForAppSrv obj=mapper1.readValue(jsonString, BundleDetailsForAppSrv.class);  
         given(registry.getRestTemplate()).willReturn(restTemplate);
         given(restTemplate.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=123", BundleDetailsForAppSrv.class )).willReturn(obj);
 		Assert.assertNotNull(deviceService.getLeadPlanIdForDeviceId("123"));
@@ -889,7 +892,10 @@ public class DeviceServiceImplTest
 		CommercialProduct commercialProduct=CommonMethods.getCommercialProduct5();
 		given(this.deviceDAOMock.getCommercialProductRepositoryByLeadMemberId(Matchers.any())).willReturn(commercialProduct);
 		String jsonString=new String(Utility.readFile("\\rest-mock\\BUNDLES-V1.json"));
-		BundleDetailsForAppSrv obj=new ObjectMapper().readValue(jsonString, BundleDetailsForAppSrv.class);  
+		ObjectMapper mapper1=new ObjectMapper();
+		mapper1.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+		mapper1.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
+		BundleDetailsForAppSrv obj=mapper1.readValue(jsonString, BundleDetailsForAppSrv.class);  
         given(registry.getRestTemplate()).willReturn(restTemplate);
         given(restTemplate.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=123", BundleDetailsForAppSrv.class )).willReturn(obj);
 		Assert.assertNotNull(deviceService.getLeadPlanIdForDeviceId("123"));
