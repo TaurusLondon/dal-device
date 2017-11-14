@@ -393,7 +393,7 @@ public class DeviceController {
 	 * @param allowedRecurringPriceLimit
 	 * @return
 	 */
-	@RequestMapping(value = "/plan/keepDeviceChangePlan", method = RequestMethod.POST, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
+	@RequestMapping(value = "/plan/action/keepDeviceChangePlan", method = RequestMethod.POST, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	public BundleDetails getKeepDeviceChangePlan(@RequestBody KeepDeviceChangePlanRequest keepDeviceChangePlanRequest) {
 		BundleDetails bundleDetails;
 		if (keepDeviceChangePlanRequest == null) {

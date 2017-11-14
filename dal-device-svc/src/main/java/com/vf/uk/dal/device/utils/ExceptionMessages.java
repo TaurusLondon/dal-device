@@ -36,7 +36,7 @@ public class ExceptionMessages
 	public static final String NO_PRODUCT_RATINGS_FOUND_FOR_GIVEN_DEVICE_ID = "No Product Ratings Found for given device id";
 	public static final String INVALID_JOURNEY_ID = "Invalid Journey Id sent in the request";
 	public static final String INVALID_GRPL_SERVICE_CALL = "Exception occured while connecting to GRPL API";
-
+	
 	public static final String INVALID_REQUEST_PARAMETER = "Invalid input request received";
 	public static final String STRING_NO_SIMILAR_PLAN = "No Similar Plan Found For Given Device Id";
 	public static final String INVALID_INPUT_MISSING_BUNDLEID = "Invalid input request received. Missing Bundle Id";
@@ -76,5 +76,6 @@ public class ExceptionMessages
 	//Sprint 6.3
 	public static final String NULL_VALUES_FROM_PRICING_API = "Null value received from Pricing API";
 	public static final String NULL_COMPATIBLE_INSURANCES_FOR_DEVICE_ID = "No Compatible Insurances found for given device Id";
+	public static final String NO_DATA_FOR_GIVEN_SEARCH_CRITERIA = "No details found for given criteria";
 }
 
