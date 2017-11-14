@@ -841,6 +841,12 @@ public class DeviceDaoImpl implements DeviceDao {
 						listOfDeviceGroupName.add(productGroup.getProductGroupName());
 					}
 				}
+				
+				if(listOfDeviceGroupName.isEmpty())
+				{
+					LogHelper.error(this, "No Compatible Accessories found for given device Id:" + deviceId);
+					throw new ApplicationException(ExceptionMessages.NULL_COMPATIBLE_VALUE_FOR_DEVICE_ID);
+				}
 
 				// HashMap for groupName and list of accessories ID
 				Map<String, List<String>> mapForGroupName = new LinkedHashMap<>();
