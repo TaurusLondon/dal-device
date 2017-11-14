@@ -621,7 +621,10 @@ public class DeviceDaoImpl implements DeviceDao {
 				deviceDetails = DaoUtils.convertCoherenceDeviceToDeviceDetails(commercialProduct,
 						listOfPriceForBundleAndHardware, listOfOfferPacks);
 			}
-
+			else{
+				LogHelper.error(this, "No data found for given journeyType :" + deviceId);
+				throw new ApplicationException(ExceptionMessages.NO_DATA_FOR_GIVEN_SEARCH_CRITERIA);
+			}
 			if (StringUtils.isNotEmpty(offerCode) && StringUtils.isNotEmpty(journeyType)) {
 				deviceDetails.setValidOffer(validateOfferValidForDevice(commercialProduct, journeyType, offerCode));
 			}
@@ -755,6 +758,10 @@ public class DeviceDaoImpl implements DeviceDao {
 					&& commercialProduct.getProductControl().isIsSellableAcq()) {
 				deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile(memberPriority, commercialProduct,
 						comBundle, listOfPriceForBundleAndHardware, listOfOfferPacks, null, false);
+			}
+			else{
+				LogHelper.error(this, "No data found for given criteria :" + id);
+				throw new ApplicationException(ExceptionMessages.NO_DATA_FOR_GIVEN_SEARCH_CRITERIA);
 			}
 
 			listOfDeviceSummary.add(deviceSummary);
