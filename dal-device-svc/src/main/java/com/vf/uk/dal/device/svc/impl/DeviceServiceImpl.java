@@ -1270,7 +1270,6 @@ public class DeviceServiceImpl implements DeviceService {
 		Map<String, String> leadMemberMap = new HashMap<>();
 		Map<String, String> groupIdAndNameMap = new HashMap<>();
 		com.vf.uk.dal.utility.entity.PriceForBundleAndHardware bundleHeaderForDevice = null;
-		List<String> l=new ArrayList<>();
 		Map<String, Map<String, List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>>> entireOfferedPriceMap = new HashMap<>();
 		if (listOfProductGroup != null && !listOfProductGroup.isEmpty()) {
 			for (Group productGroup : listOfProductGroup) {
@@ -1278,7 +1277,6 @@ public class DeviceServiceImpl implements DeviceService {
 				List<com.vf.uk.dal.device.entity.Member> listOfDeviceGroupMember = new ArrayList<>();
 				String groupId = String.valueOf(productGroup.getGroupId());
 				String groupname = productGroup.getName();
-				l.add(groupname);
 				if (productGroup.getMembers() != null && !productGroup.getMembers().isEmpty()) {
 					for (Member member : productGroup.getMembers()) {
 						entityMember = new com.vf.uk.dal.device.entity.Member();
@@ -1296,7 +1294,6 @@ public class DeviceServiceImpl implements DeviceService {
 					leadMemberMap.put(leadMemberId, Constants.IS_LEAD_MEMEBER_YES);
 				}
 			}
-			System.out.println(l);
 			Map<String, com.vf.uk.dal.utility.entity.PriceForBundleAndHardware> leadPlanIdPriceMap = new HashMap<>();
 			Map<String, List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>> nonLeadPlanIdPriceMap = new HashMap<>();
 			Map<String, List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>> groupNamePriceMap = new HashMap<>();
