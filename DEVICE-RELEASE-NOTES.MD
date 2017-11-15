@@ -322,4 +322,12 @@ Defect ID # 10460
 [ 
 SIT2-US 8806 - getDeviceTile API returning Error message for Invalid Journey 
 ]
+Defect ID # 10482 
+[ 
+DeviceDetails-Invalid JourneyType should throw error instead of success response with Null values.
+]
+Defect ID # 10480 
+[ 
+DeviceTileByDeviceVarient-Invalid JourneyType should throw error instead of success response with Null values.
+]
 

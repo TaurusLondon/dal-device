@@ -101,12 +101,18 @@ paths:
           type: string
         - name: operatingSystem
           in: query
-          description: filter by OS of the device as in specification groups.
+          description: >-
+              Filter by OS of the device as in specification groups.
+              Please note the value of this filter should be passed
+              in double quotes. example: operatingSystem = "iOS 10"
           required: false
           type: string
         - name: capacity
           in: query
-          description: filter by capacity of the device as in specification groups.
+          description: >-
+              Filter by capacity of the device as in specification groups.
+              Please note the value of this filter should be passed
+              in double quotes. example: capacity = "32 GB"
           required: false
           type: string
         - name: mustHaveFeatures
@@ -296,14 +302,14 @@ paths:
           required: false
           type: string
       tags:
-        - Accessory
+        - AccessoryTileGroup
       responses:
         '200':
           description: Success
           schema:
             type: array
             items:
-              $ref: '#/definitions/Accessory'
+              $ref: '#/definitions/AccessoryTileGroup'
         '404':
           description: Not found
         '500':
