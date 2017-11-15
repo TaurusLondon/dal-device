@@ -7,6 +7,22 @@ public class Media
 
     private String type;
 
+    private String description;
+    
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public String getDiscountId() {
+		return discountId;
+	}
+	public void setDiscountId(String discountId) {
+		this.discountId = discountId;
+	}
+	private String discountId;
+	
     public void setId(String id){
         this.id = id;
     }
