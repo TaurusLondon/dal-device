@@ -838,7 +838,7 @@ public class DeviceDaoImpl implements DeviceDao {
 					&& !productGroups.getProductGroup().isEmpty()) {
 				for (com.vodafone.product.pojo.ProductGroup productGroup : productGroups.getProductGroup()) {
 					if (productGroup.getProductGroupRole().equalsIgnoreCase(Constants.STRING_COMPATIBLE_ACCESSORIES)) {
-						listOfDeviceGroupName.add(productGroup.getProductGroupName());
+						listOfDeviceGroupName.add(productGroup.getProductGroupName() + "~" + productGroup.getProductGroupRole());
 					}
 				}
 				

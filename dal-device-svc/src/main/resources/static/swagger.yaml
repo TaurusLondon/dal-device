@@ -103,16 +103,16 @@ paths:
           in: query
           description: >-
               Filter by OS of the device as in specification groups.
-              Please note the value of this filter should pe passed
-              in double quotes. eg operatingSystem = "ios 10"
+              Please note the value of this filter should be passed
+              in double quotes. example: operatingSystem = "iOS 10"
           required: false
           type: string
         - name: capacity
           in: query
           description: >-
               Filter by capacity of the device as in specification groups.
-              Please note the value of this filter should pe passed
-              in double quotes. eg capacity = "32 GB"
+              Please note the value of this filter should be passed
+              in double quotes. example: capacity = "32 GB"
           required: false
           type: string
         - name: mustHaveFeatures
