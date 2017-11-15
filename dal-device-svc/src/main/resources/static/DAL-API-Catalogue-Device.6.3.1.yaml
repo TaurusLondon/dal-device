@@ -1,0 +1,1211 @@
+swagger: '2.0'
+info:
+  title: Device APIs
+  description: Device API service operations
+  version: 1.0.0
+host: api.vodafone.com
+schemes:
+  - http
+basePath: /api/v1
+produces:
+  - application/json
+paths:
+  '/catalogue/device/{deviceId}':
+    get:
+      summary: Get the device details for the given device Id
+      description: >-
+        The service gets the details of the device specially price, equipment,
+        specification, features, merchandising, etc in the response.
+      operationId: CAT_004_GetDeviceDetails
+      parameters:
+        - name: deviceId
+          in: path
+          description: Unique Id of the device being requested
+          required: true
+          type: string
+        - name: offerCode
+          in: query
+          description: Unique offercode
+          required: false
+          type: string
+        - name: journeyType
+          in: query
+          description: >-
+            name of journey type ex. "acquisition", "upgrade",
+            "conditionalaccept", "secondline"
+          required: false
+          type: string
+      tags:
+        - Device
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/DeviceDetails'
+        '404':
+          description: Not found
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'
+  /catalogue/deviceTile:
+    get:
+      summary: >-
+        Get the list of devices based on the filter criteria, like productGroup
+        brand Name. Pagination, sorting, filteration also defined
+      description: >-
+        The service gets the details of the device list from Solr based on the
+        filter criteria in the response.
+      operationId: CAT_001_GetDeviceTiles
+      parameters:
+        - name: offset
+          in: query
+          description: Position in pagination
+          required: false
+          type: integer
+        - name: count
+          in: query
+          description: Number of items
+          required: false
+          type: integer
+        - name: make
+          in: query
+          description: >-
+            Values on which the attributes should be filtered upon. Possible
+            values are "apple". Make is also known as Manufacturer.
+          required: false
+          type: string
+        - name: model
+          in: query
+          description: >-
+            Values on which the attributes should be filtered upon. Possible
+            values are "iphone7".
+          required: false
+          type: string
+        - name: productClass
+          in: query
+          description: Values on which the attributes should be filtered upon.
+          required: true
+          type: string
+        - name: groupType
+          in: query
+          description: Values on which the attributes should be filtered upon.
+          required: true
+          type: string
+        - name: color
+          in: query
+          description: filter by color of the device as in specification groups.
+          required: false
+          type: string
+        - name: os
+          in: query
+          description: filter by OS of the device as in specification groups.
+          required: false
+          type: string
+        - name: capacity
+          in: query
+          description: filter by capacity of the device as in specification groups.
+          required: false
+          type: string
+        - name: mustHaveFeatures
+          in: query
+          description: >-
+            One or more of the following token separated by comma.
+            'physicalKeyboard', 'greatCamera', 'goodBattery', 'bigScreen',
+            '4GEnabled', 'lightWeight'
+          required: false
+          type: string
+        - name: sort
+          in: query
+          description: >-
+            Values of attributes based on which solr will provide the sorted
+            response, like Most Popular, Product Rating, New Releases,
+            Brand(a-z)(z-a), MonthlyPrice(lo-hi)(hi-lo).
+          required: true
+          type: string
+        - name: offerCode
+          in: query
+          description: Unique offercode
+          required: false
+          type: string
+        - name: journeyType
+          in: query
+          description: >-
+            name of journey type ex. "acquisition", "upgrade",
+            "conditionalaccept", "secondline"
+          required: false
+          type: string
+        - name: creditLimit
+          in: query
+          description: creditLimit in case of conditional accept.
+          required: false
+          type: string
+        - name: includeRecommendations
+          in: query
+          description: Include chordiant recommendations or not.
+          required: false
+          type: boolean
+          default: false
+      tags:
+        - DeviceTile
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/FacetedDevice'
+        '404':
+          description: Not found
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'
+  /catalogue/deviceTile/queries/byMakeModel:
+    get:
+      summary: >-
+        Get the list of device tiles based on the filter criteria. Pagination
+        also defined
+      description: >-
+        The service gets the details of the device tiles from coherence based on
+        the filter criteria in the response.
+      operationId: CAT_002_GetDeviceTileByMakeModel
+      parameters:
+        - name: make
+          in: query
+          description: >-
+            Values on which the attributes should be filtered upon. Possible
+            values are "apple".
+          required: true
+          type: string
+        - name: model
+          in: query
+          description: >-
+            Values on which the attributes should be filtered upon. Possible
+            values are "iphone7".
+          required: true
+          type: string
+        - name: groupType
+          in: query
+          description: >-
+            Values on which the attributes should be filtered upon. Possible
+            values are "Handset" or "Accessory".
+          required: true
+          type: string
+        - name: offerCode
+          in: query
+          description: Unique offercode
+          required: false
+          type: string
+        - name: journeyType
+          in: query
+          description: >-
+            name of journey type ex. "acquisition", "upgrade",
+            "conditionalaccept", "secondline"
+          required: false
+          type: string
+      tags:
+        - DeviceTile
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DeviceTile'
+        '404':
+          description: Not found
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'
+  /catalogue/deviceTile/queries/byDeviceVariant:
+    get:
+      summary: Get the device tile details for the given device tile Id.
+      description: >-
+        The service gets the details of the device required to be dispalyed on
+        deviceTile.
+      operationId: CAT_003_GetDeviceTileByVariantId
+      parameters:
+        - name: deviceId
+          in: query
+          description: Device Id of the device tile being requested
+          required: true
+          type: string
+          format: Integer
+        - name: offerCode
+          in: query
+          description: Unique offercode
+          required: false
+          type: string
+        - name: journeyType
+          in: query
+          description: >-
+            name of journey type ex. "acquisition", "upgrade",
+            "conditionalaccept", "secondline"
+          required: false
+          type: string
+      tags:
+        - DeviceTile
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DeviceTile'
+        '404':
+          description: Not found
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'
+  /catalogue/accessory/queries/byDeviceId:
+    get:
+      summary: Get compatible accessory details for the given device Id
+      description: >-
+        The service gets the details of compatible accessory along with the
+        necessary information in the response.
+      operationId: CAT_005_GetCompatibleAccessories
+      parameters:
+        - name: offset
+          in: query
+          description: Position in pagination
+          required: false
+          type: integer
+        - name: count
+          in: query
+          description: Number of items
+          required: false
+          type: integer
+        - name: deviceId
+          in: query
+          description: Unique Id of the device being requested
+          required: true
+          type: string
+        - name: bundleId
+          in: query
+          description: Unique Id of the bundle being requested
+          required: false
+          type: string
+        - name: journeyType
+          in: query
+          description: Unique JourneyType
+          required: false
+          type: string
+      tags:
+        - Accessory
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Accessory'
+        '404':
+          description: Not found
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'
+  /catalogue/insurance/queries/byDeviceId:
+    get:
+      summary: Get the list of insurance
+      description: The service gets the details of insurance available with device.
+      operationId: CAT_006_GetCompatibleInsurance
+      parameters:
+        - name: deviceId
+          in: query
+          description: Values based on which inssurnace will be fetched.
+          required: true
+          type: string
+        - name: journeyType
+          in: query
+          description: 'name of journey type "upgrade",'
+          required: false
+          type: string
+      tags:
+        - Insurances
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Insurances'
+        '404':
+          description: Not found
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'
+  /catalogue/review/queries/byDeviceId:
+    get:
+      summary: Get the reviews for a specific device Id
+      description: The service gets the reviews of a particular device variant
+      operationId: CAT_007_GetDeviceReviews
+      parameters:
+        - name: deviceId
+          in: query
+          description: Unique Id of the device for which the review is being requested
+          required: true
+          type: string
+      tags:
+        - Review
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Review'
+        '404':
+          description: Not found
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'
+  /catalogue/device/cacheStockAvailibility:
+    post:
+      summary: Cache the stock availibilty of device in Solr.
+      description: Cache the stock availibilty of device in Solr.
+      operationId: PRDT_012-CacheStockAvailibility
+      parameters:
+        - name: cacheDeviceStockAvailibilityRequest
+          in: body
+          description: Device group Type
+          required: true
+          schema:
+            $ref: '#/definitions/CacheDeviceDetailRequest'
+      tags:
+        - Device
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: string
+        '404':
+          description: Not found
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'
+  /catalogue/deviceTile/cacheDeviceTile:
+    post:
+      summary: Cache the Device Tile Details in Solr.
+      description: Cache the Device Tile Details in Solr.
+      operationId: PRDT_012-CacheDeviceTile
+      parameters:
+        - name: cacheDeviceTileRequest
+          in: body
+          description: Device group Type
+          required: true
+          schema:
+            $ref: '#/definitions/CacheDeviceDetailRequest'
+      tags:
+        - Device
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: string
+        '404':
+          description: Not found
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'
+  /catalogue/plan/action/keepDeviceChangePlan:
+    post:
+      summary: Get compatible plans for the given device Id
+      description: >-
+        The service gets the compatible plans along with the necessary
+        information in the response.
+      operationId: PRDT_019-KeepDeviceChangePlan
+      parameters:
+        - name: keepDeviceChangePlanRequest
+          in: body
+          description: KeepDeviceChangePlan Request when CreditCheck failed
+          required: true
+          schema:
+            $ref: '#/definitions/KeepDeviceChangePlanRequest'
+      tags:
+        - Conditional Accept
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/BundleDetails'
+        '404':
+          description: Not found
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  MonthlyCostSaver:
+    type: object
+    properties:
+      mcsPlanId:
+        type: string
+        description: PlanId of the MCS
+      mcsMessage:
+        type: string
+        description: PlanId of the MCS
+      mcsParentId:
+        type: string
+        description: PlanId of the MCS
+      oneOffPrice:
+        $ref: '#/definitions/Price'
+      oneOffDiscountPrice:
+        $ref: '#/definitions/Price'
+      monthlyPrice:
+        $ref: '#/definitions/Price'
+      monthlyDiscountPrice:
+        $ref: '#/definitions/Price'
+  BundleAllowance:
+    type: object
+    properties:
+      type:
+        type: string
+        description: 'Allowance type - "DATA","TEXT","CALL"'
+      value:
+        type: string
+        description: Value of the allowance
+      uom:
+        type: string
+        description: >-
+          Unit of measurement to be used for the allowance - "MB" for DATA.
+          "COUNT" fpr TEXT amd "MIN" for CALL
+      displayUom:
+        type: string
+        description: >-
+          Unit of measurement to be used for the allowance - "MB" for DATA.
+          "COUNT" fpr TEXT amd "MIN" for CALL
+  BundleHeader:
+    type: object
+    properties:
+      skuId:
+        type: string
+        description: Unique bundle id as available from the product catalogue
+      name:
+        type: string
+        description: Name of the bundle as provided in the product catalogue
+      description:
+        type: string
+        description: Description of the bundle as provided in the product catalogue
+      bundleName:
+        type: string
+        description: Name of the bundle as provided in the merchandising file
+      bundleDescription:
+        type: string
+        description: Description of the bundle as provided in the merchandising file
+      bundleClass:
+        type: string
+        description: 'Catalogue product class identifies products - SIMO, HANDSET etc.'
+      productClass:
+        type: string
+        description: Catalogue product class identifies products
+      paymentType:
+        type: string
+        description: 'Payment type of the bundle. For example, "postpaid", "prepaid" etc.'
+      bundleType:
+        type: string
+        description: 'Type of the bundle. For example, Standard, Red, RedPlus etc.'
+      planCoupleId:
+        type: string
+        description: PlanID of the Couple Plan
+      planCoupleFlag:
+        type: boolean
+        description: 'Indicate whether this plan is to be coupled or not True, False.'
+      planCoupleLable:
+        type: string
+        description: Message needs to be build based on data difference and cost logic.
+      globalRoamingFlag:
+        type: boolean
+        description: Indicate whether this plan having Global Roaming or not
+      secureNetFlag:
+        type: boolean
+        description: Indicate whether this plan is having Secure Net or not
+      commitmentPeriod:
+        type: string
+        description: Commitment period of the bundle
+      mobileLineRentalId:
+        type: string
+        description: Mobile RentalId of the bundle
+      mobileServiceId:
+        type: string
+        description: Mobile ServiceId of the bundle
+      allowance:
+        type: array
+        items:
+          $ref: '#/definitions/BundleAllowance'
+      roamingAllowance:
+        type: array
+        items:
+          $ref: '#/definitions/BundleAllowance'
+      merchandisingMedia:
+        type: array
+        items:
+          $ref: '#/definitions/MediaLink'
+      priceInfo:
+        $ref: '#/definitions/PriceForBundleAndHardware'
+      mcs:
+        type: array
+        items:
+          $ref: '#/definitions/MonthlyCostSaver'
+  BundleDetails:
+    properties:
+      planList:
+        type: array
+        items:
+          $ref: '#/definitions/BundleHeader'
+  CacheDeviceDetailRequest:
+    type: object
+    properties:
+      groupType:
+        type: string
+        description: groupType
+  FacetedDevice:
+    type: object
+    properties:
+      facet:
+        type: array
+        items:
+          $ref: '#/definitions/Facet'
+      device:
+        type: array
+        items:
+          $ref: '#/definitions/Device'
+      noOfRecordsFound:
+        type: number
+        description: Number of Records found
+      message:
+        type: string
+        description: >-
+          When GRPL fails displays message like, failed to apply sorting based
+          on recommendations.
+  Facet:
+    type: object
+    properties:
+      facetName:
+        type: string
+        description: 'Facet Name like colour,os,capacity'
+      facetList:
+        type: array
+        description: List of facets with count
+        items:
+          $ref: '#/definitions/FacetWithCount'
+  FacetWithCount:
+    type: object
+    properties:
+      name:
+        type: string
+        description: equipment name
+      count:
+        type: number
+        description: euipment count
+  Device:
+    type: object
+    properties:
+      deviceId:
+        type: string
+        description: Product id of the requested device from the product catalogue
+      name:
+        type: string
+        description: Name of the product group as provided in the product catalogue
+      make:
+        type: string
+        description: Make of the product
+      model:
+        type: string
+        description: Model of the product
+      groupType:
+        type: string
+        description: 'Group type of product group DEVICE_PAYM, DEVICE_PAYG'
+      rating:
+        type: integer
+        description: >-
+          This will indicate the number of rating starts to be displayed on
+          screen.
+      description:
+        type: string
+        description: Description of the product as provided in the product catalogue
+      productClass:
+        type: string
+        description: 'Catalogue product class identifies products - SIMO, HANDSET etc.'
+      preorderable:
+        type: boolean
+        description: 'Catalogue product class identifies products - SIMO, HANDSET etc.'
+      merchandisingControl:
+        $ref: '#/definitions/MerchandisingControl'
+      media:
+        type: array
+        items:
+          $ref: '#/definitions/MediaLink'
+      priceInfo:
+        $ref: '#/definitions/PriceForBundleAndHardware'
+  DeviceDetails:
+    type: object
+    properties:
+      deviceId:
+        type: string
+        description: Product id of the requested device from the product catalogue
+      name:
+        type: string
+        description: Name of the product as provided in the product catalogue
+      description:
+        type: string
+        description: Description of the product as provided in the product catalogue
+      validOffer:
+        type: string
+        items:
+          description: Give the validOffer details
+      productClass:
+        type: string
+        description: 'Catalogue product class identifies products - SIMO, HANDSET etc.'
+      productLines:
+        type: array
+        items:
+          type: string
+          description: 'String of Lines of product, like MSISDN'
+      merchandisingControl:
+        $ref: '#/definitions/MerchandisingControl'
+      merchandisingPromotion:
+        type: array
+        items:
+          $ref: '#/definitions/MerchandisingPromotions'
+      stockAvailability:
+        type: string
+        items:
+          description: Details of stockAvailability
+      rating:
+        type: string
+        items:
+          description: Give the rating details
+      productPageURI:
+        type: string
+        items:
+          description: Give the productPageURI details
+      equipmentDetail:
+        $ref: '#/definitions/Equipment'
+      leadPlanId:
+        type: string
+        description: Lead Plan ID for Product
+      productAvailability:
+        $ref: '#/definitions/ProductAvailability'
+      media:
+        type: array
+        items:
+          $ref: '#/definitions/MediaLink'
+      specificationsGroups:
+        type: array
+        items:
+          $ref: '#/definitions/SpecificationGroup'
+      priceInfo:
+        $ref: '#/definitions/PriceForBundleAndHardware'
+      metaData:
+        $ref: '#/definitions/MetaData'
+  ProductAvailability:
+    type: object
+    properties:
+      startDate:
+        type: string
+        description: 'Start Date of the Product "2012-04-01+05:30"'
+      endDate:
+        type: string
+        description: 'End date of the Product 2012-04-21+05:30"'
+      salesExpired:
+        type: boolean
+        description: 'Whether the sale of the product has been expired, Yes or No'
+  Review:
+    type: object
+    properties:
+      statistics:
+        $ref: '#/definitions/ReviewStatistics'
+      details:
+        type: array
+        items:
+          $ref: '#/definitions/IndividualReview'
+        description: Individual Reviews
+  ReviewStatistics:
+    type: object
+    properties:
+      overallRating:
+        type: string
+        description: Overall review rating
+      recommendationPercentage:
+        type: string
+        description: Overall percentage of recommendations
+      featureRating:
+        type: array
+        items:
+          $ref: '#/definitions/FeatureRating'
+        description: Rating for individual features
+      ratingDistribution:
+        type: array
+        items:
+          $ref: '#/definitions/RatingCount'
+        description: Rating for individual features
+  FeatureRating:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Name of the feature
+      rating:
+        type: string
+        description: Overall rating for the feature
+  RatingCount:
+    type: object
+    properties:
+      rating:
+        type: string
+        description: Rating value
+      count:
+        type: string
+        description: Count of respective ratings
+  IndividualReview:
+    type: object
+    properties:
+      title:
+        type: string
+        description: Review title
+      totalFeedbacks:
+        type: string
+        description: Count of overall feedbacks for the review
+      totalPositiveFeedbacks:
+        type: string
+        description: Count of overall positive feedbacks for the review
+      rating:
+        type: string
+        description: Rating provided by reviewer
+      reviewedOn:
+        type: string
+        description: Date when the reviewer provided the review
+      reviewerNickName:
+        type: string
+        description: Reviewer nick name
+      recommended:
+        type: boolean
+        description: Indicates whether the reviewer has recommended the product
+      text:
+        type: string
+        description: Text content of the review
+      featureRating:
+        type: array
+        items:
+          $ref: '#/definitions/FeatureRating'
+        description: Rating for individual features
+  SpecificationGroup:
+    type: object
+    properties:
+      groupName:
+        type: string
+        description: Name of the specification
+      priority:
+        type: integer
+        description: Display Priority of the specification
+      comparable:
+        type: boolean
+        description: ' Identify if the feature is coparable'
+      specifications:
+        type: array
+        items:
+          $ref: '#/definitions/Specification'
+  Specification:
+    type: object
+    properties:
+      name:
+        type: string
+        description: 'Name of the specification, color, storage, vedeo recording, etc'
+      value:
+        type: string
+        description: Value of the field
+      priority:
+        type: integer
+        description: display Priority of the specification field
+      comparable:
+        type: boolean
+        description: Identify if the feature is coparable
+      isKey:
+        type: boolean
+        description: Identify if this a key feature
+      valueType:
+        type: string
+        description: 'Type of the value, TEXT, INTEGER, DECOMAL, BOOLEAN'
+      valueUOM:
+        type: string
+        description: Unit of measure of the value if applicable
+      description:
+        type: string
+        description: 'Friendly description, Alternative to tabular name value'
+      footNote:
+        type: string
+        description: A foot note to the specification
+  MediaLink:
+    type: object
+    properties:
+      id:
+        type: string
+        description: >-
+          Unique id given for this link which provide a reference for UI to
+          place this on the screen
+      value:
+        type: string
+        description: URL Link from the content site for the media
+      type:
+        type: string
+        description: Will provide UI information on the type of the link (like URL)
+  Price:
+    type: object
+    properties:
+      gross:
+        type: string
+        description: Gross value of the device price
+      net:
+        type: string
+        description: Net value of the device price
+      vat:
+        type: string
+        description: VAT component of the device price
+  MerchandisingControl:
+    type: object
+    properties:
+      isDisplayableECare:
+        type: boolean
+        description: IS the device Disellable in ECare
+      isSellableECare:
+        type: boolean
+        description: IS the device sellable ECare
+      isDisplayableAcq:
+        type: boolean
+        description: IS the prdevice Dsellable
+      isSellableRet:
+        type: boolean
+        description: IS the prdevice Dsellable
+      isDisplayableRet:
+        type: boolean
+        description: IS the device Disellable Ret
+      isSellableAcq:
+        type: boolean
+        description: IS the device sellable acq
+      isDisplayableSavedBasket:
+        type: boolean
+        description: IS the device Displayable in basket
+      order:
+        type: integer
+        description: Order number
+      preorderable:
+        type: boolean
+        description: Can the device pre order
+      availableFrom:
+        type: string
+        description: Date from which the device can be available
+      backorderable:
+        type: boolean
+        description: Can the device back order
+  Equipment:
+    type: object
+    properties:
+      make:
+        type: string
+        description: Make of the device
+      model:
+        type: string
+        description: Model of the device
+  MetaData:
+    type: object
+    properties:
+      seoCanonical:
+        type: string
+        description: SEO Canonical
+      seoDescription:
+        type: string
+        description: SEO Description
+      seoKeyWords:
+        type: string
+        description: SEO DKey words
+      seoIndex:
+        type: string
+        description: SEO Index
+      seoRobots:
+        type: array
+        description: List of robots
+        items:
+          type: string
+          format: uuid
+  MerchandisingPromotions:
+    type: object
+    properties:
+      promotionName:
+        type: string
+        description: 'List of promotion like, Popular, Limited Time, Household, etc'
+  DeviceTile:
+    type: object
+    properties:
+      deviceId:
+        type: string
+        description: Device of the Lead Member within the group
+      groupName:
+        type: string
+        description: Group Name of the Device
+      groupType:
+        type: string
+        description: 'Group Type this devide belongs to, like Handset'
+      rating:
+        type: string
+        description: Rating for the device Id
+      reviewCount:
+        type: string
+        description: Rating for the device Id
+      deviceSummary:
+        type: array
+        description: Device Summary of the each device within the product group
+        items:
+          $ref: '#/definitions/DeviceSummary'
+      isAffordable:
+        type: boolean
+        description: Is it Affordable
+  DeviceSummary:
+    type: object
+    properties:
+      deviceId:
+        type: string
+        description: Device Id of the member
+      displayName:
+        type: string
+        description: Display Name of a device This should come form MEF content file
+      isCompatible:
+        type: boolean
+        description: Is it Compatible
+      preOrderable:
+        type: boolean
+        description: Giving the preOrderable Details
+      priority:
+        type: string
+        description: Display priority of the Member
+      displayDescription:
+        type: string
+        description: >-
+          Description of the device as provided in the merchandising content
+          file, preDec of product/handset, eg.With 3D Touch, Live Photos, 7000
+          series ...
+      colourName:
+        type: string
+        description: 'Color of the HandSet - Default colour, eg. Gold'
+      colourHex:
+        type: string
+        description: ' Hex representation of the colour'
+      memory:
+        type: string
+        description: >-
+          Storage Capacity of the Device  32GB, 64 GB, 128 GB, Default to be
+          highlighted
+      leadPlanId:
+        type: string
+        description: Lead Plan ID for the device
+      leadPlanDisplayName:
+        type: string
+        description: 'Plan Name of the lead plan, from MEF Content file'
+      uom:
+        type: string
+        description: Associated Plan UOM
+      uomValue:
+        type: string
+        description: Associated Plan UOM Value
+      bundleType:
+        type: string
+        description: Associated Bundle Type
+      productGroupURI:
+        type: string
+        description: Concatenation of Make/Model
+      merchandisingMedia:
+        type: array
+        items:
+          $ref: '#/definitions/MediaLink'
+      priceInfo:
+        $ref: '#/definitions/PriceForBundleAndHardware'
+  PriceForBundleAndHardware:
+    type: object
+    properties:
+      bundlePrice:
+        $ref: '#/definitions/BundlePrice'
+      hardwarePrice:
+        $ref: '#/definitions/HardwarePrice'
+      oneOffPrice:
+        $ref: '#/definitions/Price'
+      oneOffDiscountPrice:
+        $ref: '#/definitions/Price'
+      monthlyPrice:
+        $ref: '#/definitions/Price'
+      monthlyDiscountPrice:
+        $ref: '#/definitions/Price'
+      stepPrices:
+        type: array
+        items:
+          $ref: '#/definitions/StepPricingInfo'
+  BundlePrice:
+    type: object
+    properties:
+      bundleId:
+        type: string
+        description: Bundle id of the price to be calculated
+      monthlyPrice:
+        $ref: '#/definitions/Price'
+      monthlyDiscountPrice:
+        $ref: '#/definitions/Price'
+      merchandisingPromotions:
+        $ref: '#/definitions/MerchandisingPromotion'
+  HardwarePrice:
+    type: object
+    properties:
+      hardwareId:
+        type: string
+        description: Hardware id of the price to be calculated
+      oneOffPrice:
+        $ref: '#/definitions/Price'
+      oneOffDiscountPrice:
+        $ref: '#/definitions/Price'
+      merchandisingPromotions:
+        type: array
+        items:
+          $ref: '#/definitions/MerchandisingPromotion'
+        description: Merchandising promotions applicable for the bundle
+  MerchandisingPromotion:
+    type: object
+    properties:
+      tag:
+        type: string
+        description: Tag value of the merchandising promotion
+      label:
+        type: string
+        description: Label value of the merchandising promotion
+      description:
+        type: string
+        description: Label value of the merchandising promotion
+      discountId:
+        type: string
+        description: 'Discount skud Id, if applicable'
+      mpType:
+        type: string
+        description: mpType in Merchandising Promotions
+      priceEstablishedLabel:
+        type: string
+        description: 'The Possible values are ''was, previously'''
+  StepPricingInfo:
+    type: object
+    properties:
+      sequence:
+        type: string
+        description: Sequence no of the line item
+      oneOffPrice:
+        $ref: '#/definitions/Price'
+      monthlyPrice:
+        $ref: '#/definitions/Price'
+      duration:
+        $ref: '#/definitions/Duration'
+      discountSkuIds:
+        description: List of applicable discount sku Ids for this duration
+        type: array
+        items:
+          type: string
+          format: uuid
+  Duration:
+    type: object
+    properties:
+      uom:
+        type: string
+        description: Unit of measurement for duration value
+      value:
+        type: string
+        description: Duration value
+  Accessory:
+    type: object
+    properties:
+      skuId:
+        type: string
+        description: Unique Accessory id as available from the product catalogue
+      name:
+        type: string
+        description: Name of the Accessory as provided in the product catalogue
+      colour:
+        type: string
+        description: Colour of the Accessory as provided in the product catalogue
+      description:
+        type: string
+        description: Description of the Accessory as provided in the product catalogue
+      merchandisingMedia:
+        type: array
+        items:
+          $ref: '#/definitions/MediaLink'
+      deviceCost:
+        $ref: '#/definitions/HardwarePrice'
+      attributes:
+        type: array
+        items:
+          $ref: '#/definitions/Attributes'
+  Insurance:
+    type: object
+    properties:
+      id:
+        type: string
+        description: >-
+          Unique id of the insurance product as available from the product
+          catalogue
+      name:
+        type: string
+        description: Name of the Insurance as provided in the product catalogue
+      price:
+        $ref: '#/definitions/Price'
+      specsGroup:
+        type: array
+        items:
+          $ref: '#/definitions/SpecificationGroup'
+      merchandisingMedia:
+        type: array
+        items:
+          $ref: '#/definitions/MediaLink'
+  Insurances:
+    type: object
+    properties:
+      insuranceList:
+        type: array
+        items:
+          $ref: '#/definitions/Insurance'
+      minCost:
+        type: string
+        description: Contains minimum cost of Insurance
+  Attributes:
+    type: object
+    properties:
+      key:
+        type: string
+        description: Item Attribute Key
+      type:
+        type: string
+        description: Item Attribute Type
+      value:
+        type: string
+        description: Item Attribute Value
+      valueUOM:
+        type: string
+        description: Item Attribute Value UOM
+  KeepDeviceChangePlanRequest:
+    type: object
+    properties:
+      deviceId:
+        type: string
+        description: Device Id to get compatible plans
+      bundleId:
+        type: string
+        description: Bundle Id to identify the plan which user selected initially
+      allowedRecurringPriceLimit:
+        type: string
+        description: Allowed monthly price limit
+      plansLimit:
+        type: string
+        description: Expected no. of plans in response
+  Error:
+    type: object
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+      referenceId:
+        type: string
