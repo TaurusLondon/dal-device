@@ -313,3 +313,13 @@ https://internal-digitalx-sit2-alb-mas-1938696969.eu-west-1.elb.amazonaws.com/de
 
 https://internal-digitalx-sit2-alb-mas-1938696969.eu-west-1.elb.amazonaws.com/devices/catalogue/deviceTile/queries/byDeviceVariant/?deviceId={deviceId}&journeyType={journeyType}
 
+*Bug Fixes: *
+Defect ID # 10411 
+[ 
+Get CompatibleAccessories not journey aware :: (deviceID - 090853)
+]
+Defect ID # 10460 
+[ 
+SIT2-US 8806 - getDeviceTile API returning Error message for Invalid Journey 
+]
+

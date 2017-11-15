@@ -300,11 +300,11 @@ public class DeviceServiceImpl implements DeviceService {
 			LogHelper.error(this, "Invalid Group Type");
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_GROUP_TYPE);
 		}
-		if (StringUtils.isNotBlank(journeyType) && !Validator.validateJourneyType(journeyType)) {
+		/*if (StringUtils.isNotBlank(journeyType) && !Validator.validateJourneyType(journeyType)) {
 			LogHelper.info(this, "Received JourneyType is invalid.");
 			throw new ApplicationException(ExceptionMessages.INVALID_JOURNEY_TYPE);
 
-		}/*		
+		}		
 		if (offerCode != null && (StringUtils.isBlank(journeyType)
 				|| (StringUtils.isNotBlank(journeyType) && !Validator.validateJourneyType(journeyType)))) {
 
@@ -315,7 +315,7 @@ public class DeviceServiceImpl implements DeviceService {
 			
 			List<MerchandisingPromotionModel> listOfMerchandisingPromotions = new ArrayList<>();
 			
-			if(journeyType.equalsIgnoreCase(Constants.JOURNEY_TYPE_UPGRADE)){		
+			/*if(journeyType.equalsIgnoreCase(Constants.JOURNEY_TYPE_UPGRADE)){		
 			listOfMerchandisingPromotions = deviceDao.getJourneyTypeCompatibleOfferCodes(Constants.JOURNEY_TYPE_UPGRADE);
 			}
 			if(journeyType.equalsIgnoreCase(Constants.JOURNEY_TYPE_SECONDLINE)){		
@@ -329,7 +329,7 @@ public class DeviceServiceImpl implements DeviceService {
 			if(merchandisingPromotionModel==null) {
 				LogHelper.info(this, "OfferCode is not compatible with JourneyId");
 				throw new ApplicationException(ExceptionMessages.INVALID_JOURNEY_TYPE_AND_OFFER_CODE_COMBINATION);
-			}	
+			}	*/
 		
 	} 
 		

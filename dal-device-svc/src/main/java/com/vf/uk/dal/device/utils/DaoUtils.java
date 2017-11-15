@@ -645,7 +645,7 @@ public class DaoUtils {
 			}
 			//Us-6717 end
 		}
-		return accessory;
+		return null;
 	}
 
 	public static Insurances convertCommercialProductToInsurance(List<CommercialProduct> insuranceProductList,String journeyType) {
