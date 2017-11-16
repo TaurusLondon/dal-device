@@ -929,9 +929,13 @@ public class DeviceDaoImpl implements DeviceDao {
 						if (accessory != null)
 							listOfAccessory.add(accessory);
 					}
-					accessoryTileGroup.setGroupName(entry.getKey());
-					accessoryTileGroup.setAccessories(listOfAccessory);
-					listOfAccessoryTile.add(accessoryTileGroup);
+					if (listOfAccessory != null && !listOfAccessory.isEmpty()) {
+						accessoryTileGroup.setGroupName(entry.getKey());
+						accessoryTileGroup.setAccessories(listOfAccessory);
+						listOfAccessoryTile.add(accessoryTileGroup);
+					} else{
+						LogHelper.error(this, "Accessories not found for the given :"+entry.getKey());
+					}
 				}
 
 			} else {
