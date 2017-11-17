@@ -1,4 +1,4 @@
-package  com.vf.uk.dal.utility.entity;
+package com.vf.uk.dal.utility.entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,9 +9,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * BundleDeviceAndProductsList
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-10-17T05:56:29.550Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-11-17T11:31:50.578Z")
 
 public class BundleDeviceAndProductsList   {
+  @JsonProperty("offerCode")
+  private String offerCode = null;
+
+  @JsonProperty("packageType")
+  private String packageType = null;
+
   @JsonProperty("deviceId")
   private String deviceId = null;
 
@@ -23,6 +29,44 @@ public class BundleDeviceAndProductsList   {
 
   @JsonProperty("extraList")
   private List<String> extraList = null;
+
+  public BundleDeviceAndProductsList offerCode(String offerCode) {
+    this.offerCode = offerCode;
+    return this;
+  }
+
+   /**
+   * offercode will be proived as part of journey
+   * @return offerCode
+  **/
+
+
+  public String getOfferCode() {
+    return offerCode;
+  }
+
+  public void setOfferCode(String offerCode) {
+    this.offerCode = offerCode;
+  }
+
+  public BundleDeviceAndProductsList packageType(String packageType) {
+    this.packageType = packageType;
+    return this;
+  }
+
+   /**
+   * Journey type will be proived as part of journey and its mandatory filed
+   * @return packageType
+  **/
+
+
+  public String getPackageType() {
+    return packageType;
+  }
+
+  public void setPackageType(String packageType) {
+    this.packageType = packageType;
+  }
 
   public BundleDeviceAndProductsList deviceId(String deviceId) {
     this.deviceId = deviceId;
@@ -126,7 +170,9 @@ public class BundleDeviceAndProductsList   {
       return false;
     }
     BundleDeviceAndProductsList bundleDeviceAndProductsList = (BundleDeviceAndProductsList) o;
-    return Objects.equals(this.deviceId, bundleDeviceAndProductsList.deviceId) &&
+    return Objects.equals(this.offerCode, bundleDeviceAndProductsList.offerCode) &&
+        Objects.equals(this.packageType, bundleDeviceAndProductsList.packageType) &&
+        Objects.equals(this.deviceId, bundleDeviceAndProductsList.deviceId) &&
         Objects.equals(this.bundleId, bundleDeviceAndProductsList.bundleId) &&
         Objects.equals(this.accessoryList, bundleDeviceAndProductsList.accessoryList) &&
         Objects.equals(this.extraList, bundleDeviceAndProductsList.extraList);
@@ -134,7 +180,7 @@ public class BundleDeviceAndProductsList   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(deviceId, bundleId, accessoryList, extraList);
+    return Objects.hash(offerCode, packageType, deviceId, bundleId, accessoryList, extraList);
   }
 
   @Override
@@ -142,6 +188,8 @@ public class BundleDeviceAndProductsList   {
     StringBuilder sb = new StringBuilder();
     sb.append("class BundleDeviceAndProductsList {\n");
     
+    sb.append("    offerCode: ").append(toIndentedString(offerCode)).append("\n");
+    sb.append("    packageType: ").append(toIndentedString(packageType)).append("\n");
     sb.append("    deviceId: ").append(toIndentedString(deviceId)).append("\n");
     sb.append("    bundleId: ").append(toIndentedString(bundleId)).append("\n");
     sb.append("    accessoryList: ").append(toIndentedString(accessoryList)).append("\n");

@@ -35,7 +35,7 @@ public interface DeviceDao {
 	public DeviceDetails getDeviceDetails(String deviceId,String journeyType,String offerCode);
 	public List<DeviceTile> getDeviceTileById(String id, String offerCode, String journeyType);
 	public List<ProductGroup> getProductGroupByGroupTypeGroupName(String groupType, String groupName);
-	public List<AccessoryTileGroup> getAccessoriesOfDevice(String deviceId,String journeyType);
+	public List<AccessoryTileGroup> getAccessoriesOfDevice(String deviceId,String journeyType,String offerCode);
 	//public FacetedDevice getDeviceList(String productClass,String make,String model,String groupType,String sortCriteria,int pageNumber,int pageSize,String capacity,String colour,String operatingSystem,String mustHaveFeatures);
 	//public Insurances getInsuranceById(String deviceId);
 	//public List<ProductGroupForDeviceListing> getDeviceListFromPricing(String grouptype);
