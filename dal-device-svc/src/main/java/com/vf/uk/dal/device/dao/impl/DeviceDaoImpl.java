@@ -845,7 +845,7 @@ public class DeviceDaoImpl implements DeviceDao {
 					&& !productGroups.getProductGroup().isEmpty()) {
 				for (com.vodafone.product.pojo.ProductGroup productGroup : productGroups.getProductGroup()) {
 					if (productGroup.getProductGroupRole().equalsIgnoreCase(Constants.STRING_COMPATIBLE_ACCESSORIES)) {
-						listOfDeviceGroupName.add(productGroup.getProductGroupName());
+						listOfDeviceGroupName.add(productGroup.getProductGroupName() + Constants.STRING_PRODUCTGROUP_OPERATOR + productGroup.getProductGroupRole());
 					}
 				}
 				
@@ -929,9 +929,13 @@ public class DeviceDaoImpl implements DeviceDao {
 						if (accessory != null)
 							listOfAccessory.add(accessory);
 					}
-					accessoryTileGroup.setGroupName(entry.getKey());
-					accessoryTileGroup.setAccessories(listOfAccessory);
-					listOfAccessoryTile.add(accessoryTileGroup);
+					if (listOfAccessory != null && !listOfAccessory.isEmpty()) {
+						accessoryTileGroup.setGroupName(entry.getKey());
+						accessoryTileGroup.setAccessories(listOfAccessory);
+						listOfAccessoryTile.add(accessoryTileGroup);
+					} else{
+						LogHelper.error(this, "Accessories not found for the given :"+entry.getKey());
+					}
 				}
 
 			} else {
