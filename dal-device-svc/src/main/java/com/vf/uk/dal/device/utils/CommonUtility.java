@@ -2,7 +2,9 @@ package com.vf.uk.dal.device.utils;
 
 import java.io.File;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -278,5 +280,65 @@ public  class CommonUtility {
 			}
 		}
 		return formatedPrice;
+	}
+	/**
+	 * Date validation
+	 * @author manoj.bera
+	 * @param startDateTime
+	 * @param endDateTime
+	 * @return flag 
+	 */
+	public static Boolean dateValidationForOffers(String startDateTime, String endDateTime, String strDateFormat) {
+		
+		boolean flag = false;
+		SimpleDateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+		Date currentDate = new Date();
+		
+		String currentDateStr = dateFormat.format(currentDate);		
+		
+		try {
+			currentDate = dateFormat.parse(currentDateStr);
+			
+		} catch (ParseException | DateTimeParseException e) {
+			LogHelper.error(CommonUtility.class, "ParseException: " + e);
+		}	
+		
+		Date startDate = null;
+		Date endDate = null;
+
+		try {
+			if (startDateTime != null) {
+				startDate = dateFormat.parse(startDateTime);
+				LogHelper.info(CommonUtility.class, "::::: StartDate " + startDate + " :::::");
+			}
+			
+		} catch (ParseException | DateTimeParseException e) {
+			LogHelper.error(CommonUtility.class, "ParseException: " + e);
+		}	
+		
+		try{
+			if (endDateTime != null) {
+				endDate = dateFormat.parse(endDateTime);
+				LogHelper.info(CommonUtility.class, "::::: EndDate " + endDate + " :::::");
+			}
+		}catch (ParseException | DateTimeParseException e) {
+			LogHelper.error(CommonUtility.class, "ParseException: " + e);
+		}
+
+		if (startDate != null && endDate != null && ((currentDate.after(startDate) || currentDate.equals(startDate))
+				&& (currentDate.before(endDate) || currentDate.equals(endDate)))) {			
+				flag = true;			
+		}
+		if (startDate == null && endDate != null && currentDate.before(endDate)) {
+			flag = true;
+		}
+		if (startDate != null && endDate == null && currentDate.after(startDate)) {
+			flag = true;
+		}
+		if (startDate == null && endDate == null) {
+			flag = true;
+		}
+
+		return flag;
 	}
 }
