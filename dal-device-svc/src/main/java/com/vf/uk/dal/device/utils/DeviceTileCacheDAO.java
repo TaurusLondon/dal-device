@@ -8,10 +8,12 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 import com.vf.uk.dal.common.configuration.DataSourceInitializer;
 import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.utility.solr.entity.BundlePrice;
@@ -84,76 +86,75 @@ public class DeviceTileCacheDAO {
 			+ "HW_ONE_OFF_DISC_PRICE_GROSS, HW_ONE_OFF_DISC_PRICE_NET, HW_ONE_OFF_DISC_PRICE_VAT, CREATE_UPDATE_TIME,"
 			+ "IS_LEAD_MEMBER, MINIMUM_COST)"
 			+" values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-		int i[] = getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
+			int i[] = getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
 
-			@Override
-			public void setValues(PreparedStatement ps, int i) throws SQLException {
-					DevicePreCalculatedData productGroupForDeviceListing = listProductGroupForDeviceListing.get(i);
-					PriceInfo priceInfo= productGroupForDeviceListing.getPriceInfo();
-					ps.setString(1, productGroupForDeviceListing.getDeviceId());
-					ps.setString(2, String.valueOf(productGroupForDeviceListing.getRating()));
-					ps.setString(3, productGroupForDeviceListing.getLeadPlanId());
-					ps.setString(4, productGroupForDeviceListing.getProductGroupName());
-					ps.setString(5, productGroupForDeviceListing.getProductGroupId());
-					if(priceInfo!=null && priceInfo.getBundlePrice()!=null)
-					{
-						if(priceInfo.getBundlePrice().getMonthlyPrice()!=null)
+				@Override
+				public void setValues(PreparedStatement ps, int i) throws SQLException {
+						DevicePreCalculatedData productGroupForDeviceListing = listProductGroupForDeviceListing.get(i);
+						PriceInfo priceInfo= productGroupForDeviceListing.getPriceInfo();
+						ps.setString(1, productGroupForDeviceListing.getDeviceId());
+						ps.setString(2, String.valueOf(productGroupForDeviceListing.getRating()));
+						ps.setString(3, productGroupForDeviceListing.getLeadPlanId());
+						ps.setString(4, productGroupForDeviceListing.getProductGroupName());
+						ps.setString(5, productGroupForDeviceListing.getProductGroupId());
+						if(priceInfo!=null && priceInfo.getBundlePrice()!=null)
 						{
-							ps.setString(6, priceInfo.getBundlePrice().getMonthlyPrice().getGross());
-							ps.setString(7, priceInfo.getBundlePrice().getMonthlyPrice().getNet());
-							ps.setString(8, priceInfo.getBundlePrice().getMonthlyPrice().getVat());
+							if(priceInfo.getBundlePrice().getMonthlyPrice()!=null)
+							{
+								ps.setString(6, priceInfo.getBundlePrice().getMonthlyPrice().getGross());
+								ps.setString(7, priceInfo.getBundlePrice().getMonthlyPrice().getNet());
+								ps.setString(8, priceInfo.getBundlePrice().getMonthlyPrice().getVat());
+							}
+							if(priceInfo.getBundlePrice().getMonthlyDiscountPrice()!=null)
+							{
+								ps.setString(9, priceInfo.getBundlePrice().getMonthlyDiscountPrice().getGross());
+								ps.setString(10, priceInfo.getBundlePrice().getMonthlyDiscountPrice().getNet());
+								ps.setString(11, priceInfo.getBundlePrice().getMonthlyDiscountPrice().getVat());
+							}
+						}else{
+							ps.setString(6, null);
+							ps.setString(7, null);
+							ps.setString(8, null);
+							ps.setString(9, null);
+							ps.setString(10, null);
+							ps.setString(11, null);
 						}
-						if(priceInfo.getBundlePrice().getMonthlyDiscountPrice()!=null)
+						if(priceInfo!=null && priceInfo.getHardwarePrice()!=null)
 						{
-							ps.setString(9, priceInfo.getBundlePrice().getMonthlyDiscountPrice().getGross());
-							ps.setString(10, priceInfo.getBundlePrice().getMonthlyDiscountPrice().getNet());
-							ps.setString(11, priceInfo.getBundlePrice().getMonthlyDiscountPrice().getVat());
+							if(priceInfo.getHardwarePrice().getOneOffPrice()!=null)
+							{
+								ps.setString(12, priceInfo.getHardwarePrice().getOneOffPrice().getGross());
+								ps.setString(13, priceInfo.getHardwarePrice().getOneOffPrice().getNet());
+								ps.setString(14, priceInfo.getHardwarePrice().getOneOffPrice().getVat());
+							}if(priceInfo.getHardwarePrice().getOneOffDiscountPrice()!=null)
+							{
+								ps.setString(15, priceInfo.getHardwarePrice().getOneOffDiscountPrice().getGross());
+								ps.setString(16, priceInfo.getHardwarePrice().getOneOffDiscountPrice().getNet());
+								ps.setString(17, priceInfo.getHardwarePrice().getOneOffDiscountPrice().getVat());
+							}
+						}else{
+							ps.setString(12, null);
+							ps.setString(13, null);
+							ps.setString(14, null);
+							ps.setString(15, null);
+							ps.setString(16, null);
+							ps.setString(17, null);
 						}
-					}else{
-						ps.setString(6, null);
-						ps.setString(7, null);
-						ps.setString(8, null);
-						ps.setString(9, null);
-						ps.setString(10, null);
-						ps.setString(11, null);
-					}
-					if(priceInfo!=null && priceInfo.getHardwarePrice()!=null)
-					{
-						if(priceInfo.getHardwarePrice().getOneOffPrice()!=null)
-						{
-							ps.setString(12, priceInfo.getHardwarePrice().getOneOffPrice().getGross());
-							ps.setString(13, priceInfo.getHardwarePrice().getOneOffPrice().getNet());
-							ps.setString(14, priceInfo.getHardwarePrice().getOneOffPrice().getVat());
-						}if(priceInfo.getHardwarePrice().getOneOffDiscountPrice()!=null)
-						{
-							ps.setString(15, priceInfo.getHardwarePrice().getOneOffDiscountPrice().getGross());
-							ps.setString(16, priceInfo.getHardwarePrice().getOneOffDiscountPrice().getNet());
-							ps.setString(17, priceInfo.getHardwarePrice().getOneOffDiscountPrice().getVat());
-						}
-					}else{
-						ps.setString(12, null);
-						ps.setString(13, null);
-						ps.setString(14, null);
-						ps.setString(15, null);
-						ps.setString(16, null);
-						ps.setString(17, null);
-					}
-					Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-					ps.setTimestamp(18,timestamp);
-					ps.setString(19, productGroupForDeviceListing.getIsLeadMember());
-					ps.setString(20, productGroupForDeviceListing.getMinimumCost());
-			}
+						Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+						ps.setTimestamp(18,timestamp);
+						ps.setString(19, productGroupForDeviceListing.getIsLeadMember());
+						ps.setString(20, productGroupForDeviceListing.getMinimumCost());
+				}
+				
+				@Override
+				public int getBatchSize() {
+					return listProductGroupForDeviceListing.size();
+				}
+			});
 			
-			@Override
-			public int getBatchSize() {
-				return listProductGroupForDeviceListing.size();
+			if (i.length > 0) {
+				result = 1;
 			}
-		});
-		
-		if (i.length > 0) {
-			result = 1;
-		}
-
 		return result;
 	}
 	/**
@@ -164,7 +165,7 @@ public class DeviceTileCacheDAO {
 	public int saveDeviceMediaData(List<Media> mediaList, String deviceId) {
 		int result=0;
 		LogHelper.info(this, "Begin DEVICE_LIST_PRE_CALC_MEDIA ");
-		String sql = "INSERT INTO PRODUCT.DEVICE_LIST_PRE_CALC_MEDIA (DEVICE_ID,ID,VALUE,TYPE) values (?,?,?,?)";
+		String sql = "INSERT INTO PRODUCT.DEVICE_LIST_PRE_CALC_MEDIA (DEVICE_ID,ID,VALUE,TYPE,DESCRIPTION,DISCOUNT_ID) values (?,?,?,?,?,?)";
 		int i[] = getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
@@ -173,6 +174,8 @@ public class DeviceTileCacheDAO {
 				ps.setString(2, mediaLink.getId());
 				ps.setString(3, mediaLink.getValue());
 				ps.setString(4, mediaLink.getType());
+				ps.setString(5, mediaLink.getDescription());
+				ps.setString(6, mediaLink.getDiscountId());
 			}
 
 			@Override
