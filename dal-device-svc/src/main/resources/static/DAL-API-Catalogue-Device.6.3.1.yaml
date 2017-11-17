@@ -1062,9 +1062,7 @@ definitions:
       oneOffDiscountPrice:
         $ref: '#/definitions/Price'
       merchandisingPromotions:
-        type: array
-        items:
-          $ref: '#/definitions/MerchandisingPromotion'
+        $ref: '#/definitions/MerchandisingPromotion'
         description: Merchandising promotions applicable for the bundle
   MerchandisingPromotion:
     type: object
