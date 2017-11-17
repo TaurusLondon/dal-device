@@ -166,4 +166,5 @@ public class Constants {
 		public static final String JOURNEY_TYPE_UPGRADE="Upgrade";
 		public static final String JOURNEY_TYPE_SECONDLINE="SecondLine";
 		public static final String OFFERCODE_PAYM="PAYM";
+		 public static final String STRING_PRODUCTGROUP_OPERATOR ="~";
 }

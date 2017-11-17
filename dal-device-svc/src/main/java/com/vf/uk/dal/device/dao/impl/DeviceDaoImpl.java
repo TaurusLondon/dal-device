@@ -621,7 +621,10 @@ public class DeviceDaoImpl implements DeviceDao {
 				deviceDetails = DaoUtils.convertCoherenceDeviceToDeviceDetails(commercialProduct,
 						listOfPriceForBundleAndHardware, listOfOfferPacks);
 			}
-
+			else{
+				LogHelper.error(this, "No data found for given journeyType :" + deviceId);
+				throw new ApplicationException(ExceptionMessages.NO_DATA_FOR_GIVEN_SEARCH_CRITERIA);
+			}
 			if (StringUtils.isNotEmpty(offerCode) && StringUtils.isNotEmpty(journeyType)) {
 				deviceDetails.setValidOffer(validateOfferValidForDevice(commercialProduct, journeyType, offerCode));
 			}
@@ -756,6 +759,10 @@ public class DeviceDaoImpl implements DeviceDao {
 				deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile(memberPriority, commercialProduct,
 						comBundle, listOfPriceForBundleAndHardware, listOfOfferPacks, null, false);
 			}
+			else{
+				LogHelper.error(this, "No data found for given criteria :" + id);
+				throw new ApplicationException(ExceptionMessages.NO_DATA_FOR_GIVEN_SEARCH_CRITERIA);
+			}
 
 			listOfDeviceSummary.add(deviceSummary);
 			deviceTile.setDeviceSummary(listOfDeviceSummary);
@@ -838,7 +845,7 @@ public class DeviceDaoImpl implements DeviceDao {
 					&& !productGroups.getProductGroup().isEmpty()) {
 				for (com.vodafone.product.pojo.ProductGroup productGroup : productGroups.getProductGroup()) {
 					if (productGroup.getProductGroupRole().equalsIgnoreCase(Constants.STRING_COMPATIBLE_ACCESSORIES)) {
-						listOfDeviceGroupName.add(productGroup.getProductGroupName() + "~" + productGroup.getProductGroupRole());
+						listOfDeviceGroupName.add(productGroup.getProductGroupName() + Constants.STRING_PRODUCTGROUP_OPERATOR + productGroup.getProductGroupRole());
 					}
 				}
 				
@@ -922,9 +929,13 @@ public class DeviceDaoImpl implements DeviceDao {
 						if (accessory != null)
 							listOfAccessory.add(accessory);
 					}
-					accessoryTileGroup.setGroupName(entry.getKey());
-					accessoryTileGroup.setAccessories(listOfAccessory);
-					listOfAccessoryTile.add(accessoryTileGroup);
+					if (listOfAccessory != null && !listOfAccessory.isEmpty()) {
+						accessoryTileGroup.setGroupName(entry.getKey());
+						accessoryTileGroup.setAccessories(listOfAccessory);
+						listOfAccessoryTile.add(accessoryTileGroup);
+					} else{
+						LogHelper.error(this, "Accessories not found for the given :"+entry.getKey());
+					}
 				}
 
 			} else {
