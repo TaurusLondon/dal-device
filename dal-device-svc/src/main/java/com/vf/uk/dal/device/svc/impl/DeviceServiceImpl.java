@@ -1000,7 +1000,7 @@ public class DeviceServiceImpl implements DeviceService {
 			                .filter(commercialProduct -> CommonUtility.isProductNotExpired(commercialProduct) && CommonUtility.isProductJourneySpecific(commercialProduct, journeyType))     
 			                .collect(Collectors.toList());
 					if (listOfFilteredInsurances != null && !listOfFilteredInsurances.isEmpty()) {
-						insurance = DaoUtils.convertCommercialProductToInsurance(listOfInsuranceProducts);
+						insurance = DaoUtils.convertCommercialProductToInsurance(listOfFilteredInsurances);
 					}
 				}
 			}
