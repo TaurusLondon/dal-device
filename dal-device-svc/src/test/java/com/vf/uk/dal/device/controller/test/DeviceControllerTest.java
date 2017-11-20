@@ -1145,7 +1145,7 @@ public class DeviceControllerTest {
 	public void testDaoUtilsconvertCoherenceDeviceToDeviceTile() {
 		DaoUtils.convertCoherenceDeviceToDeviceTile(Long.valueOf(1), CommonMethods.getCommercialProduct1(),
 				CommonMethods.getCommercialBundle(), CommonMethods.getPriceForBundleAndHardware(),
-				CommonMethods.getListOfOfferPacks(), "DEVICE_PAYM", false);
+				CommonMethods.getListOfOfferPacks(), "DEVICE_PAYM", false,null);
 	}
 
 	@Test
