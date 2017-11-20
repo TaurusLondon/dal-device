@@ -92,7 +92,7 @@ public class DaoUtils {
 		if (memberPriority != null) {
 			deviceSummary.setPriority(String.valueOf(memberPriority));
 		}
-		if(fromPricingMap!=null && fromPricingMap.get(commercialProduct.getId()!=null)){
+		if(fromPricingMap!=null){
 			deviceSummary.setFromPricing(fromPricingMap.get(commercialProduct.getId()));
 		}
 		deviceSummary.setDisplayDescription(commercialProduct.getPreDesc());
