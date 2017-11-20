@@ -30,7 +30,7 @@ public interface DeviceService {
 	public List<DeviceTile> getDeviceTileById(String id, String offerCode,String journeyType);
 	public DeviceDetails getDeviceDetails(String deviceId,String journeyType,String offerCode);
 	public List<ProductGroup> getProductGroupByGroupTypeGroupName(String groupType,String groupName);
-	public List<AccessoryTileGroup> getAccessoriesOfDevice(String deviceId,String journeyType);
+	public List<AccessoryTileGroup> getAccessoriesOfDevice(String deviceId,String journeyType,String offerCode);
 	public FacetedDevice getDeviceList(String productClass,String listOfMake,String model,String groupType,String sortCriteria,
 			int pageNumber,int pageSize,String capacity,String colour,String operatingSystem,String mustHaveFeatures,String journeyType,
 			Float creditLimit,String offerCode, String msisdn, boolean includeRecommendations);
