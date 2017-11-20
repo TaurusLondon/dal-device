@@ -379,7 +379,7 @@ public class DeviceServiceImplTest
 	insuranceList.add("093354");
 	
 		given(this.deviceDAOMock.getCommercialProductByProductId("093353")).willReturn(CommonMethods.getCommercialProductForInsurance());
-		given(this.deviceDAOMock.getGroupByProdGroupName("DEVICE_PAYM")).willReturn(CommonMethods.getGropuFromProductGroups());
+		given(this.deviceDAOMock.getGroupByProdGroupName("DEVICE_PAYM","Compatible Insurance")).willReturn(CommonMethods.getGropuFromProductGroups());
 		given(this.deviceDAOMock.getCommercialProductsList(insuranceList)).willReturn(CommonMethods.getListOfCommercialProduct());
 		Insurances insurance=null;
 			insurance=deviceService.getInsuranceByDeviceId("093353","upgrade");
@@ -429,7 +429,7 @@ public class DeviceServiceImplTest
 	}
 	@Test
 	public void NotNullTestForDaoUtilsconvertCommercialProductToInsurance() {
-		Insurances insurances = DaoUtils.convertCommercialProductToInsurance(CommonMethods.getListOfCommercialProduct(),"upgrade");
+		Insurances insurances = DaoUtils.convertCommercialProductToInsurance(CommonMethods.getListOfCommercialProduct());
 		Assert.assertNotNull(insurances);
 	}
 	/**

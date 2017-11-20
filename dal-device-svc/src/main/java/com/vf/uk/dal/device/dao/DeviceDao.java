@@ -65,7 +65,7 @@ public interface DeviceDao {
 	public CacheDeviceTileResponse getCacheDeviceJobStatus(String jobId)throws ApplicationException;
 	public Collection<CommercialBundle> getListCommercialBundleRepositoryByCompatiblePlanList(List<String> planIdList);
 	public  List<OfferAppliedPriceModel> getBundleAndHardwarePriceFromSolr(List<String> deviceIds, String offerCode);
-	public Group getGroupByProdGroupName(String groupName);
+	public Group getGroupByProdGroupName(String groupName,String groupType);
 	public List<CommercialProduct> getCommercialProductsList(List<String> productIdsList);
 	
 	public List<MerchandisingPromotionModel> getJourneyTypeCompatibleOfferCodes(String journeyType);

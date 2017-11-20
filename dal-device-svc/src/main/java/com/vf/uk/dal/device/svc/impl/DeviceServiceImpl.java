@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -965,6 +966,7 @@ public class DeviceServiceImpl implements DeviceService {
 
 			ProductGroups productGroups = cohProduct.getProductGroups();
 			String insuranceGroupName = null;
+			String  insuranceGroupType = null;
 			List<Member> listOfInsuranceMembers = new ArrayList<>();
 			if (productGroups != null && productGroups.getProductGroup() != null
 					&& !productGroups.getProductGroup().isEmpty()) {
@@ -972,11 +974,12 @@ public class DeviceServiceImpl implements DeviceService {
 					if (productGroup.getProductGroupRole() != null && productGroup.getProductGroupRole().trim()
 							.equalsIgnoreCase(Constants.STRING_COMPATIBLE_INSURANCE)) {
 						insuranceGroupName = productGroup.getProductGroupName();
+						insuranceGroupType =  productGroup.getProductGroupRole();
 					}
 				}
 				LogHelper.info(this, "::::: Insurance GroupName " + insuranceGroupName + " :::::");
 				if (StringUtils.isNotBlank(insuranceGroupName)) {
-					Group productGroup = deviceDao.getGroupByProdGroupName(insuranceGroupName);
+					Group productGroup = deviceDao.getGroupByProdGroupName(insuranceGroupName,insuranceGroupType);
 					if (productGroup != null && productGroup.getGroupType() != null && productGroup.getGroupType()
 							.trim().equalsIgnoreCase(Constants.STRING_COMPATIBLE_INSURANCE)) {
 						listOfInsuranceMembers.addAll(productGroup.getMembers());
@@ -993,8 +996,11 @@ public class DeviceServiceImpl implements DeviceService {
 
 					List<CommercialProduct> listOfInsuranceProducts = deviceDao
 							.getCommercialProductsList(insuranceProductList);
-					if (listOfInsuranceProducts != null && !listOfInsuranceProducts.isEmpty()) {
-						insurance = DaoUtils.convertCommercialProductToInsurance(listOfInsuranceProducts,journeyType);
+					List<CommercialProduct> listOfFilteredInsurances = listOfInsuranceProducts.stream()                
+			                .filter(commercialProduct -> CommonUtility.isProductNotExpired(commercialProduct) && CommonUtility.isProductJourneySpecific(commercialProduct, journeyType))     
+			                .collect(Collectors.toList());
+					if (listOfFilteredInsurances != null && !listOfFilteredInsurances.isEmpty()) {
+						insurance = DaoUtils.convertCommercialProductToInsurance(listOfFilteredInsurances);
 					}
 				}
 			}
