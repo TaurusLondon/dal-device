@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -251,9 +252,9 @@ public class DeviceServiceImpl implements DeviceService {
 	 */
 
 	@Override
-	public List<AccessoryTileGroup> getAccessoriesOfDevice(String deviceId,String journeyType) {
+	public List<AccessoryTileGroup> getAccessoriesOfDevice(String deviceId,String journeyType,String offerCode) {
 		List<AccessoryTileGroup> listOfAccessoryTileGroup;
-		listOfAccessoryTileGroup = deviceDao.getAccessoriesOfDevice(deviceId,journeyType);
+		listOfAccessoryTileGroup = deviceDao.getAccessoriesOfDevice(deviceId,journeyType,offerCode);
 		return listOfAccessoryTileGroup;
 	}
 
@@ -965,6 +966,7 @@ public class DeviceServiceImpl implements DeviceService {
 
 			ProductGroups productGroups = cohProduct.getProductGroups();
 			String insuranceGroupName = null;
+			String  insuranceGroupType = null;
 			List<Member> listOfInsuranceMembers = new ArrayList<>();
 			if (productGroups != null && productGroups.getProductGroup() != null
 					&& !productGroups.getProductGroup().isEmpty()) {
@@ -972,11 +974,12 @@ public class DeviceServiceImpl implements DeviceService {
 					if (productGroup.getProductGroupRole() != null && productGroup.getProductGroupRole().trim()
 							.equalsIgnoreCase(Constants.STRING_COMPATIBLE_INSURANCE)) {
 						insuranceGroupName = productGroup.getProductGroupName();
+						insuranceGroupType =  productGroup.getProductGroupRole();
 					}
 				}
 				LogHelper.info(this, "::::: Insurance GroupName " + insuranceGroupName + " :::::");
 				if (StringUtils.isNotBlank(insuranceGroupName)) {
-					Group productGroup = deviceDao.getGroupByProdGroupName(insuranceGroupName);
+					Group productGroup = deviceDao.getGroupByProdGroupName(insuranceGroupName,insuranceGroupType);
 					if (productGroup != null && productGroup.getGroupType() != null && productGroup.getGroupType()
 							.trim().equalsIgnoreCase(Constants.STRING_COMPATIBLE_INSURANCE)) {
 						listOfInsuranceMembers.addAll(productGroup.getMembers());
@@ -993,8 +996,11 @@ public class DeviceServiceImpl implements DeviceService {
 
 					List<CommercialProduct> listOfInsuranceProducts = deviceDao
 							.getCommercialProductsList(insuranceProductList);
-					if (listOfInsuranceProducts != null && !listOfInsuranceProducts.isEmpty()) {
-						insurance = DaoUtils.convertCommercialProductToInsurance(listOfInsuranceProducts,journeyType);
+					List<CommercialProduct> listOfFilteredInsurances = listOfInsuranceProducts.stream()                
+			                .filter(commercialProduct -> CommonUtility.isProductNotExpired(commercialProduct) && CommonUtility.isProductJourneySpecific(commercialProduct, journeyType))     
+			                .collect(Collectors.toList());
+					if (listOfFilteredInsurances != null && !listOfFilteredInsurances.isEmpty()) {
+						insurance = DaoUtils.convertCommercialProductToInsurance(listOfFilteredInsurances);
 					}
 				}
 			}
@@ -1895,7 +1901,7 @@ public class DeviceServiceImpl implements DeviceService {
 					String endDateTime = CommonUtility.getDateToString(merchandisingPromotion.getEndDateTime(),
 							Constants.DATE_FORMAT_COHERENCE);
 					if (promotionName != null && promotionName.equals(merchandisingPromotion.getTag())
-							&& dateValidationForOffers(startDateTime, endDateTime, Constants.DATE_FORMAT_COHERENCE)) {
+							&& CommonUtility.dateValidationForOffers(startDateTime, endDateTime, Constants.DATE_FORMAT_COHERENCE)) {
 						listOfMediaLink.addAll(listOfMediaLinkBasedOnMerchandising(merchandisingPromotion));
 					}
 				}
@@ -1903,66 +1909,7 @@ public class DeviceServiceImpl implements DeviceService {
 		}
 		return listOfMediaLink;
 	}
-	/**
-	 * Date validation
-	 * 
-	 * @param startDateTime
-	 * @param endDateTime
-	 * @return flag 
-	 */
-	public Boolean dateValidationForOffers(String startDateTime, String endDateTime, String strDateFormat) {
-		
-		boolean flag = false;
-		SimpleDateFormat dateFormat = new SimpleDateFormat(strDateFormat);
-		Date currentDate = new Date();
-		
-		String currentDateStr = dateFormat.format(currentDate);		
-		
-		try {
-			currentDate = dateFormat.parse(currentDateStr);
-			
-		} catch (ParseException | DateTimeParseException e) {
-			LogHelper.error(this, "ParseException: " + e);
-		}	
-		
-		Date startDate = null;
-		Date endDate = null;
-
-		try {
-			if (startDateTime != null) {
-				startDate = dateFormat.parse(startDateTime);
-				LogHelper.info(this, "::::: StartDate " + startDate + " :::::");
-			}
-			
-		} catch (ParseException | DateTimeParseException e) {
-			LogHelper.error(this, "ParseException: " + e);
-		}	
-		
-		try{
-			if (endDateTime != null) {
-				endDate = dateFormat.parse(endDateTime);
-				LogHelper.info(this, "::::: EndDate " + endDate + " :::::");
-			}
-		}catch (ParseException | DateTimeParseException e) {
-			LogHelper.error(this, "ParseException: " + e);
-		}
-
-		if (startDate != null && endDate != null && ((currentDate.after(startDate) || currentDate.equals(startDate))
-				&& (currentDate.before(endDate) || currentDate.equals(endDate)))) {			
-				flag = true;			
-		}
-		if (startDate == null && endDate != null && currentDate.before(endDate)) {
-			flag = true;
-		}
-		if (startDate != null && endDate == null && currentDate.after(startDate)) {
-			flag = true;
-		}
-		if (startDate == null && endDate == null) {
-			flag = true;
-		}
-
-		return flag;
-	}
+	
 	public List<MediaLink> listOfMediaLinkBasedOnMerchandising(MerchandisingPromotion merchandisingPromotion) {
 		MediaLink mediaLinkForDescription;
 		MediaLink mediaLinkForLabel;
@@ -2004,7 +1951,7 @@ public class DeviceServiceImpl implements DeviceService {
 					String endDateTime = CommonUtility.getDateToString(merchandisingPromotion.getEndDateTime(),
 							Constants.DATE_FORMAT_COHERENCE);
 					if (promotionName != null && promotionName.equals(merchandisingPromotion.getTag())
-							&& dateValidationForOffers(startDateTime, endDateTime, Constants.DATE_FORMAT_COHERENCE)) {
+							&& CommonUtility.dateValidationForOffers(startDateTime, endDateTime, Constants.DATE_FORMAT_COHERENCE)) {
 						listOfMediaLink.addAll(listOfMediaLinkBasedOnMerchandising(merchandisingPromotion));
 					}
 				}

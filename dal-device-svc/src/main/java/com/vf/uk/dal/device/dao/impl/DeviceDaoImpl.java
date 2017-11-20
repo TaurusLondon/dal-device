@@ -1,7 +1,5 @@
 package com.vf.uk.dal.device.dao.impl;
 
-import java.io.File;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -24,7 +22,6 @@ import java.util.UUID;
 import javax.sql.DataSource;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -32,8 +29,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vf.uk.dal.common.configuration.ConfigHelper;
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
@@ -69,7 +64,6 @@ import com.vf.uk.dal.utility.entity.PriceForAccessory;
 import com.vf.uk.dal.utility.entity.PriceForProduct;
 import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
 import com.vodafone.business.service.RequestManager;
-import com.vodafone.business.service.VodafoneConstants;
 import com.vodafone.common.Filters;
 import com.vodafone.dal.bundle.pojo.CommercialBundle;
 import com.vodafone.dal.domain.bazaarvoice.BazaarVoice;
@@ -830,7 +824,8 @@ public class DeviceDaoImpl implements DeviceDao {
 	}
 
 	@Override
-	public List<AccessoryTileGroup> getAccessoriesOfDevice(String deviceId, String journeyType) {
+	public List<AccessoryTileGroup> getAccessoriesOfDevice(String deviceId, String journeyType,String offerCode) 
+	{
 		ProductGroupRepository productGroupRepository = new ProductGroupRepository();
 		CommercialProductRepository commercialProductRepository = new CommercialProductRepository();
 		List<AccessoryTileGroup> listOfAccessoryTile = new ArrayList<>();
@@ -840,17 +835,17 @@ public class DeviceDaoImpl implements DeviceDao {
 			ProductGroups productGroups = commercialProduct.getProductGroups();
 			List<String> listOfDeviceGroupName = new ArrayList<>();
 			List<String> finalAccessoryList = new ArrayList<>();
-			Accessory accessory;
+			Accessory accessory = null;
 			if (productGroups != null && productGroups.getProductGroup() != null
 					&& !productGroups.getProductGroup().isEmpty()) {
 				for (com.vodafone.product.pojo.ProductGroup productGroup : productGroups.getProductGroup()) {
 					if (productGroup.getProductGroupRole().equalsIgnoreCase(Constants.STRING_COMPATIBLE_ACCESSORIES)) {
-						listOfDeviceGroupName.add(productGroup.getProductGroupName() + Constants.STRING_PRODUCTGROUP_OPERATOR + productGroup.getProductGroupRole());
+						listOfDeviceGroupName.add(productGroup.getProductGroupName()
+								+ Constants.STRING_PRODUCTGROUP_OPERATOR + productGroup.getProductGroupRole());
 					}
 				}
-				
-				if(listOfDeviceGroupName.isEmpty())
-				{
+
+				if (listOfDeviceGroupName.isEmpty()) {
 					LogHelper.error(this, "No Compatible Accessories found for given device Id:" + deviceId);
 					throw new ApplicationException(ExceptionMessages.NULL_COMPATIBLE_VALUE_FOR_DEVICE_ID);
 				}
@@ -890,6 +885,8 @@ public class DeviceDaoImpl implements DeviceDao {
 				bundleDeviceAndProductsList.setAccessoryList(finalAccessoryList);
 				bundleDeviceAndProductsList.setDeviceId(deviceId);
 				bundleDeviceAndProductsList.setExtraList(new ArrayList<>());
+				bundleDeviceAndProductsList.setOfferCode(offerCode);
+				bundleDeviceAndProductsList.setPackageType(journeyType);
 				PriceForProduct priceForProduct = null;
 				if (bundleDeviceAndProductsList != null) {
 					priceForProduct = CommonUtility.getAccessoryPriceDetails(bundleDeviceAndProductsList, registryclnt);
@@ -924,8 +921,42 @@ public class DeviceDaoImpl implements DeviceDao {
 					AccessoryTileGroup accessoryTileGroup = new AccessoryTileGroup();
 					List<Accessory> listOfAccessory = new ArrayList<>();
 					for (String hardwareId : entry.getValue()) {
-						accessory = DaoUtils.convertCoherenceAccesoryToAccessory(
-								mapforCommercialProduct.get(hardwareId), mapforPrice.get(hardwareId), journeyType);
+						CommercialProduct commercialproductlocal = mapforCommercialProduct.get(hardwareId);
+						String startDateTime = null;
+						String endDateTime = null;
+						if (commercialproductlocal.getProductAvailability().getStart() != null) {
+							startDateTime = CommonUtility.getDateToString(
+									commercialproductlocal.getProductAvailability().getStart(),
+									Constants.DATE_FORMAT_COHERENCE);
+						}
+						if (commercialproductlocal.getProductAvailability().getEnd() != null) {
+							endDateTime = CommonUtility.getDateToString(
+									commercialproductlocal.getProductAvailability().getEnd(),
+									Constants.DATE_FORMAT_COHERENCE);
+						}
+						if (!commercialproductlocal.getProductAvailability().isSalesExpired() && CommonUtility
+								.dateValidationForOffers(startDateTime, endDateTime, Constants.DATE_FORMAT_COHERENCE)) 
+						{
+							// US-6717 start
+							if (StringUtils.isNotBlank(journeyType)
+									&& Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)) {
+								if (commercialproductlocal.getProductControl() != null
+										&& commercialproductlocal.getProductControl().isIsSellableRet()
+										&& commercialproductlocal.getProductControl().isIsDisplayableRet()) {
+									accessory = DaoUtils.convertCoherenceAccesoryToAccessory(commercialproductlocal,
+											mapforPrice.get(hardwareId));
+								}
+							} else {
+								if (commercialproductlocal.getProductControl() != null
+										&& commercialproductlocal.getProductControl().isIsDisplayableAcq()
+										&& commercialproductlocal.getProductControl().isIsSellableAcq()) {
+									accessory = DaoUtils.convertCoherenceAccesoryToAccessory(commercialproductlocal,
+											mapforPrice.get(hardwareId));
+								}
+							}
+						}
+						// Us-6717 end
+
 						if (accessory != null)
 							listOfAccessory.add(accessory);
 					}
@@ -933,8 +964,8 @@ public class DeviceDaoImpl implements DeviceDao {
 						accessoryTileGroup.setGroupName(entry.getKey());
 						accessoryTileGroup.setAccessories(listOfAccessory);
 						listOfAccessoryTile.add(accessoryTileGroup);
-					} else{
-						LogHelper.error(this, "Accessories not found for the given :"+entry.getKey());
+					} else {
+						LogHelper.error(this, "Accessories not found for the given :" + entry.getKey());
 					}
 				}
 
@@ -2116,9 +2147,14 @@ public class DeviceDaoImpl implements DeviceDao {
 	}
 
 	@Override
-	public Group getGroupByProdGroupName(String groupName) {
-		ProductGroupRepository productGroupRepository = new ProductGroupRepository();
-		return productGroupRepository.get(groupName);
+	public Group getGroupByProdGroupName(String groupName,String groupType) {
+		try {
+			ProductGroupRepository productGroupRepository = new ProductGroupRepository();
+			return productGroupRepository.getProductGroup(groupName,groupType);
+		} catch (NullPointerException np) {
+			LogHelper.error(this, "Invalid Data Coming From Coherence " + np);
+			throw new ApplicationException(ExceptionMessages.INVALID_COHERENCE_DATA);
+		}
 	}
 
 	@Override

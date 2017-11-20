@@ -44,7 +44,6 @@ import com.vf.uk.dal.device.entity.Specification;
 import com.vf.uk.dal.device.entity.SpecificationGroup;
 import com.vf.uk.dal.utility.entity.BundlePrice;
 import com.vf.uk.dal.utility.entity.PriceForAccessory;
-import com.vf.uk.dal.utility.entity.PriceForProduct;
 import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
 import com.vf.uk.dal.utility.solr.entity.Media;
 import com.vf.uk.dal.utility.solr.entity.MonthlyDiscountPrice;
@@ -530,7 +529,7 @@ public class DaoUtils {
 		return productGroupList;
 	}
 
-	public static Accessory convertCoherenceAccesoryToAccessory(CommercialProduct commercialProduct,PriceForAccessory priceForAccessory,String journeyType) {
+	public static Accessory convertCoherenceAccesoryToAccessory(CommercialProduct commercialProduct,PriceForAccessory priceForAccessory) {
 		Accessory accessory = null;
 		List<MediaLink> merchandisingMedia = new ArrayList<>();
 		if (commercialProduct != null && priceForAccessory != null) {
@@ -576,20 +575,24 @@ public class DaoUtils {
 				MediaLink mediaLink;
 				if (commercialProduct.getListOfimageURLs() != null) {
 					for (com.vodafone.product.pojo.ImageURL imageURL : commercialProduct.getListOfimageURLs()) {
+						if(StringUtils.isNotBlank(imageURL.getImageURL())){
 						mediaLink = new MediaLink();
 						mediaLink.setId(imageURL.getImageName());
 						mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
 						mediaLink.setValue(imageURL.getImageURL());
 						merchandisingMedia.add(mediaLink);
+						}
 					}
 				}
 				if (commercialProduct.getListOfmediaURLs() != null) {
 					for (com.vodafone.product.pojo.MediaURL mediaURL : commercialProduct.getListOfmediaURLs()) {
+						if(StringUtils.isNotBlank(mediaURL.getMediaURL())){
 						mediaLink = new MediaLink();
 						mediaLink.setId(mediaURL.getMediaName());
 						mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
 						mediaLink.setValue(mediaURL.getMediaURL());
 						merchandisingMedia.add(mediaLink);
+						}
 					}
 				}
 				
@@ -597,7 +600,11 @@ public class DaoUtils {
 				/*
 				 * Looping to check if any null values in Merchandising Media List
 				 */
-				List<MediaLink> finalListOfMediaLink = new ArrayList<>();
+				/**
+				 * @author manoj.bera
+				 * below for loop not required Null check done before 
+				 */
+				/*List<MediaLink> finalListOfMediaLink = new ArrayList<>();
 				if (merchandisingMedia != null && !merchandisingMedia.isEmpty()) {
 					for (MediaLink merchandisingMediaLink : merchandisingMedia) {
 						if (merchandisingMediaLink != null && merchandisingMediaLink.getValue() != null
@@ -605,8 +612,8 @@ public class DaoUtils {
 							finalListOfMediaLink.add(merchandisingMediaLink);
 						}
 					}
-				}
-				accessory.setMerchandisingMedia(finalListOfMediaLink);
+				}*/
+				accessory.setMerchandisingMedia(merchandisingMedia);
 				/*
 				 * Price price; price = new Price();
 				 * 
@@ -633,22 +640,11 @@ public class DaoUtils {
 					accessory.setAttributes(attList);
 				}
 			}
-			//US-6717 start
-			if(StringUtils.isNotBlank(journeyType) && Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)) {
-				if(commercialProduct.getProductControl()!=null && commercialProduct.getProductControl().isIsSellableRet() 
-						&& commercialProduct.getProductControl().isIsDisplayableRet()){
-					return accessory;
-				}
-			}else if( !(Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)) && commercialProduct.getProductControl()!=null && commercialProduct.getProductControl().isIsDisplayableAcq()
-					&& commercialProduct.getProductControl().isIsSellableAcq()) {
-				return accessory;
-			}
-			//Us-6717 end
 		}
-		return null;
+		return accessory;
 	}
 
-	public static Insurances convertCommercialProductToInsurance(List<CommercialProduct> insuranceProductList,String journeyType) {
+	public static Insurances convertCommercialProductToInsurance(List<CommercialProduct> insuranceProductList) {
 		List<Double> minPrice = new ArrayList<>();
 		List<Insurance> insuranceList = new ArrayList<>();
 		Insurances insurances = new Insurances();
@@ -658,6 +654,14 @@ public class DaoUtils {
 			insurance = new Insurance();
 			insurance.setId(insuranceProduct.getId());
 			insurance.setName(insuranceProduct.getDisplayName());
+			Price price = new Price();
+			if(insuranceProduct.getPriceDetail()!=null && insuranceProduct.getPriceDetail().getPriceGross()!=null){
+			minPrice.add(insuranceProduct.getPriceDetail().getPriceGross());
+			}
+			price.setGross(String.valueOf(insuranceProduct.getPriceDetail().getPriceGross()));
+			price.setVat(String.valueOf(insuranceProduct.getPriceDetail().getPriceVAT()));
+			price.setNet(String.valueOf(insuranceProduct.getPriceDetail().getPriceNet()));
+			insurance.setPrice(price);
 			List<MediaLink> merchandisingMedia = new ArrayList<>();
 			MediaLink mediaLink;
 			if (insuranceProduct.getListOfimageURLs() != null) {
@@ -722,30 +726,7 @@ public class DaoUtils {
 
 			}
 			
-			//UserStory-6715 Begin
-			if(StringUtils.isNotBlank(journeyType) && Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)) {
-				if(insuranceProduct.getProductControl()!=null && insuranceProduct.getProductControl().isIsSellableRet() 
-						&& insuranceProduct.getProductControl().isIsDisplayableRet()){
-					Price price = new Price();
-					minPrice.add(insuranceProduct.getPriceDetail().getPriceGross());
-					price.setGross(String.valueOf(insuranceProduct.getPriceDetail().getPriceGross()));
-					price.setVat(String.valueOf(insuranceProduct.getPriceDetail().getPriceVAT()));
-					price.setNet(String.valueOf(insuranceProduct.getPriceDetail().getPriceNet()));
-					insurance.setPrice(price);
-					insuranceList.add(insurance);
-				}
-			}else if(!(Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)) && insuranceProduct.getProductControl()!=null && insuranceProduct.getProductControl().isIsDisplayableAcq()
-					&& insuranceProduct.getProductControl().isIsSellableAcq()) {
-				Price price = new Price();
-				minPrice.add(insuranceProduct.getPriceDetail().getPriceGross());
-				price.setGross(String.valueOf(insuranceProduct.getPriceDetail().getPriceGross()));
-				price.setVat(String.valueOf(insuranceProduct.getPriceDetail().getPriceVAT()));
-				price.setNet(String.valueOf(insuranceProduct.getPriceDetail().getPriceNet()));
-				insurance.setPrice(price);
-				insuranceList.add(insurance);
-			}
-			//UserStory-6715 End
-
+			insuranceList.add(insurance);
 		}
 		insurances.setInsuranceList(insuranceList);
 		insurances.setMinCost(String.valueOf(Collections.min(minPrice)));
@@ -2532,12 +2513,13 @@ public class DaoUtils {
 		List<MediaLink> merchandisingMedia = new ArrayList<>();
 				com.vf.uk.dal.utility.entity.MerchandisingPromotion merchandisingPromotions =hardwarePrice.getMerchandisingPromotions();
 				if(merchandisingPromotions!=null){
+					if(StringUtils.isNotBlank(merchandisingPromotions.getLabel())){
 					MediaLink mediaLinkLabel = new MediaLink();
 					mediaLinkLabel.setId(merchandisingPromotions.getMpType()+"."+Constants.STRING_OFFERS_LABEL);
 					mediaLinkLabel.setType(Constants.STRING_TEXT);
 					mediaLinkLabel.setValue(merchandisingPromotions.getLabel());
 					merchandisingMedia.add(mediaLinkLabel);
-					
+					}
 					if(StringUtils.isNotBlank(merchandisingPromotions.getDescription())){
 						MediaLink mediaLinkPriceEstablishedLabel = new MediaLink();
 						mediaLinkPriceEstablishedLabel.setId(merchandisingPromotions.getMpType()+"."+Constants.STRING_OFFERS_DESCRIPTION);

@@ -628,7 +628,7 @@ definitions:
       productClass:
         type: string
         description: 'Catalogue product class identifies products - SIMO, HANDSET etc.'
-      preorderable:
+      preOrderable:
         type: boolean
         description: 'Catalogue product class identifies products - SIMO, HANDSET etc.'
       merchandisingControl:
@@ -958,9 +958,6 @@ definitions:
         description: Device Summary of the each device within the product group
         items:
           $ref: '#/definitions/DeviceSummary'
-      isAffordable:
-        type: boolean
-        description: Is it Affordable
   DeviceSummary:
     type: object
     properties:
@@ -1020,6 +1017,9 @@ definitions:
           $ref: '#/definitions/MediaLink'
       priceInfo:
         $ref: '#/definitions/PriceForBundleAndHardware'
+      isAffordable:
+        type: boolean
+        description: Is it Affordable
   PriceForBundleAndHardware:
     type: object
     properties:
@@ -1062,9 +1062,7 @@ definitions:
       oneOffDiscountPrice:
         $ref: '#/definitions/Price'
       merchandisingPromotions:
-        type: array
-        items:
-          $ref: '#/definitions/MerchandisingPromotion'
+        $ref: '#/definitions/MerchandisingPromotion'
         description: Merchandising promotions applicable for the bundle
   MerchandisingPromotion:
     type: object
