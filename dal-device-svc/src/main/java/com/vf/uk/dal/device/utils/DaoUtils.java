@@ -78,7 +78,7 @@ public class DaoUtils {
 	public static DeviceSummary convertCoherenceDeviceToDeviceTile(Long memberPriority,
 			CommercialProduct commercialProduct, CommercialBundle comBundle,
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware, List<OfferPacks> listOfOfferPacks,
-			String groupType, boolean isConditionalAcceptJourney) {
+			String groupType, boolean isConditionalAcceptJourney,Map<String, Boolean> fromPricingMap) {
 
 		DeviceSummary deviceSummary;
 		deviceSummary = new DeviceSummary();
@@ -91,6 +91,9 @@ public class DaoUtils {
 		deviceSummary.setPreOrderable(commercialProduct.getProductControl().isPreOrderable());
 		if (memberPriority != null) {
 			deviceSummary.setPriority(String.valueOf(memberPriority));
+		}
+		if(fromPricingMap!=null && fromPricingMap.get(commercialProduct.getId()!=null)){
+			deviceSummary.setFromPricing(fromPricingMap.get(commercialProduct.getId()));
 		}
 		deviceSummary.setDisplayDescription(commercialProduct.getPreDesc());
 
