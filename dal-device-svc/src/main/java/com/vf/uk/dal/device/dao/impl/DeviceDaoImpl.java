@@ -2147,9 +2147,14 @@ public class DeviceDaoImpl implements DeviceDao {
 	}
 
 	@Override
-	public Group getGroupByProdGroupName(String groupName) {
-		ProductGroupRepository productGroupRepository = new ProductGroupRepository();
-		return productGroupRepository.get(groupName);
+	public Group getGroupByProdGroupName(String groupName,String groupType) {
+		try {
+			ProductGroupRepository productGroupRepository = new ProductGroupRepository();
+			return productGroupRepository.getProductGroup(groupName,groupType);
+		} catch (NullPointerException np) {
+			LogHelper.error(this, "Invalid Data Coming From Coherence " + np);
+			throw new ApplicationException(ExceptionMessages.INVALID_COHERENCE_DATA);
+		}
 	}
 
 	@Override
