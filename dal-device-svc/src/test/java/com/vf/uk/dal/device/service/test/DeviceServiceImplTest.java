@@ -379,7 +379,7 @@ public class DeviceServiceImplTest
 	insuranceList.add("093354");
 	
 		given(this.deviceDAOMock.getCommercialProductByProductId("093353")).willReturn(CommonMethods.getCommercialProductForInsurance());
-		given(this.deviceDAOMock.getGroupByProdGroupName("DEVICE_PAYM")).willReturn(CommonMethods.getGropuFromProductGroups());
+		given(this.deviceDAOMock.getGroupByProdGroupName("DEVICE_PAYM","Compatible Insurance")).willReturn(CommonMethods.getGropuFromProductGroups());
 		given(this.deviceDAOMock.getCommercialProductsList(insuranceList)).willReturn(CommonMethods.getListOfCommercialProduct());
 		Insurances insurance=null;
 			insurance=deviceService.getInsuranceByDeviceId("093353","upgrade");
@@ -387,22 +387,22 @@ public class DeviceServiceImplTest
 	}
 	@Test
 	public void NotNullTestForDaoUtilsconvertCoherenceDeviceToDeviceTile() {
-		DeviceSummary deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile((long)1, CommonMethods.getCommercialProduct(),CommonMethods.getCommercialBundle(),CommonMethods.getPriceForBundleAndHardware(),CommonMethods.getListOfOfferPacks(),null, false);
+		DeviceSummary deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile((long)1, CommonMethods.getCommercialProduct(),CommonMethods.getCommercialBundle(),CommonMethods.getPriceForBundleAndHardware(),CommonMethods.getListOfOfferPacks(),null, false,null);
 		Assert.assertNotNull(deviceSummary);
 	}
 	@Test
 	public void NotNullTestDateForDaoUtilsconvertCoherenceDeviceToDeviceTile() {
-		DeviceSummary deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile((long)1, CommonMethods.getCommercialProduct1(),CommonMethods.getCommercialBundle1(),CommonMethods.getPriceForBundleAndHardware(),CommonMethods.getListOfOfferPacks(),null, false);
+		DeviceSummary deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile((long)1, CommonMethods.getCommercialProduct1(),CommonMethods.getCommercialBundle1(),CommonMethods.getPriceForBundleAndHardware(),CommonMethods.getListOfOfferPacks(),null, false,null);
 		Assert.assertNotNull(deviceSummary);
 	}
 	@Test
 	public void NullTestStartDateForDaoUtilsconvertCoherenceDeviceToDeviceTile() {
-		DeviceSummary deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile((long)1, CommonMethods.getCommercialProduct1(),CommonMethods.getCommercialBundle2(),CommonMethods.getPriceForBundleAndHardware(),CommonMethods.getListOfOfferPacks(),null, false);
+		DeviceSummary deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile((long)1, CommonMethods.getCommercialProduct1(),CommonMethods.getCommercialBundle2(),CommonMethods.getPriceForBundleAndHardware(),CommonMethods.getListOfOfferPacks(),null, false,null);
 		Assert.assertNotNull(deviceSummary);
 	}
 	@Test
 	public void NullTestEndDateForDaoUtilsconvertCoherenceDeviceToDeviceTile() {
-		DeviceSummary deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile((long)1, CommonMethods.getCommercialProduct1(),CommonMethods.getCommercialBundle3(),CommonMethods.getPriceForBundleAndHardware(),CommonMethods.getListOfOfferPacks(),null, false);
+		DeviceSummary deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile((long)1, CommonMethods.getCommercialProduct1(),CommonMethods.getCommercialBundle3(),CommonMethods.getPriceForBundleAndHardware(),CommonMethods.getListOfOfferPacks(),null, false,null);
 		Assert.assertNotNull(deviceSummary);
 	}
 	@Test
@@ -429,7 +429,7 @@ public class DeviceServiceImplTest
 	}
 	@Test
 	public void NotNullTestForDaoUtilsconvertCommercialProductToInsurance() {
-		Insurances insurances = DaoUtils.convertCommercialProductToInsurance(CommonMethods.getListOfCommercialProduct(),"upgrade");
+		Insurances insurances = DaoUtils.convertCommercialProductToInsurance(CommonMethods.getListOfCommercialProduct());
 		Assert.assertNotNull(insurances);
 	}
 	/**

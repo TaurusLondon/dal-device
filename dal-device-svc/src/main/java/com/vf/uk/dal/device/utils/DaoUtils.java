@@ -78,7 +78,7 @@ public class DaoUtils {
 	public static DeviceSummary convertCoherenceDeviceToDeviceTile(Long memberPriority,
 			CommercialProduct commercialProduct, CommercialBundle comBundle,
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware, List<OfferPacks> listOfOfferPacks,
-			String groupType, boolean isConditionalAcceptJourney) {
+			String groupType, boolean isConditionalAcceptJourney,Map<String, Boolean> fromPricingMap) {
 
 		DeviceSummary deviceSummary;
 		deviceSummary = new DeviceSummary();
@@ -91,6 +91,9 @@ public class DaoUtils {
 		deviceSummary.setPreOrderable(commercialProduct.getProductControl().isPreOrderable());
 		if (memberPriority != null) {
 			deviceSummary.setPriority(String.valueOf(memberPriority));
+		}
+		if(fromPricingMap!=null){
+			deviceSummary.setFromPricing(fromPricingMap.get(commercialProduct.getId()));
 		}
 		deviceSummary.setDisplayDescription(commercialProduct.getPreDesc());
 
@@ -644,7 +647,7 @@ public class DaoUtils {
 		return accessory;
 	}
 
-	public static Insurances convertCommercialProductToInsurance(List<CommercialProduct> insuranceProductList,String journeyType) {
+	public static Insurances convertCommercialProductToInsurance(List<CommercialProduct> insuranceProductList) {
 		List<Double> minPrice = new ArrayList<>();
 		List<Insurance> insuranceList = new ArrayList<>();
 		Insurances insurances = new Insurances();
@@ -654,6 +657,14 @@ public class DaoUtils {
 			insurance = new Insurance();
 			insurance.setId(insuranceProduct.getId());
 			insurance.setName(insuranceProduct.getDisplayName());
+			Price price = new Price();
+			if(insuranceProduct.getPriceDetail()!=null && insuranceProduct.getPriceDetail().getPriceGross()!=null){
+			minPrice.add(insuranceProduct.getPriceDetail().getPriceGross());
+			}
+			price.setGross(String.valueOf(insuranceProduct.getPriceDetail().getPriceGross()));
+			price.setVat(String.valueOf(insuranceProduct.getPriceDetail().getPriceVAT()));
+			price.setNet(String.valueOf(insuranceProduct.getPriceDetail().getPriceNet()));
+			insurance.setPrice(price);
 			List<MediaLink> merchandisingMedia = new ArrayList<>();
 			MediaLink mediaLink;
 			if (insuranceProduct.getListOfimageURLs() != null) {
@@ -718,30 +729,7 @@ public class DaoUtils {
 
 			}
 			
-			//UserStory-6715 Begin
-			if(StringUtils.isNotBlank(journeyType) && Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)) {
-				if(insuranceProduct.getProductControl()!=null && insuranceProduct.getProductControl().isIsSellableRet() 
-						&& insuranceProduct.getProductControl().isIsDisplayableRet()){
-					Price price = new Price();
-					minPrice.add(insuranceProduct.getPriceDetail().getPriceGross());
-					price.setGross(String.valueOf(insuranceProduct.getPriceDetail().getPriceGross()));
-					price.setVat(String.valueOf(insuranceProduct.getPriceDetail().getPriceVAT()));
-					price.setNet(String.valueOf(insuranceProduct.getPriceDetail().getPriceNet()));
-					insurance.setPrice(price);
-					insuranceList.add(insurance);
-				}
-			}else if(!(Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)) && insuranceProduct.getProductControl()!=null && insuranceProduct.getProductControl().isIsDisplayableAcq()
-					&& insuranceProduct.getProductControl().isIsSellableAcq()) {
-				Price price = new Price();
-				minPrice.add(insuranceProduct.getPriceDetail().getPriceGross());
-				price.setGross(String.valueOf(insuranceProduct.getPriceDetail().getPriceGross()));
-				price.setVat(String.valueOf(insuranceProduct.getPriceDetail().getPriceVAT()));
-				price.setNet(String.valueOf(insuranceProduct.getPriceDetail().getPriceNet()));
-				insurance.setPrice(price);
-				insuranceList.add(insurance);
-			}
-			//UserStory-6715 End
-
+			insuranceList.add(insurance);
 		}
 		insurances.setInsuranceList(insuranceList);
 		insurances.setMinCost(String.valueOf(Collections.min(minPrice)));

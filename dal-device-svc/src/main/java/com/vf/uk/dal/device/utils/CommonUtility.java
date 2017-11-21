@@ -32,6 +32,7 @@ import com.vf.uk.dal.utility.entity.CurrentJourney;
 import com.vf.uk.dal.utility.entity.PriceForProduct;
 import com.vf.uk.dal.utility.entity.RecommendedProductListRequest;
 import com.vf.uk.dal.utility.entity.RecommendedProductListResponse;
+import com.vodafone.product.pojo.CommercialProduct;
 /**
  * 
  * common methods used across the services.
@@ -340,5 +341,54 @@ public  class CommonUtility {
 		}
 
 		return flag;
+	}
+	public static boolean isProductNotExpired(CommercialProduct commercialProduct) {
+		boolean isProductExpired = false;
+		String startDateTime = null;
+		String endDateTime = null;
+		if (commercialProduct.getProductAvailability().getStart() != null) {
+			startDateTime = getDateToString(commercialProduct
+					.getProductAvailability().getStart(),
+					Constants.DATE_FORMAT_COHERENCE);
+		}
+		if (commercialProduct.getProductAvailability().getEnd() != null) {
+			endDateTime = getDateToString(commercialProduct
+					.getProductAvailability().getEnd(),
+					Constants.DATE_FORMAT_COHERENCE);
+		}
+		if (!commercialProduct.getProductAvailability().isSalesExpired()) {
+			
+			isProductExpired = dateValidationForOffers(startDateTime,
+					endDateTime, Constants.DATE_FORMAT_COHERENCE);
+
+		}
+		return isProductExpired;
+
+	}
+
+	public static boolean isProductJourneySpecific(
+			CommercialProduct commercialProduct, String journeyType) {
+		boolean isProductJourneySpecific = false;
+		if (StringUtils.isNotBlank(journeyType)
+				&& Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)) {
+			if (commercialProduct.getProductControl() != null
+					&& commercialProduct.getProductControl().isIsSellableRet()
+					&& commercialProduct.getProductControl()
+							.isIsDisplayableRet()) {
+
+				isProductJourneySpecific = true;
+			}
+		} else {
+			if (commercialProduct.getProductControl() != null
+					&& commercialProduct.getProductControl()
+							.isIsDisplayableAcq()
+					&& commercialProduct.getProductControl().isIsSellableAcq()) {
+
+				isProductJourneySpecific = true;
+
+			}
+		}
+		return isProductJourneySpecific;
+
 	}
 }
