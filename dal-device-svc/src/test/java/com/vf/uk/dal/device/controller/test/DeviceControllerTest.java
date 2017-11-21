@@ -1145,7 +1145,7 @@ public class DeviceControllerTest {
 	public void testDaoUtilsconvertCoherenceDeviceToDeviceTile() {
 		DaoUtils.convertCoherenceDeviceToDeviceTile(Long.valueOf(1), CommonMethods.getCommercialProduct1(),
 				CommonMethods.getCommercialBundle(), CommonMethods.getPriceForBundleAndHardware(),
-				CommonMethods.getListOfOfferPacks(), "DEVICE_PAYM", false);
+				CommonMethods.getListOfOfferPacks(), "DEVICE_PAYM", false,null);
 	}
 
 	@Test
@@ -1163,7 +1163,7 @@ public class DeviceControllerTest {
 	public void notNullTestForGetInsuranceById() {
 		given(deviceDAOMock.getCommercialProductByProductId(Matchers.anyString()))
 				.willReturn(CommonMethods.getCommercialProductForInsurance());
-		given(deviceDAOMock.getGroupByProdGroupName(Matchers.anyString()))
+		given(deviceDAOMock.getGroupByProdGroupName(Matchers.anyString(),Matchers.anyString()))
 				.willReturn(CommonMethods.getGropuFromProductGroups());
 		given(deviceDAOMock.getCommercialProductsList(Matchers.anyList()))
 				.willReturn(Arrays.asList(CommonMethods.getCommercialProductForInsurance()));
@@ -1180,7 +1180,7 @@ public class DeviceControllerTest {
 	public void notNullTestForGetInsuranceByIdWithJourneyType() {
 		given(deviceDAOMock.getCommercialProductByProductId(Matchers.anyString()))
 				.willReturn(CommonMethods.getCommercialProductForInsurance());
-		given(deviceDAOMock.getGroupByProdGroupName(Matchers.anyString()))
+		given(deviceDAOMock.getGroupByProdGroupName(Matchers.anyString(),Matchers.anyString()))
 				.willReturn(CommonMethods.getGropuFromProductGroups());
 		given(deviceDAOMock.getCommercialProductsList(Matchers.anyList()))
 				.willReturn(Arrays.asList(CommonMethods.getCommercialProductForInsurance()));

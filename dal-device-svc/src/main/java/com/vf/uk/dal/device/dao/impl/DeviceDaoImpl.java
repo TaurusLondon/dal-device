@@ -17,7 +17,9 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.sql.DataSource;
 
@@ -161,6 +163,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		Map<String, CommercialProduct> commerProdMemMap = new HashMap<>();
 		List<BundleAndHardwareTuple> bundleAndHardwareTupleList = new ArrayList<>();
 		Map<String, Boolean> bundleIdMap = new HashMap<>();
+		Map<String, Boolean> fromPricingMap = new HashMap<>();
 		if (null != listOfCommercialProducts) {
 			listOfCommercialProducts.forEach(commercialProduct -> {
 				if ((Constants.STRING_HANDSET.equalsIgnoreCase(commercialProduct.getProductClass())
@@ -199,12 +202,14 @@ public class DeviceDaoImpl implements DeviceDao {
 								commercialProductsMatchedMemList.add(commercialProduct);
 								if (StringUtils.isNotBlank(bundleId)
 										&& commercialProduct.getListOfCompatiblePlanIds().contains(bundleId)) {
+									fromPricingMap.put(commercialProduct.getId(), commercialProduct.getLeadPlanId() != null ? false : true); 
 									bundleIdMap.put(commercialProduct.getId(), true);
 									BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
 									bundleAndHardwareTuple.setBundleId(bundleId);
 									bundleAndHardwareTuple.setHardwareId(commercialProduct.getId());
 									bundleAndHardwareTupleList.add(bundleAndHardwareTuple);
 								} else {
+									fromPricingMap.put(commercialProduct.getId(), commercialProduct.getLeadPlanId() != null ? false : true); 
 									bundleIdMap.put(commercialProduct.getId(), false);
 									bundleAndHardwareTupleList
 											.addAll(getListOfPriceForBundleAndHardware(commercialProduct));
@@ -274,7 +279,8 @@ public class DeviceDaoImpl implements DeviceDao {
 					listOfOfferPacks.addAll(offerPacksMediaListForDeviceDetails(commercialProduct));
 					deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile(memberPriority, commercialProduct,
 							comBundle, listOfPriceForBundleAndHardware, listOfOfferPacks, groupType,
-							isConditionalAcceptJourney);
+							isConditionalAcceptJourney,fromPricingMap);
+					
 					if (null != deviceSummary && commercialProduct != null) {
 						isPlanAffordable(deviceSummary, comBundle, creditLimit, isConditionalAcceptJourney);
 						if (StringUtils.isNotBlank(bundleId))
@@ -745,13 +751,13 @@ public class DeviceDaoImpl implements DeviceDao {
 					&& commercialProduct.getProductControl().isIsSellableRet()
 					&& commercialProduct.getProductControl().isIsDisplayableRet()) {
 				deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile(memberPriority, commercialProduct,
-						comBundle, listOfPriceForBundleAndHardware, listOfOfferPacks, null, false);
+						comBundle, listOfPriceForBundleAndHardware, listOfOfferPacks, null, false,null);
 			} else if (!Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
 					&& commercialProduct.getProductControl() != null
 					&& commercialProduct.getProductControl().isIsDisplayableAcq()
 					&& commercialProduct.getProductControl().isIsSellableAcq()) {
 				deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile(memberPriority, commercialProduct,
-						comBundle, listOfPriceForBundleAndHardware, listOfOfferPacks, null, false);
+						comBundle, listOfPriceForBundleAndHardware, listOfOfferPacks, null, false,null);
 			}
 			else{
 				LogHelper.error(this, "No data found for given criteria :" + id);
@@ -835,7 +841,6 @@ public class DeviceDaoImpl implements DeviceDao {
 			ProductGroups productGroups = commercialProduct.getProductGroups();
 			List<String> listOfDeviceGroupName = new ArrayList<>();
 			List<String> finalAccessoryList = new ArrayList<>();
-			Accessory accessory = null;
 			if (productGroups != null && productGroups.getProductGroup() != null
 					&& !productGroups.getProductGroup().isEmpty()) {
 				for (com.vodafone.product.pojo.ProductGroup productGroup : productGroups.getProductGroup()) {
@@ -878,11 +883,23 @@ public class DeviceDaoImpl implements DeviceDao {
 						finalAccessoryList.addAll(accessoryList);
 					}
 				}
+				
+				// Getting all commercial products for all accessories
+				Collection<CommercialProduct> comercialProductList = commercialProductRepository
+						.getAll(finalAccessoryList);
+				
+				List<CommercialProduct> listOfFilteredAccessories = comercialProductList.stream()                
+                        .filter(commercialProductAccessories -> CommonUtility.isProductNotExpired(commercialProductAccessories) && CommonUtility.isProductJourneySpecific(commercialProductAccessories, journeyType))     
+                        .collect(Collectors.toList());
+				
+				List<String> listOfValidAccesoryIds = listOfFilteredAccessories.stream().filter(Objects::nonNull).map(CommercialProduct::getId)
+						.filter(Objects::nonNull).collect(Collectors.toList());
+
 
 				// Preparing bundleDeviceAndAccessoryList and fetching price for
 				// accessories from Pricing API
 				BundleDeviceAndProductsList bundleDeviceAndProductsList = new BundleDeviceAndProductsList();
-				bundleDeviceAndProductsList.setAccessoryList(finalAccessoryList);
+				bundleDeviceAndProductsList.setAccessoryList(listOfValidAccesoryIds);
 				bundleDeviceAndProductsList.setDeviceId(deviceId);
 				bundleDeviceAndProductsList.setExtraList(new ArrayList<>());
 				bundleDeviceAndProductsList.setOfferCode(offerCode);
@@ -897,7 +914,7 @@ public class DeviceDaoImpl implements DeviceDao {
 				if (priceForProduct != null && priceForProduct.getPriceForAccessoryes() != null) {
 					for (PriceForAccessory priceForAccessory : priceForProduct.getPriceForAccessoryes()) {
 						String hardwareId = priceForAccessory.getHardwarePrice().getHardwareId();
-						if (finalAccessoryList.contains(hardwareId))
+						if (listOfValidAccesoryIds.contains(hardwareId))
 							mapforPrice.put(hardwareId, priceForAccessory);
 					}
 				} else {
@@ -905,58 +922,27 @@ public class DeviceDaoImpl implements DeviceDao {
 					throw new ApplicationException(ExceptionMessages.NULL_VALUES_FROM_PRICING_API);
 				}
 
-				// Getting all commercial products for all accessories
-				Collection<CommercialProduct> comercialProductList = commercialProductRepository
-						.getAll(finalAccessoryList);
+				
 
 				// HashMap for deviceId and Commercial Product
 				Map<String, CommercialProduct> mapforCommercialProduct = new HashMap<>();
-				for (CommercialProduct product : comercialProductList) {
+				for (CommercialProduct product : listOfFilteredAccessories) {
 					String id = product.getId();
-					if (finalAccessoryList.contains(id))
+					if (listOfValidAccesoryIds.contains(id))
 						mapforCommercialProduct.put(id, product);
 				}
 
 				for (Map.Entry<String, List<String>> entry : mapForGroupName.entrySet()) {
 					AccessoryTileGroup accessoryTileGroup = new AccessoryTileGroup();
 					List<Accessory> listOfAccessory = new ArrayList<>();
+					Accessory accessory = null;
 					for (String hardwareId : entry.getValue()) {
-						CommercialProduct commercialproductlocal = mapforCommercialProduct.get(hardwareId);
-						String startDateTime = null;
-						String endDateTime = null;
-						if (commercialproductlocal.getProductAvailability().getStart() != null) {
-							startDateTime = CommonUtility.getDateToString(
-									commercialproductlocal.getProductAvailability().getStart(),
-									Constants.DATE_FORMAT_COHERENCE);
-						}
-						if (commercialproductlocal.getProductAvailability().getEnd() != null) {
-							endDateTime = CommonUtility.getDateToString(
-									commercialproductlocal.getProductAvailability().getEnd(),
-									Constants.DATE_FORMAT_COHERENCE);
-						}
-						if (!commercialproductlocal.getProductAvailability().isSalesExpired() && CommonUtility
-								.dateValidationForOffers(startDateTime, endDateTime, Constants.DATE_FORMAT_COHERENCE)) 
-						{
 							// US-6717 start
-							if (StringUtils.isNotBlank(journeyType)
-									&& Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)) {
-								if (commercialproductlocal.getProductControl() != null
-										&& commercialproductlocal.getProductControl().isIsSellableRet()
-										&& commercialproductlocal.getProductControl().isIsDisplayableRet()) {
-									accessory = DaoUtils.convertCoherenceAccesoryToAccessory(commercialproductlocal,
+						if(mapforCommercialProduct.containsKey(hardwareId) && mapforPrice.containsKey(hardwareId)){
+							accessory = DaoUtils.convertCoherenceAccesoryToAccessory(mapforCommercialProduct.get(hardwareId),
 											mapforPrice.get(hardwareId));
-								}
-							} else {
-								if (commercialproductlocal.getProductControl() != null
-										&& commercialproductlocal.getProductControl().isIsDisplayableAcq()
-										&& commercialproductlocal.getProductControl().isIsSellableAcq()) {
-									accessory = DaoUtils.convertCoherenceAccesoryToAccessory(commercialproductlocal,
-											mapforPrice.get(hardwareId));
-								}
-							}
-						}
 						// Us-6717 end
-
+						}
 						if (accessory != null)
 							listOfAccessory.add(accessory);
 					}
@@ -2147,9 +2133,14 @@ public class DeviceDaoImpl implements DeviceDao {
 	}
 
 	@Override
-	public Group getGroupByProdGroupName(String groupName) {
-		ProductGroupRepository productGroupRepository = new ProductGroupRepository();
-		return productGroupRepository.get(groupName);
+	public Group getGroupByProdGroupName(String groupName,String groupType) {
+		try {
+			ProductGroupRepository productGroupRepository = new ProductGroupRepository();
+			return productGroupRepository.getProductGroup(groupName,groupType);
+		} catch (NullPointerException np) {
+			LogHelper.error(this, "Invalid Data Coming From Coherence " + np);
+			throw new ApplicationException(ExceptionMessages.INVALID_COHERENCE_DATA);
+		}
 	}
 
 	@Override
