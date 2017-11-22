@@ -658,7 +658,8 @@ public class DeviceDaoImpl implements DeviceDao {
 					if (StringUtils.isNotEmpty(promotionPackageType)) {
 						promotionPackagesList = Arrays.asList(promotionPackageType.toLowerCase().split(","));
 					}
-
+					
+					LogHelper.info(this, ":::::::: MERCHE_PROMOTION_TAG :::: " +merchandisingPromotion.getTag() +"::::: START DATE :: " + startDateTime + ":::: END DATE ::: " + endDateTime + " :::: ");
 					if (promotionName != null && promotionName.equals(merchandisingPromotion.getTag())
 							&& dateValidationForOffers(startDateTime, endDateTime, Constants.DATE_FORMAT_COHERENCE)
 							&& promotionPackagesList.contains(journeyType.toLowerCase())) {
@@ -1196,6 +1197,8 @@ public class DeviceDaoImpl implements DeviceDao {
 							Constants.DATE_FORMAT_COHERENCE);
 					String endDateTime = CommonUtility.getDateToString(merchandisingPromotion.getEndDateTime(),
 							Constants.DATE_FORMAT_COHERENCE);
+					LogHelper.info(this, ":::::::: MERCHE_PROMOTION_TAG :::: " +merchandisingPromotion.getTag() +"::::: START DATE :: " + startDateTime + ":::: END DATE ::: " + endDateTime + " :::: ");
+					
 					if (promotionName != null && promotionName.equals(merchandisingPromotion.getTag())
 							&& dateValidationForOffers(startDateTime, endDateTime, Constants.DATE_FORMAT_COHERENCE)) {
 						listOfMediaLink.addAll(listOfMediaLinkBasedOnMerchandising(merchandisingPromotion));
@@ -1230,6 +1233,8 @@ public class DeviceDaoImpl implements DeviceDao {
 							Constants.DATE_FORMAT_COHERENCE);
 					String endDateTime = CommonUtility.getDateToString(merchandisingPromotion.getEndDateTime(),
 							Constants.DATE_FORMAT_COHERENCE);
+					LogHelper.info(this, ":::::::: MERCHE_PROMOTION_TAG :::: " +merchandisingPromotion.getTag() +"::::: START DATE :: " + startDateTime + ":::: END DATE ::: " + endDateTime + " :::: ");
+					
 					if (promotionName != null && promotionName.equals(merchandisingPromotion.getTag())
 							&& dateValidationForOffers(startDateTime, endDateTime, Constants.DATE_FORMAT_COHERENCE)) {
 						listOfMediaLink.addAll(listOfMediaLinkBasedOnMerchandising(merchandisingPromotion));
