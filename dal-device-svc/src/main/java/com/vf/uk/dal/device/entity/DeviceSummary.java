@@ -65,6 +65,8 @@ public class DeviceSummary   {
   @JsonProperty("isAffordable")
   private Boolean isAffordable = true;
   
+  @JsonProperty("fromPricing")
+  private Boolean fromPricing = null; 
 
   public DeviceSummary deviceId(String deviceId) {
     this.deviceId = deviceId;
@@ -108,6 +110,19 @@ public class DeviceSummary   {
   public void setIsCompatible(Boolean isCompatible) {
 	this.isCompatible = isCompatible;
   }
+  
+  public DeviceSummary fromPricing(Boolean fromPricing) {
+		this.fromPricing = fromPricing;
+		return this;
+	  }
+
+	  public Boolean getFromPricing() {
+		return fromPricing;
+	  }
+
+	  public void setFromPricing(Boolean fromPricing) {
+		this.fromPricing = fromPricing;
+	  } 
 
   public DeviceSummary displayName(String displayName) {
     this.displayName = displayName;

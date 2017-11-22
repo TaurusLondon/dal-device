@@ -221,6 +221,9 @@ public class CommonMethods {
 		model.setBundleMonthlyPriceVat(9.0f);
 		model.setLeadPlanId("110154");
 		model.setLeadPlanIdNew("110154");
+		List<String> merchedn=Arrays.asList("hardware_discount.merchandisingPromotions.merchandisingPromotion.label|40% off the phone|TEXT&&110154&&HW&&Pricing_Automatic_Discount&&NA|NA|NA|NA|095597");
+		model.setMerchandisingMedia(merchedn);
+		//List<String>
 		
 		ProductModel model1 = new ProductModel();
 		model1.setProductId("092660");
@@ -266,6 +269,7 @@ public class CommonMethods {
 		model1.setBundleMonthlyPriceVat(9.0f);
 		model1.setLeadPlanId("110154");
 		model1.setLeadPlanIdNew("110154");
+		model1.setMerchandisingMedia(merchedn);
 		productModelList.add(model);
 		productModelList.add(model1);
 		return productModelList;

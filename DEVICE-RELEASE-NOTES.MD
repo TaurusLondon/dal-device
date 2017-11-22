@@ -322,4 +322,33 @@ Defect ID # 10460
 [ 
 SIT2-US 8806 - getDeviceTile API returning Error message for Invalid Journey 
 ]
+Defect ID # 10482 
+[ 
+DeviceDetails-Invalid JourneyType should throw error instead of success response with Null values.
+]
+Defect ID # 10480 
+[ 
+DeviceTileByDeviceVarient-Invalid JourneyType should throw error instead of success response with Null values.
+]
+
+-------------------------------------------Sprint 6.3 Ends---------------------------------------------------
+6.4(16-Nov-2017)
+-----------------
+User story # 11027
+[ 
+Compatible Insurance check for sales expiry 
+]
+URL for above US:
+
+https://internal-digitalx-sit2-alb-mas-1938696969.eu-west-1.elb.amazonaws.com/devices/catalogue/insurance/queries/byDeviceId/?deviceId=093353&journeyType={JourneyType}
+
+User story # 10443
+[ 
+Make getCompatibleAccessories offer code aware
+]
+URL for above US:
+https://internal-digitalx-sit2-alb-mas-1938696969.eu-west-1.elb.amazonaws.com/devices/catalogue/accessory/queries/byDeviceId/?deviceId=093353&journeyType={journeyType}&offerCode={offerCode}
+
+
+
 
