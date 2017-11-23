@@ -1864,7 +1864,7 @@ public class DaoUtils {
 			List<String> listOfProducts, List<FacetField> facetFieldList, String groupType, List<CommercialProduct> ls,
 			Map<String, BundleModel> bundleModelMap, Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice,
 			String offerCode, Map<String, String> groupNameWithProdId,
-			Map<String, BundlePrice> bundleModelAndPriceMap) {
+			Map<String, BundlePrice> bundleModelAndPriceMap , boolean offeredFlag) {
 		HardwarePrice hardwarePrice;
 		Price price;
 		PriceForBundleAndHardware priceInfo;
@@ -2069,7 +2069,7 @@ public class DaoUtils {
 								for (int i = 0; i < mediaStrList.length; i = i + 7) {
 
 									String[] typeArray = mediaStrList[i + 2].split("&&");
-									if (offerCode != null
+									if (offerCode != null && offeredFlag
 											&& !Constants.DATA_NOT_FOUND.equalsIgnoreCase(mediaStrList[i + 4])
 											&& Constants.PROMO_CATEGORY_PRICING_DISCOUNT
 													.equalsIgnoreCase(mediaStrList[i + 3])
@@ -2267,26 +2267,47 @@ public class DaoUtils {
 									PriceForBundleAndHardware priceForOfferCode = getBundleAndHardwarePriceFromSolrUtils(
 											listOfOfferAppliedPrice.get(productModel.getProductId()),
 											productModel.getLeadPlanIdNew());
+									if(priceForOfferCode.getBundlePrice()!=null && priceForOfferCode.getHardwarePrice()!=null)
+									{
 									priceForOfferCode.getBundlePrice().setMerchandisingPromotions(bundleMerchandising);
 									priceForOfferCode.getHardwarePrice()
 											.setMerchandisingPromotions(hardwareMerchandising);
 									deviceDetails.setPriceInfo(priceForOfferCode);
+									}else{
+										PriceForBundleAndHardware priceForBundleAndHardware = getBundleAndHardwarePriceFromSolrWithoutOfferCode(
+												productModel, bundleModel);
+										if(priceForBundleAndHardware.getBundlePrice()!=null){
+										priceForBundleAndHardware.getBundlePrice()
+												.setMerchandisingPromotions(bundleMerchandising);
+										}if(priceForBundleAndHardware.getHardwarePrice()!=null){
+										priceForBundleAndHardware.getHardwarePrice()
+												.setMerchandisingPromotions(hardwareMerchandising);
+										}
+										deviceDetails.setPriceInfo(priceForBundleAndHardware);
+									}
+									
 								} else {
 									PriceForBundleAndHardware priceForWithOutOfferCode = getBundleAndHardwarePriceFromSolrWithoutOfferCode(
 											productModel, bundleModel);
+									if(priceForWithOutOfferCode.getBundlePrice()!=null){
 									priceForWithOutOfferCode.getBundlePrice()
 											.setMerchandisingPromotions(bundleMerchandising);
+									}if(priceForWithOutOfferCode.getHardwarePrice()!=null){
 									priceForWithOutOfferCode.getHardwarePrice()
 											.setMerchandisingPromotions(hardwareMerchandising);
+									}
 									deviceDetails.setPriceInfo(priceForWithOutOfferCode);
 								}
 							} else {
 								PriceForBundleAndHardware priceForBundleAndHardware = getBundleAndHardwarePriceFromSolrWithoutOfferCode(
 										productModel, bundleModel);
+								if(priceForBundleAndHardware.getBundlePrice()!=null){
 								priceForBundleAndHardware.getBundlePrice()
 										.setMerchandisingPromotions(bundleMerchandising);
+								}if(priceForBundleAndHardware.getHardwarePrice()!=null){
 								priceForBundleAndHardware.getHardwarePrice()
 										.setMerchandisingPromotions(hardwareMerchandising);
+								}
 								if (bundlePrice != null) {
 									populateMerchandisingPromotions(priceForBundleAndHardware, bundlePrice);
 								}

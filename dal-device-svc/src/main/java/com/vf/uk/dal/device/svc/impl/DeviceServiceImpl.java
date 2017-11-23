@@ -301,11 +301,11 @@ public class DeviceServiceImpl implements DeviceService {
 			LogHelper.info(this, "Required JourneyType with Offercode.");
 			throw new ApplicationException(ExceptionMessages.REQUIRED_JOURNEY_TYPE);
 		}*/		
-		if ( StringUtils.isNotBlank(offerCode) && StringUtils.isNotBlank(journeyType)) {
+		/*if ( StringUtils.isNotBlank(offerCode) && StringUtils.isNotBlank(journeyType)) {
 			
 			List<MerchandisingPromotionModel> listOfMerchandisingPromotions = new ArrayList<>();
 			
-			/*if(journeyType.equalsIgnoreCase(Constants.JOURNEY_TYPE_UPGRADE)){		
+			if(journeyType.equalsIgnoreCase(Constants.JOURNEY_TYPE_UPGRADE)){		
 			listOfMerchandisingPromotions = deviceDao.getJourneyTypeCompatibleOfferCodes(Constants.JOURNEY_TYPE_UPGRADE);
 			}
 			if(journeyType.equalsIgnoreCase(Constants.JOURNEY_TYPE_SECONDLINE)){		
@@ -319,9 +319,9 @@ public class DeviceServiceImpl implements DeviceService {
 			if(merchandisingPromotionModel==null) {
 				LogHelper.info(this, "OfferCode is not compatible with JourneyId");
 				throw new ApplicationException(ExceptionMessages.INVALID_JOURNEY_TYPE_AND_OFFER_CODE_COMBINATION);
-			}	*/
+			}	
 		
-	} 
+	} */
 		
 		
 		
@@ -538,17 +538,17 @@ public class DeviceServiceImpl implements DeviceService {
 						if (variantsList != null && !variantsList.isEmpty()) {
 							List<com.vf.uk.dal.device.entity.Member> listOfMember = getListOfMembers(variantsList);
 
-							if (listOfMember != null && listOfMember.size() > 1) {
+							//if (listOfMember != null && listOfMember.size() > 1) {
 								String leadMember = getMemeberBasedOnRules1(listOfMember);
-								groupNameWithProdId.put(leadMember, productGroupModel.getName());
 								if(leadMember!=null)
 								{
+								groupNameWithProdId.put(leadMember, productGroupModel.getName());
 								listOfProducts.add(leadMember);
 								}
-							} else if (listOfMember != null) {
+							/*} else if (listOfMember != null) {
 								groupNameWithProdId.put(listOfMember.get(0).getId(), productGroupModel.getName());
 								listOfProducts.add(listOfMember.get(0).getId());
-							}
+							}*/
 						}
 					}
 					
@@ -575,10 +575,19 @@ public class DeviceServiceImpl implements DeviceService {
 
 				}
 			}
-			
+			boolean offeredFlag=false;
 			Map<String,List<OfferAppliedPriceModel>> offerPriceMap=new HashMap<>();
 			if(StringUtils.isNotBlank(offerCode)){
+				List<MerchandisingPromotionModel> listOfMerchandisingPromotions = null;
+				
+				listOfMerchandisingPromotions = deviceDao.getJourneyTypeCompatibleOfferCodes(journeyType);
+				MerchandisingPromotionModel merchandisingPromotionModel = listOfMerchandisingPromotions.stream()
+		                .filter(promotionModel -> offerCode.equals(promotionModel.getTag()))
+		                .findAny()
+		                .orElse(null);	
+			if(merchandisingPromotionModel!=null){
 				List<OfferAppliedPriceModel> listOfOfferAppliedPrice=deviceDao.getBundleAndHardwarePriceFromSolr(listOfProducts,offerCode);
+				offeredFlag=true;
 			listOfOfferAppliedPrice.forEach( offers->{
 				List<OfferAppliedPriceModel> offeredPrice;
 				if(offerPriceMap.containsKey(offers.getHardwareId()))
@@ -591,9 +600,10 @@ public class DeviceServiceImpl implements DeviceService {
 				}
 				});
 			}
+			}
 			List<FacetField> facetFields = (null != productGroupFacetModelForFacets) ? productGroupFacetModelForFacets.getListOfFacetsFields() : null;
 			facetedDevice = DaoUtils.convertProductModelListToDeviceList(listOfProductModel, listOfProducts, facetFields,
-					groupType, ls, null,offerPriceMap,offerCode,groupNameWithProdId, null);
+					groupType, ls, null,offerPriceMap,offerCode,groupNameWithProdId, null, offeredFlag);
 			//facetedDevice.setNoOfRecordsFound(productGroupFacetModel.getNumFound());
 
 		} else {
@@ -789,7 +799,7 @@ public class DeviceServiceImpl implements DeviceService {
 			// make your model to match with this
 			LogHelper.info(DaoUtils.class, "Entering convertProductModelListToDeviceList ");
 			facetedDevice = DaoUtils.convertProductModelListToDeviceList(listOfProductModel, listOfProducts,
-					productGroupFacetModelForFacets.getListOfFacetsFields(), groupType, ls, bundleModelMap,null,null,groupNameWithProdId, bundleModelAndPriceMap);
+					productGroupFacetModelForFacets.getListOfFacetsFields(), groupType, ls, bundleModelMap,null,null,groupNameWithProdId, bundleModelAndPriceMap,false);
 			LogHelper.info(DaoUtils.class, "exiting convertProductModelListToDeviceList ");
 			facetedDevice.setNoOfRecordsFound(productGroupFacetModel.getNumFound());
 
