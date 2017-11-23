@@ -349,6 +349,7 @@ public class DeviceControllerTest {
 					.willReturn(CommonMethods.getProductGroupFacetModel1());
 			given(deviceDAOMock.getProductModel(Matchers.anyList())).willReturn(CommonMethods.getProductModel());
 			given(deviceDAOMock.getCommercialProductRepositoryByLeadMemberId(Matchers.anyString())).willReturn(CommonMethods.getCommercialProduct());
+			given(deviceDAOMock.getJourneyTypeCompatibleOfferCodes(Matchers.anyString())).willReturn(CommonMethods.getModel());
 			deviceDetailsList = deviceController
 					.getDeviceList(CommonMethods.getQueryParamsMap("Apple", "iPhone-7", "DEVICE_PAYM", "HANDSET",
 							"32 GB", "White", "iOS", "Great Camera", null, null));

@@ -3126,4 +3126,12 @@ public class CommonMethods {
 		list.add(model1);
 		return list;
 	}
+	public static List<com.vodafone.solrmodels.MerchandisingPromotionModel> getModel()
+	{
+		List<com.vodafone.solrmodels.MerchandisingPromotionModel> modelList=new ArrayList<>();
+		com.vodafone.solrmodels.MerchandisingPromotionModel model=new MerchandisingPromotionModel();
+		model.setTag("W_HH_OC_02");
+		modelList.add(model);
+		return modelList;
+	}
 }
