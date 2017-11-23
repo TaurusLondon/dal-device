@@ -44,20 +44,23 @@
 			<value-type>com.vodafone.stockAvailability.pojo.StockAvailability
 			</value-type>
 		</cache-mapping>
-		<!-- <cache-mapping>
-			<cache-name>BazaarVoiceCache</cache-name>
-			<scheme-name>BazaarVoiceCacheScheme</scheme-name>
+		<!-- <cache-mapping> <cache-name>BazaarVoiceCache</cache-name> <scheme-name>BazaarVoiceCacheScheme</scheme-name> 
+			<key-type>java.lang.String</key-type> <value-type>com.vodafone.bazaarVoice.pojo.ProductRatings 
+			</value-type> </cache-mapping> -->
+		<cache-mapping>
+			<cache-name>BazaarCache</cache-name>
+			<scheme-name>BazaarCacheScheme</scheme-name>
 			<key-type>java.lang.String</key-type>
-			<value-type>com.vodafone.bazaarVoice.pojo.ProductRatings
+			<value-type>com.vodafone.dal.domain.bazaarvoice.BazaarVoice
 			</value-type>
-		</cache-mapping> -->
-	   <cache-mapping>
-		    <cache-name>BazaarCache</cache-name>
-		    <scheme-name>BazaarCacheScheme</scheme-name>
-		    <key-type>java.lang.String</key-type>
-		    <value-type>com.vodafone.dal.domain.bazaarvoice.BazaarVoice
-		    </value-type>
-	   </cache-mapping>
+		</cache-mapping>
+		<cache-mapping>
+			<cache-name>DBDetailsCache</cache-name>
+			<scheme-name>DBDetailsCacheScheme</scheme-name>
+			<key-type>java.lang.String</key-type>
+			<value-type>com.vodafone.dbDetails.pojo.DBDetails
+			</value-type>
+		</cache-mapping>
 	</caching-scheme-mapping>
 	<caching-schemes>
 
@@ -334,8 +337,21 @@
 				</serializer>
 			</initiator-config>
 		</remote-cache-scheme>
-		<!-- <remote-cache-scheme>
-			<scheme-name>BazaarVoiceCacheScheme</scheme-name>
+		<!-- <remote-cache-scheme> <scheme-name>BazaarVoiceCacheScheme</scheme-name> 
+			<service-name>DALCoherenceProductDatagrid:ExtendTcpProxyProduct </service-name> 
+			<initiator-config> <tcp-initiator> <socket-provider> <ssl> <protocol>TLS</protocol> 
+			<trust-manager> <algorithm>SunX509</algorithm> <key-store> <url>file:/apps/sb/coh-cert/cohadmin.jks</url> 
+			<password>p@ssw0rd</password> <type>JKS</type> </key-store> </trust-manager> 
+			<socket-provider>tcp</socket-provider> </ssl> </socket-provider> <name-service-addresses> 
+			name-service-addresses:address-provider-instance <address-provider> <class-name>com.vf.uk.dal.device.utils.CohAddressProvider 
+			</class-name> </address-provider> </name-service-addresses> </tcp-initiator> 
+			<outgoing-message-handler> <request-timeout>15s</request-timeout> </outgoing-message-handler> 
+			<serializer> <instance> <class-name>com.tangosol.io.pof.ConfigurablePofContext 
+			</class-name> <init-params> <init-param> <param-type>string</param-type> 
+			<param-value>config/client-pof-config.xml</param-value> </init-param> </init-params> 
+			</instance> </serializer> </initiator-config> </remote-cache-scheme> -->
+		<remote-cache-scheme>
+			<scheme-name>BazaarCacheScheme</scheme-name>
 			<service-name>DALCoherenceProductDatagrid:ExtendTcpProxyProduct
 			</service-name>
 			<initiator-config>
@@ -355,7 +371,7 @@
 						</ssl>
 					</socket-provider>
 					<name-service-addresses>
-						name-service-addresses:address-provider-instance
+						<!--name-service-addresses:address-provider-instance -->
 						<address-provider>
 							<class-name>com.vf.uk.dal.device.utils.CohAddressProvider
 							</class-name>
@@ -378,9 +394,9 @@
 					</instance>
 				</serializer>
 			</initiator-config>
-		</remote-cache-scheme> -->
+		</remote-cache-scheme>
 		<remote-cache-scheme>
-			<scheme-name>BazaarCacheScheme</scheme-name>
+			<scheme-name>DBDetailsCacheScheme</scheme-name>
 			<service-name>DALCoherenceProductDatagrid:ExtendTcpProxyProduct
 			</service-name>
 			<initiator-config>
