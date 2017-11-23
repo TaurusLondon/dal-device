@@ -343,27 +343,29 @@ public class DeviceControllerTest {
 
 			ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
 			given(deviceDAOMock.getProductGroupsWithFacets(Matchers.anyObject(), Matchers.anyObject(),
-					Matchers.anyObject(), Matchers.anyObject(), Matchers.anyObject(), Matchers.anyObject(),""))
+					Matchers.anyObject(), Matchers.anyObject(), Matchers.anyObject(), Matchers.anyObject(),Matchers.anyString()))
 							.willReturn(CommonMethods.getProductGroupFacetModel1());
 			given(deviceDAOMock.getProductGroupsWithFacets(Matchers.anyObject()))
 					.willReturn(CommonMethods.getProductGroupFacetModel1());
 			given(deviceDAOMock.getProductModel(Matchers.anyList())).willReturn(CommonMethods.getProductModel());
+			given(deviceDAOMock.getCommercialProductRepositoryByLeadMemberId(Matchers.anyString())).willReturn(CommonMethods.getCommercialProduct());
 			deviceDetailsList = deviceController
 					.getDeviceList(CommonMethods.getQueryParamsMap("Apple", "iPhone-7", "DEVICE_PAYM", "HANDSET",
-							"32 GB", "White", "iOS", "Great Camera", "c1a42269-6562-4c96-b3be-1ca2a6681d57", "32423"));
+							"32 GB", "White", "iOS", "Great Camera", null, null));
 			given(deviceDAOMock.getBundleDetails(Matchers.anyList()))
 					.willReturn(CommonMethods.getBundleModelListForBundleList());
+			
 			deviceDetailsList = deviceController
 					.getDeviceList(CommonMethods.getQueryParamsMap("Apple", "iPhone-7", "DEVICE_PAYG", "HANDSET",
-							"32 GB", "White", "iOS", "Great Camera", "c1a42269-6562-4c96-b3be-1ca2a6681d57", "4565"));
+							"32 GB", "White", "iOS", "Great Camera", "Upgrade", "W_HH_OC_02"));
 
 			Assert.assertNotNull(deviceDetailsList);
 			deviceDetailsList = deviceController
 					.getDeviceList(CommonMethods.getInvalidQueryParamsMap("Apple", "iPhone-7", "DEVICE_PAYM", "HANDSET",
-							"32 GB", "White", "iOS", "Great Camera", "c1a42269-6562-4c96-b3be-1ca2a6681d57"));
+							"32 GB", "White", "iOS", "Great Camera", "SecondLine"));
 
 		} catch (Exception e) {
-
+			
 		}
 		ServiceContext.urlParamContext.remove();
 

@@ -165,7 +165,7 @@ public class DeviceTileCacheDAO {
 	public int saveDeviceMediaData(List<Media> mediaList, String deviceId) {
 		int result=0;
 		LogHelper.info(this, "Begin DEVICE_LIST_PRE_CALC_MEDIA ");
-		String sql = "INSERT INTO PRODUCT.DEVICE_LIST_PRE_CALC_MEDIA (DEVICE_ID,ID,VALUE,TYPE,DESCRIPTION,DISCOUNT_ID) values (?,?,?,?,?,?)";
+		String sql = "INSERT INTO PRODUCT.DEVICE_LIST_PRE_CALC_MEDIA (DEVICE_ID,ID,VALUE,TYPE,DESCRIPTION,DISCOUNT_ID,PROMO_CATEGORY,OFFER_CODE) values (?,?,?,?,?,?,?,?)";
 		int i[] = getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
@@ -176,6 +176,8 @@ public class DeviceTileCacheDAO {
 				ps.setString(4, mediaLink.getType());
 				ps.setString(5, mediaLink.getDescription());
 				ps.setString(6, mediaLink.getDiscountId());
+				ps.setString(7, mediaLink.getPromoCategory());
+				ps.setString(8, mediaLink.getOfferCode());
 			}
 
 			@Override
