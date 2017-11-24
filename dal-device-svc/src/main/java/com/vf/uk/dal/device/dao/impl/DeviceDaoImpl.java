@@ -1859,7 +1859,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	}
 
 	/**
-	 * 
+	 * @author manoj.bera
 	 */
 	@Override
 	public void movePreCalcDataToSolr(List<DevicePreCalculatedData> preCalcPlanList) {
