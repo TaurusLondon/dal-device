@@ -12,6 +12,15 @@ public class MediaLink   {
 
   private String type = null;
 
+  private Integer priority = null;
+	
+  public Integer getPriority() {
+		return priority;
+	}
+  public void setPriority(Integer priority) {
+		this.priority = priority;
+	}
+  
   public MediaLink id(String id) {
     this.id = id;
     return this;
