@@ -158,6 +158,7 @@ public class DaoUtils {
 						mediaEntertainmentLink.setId(link.getId());
 						mediaEntertainmentLink.setType(link.getType());
 						mediaEntertainmentLink.setValue(link.getValue());
+						mediaEntertainmentLink.setPriority(link.getPriority());
 						merchandisingMedia.add(mediaEntertainmentLink);
 					}
 				}
@@ -181,6 +182,7 @@ public class DaoUtils {
 								.setId(merchPromoForHardware.getMpType() + "." + Constants.STRING_OFFERS_LABEL);
 						priceMediaLinkLabel.setType("TEXT");
 						priceMediaLinkLabel.setValue(merchPromoForHardware.getLabel());
+						priceMediaLinkLabel.setPriority(merchPromoForHardware.getPriority());
 						merchandisingMedia.add(priceMediaLinkLabel);
 
 						// Description
@@ -189,6 +191,7 @@ public class DaoUtils {
 								.setId(merchPromoForHardware.getMpType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
 						priceMediaLinkDescription.setType("TEXT");
 						priceMediaLinkDescription.setValue(merchPromoForHardware.getDescription());
+						priceMediaLinkDescription.setPriority(merchPromoForHardware.getPriority());
 						merchandisingMedia.add(priceMediaLinkDescription);
 
 						// PriceEstablished
@@ -197,6 +200,7 @@ public class DaoUtils {
 								merchPromoForHardware.getMpType() + "." + Constants.STRING_PRICE_ESTABLISHED_LABEL);
 						priceEstablishedMediaLink.setType("TEXT");
 						priceEstablishedMediaLink.setValue(merchPromoForHardware.getPriceEstablishedLabel());
+						priceEstablishedMediaLink.setPriority(merchPromoForHardware.getPriority());
 						merchandisingMedia.add(priceEstablishedMediaLink);
 					}
 
@@ -210,6 +214,7 @@ public class DaoUtils {
 								.setId(merchPromoForBundle.getMpType() + "." + Constants.STRING_OFFERS_LABEL);
 						priceMediaLinkLabelForBundle.setType("TEXT");
 						priceMediaLinkLabelForBundle.setValue(merchPromoForBundle.getLabel());
+						priceMediaLinkLabelForBundle.setPriority(merchPromoForBundle.getPriority());
 						merchandisingMedia.add(priceMediaLinkLabelForBundle);
 
 						// Description
@@ -218,6 +223,7 @@ public class DaoUtils {
 								.setId(merchPromoForBundle.getMpType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
 						priceMediaLinkDescriptionForBundle.setType("TEXT");
 						priceMediaLinkDescriptionForBundle.setValue(merchPromoForBundle.getDescription());
+						priceMediaLinkDescriptionForBundle.setPriority(merchPromoForBundle.getPriority());
 						merchandisingMedia.add(priceMediaLinkDescriptionForBundle);
 
 						// PriceEstablished
@@ -226,6 +232,7 @@ public class DaoUtils {
 								merchPromoForBundle.getMpType() + "." + Constants.STRING_PRICE_ESTABLISHED_LABEL);
 						priceEstablishedMediaLinkForBundle.setType("TEXT");
 						priceEstablishedMediaLinkForBundle.setValue(merchPromoForBundle.getPriceEstablishedLabel());
+						priceMediaLinkDescriptionForBundle.setPriority(merchPromoForBundle.getPriority());
 						merchandisingMedia.add(priceEstablishedMediaLinkForBundle);
 					}
 				}
