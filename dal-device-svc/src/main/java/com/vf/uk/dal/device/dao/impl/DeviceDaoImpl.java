@@ -1273,7 +1273,7 @@ public class DeviceDaoImpl implements DeviceDao {
 			mediaLinkForDescription.setType(Constants.STRING_TEXT_ALLOWANCE);
 			mediaLinkForDescription.setValue(merchandisingPromotion.getDescription());
 			if(merchandisingPromotion.getPriority()!=null){
-				mediaLinkForLabel.setPriority(merchandisingPromotion.getPriority().intValue());
+				mediaLinkForDescription.setPriority(merchandisingPromotion.getPriority().intValue());
 				}
 			listOfMediaLink.add(mediaLinkForDescription);
 			if (merchandisingPromotion.getType() != null && StringUtils
@@ -1283,7 +1283,7 @@ public class DeviceDaoImpl implements DeviceDao {
 				mediaLinkForUrlGrid.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
 				mediaLinkForUrlGrid.setValue(merchandisingPromotion.getPromotionMedia());
 				if(merchandisingPromotion.getPriority()!=null){
-					mediaLinkForLabel.setPriority(merchandisingPromotion.getPriority().intValue());
+					mediaLinkForUrlGrid.setPriority(merchandisingPromotion.getPriority().intValue());
 					}
 				listOfMediaLink.add(mediaLinkForUrlGrid);
 			}
