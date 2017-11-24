@@ -130,10 +130,10 @@ public class DeviceControllerTest {
 				.willReturn(CommonMethods.getDevice("83921"));
 		given(this.deviceDAOMock.getDeviceDetails("83929", "upgrade", "34543")).willReturn(null);
 		given(this.deviceDAOMock.getDeviceDetails(null, null, null)).willReturn(null);
-		given(this.deviceDAOMock.getAccessoriesOfDevice("93353","Upgrade"))
+		given(this.deviceDAOMock.getAccessoriesOfDevice("93353","Upgrade","W_HH_PAYM_OC_02"))
 				.willReturn(CommonMethods.getAccessoriesTileGroup("93353"));
-		given(this.deviceDAOMock.getAccessoriesOfDevice("93354",null)).willReturn(null);
-		given(this.deviceDAOMock.getAccessoriesOfDevice(null,null)).willReturn(null);
+		given(this.deviceDAOMock.getAccessoriesOfDevice("93354",null,null)).willReturn(null);
+		given(this.deviceDAOMock.getAccessoriesOfDevice(null,null,null)).willReturn(null);
 		// given(this.deviceDAOMock.getDeviceList("HANDSET","Apple", "iPhone-7",
 		// "DEVICE_PAYM", "Priority", 0, 9,"32 GB","White","iOS","Great
 		// Camera")).willReturn(CommonMethods.getFacetedDevice("HANDSET","Apple",
@@ -343,27 +343,30 @@ public class DeviceControllerTest {
 
 			ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
 			given(deviceDAOMock.getProductGroupsWithFacets(Matchers.anyObject(), Matchers.anyObject(),
-					Matchers.anyObject(), Matchers.anyObject(), Matchers.anyObject(), Matchers.anyObject(),""))
+					Matchers.anyObject(), Matchers.anyObject(), Matchers.anyObject(), Matchers.anyObject(),Matchers.anyString()))
 							.willReturn(CommonMethods.getProductGroupFacetModel1());
 			given(deviceDAOMock.getProductGroupsWithFacets(Matchers.anyObject()))
 					.willReturn(CommonMethods.getProductGroupFacetModel1());
 			given(deviceDAOMock.getProductModel(Matchers.anyList())).willReturn(CommonMethods.getProductModel());
+			given(deviceDAOMock.getCommercialProductRepositoryByLeadMemberId(Matchers.anyString())).willReturn(CommonMethods.getCommercialProduct());
+			given(deviceDAOMock.getJourneyTypeCompatibleOfferCodes(Matchers.anyString())).willReturn(CommonMethods.getModel());
 			deviceDetailsList = deviceController
 					.getDeviceList(CommonMethods.getQueryParamsMap("Apple", "iPhone-7", "DEVICE_PAYM", "HANDSET",
-							"32 GB", "White", "iOS", "Great Camera", "c1a42269-6562-4c96-b3be-1ca2a6681d57", "32423"));
+							"32 GB", "White", "iOS", "Great Camera", null, null));
 			given(deviceDAOMock.getBundleDetails(Matchers.anyList()))
 					.willReturn(CommonMethods.getBundleModelListForBundleList());
+			
 			deviceDetailsList = deviceController
 					.getDeviceList(CommonMethods.getQueryParamsMap("Apple", "iPhone-7", "DEVICE_PAYG", "HANDSET",
-							"32 GB", "White", "iOS", "Great Camera", "c1a42269-6562-4c96-b3be-1ca2a6681d57", "4565"));
+							"32 GB", "White", "iOS", "Great Camera", "Upgrade", "W_HH_OC_02"));
 
 			Assert.assertNotNull(deviceDetailsList);
 			deviceDetailsList = deviceController
 					.getDeviceList(CommonMethods.getInvalidQueryParamsMap("Apple", "iPhone-7", "DEVICE_PAYM", "HANDSET",
-							"32 GB", "White", "iOS", "Great Camera", "c1a42269-6562-4c96-b3be-1ca2a6681d57"));
+							"32 GB", "White", "iOS", "Great Camera", "SecondLine"));
 
 		} catch (Exception e) {
-
+			
 		}
 		ServiceContext.urlParamContext.remove();
 
@@ -1145,7 +1148,7 @@ public class DeviceControllerTest {
 	public void testDaoUtilsconvertCoherenceDeviceToDeviceTile() {
 		DaoUtils.convertCoherenceDeviceToDeviceTile(Long.valueOf(1), CommonMethods.getCommercialProduct1(),
 				CommonMethods.getCommercialBundle(), CommonMethods.getPriceForBundleAndHardware(),
-				CommonMethods.getListOfOfferPacks(), "DEVICE_PAYM", false);
+				CommonMethods.getListOfOfferPacks(), "DEVICE_PAYM", false,null);
 	}
 
 	@Test
@@ -1163,7 +1166,7 @@ public class DeviceControllerTest {
 	public void notNullTestForGetInsuranceById() {
 		given(deviceDAOMock.getCommercialProductByProductId(Matchers.anyString()))
 				.willReturn(CommonMethods.getCommercialProductForInsurance());
-		given(deviceDAOMock.getGroupByProdGroupName(Matchers.anyString()))
+		given(deviceDAOMock.getGroupByProdGroupName(Matchers.anyString(),Matchers.anyString()))
 				.willReturn(CommonMethods.getGropuFromProductGroups());
 		given(deviceDAOMock.getCommercialProductsList(Matchers.anyList()))
 				.willReturn(Arrays.asList(CommonMethods.getCommercialProductForInsurance()));
@@ -1180,7 +1183,7 @@ public class DeviceControllerTest {
 	public void notNullTestForGetInsuranceByIdWithJourneyType() {
 		given(deviceDAOMock.getCommercialProductByProductId(Matchers.anyString()))
 				.willReturn(CommonMethods.getCommercialProductForInsurance());
-		given(deviceDAOMock.getGroupByProdGroupName(Matchers.anyString()))
+		given(deviceDAOMock.getGroupByProdGroupName(Matchers.anyString(),Matchers.anyString()))
 				.willReturn(CommonMethods.getGropuFromProductGroups());
 		given(deviceDAOMock.getCommercialProductsList(Matchers.anyList()))
 				.willReturn(Arrays.asList(CommonMethods.getCommercialProductForInsurance()));
@@ -1361,7 +1364,7 @@ public class DeviceControllerTest {
 	@Test
 	public void convertCoherenceAccesoryToAccessory() {
 		DaoUtils.convertCoherenceAccesoryToAccessory(CommonMethods.getCommercialProduct(), 
-													 CommonMethods.GetPriceforproduct().getPriceForAccessoryes().get(0),"Upgrade");
+													 CommonMethods.GetPriceforproduct().getPriceForAccessoryes().get(0));
 	}
 
 	

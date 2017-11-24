@@ -125,9 +125,9 @@ public class DeviceServiceImplTest
 		given(this.deviceDAOMock.getDeviceDetails("83921","upgrade","34543")).willReturn(CommonMethods.getDevice("83921"));
 		given(this.deviceDAOMock.getDeviceDetails("83921","Upgrade","W_HH_PAYM_OC_02")).willReturn(CommonMethods.getDevice("83921"));
 		given(this.deviceDAOMock.getDeviceDetails("83929","upgrade","34543")).willReturn(null);
-		given(this.deviceDAOMock.getAccessoriesOfDevice("93353","Upgrade")).willReturn(CommonMethods.getAccessoriesTileGroup("93353"));
-		given(this.deviceDAOMock.getAccessoriesOfDevice("93354","Upgrade")).willReturn(null);
-		given(this.deviceDAOMock.getAccessoriesOfDevice(null,null)).willReturn(null);
+		given(this.deviceDAOMock.getAccessoriesOfDevice("93353","Upgrade","W_HH_PAYM_OC_02")).willReturn(CommonMethods.getAccessoriesTileGroup("93353"));
+		given(this.deviceDAOMock.getAccessoriesOfDevice("93354","Upgrade","W_HH_PAYM_OC_02")).willReturn(null);
+		given(this.deviceDAOMock.getAccessoriesOfDevice(null,null,null)).willReturn(null);
 		//given(this.deviceDAOMock.getDeviceList("HANDSET","apple", "iPhone-7","DEVICE_PAYM", "Priority", 1, 2,"32 GB","White","iOS","Great Camera")).willReturn(CommonMethods.getFacetedDevice("HANDSET","apple", "iPhone 7", "DEVICE_PAYM", "asc", 1, 2,"123"));
 		//given(this.deviceDAOMock.getDeviceList(null,null,null,null,null,1,0,"32 GB","White","iOS","Great Camera")).willReturn(null);
 		//given(this.deviceDAOMock.getDeviceList("productclass","make","model",null,"",1,0,"32 GB","White","iOS","Great Camera")).willReturn(null);
@@ -256,14 +256,14 @@ public class DeviceServiceImplTest
 	@Test
 	public void notNullTestForGetAccessoriesOfDevice() {
 		List<AccessoryTileGroup> accessory=new ArrayList<>();
-		accessory=deviceService.getAccessoriesOfDevice("93353","Upgrade");
+		accessory=deviceService.getAccessoriesOfDevice("93353","Upgrade","W_HH_PAYM_OC_02");
 		Assert.assertNotNull(accessory); 
 	}
 	@Test
 	public void nullTestForGetAccessoriesOfDevice() {
 		List<AccessoryTileGroup> accessory=new ArrayList<>();
 		try{
-		accessory=deviceService.getAccessoriesOfDevice(null,null);
+		accessory=deviceService.getAccessoriesOfDevice(null,null,null);
 		}
 		catch(Exception e)
 		{
@@ -379,7 +379,7 @@ public class DeviceServiceImplTest
 	insuranceList.add("093354");
 	
 		given(this.deviceDAOMock.getCommercialProductByProductId("093353")).willReturn(CommonMethods.getCommercialProductForInsurance());
-		given(this.deviceDAOMock.getGroupByProdGroupName("DEVICE_PAYM")).willReturn(CommonMethods.getGropuFromProductGroups());
+		given(this.deviceDAOMock.getGroupByProdGroupName("DEVICE_PAYM","Compatible Insurance")).willReturn(CommonMethods.getGropuFromProductGroups());
 		given(this.deviceDAOMock.getCommercialProductsList(insuranceList)).willReturn(CommonMethods.getListOfCommercialProduct());
 		Insurances insurance=null;
 			insurance=deviceService.getInsuranceByDeviceId("093353","upgrade");
@@ -387,22 +387,22 @@ public class DeviceServiceImplTest
 	}
 	@Test
 	public void NotNullTestForDaoUtilsconvertCoherenceDeviceToDeviceTile() {
-		DeviceSummary deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile((long)1, CommonMethods.getCommercialProduct(),CommonMethods.getCommercialBundle(),CommonMethods.getPriceForBundleAndHardware(),CommonMethods.getListOfOfferPacks(),null, false);
+		DeviceSummary deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile((long)1, CommonMethods.getCommercialProduct(),CommonMethods.getCommercialBundle(),CommonMethods.getPriceForBundleAndHardware(),CommonMethods.getListOfOfferPacks(),null, false,null);
 		Assert.assertNotNull(deviceSummary);
 	}
 	@Test
 	public void NotNullTestDateForDaoUtilsconvertCoherenceDeviceToDeviceTile() {
-		DeviceSummary deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile((long)1, CommonMethods.getCommercialProduct1(),CommonMethods.getCommercialBundle1(),CommonMethods.getPriceForBundleAndHardware(),CommonMethods.getListOfOfferPacks(),null, false);
+		DeviceSummary deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile((long)1, CommonMethods.getCommercialProduct1(),CommonMethods.getCommercialBundle1(),CommonMethods.getPriceForBundleAndHardware(),CommonMethods.getListOfOfferPacks(),null, false,null);
 		Assert.assertNotNull(deviceSummary);
 	}
 	@Test
 	public void NullTestStartDateForDaoUtilsconvertCoherenceDeviceToDeviceTile() {
-		DeviceSummary deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile((long)1, CommonMethods.getCommercialProduct1(),CommonMethods.getCommercialBundle2(),CommonMethods.getPriceForBundleAndHardware(),CommonMethods.getListOfOfferPacks(),null, false);
+		DeviceSummary deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile((long)1, CommonMethods.getCommercialProduct1(),CommonMethods.getCommercialBundle2(),CommonMethods.getPriceForBundleAndHardware(),CommonMethods.getListOfOfferPacks(),null, false,null);
 		Assert.assertNotNull(deviceSummary);
 	}
 	@Test
 	public void NullTestEndDateForDaoUtilsconvertCoherenceDeviceToDeviceTile() {
-		DeviceSummary deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile((long)1, CommonMethods.getCommercialProduct1(),CommonMethods.getCommercialBundle3(),CommonMethods.getPriceForBundleAndHardware(),CommonMethods.getListOfOfferPacks(),null, false);
+		DeviceSummary deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile((long)1, CommonMethods.getCommercialProduct1(),CommonMethods.getCommercialBundle3(),CommonMethods.getPriceForBundleAndHardware(),CommonMethods.getListOfOfferPacks(),null, false,null);
 		Assert.assertNotNull(deviceSummary);
 	}
 	@Test
@@ -429,7 +429,7 @@ public class DeviceServiceImplTest
 	}
 	@Test
 	public void NotNullTestForDaoUtilsconvertCommercialProductToInsurance() {
-		Insurances insurances = DaoUtils.convertCommercialProductToInsurance(CommonMethods.getListOfCommercialProduct(),"upgrade");
+		Insurances insurances = DaoUtils.convertCommercialProductToInsurance(CommonMethods.getListOfCommercialProduct());
 		Assert.assertNotNull(insurances);
 	}
 	/**
@@ -1034,7 +1034,7 @@ public class DeviceServiceImplTest
 	{
 		try
 		{
-			deviceService.getAccessoriesOfDevice("093353","Upgrade");
+			deviceService.getAccessoriesOfDevice("093353","Upgrade","W_HH_PAYM_OC_02");
 		}
 		catch(Exception e)
 		{

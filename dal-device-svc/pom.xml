@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>com.vf.uk.dal</groupId>
 	<artifactId>dal-device-svc</artifactId>
-	<version>6.3.10</version>
+	<version>6.4.8</version>
 	<packaging>jar</packaging>  
 	<build> 
 		<plugins>
@@ -24,14 +24,14 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 			<exclusions>
-			 <exclusion>
+			  <exclusion>
 					<groupId>ch.qos.logback</groupId>
 					<artifactId>logback-classic</artifactId>
 				</exclusion>
 				<exclusion>
 					<groupId>org.slf4j</groupId>
 					<artifactId>log4j-over-slf4j</artifactId>
-				</exclusion>  
+				</exclusion> 
 			</exclusions>
 		</dependency>
 		<!-- <dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-starter-eureka</artifactId> 
@@ -174,13 +174,13 @@
 		<dependency>
 			<groupId>com.vf.uk.dal.solr</groupId>
 			<artifactId>solr-query-manager</artifactId>
-			<version>6.3.1</version>  
+			<version>6.4.1</version>  
 		</dependency>
 		<dependency>
 			<groupId>Solr</groupId>
 			<artifactId>IndexManager</artifactId>
-			<version>6.3.0</version> 
-		</dependency>
+			<version>6.3.1</version> 
+		</dependency> 
 		<!-- Coherence Jars -->
 		<dependency>
 			<groupId>com.vf.uk.dal</groupId>
@@ -190,7 +190,7 @@
 		<dependency>
 			<groupId>com.vf.uk.dal.coh</groupId>
 			<artifactId>coherence-domain</artifactId>
-			<version>6.2.0</version>
+			<version>6.3.0</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>slf4j-log4j12</artifactId>
@@ -201,7 +201,7 @@
 		<dependency>
 			<groupId>com.vf.uk.dal.coh</groupId>
 			<artifactId>coherence-logging-utility</artifactId>
-			<version>6.2.0</version>
+			<version>6.3.0</version>
 		</dependency>
 		<!-- LoggingUtility uses slf4j-ext and json-simple jar -->
 		<dependency>

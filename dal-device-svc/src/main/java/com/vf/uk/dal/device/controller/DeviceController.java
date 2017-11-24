@@ -6,7 +6,6 @@ import java.util.Map;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.solr.common.util.StrUtils;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vf.uk.dal.common.context.ServiceContext;
@@ -24,7 +22,6 @@ import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.common.urlparams.FilterCriteria;
 import com.vf.uk.dal.common.urlparams.PaginationCriteria;
-import com.vf.uk.dal.device.entity.Accessory;
 import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.entity.DeviceDetails;
@@ -205,8 +202,9 @@ public class DeviceController {
 
 			String deviceId = queryParams.containsKey(DEVICE_ID) ? queryParams.get(DEVICE_ID) : null;
 			String journeyType = queryParams.containsKey(JOURNEY_TYPE)?queryParams.get(JOURNEY_TYPE) : null;
+			String offerCode = queryParams.containsKey(OFFER_CODE)?queryParams.get(OFFER_CODE) : null;
 			if (StringUtils.isNotBlank(deviceId)) {
-				listOfAccessoryTileGroup = deviceService.getAccessoriesOfDevice(deviceId,journeyType);
+				listOfAccessoryTileGroup = deviceService.getAccessoriesOfDevice(deviceId,journeyType,offerCode);
 			} else {
 				LogHelper.error(this, DEVICE_ID_IS_EMPTY);
 				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);

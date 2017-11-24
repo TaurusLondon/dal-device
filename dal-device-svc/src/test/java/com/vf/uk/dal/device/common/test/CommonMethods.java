@@ -221,7 +221,22 @@ public class CommonMethods {
 		model.setBundleMonthlyPriceVat(9.0f);
 		model.setLeadPlanId("110154");
 		model.setLeadPlanIdNew("110154");
-		List<String> merchedn=Arrays.asList("hardware_discount.merchandisingPromotions.merchandisingPromotion.label|40% off the phone|TEXT&&110154&&HW&&Pricing_Automatic_Discount&&NA|NA|NA|NA|095597");
+		List<String> merchedn=new ArrayList<>();
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.label|40% off the phone|TEXT&&110154&&HW&&handset.conditional.full.GBP|Pricing_Automatic_Discount|NA|For 3 Months, then|095597");
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.priceEstablishedLabel|WAS|TEXT&&110154&&HW&&handset.conditional.full.GBP|Pricing_Automatic_Discount|NA|For 3 Months, then|095597");
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.description|For 3 Months, then|TEXT&&110154&&HW&&handset.conditional.full.GBP|Pricing_Automatic_Discount|NA|For 3 Months, then|095597");
+		
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.label|40% off the phone|TEXT&&110154&&BP&&handset.conditional.full.GBP|Pricing_Automatic_Discount|NA|For 3 Months, then|095597");
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.priceEstablishedLabel|WAS|TEXT&&110154&&BP&&handset.conditional.full.GBP|Pricing_Automatic_Discount|NA|For 3 Months, then|095597");
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.description|For 3 Months, then|TEXT&&110154&&BP&&handset.conditional.full.GBP|Pricing_Automatic_Discount|NA|For 3 Months, then|095597");
+		
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.label|40% off the phone|TEXT&&110154&&HW&&handset.conditional.full.GBP|Pricing_Discount|W_HH_OC_02|For 3 Months, then|095597");
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.priceEstablishedLabel|WAS|TEXT&&110154&&HW&&handset.conditional.full.GBP|Pricing_Discount|W_HH_OC_02|For 3 Months, then|095597");
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.description|For 3 Months, then|TEXT&&110154&&HW&&handset.conditional.full.GBP|Pricing_Discount|W_HH_OC_02|For 3 Months, then|095597");
+		
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.label|40% off the phone|TEXT&&110154&&BP&&handset.conditional.full.GBP|Pricing_Discount|W_HH_OC_02|For 3 Months, then|095597");
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.priceEstablishedLabel|WAS|TEXT&&110154&&BP&&handset.conditional.full.GBP|Pricing_Discount|W_HH_OC_02|For 3 Months, then|095597");
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.description|For 3 Months, then|TEXT&&110154&&BP&&handset.conditional.full.GBP|Pricing_Discount|W_HH_OC_02|For 3 Months, then|095597");
 		model.setMerchandisingMedia(merchedn);
 		//List<String>
 		
@@ -695,7 +710,7 @@ public class CommonMethods {
 
 		// commercialProduct.setProductClass("pClass");
 		commercialProduct.setLeadPlanId("110154");
-		commercialProduct.setId("93353");
+		commercialProduct.setId("093353");
 		commercialProduct.setPreDesc("");
 		commercialProduct.setDisplayName("asbd");
 		PriceDetail priceDetail = new PriceDetail();
@@ -1981,6 +1996,9 @@ public class CommonMethods {
 		merchandisingPromotions.setDiscountId("107531");
 		merchandisingPromotions.setLabel("20% off with any handset");
 		merchandisingPromotions.setTag("AllPhone.full.2017");
+		merchandisingPromotions.setPriceEstablishedLabel("WAS");
+		merchandisingPromotions.setDescription("3 months free data for e more");
+		merchandisingPromotions.setMpType("full_duration");
 		/*merchandisingPromotions1.setDiscountId("107526");
 		merchandisingPromotions1.setLabel("9 months, 15% off, Any Handset");
 		merchandisingPromotions1.setTag("AllPhone.limit.2017");*/
@@ -3107,5 +3125,13 @@ public class CommonMethods {
 		list.add(model);
 		list.add(model1);
 		return list;
+	}
+	public static List<com.vodafone.solrmodels.MerchandisingPromotionModel> getModel()
+	{
+		List<com.vodafone.solrmodels.MerchandisingPromotionModel> modelList=new ArrayList<>();
+		com.vodafone.solrmodels.MerchandisingPromotionModel model=new MerchandisingPromotionModel();
+		model.setTag("W_HH_OC_02");
+		modelList.add(model);
+		return modelList;
 	}
 }
