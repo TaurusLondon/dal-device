@@ -349,6 +349,17 @@ Make getCompatibleAccessories offer code aware
 URL for above US:
 https://internal-digitalx-sit2-alb-mas-1938696969.eu-west-1.elb.amazonaws.com/devices/catalogue/accessory/queries/byDeviceId/?deviceId=093353&journeyType={journeyType}&offerCode={offerCode}
 
+User story # 10433
+[ 
+Change apis to address COH changes on Product Group
+]
+URL for above US:
+https://internal-digitalx-sit2-alb-mas-1938696969.eu-west-1.elb.amazonaws.com/devices/catalogue/accessory/queries/byDeviceId/?deviceId=093353&journeyType={journeyType}&offerCode={offerCode}
+
+https://internal-digitalx-sit2-alb-mas-1938696969.eu-west-1.elb.amazonaws.com/devices/catalogue/insurance/queries/byDeviceId/?deviceId=093353&journeyType={journeyType}
+
+
+
 
 
 
