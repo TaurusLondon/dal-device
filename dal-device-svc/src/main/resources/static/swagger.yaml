@@ -58,14 +58,14 @@ paths:
         filter criteria in the response.
       operationId: CAT_001_GetDeviceTiles
       parameters:
-        - name: offset
+        - name: pageNumber
           in: query
-          description: Position in pagination
+          description: Page Number
           required: false
           type: integer
-        - name: count
+        - name: pageSize
           in: query
-          description: Number of items
+          description: Page Size
           required: false
           type: integer
         - name: make
@@ -92,12 +92,12 @@ paths:
           description: Values on which the attributes should be filtered upon.
           required: true
           type: string
-        - name: color
+        - name: colour
           in: query
           description: filter by color of the device as in specification groups.
           required: false
           type: string
-        - name: os
+        - name: operatingSystem
           in: query
           description: filter by OS of the device as in specification groups.
           required: false
@@ -107,6 +107,11 @@ paths:
           description: filter by capacity of the device as in specification groups.
           required: false
           type: string
+        - name: msisdn
+          in: query
+          description: Msisdn of teh customer.
+          required: false
+          type: string  
         - name: mustHaveFeatures
           in: query
           description: >-
