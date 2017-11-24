@@ -1263,12 +1263,18 @@ public class DeviceDaoImpl implements DeviceDao {
 			mediaLinkForLabel.setId(merchandisingPromotion.getType() + "." + Constants.STRING_OFFERS_LABEL);
 			mediaLinkForLabel.setType(Constants.STRING_TEXT_ALLOWANCE);
 			mediaLinkForLabel.setValue(merchandisingPromotion.getLabel());
+			if(merchandisingPromotion.getPriority()!=null){
+			mediaLinkForLabel.setPriority(merchandisingPromotion.getPriority().intValue());
+			}
 			listOfMediaLink.add(mediaLinkForLabel);
 
 			mediaLinkForDescription = new MediaLink();
 			mediaLinkForDescription.setId(merchandisingPromotion.getType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
 			mediaLinkForDescription.setType(Constants.STRING_TEXT_ALLOWANCE);
 			mediaLinkForDescription.setValue(merchandisingPromotion.getDescription());
+			if(merchandisingPromotion.getPriority()!=null){
+				mediaLinkForLabel.setPriority(merchandisingPromotion.getPriority().intValue());
+				}
 			listOfMediaLink.add(mediaLinkForDescription);
 			if (merchandisingPromotion.getType() != null && StringUtils
 					.containsIgnoreCase(merchandisingPromotion.getType(), Constants.STRING_FOR_ENTERTAINMENT)) {
@@ -1276,6 +1282,9 @@ public class DeviceDaoImpl implements DeviceDao {
 				mediaLinkForUrlGrid.setId(merchandisingPromotion.getType() + "." + Constants.STRING_PROMOTION_MEDIA);
 				mediaLinkForUrlGrid.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
 				mediaLinkForUrlGrid.setValue(merchandisingPromotion.getPromotionMedia());
+				if(merchandisingPromotion.getPriority()!=null){
+					mediaLinkForLabel.setPriority(merchandisingPromotion.getPriority().intValue());
+					}
 				listOfMediaLink.add(mediaLinkForUrlGrid);
 			}
 		}
