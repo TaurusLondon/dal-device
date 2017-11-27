@@ -1162,6 +1162,7 @@ public class DeviceServiceImpl implements DeviceService {
 		JSONObject jsonObject = null;
 		//String deviceIdMdfd = CommonUtility.trimLeadingZeros(deviceId);	
 		String deviceIdMdfd = CommonUtility.appendPrefixString(deviceId);
+		LogHelper.info(this,"::::: deviceIdMdfd :: " + deviceIdMdfd + ":::::");
 		String response=deviceDao.getDeviceReviewDetails(deviceIdMdfd);
 		if(StringUtils.isNotBlank(response) )
 		{
