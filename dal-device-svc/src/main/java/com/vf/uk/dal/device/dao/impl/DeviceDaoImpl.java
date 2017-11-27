@@ -936,16 +936,18 @@ public class DeviceDaoImpl implements DeviceDao {
 				for (Map.Entry<String, List<String>> entry : mapForGroupName.entrySet()) {
 					AccessoryTileGroup accessoryTileGroup = new AccessoryTileGroup();
 					List<Accessory> listOfAccessory = new ArrayList<>();
-					Accessory accessory = null;
+					
 					for (String hardwareId : entry.getValue()) {
 							// US-6717 start
+						Accessory accessory = null;
 						if(mapforCommercialProduct.containsKey(hardwareId) && mapforPrice.containsKey(hardwareId)){
 							accessory = DaoUtils.convertCoherenceAccesoryToAccessory(mapforCommercialProduct.get(hardwareId),
 											mapforPrice.get(hardwareId));
 						// Us-6717 end
 						}
-						if (accessory != null)
+						if (accessory != null){
 							listOfAccessory.add(accessory);
+						}
 					}
 					if (listOfAccessory != null && !listOfAccessory.isEmpty()) {
 						accessoryTileGroup.setGroupName(entry.getKey());
