@@ -164,5 +164,6 @@ public class EntityTest
  		BeanTest.test(BundleDeviceAndProductsList.class);
  		BeanTest.test(PriceForProduct.class);
  		BeanTest.test(PriceForExtra.class);
+ 		BeanTest.test(com.vf.uk.dal.device.entity.AccessoryTileGroup.class);
  	}
 }

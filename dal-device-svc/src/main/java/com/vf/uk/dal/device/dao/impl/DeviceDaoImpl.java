@@ -936,16 +936,18 @@ public class DeviceDaoImpl implements DeviceDao {
 				for (Map.Entry<String, List<String>> entry : mapForGroupName.entrySet()) {
 					AccessoryTileGroup accessoryTileGroup = new AccessoryTileGroup();
 					List<Accessory> listOfAccessory = new ArrayList<>();
-					Accessory accessory = null;
+					
 					for (String hardwareId : entry.getValue()) {
 							// US-6717 start
+						Accessory accessory = null;
 						if(mapforCommercialProduct.containsKey(hardwareId) && mapforPrice.containsKey(hardwareId)){
 							accessory = DaoUtils.convertCoherenceAccesoryToAccessory(mapforCommercialProduct.get(hardwareId),
 											mapforPrice.get(hardwareId));
 						// Us-6717 end
 						}
-						if (accessory != null)
+						if (accessory != null){
 							listOfAccessory.add(accessory);
+						}
 					}
 					if (listOfAccessory != null && !listOfAccessory.isEmpty()) {
 						accessoryTileGroup.setGroupName(entry.getKey());
@@ -1263,12 +1265,18 @@ public class DeviceDaoImpl implements DeviceDao {
 			mediaLinkForLabel.setId(merchandisingPromotion.getType() + "." + Constants.STRING_OFFERS_LABEL);
 			mediaLinkForLabel.setType(Constants.STRING_TEXT_ALLOWANCE);
 			mediaLinkForLabel.setValue(merchandisingPromotion.getLabel());
+			if(merchandisingPromotion.getPriority()!=null){
+			mediaLinkForLabel.setPriority(merchandisingPromotion.getPriority().intValue());
+			}
 			listOfMediaLink.add(mediaLinkForLabel);
 
 			mediaLinkForDescription = new MediaLink();
 			mediaLinkForDescription.setId(merchandisingPromotion.getType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
 			mediaLinkForDescription.setType(Constants.STRING_TEXT_ALLOWANCE);
 			mediaLinkForDescription.setValue(merchandisingPromotion.getDescription());
+			if(merchandisingPromotion.getPriority()!=null){
+				mediaLinkForDescription.setPriority(merchandisingPromotion.getPriority().intValue());
+				}
 			listOfMediaLink.add(mediaLinkForDescription);
 			if (merchandisingPromotion.getType() != null && StringUtils
 					.containsIgnoreCase(merchandisingPromotion.getType(), Constants.STRING_FOR_ENTERTAINMENT)) {
@@ -1276,6 +1284,9 @@ public class DeviceDaoImpl implements DeviceDao {
 				mediaLinkForUrlGrid.setId(merchandisingPromotion.getType() + "." + Constants.STRING_PROMOTION_MEDIA);
 				mediaLinkForUrlGrid.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
 				mediaLinkForUrlGrid.setValue(merchandisingPromotion.getPromotionMedia());
+				if(merchandisingPromotion.getPriority()!=null){
+					mediaLinkForUrlGrid.setPriority(merchandisingPromotion.getPriority().intValue());
+					}
 				listOfMediaLink.add(mediaLinkForUrlGrid);
 			}
 		}
@@ -1859,7 +1870,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	}
 
 	/**
-	 * 
+	 * @author manoj.bera
 	 */
 	@Override
 	public void movePreCalcDataToSolr(List<DevicePreCalculatedData> preCalcPlanList) {
