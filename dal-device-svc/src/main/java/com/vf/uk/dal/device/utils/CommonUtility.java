@@ -82,6 +82,7 @@ public  class CommonUtility {
 			LogHelper.info(CommonUtility.class, "Start --> Calling  Price.calculateForBundleAndHardware");
 		} catch (Exception e) {
 			LogHelper.error(CommonUtility.class, "PRICE API of PriceForBundleAndHardware Exception---------------"+e);
+			throw new ApplicationException(ExceptionMessages.PRICING_API_EXCEPTION);
 		}
  		ObjectMapper mapper = new ObjectMapper();
 		return mapper.convertValue(client, new TypeReference<List<PriceForBundleAndHardware>>(){});
