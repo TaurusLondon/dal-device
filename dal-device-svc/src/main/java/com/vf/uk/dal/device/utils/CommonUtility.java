@@ -1,6 +1,5 @@
 package com.vf.uk.dal.device.utils;
 
-import java.io.File;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -8,7 +7,6 @@ import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -79,7 +77,13 @@ public  class CommonUtility {
 		requestForBundleAndHardware.setBundleAndHardwareList(bundleAndHardwareTupleList);
 		requestForBundleAndHardware.setOfferCode(offerCode);
 		requestForBundleAndHardware.setPackageType(journeyType);
-		PriceForBundleAndHardware[] client=restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware" ,requestForBundleAndHardware,PriceForBundleAndHardware[].class);
+		PriceForBundleAndHardware[] client = new PriceForBundleAndHardware[7000];;
+		try {
+			client = restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
+					requestForBundleAndHardware, PriceForBundleAndHardware[].class);
+		} catch (Exception e) {
+			LogHelper.error(CommonUtility.class, "PRICE API of PriceForBundleAndHardware Exception---------------"+e);
+		}
  		ObjectMapper mapper = new ObjectMapper();
 		return mapper.convertValue(client, new TypeReference<List<PriceForBundleAndHardware>>(){});
 		
@@ -93,10 +97,10 @@ public  class CommonUtility {
 		return mapper.convertValue(client, new TypeReference<List<StockInfo>>(){});
 		
 	}*/
-	public static CurrentJourney getCurrentJourney(String journeyId,RegistryClient registryClient) {
+	/*public static CurrentJourney getCurrentJourney(String journeyId,RegistryClient registryClient) {
 		RestTemplate restTemplate =registryClient.getRestTemplate();
 		return restTemplate.getForObject("http://COMMON-V1/common/journey/"+journeyId+"/queries/currentJourney" ,CurrentJourney.class);
-	}
+	}*/
 	
 	public static RecommendedProductListResponse getRecommendedProductList(RecommendedProductListRequest recomProductList,RegistryClient registryClient) {
 		RestTemplate restTemplate =registryClient.getRestTemplate();
