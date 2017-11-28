@@ -179,7 +179,9 @@ public  class CommonUtility {
 		RestTemplate restTemplate =registryClient.getRestTemplate();
 		PriceForProduct client;
 		try{
+			LogHelper.info(CommonUtility.class, "Start -->  calling  Price.product");
 		 client=restTemplate.postForObject("http://PRICE-V1/price/product" ,bundleDeviceAndProductsList,PriceForProduct.class);
+		 LogHelper.info(CommonUtility.class, "End -->  calling  Price.product");
 		}catch(Exception e){
 			LogHelper.error(CommonUtility.class, "getAccessoryPriceDetails API Exception---------------"+e);
 			throw new ApplicationException(ExceptionMessages.PRICING_API_EXCEPTION);
