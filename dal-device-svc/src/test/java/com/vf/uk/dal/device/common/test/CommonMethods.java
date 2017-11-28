@@ -12,7 +12,10 @@ import java.util.UUID;
 import org.apache.solr.client.solrj.response.FacetField;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.vf.uk.dal.common.registry.client.Utility;
@@ -44,6 +47,7 @@ import com.vf.uk.dal.device.entity.Specification;
 import com.vf.uk.dal.device.entity.SpecificationGroup;
 import com.vf.uk.dal.device.entity.StepPricingInfo;
 import com.vf.uk.dal.device.utils.Constants;
+import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 import com.vf.uk.dal.utility.entity.BundleDetails;
 import com.vf.uk.dal.utility.entity.BundleHeader;
 import com.vf.uk.dal.utility.entity.ExtraPrice;
@@ -64,6 +68,7 @@ import com.vodafone.dal.bundle.pojo.Commitment;
 import com.vodafone.dal.bundle.pojo.DevicePrice;
 import com.vodafone.dal.bundle.pojo.ImageURL;
 import com.vodafone.dal.bundle.pojo.LineRental;
+import com.vodafone.dal.bundle.pojo.Relationship;
 import com.vodafone.dal.bundle.pojo.ServiceProduct;
 import com.vodafone.dal.domain.bazaarvoice.BazaarVoice;
 import com.vodafone.product.pojo.CommercialProduct;
@@ -3134,4 +3139,26 @@ public class CommonMethods {
 		modelList.add(model);
 		return modelList;
 	}
+/*public static List<BundleAndHardwarePromotions> getListOfBundleAndHardwarePromotions() {
+		
+		try {
+			
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			String bundle=new String(Utility.readFile("\\BundleandhardwarePromotuions.json"));
+			BundleAndHardwarePromotions[] bundleList=mapper.readValue(bundle, BundleAndHardwarePromotions[].class);
+
+			return  mapper.convertValue(bundleList, new TypeReference<List<BundleAndHardwarePromotions>>(){});
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}*/
 }
