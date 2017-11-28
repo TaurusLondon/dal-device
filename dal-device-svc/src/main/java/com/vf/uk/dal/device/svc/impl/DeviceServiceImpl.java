@@ -54,6 +54,7 @@ import com.vf.uk.dal.device.utils.DeviceTileCacheDAO;
 import com.vf.uk.dal.device.utils.DeviceUtils;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 import com.vf.uk.dal.device.utils.MediaConstants;
+import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 import com.vf.uk.dal.utility.entity.BundleDetails;
 import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
 import com.vf.uk.dal.utility.entity.BundleHeader;
@@ -414,14 +415,14 @@ public class DeviceServiceImpl implements DeviceService {
 			for (ProductModel productModel2 : productModel) {
 				if (productModel2.getProductStartDate() != null) {
 					try {
-						startDateTime = new SimpleDateFormat(Constants.DATE_FORMAT_SOLR).parse(productModel2.getProductStartDate());
+						startDateTime = new SimpleDateFormat(Constants.DATE_FORMAT).parse(productModel2.getProductStartDate());
 					} catch (ParseException e) {
 						LogHelper.error(this, "Parse Exception: " + e);
 					}
 				}
 				if (productModel2.getProductEndDate() != null) {
 					try {
-						endDateTime = new SimpleDateFormat(Constants.DATE_FORMAT_SOLR).parse(productModel2.getProductEndDate());
+						endDateTime = new SimpleDateFormat(Constants.DATE_FORMAT).parse(productModel2.getProductEndDate());
 					} catch (ParseException ex) {
 						LogHelper.error(this, "Parse Exception: " + ex);
 					}
@@ -531,7 +532,7 @@ public class DeviceServiceImpl implements DeviceService {
 			if (productGroupModelList != null && !productGroupModelList.isEmpty()) {
 				productGroupModelList.forEach(productGroupModel -> {
 					if (productGroupModel.getLeadDeviceId() != null) {
-						listOfProducts.add(productGroupModel.getLeadDeviceId());	
+						listOfProducts.add(productGroupModel.getLeadDeviceId());
 					}else{
 						//Below Code for If leadDevicId not coming from SOLR
 						List<String> variantsList = productGroupModel.getListOfVariants();
@@ -560,11 +561,33 @@ public class DeviceServiceImpl implements DeviceService {
 			}
 			LogHelper.error(this, "Lead DeviceId List Coming From Solr------------:  " + listOfProducts);
 			List<ProductModel> listOfProductModel = deviceDao.getProductModel(listOfProducts);
+			List<BundleAndHardwareTuple> bundleHardwareTupleList=new ArrayList<>();
 			if (listOfProductModel != null && !listOfProductModel.isEmpty()) {
 				listOfProductModel=sortListForProductModel(listOfProductModel,listOfProducts);
+				listOfProductModel.forEach(productModel->{
+					if(StringUtils.isNotBlank(productModel.getLeadPlanIdNew()) && productModel.getLeadPlanIdNew().length()==6)
+					{
+						BundleAndHardwareTuple bundleAndHardwareTuple=new BundleAndHardwareTuple();
+						bundleAndHardwareTuple.setBundleId(productModel.getLeadPlanIdNew());
+						bundleAndHardwareTuple.setHardwareId(productModel.getProductId());
+						bundleHardwareTupleList.add(bundleAndHardwareTuple);
+					}
+				});
 			} else {
 				LogHelper.error(this, "No Data Found for the given list of Products : " + listOfProductModel);
 				throw new ApplicationException(ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_PRODUCT_LIST);
+			}
+			List<BundleAndHardwarePromotions> promotions=null;
+			Map<String,BundleAndHardwarePromotions> promotionmap=new HashMap<>();
+			if(!bundleHardwareTupleList.isEmpty())
+			{
+				 promotions = CommonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList , registryclnt);
+			}
+			if(promotions!=null)
+			{
+				promotions.forEach(promotion->{
+					promotionmap.put(promotion.getHardwareId(), promotion);
+				});
 			}
 			if (groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG)) {
 				CommercialProduct commercialProduct;
@@ -598,12 +621,12 @@ public class DeviceServiceImpl implements DeviceService {
 					offeredPrice.add(offers);
 					offerPriceMap.put(offers.getHardwareId(), offeredPrice);
 				}
-				});
+			 });
 			}
 			}
 			List<FacetField> facetFields = (null != productGroupFacetModelForFacets) ? productGroupFacetModelForFacets.getListOfFacetsFields() : null;
 			facetedDevice = DaoUtils.convertProductModelListToDeviceList(listOfProductModel, listOfProducts, facetFields,
-					groupType, ls, null,offerPriceMap,offerCode,groupNameWithProdId, null, offeredFlag);
+					groupType, ls, null,offerPriceMap,offerCode,groupNameWithProdId, null, offeredFlag,promotionmap);
 			//facetedDevice.setNoOfRecordsFound(productGroupFacetModel.getNumFound());
 
 		} else {
@@ -799,7 +822,7 @@ public class DeviceServiceImpl implements DeviceService {
 			// make your model to match with this
 			LogHelper.info(DaoUtils.class, "Entering convertProductModelListToDeviceList ");
 			facetedDevice = DaoUtils.convertProductModelListToDeviceList(listOfProductModel, listOfProducts,
-					productGroupFacetModelForFacets.getListOfFacetsFields(), groupType, ls, bundleModelMap,null,null,groupNameWithProdId, bundleModelAndPriceMap,false);
+					productGroupFacetModelForFacets.getListOfFacetsFields(), groupType, ls, bundleModelMap,null,null,groupNameWithProdId, bundleModelAndPriceMap,false,null);
 			LogHelper.info(DaoUtils.class, "exiting convertProductModelListToDeviceList ");
 			facetedDevice.setNoOfRecordsFound(productGroupFacetModel.getNumFound());
 
