@@ -574,11 +574,16 @@ public class DeviceDaoImpl implements DeviceDao {
 	 */
 	@Override
 	public DeviceDetails getDeviceDetails(String deviceId, String journeyType, String offerCode) {
-
-		CommercialProductRepository commercialProductRepository = new CommercialProductRepository();
-		CommercialProduct commercialProduct = commercialProductRepository.get(deviceId);
+		
+		LogHelper.info(this, "Start -->  calling  CommercialProductRepository.get");
+		if(commercialProductRepository == null){
+			commercialProductRepository = CoherenceConnectionProvider.getCommercialProductRepoConnection();
+		}
+		CommercialProduct commercialProduct= commercialProductRepository.get(deviceId);
+		LogHelper.info(this, "End -->  After calling  CommercialProductRepository.get");
+		
+		
 		DeviceDetails deviceDetails = new DeviceDetails();
-		CommercialBundleRepository commercialBundleRepository = new CommercialBundleRepository();
 		if (commercialProduct != null && commercialProduct.getId() != null && commercialProduct.getIsDeviceProduct()
 				&& (commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)
 						|| commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_DATA_DEVICE))) {
@@ -602,7 +607,14 @@ public class DeviceDaoImpl implements DeviceDao {
 				leadPlanId = bundleAndHardwareTupleList.get(0).getBundleId();
 				LogHelper.info(this, "::::: LeadPlanId " + leadPlanId + " :::::");	
 			}
-			CommercialBundle commercialBundle = commercialBundleRepository.get(leadPlanId);
+			
+			LogHelper.info(this, "Start -->  calling  bundleRepository.get");
+			if(commercialBundleRepository == null){
+				commercialBundleRepository = CoherenceConnectionProvider.getCommercialBundleRepoConnection();
+			}
+			CommercialBundle commercialBundle= commercialBundleRepository.get(leadPlanId);
+			LogHelper.info(this, "End -->  After calling  bundleRepository.get");
+			
 			List<OfferPacks> listOfOfferPacks = new ArrayList<>();
 			if (commercialBundle != null) {
 				listOfOfferPacks.addAll(offerPacksMediaListForBundleDetails(commercialBundle));
@@ -645,6 +657,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		}
 		if (commercialProduct.getPromoteAs() != null && commercialProduct.getPromoteAs().getPromotionName() != null
 				&& !commercialProduct.getPromoteAs().getPromotionName().isEmpty()) {
+			LogHelper.info(this, "Start -->  calling  MerchandisingPromotion.get");
 			for (String promotionName : commercialProduct.getPromoteAs().getPromotionName()) {
 				com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion merchandisingPromotion = merchandisingPromotionRepository
 						.get(promotionName);
@@ -667,6 +680,7 @@ public class DeviceDaoImpl implements DeviceDao {
 					}
 				}
 			}
+			LogHelper.info(this, "End -->  After calling  MerchandisingPromotion.get");
 		}
 		validOffer = offerCodes.contains(offerCode) ? true : false;
 		return validOffer;
@@ -1224,11 +1238,12 @@ public class DeviceDaoImpl implements DeviceDao {
 		if (commercialBundle.getPromoteAs() != null && commercialBundle.getPromoteAs().getPromotionName() != null
 				&& !commercialBundle.getPromoteAs().getPromotionName().isEmpty()) {
 			offerPacks = new OfferPacks();
+			LogHelper.info(this, "Start -->  calling  MerchandisingPromotion.get");
 			for (String promotionName : commercialBundle.getPromoteAs().getPromotionName()) {
-				LogHelper.info(this, "Start -->  calling  MerchandisingPromotion.get");
+				
 				com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion merchandisingPromotion = merchandisingPromotionRepository
 						.get(promotionName);
-				LogHelper.info(this, "End -->  After calling  MerchandisingPromotion.get");
+				
 				if (merchandisingPromotion != null) {
 					String startDateTime = CommonUtility.getDateToString(merchandisingPromotion.getStartDateTime(),
 							Constants.DATE_FORMAT_COHERENCE);
@@ -1242,6 +1257,7 @@ public class DeviceDaoImpl implements DeviceDao {
 					}
 				}
 			}
+			LogHelper.info(this, "End -->  After calling  MerchandisingPromotion.get");
 			offerPacks.setBundleId(commercialBundle.getId());
 			offerPacks.setMediaLinkList(listOfMediaLink);
 			listOfOfferPacks.add(offerPacks);
@@ -1262,7 +1278,8 @@ public class DeviceDaoImpl implements DeviceDao {
 		if (commercialProduct.getPromoteAs() != null && commercialProduct.getPromoteAs().getPromotionName() != null
 				&& !commercialProduct.getPromoteAs().getPromotionName().isEmpty()) {
 			offerPacks = new OfferPacks();
-			for (String promotionName : commercialProduct.getPromoteAs().getPromotionName()) {
+			LogHelper.info(this, "Start -->  calling  MerchandisingPromotion.get");
+			for (String promotionName : commercialProduct.getPromoteAs().getPromotionName()) {				
 				com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion merchandisingPromotion = merchandisingPromotionRepository
 						.get(promotionName);
 				if (merchandisingPromotion != null) {
@@ -1278,6 +1295,7 @@ public class DeviceDaoImpl implements DeviceDao {
 					}
 				}
 			}
+			LogHelper.info(this, "End -->  After calling  MerchandisingPromotion.get");
 			offerPacks.setBundleId(commercialProduct.getId());
 			offerPacks.setMediaLinkList(listOfMediaLink);
 			listOfOfferPacks.add(offerPacks);
