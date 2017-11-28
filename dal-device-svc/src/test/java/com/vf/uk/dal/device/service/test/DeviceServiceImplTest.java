@@ -912,7 +912,7 @@ public class DeviceServiceImplTest
 		Assert.assertNotNull(deviceService.validateMemeber("123"));
 	}
 	
-	@Test
+	/*@Test
 	public void testCommonUtilitygetCurrentJourney()
 	{
 		try
@@ -923,7 +923,7 @@ public class DeviceServiceImplTest
 		{
 			
 		}
-	}
+	}*/
 	
 	@Test
 	public void testGetPriceDetailsForCompatibaleBundle()
