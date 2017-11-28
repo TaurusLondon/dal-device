@@ -45,6 +45,7 @@ import com.vf.uk.dal.device.entity.Member;
 import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
 import com.vf.uk.dal.device.entity.ProductGroup;
 import com.vf.uk.dal.device.entity.RequestForBundleAndHardware;
+import com.vf.uk.dal.device.entity.SourcePackageSummary;
 import com.vf.uk.dal.device.entity.Subscription;
 import com.vf.uk.dal.device.svc.DeviceRecommendationService;
 import com.vf.uk.dal.device.svc.DeviceService;
@@ -602,31 +603,21 @@ public class DeviceServiceImplTest
 		
 		String subscriptionId = "07741655541";
 		String subscriptionType = "msisdn";
-		Subscription s = getSubscription();
+		SourcePackageSummary s = getSourcePackageSummary();
 		
 		Mockito.when(registry.getRestTemplate()).thenReturn(restTemplate);
-		String url = "http://CUSTOMER-V1/customer/subscription/" + subscriptionType + ":" + subscriptionId;
+		String url = "http://CUSTOMER-V1/customer/subscription/" + subscriptionType + ":" + subscriptionId + "/sourcePackageSummary";
 		
 
-		given(restTemplate.getForObject(url, Subscription.class)).willReturn(s);
+		given(restTemplate.getForObject(url, SourcePackageSummary.class)).willReturn(s);
 		String deviceId = CommonUtility.getSubscriptionBundleId(subscriptionId, Constants.SUBSCRIPTION_TYPE_MSISDN, registry);
 		Assert.assertEquals("109381", deviceId);
 	}
 
 	
-	private Subscription getSubscription() {
-		Subscription s = new Subscription();
-		Asset a = new Asset();
-		a.setPrivateInstalledProductId("1-55CUT2KA");
-		a.setPrivateRootInstalledProductId("1-55CUT2KA");
-		a.setPrivateParentInstalledProductId(null);
-		a.setSerialNumber(null);
-		a.setProductId("109381");
-		a.setPromotionId("109381");
-		List<Asset> al = new ArrayList<>();
-		al.add(a);
-		s.setProductId("100000");
-		s.setAsset(al);
+	private SourcePackageSummary getSourcePackageSummary() {
+		SourcePackageSummary s = new SourcePackageSummary();
+		s.setPromotionId("109381");
 		return s;
 		
 	}
