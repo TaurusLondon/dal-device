@@ -14,19 +14,16 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vf.uk.dal.common.configuration.ConfigHelper;
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.common.registry.client.RegistryClient;
-import com.vf.uk.dal.device.entity.Asset;
 import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
 import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
 import com.vf.uk.dal.device.entity.RequestForBundleAndHardware;
-import com.vf.uk.dal.device.entity.Subscription;
+import com.vf.uk.dal.device.entity.SourcePackageSummary;
 import com.vf.uk.dal.utility.entity.BundleDetails;
 import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
 import com.vf.uk.dal.utility.entity.BundleDeviceAndProductsList;
-import com.vf.uk.dal.utility.entity.CurrentJourney;
 import com.vf.uk.dal.utility.entity.PriceForProduct;
 import com.vf.uk.dal.utility.entity.RecommendedProductListRequest;
 import com.vf.uk.dal.utility.entity.RecommendedProductListResponse;
@@ -79,10 +76,13 @@ public  class CommonUtility {
 		requestForBundleAndHardware.setPackageType(journeyType);
 		PriceForBundleAndHardware[] client = new PriceForBundleAndHardware[7000];;
 		try {
+			LogHelper.info(CommonUtility.class, "Start --> Calling  Price.calculateForBundleAndHardware");
 			client = restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
 					requestForBundleAndHardware, PriceForBundleAndHardware[].class);
+			LogHelper.info(CommonUtility.class, "Start --> Calling  Price.calculateForBundleAndHardware");
 		} catch (Exception e) {
 			LogHelper.error(CommonUtility.class, "PRICE API of PriceForBundleAndHardware Exception---------------"+e);
+			throw new ApplicationException(ExceptionMessages.PRICING_API_EXCEPTION);
 		}
  		ObjectMapper mapper = new ObjectMapper();
 		return mapper.convertValue(client, new TypeReference<List<PriceForBundleAndHardware>>(){});
@@ -109,6 +109,7 @@ public  class CommonUtility {
 	
 	public static BundleDetailsForAppSrv getPriceDetailsForCompatibaleBundle(String deviceId,RegistryClient registryClient) {
 		try {
+			LogHelper.info(CommonUtility.class, "Start --> Calling  Bundle.getCoupledBundleList");
 			RestTemplate restTemplate =registryClient.getRestTemplate();
 			return restTemplate.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=" +deviceId, BundleDetailsForAppSrv.class );
 		} catch (Exception e) {
@@ -182,7 +183,9 @@ public  class CommonUtility {
 		RestTemplate restTemplate =registryClient.getRestTemplate();
 		PriceForProduct client;
 		try{
+			LogHelper.info(CommonUtility.class, "Start -->  calling  Price.product");
 		 client=restTemplate.postForObject("http://PRICE-V1/price/product" ,bundleDeviceAndProductsList,PriceForProduct.class);
+		 LogHelper.info(CommonUtility.class, "End -->  calling  Price.product");
 		}catch(Exception e){
 			LogHelper.error(CommonUtility.class, "getAccessoryPriceDetails API Exception---------------"+e);
 			throw new ApplicationException(ExceptionMessages.PRICING_API_EXCEPTION);
@@ -216,58 +219,29 @@ public  class CommonUtility {
 	 * @param registryClient
 	 * @return
 	 */
-	public static String getSubscriptionBundleId(String subscriptionId, String subscriptionType, RegistryClient registryClient) {
+	 public static String getSubscriptionBundleId(String subscriptionId, String subscriptionType, RegistryClient registryClient) {
 		
 		String bundleId = null;
 
 		try {
-			String url = "http://CUSTOMER-V1/customer/subscription/" + subscriptionType + ":" + subscriptionId;
+			String url = "http://CUSTOMER-V1/customer/subscription/" + subscriptionType + ":" + subscriptionId + "/sourcePackageSummary";
 			RestTemplate restTemplate = registryClient.getRestTemplate();
-			Subscription subAsset = restTemplate.getForObject(url, Subscription.class);
+			SourcePackageSummary sourcePackageSummary = restTemplate.getForObject(url, SourcePackageSummary.class);
 			
-			if (null != subAsset) {
+			if (null != sourcePackageSummary && null != sourcePackageSummary.getPromotionId()){
+				bundleId = sourcePackageSummary.getPromotionId();
 			
-				List<Asset> assetList = subAsset.getAsset(); 
-		
-				if (assetList != null && !assetList.isEmpty()) {
-					LogHelper.info(CommonUtility.class, "Subscriptions found for msisdn " + subscriptionId  + " : " + assetList.size());
-					
-					if (ConfigHelper.getString("ROOT_INSTALLED_PRODUCT_IDS_MPS", "100000, 110286").contains(subAsset.getProductId())) {
-					
-						for (Asset asset : assetList) {
-							if (null != asset && null != asset.getProductId()) {
-								String privateInstProdId = asset.getPrivateInstalledProductId();
-								String privateRootInstProdId = asset.getPrivateRootInstalledProductId();
-								String privateParentInstProdId = asset.getPrivateParentInstalledProductId();
-								String promotionId = asset.getPromotionId();
-								String serialNum = asset.getSerialNumber();
-								
-								if (null != privateInstProdId && null != privateRootInstProdId && null == privateParentInstProdId
-										&& privateInstProdId.equals(privateRootInstProdId)
-										&& Constants.SUBSCRIPTION_TYPE_MSISDN.equalsIgnoreCase(subscriptionType)
-										&& null != promotionId && null == serialNum) {
-									
-										bundleId = asset.getProductId();
-										LogHelper.info(CommonUtility.class, "BundleId found for subscription " + subscriptionId  + " : " + bundleId);
-										return bundleId;
-								}
-							}
-						}
-					} else {
-						LogHelper.info(CommonUtility.class, "Unable to find mobile subscription for subscriptionId" + subscriptionId);
-					}
-				} else {
-					LogHelper.info(CommonUtility.class, "Unable to get Assets from subscription for subscriptionId" + subscriptionId);
-				}
-			} else {
+				if (StringUtils.isBlank(bundleId))
+					LogHelper.info(CommonUtility.class, "No bundleId retrived from getSubscriptionAPI for the given MSISDN");
+			}
+			 else {
 				LogHelper.info(CommonUtility.class, "Unable to get Subscriptions from GetSubscriptionbyMSISDN servcie for subscriptionId" + subscriptionId);
 			}
 		
 		}catch(Exception e){
 			LogHelper.error(CommonUtility.class, "getBundleId API failed to get bundle from customer subscription : "+e);
 		}
-		LogHelper.warn(CommonUtility.class, "BundleId not found for subscription " + subscriptionId);
-		return null;
+		return bundleId;
 
 	}
 	
