@@ -35,6 +35,7 @@ import com.vf.uk.dal.device.entity.ProductAvailability;
 import com.vf.uk.dal.device.entity.ProductGroup;
 import com.vf.uk.dal.device.entity.ProductGroupForDeviceListing;
 import com.vf.uk.dal.device.entity.RequestForBundleAndHardware;
+import com.vf.uk.dal.device.entity.SourcePackageSummary;
 import com.vf.uk.dal.device.entity.Specification;
 import com.vf.uk.dal.device.entity.SpecificationGroup;
 import com.vf.uk.dal.device.entity.StepPricingInfo;
@@ -165,5 +166,6 @@ public class EntityTest
  		BeanTest.test(PriceForProduct.class);
  		BeanTest.test(PriceForExtra.class);
  		BeanTest.test(com.vf.uk.dal.device.entity.AccessoryTileGroup.class);
+ 		BeanTest.test(SourcePackageSummary.class);
  	}
 }
