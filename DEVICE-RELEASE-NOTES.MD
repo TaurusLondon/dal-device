@@ -358,8 +358,11 @@ https://internal-digitalx-sit2-alb-mas-1938696969.eu-west-1.elb.amazonaws.com/de
 
 https://internal-digitalx-sit2-alb-mas-1938696969.eu-west-1.elb.amazonaws.com/devices/catalogue/insurance/queries/byDeviceId/?deviceId=093353&journeyType={journeyType}
 
+User story # 7396
+[ 
+GetDeviceTile to expose MediaLinks 
+]
 
+URL for above US:
 
-
-
-
+https://internal-digitalx-sit2-alb-mas-1938696969.eu-west-1.elb.amazonaws.com/devices/catalogue/deviceTile/?productClass=HANDSET&sort=Priority&groupType=DEVICE_PAYM 

@@ -835,11 +835,19 @@ public class DeviceDaoImpl implements DeviceDao {
 	{
 		ProductGroupRepository productGroupRepository = new ProductGroupRepository();
 		CommercialProductRepository commercialProductRepository = new CommercialProductRepository();
-		List<AccessoryTileGroup> listOfAccessoryTile = new ArrayList<>();
+		List<AccessoryTileGroup> listOfAccessoryTile = new ArrayList<>();	
+		
+		LogHelper.info(this, "Start -->  calling  CommercialProduct.get");
 		CommercialProduct commercialProduct = commercialProductRepository.get(deviceId);
+		LogHelper.info(this, "End -->  After calling  CommercialProduct.get");
+		
 		if (commercialProduct != null && commercialProduct.getId() != null && commercialProduct.getIsDeviceProduct()
 				&& commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)) {
+			
+			LogHelper.info(this, "Start -->  calling  CommercialProduct.getProductGroups");
 			ProductGroups productGroups = commercialProduct.getProductGroups();
+			LogHelper.info(this, "End -->  After calling  CommercialProduct.getProductGroups");
+			
 			List<String> listOfDeviceGroupName = new ArrayList<>();
 			List<String> finalAccessoryList = new ArrayList<>();
 			if (productGroups != null && productGroups.getProductGroup() != null
@@ -858,9 +866,12 @@ public class DeviceDaoImpl implements DeviceDao {
 
 				// HashMap for groupName and list of accessories ID
 				Map<String, List<String>> mapForGroupName = new LinkedHashMap<>();
-
+				
+				LogHelper.info(this, "Start -->  calling  productGroupRepository.getAll");
 				List<Group> listOfProductGroup = new ArrayList<Group>(
 						productGroupRepository.getAll(listOfDeviceGroupName));
+				LogHelper.info(this, "End -->  After calling  productGroupRepository.getAll");
+				
 				listOfProductGroup = getGroupBasedOnPriority(listOfProductGroup);
 
 				for (Group productGroup : listOfProductGroup) {
@@ -884,10 +895,11 @@ public class DeviceDaoImpl implements DeviceDao {
 						finalAccessoryList.addAll(accessoryList);
 					}
 				}
-				
+				LogHelper.info(this, "Start -->  calling  CommercialProduct.getAll");
 				// Getting all commercial products for all accessories
 				Collection<CommercialProduct> comercialProductList = commercialProductRepository
 						.getAll(finalAccessoryList);
+				LogHelper.info(this, "End -->  After calling  CommercialProduct.getAll");
 				
 				List<CommercialProduct> listOfFilteredAccessories = comercialProductList.stream()                
                         .filter(commercialProductAccessories -> CommonUtility.isProductNotExpired(commercialProductAccessories) && CommonUtility.isProductJourneySpecific(commercialProductAccessories, journeyType))     
@@ -936,16 +948,18 @@ public class DeviceDaoImpl implements DeviceDao {
 				for (Map.Entry<String, List<String>> entry : mapForGroupName.entrySet()) {
 					AccessoryTileGroup accessoryTileGroup = new AccessoryTileGroup();
 					List<Accessory> listOfAccessory = new ArrayList<>();
-					Accessory accessory = null;
+					
 					for (String hardwareId : entry.getValue()) {
 							// US-6717 start
+						Accessory accessory = null;
 						if(mapforCommercialProduct.containsKey(hardwareId) && mapforPrice.containsKey(hardwareId)){
 							accessory = DaoUtils.convertCoherenceAccesoryToAccessory(mapforCommercialProduct.get(hardwareId),
 											mapforPrice.get(hardwareId));
 						// Us-6717 end
 						}
-						if (accessory != null)
+						if (accessory != null){
 							listOfAccessory.add(accessory);
+						}
 					}
 					if (listOfAccessory != null && !listOfAccessory.isEmpty()) {
 						accessoryTileGroup.setGroupName(entry.getKey());
@@ -2041,9 +2055,14 @@ public class DeviceDaoImpl implements DeviceDao {
 	}
 
 	@Override
-	public CommercialProduct getCommercialProductByProductId(String productId) {
-		CommercialProductRepository commercialProductRepository = new CommercialProductRepository();
-		return commercialProductRepository.get(productId);
+	public CommercialProduct getCommercialProductByProductId(String productId) {		
+		LogHelper.info(this, "Start -->  calling  CommercialProduct.get");
+		if(commercialProductRepository == null){
+			commercialProductRepository = new CommercialProductRepository();
+		}
+		CommercialProduct commercialProduct= commercialProductRepository.get(productId);
+		LogHelper.info(this, "End -->  After calling  CommercialProduct.get");
+		return commercialProduct;
 	}
 
 	@Override
@@ -2148,20 +2167,31 @@ public class DeviceDaoImpl implements DeviceDao {
 
 	@Override
 	public Group getGroupByProdGroupName(String groupName,String groupType) {
+		
+		Group  group;
 		try {
-			ProductGroupRepository productGroupRepository = new ProductGroupRepository();
-			return productGroupRepository.getProductGroup(groupName,groupType);
+		LogHelper.info(this, "Start -->  calling  getCommercialProductByDeviceId.get");
+		if(productGroupRepository == null){
+			productGroupRepository = new ProductGroupRepository();
+		}
+		 group= productGroupRepository.getProductGroup(groupName,groupType);
+		LogHelper.info(this, "End -->  After calling  getCommercialProductByDeviceId.get");
 		} catch (NullPointerException np) {
 			LogHelper.error(this, "Invalid Data Coming From Coherence " + np);
 			throw new ApplicationException(ExceptionMessages.INVALID_COHERENCE_DATA);
 		}
+		return group;
 	}
 
 	@Override
 	public List<CommercialProduct> getCommercialProductsList(List<String> productIdsList) {
-		CommercialProductRepository commercialProductRepository = new CommercialProductRepository();
-		List<CommercialProduct> commercialProducts = new ArrayList<>(
-				commercialProductRepository.getAll(productIdsList));
+				
+		LogHelper.info(this, "Start -->  calling  productRepository.getAll");
+		if(commercialProductRepository == null){
+			commercialProductRepository = CoherenceConnectionProvider.getCommercialProductRepoConnection();
+		}
+		List<CommercialProduct> commercialProducts= new ArrayList<>(commercialProductRepository.getAll(productIdsList));
+		LogHelper.info(this, "End -->  After calling  productRepository.getAll");
 		return commercialProducts;
 	}
 
