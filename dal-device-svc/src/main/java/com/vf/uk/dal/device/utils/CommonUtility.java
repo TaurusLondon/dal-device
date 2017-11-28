@@ -76,10 +76,13 @@ public  class CommonUtility {
 		requestForBundleAndHardware.setPackageType(journeyType);
 		PriceForBundleAndHardware[] client = new PriceForBundleAndHardware[7000];;
 		try {
+			LogHelper.info(CommonUtility.class, "Start --> Calling  Price.calculateForBundleAndHardware");
 			client = restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
 					requestForBundleAndHardware, PriceForBundleAndHardware[].class);
+			LogHelper.info(CommonUtility.class, "Start --> Calling  Price.calculateForBundleAndHardware");
 		} catch (Exception e) {
 			LogHelper.error(CommonUtility.class, "PRICE API of PriceForBundleAndHardware Exception---------------"+e);
+			throw new ApplicationException(ExceptionMessages.PRICING_API_EXCEPTION);
 		}
  		ObjectMapper mapper = new ObjectMapper();
 		return mapper.convertValue(client, new TypeReference<List<PriceForBundleAndHardware>>(){});
@@ -106,6 +109,7 @@ public  class CommonUtility {
 	
 	public static BundleDetailsForAppSrv getPriceDetailsForCompatibaleBundle(String deviceId,RegistryClient registryClient) {
 		try {
+			LogHelper.info(CommonUtility.class, "Start --> Calling  Bundle.getCoupledBundleList");
 			RestTemplate restTemplate =registryClient.getRestTemplate();
 			return restTemplate.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=" +deviceId, BundleDetailsForAppSrv.class );
 		} catch (Exception e) {
@@ -179,7 +183,9 @@ public  class CommonUtility {
 		RestTemplate restTemplate =registryClient.getRestTemplate();
 		PriceForProduct client;
 		try{
+			LogHelper.info(CommonUtility.class, "Start -->  calling  Price.product");
 		 client=restTemplate.postForObject("http://PRICE-V1/price/product" ,bundleDeviceAndProductsList,PriceForProduct.class);
+		 LogHelper.info(CommonUtility.class, "End -->  calling  Price.product");
 		}catch(Exception e){
 			LogHelper.error(CommonUtility.class, "getAccessoryPriceDetails API Exception---------------"+e);
 			throw new ApplicationException(ExceptionMessages.PRICING_API_EXCEPTION);
