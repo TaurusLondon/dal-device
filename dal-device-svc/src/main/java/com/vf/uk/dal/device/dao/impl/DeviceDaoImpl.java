@@ -1833,6 +1833,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	public BundleDetails getBundleDetailsFromComplansListingAPI(String deviceId, String sortCriteria) {
 		BundleDetails bundleDetails = null;
 		try {
+			LogHelper.info(this, "Getting Compatible bundle details by calling Compatible Plan List API");
 			bundleDetails = CommonUtility.getBundleDetailsFromComplansListingAPI(deviceId, sortCriteria, registryclnt);
 		} catch (ApplicationException e) {
 			LogHelper.error(this, "No Compatible bundle Found By Given Bundle Id " + e);
@@ -2125,17 +2126,17 @@ public class DeviceDaoImpl implements DeviceDao {
 
 	@Override
 	public CommercialProduct getCommercialProductByProductId(String productId) {		
-		LogHelper.info(this, "Start -->  calling  CommercialProduct.get");
+		LogHelper.info(this, "Get Commercial Product details for Product Id"+ productId);
 		if(commercialProductRepository == null){
 			commercialProductRepository = new CommercialProductRepository();
 		}
 		CommercialProduct commercialProduct= commercialProductRepository.get(productId);
-		LogHelper.info(this, "End -->  After calling  CommercialProduct.get");
 		return commercialProduct;
 	}
 
 	@Override
 	public CommercialBundle getCommercialBundleByBundleId(String bundleId) {
+		LogHelper.info(this, "Get Commercial Bundle details for Bundle Id"+ bundleId);
 		CommercialBundleRepository commercialBundleRepository = new CommercialBundleRepository();
 		return commercialBundleRepository.get(bundleId);
 	}
@@ -2144,6 +2145,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	public List<PriceForBundleAndHardware> getPriceForBundleAndHardware(
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType) {
 		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware;
+		LogHelper.info(this, "Get the price details for Bundle and Hardware list from Pricing API");
 		listOfPriceForBundleAndHardware = CommonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode,
 				registryclnt, journeyType);
 		return listOfPriceForBundleAndHardware;

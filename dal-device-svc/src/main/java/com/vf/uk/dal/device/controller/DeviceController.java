@@ -131,7 +131,7 @@ public class DeviceController {
 			LogHelper.error(this, DEVICE_ID_IS_EMPTY);
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
 		}
-
+		
 		return deviceDetails;
 	}
 
@@ -428,9 +428,9 @@ public class DeviceController {
 			LogHelper.error(this, "Limit is Invalid");
 			throw new ApplicationException(ExceptionMessages.INVALID_PLANS_LIMIT);
 		} else {
+			LogHelper.info(this, "Get the bundle details of a particular device id");
 			bundleDetails = deviceService.getBundlesOfDeviceId(deviceId, bundleId, allowedRecurringPriceLimit,
 					plansLimit);
-
 		}
 
 		return bundleDetails;
@@ -461,6 +461,8 @@ public class DeviceController {
 	public List<DeviceDetails> getListOfDeviceDetails(@RequestParam Map<String, String> queryParams) {
 
 		if (!queryParams.isEmpty() && Validator.validateDeviceId(queryParams)) {
+			
+			LogHelper.info(this, "Query parameter(s) passed in the request "+queryParams);
 			List<DeviceDetails> listOfDeviceDetails;
 
 			String deviceId = queryParams.containsKey(DEVICE_ID) ? queryParams.get(DEVICE_ID) : null;
@@ -473,6 +475,7 @@ public class DeviceController {
 				throw new ApplicationException(ExceptionMessages.REQUIRED_JOURNEY_TYPE);
 			}*/	
 			if (deviceId != null) {
+				LogHelper.info(this, "Get the list of device details for the device id passed as request params "+deviceId);
 				listOfDeviceDetails = deviceService.getListOfDeviceDetails(deviceId,offerCode,journeyType);
 			} else {
 				LogHelper.error(this, DEVICE_ID_IS_EMPTY);
@@ -480,6 +483,7 @@ public class DeviceController {
 			}
 			return listOfDeviceDetails;
 		} else
+			LogHelper.error(this, "Query parameter(s) passed in the request is invalid"+ExceptionMessages.INVALID_QUERY_PARAMS);
 			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
 
 	}
