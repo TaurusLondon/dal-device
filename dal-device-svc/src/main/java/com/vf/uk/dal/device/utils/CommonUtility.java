@@ -76,8 +76,10 @@ public  class CommonUtility {
 		requestForBundleAndHardware.setPackageType(journeyType);
 		PriceForBundleAndHardware[] client = new PriceForBundleAndHardware[7000];;
 		try {
+			LogHelper.info(CommonUtility.class, "Start --> Calling  Price.calculateForBundleAndHardware");
 			client = restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
 					requestForBundleAndHardware, PriceForBundleAndHardware[].class);
+			LogHelper.info(CommonUtility.class, "Start --> Calling  Price.calculateForBundleAndHardware");
 		} catch (Exception e) {
 			LogHelper.error(CommonUtility.class, "PRICE API of PriceForBundleAndHardware Exception---------------"+e);
 		}
@@ -106,6 +108,7 @@ public  class CommonUtility {
 	
 	public static BundleDetailsForAppSrv getPriceDetailsForCompatibaleBundle(String deviceId,RegistryClient registryClient) {
 		try {
+			LogHelper.info(CommonUtility.class, "Start --> Calling  Bundle.getCoupledBundleList");
 			RestTemplate restTemplate =registryClient.getRestTemplate();
 			return restTemplate.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=" +deviceId, BundleDetailsForAppSrv.class );
 		} catch (Exception e) {
