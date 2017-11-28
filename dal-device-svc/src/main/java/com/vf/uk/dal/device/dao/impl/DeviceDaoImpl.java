@@ -681,9 +681,14 @@ public class DeviceDaoImpl implements DeviceDao {
 	@Override
 	public List<DeviceTile> getDeviceTileById(String id, String offerCode, String journeyType) {
 		String strGroupType = null;
-		CommercialProductRepository commercialProductRepository = new CommercialProductRepository();
-		CommercialProduct commercialProduct = commercialProductRepository.get(id);
-		ProductGroupRepository productGroupRepository = new ProductGroupRepository();
+				
+		LogHelper.info(this, "Start -->  calling  CommercialProductRepository.get");
+		if(commercialProductRepository == null){
+			commercialProductRepository = CoherenceConnectionProvider.getCommercialProductRepoConnection();
+		}
+		CommercialProduct commercialProduct= commercialProductRepository.get(id);
+		LogHelper.info(this, "End -->  After calling  CommercialProductRepository.get");
+		
 		List<DeviceTile> listOfDeviceTile;
 		Long memberPriority = null;
 		if (commercialProduct != null && commercialProduct.getId() != null && commercialProduct.getIsDeviceProduct()
@@ -703,8 +708,14 @@ public class DeviceDaoImpl implements DeviceDao {
 				strGroupType = Constants.STRING_DATADEVICE_PAYM;
 			}
 			// ******** start ofUserStory No 6860 ****//
-
+			
+			LogHelper.info(this, "Start -->  calling  productGroupRepository.getProductGroupsByType");
+			if(productGroupRepository == null){
+				productGroupRepository = CoherenceConnectionProvider.getProductGroupRepoRepository();
+			}
 			List<Group> listOfProductGroup = productGroupRepository.getProductGroupsByType(strGroupType);
+			LogHelper.info(this, "End -->  After calling  productGroupRepository.getProductGroupsByType");			
+
 			if (listOfProductGroup != null && !listOfProductGroup.isEmpty()) {
 				for (Group productGroup : listOfProductGroup) {
 					if (productGroup.getMembers() != null && !productGroup.getMembers().isEmpty()) {
@@ -731,14 +742,20 @@ public class DeviceDaoImpl implements DeviceDao {
 						registryclnt, journeyType);
 			}
 
-			CommercialBundleRepository commercialBundleRepository = new CommercialBundleRepository();
 			String leadPlanId = null;
 			if (commercialProduct.getLeadPlanId() != null) {
 				leadPlanId = commercialProduct.getLeadPlanId();
 			} else if (bundleAndHardwareTupleList != null && !bundleAndHardwareTupleList.isEmpty()) {
 				leadPlanId = bundleAndHardwareTupleList.get(0).getBundleId();
 			}
-			CommercialBundle comBundle = commercialBundleRepository.get(leadPlanId);
+			
+			LogHelper.info(this, "Start -->  calling  bundleRepository.get");
+			if(commercialBundleRepository == null){
+				commercialBundleRepository = CoherenceConnectionProvider.getCommercialBundleRepoConnection();
+			}
+			CommercialBundle comBundle= commercialBundleRepository.get(leadPlanId);
+			LogHelper.info(this, "End -->  After calling  bundleRepository.get");
+			
 			// Media Link from merchandising Promotion
 			List<OfferPacks> listOfOfferPacks = new ArrayList<>();
 
@@ -794,7 +811,11 @@ public class DeviceDaoImpl implements DeviceDao {
 				requestManager = SolrConnectionProvider.getSolrConnection();
 			}
 			if (groupType != null && groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYM)) {
+				
+				LogHelper.info(this,"Start -->  calling  getProductGroups_Solr");
 				listOfProductGroupModel = requestManager.getProductGroups(Filters.HANDSET);
+				LogHelper.info(this,"End -->  After calling  getProductGroups_Solr");
+				
 			} else {
 				LogHelper.error(this, Constants.NO_DATA_FOUND_FOR_GROUP_TYPE + groupType);
 				throw new ApplicationException(ExceptionMessages.NULL_VALUE_GROUP_TYPE);
@@ -1204,8 +1225,10 @@ public class DeviceDaoImpl implements DeviceDao {
 				&& !commercialBundle.getPromoteAs().getPromotionName().isEmpty()) {
 			offerPacks = new OfferPacks();
 			for (String promotionName : commercialBundle.getPromoteAs().getPromotionName()) {
+				LogHelper.info(this, "Start -->  calling  MerchandisingPromotion.get");
 				com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion merchandisingPromotion = merchandisingPromotionRepository
 						.get(promotionName);
+				LogHelper.info(this, "End -->  After calling  MerchandisingPromotion.get");
 				if (merchandisingPromotion != null) {
 					String startDateTime = CommonUtility.getDateToString(merchandisingPromotion.getStartDateTime(),
 							Constants.DATE_FORMAT_COHERENCE);
@@ -1805,8 +1828,10 @@ public class DeviceDaoImpl implements DeviceDao {
 	@Override
 	public String getDeviceReviewDetails(String deviceId) {
 		String jsonObject = null;
+		LogHelper.info(this, "Start -->  calling  BazaarReviewRepository.get");
 		BazaarReviewRepository repo = new BazaarReviewRepository();
 		BazaarVoice response = repo.get(deviceId);
+		LogHelper.info(this, "End -->  calling  BazaarReviewRepository.get");
 		if (response != null) {
 			jsonObject = response.getJsonsource();
 		}
@@ -1996,11 +2021,13 @@ public class DeviceDaoImpl implements DeviceDao {
 	public List<BazaarVoice> getReviewRatingList(List<String> listMemberIds) {
 
 		try {
+			LogHelper.info(this, "Start -->  calling  BazaarReviewRepository.get");
 			BazaarReviewRepository repo = new BazaarReviewRepository();
 			List<BazaarVoice> response = new ArrayList<>();
 			for (String skuId : listMemberIds) {
 				response.add(repo.get(CommonUtility.appendPrefixString(skuId)));
 			}
+			LogHelper.info(this, "End --> After calling  BazaarReviewRepository.get");
 			return response;
 		} catch (Exception e) {
 			LogHelper.error(this, "Bazar Voice Exception: " + e);
