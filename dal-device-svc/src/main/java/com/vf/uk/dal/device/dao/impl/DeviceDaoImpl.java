@@ -1891,8 +1891,15 @@ public class DeviceDaoImpl implements DeviceDao {
 	@Override
 	public CommercialProduct getCommercialProductRepositoryByLeadMemberId(String leadMemberId) {
 		try {
-			CommercialProductRepository commercialProductRepository = new CommercialProductRepository();
-			return commercialProductRepository.get(leadMemberId);
+			LogHelper.info(this, "Start -->  calling  CommercialProductRepository.get");
+			if(commercialProductRepository == null){
+				commercialProductRepository = CoherenceConnectionProvider.getCommercialProductRepoConnection();
+			}
+			CommercialProduct commercialProduct= commercialProductRepository.get(leadMemberId);
+			LogHelper.info(this, "End -->  After calling  CommercialProductRepository.get");
+			
+			return commercialProduct;
+			
 		} catch (NullPointerException np) {
 			LogHelper.error(this, "Invalid Data Coming From Coherence " + np);
 			LogHelper.info(this, "Invalid MemberId " + leadMemberId);
@@ -1910,8 +1917,14 @@ public class DeviceDaoImpl implements DeviceDao {
 	public Collection<CommercialProduct> getListCommercialProductRepositoryByLeadMemberId(List<String> leadMemberId) {
 		Collection<CommercialProduct> commercialProductList = null;
 		try {
-			CommercialProductRepository commercialProductRepository = new CommercialProductRepository();
-			commercialProductList = commercialProductRepository.getAll(leadMemberId);
+						
+			LogHelper.info(this, "Start -->  calling  productRepository.getAll");
+			if(commercialProductRepository == null){
+				commercialProductRepository = CoherenceConnectionProvider.getCommercialProductRepoConnection();
+			}
+			commercialProductList = new ArrayList<>(commercialProductRepository.getAll(leadMemberId));
+			LogHelper.info(this, "End -->  After calling  productRepository.getAll");
+			
 		} catch (Exception np) {
 			LogHelper.error(this, "Invalid Data Coming From Coherence " + np);
 			LogHelper.info(this, "Invalid MemberId " + leadMemberId);
@@ -1970,8 +1983,10 @@ public class DeviceDaoImpl implements DeviceDao {
 						filterCriteria, sortBy, sortOption, pageNumber, pageSize,
 						Arrays.asList(VodafoneConstants.UPGRADE));
 			} else {*/
+			LogHelper.info(this, "Start --> Calling  getProductGroupsWithFacets_Solr");
 				productGroupFacetModel = requestManager.getProductGroupsWithFacets(filterKey, filterCriteria, sortBy,
 						sortOption, pageNumber, pageSize);
+		    LogHelper.info(this, "End --> After calling  getProductGroupsWithFacets_Solr");
 			//}
 		} catch (org.apache.solr.common.SolrException solrExcp) {
 			SolrConnectionProvider.closeSolrConnection();
@@ -1991,7 +2006,9 @@ public class DeviceDaoImpl implements DeviceDao {
 			if (requestManager == null) {
 				requestManager = SolrConnectionProvider.getSolrConnection();
 			}
+			LogHelper.info(this, "Start --> Calling  getProductGroupsWithFacets_Solr");
 			productGroupFacetModel = requestManager.getProductGroupsWithFacets(filterKey);
+			LogHelper.info(this, "End --> After Calling  getProductGroupsWithFacets_Solr");
 		} catch (org.apache.solr.common.SolrException solrExcp) {
 			SolrConnectionProvider.closeSolrConnection();
 			LogHelper.error(this, "SolrException: " + solrExcp);
@@ -2010,7 +2027,9 @@ public class DeviceDaoImpl implements DeviceDao {
 			if (requestManager == null) {
 				requestManager = SolrConnectionProvider.getSolrConnection();
 			}
+			LogHelper.info(this, "Start --> Calling  getProductModel_Solr");
 			productModel = requestManager.getProductModel(listOfProducts);
+			LogHelper.info(this, "End --> Calling  getProductModel_Solr");
 		} catch (org.apache.solr.common.SolrException solrExcp) {
 			SolrConnectionProvider.closeSolrConnection();
 			LogHelper.error(this, "SolrException: " + solrExcp);
@@ -2253,8 +2272,10 @@ public class DeviceDaoImpl implements DeviceDao {
 			if (requestManager == null) {
 				requestManager = SolrConnectionProvider.getSolrConnection();
 			}
+			LogHelper.info(this, "Start -->  calling  getMerchandisingPromotionsByProductLineAndPackageType_Solr");
 			listOfMerchandisingPromotions = requestManager.getMerchandisingPromotionsByProductLineAndPackageType("PAYM",
 					journeyType);
+			LogHelper.info(this, "End -->  After calling  getMerchandisingPromotionsByProductLineAndPackageType_solr");
 		} catch (org.apache.solr.common.SolrException solrExcp) {
 			SolrConnectionProvider.closeSolrConnection();
 			LogHelper.error(this, "SolrException: " + solrExcp);
