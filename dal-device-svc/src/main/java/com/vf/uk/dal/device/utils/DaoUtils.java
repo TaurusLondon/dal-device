@@ -42,7 +42,16 @@ import com.vf.uk.dal.device.entity.ProductAvailability;
 import com.vf.uk.dal.device.entity.ProductGroup;
 import com.vf.uk.dal.device.entity.Specification;
 import com.vf.uk.dal.device.entity.SpecificationGroup;
+import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 import com.vf.uk.dal.utility.entity.BundlePrice;
+import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareAccessory;
+import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareDataAllowances;
+import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks;
+import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareExtras;
+import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions;
+import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareSash;
+import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareSecureNet;
+import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForHardwareSash;
 import com.vf.uk.dal.utility.entity.PriceForAccessory;
 import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
 import com.vf.uk.dal.utility.solr.entity.Media;
@@ -1871,7 +1880,8 @@ public class DaoUtils {
 			List<String> listOfProducts, List<FacetField> facetFieldList, String groupType, List<CommercialProduct> ls,
 			Map<String, BundleModel> bundleModelMap, Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice,
 			String offerCode, Map<String, String> groupNameWithProdId,
-			Map<String, BundlePrice> bundleModelAndPriceMap , boolean offeredFlag) {
+			Map<String, BundlePrice> bundleModelAndPriceMap , boolean offeredFlag,
+			Map<String,BundleAndHardwarePromotions> promotionmap) {
 		HardwarePrice hardwarePrice;
 		Price price;
 		PriceForBundleAndHardware priceInfo;
@@ -1963,95 +1973,145 @@ public class DaoUtils {
 						// Media Link
 						List<MediaLink> mediaList = new ArrayList<>();
 
+						/**
+						 * Promotions from promotion API
+						 * @author manoj.bera
+						 */
+						if(promotionmap!=null && !promotionmap.isEmpty() && promotionmap.containsKey(productModel.getProductId()))
+						{
+							
+							BundleAndHardwarePromotions promotions=	promotionmap.get(productModel.getProductId());
+							List<CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks> entertainmentPacks=promotions.getEntertainmentPacks();
+							List<CataloguepromotionqueriesForBundleAndHardwareDataAllowances> dataAllowances=promotions.getDataAllowances();
+							List<CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions> planCouplingPromotions=promotions.getPlanCouplingPromotions();
+							List<CataloguepromotionqueriesForBundleAndHardwareSash> sash=promotions.getSashBannerForPlan();
+							List<CataloguepromotionqueriesForBundleAndHardwareSecureNet> secureNet=promotions.getSecureNet();
+							List<CataloguepromotionqueriesForHardwareSash> sashBannerForHardware=promotions.getSashBannerForHardware();
+							List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtras=promotions.getFreeExtras();
+							List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccessories=promotions.getFreeAccessory();
+							List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtrasForPlans=promotions.getFreeExtrasForPlan();
+							List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccForPlans=promotions.getFreeAccForPlan();
+							List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtrasForHardwares=promotions.getFreeExtrasForHardware();
+							List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccForHardwares=promotions.getFreeAccForHardware();
+							mediaList.addAll(CommonUtility.getMediaListForBundleAndHardware(entertainmentPacks, dataAllowances, planCouplingPromotions, sash, secureNet, sashBannerForHardware, freeExtras, freeAccessories, freeExtrasForPlans, freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares));
+						}
+						if(StringUtils.isNotBlank(productModel.getImageURLsThumbsFront())){
 						MediaLink mediaThumbsFrontLink = new MediaLink();
 						mediaThumbsFrontLink.setId(MediaConstants.STRING_FOR_IMAGE_THUMBS_FRONT);
 						mediaThumbsFrontLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
 						mediaThumbsFrontLink.setValue(productModel.getImageURLsThumbsFront());
 						mediaList.add(mediaThumbsFrontLink);
+						}
 
+						if(StringUtils.isNotBlank(productModel.getImageURLsThumbsLeft())){
 						MediaLink mediaThumbsLeftLink = new MediaLink();
 						mediaThumbsLeftLink.setId(MediaConstants.STRING_FOR_IMAGE_THUMBS_LEFT);
 						mediaThumbsLeftLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
 						mediaThumbsLeftLink.setValue(productModel.getImageURLsThumbsLeft());
 						mediaList.add(mediaThumbsLeftLink);
+						}
 
+						if(StringUtils.isNotBlank(productModel.getImageURLsThumbsRight())){
 						MediaLink mediaThumbsRightLink = new MediaLink();
 						mediaThumbsRightLink.setId(MediaConstants.STRING_FOR_IMAGE_THUMBS_RIGHT);
 						mediaThumbsRightLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
 						mediaThumbsRightLink.setValue(productModel.getImageURLsThumbsRight());
 						mediaList.add(mediaThumbsRightLink);
+						}
 
+						if(StringUtils.isNotBlank(productModel.getImageURLsThumbsSide())){
 						MediaLink mediaThumbsSideLink = new MediaLink();
 						mediaThumbsSideLink.setId(MediaConstants.STRING_FOR_IMAGE_THUMBS_SIDE);
 						mediaThumbsSideLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
 						mediaThumbsSideLink.setValue(productModel.getImageURLsThumbsSide());
 						mediaList.add(mediaThumbsSideLink);
+						}
+						
 
+						if(StringUtils.isNotBlank(productModel.getImageURLsFullLeft())){
 						MediaLink mediaFullLeftLink = new MediaLink();
 						mediaFullLeftLink.setId(MediaConstants.STRING_FOR_IMAGE_FULL_LEFT);
 						mediaFullLeftLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
 						mediaFullLeftLink.setValue(productModel.getImageURLsFullLeft());
 						mediaList.add(mediaFullLeftLink);
+						}
 
+						if(StringUtils.isNotBlank(productModel.getImageURLsFullRight())){
 						MediaLink mediaFullRightLink = new MediaLink();
 						mediaFullRightLink.setId(MediaConstants.STRING_FOR_IMAGE_FULL_RIGHT);
 						mediaFullRightLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
 						mediaFullRightLink.setValue(productModel.getImageURLsFullRight());
 						mediaList.add(mediaFullRightLink);
+						}
 
+						if(StringUtils.isNotBlank(productModel.getImageURLsFullSide())){
 						MediaLink mediaFullSideLink = new MediaLink();
 						mediaFullSideLink.setId(MediaConstants.STRING_FOR_IMAGE_FULL_SIDE);
 						mediaFullSideLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
 						mediaFullSideLink.setValue(productModel.getImageURLsFullSide());
 						mediaList.add(mediaFullSideLink);
-
+						}
+					
+						if(StringUtils.isNotBlank(productModel.getImageURLsFullBack())){
 						MediaLink mediaFullBackLink = new MediaLink();
 						mediaFullBackLink.setId(MediaConstants.STRING_FOR_IMAGE_FULL_BACK);
 						mediaFullBackLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
 						mediaFullBackLink.setValue(productModel.getImageURLsFullBack());
 						mediaList.add(mediaFullBackLink);
+						}
 
+						if(StringUtils.isNotBlank(productModel.getImageURLsGrid())){
 						MediaLink mediaGridLink = new MediaLink();
 						mediaGridLink.setId(MediaConstants.STRING_FOR_IMAGE_GRID);
 						mediaGridLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
 						mediaGridLink.setValue(productModel.getImageURLsGrid());
 						mediaList.add(mediaGridLink);
+						}
 
+						if(StringUtils.isNotBlank(productModel.getImageURLsSmall())){
 						MediaLink mediaSmallLink = new MediaLink();
 						mediaSmallLink.setId(MediaConstants.STRING_FOR_IMAGE_SMALL);
 						mediaSmallLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
 						mediaSmallLink.setValue(productModel.getImageURLsSmall());
 						mediaList.add(mediaSmallLink);
+						}
 
+						if(StringUtils.isNotBlank(productModel.getImageURLsSticker())){
 						MediaLink mediaStickerLink = new MediaLink();
 						mediaStickerLink.setId(MediaConstants.STRING_FOR_IMAGE_STICKER);
 						mediaStickerLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
 						mediaStickerLink.setValue(productModel.getImageURLsSticker());
 						mediaList.add(mediaStickerLink);
+						}
 
+						if(StringUtils.isNotBlank(productModel.getImageURLsIcon())){
 						MediaLink mediaIconLink = new MediaLink();
 						mediaIconLink.setId(MediaConstants.STRING_FOR_IMAGE_ICON);
 						mediaIconLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
 						mediaIconLink.setValue(productModel.getImageURLsIcon());
 						mediaList.add(mediaIconLink);
-
-						MediaLink mediaVideoLink = new MediaLink();
+						}
+						/*MediaLink mediaVideoLink = new MediaLink();
 						mediaVideoLink.setId(MediaConstants.STRING_FOR_IMAGE_VIDEO);
 						mediaVideoLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
 						mediaVideoLink.setValue("");
-						mediaList.add(mediaVideoLink);
-
+						mediaList.add(mediaVideoLink);*/
+						
+						if(StringUtils.isNotBlank(productModel.getThreeDSpin())){
 						MediaLink media3DSpinLink = new MediaLink();
 						media3DSpinLink.setId(MediaConstants.STRING_FOR_IMAGE_3DSPIN);
 						media3DSpinLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
 						media3DSpinLink.setValue(productModel.getThreeDSpin());
 						mediaList.add(media3DSpinLink);
+						}
 
+						if(StringUtils.isNotBlank(productModel.getSupport())){
 						MediaLink mediaSupportLink = new MediaLink();
 						mediaSupportLink.setId(MediaConstants.STRING_FOR_IMAGE_SUPPORT);
 						mediaSupportLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
 						mediaSupportLink.setValue(productModel.getSupport());
 						mediaList.add(mediaSupportLink);
+						}
 						com.vf.uk.dal.device.entity.MerchandisingPromotion bundleMerchandising = null;
 						com.vf.uk.dal.device.entity.MerchandisingPromotion hardwareMerchandising = null;
 						// Merchandising Media
@@ -2295,7 +2355,11 @@ public class DaoUtils {
 						 * Looping to check if any null values in Merchandising
 						 * Media List
 						 */
-						List<MediaLink> finalListOfMediaLink = new ArrayList<>();
+						/**
+						 * below loop not required
+						 * @author manoj.bera
+						 */
+						/*List<MediaLink> finalListOfMediaLink = new ArrayList<>();
 						if (mediaList != null && !mediaList.isEmpty()) {
 							for (MediaLink merchandisingMediaLink : mediaList) {
 								if (merchandisingMediaLink != null && merchandisingMediaLink.getValue() != null
@@ -2303,8 +2367,8 @@ public class DaoUtils {
 									finalListOfMediaLink.add(merchandisingMediaLink);
 								}
 							}
-						}
-						deviceDetails.setMedia(finalListOfMediaLink);
+						}*/
+						deviceDetails.setMedia(mediaList);
 						// Price Info Device
 						BundleModel bundleModel = null;
 						BundlePrice bundlePrice = null;

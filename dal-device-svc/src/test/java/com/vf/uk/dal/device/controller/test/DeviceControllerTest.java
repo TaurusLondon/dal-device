@@ -51,9 +51,12 @@ import com.vf.uk.dal.device.entity.Insurances;
 import com.vf.uk.dal.device.entity.KeepDeviceChangePlanRequest;
 import com.vf.uk.dal.device.entity.ProductGroup;
 import com.vf.uk.dal.device.entity.RequestForBundleAndHardware;
+import com.vf.uk.dal.device.utils.CommonUtility;
 import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.DaoUtils;
 import com.vf.uk.dal.device.utils.DeviceTileCacheDAO;
+import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
+import com.vf.uk.dal.utility.entity.BundleAndHardwareRequest;
 import com.vf.uk.dal.utility.entity.BundleDetails;
 import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
 import com.vf.uk.dal.utility.entity.CurrentJourney;
@@ -350,6 +353,23 @@ public class DeviceControllerTest {
 			given(deviceDAOMock.getProductModel(Matchers.anyList())).willReturn(CommonMethods.getProductModel());
 			given(deviceDAOMock.getCommercialProductRepositoryByLeadMemberId(Matchers.anyString())).willReturn(CommonMethods.getCommercialProduct());
 			given(deviceDAOMock.getJourneyTypeCompatibleOfferCodes(Matchers.anyString())).willReturn(CommonMethods.getModel());
+			List<BundleAndHardwareTuple> bundleHardwareTupleList=new ArrayList<>();
+			BundleAndHardwareTuple bundleAndHardwareTuple1= new BundleAndHardwareTuple();
+			bundleAndHardwareTuple1.setBundleId("110154");
+			bundleAndHardwareTuple1.setHardwareId("093353");
+			BundleAndHardwareTuple bundleAndHardwareTuple2= new BundleAndHardwareTuple();
+			bundleAndHardwareTuple2.setBundleId("110154");
+			bundleAndHardwareTuple2.setHardwareId("092660");
+			bundleHardwareTupleList.add(bundleAndHardwareTuple1);
+			bundleHardwareTupleList.add(bundleAndHardwareTuple2);
+			BundleAndHardwareRequest request =new BundleAndHardwareRequest();
+			request.setBundleAndHardwareList(bundleHardwareTupleList);
+			String jsonString = new String(Utility.readFile("\\BundleandhardwarePromotuions.json"));
+			 BundleAndHardwarePromotions[] obj = new ObjectMapper().readValue(jsonString,  BundleAndHardwarePromotions[].class);
+			given(restTemplate.postForObject("http://PROMOTION-V1/promotion/queries/ForBundleAndHardware",
+					request, BundleAndHardwarePromotions[].class))
+							.willReturn(obj);
+			
 			deviceDetailsList = deviceController
 					.getDeviceList(CommonMethods.getQueryParamsMap("Apple", "iPhone-7", "DEVICE_PAYM", "HANDSET",
 							"32 GB", "White", "iOS", "Great Camera", null, null));

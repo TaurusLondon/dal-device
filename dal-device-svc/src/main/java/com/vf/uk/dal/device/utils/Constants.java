@@ -172,6 +172,8 @@ public class Constants {
 	public static final String STRING_MEDIA_PRICEESTABLISH = "priceEstablishedLabel";
 	public static final String STRING_MEDIA_DESCRIPTION = "description";
 	public static final String STRING_MEDIA_LABEL = "label";
+	public static final String STRING_URL_ALLOWANCE = "URL";
+	public static final String DATE_FORMAT = "yyyy-MM-dd";
 	/**
 	 * @author manoj.bera 
 	 * @Sprint 6.4 Constants End
