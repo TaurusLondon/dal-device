@@ -152,13 +152,18 @@ public class DeviceDaoImpl implements DeviceDao {
 		if (groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYM)
 				|| groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG)
 				|| groupType.equalsIgnoreCase(Constants.STRING_DEVICE_NEARLY_NEW)) {
+			LogHelper.info(this, "Start -->  calling  CommericalProduct.getByMakeAndModel");
 			listOfCommercialProducts = commercialProductRepository.getByMakeANDModel(make, model);
+			LogHelper.info(this, "End -->  After calling  CommericalProduct.getByMakeAndModel");
 			
 		} else {
 			LogHelper.error(this, Constants.NO_DATA_FOUND_FOR_GROUP_TYPE + groupType);
 			throw new ApplicationException(ExceptionMessages.NULL_VALUE_GROUP_TYPE);
 		}
+		LogHelper.info(this, "Start -->  calling  productGroupRepository.getProductGroupsByType");
 		List<Group> listOfProductGroup = productGroupRepository.getProductGroupsByType(groupType);
+		LogHelper.info(this, "End -->  After calling  productGroupRepository.getProductGroupsByType");
+		
 		List<CommercialProduct> commercialProductsMatchedMemList = new ArrayList<>();
 		Map<String, CommercialProduct> commerProdMemMap = new HashMap<>();
 		List<BundleAndHardwareTuple> bundleAndHardwareTupleList = new ArrayList<>();
