@@ -325,7 +325,7 @@ public class DeviceServiceImpl implements DeviceService {
 	} */
 		
 		
-		
+		LogHelper.info(this, "Start -->  calling  getDeviceList in ServiceImpl");
 		if (includeRecommendations && StringUtils.isBlank(msisdn)) {
 			LogHelper.error(this, "Invalid MSISDN provided. MSISDN is required for retrieving recommendations.");
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MSISDN);
@@ -363,6 +363,7 @@ public class DeviceServiceImpl implements DeviceService {
 				
 			}
 		}
+		LogHelper.info(this, "End -->  calling  GetDeviceList in ServiceImpl");
 		return facetedDevice;
 	}
 	/**
@@ -1708,9 +1709,11 @@ public class DeviceServiceImpl implements DeviceService {
 	public List<DeviceDetails> getListOfDeviceDetails(String deviceId,String offerCode,String journeyType) {
 		List<DeviceDetails> listOfDevices;
 		List<String> listOfDeviceIds;
+		LogHelper.info(this, "Get the list of device details of device id(s) "+deviceId);
 		if (deviceId.contains(",")) {
 			String[] deviceIds = deviceId.split(",");
 			listOfDeviceIds = Arrays.asList(deviceIds);
+			
 			listOfDevices = getDeviceDetailsList(listOfDeviceIds,offerCode, journeyType);
 			}else{
 				listOfDeviceIds = new ArrayList<>();
@@ -1718,7 +1721,7 @@ public class DeviceServiceImpl implements DeviceService {
 				listOfDevices = getDeviceDetailsList(listOfDeviceIds, offerCode, journeyType);
 			}
 		if(listOfDevices==null || listOfDevices.isEmpty()){
-			LogHelper.error(this, "Invalid Device Id");
+			LogHelper.error(this, "Invalid Device Id"+ExceptionMessages.INVALID_DEVICE_ID);
 			throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 		}
 		return listOfDevices;
@@ -1842,7 +1845,8 @@ public class DeviceServiceImpl implements DeviceService {
 		}
 		// Calling pricing API
 				List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = deviceDao.getPriceForBundleAndHardware(listOfBundleAndHardwareTuple,offerCode,journeyType);
-		//Setting prices and its corresponding promotions
+		
+			LogHelper.info(this, "Setting prices and its corresponding promotions");
 				settingPriceAndPromotionsToListOfDevices(listOfPriceForBundleAndHardware,listOfDevices);
 				
 		return listOfDevices;

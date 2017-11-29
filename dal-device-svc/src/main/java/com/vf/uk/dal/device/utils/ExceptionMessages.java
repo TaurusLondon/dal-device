@@ -71,11 +71,14 @@ public class ExceptionMessages
 	public static final String INVALID_JOURNEY_TYPE = "Received invalid journeyType in the request.";
 	
 	public static final String PRICING_API_EXCEPTION = "Pricing API throwing Exception While calling";
-	public static final String BAZARVOICE_SERVICE_EXCEPTION = "Exception Occured While calling BazarVoice";
+	public static final String BAZARVOICE_SERVICE_EXCEPTION = "Exception Occured While calling BazarVoiceRepo"; //update script
 
 	//Sprint 6.3
 	public static final String NULL_VALUES_FROM_PRICING_API = "Null value received from Pricing API";
 	public static final String NULL_COMPATIBLE_INSURANCES_FOR_DEVICE_ID = "No Compatible Insurances found for given device Id";
 	public static final String NO_DATA_FOR_GIVEN_SEARCH_CRITERIA = "No details found for given criteria";
+	
+	public static final String BUNDLECOMPATIBLELIST_API_EXCEPTION = "Error while calling BundleCompatibleList API";
+	public static final String COUPLEBUNDLELIST_API_EXCEPTION = "Error while calling CoupleBundleList API";
 }
 

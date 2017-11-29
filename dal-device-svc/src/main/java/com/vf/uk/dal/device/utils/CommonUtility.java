@@ -92,7 +92,7 @@ public  class CommonUtility {
 			LogHelper.info(CommonUtility.class, "Start --> Calling  Price.calculateForBundleAndHardware");
 			client = restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
 					requestForBundleAndHardware, PriceForBundleAndHardware[].class);
-			LogHelper.info(CommonUtility.class, "Start --> Calling  Price.calculateForBundleAndHardware");
+			LogHelper.info(CommonUtility.class, "End --> Calling  Price.calculateForBundleAndHardware");
 		} catch (Exception e) {
 			LogHelper.error(CommonUtility.class, "PRICE API of PriceForBundleAndHardware Exception---------------"+e);
 			throw new ApplicationException(ExceptionMessages.PRICING_API_EXCEPTION);
@@ -127,8 +127,10 @@ public  class CommonUtility {
 			return restTemplate.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=" +deviceId, BundleDetailsForAppSrv.class );
 		} catch (Exception e) {
 			LogHelper.error(CommonUtility.class, ""+e);
-			return null;
-		}}
+			throw new ApplicationException(ExceptionMessages.COUPLEBUNDLELIST_API_EXCEPTION);
+			//return null;
+		}
+	}
 	/**
 	 * Gets the bundle details from complans listing API.
 	 *
@@ -141,6 +143,7 @@ public  class CommonUtility {
 	public static BundleDetails getBundleDetailsFromComplansListingAPI(String deviceId, String sortCriteria,
 			RegistryClient registryClient) {
 		RestTemplate restTemplate = registryClient.getRestTemplate();
+		LogHelper.info(CommonUtility.class, "Start -->  calling  Bundle.GetCompatibleListAPI");
 		String URL = "http://BUNDLES-V1/bundles/catalogue/bundle/queries/byDeviceId/" + deviceId + "/";
 		if (sortCriteria != null && StringUtils.isNotBlank(sortCriteria)) {
 			URL += "/?sort=" + sortCriteria;
@@ -148,10 +151,11 @@ public  class CommonUtility {
 		BundleDetails client=new BundleDetails();
 		try{
 		 client = restTemplate.getForObject(URL, BundleDetails.class);
+		 LogHelper.info(CommonUtility.class, "End -->  calling  Bundle.GetCompatibleListAPI");
 		} 
 		catch(Exception e){
 			LogHelper.error(CommonUtility.class, "getBundleDetailsFromGetCompatibleListAPI API Exception---------------"+e);
-			throw new ApplicationException(e.getLocalizedMessage());
+			throw new ApplicationException(ExceptionMessages.BUNDLECOMPATIBLELIST_API_EXCEPTION);
 	}
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.convertValue(client, new TypeReference<BundleDetails>() {
@@ -215,7 +219,9 @@ public  class CommonUtility {
 			requestForBundleAndHardware.setBundleAndHardwareList(bundleAndHardwareTupleList);
 			requestForBundleAndHardware.setOfferCode(offerCode);
 			requestForBundleAndHardware.setPackageType(journeyType);
+			LogHelper.info(CommonUtility.class, "Start --> Calling  Price.calculateForBundleAndHardware");
 			com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[] client=restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware" ,requestForBundleAndHardware,com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[].class);
+			LogHelper.info(CommonUtility.class, "End --> Calling  Price.calculateForBundleAndHardware");
 			ObjectMapper mapper = new ObjectMapper();
 			priceList= mapper.convertValue(client, new TypeReference<List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>>(){});
 		} catch (Exception e) {

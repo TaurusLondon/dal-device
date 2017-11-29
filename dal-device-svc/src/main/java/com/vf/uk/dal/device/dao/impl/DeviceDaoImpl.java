@@ -764,8 +764,10 @@ public class DeviceDaoImpl implements DeviceDao {
 			String leadPlanId = null;
 			if (commercialProduct.getLeadPlanId() != null) {
 				leadPlanId = commercialProduct.getLeadPlanId();
+				LogHelper.info(this, "::::: LeadPlanId " + leadPlanId + " :::::");	
 			} else if (bundleAndHardwareTupleList != null && !bundleAndHardwareTupleList.isEmpty()) {
 				leadPlanId = bundleAndHardwareTupleList.get(0).getBundleId();
+				LogHelper.info(this, "::::: LeadPlanId " + leadPlanId + " :::::");	
 			}
 			
 			LogHelper.info(this, "Start -->  calling  bundleRepository.get");
@@ -873,13 +875,14 @@ public class DeviceDaoImpl implements DeviceDao {
 	@Override
 	public List<AccessoryTileGroup> getAccessoriesOfDevice(String deviceId, String journeyType,String offerCode) 
 	{
-		ProductGroupRepository productGroupRepository = new ProductGroupRepository();
-		CommercialProductRepository commercialProductRepository = new CommercialProductRepository();
-		List<AccessoryTileGroup> listOfAccessoryTile = new ArrayList<>();	
+		List<AccessoryTileGroup> listOfAccessoryTile = new ArrayList<>();		
 		
-		LogHelper.info(this, "Start -->  calling  CommercialProduct.get");
-		CommercialProduct commercialProduct = commercialProductRepository.get(deviceId);
-		LogHelper.info(this, "End -->  After calling  CommercialProduct.get");
+		LogHelper.info(this, "Start -->  calling  CommercialProductRepository.get");
+		if(commercialProductRepository == null){
+			commercialProductRepository = CoherenceConnectionProvider.getCommercialProductRepoConnection();
+		}
+		CommercialProduct commercialProduct= commercialProductRepository.get(deviceId);
+		LogHelper.info(this, "End -->  After calling  CommercialProductRepository.get");
 		
 		if (commercialProduct != null && commercialProduct.getId() != null && commercialProduct.getIsDeviceProduct()
 				&& commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)) {
@@ -908,6 +911,9 @@ public class DeviceDaoImpl implements DeviceDao {
 				Map<String, List<String>> mapForGroupName = new LinkedHashMap<>();
 				
 				LogHelper.info(this, "Start -->  calling  productGroupRepository.getAll");
+				if(productGroupRepository == null){
+					productGroupRepository = CoherenceConnectionProvider.getProductGroupRepoRepository();
+				}
 				List<Group> listOfProductGroup = new ArrayList<Group>(
 						productGroupRepository.getAll(listOfDeviceGroupName));
 				LogHelper.info(this, "End -->  After calling  productGroupRepository.getAll");
@@ -1132,8 +1138,14 @@ public class DeviceDaoImpl implements DeviceDao {
 	 */
 	public Boolean validateMemeber(String memberId) {
 		Boolean memberFlag = false;
-		CommercialProductRepository commercialProductRepository = new CommercialProductRepository();
-		CommercialProduct comProduct = commercialProductRepository.get(memberId);
+		
+		LogHelper.info(this, "Start -->  calling  CommercialProductRepository.get");
+		if(commercialProductRepository == null){
+			commercialProductRepository = CoherenceConnectionProvider.getCommercialProductRepoConnection();
+		}
+		CommercialProduct comProduct= commercialProductRepository.get(memberId);
+		LogHelper.info(this, "End -->  After calling  CommercialProductRepository.get");
+		
 		Date startDateTime = comProduct.getProductAvailability().getStart();
 		Date endDateTime = comProduct.getProductAvailability().getEnd();
 		boolean preOrderableFlag = comProduct.getProductControl().isPreOrderable();
@@ -1833,6 +1845,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	public BundleDetails getBundleDetailsFromComplansListingAPI(String deviceId, String sortCriteria) {
 		BundleDetails bundleDetails = null;
 		try {
+			LogHelper.info(this, "Getting Compatible bundle details by calling Compatible Plan List API");
 			bundleDetails = CommonUtility.getBundleDetailsFromComplansListingAPI(deviceId, sortCriteria, registryclnt);
 		} catch (ApplicationException e) {
 			LogHelper.error(this, "No Compatible bundle Found By Given Bundle Id " + e);
@@ -1867,8 +1880,14 @@ public class DeviceDaoImpl implements DeviceDao {
 	@Override
 	public com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion getMerchandisingPromotionByPromotionName(
 			String promotionName) {
-		MerchandisingPromotionRepository merchandisingPromotionRepository = new MerchandisingPromotionRepository();
-		return merchandisingPromotionRepository.get(promotionName);
+		
+		LogHelper.info(this, "Start -->  calling  merchandisingPromotionRepository.get");
+		if(merchandisingPromotionRepository == null){
+			merchandisingPromotionRepository = CoherenceConnectionProvider.getMerchandisingRepoConnection();
+		}
+		com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion merchandisingPromotion= merchandisingPromotionRepository.get(promotionName);
+		LogHelper.info(this, "End -->  After calling  merchandisingPromotionRepository.get");
+		return merchandisingPromotion;
 	}
 
 	/**
@@ -1876,9 +1895,16 @@ public class DeviceDaoImpl implements DeviceDao {
 	 */
 	@Override
 	public List<Group> getProductGroupsByType(String groupType) {
-		try {
-			ProductGroupRepository productGroupRepository = new ProductGroupRepository();
-			return productGroupRepository.getProductGroupsByType(groupType);
+		try {			
+			if(productGroupRepository == null){
+				productGroupRepository = CoherenceConnectionProvider.getProductGroupRepoRepository();
+			}
+			LogHelper.info(this, "Start --> Calling  productRepository.getByName");
+			List<Group> groupList= productGroupRepository.getProductGroupsByType(groupType);
+			LogHelper.info(this, "End --> End -->  After calling  productRepository.getProductByClass");
+			return groupList;
+						
+			
 		} catch (Exception e) {
 			LogHelper.error(this, "Coherence Issue " + e);
 			throw new ApplicationException(ExceptionMessages.INVALID_COHERENCE_DATA);
@@ -1906,10 +1932,14 @@ public class DeviceDaoImpl implements DeviceDao {
 			throw new ApplicationException(ExceptionMessages.INVALID_COHERENCE_DATA);
 		}
 	}
-
+	
+	@Override
 	public List<OfferAppliedPriceModel> getBundleAndHardwarePriceFromSolr(List<String> deviceIds, String offerCode) {
 
+		LogHelper.info(this, "Start --> Calling  getOfferAppliedPrices_Solr");
 		List<OfferAppliedPriceModel> list = requestManager.getOfferAppliedPrices(deviceIds, offerCode);
+		LogHelper.info(this, "End --> End -->  After calling  getOfferAppliedPrices_Solr");		
+		
 		return list;
 	}
 
@@ -2125,25 +2155,33 @@ public class DeviceDaoImpl implements DeviceDao {
 
 	@Override
 	public CommercialProduct getCommercialProductByProductId(String productId) {		
-		LogHelper.info(this, "Start -->  calling  CommercialProduct.get");
+			
+		LogHelper.info(this, "Start -->  calling  CommercialProductRepository.get");
 		if(commercialProductRepository == null){
-			commercialProductRepository = new CommercialProductRepository();
+			commercialProductRepository = CoherenceConnectionProvider.getCommercialProductRepoConnection();
 		}
 		CommercialProduct commercialProduct= commercialProductRepository.get(productId);
-		LogHelper.info(this, "End -->  After calling  CommercialProduct.get");
+		LogHelper.info(this, "End -->  After calling  CommercialProductRepository.get");
 		return commercialProduct;
 	}
 
 	@Override
 	public CommercialBundle getCommercialBundleByBundleId(String bundleId) {
-		CommercialBundleRepository commercialBundleRepository = new CommercialBundleRepository();
-		return commercialBundleRepository.get(bundleId);
+		
+		LogHelper.info(this, "Start -->  calling  bundleRepository.get");
+		if(commercialBundleRepository == null){
+			commercialBundleRepository = CoherenceConnectionProvider.getCommercialBundleRepoConnection();
+		}
+		CommercialBundle commercialBundle= commercialBundleRepository.get(bundleId);
+		LogHelper.info(this, "End -->  After calling  bundleRepository.get");
+		return commercialBundle;
 	}
 
 	@Override
 	public List<PriceForBundleAndHardware> getPriceForBundleAndHardware(
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType) {
 		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware;
+		LogHelper.info(this, "Get the price details for Bundle and Hardware list from Pricing API");
 		listOfPriceForBundleAndHardware = CommonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode,
 				registryclnt, journeyType);
 		return listOfPriceForBundleAndHardware;
@@ -2224,9 +2262,14 @@ public class DeviceDaoImpl implements DeviceDao {
 	@Override
 	public Collection<CommercialBundle> getListCommercialBundleRepositoryByCompatiblePlanList(List<String> planIdList) {
 		Collection<CommercialBundle> commercialBundleList = null;
-		try {
-			CommercialBundleRepository commercialBundleRepository = new CommercialBundleRepository();
+		try {			
+			if(commercialBundleRepository == null){
+				commercialBundleRepository = CoherenceConnectionProvider.getCommercialBundleRepoConnection();
+			}
+			LogHelper.info(this, "Start --> Calling BundleRepository.getAll");
 			commercialBundleList = commercialBundleRepository.getAll(planIdList);
+			LogHelper.info(this, "End --> End -->  After calling  BundleRepository.getAll");			
+			
 		} catch (Exception e) {
 			LogHelper.error(this, "==>" + e);
 			return commercialBundleList;
