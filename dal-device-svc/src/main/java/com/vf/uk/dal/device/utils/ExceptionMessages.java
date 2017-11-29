@@ -78,6 +78,7 @@ public class ExceptionMessages
 	public static final String NULL_COMPATIBLE_INSURANCES_FOR_DEVICE_ID = "No Compatible Insurances found for given device Id";
 	public static final String NO_DATA_FOR_GIVEN_SEARCH_CRITERIA = "No details found for given criteria";
 	
-	public static final String BUNDLECOMPATIBLELIST_API_EXCEPTION = "Error while BundleCompatibleList API";
+	public static final String BUNDLECOMPATIBLELIST_API_EXCEPTION = "Error while calling BundleCompatibleList API";
+	public static final String COUPLEBUNDLELIST_API_EXCEPTION = "Error while calling CoupleBundleList API";
 }
 
