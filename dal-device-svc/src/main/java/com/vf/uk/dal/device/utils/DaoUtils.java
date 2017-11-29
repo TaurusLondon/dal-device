@@ -86,7 +86,7 @@ public class DaoUtils {
 	 */
 	public static DeviceSummary convertCoherenceDeviceToDeviceTile(Long memberPriority,
 			CommercialProduct commercialProduct, CommercialBundle comBundle,
-			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware, List<OfferPacks> listOfOfferPacks,
+				PriceForBundleAndHardware priceforBundleAndHardware, List<BundleAndHardwarePromotions> listOfOfferPacks,
 			String groupType, boolean isConditionalAcceptJourney, Map<String, Boolean> fromPricingMap) {
 
 		DeviceSummary deviceSummary;
@@ -140,25 +140,31 @@ public class DaoUtils {
 		MediaLink mediaLink;
 		if (commercialProduct.getListOfimageURLs() != null) {
 			for (com.vodafone.product.pojo.ImageURL imageURL : commercialProduct.getListOfimageURLs()) {
-				mediaLink = new MediaLink();
-				mediaLink.setId(imageURL.getImageName());
-				mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-				mediaLink.setValue(imageURL.getImageURL());
-				merchandisingMedia.add(mediaLink);
+				if(StringUtils.isNotBlank(imageURL.getImageURL()))
+				{
+					mediaLink = new MediaLink();
+					mediaLink.setId(imageURL.getImageName());
+					mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
+					mediaLink.setValue(imageURL.getImageURL());
+					merchandisingMedia.add(mediaLink);
+				}
 			}
 		}
 		if (commercialProduct.getListOfmediaURLs() != null) {
 			for (com.vodafone.product.pojo.MediaURL mediaURL : commercialProduct.getListOfmediaURLs()) {
-				mediaLink = new MediaLink();
-				mediaLink.setId(mediaURL.getMediaName());
-				mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-				mediaLink.setValue(mediaURL.getMediaURL());
-				merchandisingMedia.add(mediaLink);
+				if(StringUtils.isNotBlank(mediaURL.getMediaURL()))
+				{
+					mediaLink = new MediaLink();
+					mediaLink.setId(mediaURL.getMediaName());
+					mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
+					mediaLink.setValue(mediaURL.getMediaURL());
+					merchandisingMedia.add(mediaLink);
+				}
 			}
 		}
 
 		// Offer Packs
-		MediaLink mediaEntertainmentLink;
+		/*MediaLink mediaEntertainmentLink;
 		if (listOfOfferPacks != null && !listOfOfferPacks.isEmpty()) {
 			for (OfferPacks entertainmentPacks : listOfOfferPacks) {
 				if (entertainmentPacks.getMediaLinkList() != null && !entertainmentPacks.getMediaLinkList().isEmpty()) {
@@ -172,45 +178,73 @@ public class DaoUtils {
 					}
 				}
 			}
+		}*/
+		/**
+		 * @author manoj.bera
+		 * @Sprint 6.4
+		 */
+		if(listOfOfferPacks!=null && !listOfOfferPacks.isEmpty())
+		{
+			
+			List<CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks> entertainmentPacks=listOfOfferPacks.get(0).getEntertainmentPacks();
+			List<CataloguepromotionqueriesForBundleAndHardwareDataAllowances> dataAllowances=listOfOfferPacks.get(0).getDataAllowances();
+			List<CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions> planCouplingPromotions=listOfOfferPacks.get(0).getPlanCouplingPromotions();
+			List<CataloguepromotionqueriesForBundleAndHardwareSash> sash=listOfOfferPacks.get(0).getSashBannerForPlan();
+			List<CataloguepromotionqueriesForBundleAndHardwareSecureNet> secureNet=listOfOfferPacks.get(0).getSecureNet();
+			List<CataloguepromotionqueriesForHardwareSash> sashBannerForHardware=listOfOfferPacks.get(0).getSashBannerForHardware();
+			List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtras=listOfOfferPacks.get(0).getFreeExtras();
+			List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccessories=listOfOfferPacks.get(0).getFreeAccessory();
+			List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtrasForPlans=listOfOfferPacks.get(0).getFreeExtrasForPlan();
+			List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccForPlans=listOfOfferPacks.get(0).getFreeAccForPlan();
+			List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtrasForHardwares=listOfOfferPacks.get(0).getFreeExtrasForHardware();
+			List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccForHardwares=listOfOfferPacks.get(0).getFreeAccForHardware();
+			merchandisingMedia.addAll(CommonUtility.getMediaListForBundleAndHardware(entertainmentPacks, dataAllowances, planCouplingPromotions, sash, secureNet, sashBannerForHardware, freeExtras, freeAccessories, freeExtrasForPlans, freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares));
 		}
 
 		// MediaLink for PricePromotions
-		if (listOfPriceForBundleAndHardware != null && !listOfPriceForBundleAndHardware.isEmpty()) {
-			for (PriceForBundleAndHardware priceforBundleAndHardware : listOfPriceForBundleAndHardware) {
-				if (priceforBundleAndHardware != null && priceforBundleAndHardware.getHardwarePrice() != null
+		if (priceforBundleAndHardware != null ) {
+			//for (PriceForBundleAndHardware priceforBundleAndHardware : listOfPriceForBundleAndHardware) {
+				/*if (priceforBundleAndHardware != null && priceforBundleAndHardware.getHardwarePrice() != null
 						&& priceforBundleAndHardware.getHardwarePrice().getHardwareId()
-								.equalsIgnoreCase(commercialProduct.getId())) {
+								.equalsIgnoreCase(commercialProduct.getId())) {*/
 
 					// Hardware Promotion
 					MerchandisingPromotion merchPromoForHardware = priceforBundleAndHardware.getHardwarePrice()
 							.getMerchandisingPromotions();
 					// Label
 					MediaLink priceMediaLinkLabel = new MediaLink();
-					if (merchPromoForHardware != null && merchPromoForHardware.getMpType() != null) {
-						priceMediaLinkLabel
-								.setId(merchPromoForHardware.getMpType() + "." + Constants.STRING_OFFERS_LABEL);
-						priceMediaLinkLabel.setType("TEXT");
-						priceMediaLinkLabel.setValue(merchPromoForHardware.getLabel());
-						priceMediaLinkLabel.setPriority(merchPromoForHardware.getPriority());
-						merchandisingMedia.add(priceMediaLinkLabel);
-
+					if (merchPromoForHardware != null && StringUtils.isNotBlank(merchPromoForHardware.getMpType())) {
+						if(StringUtils.isNotBlank(merchPromoForHardware.getLabel()))
+						{
+							priceMediaLinkLabel
+									.setId(merchPromoForHardware.getMpType() + "." + Constants.STRING_OFFERS_LABEL);
+							priceMediaLinkLabel.setType("TEXT");
+							priceMediaLinkLabel.setValue(merchPromoForHardware.getLabel());
+							priceMediaLinkLabel.setPriority(merchPromoForHardware.getPriority());
+							merchandisingMedia.add(priceMediaLinkLabel);
+						}
 						// Description
-						MediaLink priceMediaLinkDescription = new MediaLink();
-						priceMediaLinkDescription
-								.setId(merchPromoForHardware.getMpType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
-						priceMediaLinkDescription.setType("TEXT");
-						priceMediaLinkDescription.setValue(merchPromoForHardware.getDescription());
-						priceMediaLinkDescription.setPriority(merchPromoForHardware.getPriority());
-						merchandisingMedia.add(priceMediaLinkDescription);
-
+						if(StringUtils.isNotBlank(merchPromoForHardware.getDescription()))
+						{
+							MediaLink priceMediaLinkDescription = new MediaLink();
+							priceMediaLinkDescription
+									.setId(merchPromoForHardware.getMpType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
+							priceMediaLinkDescription.setType("TEXT");
+							priceMediaLinkDescription.setValue(merchPromoForHardware.getDescription());
+							priceMediaLinkDescription.setPriority(merchPromoForHardware.getPriority());
+							merchandisingMedia.add(priceMediaLinkDescription);
+						}
 						// PriceEstablished
-						MediaLink priceEstablishedMediaLink = new MediaLink();
-						priceEstablishedMediaLink.setId(
-								merchPromoForHardware.getMpType() + "." + Constants.STRING_PRICE_ESTABLISHED_LABEL);
-						priceEstablishedMediaLink.setType("TEXT");
-						priceEstablishedMediaLink.setValue(merchPromoForHardware.getPriceEstablishedLabel());
-						priceEstablishedMediaLink.setPriority(merchPromoForHardware.getPriority());
-						merchandisingMedia.add(priceEstablishedMediaLink);
+						if(StringUtils.isNotBlank(merchPromoForHardware.getPriceEstablishedLabel()))
+						{
+							MediaLink priceEstablishedMediaLink = new MediaLink();
+							priceEstablishedMediaLink.setId(
+									merchPromoForHardware.getMpType() + "." + Constants.STRING_PRICE_ESTABLISHED_LABEL);
+							priceEstablishedMediaLink.setType("TEXT");
+							priceEstablishedMediaLink.setValue(merchPromoForHardware.getPriceEstablishedLabel());
+							priceEstablishedMediaLink.setPriority(merchPromoForHardware.getPriority());
+							merchandisingMedia.add(priceEstablishedMediaLink);
+						}
 					}
 
 					// Bundle Promotion
@@ -218,40 +252,47 @@ public class DaoUtils {
 							.getMerchandisingPromotions();
 					// Label
 					if (merchPromoForBundle != null && merchPromoForBundle.getMpType() != null) {
-						MediaLink priceMediaLinkLabelForBundle = new MediaLink();
-						priceMediaLinkLabelForBundle
-								.setId(merchPromoForBundle.getMpType() + "." + Constants.STRING_OFFERS_LABEL);
-						priceMediaLinkLabelForBundle.setType("TEXT");
-						priceMediaLinkLabelForBundle.setValue(merchPromoForBundle.getLabel());
-						priceMediaLinkLabelForBundle.setPriority(merchPromoForBundle.getPriority());
-						merchandisingMedia.add(priceMediaLinkLabelForBundle);
-
+						if(StringUtils.isNotBlank(merchPromoForBundle.getLabel()))
+						{
+							MediaLink priceMediaLinkLabelForBundle = new MediaLink();
+							priceMediaLinkLabelForBundle
+									.setId(merchPromoForBundle.getMpType() + "." + Constants.STRING_OFFERS_LABEL);
+							priceMediaLinkLabelForBundle.setType("TEXT");
+							priceMediaLinkLabelForBundle.setValue(merchPromoForBundle.getLabel());
+							priceMediaLinkLabelForBundle.setPriority(merchPromoForBundle.getPriority());
+							merchandisingMedia.add(priceMediaLinkLabelForBundle);
+						}
 						// Description
-						MediaLink priceMediaLinkDescriptionForBundle = new MediaLink();
-						priceMediaLinkDescriptionForBundle
-								.setId(merchPromoForBundle.getMpType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
-						priceMediaLinkDescriptionForBundle.setType("TEXT");
-						priceMediaLinkDescriptionForBundle.setValue(merchPromoForBundle.getDescription());
-						priceMediaLinkDescriptionForBundle.setPriority(merchPromoForBundle.getPriority());
-						merchandisingMedia.add(priceMediaLinkDescriptionForBundle);
-
+						if(StringUtils.isNotBlank(merchPromoForBundle.getDescription()))
+						{
+							MediaLink priceMediaLinkDescriptionForBundle = new MediaLink();
+							priceMediaLinkDescriptionForBundle
+									.setId(merchPromoForBundle.getMpType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
+							priceMediaLinkDescriptionForBundle.setType("TEXT");
+							priceMediaLinkDescriptionForBundle.setValue(merchPromoForBundle.getDescription());
+							priceMediaLinkDescriptionForBundle.setPriority(merchPromoForBundle.getPriority());
+							merchandisingMedia.add(priceMediaLinkDescriptionForBundle);
+						}
 						// PriceEstablished
+						if(StringUtils.isNotBlank(merchPromoForBundle.getPriceEstablishedLabel()))
+						{
 						MediaLink priceEstablishedMediaLinkForBundle = new MediaLink();
 						priceEstablishedMediaLinkForBundle.setId(
 								merchPromoForBundle.getMpType() + "." + Constants.STRING_PRICE_ESTABLISHED_LABEL);
 						priceEstablishedMediaLinkForBundle.setType("TEXT");
 						priceEstablishedMediaLinkForBundle.setValue(merchPromoForBundle.getPriceEstablishedLabel());
-						priceMediaLinkDescriptionForBundle.setPriority(merchPromoForBundle.getPriority());
+						priceEstablishedMediaLinkForBundle.setPriority(merchPromoForBundle.getPriority());
 						merchandisingMedia.add(priceEstablishedMediaLinkForBundle);
+						}
 					}
-				}
-			}
+				//}
+			//}
 		}
 
 		/*
 		 * Looping to check if any null values in Merchandising Media List
 		 */
-		List<MediaLink> finalListOfMediaLink = new ArrayList<>();
+		/*List<MediaLink> finalListOfMediaLink = new ArrayList<>();
 		if (merchandisingMedia != null && !merchandisingMedia.isEmpty()) {
 			for (MediaLink merchandisingMediaLink : merchandisingMedia) {
 				if (merchandisingMediaLink != null && merchandisingMediaLink.getValue() != null
@@ -259,9 +300,9 @@ public class DaoUtils {
 					finalListOfMediaLink.add(merchandisingMediaLink);
 				}
 			}
-		}
+		}*/
 
-		deviceSummary.setMerchandisingMedia(finalListOfMediaLink);
+		deviceSummary.setMerchandisingMedia(merchandisingMedia);
 
 		if (comBundle != null) {
 			deviceSummary.setLeadPlanId(comBundle.getId());
@@ -298,7 +339,7 @@ public class DaoUtils {
 			deviceSummary.setPriceInfo(priceInfo);
 		} else {
 			PriceForBundleAndHardware priceForBundleAndHardware = getBundleAndHardwarePrice(
-					listOfPriceForBundleAndHardware, commercialProduct.getId(), isConditionalAcceptJourney, comBundle);
+					priceforBundleAndHardware, commercialProduct.getId(), isConditionalAcceptJourney, comBundle);
 			if (null == priceForBundleAndHardware || null == priceForBundleAndHardware.getBundlePrice()
 					|| null == priceForBundleAndHardware.getBundlePrice().getMonthlyPrice()) {
 				return null;
@@ -317,7 +358,7 @@ public class DaoUtils {
 	 * @return DeviceDetails
 	 */
 	public static DeviceDetails convertCoherenceDeviceToDeviceDetails(CommercialProduct cohProduct,
-			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware, List<OfferPacks> listOfOfferPacks) {
+			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware, List<BundleAndHardwarePromotions> listOfOfferPacks) {
 		ProductAvailability productAvailability = new ProductAvailability();
 
 		List<MediaLink> merchandisingMedia = new ArrayList<>();
@@ -382,25 +423,31 @@ public class DaoUtils {
 		MediaLink mediaLink;
 		if (cohProduct.getListOfimageURLs() != null) {
 			for (com.vodafone.product.pojo.ImageURL imageURL : cohProduct.getListOfimageURLs()) {
-				mediaLink = new MediaLink();
-				mediaLink.setId(imageURL.getImageName());
-				mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-				mediaLink.setValue(imageURL.getImageURL());
-				merchandisingMedia.add(mediaLink);
+				if(StringUtils.isNotBlank(imageURL.getImageURL()))
+				{
+					mediaLink = new MediaLink();
+					mediaLink.setId(imageURL.getImageName());
+					mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
+					mediaLink.setValue(imageURL.getImageURL());
+					merchandisingMedia.add(mediaLink);
+				}
 			}
 		}
 		if (cohProduct.getListOfmediaURLs() != null) {
 			for (com.vodafone.product.pojo.MediaURL mediaURL : cohProduct.getListOfmediaURLs()) {
-				mediaLink = new MediaLink();
-				mediaLink.setId(mediaURL.getMediaName());
-				mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-				mediaLink.setValue(mediaURL.getMediaURL());
-				merchandisingMedia.add(mediaLink);
+				if(StringUtils.isNotBlank(mediaURL.getMediaURL()))
+				{
+					mediaLink = new MediaLink();
+					mediaLink.setId(mediaURL.getMediaName());
+					mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
+					mediaLink.setValue(mediaURL.getMediaURL());
+					merchandisingMedia.add(mediaLink);
+				}
 			}
 		}
 
 		// Offer Packs
-		MediaLink mediaEntertainmentLink;
+		/*MediaLink mediaEntertainmentLink;
 		if (listOfOfferPacks != null && !listOfOfferPacks.isEmpty()) {
 			for (OfferPacks entertainmentPacks : listOfOfferPacks) {
 				if (entertainmentPacks.getMediaLinkList() != null && !entertainmentPacks.getMediaLinkList().isEmpty()) {
@@ -413,11 +460,33 @@ public class DaoUtils {
 					}
 				}
 			}
+		}*/
+		/**
+		 * @author manoj.bera
+		 * I called promotion API
+		 */
+		if(listOfOfferPacks!=null && !listOfOfferPacks.isEmpty())
+		{
+			
+			BundleAndHardwarePromotions promotions=	listOfOfferPacks.get(0);
+			List<CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks> entertainmentPacks=promotions.getEntertainmentPacks();
+			List<CataloguepromotionqueriesForBundleAndHardwareDataAllowances> dataAllowances=promotions.getDataAllowances();
+			List<CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions> planCouplingPromotions=promotions.getPlanCouplingPromotions();
+			List<CataloguepromotionqueriesForBundleAndHardwareSash> sash=promotions.getSashBannerForPlan();
+			List<CataloguepromotionqueriesForBundleAndHardwareSecureNet> secureNet=promotions.getSecureNet();
+			List<CataloguepromotionqueriesForHardwareSash> sashBannerForHardware=promotions.getSashBannerForHardware();
+			List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtras=promotions.getFreeExtras();
+			List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccessories=promotions.getFreeAccessory();
+			List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtrasForPlans=promotions.getFreeExtrasForPlan();
+			List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccForPlans=promotions.getFreeAccForPlan();
+			List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtrasForHardwares=promotions.getFreeExtrasForHardware();
+			List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccForHardwares=promotions.getFreeAccForHardware();
+			merchandisingMedia.addAll(CommonUtility.getMediaListForBundleAndHardware(entertainmentPacks, dataAllowances, planCouplingPromotions, sash, secureNet, sashBannerForHardware, freeExtras, freeAccessories, freeExtrasForPlans, freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares));
 		}
 		/*
 		 * Looping to check if any null values in Merchandising Media List
 		 */
-		List<MediaLink> finalListOfMediaLink = new ArrayList<>();
+		/*List<MediaLink> finalListOfMediaLink = new ArrayList<>();
 		if (merchandisingMedia != null && !merchandisingMedia.isEmpty()) {
 			for (MediaLink merchandisingMediaLink : merchandisingMedia) {
 				if (merchandisingMediaLink != null && merchandisingMediaLink.getValue() != null
@@ -425,9 +494,7 @@ public class DaoUtils {
 					finalListOfMediaLink.add(merchandisingMediaLink);
 				}
 			}
-		}
-
-		deviceDetails.setMedia(finalListOfMediaLink);
+		}*/
 
 		List<com.vodafone.product.pojo.Group> listOfSpecificationGroups = cohProduct.getSpecificationGroups();
 		List<Specification> listOfSpecification;
@@ -503,9 +570,90 @@ public class DaoUtils {
 					}
 				}
 				deviceDetails.setPriceInfo(priceForBundleAndHardware);
-			}
-		}
+				
+				/**
+				 * pricing Merchandising population
+				 */
+				MerchandisingPromotion merchPromoForHardware = priceForBundleAndHardware.getHardwarePrice()
+						.getMerchandisingPromotions();
+				// Label
+				MediaLink priceMediaLinkLabel = new MediaLink();
+				if (merchPromoForHardware != null && StringUtils.isNotBlank(merchPromoForHardware.getMpType())) {
+					if(StringUtils.isNotBlank(merchPromoForHardware.getLabel()))
+					{
+						priceMediaLinkLabel
+								.setId(merchPromoForHardware.getMpType() + "." + Constants.STRING_OFFERS_LABEL);
+						priceMediaLinkLabel.setType("TEXT");
+						priceMediaLinkLabel.setValue(merchPromoForHardware.getLabel());
+						priceMediaLinkLabel.setPriority(merchPromoForHardware.getPriority());
+						merchandisingMedia.add(priceMediaLinkLabel);
+					}
+					// Description
+					if(StringUtils.isNotBlank(merchPromoForHardware.getDescription()))
+					{
+						MediaLink priceMediaLinkDescription = new MediaLink();
+						priceMediaLinkDescription
+								.setId(merchPromoForHardware.getMpType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
+						priceMediaLinkDescription.setType("TEXT");
+						priceMediaLinkDescription.setValue(merchPromoForHardware.getDescription());
+						priceMediaLinkDescription.setPriority(merchPromoForHardware.getPriority());
+						merchandisingMedia.add(priceMediaLinkDescription);
+					}
+					// PriceEstablished
+					if(StringUtils.isNotBlank(merchPromoForHardware.getPriceEstablishedLabel()))
+					{
+						MediaLink priceEstablishedMediaLink = new MediaLink();
+						priceEstablishedMediaLink.setId(
+								merchPromoForHardware.getMpType() + "." + Constants.STRING_PRICE_ESTABLISHED_LABEL);
+						priceEstablishedMediaLink.setType("TEXT");
+						priceEstablishedMediaLink.setValue(merchPromoForHardware.getPriceEstablishedLabel());
+						priceEstablishedMediaLink.setPriority(merchPromoForHardware.getPriority());
+						merchandisingMedia.add(priceEstablishedMediaLink);
+					}
+				}
 
+				// Bundle Promotion
+				MerchandisingPromotion merchPromoForBundle = priceForBundleAndHardware.getBundlePrice()
+						.getMerchandisingPromotions();
+				// Label
+				if (merchPromoForBundle != null && merchPromoForBundle.getMpType() != null) {
+					if(StringUtils.isNotBlank(merchPromoForBundle.getLabel()))
+					{
+						MediaLink priceMediaLinkLabelForBundle = new MediaLink();
+						priceMediaLinkLabelForBundle
+								.setId(merchPromoForBundle.getMpType() + "." + Constants.STRING_OFFERS_LABEL);
+						priceMediaLinkLabelForBundle.setType("TEXT");
+						priceMediaLinkLabelForBundle.setValue(merchPromoForBundle.getLabel());
+						priceMediaLinkLabelForBundle.setPriority(merchPromoForBundle.getPriority());
+						merchandisingMedia.add(priceMediaLinkLabelForBundle);
+					}
+					// Description
+					if(StringUtils.isNotBlank(merchPromoForBundle.getDescription()))
+					{
+						MediaLink priceMediaLinkDescriptionForBundle = new MediaLink();
+						priceMediaLinkDescriptionForBundle
+								.setId(merchPromoForBundle.getMpType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
+						priceMediaLinkDescriptionForBundle.setType("TEXT");
+						priceMediaLinkDescriptionForBundle.setValue(merchPromoForBundle.getDescription());
+						priceMediaLinkDescriptionForBundle.setPriority(merchPromoForBundle.getPriority());
+						merchandisingMedia.add(priceMediaLinkDescriptionForBundle);
+					}
+					// PriceEstablished
+					if(StringUtils.isNotBlank(merchPromoForBundle.getPriceEstablishedLabel()))
+					{
+					MediaLink priceEstablishedMediaLinkForBundle = new MediaLink();
+					priceEstablishedMediaLinkForBundle.setId(
+							merchPromoForBundle.getMpType() + "." + Constants.STRING_PRICE_ESTABLISHED_LABEL);
+					priceEstablishedMediaLinkForBundle.setType("TEXT");
+					priceEstablishedMediaLinkForBundle.setValue(merchPromoForBundle.getPriceEstablishedLabel());
+					priceEstablishedMediaLinkForBundle.setPriority(merchPromoForBundle.getPriority());
+					merchandisingMedia.add(priceEstablishedMediaLinkForBundle);
+					}
+				}
+			}
+			
+		}
+		deviceDetails.setMedia(merchandisingMedia);
 		MetaData metaData;
 		metaData = new MetaData();
 		metaData.setSeoCanonical(cohProduct.getSeoCanonical());
@@ -761,69 +909,83 @@ public class DaoUtils {
 		insurances.setMinCost(String.valueOf(Collections.min(minPrice)));
 		return insurances;
 	}
-
+/**
+ * @author manoj.bera
+ * @param priceForBundleAndHardware
+ * @param deviceId
+ * @param isConditionalAcceptJourney
+ * @param comBundle
+ * @return
+ */
 	public static PriceForBundleAndHardware getBundleAndHardwarePrice(
-			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware, String deviceId,
+				PriceForBundleAndHardware priceForBundleAndHardware, String deviceId,
 			boolean isConditionalAcceptJourney, CommercialBundle comBundle) {
 		PriceForBundleAndHardware priceForBundleAndHardware1 = null;
-		if (listOfPriceForBundleAndHardware != null && !listOfPriceForBundleAndHardware.isEmpty()) {
-			for (PriceForBundleAndHardware priceForBundleAndHardware : listOfPriceForBundleAndHardware) {
-				if (priceForBundleAndHardware.getHardwarePrice() != null
-						&& priceForBundleAndHardware.getHardwarePrice().getOneOffPrice() != null
-						&& priceForBundleAndHardware.getHardwarePrice().getOneOffDiscountPrice() != null
-						&& priceForBundleAndHardware.getHardwarePrice().getHardwareId() != null) {
-					// &&
-					// priceForBundleAndHardware.getHardwarePrice().getHardwareId().equals(deviceId))
-					// {
-					if (isConditionalAcceptJourney) {
-						if (null != priceForBundleAndHardware.getBundlePrice() && null != comBundle && !comBundle
-								.getId().equals(priceForBundleAndHardware.getBundlePrice().getBundleId())) {
-							continue;
-						}
-					}
-					Integer deviceID = new Integer(deviceId);
-					Integer hardwareID = new Integer(priceForBundleAndHardware.getHardwarePrice().getHardwareId());
-					if (deviceID.equals(hardwareID)) {
+		if (priceForBundleAndHardware != null) {
+			// for (PriceForBundleAndHardware priceForBundleAndHardware :
+			// listOfPriceForBundleAndHardware) {
+			if (priceForBundleAndHardware.getHardwarePrice() != null
+					&& priceForBundleAndHardware.getHardwarePrice().getOneOffPrice() != null
+					&& priceForBundleAndHardware.getHardwarePrice().getOneOffDiscountPrice() != null
+					&& priceForBundleAndHardware.getHardwarePrice().getHardwareId() != null) {
+				// &&
+				// priceForBundleAndHardware.getHardwarePrice().getHardwareId().equals(deviceId))
+				// {
+				Integer deviceID = new Integer(deviceId);
+				Integer hardwareID = new Integer(priceForBundleAndHardware.getHardwarePrice().getHardwareId());
+				if (isConditionalAcceptJourney) {
+					if (null != priceForBundleAndHardware.getBundlePrice() && null != comBundle
+							&& !comBundle.getId().equals(priceForBundleAndHardware.getBundlePrice().getBundleId())
+							&& deviceID.equals(hardwareID)) {
 						priceForBundleAndHardware1 = priceForBundleAndHardware;
-						if (priceForBundleAndHardware1.getHardwarePrice() != null
-								&& priceForBundleAndHardware1.getHardwarePrice().getOneOffPrice() != null
-								&& priceForBundleAndHardware1.getOneOffDiscountPrice() != null
-								&& priceForBundleAndHardware1.getOneOffDiscountPrice().getGross() != null
-								&& priceForBundleAndHardware1.getOneOffPrice().getGross() != null)
-							if (priceForBundleAndHardware1.getHardwarePrice().getOneOffPrice().getGross()
-									.equalsIgnoreCase(priceForBundleAndHardware1.getHardwarePrice()
-											.getOneOffDiscountPrice().getGross())) {
-								priceForBundleAndHardware1.getHardwarePrice().getOneOffDiscountPrice().setGross(null);
-								priceForBundleAndHardware1.getHardwarePrice().getOneOffDiscountPrice().setVat(null);
-								priceForBundleAndHardware1.getHardwarePrice().getOneOffDiscountPrice().setNet(null);
-								priceForBundleAndHardware1.getOneOffDiscountPrice().setGross(null);
-								priceForBundleAndHardware1.getOneOffDiscountPrice().setVat(null);
-								priceForBundleAndHardware1.getOneOffDiscountPrice().setNet(null);
-							}
-						if (priceForBundleAndHardware1.getBundlePrice() != null
-								&& priceForBundleAndHardware1.getBundlePrice().getMonthlyDiscountPrice() != null
-								&& priceForBundleAndHardware1.getBundlePrice().getMonthlyPrice() != null
-								&& priceForBundleAndHardware1.getBundlePrice().getMonthlyDiscountPrice()
-										.getGross() != null
-								&& priceForBundleAndHardware1.getBundlePrice().getMonthlyPrice().getGross() != null)
-							if (priceForBundleAndHardware1.getBundlePrice().getMonthlyDiscountPrice().getGross()
-									.equalsIgnoreCase(
-											priceForBundleAndHardware1.getBundlePrice().getMonthlyPrice().getGross())) {
-								priceForBundleAndHardware1.getBundlePrice().getMonthlyDiscountPrice().setGross(null);
-								priceForBundleAndHardware1.getBundlePrice().getMonthlyDiscountPrice().setVat(null);
-								priceForBundleAndHardware1.getBundlePrice().getMonthlyDiscountPrice().setNet(null);
-								priceForBundleAndHardware1.getMonthlyDiscountPrice().setGross(null);
-								priceForBundleAndHardware1.getMonthlyDiscountPrice().setVat(null);
-								priceForBundleAndHardware1.getMonthlyDiscountPrice().setNet(null);
-							}
+						priceForBundleAndHardware1 = getCalculatedPrice(priceForBundleAndHardware1);
 					}
-
+				} else if (deviceID.equals(hardwareID)) {
+					priceForBundleAndHardware1 = priceForBundleAndHardware;
+					priceForBundleAndHardware1 = getCalculatedPrice(priceForBundleAndHardware1);
 				}
+
 			}
+			// }
 		}
 		return priceForBundleAndHardware1;
 	}
-
+	/**
+	 * @author manoj.bera
+	 * @param priceForBundleAndHardware1
+	 * @return
+	 */
+	public static PriceForBundleAndHardware getCalculatedPrice(PriceForBundleAndHardware priceForBundleAndHardware1) {
+		if (priceForBundleAndHardware1.getHardwarePrice() != null
+				&& priceForBundleAndHardware1.getHardwarePrice().getOneOffPrice() != null
+				&& priceForBundleAndHardware1.getOneOffDiscountPrice() != null
+				&& priceForBundleAndHardware1.getOneOffDiscountPrice().getGross() != null
+				&& priceForBundleAndHardware1.getOneOffPrice().getGross() != null)
+			if (priceForBundleAndHardware1.getHardwarePrice().getOneOffPrice().getGross().equalsIgnoreCase(
+					priceForBundleAndHardware1.getHardwarePrice().getOneOffDiscountPrice().getGross())) {
+				priceForBundleAndHardware1.getHardwarePrice().getOneOffDiscountPrice().setGross(null);
+				priceForBundleAndHardware1.getHardwarePrice().getOneOffDiscountPrice().setVat(null);
+				priceForBundleAndHardware1.getHardwarePrice().getOneOffDiscountPrice().setNet(null);
+				priceForBundleAndHardware1.getOneOffDiscountPrice().setGross(null);
+				priceForBundleAndHardware1.getOneOffDiscountPrice().setVat(null);
+				priceForBundleAndHardware1.getOneOffDiscountPrice().setNet(null);
+			}
+		if (priceForBundleAndHardware1.getBundlePrice() != null
+				&& priceForBundleAndHardware1.getBundlePrice().getMonthlyDiscountPrice() != null
+				&& priceForBundleAndHardware1.getBundlePrice().getMonthlyPrice() != null
+				&& priceForBundleAndHardware1.getBundlePrice().getMonthlyDiscountPrice().getGross() != null
+				&& priceForBundleAndHardware1.getBundlePrice().getMonthlyPrice().getGross() != null)
+			if (priceForBundleAndHardware1.getBundlePrice().getMonthlyDiscountPrice().getGross()
+					.equalsIgnoreCase(priceForBundleAndHardware1.getBundlePrice().getMonthlyPrice().getGross())) {
+				priceForBundleAndHardware1.getBundlePrice().getMonthlyDiscountPrice().setGross(null);
+				priceForBundleAndHardware1.getBundlePrice().getMonthlyDiscountPrice().setVat(null);
+				priceForBundleAndHardware1.getBundlePrice().getMonthlyDiscountPrice().setNet(null);
+				priceForBundleAndHardware1.getMonthlyDiscountPrice().setGross(null);
+				priceForBundleAndHardware1.getMonthlyDiscountPrice().setVat(null);
+				priceForBundleAndHardware1.getMonthlyDiscountPrice().setNet(null);
+			}
+		return priceForBundleAndHardware1;
+	}
 	/**
 	 * Date validation
 	 * 

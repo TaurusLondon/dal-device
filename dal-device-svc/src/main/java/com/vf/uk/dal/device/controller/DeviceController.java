@@ -64,6 +64,7 @@ public class DeviceController {
 	/**
 	 * Handles requests for getDeviceTile Service with input as
 	 * GROUP_NAME,GROUP_TYPE in URL as query.
+	 * performance improved by @author manoj.bera
 	 * 
 	 * @return Device
 	 **/

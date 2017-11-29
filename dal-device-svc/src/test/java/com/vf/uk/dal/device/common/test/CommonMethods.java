@@ -1376,6 +1376,8 @@ public class CommonMethods {
 		merchandisingPromotions.setDiscountId("107531");
 		merchandisingPromotions.setLabel("20% off with any handset");
 		merchandisingPromotions.setTag("AllPhone.full.2017");
+		merchandisingPromotions.setDescription("description");
+		merchandisingPromotions.setMpType("limited_discount");
 		/*merchandisingPromotions1.setDiscountId("107526");
 		merchandisingPromotions1.setLabel("9 months, 15% off, Any Handset");
 		merchandisingPromotions1.setTag("AllPhone.limit.2017");*/
@@ -3139,7 +3141,7 @@ public class CommonMethods {
 		modelList.add(model);
 		return modelList;
 	}
-/*public static List<BundleAndHardwarePromotions> getListOfBundleAndHardwarePromotions() {
+	public static List<BundleAndHardwarePromotions> getListOfBundleAndHardwarePromotions() {
 		
 		try {
 			
@@ -3160,5 +3162,5 @@ public class CommonMethods {
 			e.printStackTrace();
 		}
 		return null;
-	}*/
+	}
 }
