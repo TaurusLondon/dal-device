@@ -325,7 +325,7 @@ public class DeviceServiceImpl implements DeviceService {
 	} */
 		
 		
-		
+		LogHelper.info(this, "Start -->  calling  getDeviceList in ServiceImpl");
 		if (includeRecommendations && StringUtils.isBlank(msisdn)) {
 			LogHelper.error(this, "Invalid MSISDN provided. MSISDN is required for retrieving recommendations.");
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MSISDN);
@@ -363,6 +363,7 @@ public class DeviceServiceImpl implements DeviceService {
 				
 			}
 		}
+		LogHelper.info(this, "End -->  calling  GetDeviceList in ServiceImpl");
 		return facetedDevice;
 	}
 	/**
