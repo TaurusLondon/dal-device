@@ -141,6 +141,7 @@ public  class CommonUtility {
 	public static BundleDetails getBundleDetailsFromComplansListingAPI(String deviceId, String sortCriteria,
 			RegistryClient registryClient) {
 		RestTemplate restTemplate = registryClient.getRestTemplate();
+		LogHelper.info(CommonUtility.class, "Start -->  calling  Bundle.GetCompatibleListAPI");
 		String URL = "http://BUNDLES-V1/bundles/catalogue/bundle/queries/byDeviceId/" + deviceId + "/";
 		if (sortCriteria != null && StringUtils.isNotBlank(sortCriteria)) {
 			URL += "/?sort=" + sortCriteria;
@@ -148,10 +149,11 @@ public  class CommonUtility {
 		BundleDetails client=new BundleDetails();
 		try{
 		 client = restTemplate.getForObject(URL, BundleDetails.class);
+		 LogHelper.info(CommonUtility.class, "End -->  calling  Bundle.GetCompatibleListAPI");
 		} 
 		catch(Exception e){
 			LogHelper.error(CommonUtility.class, "getBundleDetailsFromGetCompatibleListAPI API Exception---------------"+e);
-			throw new ApplicationException(e.getLocalizedMessage());
+			throw new ApplicationException(ExceptionMessages.BUNDLECOMPATIBLELIST_API_EXCEPTION);
 	}
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.convertValue(client, new TypeReference<BundleDetails>() {
