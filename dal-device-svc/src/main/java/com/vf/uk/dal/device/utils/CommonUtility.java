@@ -92,7 +92,7 @@ public  class CommonUtility {
 			LogHelper.info(CommonUtility.class, "Start --> Calling  Price.calculateForBundleAndHardware");
 			client = restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
 					requestForBundleAndHardware, PriceForBundleAndHardware[].class);
-			LogHelper.info(CommonUtility.class, "Start --> Calling  Price.calculateForBundleAndHardware");
+			LogHelper.info(CommonUtility.class, "End --> Calling  Price.calculateForBundleAndHardware");
 		} catch (Exception e) {
 			LogHelper.error(CommonUtility.class, "PRICE API of PriceForBundleAndHardware Exception---------------"+e);
 			throw new ApplicationException(ExceptionMessages.PRICING_API_EXCEPTION);
@@ -217,7 +217,9 @@ public  class CommonUtility {
 			requestForBundleAndHardware.setBundleAndHardwareList(bundleAndHardwareTupleList);
 			requestForBundleAndHardware.setOfferCode(offerCode);
 			requestForBundleAndHardware.setPackageType(journeyType);
+			LogHelper.info(CommonUtility.class, "Start --> Calling  Price.calculateForBundleAndHardware");
 			com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[] client=restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware" ,requestForBundleAndHardware,com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[].class);
+			LogHelper.info(CommonUtility.class, "End --> Calling  Price.calculateForBundleAndHardware");
 			ObjectMapper mapper = new ObjectMapper();
 			priceList= mapper.convertValue(client, new TypeReference<List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>>(){});
 		} catch (Exception e) {
