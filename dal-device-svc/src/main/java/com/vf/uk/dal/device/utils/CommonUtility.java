@@ -127,8 +127,10 @@ public  class CommonUtility {
 			return restTemplate.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=" +deviceId, BundleDetailsForAppSrv.class );
 		} catch (Exception e) {
 			LogHelper.error(CommonUtility.class, ""+e);
-			return null;
-		}}
+			throw new ApplicationException(ExceptionMessages.COUPLEBUNDLELIST_API_EXCEPTION);
+			//return null;
+		}
+	}
 	/**
 	 * Gets the bundle details from complans listing API.
 	 *

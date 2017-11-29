@@ -875,13 +875,14 @@ public class DeviceDaoImpl implements DeviceDao {
 	@Override
 	public List<AccessoryTileGroup> getAccessoriesOfDevice(String deviceId, String journeyType,String offerCode) 
 	{
-		ProductGroupRepository productGroupRepository = new ProductGroupRepository();
-		CommercialProductRepository commercialProductRepository = new CommercialProductRepository();
-		List<AccessoryTileGroup> listOfAccessoryTile = new ArrayList<>();	
+		List<AccessoryTileGroup> listOfAccessoryTile = new ArrayList<>();		
 		
-		LogHelper.info(this, "Start -->  calling  CommercialProduct.get");
-		CommercialProduct commercialProduct = commercialProductRepository.get(deviceId);
-		LogHelper.info(this, "End -->  After calling  CommercialProduct.get");
+		LogHelper.info(this, "Start -->  calling  CommercialProductRepository.get");
+		if(commercialProductRepository == null){
+			commercialProductRepository = CoherenceConnectionProvider.getCommercialProductRepoConnection();
+		}
+		CommercialProduct commercialProduct= commercialProductRepository.get(deviceId);
+		LogHelper.info(this, "End -->  After calling  CommercialProductRepository.get");
 		
 		if (commercialProduct != null && commercialProduct.getId() != null && commercialProduct.getIsDeviceProduct()
 				&& commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)) {
@@ -910,6 +911,9 @@ public class DeviceDaoImpl implements DeviceDao {
 				Map<String, List<String>> mapForGroupName = new LinkedHashMap<>();
 				
 				LogHelper.info(this, "Start -->  calling  productGroupRepository.getAll");
+				if(productGroupRepository == null){
+					productGroupRepository = CoherenceConnectionProvider.getProductGroupRepoRepository();
+				}
 				List<Group> listOfProductGroup = new ArrayList<Group>(
 						productGroupRepository.getAll(listOfDeviceGroupName));
 				LogHelper.info(this, "End -->  After calling  productGroupRepository.getAll");
@@ -1134,8 +1138,14 @@ public class DeviceDaoImpl implements DeviceDao {
 	 */
 	public Boolean validateMemeber(String memberId) {
 		Boolean memberFlag = false;
-		CommercialProductRepository commercialProductRepository = new CommercialProductRepository();
-		CommercialProduct comProduct = commercialProductRepository.get(memberId);
+		
+		LogHelper.info(this, "Start -->  calling  CommercialProductRepository.get");
+		if(commercialProductRepository == null){
+			commercialProductRepository = CoherenceConnectionProvider.getCommercialProductRepoConnection();
+		}
+		CommercialProduct comProduct= commercialProductRepository.get(memberId);
+		LogHelper.info(this, "End -->  After calling  CommercialProductRepository.get");
+		
 		Date startDateTime = comProduct.getProductAvailability().getStart();
 		Date endDateTime = comProduct.getProductAvailability().getEnd();
 		boolean preOrderableFlag = comProduct.getProductControl().isPreOrderable();
