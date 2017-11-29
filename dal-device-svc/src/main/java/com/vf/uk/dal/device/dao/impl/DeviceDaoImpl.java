@@ -2157,9 +2157,14 @@ public class DeviceDaoImpl implements DeviceDao {
 
 	@Override
 	public CommercialBundle getCommercialBundleByBundleId(String bundleId) {
-		LogHelper.info(this, "Get Commercial Bundle details for Bundle Id"+ bundleId);
-		CommercialBundleRepository commercialBundleRepository = new CommercialBundleRepository();
-		return commercialBundleRepository.get(bundleId);
+		
+		LogHelper.info(this, "Start -->  calling  bundleRepository.get");
+		if(commercialBundleRepository == null){
+			commercialBundleRepository = CoherenceConnectionProvider.getCommercialBundleRepoConnection();
+		}
+		CommercialBundle commercialBundle= commercialBundleRepository.get(bundleId);
+		LogHelper.info(this, "End -->  After calling  bundleRepository.get");
+		return commercialBundle;
 	}
 
 	@Override
