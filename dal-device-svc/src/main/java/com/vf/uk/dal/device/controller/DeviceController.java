@@ -500,9 +500,10 @@ public class DeviceController {
 				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
 			}
 			return listOfDeviceDetails;
-		} else
+		} else{
 			LogHelper.error(this, "Query parameter(s) passed in the request is invalid"+ExceptionMessages.INVALID_QUERY_PARAMS);
 			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
+		}
 
 	}
 
