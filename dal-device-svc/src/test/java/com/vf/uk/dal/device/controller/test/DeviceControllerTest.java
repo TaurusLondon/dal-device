@@ -1402,4 +1402,12 @@ public class DeviceControllerTest {
 		queryparams.put("deviceId", "093353");
 		 deviceController.getListOfDeviceDetails(queryparams);
 	}
+	@Test
+	public void notNullTestForGetAccessoriesOfDeviceDao() {
+		try {
+			 DaoUtils.convertCoherenceAccesoryToAccessory(CommonMethods.getCommercialProduct2(), CommonMethods.getPriceForAccessory());
+		} catch (Exception e) {
+
+		}
+	}
 }

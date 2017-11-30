@@ -3163,4 +3163,30 @@ public class CommonMethods {
 		}
 		return null;
 	}
+	public static PriceForAccessory getPriceForAccessory()
+	{
+		PriceForAccessory priceForAccessory = new PriceForAccessory();
+		com.vf.uk.dal.utility.entity.HardwarePrice hardwarePrice= new com.vf.uk.dal.utility.entity.HardwarePrice();
+		com.vf.uk.dal.utility.entity.Price price= new com.vf.uk.dal.utility.entity.Price();
+		price.setGross("25.0");
+		price.setNet("16.0");
+		price.setVat("9.0");
+		com.vf.uk.dal.utility.entity.Price price1= new com.vf.uk.dal.utility.entity.Price();
+		price1.setGross("25.0");
+		price1.setNet("16.0");
+		price1.setVat("9.0");
+		com.vf.uk.dal.utility.entity.MerchandisingPromotion merchandisingPromotion=new com.vf.uk.dal.utility.entity.MerchandisingPromotion();
+		merchandisingPromotion.setTag("tag");
+		merchandisingPromotion.setDescription("description");
+		merchandisingPromotion.setDiscountId("discountId");
+		merchandisingPromotion.setLabel("label");
+		merchandisingPromotion.setMpType("mpType");
+		merchandisingPromotion.setPriceEstablishedLabel("priceEstablishedLabel");
+		hardwarePrice.setHardwareId("093353");
+		hardwarePrice.setMerchandisingPromotions(merchandisingPromotion);
+		hardwarePrice.setOneOffPrice(price);
+		hardwarePrice.setOneOffDiscountPrice(price1);
+		 priceForAccessory.setHardwarePrice(hardwarePrice);
+		 return priceForAccessory;
+	}
 }
