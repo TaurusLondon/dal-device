@@ -131,7 +131,6 @@ public class DeviceDaoImpl implements DeviceDao {
 	public List<DeviceTile> getListOfDeviceTile(String make, String model, String groupType, String deviceId,
 			String journeyType, Double creditLimit, String offerCode, String bundleId) {
 		boolean isConditionalAcceptJourney = (null != creditLimit) ? true : false;
-		ExecutorService executor = CommonUtility.getThreadPool();
 		// Performance Improvement changes in this Method.
 		List<DeviceTile> listOfDeviceTile = new ArrayList<>();
 		// Create connection for CommercialBundle Repository for Products.
