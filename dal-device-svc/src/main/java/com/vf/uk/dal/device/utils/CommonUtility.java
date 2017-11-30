@@ -7,6 +7,8 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.commons.lang.StringUtils;
 import org.json.simple.JSONObject;
@@ -760,5 +762,13 @@ public  class CommonUtility {
 		}
 		
 		return mediaList;
+	}
+	/**	
+	 * @author manoj.bera
+	 * @return
+	 */
+	public static ExecutorService getThreadPool() {
+		int threadNum = 20;
+		return Executors.newFixedThreadPool(threadNum);
 	}
 }
