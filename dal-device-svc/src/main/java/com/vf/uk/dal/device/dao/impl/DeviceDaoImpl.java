@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.FutureTask;
 import java.util.stream.Collectors;
 
 import javax.sql.DataSource;
@@ -129,7 +132,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	public List<DeviceTile> getListOfDeviceTile(String make, String model, String groupType, String deviceId,
 			String journeyType, Double creditLimit, String offerCode, String bundleId) {
 		boolean isConditionalAcceptJourney = (null != creditLimit) ? true : false;
-
+		ExecutorService executor = CommonUtility.getThreadPool();
 		// Performance Improvement changes in this Method.
 		List<DeviceTile> listOfDeviceTile = new ArrayList<>();
 		// Create connection for CommercialBundle Repository for Products.
@@ -261,11 +264,13 @@ public class DeviceDaoImpl implements DeviceDao {
 				 *         price
 				 */
 				List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = null;
+				Map<String, List<PriceForBundleAndHardware>> priceMapForAllDevice = new HashMap<>();
 				if (!groupType.equals(Constants.STRING_DEVICE_PAYG)) {
 					// Calling Pricing Api
 					if (bundleAndHardwareTupleList != null && !bundleAndHardwareTupleList.isEmpty()) {
 						listOfPriceForBundleAndHardware = CommonUtility.getPriceDetails(bundleAndHardwareTupleList,
 								offerCode, registryclnt, journeyType);
+						priceMapForAllDevice.put("price", listOfPriceForBundleAndHardware);
 					}
 				}
 				Map<String, PriceForBundleAndHardware> priceMapForParticularDevice = new HashMap<>();
@@ -299,83 +304,112 @@ public class DeviceDaoImpl implements DeviceDao {
 				}
 				deviceTile.setGroupName(groupName);
 				deviceTile.setGroupType(groupType);
-				DeviceSummary deviceSummary;
-				List<DeviceSummary> listOfDeviceSummary = new ArrayList<>();
-				for (com.vf.uk.dal.device.entity.Member member : listOfDeviceGroupMember) {
-					CommercialProduct commercialProduct = commerProdMemMap.get(member.getId());
-					Long memberPriority = Long.valueOf(member.getPriority());
-					CommercialBundle comBundle = null;
-					List<BundleAndHardwarePromotions> promotions = null;
-					if (isConditionalAcceptJourney && commercialProduct != null) {
-						// Check if lead plan is within credit limit.
-						if (isLeadPlanWithinCreditLimit(commercialProduct, creditLimit, listOfPriceForBundleAndHardware,
-								journeyType)) {
-							comBundle = commercialBundleRepository.get(commercialProduct.getLeadPlanId());
-						} else {
-							comBundle = getLeadBundleBasedOnAllPlans(creditLimit, commercialProduct,
-									commercialBundleRepository, listOfPriceForBundleAndHardware, journeyType);
-						}
-						List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
-						if (comBundle != null) {
-							BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
-							bundleAndHardwareTuple.setBundleId(comBundle.getId());
-							bundleAndHardwareTuple.setHardwareId(member.getId());
-							bundleHardwareTupleList.add(bundleAndHardwareTuple);
-						}
-						if (!bundleHardwareTupleList.isEmpty()) {
-							promotions = CommonUtility
-									.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList, registryclnt);
-						}
+				FutureTask<List<DeviceSummary>> listOfDeviceSummeryLocal = new FutureTask<List<DeviceSummary>>(
+						new Callable<List<DeviceSummary>>() {
+							@Override
+							public List<DeviceSummary> call() {
+								List<DeviceSummary> listOfDeviceSummaryLocal = new ArrayList<>();
+								DeviceSummary deviceSummary;
+								final List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareLocal=priceMapForAllDevice.get("price");
+								for (com.vf.uk.dal.device.entity.Member member : listOfDeviceGroupMember) {
+									CommercialProduct commercialProduct = commerProdMemMap.get(member.getId());
+									Long memberPriority = Long.valueOf(member.getPriority());
+									CommercialBundle comBundle = null;
+									List<BundleAndHardwarePromotions> promotions = null;
+									if (isConditionalAcceptJourney && commercialProduct != null) {
+										// Check if lead plan is within credit
+										// limit.
+										if (isLeadPlanWithinCreditLimit(commercialProduct, creditLimit,
+												listOfPriceForBundleAndHardwareLocal, journeyType)) {
+											comBundle = commercialBundleRepository
+													.get(commercialProduct.getLeadPlanId());
+										} else {
+											comBundle = getLeadBundleBasedOnAllPlans(creditLimit, commercialProduct,
+													commercialBundleRepository, listOfPriceForBundleAndHardwareLocal,
+													journeyType);
+										}
+										List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
+										if (comBundle != null) {
+											BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
+											bundleAndHardwareTuple.setBundleId(comBundle.getId());
+											bundleAndHardwareTuple.setHardwareId(member.getId());
+											bundleHardwareTupleList.add(bundleAndHardwareTuple);
+										}
+										if (!bundleHardwareTupleList.isEmpty()) {
+											promotions = CommonUtility.getPromotionsForBundleAndHardWarePromotions(
+													bundleHardwareTupleList, registryclnt);
+										}
 
-					} else if (StringUtils.isNotBlank(bundleId) && commercialProduct != null
-							&& bundleIdMap.get(member.getId())) {
-						// comBundle = commercialBundleRepository.get(bundleId);
-						if (commercialBundleMap.containsKey(bundleId)) {
-							comBundle = commercialBundleMap.get(bundleId);
-						}
-						if (bundleAndHardwarePromotionsMap.containsKey(member.getId())) {
-							promotions = Arrays.asList(bundleAndHardwarePromotionsMap.get(member.getId()));
-						}
-					} else {
-						String planId = null;
-						if (!leadPlanIdMap.isEmpty() && leadPlanIdMap.containsKey(member.getId())) {
-							planId = leadPlanIdMap.get(member.getId());
-						}
-						if (commercialBundleMap.containsKey(planId)) {
-							comBundle = commercialBundleMap.get(planId);
-						}
-						if (bundleAndHardwarePromotionsMap.containsKey(member.getId())) {
-							promotions = Arrays.asList(bundleAndHardwarePromotionsMap.get(member.getId()));
-						}
-					}
-					/*
-					 * List<OfferPacks> listOfOfferPacks = new ArrayList<>(); if
-					 * (comBundle != null) { listOfOfferPacks.addAll(
-					 * offerPacksMediaListForBundleDetails(comBundle)); }
-					 * listOfOfferPacks.addAll(
-					 * offerPacksMediaListForDeviceDetails(commercialProduct));
-					 */
+									} else if (StringUtils.isNotBlank(bundleId) && commercialProduct != null
+											&& bundleIdMap.get(member.getId())) {
+										// comBundle =
+										// commercialBundleRepository.get(bundleId);
+										if (commercialBundleMap.containsKey(bundleId)) {
+											comBundle = commercialBundleMap.get(bundleId);
+										}
+										if (bundleAndHardwarePromotionsMap.containsKey(member.getId())) {
+											promotions = Arrays
+													.asList(bundleAndHardwarePromotionsMap.get(member.getId()));
+										}
+									} else {
+										String planId = null;
+										if (!leadPlanIdMap.isEmpty() && leadPlanIdMap.containsKey(member.getId())) {
+											planId = leadPlanIdMap.get(member.getId());
+										}
+										if (commercialBundleMap.containsKey(planId)) {
+											comBundle = commercialBundleMap.get(planId);
+										}
+										if (bundleAndHardwarePromotionsMap.containsKey(member.getId())) {
+											promotions = Arrays
+													.asList(bundleAndHardwarePromotionsMap.get(member.getId()));
+										}
+									}
+									/*
+									 * List<OfferPacks> listOfOfferPacks = new
+									 * ArrayList<>(); if (comBundle != null) {
+									 * listOfOfferPacks.addAll(
+									 * offerPacksMediaListForBundleDetails(
+									 * comBundle)); } listOfOfferPacks.addAll(
+									 * offerPacksMediaListForDeviceDetails(
+									 * commercialProduct));
+									 */
 
-					PriceForBundleAndHardware priceForBundleAndHardware = null;
-					if (priceMapForParticularDevice.containsKey(member.getId())) {
-						priceForBundleAndHardware = priceMapForParticularDevice.get(member.getId());
-					}
-					deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile(memberPriority, commercialProduct,
-							comBundle, priceForBundleAndHardware, promotions, groupType, isConditionalAcceptJourney,
-							fromPricingMap);
+									PriceForBundleAndHardware priceForBundleAndHardware = null;
+									if (priceMapForParticularDevice.containsKey(member.getId())) {
+										priceForBundleAndHardware = priceMapForParticularDevice.get(member.getId());
+									}
+									deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile(memberPriority,
+											commercialProduct, comBundle, priceForBundleAndHardware, promotions,
+											groupType, isConditionalAcceptJourney, fromPricingMap);
 
-					if (null != deviceSummary && commercialProduct != null) {
-						isPlanAffordable(deviceSummary, comBundle, creditLimit, isConditionalAcceptJourney);
-						if (StringUtils.isNotBlank(bundleId))
-							if (bundleIdMap.get(member.getId()))
-								deviceSummary.setIsCompatible(true);
-							else
-								deviceSummary.setIsCompatible(false);
-						listOfDeviceSummary.add(deviceSummary);
-					}
+									if (null != deviceSummary && commercialProduct != null) {
+										isPlanAffordable(deviceSummary, comBundle, creditLimit,
+												isConditionalAcceptJourney);
+										if (StringUtils.isNotBlank(bundleId))
+											if (bundleIdMap.get(member.getId()))
+												deviceSummary.setIsCompatible(true);
+											else
+												deviceSummary.setIsCompatible(false);
+										listOfDeviceSummaryLocal.add(deviceSummary);
+									}
 
-				}
-
+								}
+								return listOfDeviceSummaryLocal;
+							}
+						});		
+				
+				executor.execute(listOfDeviceSummeryLocal);
+				
+				executor.shutdown();
+				List<DeviceSummary> listOfDeviceSummary ;
+				try {
+					listOfDeviceSummary = listOfDeviceSummeryLocal.get();
+				} catch (Exception e) {
+					
+						LogHelper.error(this, "Exception occured while executing thread pool :" +e );
+						throw new ApplicationException(ExceptionMessages.ERROR_IN_FUTURE_TASK);
+					
+				} 
 				// Reset Device Id if journey is conditional accept and
 				// lead device is not affordable.
 				resetDeviceId(isConditionalAcceptJourney, deviceTile, listOfDeviceSummary, deviceId);
