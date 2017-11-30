@@ -20,8 +20,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.FutureTask;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import javax.sql.DataSource;
@@ -49,8 +52,6 @@ import com.vf.uk.dal.device.entity.DeviceSummary;
 import com.vf.uk.dal.device.entity.DeviceTile;
 import com.vf.uk.dal.device.entity.Insurance;
 import com.vf.uk.dal.device.entity.Insurances;
-import com.vf.uk.dal.device.entity.MediaLink;
-import com.vf.uk.dal.device.entity.OfferPacks;
 import com.vf.uk.dal.device.entity.Price;
 import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
 import com.vf.uk.dal.device.entity.ProductGroup;
@@ -59,7 +60,6 @@ import com.vf.uk.dal.device.utils.CommonUtility;
 import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.DaoUtils;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
-import com.vf.uk.dal.device.utils.MediaConstants;
 import com.vf.uk.dal.device.utils.SolrConnectionProvider;
 import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 import com.vf.uk.dal.utility.entity.BundleDetails;
@@ -79,7 +79,6 @@ import com.vodafone.dal.domain.repository.CommercialProductRepository;
 import com.vodafone.dal.domain.repository.MerchandisingPromotionRepository;
 import com.vodafone.dal.domain.repository.ProductGroupRepository;
 import com.vodafone.dal.domain.repository.StockAvailabilityRepository;
-import com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion;
 import com.vodafone.product.pojo.CommercialProduct;
 import com.vodafone.product.pojo.ProductGroups;
 import com.vodafone.productGroups.pojo.Group;
@@ -281,7 +280,7 @@ public class DeviceDaoImpl implements DeviceDao {
 					});
 				}
 				/**
-				 * @author manoj.bera promotion Api calling
+				 * @author manoj.bera promotion API calling
 				 */
 				Map<String, BundleAndHardwarePromotions> bundleAndHardwarePromotionsMap = new HashMap<>();
 				if (!isConditionalAcceptJourney && !bundleAndHardwareTupleList.isEmpty()) {
@@ -304,113 +303,19 @@ public class DeviceDaoImpl implements DeviceDao {
 				}
 				deviceTile.setGroupName(groupName);
 				deviceTile.setGroupType(groupType);
-				FutureTask<List<DeviceSummary>> listOfDeviceSummeryLocal = new FutureTask<List<DeviceSummary>>(
-						new Callable<List<DeviceSummary>>() {
-							@Override
-							public List<DeviceSummary> call() {
-								List<DeviceSummary> listOfDeviceSummaryLocal = new ArrayList<>();
-								DeviceSummary deviceSummary;
-								final List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareLocal=priceMapForAllDevice.get("price");
-								for (com.vf.uk.dal.device.entity.Member member : listOfDeviceGroupMember) {
-									CommercialProduct commercialProduct = commerProdMemMap.get(member.getId());
-									Long memberPriority = Long.valueOf(member.getPriority());
-									CommercialBundle comBundle = null;
-									List<BundleAndHardwarePromotions> promotions = null;
-									if (isConditionalAcceptJourney && commercialProduct != null) {
-										// Check if lead plan is within credit
-										// limit.
-										if (isLeadPlanWithinCreditLimit(commercialProduct, creditLimit,
-												listOfPriceForBundleAndHardwareLocal, journeyType)) {
-											comBundle = commercialBundleRepository
-													.get(commercialProduct.getLeadPlanId());
-										} else {
-											comBundle = getLeadBundleBasedOnAllPlans(creditLimit, commercialProduct,
-													commercialBundleRepository, listOfPriceForBundleAndHardwareLocal,
-													journeyType);
-										}
-										List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
-										if (comBundle != null) {
-											BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
-											bundleAndHardwareTuple.setBundleId(comBundle.getId());
-											bundleAndHardwareTuple.setHardwareId(member.getId());
-											bundleHardwareTupleList.add(bundleAndHardwareTuple);
-										}
-										if (!bundleHardwareTupleList.isEmpty()) {
-											promotions = CommonUtility.getPromotionsForBundleAndHardWarePromotions(
-													bundleHardwareTupleList, registryclnt);
-										}
-
-									} else if (StringUtils.isNotBlank(bundleId) && commercialProduct != null
-											&& bundleIdMap.get(member.getId())) {
-										// comBundle =
-										// commercialBundleRepository.get(bundleId);
-										if (commercialBundleMap.containsKey(bundleId)) {
-											comBundle = commercialBundleMap.get(bundleId);
-										}
-										if (bundleAndHardwarePromotionsMap.containsKey(member.getId())) {
-											promotions = Arrays
-													.asList(bundleAndHardwarePromotionsMap.get(member.getId()));
-										}
-									} else {
-										String planId = null;
-										if (!leadPlanIdMap.isEmpty() && leadPlanIdMap.containsKey(member.getId())) {
-											planId = leadPlanIdMap.get(member.getId());
-										}
-										if (commercialBundleMap.containsKey(planId)) {
-											comBundle = commercialBundleMap.get(planId);
-										}
-										if (bundleAndHardwarePromotionsMap.containsKey(member.getId())) {
-											promotions = Arrays
-													.asList(bundleAndHardwarePromotionsMap.get(member.getId()));
-										}
-									}
-									/*
-									 * List<OfferPacks> listOfOfferPacks = new
-									 * ArrayList<>(); if (comBundle != null) {
-									 * listOfOfferPacks.addAll(
-									 * offerPacksMediaListForBundleDetails(
-									 * comBundle)); } listOfOfferPacks.addAll(
-									 * offerPacksMediaListForDeviceDetails(
-									 * commercialProduct));
-									 */
-
-									PriceForBundleAndHardware priceForBundleAndHardware = null;
-									if (priceMapForParticularDevice.containsKey(member.getId())) {
-										priceForBundleAndHardware = priceMapForParticularDevice.get(member.getId());
-									}
-									deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile(memberPriority,
-											commercialProduct, comBundle, priceForBundleAndHardware, promotions,
-											groupType, isConditionalAcceptJourney, fromPricingMap);
-
-									if (null != deviceSummary && commercialProduct != null) {
-										isPlanAffordable(deviceSummary, comBundle, creditLimit,
-												isConditionalAcceptJourney);
-										if (StringUtils.isNotBlank(bundleId))
-											if (bundleIdMap.get(member.getId()))
-												deviceSummary.setIsCompatible(true);
-											else
-												deviceSummary.setIsCompatible(false);
-										listOfDeviceSummaryLocal.add(deviceSummary);
-									}
-
-								}
-								return listOfDeviceSummaryLocal;
-							}
-						});		
-				
-				executor.execute(listOfDeviceSummeryLocal);
-				
-				executor.shutdown();
-				List<DeviceSummary> listOfDeviceSummary ;
+				/**
+				 * @author manoj.bera
+				 * For Performance improvement Using below code
+				 */
+				CompletableFuture<List<DeviceSummary>> future1=getDeviceSummery(listOfDeviceGroupMember, listOfPriceForBundleAndHardware, commerProdMemMap, isConditionalAcceptJourney, journeyType, creditLimit, commercialBundleMap, bundleIdMap, bundleId, bundleAndHardwarePromotionsMap, leadPlanIdMap, groupType, priceMapForParticularDevice, fromPricingMap);
+				List<DeviceSummary> listOfDeviceSummary;
 				try {
-					listOfDeviceSummary = listOfDeviceSummeryLocal.get();
+					listOfDeviceSummary = future1.get();
 				} catch (Exception e) {
-					
-						LogHelper.error(this, "Exception occured while executing thread pool :" +e );
-						throw new ApplicationException(ExceptionMessages.ERROR_IN_FUTURE_TASK);
-					
+					LogHelper.error(this, "Exception occured while executing thread pool :" +e );
+					throw new ApplicationException(ExceptionMessages.ERROR_IN_FUTURE_TASK);
 				} 
-				// Reset Device Id if journey is conditional accept and
+				//Reset Device Id if journey is conditional accept and
 				// lead device is not affordable.
 				resetDeviceId(isConditionalAcceptJourney, deviceTile, listOfDeviceSummary, deviceId);
 				if (isConditionalAcceptJourney) {
@@ -434,7 +339,113 @@ public class DeviceDaoImpl implements DeviceDao {
 		return listOfDeviceTile;
 
 	}
+/**
+ * @author manoj.bera
+ * @sprint 6.4
+ * @param listOfDeviceGroupMember
+ * @param listOfPriceForBundleAndHardwareLocal
+ * @param commerProdMemMap
+ * @param isConditionalAcceptJourney
+ * @param journeyType
+ * @param creditLimit
+ * @param commercialBundleMap
+ * @param bundleIdMap
+ * @param bundleId
+ * @param bundleAndHardwarePromotionsMap
+ * @param leadPlanIdMap
+ * @param groupType
+ * @param priceMapForParticularDevice
+ * @param fromPricingMap
+ * @return
+ */
+		
+	public CompletableFuture<List<DeviceSummary>> getDeviceSummery(List<com.vf.uk.dal.device.entity.Member> listOfDeviceGroupMember ,
+			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareLocal,
+			Map<String, CommercialProduct> commerProdMemMap ,boolean isConditionalAcceptJourney ,String journeyType, Double creditLimit,
+			Map<String, CommercialBundle> commercialBundleMap, Map<String, Boolean> bundleIdMap, String bundleId,
+			Map<String, BundleAndHardwarePromotions> bundleAndHardwarePromotionsMap ,Map<String, String> leadPlanIdMap , String groupType,
+			Map<String, PriceForBundleAndHardware> priceMapForParticularDevice, Map<String, Boolean> fromPricingMap)
+	{
+		return CompletableFuture.supplyAsync(new Supplier<List<DeviceSummary>>() {
 
+			List<DeviceSummary> listOfDeviceSummaryLocal = new ArrayList<>();
+			DeviceSummary deviceSummary;
+
+			@Override
+			public List<DeviceSummary> get() {
+				for (com.vf.uk.dal.device.entity.Member member : listOfDeviceGroupMember) {
+					CommercialProduct commercialProduct = commerProdMemMap.get(member.getId());
+					Long memberPriority = Long.valueOf(member.getPriority());
+					CommercialBundle comBundle = null;
+					List<BundleAndHardwarePromotions> promotions = null;
+					if (isConditionalAcceptJourney && commercialProduct != null) {
+						// Check if lead plan is within credit
+						// limit.
+						if (isLeadPlanWithinCreditLimit(commercialProduct, creditLimit,
+								listOfPriceForBundleAndHardwareLocal, journeyType)) {
+							comBundle = commercialBundleRepository.get(commercialProduct.getLeadPlanId());
+						} else {
+							comBundle = getLeadBundleBasedOnAllPlans(creditLimit, commercialProduct,
+									commercialBundleRepository, listOfPriceForBundleAndHardwareLocal, journeyType);
+						}
+						List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
+						if (comBundle != null) {
+							BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
+							bundleAndHardwareTuple.setBundleId(comBundle.getId());
+							bundleAndHardwareTuple.setHardwareId(member.getId());
+							bundleHardwareTupleList.add(bundleAndHardwareTuple);
+						}
+						if (!bundleHardwareTupleList.isEmpty()) {
+							promotions = CommonUtility
+									.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList, registryclnt);
+						}
+
+					} else if (StringUtils.isNotBlank(bundleId) && commercialProduct != null
+							&& bundleIdMap.get(member.getId())) {
+						// comBundle =
+						// commercialBundleRepository.get(bundleId);
+						if (commercialBundleMap.containsKey(bundleId)) {
+							comBundle = commercialBundleMap.get(bundleId);
+						}
+						if (bundleAndHardwarePromotionsMap.containsKey(member.getId())) {
+							promotions = Arrays.asList(bundleAndHardwarePromotionsMap.get(member.getId()));
+						}
+					} else {
+						String planId = null;
+						if (!leadPlanIdMap.isEmpty() && leadPlanIdMap.containsKey(member.getId())) {
+							planId = leadPlanIdMap.get(member.getId());
+						}
+						if (commercialBundleMap.containsKey(planId)) {
+							comBundle = commercialBundleMap.get(planId);
+						}
+						if (bundleAndHardwarePromotionsMap.containsKey(member.getId())) {
+							promotions = Arrays.asList(bundleAndHardwarePromotionsMap.get(member.getId()));
+						}
+					}
+					PriceForBundleAndHardware priceForBundleAndHardware = null;
+					if (priceMapForParticularDevice.containsKey(member.getId())) {
+						priceForBundleAndHardware = priceMapForParticularDevice.get(member.getId());
+					}
+					deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile(memberPriority, commercialProduct,
+							comBundle, priceForBundleAndHardware, promotions, groupType, isConditionalAcceptJourney,
+							fromPricingMap);
+
+					if (null != deviceSummary && commercialProduct != null) {
+						isPlanAffordable(deviceSummary, comBundle, creditLimit, isConditionalAcceptJourney);
+						if (StringUtils.isNotBlank(bundleId))
+							if (bundleIdMap.get(member.getId()))
+								deviceSummary.setIsCompatible(true);
+							else
+								deviceSummary.setIsCompatible(false);
+						listOfDeviceSummaryLocal.add(deviceSummary);
+					}
+
+				}
+				return listOfDeviceSummaryLocal;
+			}
+		});
+
+	}
 	/**
 	 * If journey is ConditionAccept and then in list of device summary the
 	 * first plan which is affordable is lead device plan.
