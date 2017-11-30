@@ -106,7 +106,7 @@ public class DeviceServiceImpl implements DeviceService {
 	 * Handles requests from controller and connects to DAO.
 	 * 
 	 * @param String
-	 * 
+	 * performance improved by @author manoj.bera
 	 * @return Device
 	 **/
 
