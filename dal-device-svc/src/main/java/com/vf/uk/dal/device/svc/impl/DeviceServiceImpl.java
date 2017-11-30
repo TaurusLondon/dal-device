@@ -532,7 +532,7 @@ public class DeviceServiceImpl implements DeviceService {
 			List<ProductGroupModel> productGroupModelList = productGroupFacetModel.getListOfProductGroups();
 			if (productGroupModelList != null && !productGroupModelList.isEmpty()) {
 				productGroupModelList.forEach(productGroupModel -> {
-					if (productGroupModel.getLeadDeviceId() != null) {
+					if (StringUtils.isNotBlank(productGroupModel.getLeadDeviceId())) {
 						listOfProducts.add(productGroupModel.getLeadDeviceId());
 					}else{
 						//Below Code for If leadDevicId not coming from SOLR
@@ -542,7 +542,7 @@ public class DeviceServiceImpl implements DeviceService {
 
 							//if (listOfMember != null && listOfMember.size() > 1) {
 								String leadMember = getMemeberBasedOnRules1(listOfMember);
-								if(leadMember!=null)
+								if(StringUtils.isNotBlank(leadMember))
 								{
 								groupNameWithProdId.put(leadMember, productGroupModel.getName());
 								listOfProducts.add(leadMember);
