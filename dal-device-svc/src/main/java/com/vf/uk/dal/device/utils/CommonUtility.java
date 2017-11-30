@@ -763,12 +763,4 @@ public  class CommonUtility {
 		
 		return mediaList;
 	}
-	/**	
-	 * @author manoj.bera
-	 * @return
-	 */
-	public static ExecutorService getThreadPool() {
-		int threadNum = 20;
-		return Executors.newFixedThreadPool(threadNum);
-	}
 }
