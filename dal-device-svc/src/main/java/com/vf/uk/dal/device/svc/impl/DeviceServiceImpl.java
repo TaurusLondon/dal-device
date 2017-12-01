@@ -582,7 +582,7 @@ public class DeviceServiceImpl implements DeviceService {
 			Map<String,BundleAndHardwarePromotions> promotionmap=new HashMap<>();
 			if(!bundleHardwareTupleList.isEmpty())
 			{
-				 promotions = CommonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList , registryclnt);
+				 promotions = CommonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList ,journeyType, registryclnt);
 			}
 			if(promotions!=null)
 			{
