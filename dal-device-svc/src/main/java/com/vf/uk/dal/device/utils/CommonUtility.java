@@ -401,11 +401,12 @@ public  class CommonUtility {
 	 * @author manoj.bera
 	 * @SPRINT 6.4
 	 */
-	public static List<BundleAndHardwarePromotions> getPromotionsForBundleAndHardWarePromotions(List<BundleAndHardwareTuple> bundleHardwareTupleList , RegistryClient registryClient)
+	public static List<BundleAndHardwarePromotions> getPromotionsForBundleAndHardWarePromotions(List<BundleAndHardwareTuple> bundleHardwareTupleList ,String journeyType, RegistryClient registryClient)
 	{
 		RestTemplate restTemplate = registryClient.getRestTemplate();
 		BundleAndHardwareRequest request =new BundleAndHardwareRequest();
 		request.setBundleAndHardwareList(bundleHardwareTupleList);
+		request.setJourneyType(journeyType);
 		BundleAndHardwarePromotions[] response = null;
 		try {
 			
