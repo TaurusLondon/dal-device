@@ -705,7 +705,32 @@ public class DaoUtils {
 		}
 		return productGroupList;
 	}
-
+	/**
+	 * @author manoj.bera
+	 * @param priceForAccessory
+	 * @return
+	 */
+	public static PriceForAccessory getPriceForAccessory(PriceForAccessory priceForAccessory)
+	{
+		if(priceForAccessory!=null)
+		{
+			if(priceForAccessory.getHardwarePrice()!=null && priceForAccessory.getHardwarePrice().getOneOffPrice()!=null
+				&& priceForAccessory.getHardwarePrice().getOneOffPrice().getGross()!=null && priceForAccessory.getHardwarePrice().getOneOffDiscountPrice().getGross()!=null
+				&& priceForAccessory.getHardwarePrice().getOneOffPrice().getGross().equalsIgnoreCase(priceForAccessory.getHardwarePrice().getOneOffDiscountPrice().getGross()))
+			{
+				priceForAccessory.getHardwarePrice().getOneOffDiscountPrice().setGross(null);
+				priceForAccessory.getHardwarePrice().getOneOffDiscountPrice().setNet(null);
+				priceForAccessory.getHardwarePrice().getOneOffDiscountPrice().setVat(null);
+			}
+		}
+		return priceForAccessory;
+	}
+/**
+ * 
+ * @param commercialProduct
+ * @param priceForAccessory
+ * @return
+ */
 	public static Accessory convertCoherenceAccesoryToAccessory(CommercialProduct commercialProduct,
 			PriceForAccessory priceForAccessory) {
 		Accessory accessory = null;
@@ -721,7 +746,7 @@ public class DaoUtils {
 
 				if (Double.valueOf(hardwarePrice.getOneOffPrice().getGross()) > 0) {
 					accessory = new Accessory();
-					accessory.setDeviceCost(priceForAccessory);
+					accessory.setDeviceCost(getPriceForAccessory(priceForAccessory));
 					accessory.setSkuId(commercialProduct.getId());
 					accessory.setName(commercialProduct.getDisplayName());
 					accessory.setDescription(commercialProduct.getPreDesc());

@@ -1,5 +1,6 @@
 package com.vf.uk.dal.device.utils;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Component;
 
 import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
@@ -304,4 +306,52 @@ public class DeviceTileCacheDAO {
 
 		return result;
 		}
+	
+	Connection conn = null;
+
+	
+	public void beginTransaction() {
+		try {
+			conn = DataSourceUtils.getConnection(getJdbcTemplate().getDataSource());
+			conn.setAutoCommit(false);
+		} catch (SQLException e) {
+			LogHelper.error(this, "Exception occurred while opening connection" + e);
+		}
+	}
+
+	// Method to End JDBC Transaction
+	
+	public void endTransaction() {
+		try {
+			conn.commit();
+		} catch (SQLException e) {
+			LogHelper.error(this, "Exception occurred while persisting data in intermediate tables" + e);
+		} finally {
+			try {
+				if (conn != null && !conn.isClosed()) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				LogHelper.error(this, "Exception occurred while closing connection" + e);
+			}
+		}
+	}
+
+	// Method to roll back JDBC Transaction
+	
+	public void rollBackTransaction() {
+		try {
+			conn.rollback();
+		} catch (SQLException e) {
+			LogHelper.error(this, "Exception occurred while persisting data in intermediate tables" + e);
+		} finally {
+			try {
+				if (conn != null && !conn.isClosed()) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				LogHelper.error(this, "Exception occurred while closing connection" + e);
+			}
+		}
+	}
 }

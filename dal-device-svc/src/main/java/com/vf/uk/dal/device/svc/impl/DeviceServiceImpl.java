@@ -532,7 +532,7 @@ public class DeviceServiceImpl implements DeviceService {
 			List<ProductGroupModel> productGroupModelList = productGroupFacetModel.getListOfProductGroups();
 			if (productGroupModelList != null && !productGroupModelList.isEmpty()) {
 				productGroupModelList.forEach(productGroupModel -> {
-					if (productGroupModel.getLeadDeviceId() != null) {
+					if (StringUtils.isNotBlank(productGroupModel.getLeadDeviceId())) {
 						listOfProducts.add(productGroupModel.getLeadDeviceId());
 					}else{
 						//Below Code for If leadDevicId not coming from SOLR
@@ -542,7 +542,7 @@ public class DeviceServiceImpl implements DeviceService {
 
 							//if (listOfMember != null && listOfMember.size() > 1) {
 								String leadMember = getMemeberBasedOnRules1(listOfMember);
-								if(leadMember!=null)
+								if(StringUtils.isNotBlank(leadMember))
 								{
 								groupNameWithProdId.put(leadMember, productGroupModel.getName());
 								listOfProducts.add(leadMember);
@@ -1214,6 +1214,7 @@ public class DeviceServiceImpl implements DeviceService {
 		List<DevicePreCalculatedData> devicePreCalculatedData;
 		try {
 			devicePreCalculatedData = getDeviceListFromPricing(groupType);
+			deviceTileCacheDAO.beginTransaction();
 			//LogHelper.info(this, jobId+"==>List Of Product group For Device Listing : " + devicePreCalculatedData);
 		
 			if (devicePreCalculatedData != null && !devicePreCalculatedData.isEmpty()) {
@@ -1230,6 +1231,7 @@ public class DeviceServiceImpl implements DeviceService {
 				{
 					deviceTileCacheDAO.saveDeviceListILSCalcData(offerAppliedPrices);
 				}
+				
 			} else {
 				LogHelper.error(this,  jobId+"==>No Device Pre Calculated Data found To Store");
 				exceptionFlag=true;
@@ -1246,12 +1248,14 @@ public class DeviceServiceImpl implements DeviceService {
 		} catch (Exception e) {
 			exceptionFlag=true;
 			LogHelper.error(this,  jobId+"==>"+e);
+			deviceTileCacheDAO.rollBackTransaction();
 		}finally{
 			if(exceptionFlag){
 				deviceDao.updateCacheDeviceToDb(jobId, "FAILED");
 			}else{
 				deviceDao.updateCacheDeviceToDb(jobId, "SUCCESS");				
 			}
+			 deviceTileCacheDAO.endTransaction();
 		}
 		 return CompletableFuture.completedFuture(i);
 	}
