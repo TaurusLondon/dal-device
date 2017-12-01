@@ -64,6 +64,7 @@ public class DeviceController {
 	/**
 	 * Handles requests for getDeviceTile Service with input as
 	 * GROUP_NAME,GROUP_TYPE in URL as query.
+	 * performance improved by @author manoj.bera
 	 * 
 	 * @return Device
 	 **/
@@ -106,9 +107,10 @@ public class DeviceController {
 				LogHelper.error(this, "BundleId is Invalid");
 				throw new ApplicationException(ExceptionMessages.INVALID_BUNDLE_ID);
 			}
-			
+			LogHelper.info(this, "Start -->  calling  getListofDeviceTile");
 			listOfDeviceTile = deviceService.getListOfDeviceTile(make, model, groupType, deviceId,
 					creditLimit, journeyType, offerCode, bundleId);
+			LogHelper.info(this, "End -->  calling  getListofDeviceTile");
 			return listOfDeviceTile;
 		} else
 			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
@@ -126,12 +128,14 @@ public class DeviceController {
 		DeviceDetails deviceDetails;
 		LogHelper.info(this, ":::::::Test Logger for VSTS migration And Validate Pipeline Validation::::::::");
 		if (StringUtils.isNotBlank(deviceId)) {
+			LogHelper.info(this, "Start -->  calling  getDeviceDetails");
 			deviceDetails = deviceService.getDeviceDetails(deviceId, journeyType, offerCode);
+			LogHelper.info(this, "End -->  calling  getDeviceDetails");
 		} else {
 			LogHelper.error(this, DEVICE_ID_IS_EMPTY);
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
 		}
-
+		
 		return deviceDetails;
 	}
 
@@ -160,7 +164,9 @@ public class DeviceController {
 					LogHelper.error(this, "DeviceId is Invalid");
 					throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 				}
+				LogHelper.info(this, "Start -->  calling  getDeviceTileById");
 				listOfDeviceTile = deviceService.getDeviceTileById(deviceId,offerCode,journeyType);
+				LogHelper.info(this, "End -->  calling  getDeviceTileById");
 			} else {
 				LogHelper.error(this, DEVICE_ID_IS_EMPTY);
 				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
@@ -184,7 +190,9 @@ public class DeviceController {
 		String groupName;
 		groupType = getFilterValue(GROUP_TYPE);
 		groupName = getFilterValue(GROUP_NAME);
+		LogHelper.info(this, "Start -->  calling  getProductGroupByGroupTypeGroupName");
 		productGroup = deviceService.getProductGroupByGroupTypeGroupName(groupType, groupName);
+		LogHelper.info(this, "End -->  calling  getProductGroupByGroupTypeGroupName");
 		return productGroup;
 	}
 
@@ -204,7 +212,9 @@ public class DeviceController {
 			String journeyType = queryParams.containsKey(JOURNEY_TYPE)?queryParams.get(JOURNEY_TYPE) : null;
 			String offerCode = queryParams.containsKey(OFFER_CODE)?queryParams.get(OFFER_CODE) : null;
 			if (StringUtils.isNotBlank(deviceId)) {
+				LogHelper.info(this, "Start -->  calling  getAccessoriesOfDevice");
 				listOfAccessoryTileGroup = deviceService.getAccessoriesOfDevice(deviceId,journeyType,offerCode);
+				LogHelper.info(this, "End -->  calling  getAccessoriesOfDevice");
 			} else {
 				LogHelper.error(this, DEVICE_ID_IS_EMPTY);
 				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
@@ -272,8 +282,10 @@ public class DeviceController {
 					
 					//Retrieving sort value
 					String sortCriteria = ServiceContext.getSortCriteria();
+					LogHelper.info(this, "Start -->  calling  getDeviceList");
 					facetedDevice = deviceService.getDeviceList(productClass,make,model,groupType,sortCriteria,pageNumber,
 							pageSize,capacity,colour,operatingSystem,mustHaveFeatures,journeyType, creditLimit,offerCode, msisdn, includeRecommendations);
+					LogHelper.info(this, "End -->  calling  getDeviceList");
 				} else {
 					throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
 			}
@@ -301,7 +313,9 @@ public class DeviceController {
 
 			}*/
 			if (StringUtils.isNotBlank(deviceId)) {
+				LogHelper.info(this, "Start -->  calling  getInusranceByDeviceId");
 				insurance = deviceService.getInsuranceByDeviceId(deviceId,journeyType);
+				LogHelper.info(this, "End -->  calling  getInsuranceDeviceId");
 			} else {
 				LogHelper.error(this, DEVICE_ID_IS_EMPTY);
 				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
@@ -428,9 +442,11 @@ public class DeviceController {
 			LogHelper.error(this, "Limit is Invalid");
 			throw new ApplicationException(ExceptionMessages.INVALID_PLANS_LIMIT);
 		} else {
+			LogHelper.info(this, "Get the bundle details of a particular device id");
+			LogHelper.info(this, "Start -->  calling  getBundleOfDeviceId");
 			bundleDetails = deviceService.getBundlesOfDeviceId(deviceId, bundleId, allowedRecurringPriceLimit,
 					plansLimit);
-
+			LogHelper.info(this, "End -->  calling  getBundleOfDeviceId");
 		}
 
 		return bundleDetails;
@@ -447,6 +463,7 @@ public class DeviceController {
 	public JSONObject getDeviceReviewDetails(@PathVariable(DEVICE_ID) String deviceId) {
 
 		Validator.validateDeviceId(deviceId);
+		LogHelper.info(this, "Start -->  calling  getDeviceReviewDetails");
 		return deviceService.getDeviceReviewDetails(deviceId);
 
 	}
@@ -461,6 +478,8 @@ public class DeviceController {
 	public List<DeviceDetails> getListOfDeviceDetails(@RequestParam Map<String, String> queryParams) {
 
 		if (!queryParams.isEmpty() && Validator.validateDeviceId(queryParams)) {
+			
+			LogHelper.info(this, "Query parameter(s) passed in the request "+queryParams);
 			List<DeviceDetails> listOfDeviceDetails;
 
 			String deviceId = queryParams.containsKey(DEVICE_ID) ? queryParams.get(DEVICE_ID) : null;
@@ -473,14 +492,19 @@ public class DeviceController {
 				throw new ApplicationException(ExceptionMessages.REQUIRED_JOURNEY_TYPE);
 			}*/	
 			if (deviceId != null) {
+				LogHelper.info(this, "Get the list of device details for the device id passed as request params "+deviceId);
+				LogHelper.info(this, "Start -->  calling  getListOfDeviceDetails");
 				listOfDeviceDetails = deviceService.getListOfDeviceDetails(deviceId,offerCode,journeyType);
+				LogHelper.info(this, "End -->  calling  getListofDeviceDetails");
 			} else {
 				LogHelper.error(this, DEVICE_ID_IS_EMPTY);
 				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
 			}
 			return listOfDeviceDetails;
-		} else
+		} else{
+			LogHelper.error(this, "Query parameter(s) passed in the request is invalid"+ExceptionMessages.INVALID_QUERY_PARAMS);
 			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
+		}
 
 	}
 

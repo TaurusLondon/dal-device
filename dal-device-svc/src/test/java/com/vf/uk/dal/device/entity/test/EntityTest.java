@@ -3,7 +3,6 @@ import java.beans.IntrospectionException;
 
 import org.junit.Test;
 
-import com.tangosol.internal.sleepycat.persist.model.Entity;
 import com.vf.uk.dal.device.dao.impl.DeviceDaoImpl;
 import com.vf.uk.dal.device.entity.Accessory;
 import com.vf.uk.dal.device.entity.BundleAllowance;
@@ -43,15 +42,21 @@ import com.vf.uk.dal.device.test.BeanTest;
 import com.vf.uk.dal.device.utils.CohAddressProvider;
 import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
-import com.vf.uk.dal.utility.entity.BundleDetails;
+import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
+import com.vf.uk.dal.utility.entity.BundleAndHardwareRequest;
 import com.vf.uk.dal.utility.entity.BundleDeviceAndAccessoryList;
 import com.vf.uk.dal.utility.entity.BundleDeviceAndProductsList;
-import com.vf.uk.dal.utility.entity.CurrentJourney;
+import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareAccessory;
+import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareDataAllowances;
+import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks;
+import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareExtras;
+import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions;
+import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareSash;
+import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareSecureNet;
+import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForHardwareSash;
 import com.vf.uk.dal.utility.entity.ExtraPrice;
 import com.vf.uk.dal.utility.entity.PriceForExtra;
 import com.vf.uk.dal.utility.entity.PriceForProduct;
-import com.vf.uk.dal.utility.entity.RecommendedProductListRequest;
-import com.vf.uk.dal.utility.entity.RecommendedProductListResponse;
 import com.vf.uk.dal.utility.entity.StockInfo;
 
 public class EntityTest
@@ -167,5 +172,16 @@ public class EntityTest
  		BeanTest.test(PriceForExtra.class);
  		BeanTest.test(com.vf.uk.dal.device.entity.AccessoryTileGroup.class);
  		BeanTest.test(SourcePackageSummary.class);
+ 		
+ 		BeanTest.test(CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks.class);
+ 		BeanTest.test(CataloguepromotionqueriesForBundleAndHardwareDataAllowances.class);
+ 		BeanTest.test(CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions.class);
+ 		BeanTest.test(CataloguepromotionqueriesForBundleAndHardwareSash.class);
+ 		BeanTest.test(CataloguepromotionqueriesForBundleAndHardwareSecureNet.class);
+ 		BeanTest.test(CataloguepromotionqueriesForHardwareSash.class);
+ 		BeanTest.test(CataloguepromotionqueriesForBundleAndHardwareExtras.class);
+ 		BeanTest.test(CataloguepromotionqueriesForBundleAndHardwareAccessory.class);
+ 		BeanTest.test(BundleAndHardwarePromotions.class);
+ 		BeanTest.test(BundleAndHardwareRequest.class);
  	}
 }
