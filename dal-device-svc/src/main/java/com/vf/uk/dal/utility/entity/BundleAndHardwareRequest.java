@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Objects;
 
 import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
-import com.vf.uk.dal.device.utils.Constants;
 
 /**
  * RequestForBundleAndHardware
@@ -13,15 +12,6 @@ import com.vf.uk.dal.device.utils.Constants;
 public class BundleAndHardwareRequest {
 
 	private List<BundleAndHardwareTuple> bundleAndHardwareList = null;
-    private String journeyType=Constants.JOURNEY_TYPE_ACQUISITION;
-    
-	public String getJourneyType() {
-		return journeyType;
-	}
-
-	public void setJourneyType(String journeyType) {
-		this.journeyType = journeyType;
-	}
 
 	public BundleAndHardwareRequest bundleAndHardwareList(List<BundleAndHardwareTuple> bundleAndHardwareList) {
 		this.bundleAndHardwareList = bundleAndHardwareList;

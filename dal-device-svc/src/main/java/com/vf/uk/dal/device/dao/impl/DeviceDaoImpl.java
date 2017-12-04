@@ -284,7 +284,7 @@ public class DeviceDaoImpl implements DeviceDao {
 				Map<String, BundleAndHardwarePromotions> bundleAndHardwarePromotionsMap = new HashMap<>();
 				if (!isConditionalAcceptJourney && !bundleAndHardwareTupleList.isEmpty()) {
 					List<BundleAndHardwarePromotions> allPromotions = CommonUtility
-							.getPromotionsForBundleAndHardWarePromotions(bundleAndHardwareTupleList,journeyType, registryclnt);
+							.getPromotionsForBundleAndHardWarePromotions(bundleAndHardwareTupleList, registryclnt);
 					if (allPromotions != null && !allPromotions.isEmpty()) {
 						allPromotions.forEach(promotion -> {
 							bundleAndHardwarePromotionsMap.put(promotion.getHardwareId(), promotion);
@@ -396,7 +396,7 @@ public class DeviceDaoImpl implements DeviceDao {
 						}
 						if (!bundleHardwareTupleList.isEmpty()) {
 							promotions = CommonUtility
-									.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList,journeyType, registryclnt);
+									.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList,registryclnt);
 						}
 
 					} else if (StringUtils.isNotBlank(bundleId) && commercialProduct != null
@@ -760,7 +760,7 @@ public class DeviceDaoImpl implements DeviceDao {
 			}
 			if(!bundleHardwareTupleList.isEmpty())
 			{
-				 promotions = CommonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList ,journeyType, registryclnt);
+				 promotions = CommonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList , registryclnt);
 			}
 			if (StringUtils.isNotBlank(journeyType) && Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
 					&& commercialProduct.getProductControl() != null
@@ -937,7 +937,7 @@ public class DeviceDaoImpl implements DeviceDao {
 			}
 			if(!bundleHardwareTupleList.isEmpty())
 			{
-				 promotions = CommonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList ,journeyType, registryclnt);
+				 promotions = CommonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList , registryclnt);
 			}
 			if(listOfPriceForBundleAndHardware!=null && !listOfPriceForBundleAndHardware.isEmpty())
 			{
