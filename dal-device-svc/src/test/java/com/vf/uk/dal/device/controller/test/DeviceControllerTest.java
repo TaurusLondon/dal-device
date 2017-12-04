@@ -369,7 +369,6 @@ public class DeviceControllerTest {
 			given(restTemplate.postForObject("http://PROMOTION-V1/promotion/queries/ForBundleAndHardware",
 					request, BundleAndHardwarePromotions[].class))
 							.willReturn(obj);
-			
 			deviceDetailsList = deviceController
 					.getDeviceList(CommonMethods.getQueryParamsMap("Apple", "iPhone-7", "DEVICE_PAYM", "HANDSET",
 							"32 GB", "White", "iOS", "Great Camera", null, null));
@@ -1167,14 +1166,14 @@ public class DeviceControllerTest {
 	@Test
 	public void testDaoUtilsconvertCoherenceDeviceToDeviceTile() {
 		DaoUtils.convertCoherenceDeviceToDeviceTile(Long.valueOf(1), CommonMethods.getCommercialProduct1(),
-				CommonMethods.getCommercialBundle(), CommonMethods.getPriceForBundleAndHardware(),
-				CommonMethods.getListOfOfferPacks(), "DEVICE_PAYM", false,null);
+				CommonMethods.getCommercialBundle(), CommonMethods.getPriceForBundleAndHardware().get(0),
+				CommonMethods.getListOfBundleAndHardwarePromotions(), "DEVICE_PAYM", false,null);
 	}
 
 	@Test
 	public void testDaoUtilsconvertCoherenceDeviceToDeviceDetails() {
 		DaoUtils.convertCoherenceDeviceToDeviceDetails(CommonMethods.getCommercialProduct(),
-				CommonMethods.getPriceForBundleAndHardware(), CommonMethods.getListOfOfferPacks());
+				CommonMethods.getPriceForBundleAndHardware(), CommonMethods.getListOfBundleAndHardwarePromotions());
 	}
 
 	@Test
@@ -1402,5 +1401,13 @@ public class DeviceControllerTest {
 		queryparams.put("offerCode", "W_HH_OC_01");
 		queryparams.put("deviceId", "093353");
 		 deviceController.getListOfDeviceDetails(queryparams);
+	}
+	@Test
+	public void notNullTestForGetAccessoriesOfDeviceDao() {
+		try {
+			 DaoUtils.convertCoherenceAccesoryToAccessory(CommonMethods.getCommercialProduct2(), CommonMethods.getPriceForAccessory());
+		} catch (Exception e) {
+
+		}
 	}
 }

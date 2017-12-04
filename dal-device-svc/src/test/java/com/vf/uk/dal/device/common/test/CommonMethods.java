@@ -1376,6 +1376,8 @@ public class CommonMethods {
 		merchandisingPromotions.setDiscountId("107531");
 		merchandisingPromotions.setLabel("20% off with any handset");
 		merchandisingPromotions.setTag("AllPhone.full.2017");
+		merchandisingPromotions.setDescription("description");
+		merchandisingPromotions.setMpType("limited_discount");
 		/*merchandisingPromotions1.setDiscountId("107526");
 		merchandisingPromotions1.setLabel("9 months, 15% off, Any Handset");
 		merchandisingPromotions1.setTag("AllPhone.limit.2017");*/
@@ -3139,7 +3141,7 @@ public class CommonMethods {
 		modelList.add(model);
 		return modelList;
 	}
-/*public static List<BundleAndHardwarePromotions> getListOfBundleAndHardwarePromotions() {
+	public static List<BundleAndHardwarePromotions> getListOfBundleAndHardwarePromotions() {
 		
 		try {
 			
@@ -3160,5 +3162,31 @@ public class CommonMethods {
 			e.printStackTrace();
 		}
 		return null;
-	}*/
+	}
+	public static PriceForAccessory getPriceForAccessory()
+	{
+		PriceForAccessory priceForAccessory = new PriceForAccessory();
+		com.vf.uk.dal.utility.entity.HardwarePrice hardwarePrice= new com.vf.uk.dal.utility.entity.HardwarePrice();
+		com.vf.uk.dal.utility.entity.Price price= new com.vf.uk.dal.utility.entity.Price();
+		price.setGross("25.0");
+		price.setNet("16.0");
+		price.setVat("9.0");
+		com.vf.uk.dal.utility.entity.Price price1= new com.vf.uk.dal.utility.entity.Price();
+		price1.setGross("25.0");
+		price1.setNet("16.0");
+		price1.setVat("9.0");
+		com.vf.uk.dal.utility.entity.MerchandisingPromotion merchandisingPromotion=new com.vf.uk.dal.utility.entity.MerchandisingPromotion();
+		merchandisingPromotion.setTag("tag");
+		merchandisingPromotion.setDescription("description");
+		merchandisingPromotion.setDiscountId("discountId");
+		merchandisingPromotion.setLabel("label");
+		merchandisingPromotion.setMpType("mpType");
+		merchandisingPromotion.setPriceEstablishedLabel("priceEstablishedLabel");
+		hardwarePrice.setHardwareId("093353");
+		hardwarePrice.setMerchandisingPromotions(merchandisingPromotion);
+		hardwarePrice.setOneOffPrice(price);
+		hardwarePrice.setOneOffDiscountPrice(price1);
+		 priceForAccessory.setHardwarePrice(hardwarePrice);
+		 return priceForAccessory;
+	}
 }

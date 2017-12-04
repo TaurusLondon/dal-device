@@ -178,4 +178,6 @@ public class Constants {
 	 * @author manoj.bera 
 	 * @Sprint 6.4 Constants End
 	 */
+	
+	public static final String JOURNEY_TYPE_ACQUISITION = "Acquisition";
 }

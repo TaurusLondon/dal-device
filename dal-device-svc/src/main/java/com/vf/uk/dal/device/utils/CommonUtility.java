@@ -7,6 +7,8 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.commons.lang.StringUtils;
 import org.json.simple.JSONObject;
@@ -404,6 +406,7 @@ public  class CommonUtility {
 		RestTemplate restTemplate = registryClient.getRestTemplate();
 		BundleAndHardwareRequest request =new BundleAndHardwareRequest();
 		request.setBundleAndHardwareList(bundleHardwareTupleList);
+		//request.setJourneyType(journeyType);
 		BundleAndHardwarePromotions[] response = null;
 		try {
 			

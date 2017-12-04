@@ -80,5 +80,14 @@ public class ExceptionMessages
 	
 	public static final String BUNDLECOMPATIBLELIST_API_EXCEPTION = "Error while calling BundleCompatibleList API";
 	public static final String COUPLEBUNDLELIST_API_EXCEPTION = "Error while calling CoupleBundleList API";
+	
+	/**
+	 * Sprint 6.5
+	 * Start
+	 */
+		public static final String ERROR_IN_FUTURE_TASK = "Exception occured while executing thread pool";
+	/**
+	 * Sprint 6.5 End
+	 */
 }
 
