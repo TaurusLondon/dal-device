@@ -366,3 +366,23 @@ GetDeviceTile to expose MediaLinks
 URL for above US:
 
 https://internal-digitalx-sit2-alb-mas-1938696969.eu-west-1.elb.amazonaws.com/devices/catalogue/deviceTile/?productClass=HANDSET&sort=Priority&groupType=DEVICE_PAYM 
+
+6.5(30-Nov-2017)
+-----------------
+User story # 12564
+[ 
+GetDeviceTile to expose MediaLinks - non pricing promotions
+]
+
+URL for above US:
+
+https://internal-digitalx-sit2-alb-mas-1938696969.eu-west-1.elb.amazonaws.com/devices/catalogue/deviceTile/?productClass=HANDSET&sort=Priority&pageSize=9&pageNumber=0&groupType=DEVICE_PAYM
+
+Defect ID # 12468
+[ 
+Labels of hardware specific promotions- ExtraDiscount & AccessoryDiscount are not visible in solr after hitting cacheDeviceTile and in GetDeviceList response.
+]
+
+URL for above Defect:
+
+https://internal-digitalx-sit2-alb-mas-1938696969.eu-west-1.elb.amazonaws.com/devices/catalogue/deviceTile/?productClass=HANDSET&sort=Priority&pageSize=9&pageNumber=0&groupType=DEVICE_PAYM

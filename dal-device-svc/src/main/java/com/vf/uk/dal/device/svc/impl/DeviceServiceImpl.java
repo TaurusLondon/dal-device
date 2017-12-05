@@ -54,6 +54,7 @@ import com.vf.uk.dal.device.utils.DeviceTileCacheDAO;
 import com.vf.uk.dal.device.utils.DeviceUtils;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 import com.vf.uk.dal.device.utils.MediaConstants;
+import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 import com.vf.uk.dal.utility.entity.BundleDetails;
 import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
 import com.vf.uk.dal.utility.entity.BundleHeader;
@@ -105,7 +106,7 @@ public class DeviceServiceImpl implements DeviceService {
 	 * Handles requests from controller and connects to DAO.
 	 * 
 	 * @param String
-	 * 
+	 * performance improved by @author manoj.bera
 	 * @return Device
 	 **/
 
@@ -324,7 +325,7 @@ public class DeviceServiceImpl implements DeviceService {
 	} */
 		
 		
-		
+		LogHelper.info(this, "Start -->  calling  getDeviceList in ServiceImpl");
 		if (includeRecommendations && StringUtils.isBlank(msisdn)) {
 			LogHelper.error(this, "Invalid MSISDN provided. MSISDN is required for retrieving recommendations.");
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MSISDN);
@@ -362,6 +363,7 @@ public class DeviceServiceImpl implements DeviceService {
 				
 			}
 		}
+		LogHelper.info(this, "End -->  calling  GetDeviceList in ServiceImpl");
 		return facetedDevice;
 	}
 	/**
@@ -414,14 +416,14 @@ public class DeviceServiceImpl implements DeviceService {
 			for (ProductModel productModel2 : productModel) {
 				if (productModel2.getProductStartDate() != null) {
 					try {
-						startDateTime = new SimpleDateFormat(Constants.DATE_FORMAT_SOLR).parse(productModel2.getProductStartDate());
+						startDateTime = new SimpleDateFormat(Constants.DATE_FORMAT).parse(productModel2.getProductStartDate());
 					} catch (ParseException e) {
 						LogHelper.error(this, "Parse Exception: " + e);
 					}
 				}
 				if (productModel2.getProductEndDate() != null) {
 					try {
-						endDateTime = new SimpleDateFormat(Constants.DATE_FORMAT_SOLR).parse(productModel2.getProductEndDate());
+						endDateTime = new SimpleDateFormat(Constants.DATE_FORMAT).parse(productModel2.getProductEndDate());
 					} catch (ParseException ex) {
 						LogHelper.error(this, "Parse Exception: " + ex);
 					}
@@ -530,8 +532,8 @@ public class DeviceServiceImpl implements DeviceService {
 			List<ProductGroupModel> productGroupModelList = productGroupFacetModel.getListOfProductGroups();
 			if (productGroupModelList != null && !productGroupModelList.isEmpty()) {
 				productGroupModelList.forEach(productGroupModel -> {
-					if (productGroupModel.getLeadDeviceId() != null) {
-						listOfProducts.add(productGroupModel.getLeadDeviceId());	
+					if (StringUtils.isNotBlank(productGroupModel.getLeadDeviceId())) {
+						listOfProducts.add(productGroupModel.getLeadDeviceId());
 					}else{
 						//Below Code for If leadDevicId not coming from SOLR
 						List<String> variantsList = productGroupModel.getListOfVariants();
@@ -540,7 +542,7 @@ public class DeviceServiceImpl implements DeviceService {
 
 							//if (listOfMember != null && listOfMember.size() > 1) {
 								String leadMember = getMemeberBasedOnRules1(listOfMember);
-								if(leadMember!=null)
+								if(StringUtils.isNotBlank(leadMember))
 								{
 								groupNameWithProdId.put(leadMember, productGroupModel.getName());
 								listOfProducts.add(leadMember);
@@ -560,11 +562,33 @@ public class DeviceServiceImpl implements DeviceService {
 			}
 			LogHelper.error(this, "Lead DeviceId List Coming From Solr------------:  " + listOfProducts);
 			List<ProductModel> listOfProductModel = deviceDao.getProductModel(listOfProducts);
+			List<BundleAndHardwareTuple> bundleHardwareTupleList=new ArrayList<>();
 			if (listOfProductModel != null && !listOfProductModel.isEmpty()) {
 				listOfProductModel=sortListForProductModel(listOfProductModel,listOfProducts);
+				listOfProductModel.forEach(productModel->{
+					if(StringUtils.isNotBlank(productModel.getLeadPlanIdNew()) && productModel.getLeadPlanIdNew().length()==6)
+					{
+						BundleAndHardwareTuple bundleAndHardwareTuple=new BundleAndHardwareTuple();
+						bundleAndHardwareTuple.setBundleId(productModel.getLeadPlanIdNew());
+						bundleAndHardwareTuple.setHardwareId(productModel.getProductId());
+						bundleHardwareTupleList.add(bundleAndHardwareTuple);
+					}
+				});
 			} else {
 				LogHelper.error(this, "No Data Found for the given list of Products : " + listOfProductModel);
 				throw new ApplicationException(ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_PRODUCT_LIST);
+			}
+			List<BundleAndHardwarePromotions> promotions=null;
+			Map<String,BundleAndHardwarePromotions> promotionmap=new HashMap<>();
+			if(!bundleHardwareTupleList.isEmpty())
+			{
+				 promotions = CommonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList , registryclnt);
+			}
+			if(promotions!=null)
+			{
+				promotions.forEach(promotion->{
+					promotionmap.put(promotion.getHardwareId(), promotion);
+				});
 			}
 			if (groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG)) {
 				CommercialProduct commercialProduct;
@@ -598,12 +622,12 @@ public class DeviceServiceImpl implements DeviceService {
 					offeredPrice.add(offers);
 					offerPriceMap.put(offers.getHardwareId(), offeredPrice);
 				}
-				});
+			 });
 			}
 			}
 			List<FacetField> facetFields = (null != productGroupFacetModelForFacets) ? productGroupFacetModelForFacets.getListOfFacetsFields() : null;
 			facetedDevice = DaoUtils.convertProductModelListToDeviceList(listOfProductModel, listOfProducts, facetFields,
-					groupType, ls, null,offerPriceMap,offerCode,groupNameWithProdId, null, offeredFlag);
+					groupType, ls, null,offerPriceMap,offerCode,groupNameWithProdId, null, offeredFlag,promotionmap);
 			//facetedDevice.setNoOfRecordsFound(productGroupFacetModel.getNumFound());
 
 		} else {
@@ -799,7 +823,7 @@ public class DeviceServiceImpl implements DeviceService {
 			// make your model to match with this
 			LogHelper.info(DaoUtils.class, "Entering convertProductModelListToDeviceList ");
 			facetedDevice = DaoUtils.convertProductModelListToDeviceList(listOfProductModel, listOfProducts,
-					productGroupFacetModelForFacets.getListOfFacetsFields(), groupType, ls, bundleModelMap,null,null,groupNameWithProdId, bundleModelAndPriceMap,false);
+					productGroupFacetModelForFacets.getListOfFacetsFields(), groupType, ls, bundleModelMap,null,null,groupNameWithProdId, bundleModelAndPriceMap,false,null);
 			LogHelper.info(DaoUtils.class, "exiting convertProductModelListToDeviceList ");
 			facetedDevice.setNoOfRecordsFound(productGroupFacetModel.getNumFound());
 
@@ -1190,6 +1214,7 @@ public class DeviceServiceImpl implements DeviceService {
 		List<DevicePreCalculatedData> devicePreCalculatedData;
 		try {
 			devicePreCalculatedData = getDeviceListFromPricing(groupType);
+			deviceTileCacheDAO.beginTransaction();
 			//LogHelper.info(this, jobId+"==>List Of Product group For Device Listing : " + devicePreCalculatedData);
 		
 			if (devicePreCalculatedData != null && !devicePreCalculatedData.isEmpty()) {
@@ -1206,6 +1231,7 @@ public class DeviceServiceImpl implements DeviceService {
 				{
 					deviceTileCacheDAO.saveDeviceListILSCalcData(offerAppliedPrices);
 				}
+				
 			} else {
 				LogHelper.error(this,  jobId+"==>No Device Pre Calculated Data found To Store");
 				exceptionFlag=true;
@@ -1222,12 +1248,14 @@ public class DeviceServiceImpl implements DeviceService {
 		} catch (Exception e) {
 			exceptionFlag=true;
 			LogHelper.error(this,  jobId+"==>"+e);
+			deviceTileCacheDAO.rollBackTransaction();
 		}finally{
 			if(exceptionFlag){
 				deviceDao.updateCacheDeviceToDb(jobId, "FAILED");
 			}else{
 				deviceDao.updateCacheDeviceToDb(jobId, "SUCCESS");				
 			}
+			 deviceTileCacheDAO.endTransaction();
 		}
 		 return CompletableFuture.completedFuture(i);
 	}
@@ -1685,9 +1713,11 @@ public class DeviceServiceImpl implements DeviceService {
 	public List<DeviceDetails> getListOfDeviceDetails(String deviceId,String offerCode,String journeyType) {
 		List<DeviceDetails> listOfDevices;
 		List<String> listOfDeviceIds;
+		LogHelper.info(this, "Get the list of device details of device id(s) "+deviceId);
 		if (deviceId.contains(",")) {
 			String[] deviceIds = deviceId.split(",");
 			listOfDeviceIds = Arrays.asList(deviceIds);
+			
 			listOfDevices = getDeviceDetailsList(listOfDeviceIds,offerCode, journeyType);
 			}else{
 				listOfDeviceIds = new ArrayList<>();
@@ -1695,7 +1725,7 @@ public class DeviceServiceImpl implements DeviceService {
 				listOfDevices = getDeviceDetailsList(listOfDeviceIds, offerCode, journeyType);
 			}
 		if(listOfDevices==null || listOfDevices.isEmpty()){
-			LogHelper.error(this, "Invalid Device Id");
+			LogHelper.error(this, "Invalid Device Id"+ExceptionMessages.INVALID_DEVICE_ID);
 			throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 		}
 		return listOfDevices;
@@ -1819,7 +1849,8 @@ public class DeviceServiceImpl implements DeviceService {
 		}
 		// Calling pricing API
 				List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = deviceDao.getPriceForBundleAndHardware(listOfBundleAndHardwareTuple,offerCode,journeyType);
-		//Setting prices and its corresponding promotions
+		
+			LogHelper.info(this, "Setting prices and its corresponding promotions");
 				settingPriceAndPromotionsToListOfDevices(listOfPriceForBundleAndHardware,listOfDevices);
 				
 		return listOfDevices;
