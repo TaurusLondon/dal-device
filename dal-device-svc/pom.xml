@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>com.vf.uk.dal</groupId>
 	<artifactId>dal-device-svc</artifactId>
-	<version>6.4.22</version>
+	<version>6.4.23</version>
 	<packaging>jar</packaging>  
 	<build> 
 		<plugins>
@@ -174,7 +174,7 @@
 		<dependency>
 			<groupId>com.vf.uk.dal.solr</groupId>
 			<artifactId>solr-query-manager</artifactId>
-			<version>6.5.0</version>  
+			<version>6.5.1</version>  
 		</dependency>
 		<dependency>
 			<groupId>Solr</groupId>
