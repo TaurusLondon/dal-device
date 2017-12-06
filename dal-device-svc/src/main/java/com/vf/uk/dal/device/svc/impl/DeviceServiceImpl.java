@@ -271,15 +271,18 @@ public class DeviceServiceImpl implements DeviceService {
 		
 		FacetedDevice facetedDevice;
 		String message = null;
+		String sortCriteriaLocal=null;
 		if (sortCriteria == null || sortCriteria.isEmpty()) {
 			LogHelper.error(this, "sortCriteria is null");
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_SORT);
 		}
 		
 		if (StringUtils.isNotBlank(sortCriteria) && sortCriteria.startsWith(Constants.SORT_HYPEN)) {
-			sortCriteria = sortCriteria.substring(1);
-		} 
-		if(StringUtils.isNotBlank(sortCriteria) && !Validator.validateSortCriteria(sortCriteria)){ 
+			sortCriteriaLocal = sortCriteria.substring(1);
+		} else {
+			sortCriteriaLocal = sortCriteria;
+		}
+		if(StringUtils.isNotBlank(sortCriteriaLocal) && !Validator.validateSortCriteria(sortCriteriaLocal)){ 
 			LogHelper.error(this, "Received sortCriteria is invalid.");  
 			throw new ApplicationException(ExceptionMessages.RECEVIED_INVALID_SORTCRITERIA); 
 		}
@@ -343,10 +346,10 @@ public class DeviceServiceImpl implements DeviceService {
 			// if conditional accept 
 			if (creditLimit != null) {
 				LogHelper.info(this, "Getting devices for conditional Accept, with credit limit :" + creditLimit);
-				facetedDevice = getDeviceListForConditionalAccept(productClass, make, model, groupType, sortCriteria,
+				facetedDevice = getDeviceListForConditionalAccept(productClass, make, model, groupType, sortCriteriaLocal,
 						pageNumber, pageSize, capacity, colour, operatingSystem, mustHaveFeatures, creditLimit,journeyType);
 			} else {
-				facetedDevice = getDeviceListofFacetedDevice(productClass, make, model, groupType, sortCriteria, pageNumber, pageSize,
+				facetedDevice = getDeviceListofFacetedDevice(productClass, make, model, groupType, sortCriteriaLocal, pageNumber, pageSize,
 						capacity, colour, operatingSystem, mustHaveFeatures,journeyType,offerCode);
 			}
 			if (facetedDevice != null && includeRecommendations) {
