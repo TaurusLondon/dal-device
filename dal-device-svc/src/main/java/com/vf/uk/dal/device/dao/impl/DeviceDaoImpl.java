@@ -243,7 +243,7 @@ public class DeviceDaoImpl implements DeviceDao {
 				 * Identify the member based on rules
 				 */
 
-				String leadMemberId = getMemeberBasedOnRules(listOfDeviceGroupMember);
+				String leadMemberId = getMemeberBasedOnRules(listOfDeviceGroupMember, journeyType);
 				if (leadMemberId != null) {
 					deviceTile.setDeviceId(leadMemberId);
 					String avarageOverallRating = getDeviceReviewRating(new ArrayList<>(Arrays.asList(leadMemberId)))
@@ -1273,13 +1273,13 @@ public class DeviceDaoImpl implements DeviceDao {
 	 * @param listOfDeviceGroupMembers
 	 * @return leadDeviceSkuId
 	 */
-	public String getMemeberBasedOnRules(List<com.vf.uk.dal.device.entity.Member> listOfDeviceGroupMember) {
+	public String getMemeberBasedOnRules(List<com.vf.uk.dal.device.entity.Member> listOfDeviceGroupMember, String journeyType) {
 		String leadDeviceSkuId = null;
 		DaoUtils daoUtils = new DaoUtils();
 		List<com.vf.uk.dal.device.entity.Member> listOfSortedMember = daoUtils
 				.getAscendingOrderForMembers(listOfDeviceGroupMember);
 		for (com.vf.uk.dal.device.entity.Member member : listOfSortedMember) {
-			if (validateMemeber(member.getId())) {
+			if (validateMemeber(member.getId(), journeyType)) {
 				leadDeviceSkuId = member.getId();
 				break;
 			}
@@ -1293,7 +1293,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	 * @param memberId
 	 * @return memberFlag
 	 */
-	public Boolean validateMemeber(String memberId) {
+	public Boolean validateMemeber(String memberId, String journeyType) {
 		Boolean memberFlag = false;
 
 		LogHelper.info(this, "Start -->  calling  CommercialProductRepository.get");
@@ -1307,7 +1307,17 @@ public class DeviceDaoImpl implements DeviceDao {
 		Date endDateTime = comProduct.getProductAvailability().getEnd();
 		boolean preOrderableFlag = comProduct.getProductControl().isPreOrderable();
 
-		if ((comProduct.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)
+		if (StringUtils.isNotBlank(journeyType)
+				&& Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)&&
+				(comProduct.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)
+				|| comProduct.getProductClass().equalsIgnoreCase(Constants.STRING_DATA_DEVICE))
+				&& DaoUtils.dateValidation(startDateTime, endDateTime, preOrderableFlag)
+				&& (comProduct.getProductControl().isIsSellableRet()
+						&& comProduct.getProductControl().isIsDisplayableRet())) {
+			memberFlag = true;
+		}
+		else if (
+				(comProduct.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)
 				|| comProduct.getProductClass().equalsIgnoreCase(Constants.STRING_DATA_DEVICE))
 				&& DaoUtils.dateValidation(startDateTime, endDateTime, preOrderableFlag)
 				&& (comProduct.getProductControl().isIsDisplayableAcq()

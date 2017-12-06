@@ -89,5 +89,7 @@ public class ExceptionMessages
 	/**
 	 * Sprint 6.5 End
 	 */
+		
+		public static final String RECEVIED_INVALID_SORTCRITERIA = "Received sortCriteria is invalid.";
 }
 
