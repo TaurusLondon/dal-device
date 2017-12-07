@@ -406,6 +406,7 @@ public  class CommonUtility {
 		RestTemplate restTemplate = registryClient.getRestTemplate();
 		BundleAndHardwareRequest request =new BundleAndHardwareRequest();
 		request.setBundleAndHardwareList(bundleHardwareTupleList);
+		//request.setJourneyType(journeyType);
 		BundleAndHardwarePromotions[] response = null;
 		try {
 			
