@@ -29,22 +29,37 @@ public class DeviceServiceImplHelper {
 		String newCapacity;
 		String newColour;
 		String newOperatingSystem;
-		String filterCriteria;
+		String filterCriteria = "";
 		String newMustHaveFeatures;
 		String musthaveFeatureUpdated;
-		String newMake = getFilterForDeviceList(make, Constants.STRING_EQUIPMENT_MAKE_COLON);
-		filterCriteria = newMake;
+		if (StringUtils.isNotEmpty(make)) {
+			String newMake = getFilterForDeviceList(make, Constants.STRING_EQUIPMENT_MAKE_COLON);
+			filterCriteria = newMake;
+		}
+
 		if (capacity != null && !"\"\"".equals(capacity)) {
 			newCapacity = getFilterForDeviceList(capacity, Constants.STRING_CAPACITY_COLON);
-			filterCriteria = filterCriteria + Constants.STRING_AND + newCapacity;
+			if (StringUtils.isNotEmpty(filterCriteria)) {
+				filterCriteria = filterCriteria + Constants.STRING_AND + newCapacity;
+			} else {
+				filterCriteria = newCapacity;
+			}
 		}
 		if (colour != null && !"\"\"".equals(colour)) {
 			newColour = getFilterForDeviceList(colour, Constants.STRING_COLOUR_COLON);
-			filterCriteria = filterCriteria + Constants.STRING_AND + newColour;
+			if (StringUtils.isNotEmpty(filterCriteria)) {
+				filterCriteria = filterCriteria + Constants.STRING_AND + newColour;
+			} else {
+				filterCriteria = newColour;
+			}
 		}
 		if (operatingSystem != null && !"\"\"".equals(operatingSystem)) {
 			newOperatingSystem = getFilterForDeviceList(operatingSystem, Constants.STRING_OPERATING_SYSTEM);
-			filterCriteria = filterCriteria + Constants.STRING_AND + newOperatingSystem;
+			if (StringUtils.isNotEmpty(filterCriteria)) {
+				filterCriteria = filterCriteria + Constants.STRING_AND + newOperatingSystem;
+			} else {
+				filterCriteria = newOperatingSystem;
+			}
 		}
 		if (mustHaveFeatures != null && !"\"\"".equals(mustHaveFeatures)) {
 			musthaveFeatureUpdated = mustHaveFeatures;
@@ -53,17 +68,19 @@ public class DeviceServiceImplHelper {
 			}
 			newMustHaveFeatures = getFilterForDeviceList(musthaveFeatureUpdated,
 					Constants.STRING_MUST_HAVE_FEATURES_WITH_COLON);
-			filterCriteria = filterCriteria + Constants.STRING_AND + newMustHaveFeatures;
+			if (StringUtils.isNotEmpty(filterCriteria)) {
+				filterCriteria = filterCriteria + Constants.STRING_AND + newMustHaveFeatures;
+			} else {
+				filterCriteria = newMustHaveFeatures;
+			}
 		}
 		return filterCriteria;
 	}
 	public String getFilterForDeviceList(String filter, String parameter) {
-		String newFilter;
+		String newFilter = "";
 		String[] filterArray;
 		List<String> filterList = new ArrayList<>();
-		if (filter == null || filter.isEmpty() || "".equals(filter) || "\"\"".equals(filter)) {
-			newFilter = parameter + "*";
-		} else {
+		if(StringUtils.isNotEmpty(filter)){
 			filterArray = filter.split(",");
 
 			if (filterArray != null && filterArray.length > 0) {
