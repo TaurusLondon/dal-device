@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import com.vf.uk.dal.device.validator.Validator;
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.common.registry.client.RegistryClient;
@@ -270,10 +271,22 @@ public class DeviceServiceImpl implements DeviceService {
 		
 		FacetedDevice facetedDevice;
 		String message = null;
+		String sortCriteriaLocal=null;
 		if (sortCriteria == null || sortCriteria.isEmpty()) {
 			LogHelper.error(this, "sortCriteria is null");
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_SORT);
 		}
+		
+		if (StringUtils.isNotBlank(sortCriteria) && sortCriteria.startsWith(Constants.SORT_HYPEN)) {
+			sortCriteriaLocal = sortCriteria.substring(1);
+		} else {
+			sortCriteriaLocal = sortCriteria;
+		}
+		if(StringUtils.isNotBlank(sortCriteriaLocal) && !Validator.validateSortCriteria(sortCriteriaLocal)){ 
+			LogHelper.error(this, "Received sortCriteria is invalid.");  
+			throw new ApplicationException(ExceptionMessages.RECEVIED_INVALID_SORTCRITERIA); 
+		}
+		
 		if (groupType == null || groupType.isEmpty()) {
 			LogHelper.error(this, "Group Type is null");
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_GROUPTYPE);
@@ -333,10 +346,10 @@ public class DeviceServiceImpl implements DeviceService {
 			// if conditional accept 
 			if (creditLimit != null) {
 				LogHelper.info(this, "Getting devices for conditional Accept, with credit limit :" + creditLimit);
-				facetedDevice = getDeviceListForConditionalAccept(productClass, make, model, groupType, sortCriteria,
+				facetedDevice = getDeviceListForConditionalAccept(productClass, make, model, groupType, sortCriteriaLocal,
 						pageNumber, pageSize, capacity, colour, operatingSystem, mustHaveFeatures, creditLimit,journeyType);
 			} else {
-				facetedDevice = getDeviceListofFacetedDevice(productClass, make, model, groupType, sortCriteria, pageNumber, pageSize,
+				facetedDevice = getDeviceListofFacetedDevice(productClass, make, model, groupType, sortCriteriaLocal, pageNumber, pageSize,
 						capacity, colour, operatingSystem, mustHaveFeatures,journeyType,offerCode);
 			}
 			if (facetedDevice != null && includeRecommendations) {
@@ -527,6 +540,8 @@ public class DeviceServiceImpl implements DeviceService {
 		LogHelper.info(this, "Facets :" + (null != productGroupFacetModelForFacets ? productGroupFacetModelForFacets.getNumFound() : null));
 		List<String> listOfProducts = new ArrayList<>();
 		Map<String, String> groupNameWithProdId = new HashMap<>();
+		Map<String,Boolean> isLeadMemberFromSolr = new HashMap<>();        
+		isLeadMemberFromSolr.put("leadMember", false);
 		if (productGroupFacetModel != null && productGroupFacetModel.getListOfProductGroups() != null
 				&& !productGroupFacetModel.getListOfProductGroups().isEmpty()) {
 			List<ProductGroupModel> productGroupModelList = productGroupFacetModel.getListOfProductGroups();
@@ -534,6 +549,7 @@ public class DeviceServiceImpl implements DeviceService {
 				productGroupModelList.forEach(productGroupModel -> {
 					if (StringUtils.isNotBlank(productGroupModel.getLeadDeviceId())) {
 						listOfProducts.add(productGroupModel.getLeadDeviceId());
+						isLeadMemberFromSolr.put("leadMember", true);
 					}else{
 						//Below Code for If leadDevicId not coming from SOLR
 						List<String> variantsList = productGroupModel.getListOfVariants();
@@ -627,7 +643,7 @@ public class DeviceServiceImpl implements DeviceService {
 			}
 			List<FacetField> facetFields = (null != productGroupFacetModelForFacets) ? productGroupFacetModelForFacets.getListOfFacetsFields() : null;
 			facetedDevice = DaoUtils.convertProductModelListToDeviceList(listOfProductModel, listOfProducts, facetFields,
-					groupType, ls, null,offerPriceMap,offerCode,groupNameWithProdId, null, offeredFlag,promotionmap);
+					groupType, ls, null,offerPriceMap,offerCode,groupNameWithProdId, null, offeredFlag,promotionmap,isLeadMemberFromSolr);
 			//facetedDevice.setNoOfRecordsFound(productGroupFacetModel.getNumFound());
 
 		} else {
@@ -821,9 +837,11 @@ public class DeviceServiceImpl implements DeviceService {
 			}
 
 			// make your model to match with this
+			Map<String,Boolean> isLeadMemberFromSolr = new HashMap<>();            
+			isLeadMemberFromSolr.put("leadMember", false);
 			LogHelper.info(DaoUtils.class, "Entering convertProductModelListToDeviceList ");
 			facetedDevice = DaoUtils.convertProductModelListToDeviceList(listOfProductModel, listOfProducts,
-					productGroupFacetModelForFacets.getListOfFacetsFields(), groupType, ls, bundleModelMap,null,null,groupNameWithProdId, bundleModelAndPriceMap,false,null);
+					productGroupFacetModelForFacets.getListOfFacetsFields(), groupType, ls, bundleModelMap,null,null,groupNameWithProdId, bundleModelAndPriceMap,false,null,isLeadMemberFromSolr);
 			LogHelper.info(DaoUtils.class, "exiting convertProductModelListToDeviceList ");
 			facetedDevice.setNoOfRecordsFound(productGroupFacetModel.getNumFound());
 
