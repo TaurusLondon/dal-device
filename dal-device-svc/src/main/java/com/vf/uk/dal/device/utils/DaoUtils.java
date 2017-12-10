@@ -2068,7 +2068,7 @@ public class DaoUtils {
 			Map<String, BundleModel> bundleModelMap, Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice,
 			String offerCode, Map<String, String> groupNameWithProdId,
 			Map<String, BundlePrice> bundleModelAndPriceMap , boolean offeredFlag,
-			Map<String,BundleAndHardwarePromotions> promotionmap) {
+			Map<String,BundleAndHardwarePromotions> promotionmap,Map<String,Boolean> isLeadMemberFromSolr) {
 		HardwarePrice hardwarePrice;
 		Price price;
 		PriceForBundleAndHardware priceInfo;
@@ -2660,9 +2660,14 @@ public class DaoUtils {
 								}
 							}
 						}
-
-						deviceList.add(deviceDetails);
-						count++;
+						if (isLeadMemberFromSolr.get("leadMember") && StringUtils.isNotBlank(productModel.getLeadPlanIdNew())) {
+							deviceList.add(deviceDetails);
+							count++;
+						}
+						else if(!isLeadMemberFromSolr.get("leadMember")){
+							deviceList.add(deviceDetails);
+							count++;
+						}
 					}
 				}
 			}

@@ -74,4 +74,12 @@ public class Validator {
 		else
 			return false;
 	}
+	
+	public static boolean validateSortCriteria(String sortCriteria)    {  
+		List<String> sortCriteriaList = Arrays.asList("Rating", "Priority", "Brand", "ReccuringCharge");  
+		if(sortCriteriaList.contains(sortCriteria))         
+			return true;      
+		else          
+			return false;    
+		}
 }

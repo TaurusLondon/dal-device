@@ -89,5 +89,8 @@ public class ExceptionMessages
 	/**
 	 * Sprint 6.5 End
 	 */
+		
+		public static final String RECEVIED_INVALID_SORTCRITERIA = "Received sortCriteria is invalid.";
+		public static final String DEVICE_ID_NOT_HANDSET = "Given DeviceId is not ProductClass Handset";
 }
 
