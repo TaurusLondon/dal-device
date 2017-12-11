@@ -135,8 +135,8 @@ paths:
           in: query
           description: >-
             Values of attributes based on which solr will provide the sorted
-            response, like Most Popular, Product Rating, New Releases,
-            Brand(a-z)(z-a), MonthlyPrice(lo-hi)(hi-lo).
+            response, like Most Popular(Priority),Rating, New Releases,
+            Brand(a-z)(z-a) but need to pass EquipmentMake to api, MonthlyPrice(lo-hi)(hi-lo)(Need to pass RecurringCharge).
           required: true
           type: string
         - name: journeyType
