@@ -187,21 +187,21 @@ paths:
           description: >-
             Values on which the attributes should be filtered upon. Possible
             values are "apple".
-          required: false
+          required: true
           type: string
         - name: model
           in: query
           description: >-
             Values on which the attributes should be filtered upon. Possible
             values are "iphone7".
-          required: false
+          required: true
           type: string
         - name: groupType
           in: query
           description: >-
             Values on which the attributes should be filtered upon. Possible
             values are "Handset" or "Accessory".
-          required: false
+          required: true
           type: string
         - name: journeyType
           in: query
