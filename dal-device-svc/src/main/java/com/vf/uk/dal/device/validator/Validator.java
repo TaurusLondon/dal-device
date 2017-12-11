@@ -76,7 +76,7 @@ public class Validator {
 	}
 	
 	public static boolean validateSortCriteria(String sortCriteria)    {  
-		List<String> sortCriteriaList = Arrays.asList("Rating", "Priority", "Brand", "ReccuringCharge");  
+		List<String> sortCriteriaList = Arrays.asList("Rating", "Priority", "EquipmentMake", "ReccuringCharge");  
 		if(sortCriteriaList.contains(sortCriteria))         
 			return true;      
 		else          
