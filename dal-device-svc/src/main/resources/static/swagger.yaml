@@ -96,7 +96,10 @@ paths:
           type: string
         - name: color
           in: query
-          description: filter by color of the device as in specification groups.
+          description: >-
+            Filter by Colour of the device as in specification groups. Please
+            note the value of this filter should be passed in double quotes.
+            example: colour = "Black","Gold"
           required: false
           type: string
         - name: operatingSystem
@@ -104,7 +107,7 @@ paths:
           description: >-
             Filter by OS of the device as in specification groups. Please note
             the value of this filter should be passed in double quotes. example:
-            operatingSystem = "iOS 10"
+            operatingSystem = "iOS 10","iOS 9"
           required: false
           type: string
         - name: capacity
@@ -112,7 +115,7 @@ paths:
           description: >-
             Filter by capacity of the device as in specification groups. Please
             note the value of this filter should be passed in double quotes.
-            example: capacity = "32 GB"
+            example: capacity = "32 GB","8 GB"
           required: false
           type: string
         - name: msisdn
@@ -124,17 +127,17 @@ paths:
           in: query
           description: >-
             One or more of the following token separated by comma.
-            'physicalKeyboard', 'greatCamera', 'goodBattery', 'bigScreen',
-            '4GEnabled', 'lightWeight'
+            "physicalKeyboard", "greatCamera", "goodBattery", "bigScreen",
+            "4GEnabled", 'lightWeight"
           required: false
           type: string
         - name: sort
           in: query
           description: >-
             Values of attributes based on which solr will provide the sorted
-            response, like Most Popular, Product Rating, New Releases,
-            Brand(a-z)(z-a), MonthlyPrice(lo-hi)(hi-lo).
-          required: false
+            response, like Most Popular(Priority),Rating, New Releases,
+            Brand(a-z)(z-a) but need to pass EquipmentMake to api, MonthlyPrice(lo-hi)(hi-lo)(Need to pass RecurringCharge).
+          required: true
           type: string
         - name: journeyType
           in: query
@@ -184,21 +187,21 @@ paths:
           description: >-
             Values on which the attributes should be filtered upon. Possible
             values are "apple".
-          required: false
+          required: true
           type: string
         - name: model
           in: query
           description: >-
             Values on which the attributes should be filtered upon. Possible
             values are "iphone7".
-          required: false
+          required: true
           type: string
         - name: groupType
           in: query
           description: >-
             Values on which the attributes should be filtered upon. Possible
             values are "Handset" or "Accessory".
-          required: false
+          required: true
           type: string
         - name: journeyType
           in: query
