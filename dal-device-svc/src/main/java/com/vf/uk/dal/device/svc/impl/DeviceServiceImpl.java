@@ -1510,7 +1510,7 @@ public class DeviceServiceImpl implements DeviceService {
 										.get(deviceId);
 								DaoUtils daoutils = new DaoUtils();
 								bundleHeaderForDevice = daoutils
-										.getListOfPriceForBundleAndHardwareForCacheDevice(listOfPrice);
+										.getListOfPriceForBundleAndHardwareForCacheDevice(listOfPrice,commercialBundleMap);
 								if (bundleHeaderForDevice != null) {
 									listOfPriceForBundleAndHardware.add(bundleHeaderForDevice);
 									leadPlanId = bundleHeaderForDevice.getBundlePrice().getBundleId();
