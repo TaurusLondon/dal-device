@@ -7,12 +7,12 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -42,6 +42,7 @@ import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForHardwareSash;
 import com.vf.uk.dal.utility.entity.PriceForProduct;
 import com.vf.uk.dal.utility.entity.RecommendedProductListRequest;
 import com.vf.uk.dal.utility.entity.RecommendedProductListResponse;
+import com.vodafone.dal.bundle.pojo.CommercialBundle;
 import com.vodafone.product.pojo.CommercialProduct;
 /**
  * 
@@ -763,5 +764,33 @@ public  class CommonUtility {
 		}
 		
 		return mediaList;
+	}
+	public static boolean isValidBundleForProduct(com.vf.uk.dal.utility.entity.PriceForBundleAndHardware price,
+			Map<String,CommercialBundle> commercialBundleMap,List<String> productLinesList)
+	{
+		boolean flag =false;
+		String bundleId=price.getBundlePrice().getBundleId();
+		if(commercialBundleMap.containsKey(bundleId))
+		{
+			CommercialBundle commercialBundle= commercialBundleMap.get(bundleId);
+			String startDateTime = null;
+			String endDateTime = null;
+			if (commercialBundle.getAvailability().getStart() != null) {
+				startDateTime = getDateToString(commercialBundle.getAvailability().getStart(),
+						Constants.DATE_FORMAT_COHERENCE);
+			}
+			if (commercialBundle.getAvailability().getEnd() != null) {
+				endDateTime = getDateToString(commercialBundle.getAvailability().getEnd(),
+						Constants.DATE_FORMAT_COHERENCE);
+			}
+			//boolean isCompatible=commercialBundle.getProductLines().containsAll(productLinesList);
+			boolean isCompatible=commercialBundle.getProductLines().stream().anyMatch(productLinesList.get(0)::equalsIgnoreCase)?true:commercialBundle.getProductLines().stream().anyMatch(productLinesList.get(1)::equalsIgnoreCase)?true:false;
+			if(isCompatible && dateValidationForOffers(startDateTime,
+					endDateTime, Constants.DATE_FORMAT_COHERENCE) && !commercialBundle.getAvailability().getSalesExpired() && commercialBundle.getBundleControl().isDisplayableAcq() && commercialBundle.getBundleControl().isSellableAcq())
+			{
+				flag =true;
+			}
+		}
+		return flag;
 	}
 }

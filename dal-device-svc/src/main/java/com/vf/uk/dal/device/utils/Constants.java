@@ -180,4 +180,14 @@ public class Constants {
 	 */
 	
 	public static final String JOURNEY_TYPE_ACQUISITION = "Acquisition";
+	/**
+	 * @author manoj.bera 
+	 * @Sprint 6.5 Constants Start
+	 */
+	
+	public static final String STRING_MBB_SELLABLE="MBB Sellable";
+	/**
+	 * @author manoj.bera 
+	 * @Sprint 6.5 Constants Start
+	 */
 }

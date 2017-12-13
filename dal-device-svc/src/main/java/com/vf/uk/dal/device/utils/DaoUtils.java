@@ -8,11 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.FacetField.Count;
-
 import com.vf.uk.dal.common.configuration.ConfigHelper;
 import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.entity.Accessory;
@@ -35,7 +35,6 @@ import com.vf.uk.dal.device.entity.MerchandisingPromotion;
 import com.vf.uk.dal.device.entity.MerchandisingPromotions;
 import com.vf.uk.dal.device.entity.MetaData;
 import com.vf.uk.dal.device.entity.NewFacet;
-import com.vf.uk.dal.device.entity.OfferPacks;
 import com.vf.uk.dal.device.entity.Price;
 import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
 import com.vf.uk.dal.device.entity.ProductAvailability;
@@ -2967,14 +2966,20 @@ public class DaoUtils {
 	 * @return
 	 */
 	public com.vf.uk.dal.utility.entity.PriceForBundleAndHardware getListOfPriceForBundleAndHardwareForCacheDevice(
-			List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware> listOfPriceForBundleHeader) {
+			List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware> listOfPriceForBundleHeaderLocal,
+			Map<String,CommercialBundle> commercialbundleMap) {
 		List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware> listOfBundelMonthlyPriceForBundleHeader = null;
 		com.vf.uk.dal.utility.entity.PriceForBundleAndHardware bundleHeaderForDevice1 = null;
 		String gross = null;
-
 		try {
 
-			if (listOfPriceForBundleHeader != null && !listOfPriceForBundleHeader.isEmpty()) {
+			if (listOfPriceForBundleHeaderLocal != null && !listOfPriceForBundleHeaderLocal.isEmpty()) {
+				List<String> productLinesList = new ArrayList<>();
+				productLinesList.add(Constants.STRING_MOBILE_PHONE_SERVICE_SELLABLE);
+				productLinesList.add(Constants.STRING_MBB_SELLABLE);
+				List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware> listOfPriceForBundleHeader=listOfPriceForBundleHeaderLocal.stream()
+						.filter(price -> CommonUtility.isValidBundleForProduct(price,commercialbundleMap,productLinesList))
+						.collect(Collectors.toList());
 				List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware> listOfOneOffPriceForBundleHeader = getAscendingOrderForOneoffPriceForCacheDeviceTile(
 						listOfPriceForBundleHeader);
 				if (listOfOneOffPriceForBundleHeader != null && !listOfOneOffPriceForBundleHeader.isEmpty()) {
