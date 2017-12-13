@@ -254,6 +254,11 @@ paths:
           required: true
           type: string
           format: Integer
+        - name: journeyType
+          in: query
+          description: Promotional Offer Code that's applicable
+          required: false
+          type: string
         - name: offerCode
           in: query
           description: Promotional Offer Code that's applicable
