@@ -964,7 +964,7 @@ public class CommonMethods {
 		Availability availability = new Availability();
 		availability.setEnd((Date.valueOf("2019-03-30")));
 		availability.setSalesExpired(false);
-		availability.setStart((Date.valueOf("2017-01-05")));
+		availability.setStart((Date.valueOf("2019-01-05")));
 		bundle.setAvailability(availability);
 		BundleControl bundleControl = new BundleControl();
 		bundleControl.setDisplayableAcq(true);
@@ -3189,4 +3189,36 @@ public class CommonMethods {
 		 priceForAccessory.setHardwarePrice(hardwarePrice);
 		 return priceForAccessory;
 	}
+	/**
+	 * @author manoj.bera
+	 * @return
+	 */
+	public static com.vf.uk.dal.utility.entity.PriceForBundleAndHardware getUtilityPriceForBundleAndHardware()
+	{
+		List<com.vf.uk.dal.utility.entity.BundleAllowance> bundleAllowanceList = new ArrayList<>();
+		com.vf.uk.dal.utility.entity.BundleAllowance bundleAllowance = new com.vf.uk.dal.utility.entity.BundleAllowance();
+		bundleAllowance.setType("Red Bundle");
+		bundleAllowance.setUom("Months");
+		bundleAllowance.setValue("10Gb");
+		bundleAllowanceList.add(bundleAllowance);
+		com.vf.uk.dal.utility.entity.Price price = new com.vf.uk.dal.utility.entity.Price();
+		price.setGross("22");
+		price.setNet("20");
+		price.setVat("2");
+		com.vf.uk.dal.utility.entity.BundlePrice bundlePrice = new com.vf.uk.dal.utility.entity.BundlePrice();
+		bundlePrice.setBundleId("110154");
+		bundlePrice.setMonthlyDiscountPrice(price);
+		bundlePrice.setMonthlyPrice(price);
+		com.vf.uk.dal.utility.entity.HardwarePrice hardwarePrice = new com.vf.uk.dal.utility.entity.HardwarePrice();
+		hardwarePrice.setHardwareId("093353");
+		hardwarePrice.setOneOffPrice(price);
+		hardwarePrice.setOneOffDiscountPrice(price);
+		com.vf.uk.dal.utility.entity.PriceForBundleAndHardware priceInfo = new com.vf.uk.dal.utility.entity.PriceForBundleAndHardware();
+		priceInfo.setBundlePrice(bundlePrice);
+		priceInfo.setMonthlyPrice(price);
+		priceInfo.setOneOffPrice(price);
+		priceInfo.setHardwarePrice(hardwarePrice);
+		return priceInfo;
+	}
+	
 }
