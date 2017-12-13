@@ -2966,18 +2966,18 @@ public class DaoUtils {
 	 * @return
 	 */
 	public com.vf.uk.dal.utility.entity.PriceForBundleAndHardware getListOfPriceForBundleAndHardwareForCacheDevice(
-			List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware> listOfPriceForBundleHeader,
+			List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware> listOfPriceForBundleHeaderLocal,
 			Map<String,CommercialBundle> commercialbundleMap) {
 		List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware> listOfBundelMonthlyPriceForBundleHeader = null;
 		com.vf.uk.dal.utility.entity.PriceForBundleAndHardware bundleHeaderForDevice1 = null;
 		String gross = null;
 		try {
 
-			if (listOfPriceForBundleHeader != null && !listOfPriceForBundleHeader.isEmpty()) {
+			if (listOfPriceForBundleHeaderLocal != null && !listOfPriceForBundleHeaderLocal.isEmpty()) {
 				List<String> productLinesList = new ArrayList<>();
 				productLinesList.add(Constants.STRING_MOBILE_PHONE_SERVICE_SELLABLE);
 				productLinesList.add(Constants.STRING_MBB_SELLABLE);
-				listOfPriceForBundleHeader=listOfPriceForBundleHeader.stream()
+				List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware> listOfPriceForBundleHeader=listOfPriceForBundleHeaderLocal.stream()
 						.filter(price -> CommonUtility.isValidBundleForProduct(price,commercialbundleMap,productLinesList))
 						.collect(Collectors.toList());
 				List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware> listOfOneOffPriceForBundleHeader = getAscendingOrderForOneoffPriceForCacheDeviceTile(
