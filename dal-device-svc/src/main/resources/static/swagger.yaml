@@ -77,13 +77,6 @@ paths:
             values are "apple". Make is also known as Manufacturer.
           required: false
           type: string
-        - name: model
-          in: query
-          description: >-
-            Values on which the attributes should be filtered upon. Possible
-            values are "iphone7".
-          required: false
-          type: string
         - name: productClass
           in: query
           description: Values on which the attributes should be filtered upon.
@@ -261,6 +254,11 @@ paths:
           required: true
           type: string
           format: Integer
+        - name: journeyType
+          in: query
+          description: Promotional Offer Code that's applicable
+          required: false
+          type: string
         - name: offerCode
           in: query
           description: Promotional Offer Code that's applicable
