@@ -12,11 +12,15 @@ import java.util.UUID;
 import org.apache.solr.client.solrj.response.FacetField;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.vf.uk.dal.common.registry.client.Utility;
 import com.vf.uk.dal.device.entity.Accessory;
+import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.BundlePrice;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.entity.Device;
@@ -43,6 +47,7 @@ import com.vf.uk.dal.device.entity.Specification;
 import com.vf.uk.dal.device.entity.SpecificationGroup;
 import com.vf.uk.dal.device.entity.StepPricingInfo;
 import com.vf.uk.dal.device.utils.Constants;
+import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 import com.vf.uk.dal.utility.entity.BundleDetails;
 import com.vf.uk.dal.utility.entity.BundleHeader;
 import com.vf.uk.dal.utility.entity.ExtraPrice;
@@ -63,6 +68,7 @@ import com.vodafone.dal.bundle.pojo.Commitment;
 import com.vodafone.dal.bundle.pojo.DevicePrice;
 import com.vodafone.dal.bundle.pojo.ImageURL;
 import com.vodafone.dal.bundle.pojo.LineRental;
+import com.vodafone.dal.bundle.pojo.Relationship;
 import com.vodafone.dal.bundle.pojo.ServiceProduct;
 import com.vodafone.dal.domain.bazaarvoice.BazaarVoice;
 import com.vodafone.product.pojo.CommercialProduct;
@@ -220,6 +226,24 @@ public class CommonMethods {
 		model.setBundleMonthlyPriceVat(9.0f);
 		model.setLeadPlanId("110154");
 		model.setLeadPlanIdNew("110154");
+		List<String> merchedn=new ArrayList<>();
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.label|40% off the phone|TEXT&&110154&&HW&&handset.conditional.full.GBP|Pricing_Automatic_Discount|NA|For 3 Months, then|095597");
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.priceEstablishedLabel|WAS|TEXT&&110154&&HW&&handset.conditional.full.GBP|Pricing_Automatic_Discount|NA|For 3 Months, then|095597");
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.description|For 3 Months, then|TEXT&&110154&&HW&&handset.conditional.full.GBP|Pricing_Automatic_Discount|NA|For 3 Months, then|095597");
+		
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.label|40% off the phone|TEXT&&110154&&BP&&handset.conditional.full.GBP|Pricing_Automatic_Discount|NA|For 3 Months, then|095597");
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.priceEstablishedLabel|WAS|TEXT&&110154&&BP&&handset.conditional.full.GBP|Pricing_Automatic_Discount|NA|For 3 Months, then|095597");
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.description|For 3 Months, then|TEXT&&110154&&BP&&handset.conditional.full.GBP|Pricing_Automatic_Discount|NA|For 3 Months, then|095597");
+		
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.label|40% off the phone|TEXT&&110154&&HW&&handset.conditional.full.GBP|Pricing_Discount|W_HH_OC_02|For 3 Months, then|095597");
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.priceEstablishedLabel|WAS|TEXT&&110154&&HW&&handset.conditional.full.GBP|Pricing_Discount|W_HH_OC_02|For 3 Months, then|095597");
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.description|For 3 Months, then|TEXT&&110154&&HW&&handset.conditional.full.GBP|Pricing_Discount|W_HH_OC_02|For 3 Months, then|095597");
+		
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.label|40% off the phone|TEXT&&110154&&BP&&handset.conditional.full.GBP|Pricing_Discount|W_HH_OC_02|For 3 Months, then|095597");
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.priceEstablishedLabel|WAS|TEXT&&110154&&BP&&handset.conditional.full.GBP|Pricing_Discount|W_HH_OC_02|For 3 Months, then|095597");
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.description|For 3 Months, then|TEXT&&110154&&BP&&handset.conditional.full.GBP|Pricing_Discount|W_HH_OC_02|For 3 Months, then|095597");
+		model.setMerchandisingMedia(merchedn);
+		//List<String>
 		
 		ProductModel model1 = new ProductModel();
 		model1.setProductId("092660");
@@ -265,6 +289,7 @@ public class CommonMethods {
 		model1.setBundleMonthlyPriceVat(9.0f);
 		model1.setLeadPlanId("110154");
 		model1.setLeadPlanIdNew("110154");
+		model1.setMerchandisingMedia(merchedn);
 		productModelList.add(model);
 		productModelList.add(model1);
 		return productModelList;
@@ -690,7 +715,7 @@ public class CommonMethods {
 
 		// commercialProduct.setProductClass("pClass");
 		commercialProduct.setLeadPlanId("110154");
-		commercialProduct.setId("93353");
+		commercialProduct.setId("093353");
 		commercialProduct.setPreDesc("");
 		commercialProduct.setDisplayName("asbd");
 		PriceDetail priceDetail = new PriceDetail();
@@ -939,7 +964,7 @@ public class CommonMethods {
 		Availability availability = new Availability();
 		availability.setEnd((Date.valueOf("2019-03-30")));
 		availability.setSalesExpired(false);
-		availability.setStart((Date.valueOf("2017-01-05")));
+		availability.setStart((Date.valueOf("2019-01-05")));
 		bundle.setAvailability(availability);
 		BundleControl bundleControl = new BundleControl();
 		bundleControl.setDisplayableAcq(true);
@@ -1307,6 +1332,14 @@ public class CommonMethods {
 		return bundle;
 	}
 
+	public static List<AccessoryTileGroup> getAccessoriesTileGroup(String deviceId){
+		List<AccessoryTileGroup> tileGroup = new ArrayList<>();
+		AccessoryTileGroup tile = new AccessoryTileGroup();
+		tile.setGroupName("Apple AirPods");
+		tile.setAccessories(getAccessoriesOfDevice(deviceId));
+		return tileGroup;
+	}
+	
 	public static List<Accessory> getAccessoriesOfDevice(String deviceId) {
 		List<Accessory> accessoryList = new ArrayList<Accessory>();
 		Accessory accessory = new Accessory();
@@ -1343,6 +1376,8 @@ public class CommonMethods {
 		merchandisingPromotions.setDiscountId("107531");
 		merchandisingPromotions.setLabel("20% off with any handset");
 		merchandisingPromotions.setTag("AllPhone.full.2017");
+		merchandisingPromotions.setDescription("description");
+		merchandisingPromotions.setMpType("limited_discount");
 		/*merchandisingPromotions1.setDiscountId("107526");
 		merchandisingPromotions1.setLabel("9 months, 15% off, Any Handset");
 		merchandisingPromotions1.setTag("AllPhone.limit.2017");*/
@@ -1968,6 +2003,9 @@ public class CommonMethods {
 		merchandisingPromotions.setDiscountId("107531");
 		merchandisingPromotions.setLabel("20% off with any handset");
 		merchandisingPromotions.setTag("AllPhone.full.2017");
+		merchandisingPromotions.setPriceEstablishedLabel("WAS");
+		merchandisingPromotions.setDescription("3 months free data for e more");
+		merchandisingPromotions.setMpType("full_duration");
 		/*merchandisingPromotions1.setDiscountId("107526");
 		merchandisingPromotions1.setLabel("9 months, 15% off, Any Handset");
 		merchandisingPromotions1.setTag("AllPhone.limit.2017");*/
@@ -3095,4 +3133,92 @@ public class CommonMethods {
 		list.add(model1);
 		return list;
 	}
+	public static List<com.vodafone.solrmodels.MerchandisingPromotionModel> getModel()
+	{
+		List<com.vodafone.solrmodels.MerchandisingPromotionModel> modelList=new ArrayList<>();
+		com.vodafone.solrmodels.MerchandisingPromotionModel model=new MerchandisingPromotionModel();
+		model.setTag("W_HH_OC_02");
+		modelList.add(model);
+		return modelList;
+	}
+	public static List<BundleAndHardwarePromotions> getListOfBundleAndHardwarePromotions() {
+		
+		try {
+			
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			String bundle=new String(Utility.readFile("\\BundleandhardwarePromotuions.json"));
+			BundleAndHardwarePromotions[] bundleList=mapper.readValue(bundle, BundleAndHardwarePromotions[].class);
+
+			return  mapper.convertValue(bundleList, new TypeReference<List<BundleAndHardwarePromotions>>(){});
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public static PriceForAccessory getPriceForAccessory()
+	{
+		PriceForAccessory priceForAccessory = new PriceForAccessory();
+		com.vf.uk.dal.utility.entity.HardwarePrice hardwarePrice= new com.vf.uk.dal.utility.entity.HardwarePrice();
+		com.vf.uk.dal.utility.entity.Price price= new com.vf.uk.dal.utility.entity.Price();
+		price.setGross("25.0");
+		price.setNet("16.0");
+		price.setVat("9.0");
+		com.vf.uk.dal.utility.entity.Price price1= new com.vf.uk.dal.utility.entity.Price();
+		price1.setGross("25.0");
+		price1.setNet("16.0");
+		price1.setVat("9.0");
+		com.vf.uk.dal.utility.entity.MerchandisingPromotion merchandisingPromotion=new com.vf.uk.dal.utility.entity.MerchandisingPromotion();
+		merchandisingPromotion.setTag("tag");
+		merchandisingPromotion.setDescription("description");
+		merchandisingPromotion.setDiscountId("discountId");
+		merchandisingPromotion.setLabel("label");
+		merchandisingPromotion.setMpType("mpType");
+		merchandisingPromotion.setPriceEstablishedLabel("priceEstablishedLabel");
+		hardwarePrice.setHardwareId("093353");
+		hardwarePrice.setMerchandisingPromotions(merchandisingPromotion);
+		hardwarePrice.setOneOffPrice(price);
+		hardwarePrice.setOneOffDiscountPrice(price1);
+		 priceForAccessory.setHardwarePrice(hardwarePrice);
+		 return priceForAccessory;
+	}
+	/**
+	 * @author manoj.bera
+	 * @return
+	 */
+	public static com.vf.uk.dal.utility.entity.PriceForBundleAndHardware getUtilityPriceForBundleAndHardware()
+	{
+		List<com.vf.uk.dal.utility.entity.BundleAllowance> bundleAllowanceList = new ArrayList<>();
+		com.vf.uk.dal.utility.entity.BundleAllowance bundleAllowance = new com.vf.uk.dal.utility.entity.BundleAllowance();
+		bundleAllowance.setType("Red Bundle");
+		bundleAllowance.setUom("Months");
+		bundleAllowance.setValue("10Gb");
+		bundleAllowanceList.add(bundleAllowance);
+		com.vf.uk.dal.utility.entity.Price price = new com.vf.uk.dal.utility.entity.Price();
+		price.setGross("22");
+		price.setNet("20");
+		price.setVat("2");
+		com.vf.uk.dal.utility.entity.BundlePrice bundlePrice = new com.vf.uk.dal.utility.entity.BundlePrice();
+		bundlePrice.setBundleId("110154");
+		bundlePrice.setMonthlyDiscountPrice(price);
+		bundlePrice.setMonthlyPrice(price);
+		com.vf.uk.dal.utility.entity.HardwarePrice hardwarePrice = new com.vf.uk.dal.utility.entity.HardwarePrice();
+		hardwarePrice.setHardwareId("093353");
+		hardwarePrice.setOneOffPrice(price);
+		hardwarePrice.setOneOffDiscountPrice(price);
+		com.vf.uk.dal.utility.entity.PriceForBundleAndHardware priceInfo = new com.vf.uk.dal.utility.entity.PriceForBundleAndHardware();
+		priceInfo.setBundlePrice(bundlePrice);
+		priceInfo.setMonthlyPrice(price);
+		priceInfo.setOneOffPrice(price);
+		priceInfo.setHardwarePrice(hardwarePrice);
+		return priceInfo;
+	}
+	
 }

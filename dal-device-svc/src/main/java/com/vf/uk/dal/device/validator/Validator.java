@@ -66,12 +66,20 @@ public class Validator {
 	}
 	
 	
-/*	public static boolean validateJourneyType(String journeyType)
+	public static boolean validateJourneyType(String journeyType)
 	{
 		List<String> journeyList = Arrays.asList("acquisition", "upgrade", "secondline");
 		if(journeyList.contains(journeyType.toLowerCase()))
 			return true;
 		else
 			return false;
-	}*/
+	}
+	
+	public static boolean validateSortCriteria(String sortCriteria)    {  
+		List<String> sortCriteriaList = Arrays.asList("Rating", "Priority", "EquipmentMake", "ReccuringCharge");  
+		if(sortCriteriaList.contains(sortCriteria))         
+			return true;      
+		else          
+			return false;    
+		}
 }

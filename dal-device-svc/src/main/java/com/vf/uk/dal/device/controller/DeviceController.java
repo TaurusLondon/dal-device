@@ -6,7 +6,6 @@ import java.util.Map;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.solr.common.util.StrUtils;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vf.uk.dal.common.context.ServiceContext;
@@ -24,7 +22,7 @@ import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.common.urlparams.FilterCriteria;
 import com.vf.uk.dal.common.urlparams.PaginationCriteria;
-import com.vf.uk.dal.device.entity.Accessory;
+import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.entity.DeviceDetails;
 import com.vf.uk.dal.device.entity.DeviceTile;
@@ -66,6 +64,7 @@ public class DeviceController {
 	/**
 	 * Handles requests for getDeviceTile Service with input as
 	 * GROUP_NAME,GROUP_TYPE in URL as query.
+	 * performance improved by @author manoj.bera
 	 * 
 	 * @return Device
 	 **/
@@ -108,9 +107,10 @@ public class DeviceController {
 				LogHelper.error(this, "BundleId is Invalid");
 				throw new ApplicationException(ExceptionMessages.INVALID_BUNDLE_ID);
 			}
-			
+			LogHelper.info(this, "Start -->  calling  getListofDeviceTile");
 			listOfDeviceTile = deviceService.getListOfDeviceTile(make, model, groupType, deviceId,
 					creditLimit, journeyType, offerCode, bundleId);
+			LogHelper.info(this, "End -->  calling  getListofDeviceTile");
 			return listOfDeviceTile;
 		} else
 			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
@@ -128,12 +128,14 @@ public class DeviceController {
 		DeviceDetails deviceDetails;
 		LogHelper.info(this, ":::::::Test Logger for VSTS migration And Validate Pipeline Validation::::::::");
 		if (StringUtils.isNotBlank(deviceId)) {
+			LogHelper.info(this, "Start -->  calling  getDeviceDetails");
 			deviceDetails = deviceService.getDeviceDetails(deviceId, journeyType, offerCode);
+			LogHelper.info(this, "End -->  calling  getDeviceDetails");
 		} else {
 			LogHelper.error(this, DEVICE_ID_IS_EMPTY);
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
 		}
-
+		
 		return deviceDetails;
 	}
 
@@ -158,7 +160,13 @@ public class DeviceController {
 				throw new ApplicationException(ExceptionMessages.REQUIRED_JOURNEY_TYPE);
 			}	*/
 			if (deviceId != null) {
+				if(!deviceId.matches("[0-9]{6}")) {
+					LogHelper.error(this, "DeviceId is Invalid");
+					throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
+				}
+				LogHelper.info(this, "Start -->  calling  getDeviceTileById");
 				listOfDeviceTile = deviceService.getDeviceTileById(deviceId,offerCode,journeyType);
+				LogHelper.info(this, "End -->  calling  getDeviceTileById");
 			} else {
 				LogHelper.error(this, DEVICE_ID_IS_EMPTY);
 				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
@@ -182,7 +190,9 @@ public class DeviceController {
 		String groupName;
 		groupType = getFilterValue(GROUP_TYPE);
 		groupName = getFilterValue(GROUP_NAME);
+		LogHelper.info(this, "Start -->  calling  getProductGroupByGroupTypeGroupName");
 		productGroup = deviceService.getProductGroupByGroupTypeGroupName(groupType, groupName);
+		LogHelper.info(this, "End -->  calling  getProductGroupByGroupTypeGroupName");
 		return productGroup;
 	}
 
@@ -193,20 +203,23 @@ public class DeviceController {
 	 * @return List<Accessory>
 	 **/
 	@RequestMapping(value = "/accessory/queries/byDeviceId/", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
-	public List<Accessory> getAccessoriesOfDevice(@RequestParam Map<String, String> queryParams) {
+	public List<AccessoryTileGroup> getAccessoriesOfDevice(@RequestParam Map<String, String> queryParams) {
 
 		if (!queryParams.isEmpty() && Validator.validateDeviceId(queryParams)) {
-			List<Accessory> listOfAccessory;
+			List<AccessoryTileGroup> listOfAccessoryTileGroup;
 
 			String deviceId = queryParams.containsKey(DEVICE_ID) ? queryParams.get(DEVICE_ID) : null;
 			String journeyType = queryParams.containsKey(JOURNEY_TYPE)?queryParams.get(JOURNEY_TYPE) : null;
+			String offerCode = queryParams.containsKey(OFFER_CODE)?queryParams.get(OFFER_CODE) : null;
 			if (StringUtils.isNotBlank(deviceId)) {
-				listOfAccessory = deviceService.getAccessoriesOfDevice(deviceId,journeyType);
+				LogHelper.info(this, "Start -->  calling  getAccessoriesOfDevice");
+				listOfAccessoryTileGroup = deviceService.getAccessoriesOfDevice(deviceId,journeyType,offerCode);
+				LogHelper.info(this, "End -->  calling  getAccessoriesOfDevice");
 			} else {
 				LogHelper.error(this, DEVICE_ID_IS_EMPTY);
 				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
 			}
-			return listOfAccessory;
+			return listOfAccessoryTileGroup;
 		} else
 			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
 	}
@@ -269,8 +282,10 @@ public class DeviceController {
 					
 					//Retrieving sort value
 					String sortCriteria = ServiceContext.getSortCriteria();
+					LogHelper.info(this, "Start -->  calling  getDeviceList");
 					facetedDevice = deviceService.getDeviceList(productClass,make,model,groupType,sortCriteria,pageNumber,
 							pageSize,capacity,colour,operatingSystem,mustHaveFeatures,journeyType, creditLimit,offerCode, msisdn, includeRecommendations);
+					LogHelper.info(this, "End -->  calling  getDeviceList");
 				} else {
 					throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
 			}
@@ -298,7 +313,9 @@ public class DeviceController {
 
 			}*/
 			if (StringUtils.isNotBlank(deviceId)) {
+				LogHelper.info(this, "Start -->  calling  getInusranceByDeviceId");
 				insurance = deviceService.getInsuranceByDeviceId(deviceId,journeyType);
+				LogHelper.info(this, "End -->  calling  getInsuranceDeviceId");
 			} else {
 				LogHelper.error(this, DEVICE_ID_IS_EMPTY);
 				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
@@ -388,7 +405,7 @@ public class DeviceController {
 	 * @param allowedRecurringPriceLimit
 	 * @return
 	 */
-	@RequestMapping(value = "/plan/keepDeviceChangePlan", method = RequestMethod.POST, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
+	@RequestMapping(value = "/plan/action/keepDeviceChangePlan", method = RequestMethod.POST, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	public BundleDetails getKeepDeviceChangePlan(@RequestBody KeepDeviceChangePlanRequest keepDeviceChangePlanRequest) {
 		BundleDetails bundleDetails;
 		if (keepDeviceChangePlanRequest == null) {
@@ -425,9 +442,11 @@ public class DeviceController {
 			LogHelper.error(this, "Limit is Invalid");
 			throw new ApplicationException(ExceptionMessages.INVALID_PLANS_LIMIT);
 		} else {
+			LogHelper.info(this, "Get the bundle details of a particular device id");
+			LogHelper.info(this, "Start -->  calling  getBundleOfDeviceId");
 			bundleDetails = deviceService.getBundlesOfDeviceId(deviceId, bundleId, allowedRecurringPriceLimit,
 					plansLimit);
-
+			LogHelper.info(this, "End -->  calling  getBundleOfDeviceId");
 		}
 
 		return bundleDetails;
@@ -444,6 +463,7 @@ public class DeviceController {
 	public JSONObject getDeviceReviewDetails(@PathVariable(DEVICE_ID) String deviceId) {
 
 		Validator.validateDeviceId(deviceId);
+		LogHelper.info(this, "Start -->  calling  getDeviceReviewDetails");
 		return deviceService.getDeviceReviewDetails(deviceId);
 
 	}
@@ -458,6 +478,8 @@ public class DeviceController {
 	public List<DeviceDetails> getListOfDeviceDetails(@RequestParam Map<String, String> queryParams) {
 
 		if (!queryParams.isEmpty() && Validator.validateDeviceId(queryParams)) {
+			
+			LogHelper.info(this, "Query parameter(s) passed in the request "+queryParams);
 			List<DeviceDetails> listOfDeviceDetails;
 
 			String deviceId = queryParams.containsKey(DEVICE_ID) ? queryParams.get(DEVICE_ID) : null;
@@ -470,14 +492,19 @@ public class DeviceController {
 				throw new ApplicationException(ExceptionMessages.REQUIRED_JOURNEY_TYPE);
 			}*/	
 			if (deviceId != null) {
+				LogHelper.info(this, "Get the list of device details for the device id passed as request params "+deviceId);
+				LogHelper.info(this, "Start -->  calling  getListOfDeviceDetails");
 				listOfDeviceDetails = deviceService.getListOfDeviceDetails(deviceId,offerCode,journeyType);
+				LogHelper.info(this, "End -->  calling  getListofDeviceDetails");
 			} else {
 				LogHelper.error(this, DEVICE_ID_IS_EMPTY);
 				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
 			}
 			return listOfDeviceDetails;
-		} else
+		} else{
+			LogHelper.error(this, "Query parameter(s) passed in the request is invalid"+ExceptionMessages.INVALID_QUERY_PARAMS);
 			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
+		}
 
 	}
 

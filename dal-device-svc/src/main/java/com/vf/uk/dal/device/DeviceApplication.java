@@ -11,30 +11,26 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import com.vf.uk.dal.common.annotation.Service;
 
 /**
- * DeviceApplication, will start the service as SpringBoot Application
- * Added Comments
+ * DeviceApplication, will start the service as SpringBoot Application Added
+ * Comments
  **/
-
 
 @Service
 @EnableTransactionManagement
 @EnableAsync
-public class DeviceApplication
-{
-    public static void main(String[] args)
-    {
-       SpringApplication.run(DeviceApplication.class, args);
-    }
-    
-   
-    /*@Bean
-    public Executor asyncExecutor() {
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(5);
-        executor.setMaxPoolSize(10);
-        executor.setQueueCapacity(10);
-        executor.setThreadNamePrefix("DeviceApplication-");
-        executor.initialize();
-        return executor;
-    }*/
+public class DeviceApplication {
+	public static void main(String[] args) {
+		SpringApplication.run(DeviceApplication.class, args);
+	}
+
+	@Bean
+	public Executor asyncExecutor() {
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		executor.setCorePoolSize(2);
+		executor.setMaxPoolSize(2);
+		executor.setQueueCapacity(50);
+		executor.setThreadNamePrefix("DeviceApplication-");
+		executor.initialize();
+		return executor;
+	}
 }

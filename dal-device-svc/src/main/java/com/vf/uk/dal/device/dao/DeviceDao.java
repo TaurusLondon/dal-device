@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
-import com.vf.uk.dal.device.entity.Accessory;
+import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.entity.DeviceDetails;
@@ -35,7 +35,7 @@ public interface DeviceDao {
 	public DeviceDetails getDeviceDetails(String deviceId,String journeyType,String offerCode);
 	public List<DeviceTile> getDeviceTileById(String id, String offerCode, String journeyType);
 	public List<ProductGroup> getProductGroupByGroupTypeGroupName(String groupType, String groupName);
-	public List<Accessory> getAccessoriesOfDevice(String deviceId,String journeyType);
+	public List<AccessoryTileGroup> getAccessoriesOfDevice(String deviceId,String journeyType,String offerCode);
 	//public FacetedDevice getDeviceList(String productClass,String make,String model,String groupType,String sortCriteria,int pageNumber,int pageSize,String capacity,String colour,String operatingSystem,String mustHaveFeatures);
 	//public Insurances getInsuranceById(String deviceId);
 	//public List<ProductGroupForDeviceListing> getDeviceListFromPricing(String grouptype);
@@ -50,7 +50,7 @@ public interface DeviceDao {
 	public StockAvailability getStockAvailabilityByMemberId(String memberId);
 	public void movePreCalcDataToSolr(List<DevicePreCalculatedData> preCalcPlanList);
 	public ProductGroupFacetModel getProductGroupsWithFacets(Filters filterKey,String filterCriteria,
-			String sortBy,String sortOption,Integer pageNumber,Integer pageSize);
+			String sortBy,String sortOption,Integer pageNumber,Integer pageSize,String journeyType);
 	public ProductGroupFacetModel getProductGroupsWithFacets(Filters filterKey);
 	public List<ProductModel> getProductModel(List<String> listOfProducts);
 	public List<BundleModel> getBundleDetails(List<String> listOfLeadPlanId);
@@ -65,7 +65,7 @@ public interface DeviceDao {
 	public CacheDeviceTileResponse getCacheDeviceJobStatus(String jobId)throws ApplicationException;
 	public Collection<CommercialBundle> getListCommercialBundleRepositoryByCompatiblePlanList(List<String> planIdList);
 	public  List<OfferAppliedPriceModel> getBundleAndHardwarePriceFromSolr(List<String> deviceIds, String offerCode);
-	public Group getGroupByProdGroupName(String groupName);
+	public Group getGroupByProdGroupName(String groupName,String groupType);
 	public List<CommercialProduct> getCommercialProductsList(List<String> productIdsList);
 	
 	public List<MerchandisingPromotionModel> getJourneyTypeCompatibleOfferCodes(String journeyType);

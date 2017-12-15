@@ -37,6 +37,18 @@ public class MerchandisingPromotion {
   @SerializedName("mpType")
   private String mpType = null;
 
+  @SerializedName("priority")
+  private Integer priority = null;
+	
+  public Integer getPriority() 
+  {
+	return priority;
+  }
+  public void setPriority(Integer priority) 
+  {
+	this.priority = priority;
+  }
+  
   private String priceEstablishedLabel = null;
 
   public MerchandisingPromotion tag(String tag) {

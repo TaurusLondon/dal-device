@@ -8,6 +8,7 @@ import org.json.simple.JSONObject;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.vf.uk.dal.device.entity.Accessory;
+import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.entity.DeviceDetails;
 import com.vf.uk.dal.device.entity.DeviceTile;
@@ -29,7 +30,7 @@ public interface DeviceService {
 	public List<DeviceTile> getDeviceTileById(String id, String offerCode,String journeyType);
 	public DeviceDetails getDeviceDetails(String deviceId,String journeyType,String offerCode);
 	public List<ProductGroup> getProductGroupByGroupTypeGroupName(String groupType,String groupName);
-	public List<Accessory> getAccessoriesOfDevice(String deviceId,String journeyType);
+	public List<AccessoryTileGroup> getAccessoriesOfDevice(String deviceId,String journeyType,String offerCode);
 	public FacetedDevice getDeviceList(String productClass,String listOfMake,String model,String groupType,String sortCriteria,
 			int pageNumber,int pageSize,String capacity,String colour,String operatingSystem,String mustHaveFeatures,String journeyType,
 			Float creditLimit,String offerCode, String msisdn, boolean includeRecommendations);
@@ -49,7 +50,7 @@ public interface DeviceService {
 	Boolean validateMemeber1(String memberId);
 	FacetedDevice getDeviceListForConditionalAccept(String productClass, String make, String model, String groupType,
 			String sortCriteria, int pageNumber, int pageSize, String capacity, String colour, String operatingSystem,
-			String mustHaveFeatures, Float creditLimit);
+			String mustHaveFeatures, Float creditLimit,String journeyType);
 	String getFilterForDeviceList(String filter, String parameter);
 	public String getLeadPlanIdForDeviceId(String deviceId);
 	public Boolean validateMemeber(String memberId);

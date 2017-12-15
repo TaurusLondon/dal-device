@@ -23,18 +23,16 @@ paths:
           description: Unique Id of the device being requested
           required: true
           type: string
+        - name: offerCode
+          in: query
+          description: Unique offercode
+          required: false
+          type: string
         - name: journeyType
           in: query
           description: >-
-            Type of journey that the user undertakes e.g. "Acquisition",
-            "upgrade", "ils" etc.
-          required: false
-          type: string
-        - name: offerCode
-          in: query
-          description: >-
-            Offer code that defines what type of promotional discount needs to
-            be displaced.
+            name of journey type ex. "acquisition", "upgrade",
+            "conditionalaccept", "secondline"
           required: false
           type: string
       tags:
@@ -60,14 +58,14 @@ paths:
         filter criteria in the response.
       operationId: CAT_001_GetDeviceTiles
       parameters:
-        - name: pageNumber
+        - name: offset
           in: query
-          description: Page Number
+          description: Position in pagination
           required: false
           type: integer
-        - name: pageSize
+        - name: count
           in: query
-          description: Page Size
+          description: Number of items
           required: false
           type: integer
         - name: make
@@ -75,6 +73,13 @@ paths:
           description: >-
             Values on which the attributes should be filtered upon. Possible
             values are "apple". Make is also known as Manufacturer.
+          required: false
+          type: string
+        - name: model
+          in: query
+          description: >-
+            Values on which the attributes should be filtered upon. Possible
+            values are "iphone7".
           required: false
           type: string
         - name: productClass
@@ -89,69 +94,58 @@ paths:
           type: string
         - name: color
           in: query
-          description: >-
-            Filter by Colour of the device as in specification groups. Please
-            note the value of this filter should be passed in double quotes.
-            example: colour = "Black","Gold"
+          description: filter by color of the device as in specification groups.
           required: false
           type: string
-        - name: operatingSystem
+        - name: os
           in: query
-          description: >-
-            Filter by OS of the device as in specification groups. Please note
-            the value of this filter should be passed in double quotes. example:
-            operatingSystem = "iOS 10","iOS 9"
+          description: filter by OS of the device as in specification groups.
           required: false
           type: string
         - name: capacity
           in: query
-          description: >-
-            Filter by capacity of the device as in specification groups. Please
-            note the value of this filter should be passed in double quotes.
-            example: capacity = "32 GB","8 GB"
-          required: false
-          type: string
-        - name: msisdn
-          in: query
-          description: Msisdn of the customer.
+          description: filter by capacity of the device as in specification groups.
           required: false
           type: string
         - name: mustHaveFeatures
           in: query
           description: >-
             One or more of the following token separated by comma.
-            "physicalKeyboard", "greatCamera", "goodBattery", "bigScreen",
-            "4GEnabled", 'lightWeight"
+            'physicalKeyboard', 'greatCamera', 'goodBattery', 'bigScreen',
+            '4GEnabled', 'lightWeight'
           required: false
           type: string
         - name: sort
           in: query
           description: >-
             Values of attributes based on which solr will provide the sorted
-            response, like Most Popular(Priority),Rating, New Releases,
-            Brand(a-z)(z-a) but need to pass EquipmentMake to api, MonthlyPrice(lo-hi)(hi-lo)(Need to pass RecurringCharge).
+            response, like Most Popular, Product Rating, New Releases,
+            Brand(a-z)(z-a), MonthlyPrice(lo-hi)(hi-lo).
           required: true
-          type: string
-        - name: journeyType
-          in: query
-          description: When user selects device for Upgrade.
-          required: false
-          type: string
-        - name: includeRecommendations
-          in: query
-          description: When user selects device for Upgrade.
-          required: false
           type: string
         - name: offerCode
           in: query
-          description: Promotional offer code applicable.
+          description: Unique offercode
+          required: false
+          type: string
+        - name: journeyType
+          in: query
+          description: >-
+            name of journey type ex. "acquisition", "upgrade",
+            "conditionalaccept", "secondline"
           required: false
           type: string
         - name: creditLimit
           in: query
-          description: Monthly credit limit applicable in case of conditional accept.
+          description: creditLimit in case of conditional accept.
           required: false
           type: string
+        - name: includeRecommendations
+          in: query
+          description: Include chordiant recommendations or not.
+          required: false
+          type: boolean
+          default: false
       tags:
         - DeviceTile
       responses:
@@ -196,33 +190,16 @@ paths:
             values are "Handset" or "Accessory".
           required: true
           type: string
+        - name: offerCode
+          in: query
+          description: Unique offercode
+          required: false
+          type: string
         - name: journeyType
           in: query
           description: >-
-            The journey that user undertakes "acquisition", "upgrade", "ils"
-            etc.
-          required: false
-          type: string
-        - name: offerCode
-          in: query
-          description: Promotional offer code applicable
-          required: false
-          type: string
-        - name: bundleId
-          in: query
-          description: bundle Id for comaptible devices needs to displayed
-          required: false
-          type: string
-        - name: deviceId
-          in: query
-          description: device Id for comaptible devices needs to displayed
-          required: false
-          type: string
-        - name: creditLimit
-          in: query
-          description: >-
-            creditLimit applicable for the customer in case of conditional
-            accept state
+            name of journey type ex. "acquisition", "upgrade",
+            "conditionalaccept", "secondline"
           required: false
           type: string
       tags:
@@ -254,14 +231,16 @@ paths:
           required: true
           type: string
           format: Integer
-        - name: journeyType
-          in: query
-          description: Promotional Offer Code that's applicable
-          required: false
-          type: string
         - name: offerCode
           in: query
-          description: Promotional Offer Code that's applicable
+          description: Unique offercode
+          required: false
+          type: string
+        - name: journeyType
+          in: query
+          description: >-
+            name of journey type ex. "acquisition", "upgrade",
+            "conditionalaccept", "secondline"
           required: false
           type: string
       tags:
@@ -287,30 +266,45 @@ paths:
         necessary information in the response.
       operationId: CAT_005_GetCompatibleAccessories
       parameters:
+        - name: offset
+          in: query
+          description: Position in pagination
+          required: false
+          type: integer
+        - name: count
+          in: query
+          description: Number of items
+          required: false
+          type: integer
         - name: deviceId
           in: query
           description: Unique Id of the device being requested
           required: true
           type: string
+        - name: bundleId
+          in: query
+          description: Unique Id of the bundle being requested
+          required: false
+          type: string
         - name: journeyType
           in: query
-          description: The journey that the user undertakes
+          description: Unique JourneyType
           required: false
           type: string
         - name: offerCode
           in: query
-          description: Promotional offer applicable
+          description: Unique offerCode
           required: false
-          type: string
+          type: string  
       tags:
-        - AccessoryTileGroup
+        - Accessory
       responses:
         '200':
           description: Success
           schema:
             type: array
             items:
-              $ref: '#/definitions/AccessoryTileGroup'
+              $ref: '#/definitions/Accessory'
         '404':
           description: Not found
         '500':
@@ -330,7 +324,7 @@ paths:
           type: string
         - name: journeyType
           in: query
-          description: user journey
+          description: 'name of journey type "upgrade",'
           required: false
           type: string
       tags:
@@ -408,67 +402,39 @@ paths:
           schema:
             $ref: '#/definitions/CacheDeviceDetailRequest'
       tags:
-        - DeviceTile
+        - Device
       responses:
-        '201':
+        '200':
           description: Success
           schema:
-            $ref: '#/definitions/CacheDeviceTileResponse'
+            type: string
         '404':
           description: Not found
         '500':
           description: Internal Server Error
           schema:
             $ref: '#/definitions/Error'
-  /catalogue/productGroup:
-    get:
-      summary: Get the list of Product Groups
-      description: Get the list of Product Groups
-      operationId: CAT_006_GetProductGroups
+  /catalogue/plan/action/keepDeviceChangePlan:
+    post:
+      summary: Get compatible plans for the given device Id
+      description: >-
+        The service gets the compatible plans along with the necessary
+        information in the response.
+      operationId: PRDT_019-KeepDeviceChangePlan
       parameters:
-        - name: groupType
-          in: query
-          description: get List of Product Groups for given criteria
+        - name: keepDeviceChangePlanRequest
+          in: body
+          description: KeepDeviceChangePlan Request when CreditCheck failed
           required: true
-          type: string
-        - name: groupName
-          in: query
-          description: group name
-          required: false
-          type: string
+          schema:
+            $ref: '#/definitions/KeepDeviceChangePlanRequest'
       tags:
-        - ProductGroups
+        - Conditional Accept
       responses:
         '200':
           description: Success
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/ProductGroup'
-        '404':
-          description: Not found
-        '500':
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/Error'
-  '/catalogue/deviceTile/cacheDeviceTile/{jobId}/status':
-    get:
-      summary: Get the Cache Device Tile job status.
-      description: Get the Cache Device Tile job status.
-      operationId: PRDT_012-CacheDeviceTileStatus
-      parameters:
-        - name: jobId
-          in: path
-          description: Device group Type
-          required: true
-          type: string
-      tags:
-        - DeviceTile
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/CacheDeviceTileResponse'
+            $ref: '#/definitions/BundleDetails'
         '404':
           description: Not found
         '500':
@@ -476,6 +442,123 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 definitions:
+  MonthlyCostSaver:
+    type: object
+    properties:
+      mcsPlanId:
+        type: string
+        description: PlanId of the MCS
+      mcsMessage:
+        type: string
+        description: PlanId of the MCS
+      mcsParentId:
+        type: string
+        description: PlanId of the MCS
+      oneOffPrice:
+        $ref: '#/definitions/Price'
+      oneOffDiscountPrice:
+        $ref: '#/definitions/Price'
+      monthlyPrice:
+        $ref: '#/definitions/Price'
+      monthlyDiscountPrice:
+        $ref: '#/definitions/Price'
+  BundleAllowance:
+    type: object
+    properties:
+      type:
+        type: string
+        description: 'Allowance type - "DATA","TEXT","CALL"'
+      value:
+        type: string
+        description: Value of the allowance
+      uom:
+        type: string
+        description: >-
+          Unit of measurement to be used for the allowance - "MB" for DATA.
+          "COUNT" fpr TEXT amd "MIN" for CALL
+      displayUom:
+        type: string
+        description: >-
+          Unit of measurement to be used for the allowance - "MB" for DATA.
+          "COUNT" fpr TEXT amd "MIN" for CALL
+  BundleHeader:
+    type: object
+    properties:
+      skuId:
+        type: string
+        description: Unique bundle id as available from the product catalogue
+      name:
+        type: string
+        description: Name of the bundle as provided in the product catalogue
+      description:
+        type: string
+        description: Description of the bundle as provided in the product catalogue
+      bundleName:
+        type: string
+        description: Name of the bundle as provided in the merchandising file
+      bundleDescription:
+        type: string
+        description: Description of the bundle as provided in the merchandising file
+      bundleClass:
+        type: string
+        description: 'Catalogue product class identifies products - SIMO, HANDSET etc.'
+      productClass:
+        type: string
+        description: Catalogue product class identifies products
+      paymentType:
+        type: string
+        description: 'Payment type of the bundle. For example, "postpaid", "prepaid" etc.'
+      bundleType:
+        type: string
+        description: 'Type of the bundle. For example, Standard, Red, RedPlus etc.'
+      planCoupleId:
+        type: string
+        description: PlanID of the Couple Plan
+      planCoupleFlag:
+        type: boolean
+        description: 'Indicate whether this plan is to be coupled or not True, False.'
+      planCoupleLable:
+        type: string
+        description: Message needs to be build based on data difference and cost logic.
+      globalRoamingFlag:
+        type: boolean
+        description: Indicate whether this plan having Global Roaming or not
+      secureNetFlag:
+        type: boolean
+        description: Indicate whether this plan is having Secure Net or not
+      commitmentPeriod:
+        type: string
+        description: Commitment period of the bundle
+      mobileLineRentalId:
+        type: string
+        description: Mobile RentalId of the bundle
+      mobileServiceId:
+        type: string
+        description: Mobile ServiceId of the bundle
+      allowance:
+        type: array
+        items:
+          $ref: '#/definitions/BundleAllowance'
+      roamingAllowance:
+        type: array
+        items:
+          $ref: '#/definitions/BundleAllowance'
+      merchandisingMedia:
+        type: array
+        items:
+          $ref: '#/definitions/MediaLink'
+      priceInfo:
+        $ref: '#/definitions/PriceForBundleAndHardware'
+      mcs:
+        type: array
+        items:
+          $ref: '#/definitions/MonthlyCostSaver'
+  BundleDetails:
+    properties:
+      planList:
+        type: array
+        items:
+          $ref: '#/definitions/BundleHeader'
   CacheDeviceDetailRequest:
     type: object
     properties:
@@ -485,10 +568,10 @@ definitions:
   FacetedDevice:
     type: object
     properties:
-      newFacet:
+      facet:
         type: array
         items:
-          $ref: '#/definitions/NewFacet'
+          $ref: '#/definitions/Facet'
       device:
         type: array
         items:
@@ -498,8 +581,10 @@ definitions:
         description: Number of Records found
       message:
         type: string
-        description: GRPL error message for Tealium to be checked
-  NewFacet:
+        description: >-
+          When GRPL fails displays message like, failed to apply sorting based
+          on recommendations.
+  Facet:
     type: object
     properties:
       facetName:
@@ -550,7 +635,7 @@ definitions:
         description: 'Catalogue product class identifies products - SIMO, HANDSET etc.'
       preOrderable:
         type: boolean
-        description: Pre orderable Flag
+        description: 'Catalogue product class identifies products - SIMO, HANDSET etc.'
       merchandisingControl:
         $ref: '#/definitions/MerchandisingControl'
       media:
@@ -572,8 +657,9 @@ definitions:
         type: string
         description: Description of the product as provided in the product catalogue
       validOffer:
-        type: boolean
-        description: Is Valid Offer Present
+        type: string
+        items:
+          description: Give the validOffer details
       productClass:
         type: string
         description: 'Catalogue product class identifies products - SIMO, HANDSET etc.'
@@ -590,13 +676,16 @@ definitions:
           $ref: '#/definitions/MerchandisingPromotions'
       stockAvailability:
         type: string
-        description: Availability of Stock
+        items:
+          description: Details of stockAvailability
       rating:
         type: string
-        description: Bazaar voice rating of the product
+        items:
+          description: Give the rating details
       productPageURI:
         type: string
-        description: Product Page URI
+        items:
+          description: Give the productPageURI details
       equipmentDetail:
         $ref: '#/definitions/Equipment'
       leadPlanId:
@@ -767,9 +856,6 @@ definitions:
       type:
         type: string
         description: Will provide UI information on the type of the link (like URL)
-      priority:
-        type: integer
-        description: The priority of Media Link
   Price:
     type: object
     properties:
@@ -886,6 +972,12 @@ definitions:
       displayName:
         type: string
         description: Display Name of a device This should come form MEF content file
+      isCompatible:
+        type: boolean
+        description: Is it Compatible
+      preOrderable:
+        type: boolean
+        description: Giving the preOrderable Details
       priority:
         type: string
         description: Display priority of the Member
@@ -930,20 +1022,9 @@ definitions:
           $ref: '#/definitions/MediaLink'
       priceInfo:
         $ref: '#/definitions/PriceForBundleAndHardware'
-      isCompatible:
-        type: boolean
-        description: Is the device compatible with the given bundle
-      preOrderable:
-        type: boolean
-        description: Is the device pre-orderable as per MEF
       isAffordable:
         type: boolean
-        description: >-
-          flag to showcase whether the device is affordable or not in
-          conditional accept scenario
-      fromPricing:
-        type: boolean
-        description: flag to show associated/from price
+        description: Is it Affordable
   PriceForBundleAndHardware:
     type: object
     properties:
@@ -999,19 +1080,16 @@ definitions:
         description: Label value of the merchandising promotion
       description:
         type: string
-        description: Description Text from MEF
+        description: Label value of the merchandising promotion
       discountId:
         type: string
         description: 'Discount skud Id, if applicable'
       mpType:
         type: string
-        description: Promotion Type
+        description: mpType in Merchandising Promotions
       priceEstablishedLabel:
         type: string
-        description: Price Established label available in MEF file
-      priority:
-        type: integer
-        description: The priority of Merchandising Promotion
+        description: 'The Possible values are ''was, previously'''
   StepPricingInfo:
     type: object
     properties:
@@ -1059,7 +1137,7 @@ definitions:
         items:
           $ref: '#/definitions/MediaLink'
       deviceCost:
-        $ref: '#/definitions/DeviceCost'
+        $ref: '#/definitions/HardwarePrice'
       attributes:
         type: array
         items:
@@ -1081,6 +1159,10 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/SpecificationGroup'
+      merchandisingMedia:
+        type: array
+        items:
+          $ref: '#/definitions/MediaLink'
   Insurances:
     type: object
     properties:
@@ -1106,58 +1188,21 @@ definitions:
       valueUOM:
         type: string
         description: Item Attribute Value UOM
-  DeviceCost:
+  KeepDeviceChangePlanRequest:
     type: object
     properties:
-      hardwarePrice:
-        $ref: '#/definitions/HardwarePrice'
-  ProductGroup:
-    type: object
-    properties:
-      id:
-        type: integer
-        description: identifier (product group  id)
-      groupName:
+      deviceId:
         type: string
-        description: Product Group Name
-      groupPriority:
+        description: Device Id to get compatible plans
+      bundleId:
         type: string
-        description: Product Group Name
-      groupType:
+        description: Bundle Id to identify the plan which user selected initially
+      allowedRecurringPriceLimit:
         type: string
-        description: Product Group Name
-      members:
-        type: array
-        items:
-          $ref: '#/definitions/Member'
-  Member:
-    type: object
-    properties:
-      id:
+        description: Allowed monthly price limit
+      plansLimit:
         type: string
-        description: identifier (product sku id)
-      priority:
-        type: string
-        description: Priority defined for the product group in MEF
-  CacheDeviceTileResponse:
-    type: object
-    properties:
-      jobId:
-        type: string
-        description: job identifier
-      jobStatus:
-        type: string
-        description: job status
-  AccessoryTileGroup:
-    type: object
-    properties:
-      groupName:
-        type: string
-        description: Accessory product group name like " Apple iPhone 6 cases"
-      accessories:
-        type: array
-        items:
-          $ref: '#/definitions/Accessory'
+        description: Expected no. of plans in response
   Error:
     type: object
     properties:
