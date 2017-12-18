@@ -62,6 +62,7 @@ import com.vf.uk.dal.utility.entity.RecommendedProductListRequest;
 import com.vf.uk.dal.utility.entity.RecommendedProductListResponse;
 import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
 import com.vodafone.common.Filters;
+import com.vodafone.dal.bundle.pojo.CommercialBundle;
 import com.vodafone.product.pojo.CommercialProduct;
 import com.vodafone.solrmodels.ProductGroupFacetModel;
 
@@ -1099,5 +1100,15 @@ public class DeviceServiceImplTest
 		deviceService.getDeviceList("Handset","apple", "iPhone 7", "DEVICE_PAYM",
 					"Priority", 0, 9,"32 GB","White","iOS","Great Camera","SecondLine",null,"W_HH_PAYM_02", null, true);
 		
+	}
+	@Test
+	public void nullTestIsValidBundleForProduct() {
+		Map<String,CommercialBundle> commercialBundleMap=new HashMap<>();
+		commercialBundleMap.put("110154", CommonMethods.getCommercialBundle());
+		List<String> productLinesList = new ArrayList<>();
+		productLinesList.add(Constants.STRING_MOBILE_PHONE_SERVICE_SELLABLE);
+		productLinesList.add(Constants.STRING_MBB_SELLABLE);
+		Assert.assertNotNull(CommonUtility.isValidBundleForProduct(CommonMethods.getUtilityPriceForBundleAndHardware(),
+				 commercialBundleMap,productLinesList));
 	}
 }

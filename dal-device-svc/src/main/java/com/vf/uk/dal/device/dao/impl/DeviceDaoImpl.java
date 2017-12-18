@@ -149,7 +149,9 @@ public class DeviceDaoImpl implements DeviceDao {
 		com.vf.uk.dal.device.entity.Member entityMember;
 		if (groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYM)
 				|| groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG)
-				|| groupType.equalsIgnoreCase(Constants.STRING_DEVICE_NEARLY_NEW)) {
+				|| groupType.equalsIgnoreCase(Constants.STRING_DEVICE_NEARLY_NEW)
+				|| groupType.equalsIgnoreCase(Constants.STRING_DATADEVICE_PAYM)
+				|| groupType.equalsIgnoreCase(Constants.STRING_DATADEVICE_PAYG)) {
 			LogHelper.info(this, "Start -->  calling  CommericalProduct.getByMakeAndModel");
 			listOfCommercialProducts = commercialProductRepository.getByMakeANDModel(make, model);
 			LogHelper.info(this, "End -->  After calling  CommericalProduct.getByMakeAndModel");
