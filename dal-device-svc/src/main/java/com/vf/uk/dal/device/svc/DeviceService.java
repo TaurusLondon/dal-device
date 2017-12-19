@@ -53,6 +53,6 @@ public interface DeviceService {
 			String mustHaveFeatures, Float creditLimit,String journeyType);
 	String getFilterForDeviceList(String filter, String parameter);
 	public String getLeadPlanIdForDeviceId(String deviceId);
-	public Boolean validateMemeber(String memberId);
+	public Boolean validateMemeber(String memberId,String journeyType);
 	Insurances getInsuranceByDeviceId(String deviceId,String journeyType);
 }
