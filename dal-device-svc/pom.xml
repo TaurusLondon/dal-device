@@ -179,7 +179,7 @@
 		<dependency>
 			<groupId>Solr</groupId>
 			<artifactId>IndexManager</artifactId>
-			<version>6.5.3</version> 
+			<version>6.6.0</version> 
 		</dependency> 
 		<!-- Coherence Jars -->
 		<dependency>
