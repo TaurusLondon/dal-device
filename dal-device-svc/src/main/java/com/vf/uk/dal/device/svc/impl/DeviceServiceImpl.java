@@ -1706,11 +1706,23 @@ public class DeviceServiceImpl implements DeviceService {
 					listOfOfferdMedia.addAll(listOfdMediaWithoutOfferCode);
 				}
 				if (iLSPrice != null && !iLSPrice.isEmpty()) {
-					priceInfo.setOfferAppliedPrices(iLSPrice);
+					if(priceInfo==null){
+						com.vf.uk.dal.utility.solr.entity.PriceInfo priceInfoLocal =new com.vf.uk.dal.utility.solr.entity.PriceInfo();
+						priceInfoLocal.setOfferAppliedPrices(iLSPrice);
+						deviceDataRating.setPriceInfo(priceInfoLocal);
+					}else{
+						priceInfo.setOfferAppliedPrices(iLSPrice);
+					}
+					
 				}
 				if (listOfOfferdMedia != null && !listOfOfferdMedia.isEmpty()) {
 					List<com.vf.uk.dal.utility.solr.entity.Media> listOfMedia = deviceDataRating.getMedia();
-					listOfMedia.addAll(listOfOfferdMedia);
+					if(listOfMedia==null){
+						deviceDataRating.setMedia(listOfOfferdMedia);
+					}else{
+						listOfMedia.addAll(listOfOfferdMedia);
+					}
+					
 				}
 				if (minimumPriceMap.containsKey(deviceDataRating.getProductGroupName())) {
 					deviceDataRating.setMinimumCost(minimumPriceMap.get(deviceDataRating.getProductGroupName()));

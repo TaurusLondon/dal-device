@@ -548,7 +548,7 @@ public class DeviceServiceImplTest
 		iLSPriceMap.put("093353", CommonMethods.getOfferAppliedPrice());
 		DevicePreCalculatedData	productGroupForDeviceListing=DaoUtils
 		.convertBundleHeaderForDeviceToProductGroupForDeviceListing("093353",null,"groupname"
-				,"groupId", CommonMethods.getPrice(),CommonMethods.getleadMemberMap(),iLSPriceMap,CommonMethods.getleadMemberMap(),"upgradeLeadPlanId");
+				,"groupId", CommonMethods.getPrice(),CommonMethods.getleadMemberMap(),iLSPriceMap,CommonMethods.getleadMemberMap(),null);
 
 		Assert.assertNotNull(productGroupForDeviceListing);
 	}
@@ -1108,14 +1108,26 @@ public class DeviceServiceImplTest
 		
 	}
 	@Test
+	public void nullTestIsValidBundleForProductUpgrade() {
+		Map<String,CommercialBundle> commercialBundleMap=new HashMap<>();
+		commercialBundleMap.put("110154", CommonMethods.getCommercialBundle());
+		List<String> productLinesList = new ArrayList<>();
+		String upgrade="Upgrade";
+		productLinesList.add(Constants.STRING_MOBILE_PHONE_SERVICE_SELLABLE);
+		productLinesList.add(Constants.STRING_MBB_SELLABLE);
+		Assert.assertNotNull(CommonUtility.isValidBundleForProduct(CommonMethods.getUtilityPriceForBundleAndHardware(),
+				 commercialBundleMap,productLinesList,upgrade));
+	}
+	@Test
 	public void nullTestIsValidBundleForProduct() {
 		Map<String,CommercialBundle> commercialBundleMap=new HashMap<>();
 		commercialBundleMap.put("110154", CommonMethods.getCommercialBundle());
 		List<String> productLinesList = new ArrayList<>();
+		String Acquistion="Acquistion";
 		productLinesList.add(Constants.STRING_MOBILE_PHONE_SERVICE_SELLABLE);
 		productLinesList.add(Constants.STRING_MBB_SELLABLE);
 		Assert.assertNotNull(CommonUtility.isValidBundleForProduct(CommonMethods.getUtilityPriceForBundleAndHardware(),
-				 commercialBundleMap,productLinesList,"Upgrade"));
+				 commercialBundleMap,productLinesList,Acquistion));
 	}
 	
 }

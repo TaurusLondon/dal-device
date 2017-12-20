@@ -1987,74 +1987,88 @@ public class DaoUtils {
 		List<com.vf.uk.dal.utility.solr.entity.OfferAppliedPriceDetails> listOfOfferAppliedPriceDetails = priceInfo
 				.getOfferAppliedPrices();
 		List<com.vodafone.pojos.fromjson.device.OfferAppliedPriceDetails> listOfOfferAppliedPriceDetailsForSolr = null;
-		if (listOfOfferAppliedPriceDetails != null && !listOfOfferAppliedPriceDetails.isEmpty()) {
+		if (listOfOfferAppliedPriceDetails != null
+				&& !listOfOfferAppliedPriceDetails.isEmpty()) {
 			listOfOfferAppliedPriceDetailsForSolr = getListOfOfferAppliedPriceDetails(listOfOfferAppliedPriceDetails);
 		}
-		com.vf.uk.dal.utility.solr.entity.BundlePrice bundlePrice1 = priceInfo.getBundlePrice();
 
+		com.vf.uk.dal.utility.solr.entity.BundlePrice bundlePrice1 = priceInfo
+				.getBundlePrice();
 		com.vodafone.pojos.fromjson.device.BundlePrice bundlePrice = new com.vodafone.pojos.fromjson.device.BundlePrice();
+		if (bundlePrice1 != null) {
+			com.vodafone.pojos.fromjson.device.MonthlyPrice monthlyPrice = new com.vodafone.pojos.fromjson.device.MonthlyPrice();
 
-		com.vodafone.pojos.fromjson.device.MonthlyPrice monthlyPrice = new com.vodafone.pojos.fromjson.device.MonthlyPrice();
+			com.vodafone.pojos.fromjson.device.MonthlyDiscountPrice monthlyDiscountPrice = new com.vodafone.pojos.fromjson.device.MonthlyDiscountPrice();
 
-		MonthlyPrice mnthlyPrice = bundlePrice1.getMonthlyPrice();
+			MonthlyPrice mnthlyPrice = bundlePrice1.getMonthlyPrice();
 
-		if (mnthlyPrice != null && mnthlyPrice.getGross() != null) {
-			monthlyPrice.setGross(Float.valueOf(mnthlyPrice.getGross()));
+			if (mnthlyPrice != null && mnthlyPrice.getGross() != null) {
+				monthlyPrice.setGross(Float.valueOf(mnthlyPrice.getGross()));
 
-			monthlyPrice.setNet(Float.valueOf(mnthlyPrice.getNet()));
+				monthlyPrice.setNet(Float.valueOf(mnthlyPrice.getNet()));
 
-			monthlyPrice.setVat(Float.valueOf(mnthlyPrice.getVat()));
-		}
-		bundlePrice.setMonthlyPrice(monthlyPrice);
-		com.vodafone.pojos.fromjson.device.MonthlyDiscountPrice monthlyDiscountPrice = new com.vodafone.pojos.fromjson.device.MonthlyDiscountPrice();
+				monthlyPrice.setVat(Float.valueOf(mnthlyPrice.getVat()));
+			}
+			bundlePrice.setMonthlyPrice(monthlyPrice);
 
-		MonthlyDiscountPrice mnthlydiscPrice = bundlePrice1.getMonthlyDiscountPrice();
-		if (mnthlydiscPrice != null && mnthlydiscPrice.getGross() != null) {
-			monthlyDiscountPrice.setGross(Float.valueOf(mnthlydiscPrice.getGross()));
+			MonthlyDiscountPrice mnthlydiscPrice = bundlePrice1
+					.getMonthlyDiscountPrice();
+			if (mnthlydiscPrice != null && mnthlydiscPrice.getGross() != null) {
+				monthlyDiscountPrice.setGross(Float.valueOf(mnthlydiscPrice
+						.getGross()));
 
-			monthlyDiscountPrice.setNet(Float.valueOf(mnthlydiscPrice.getNet()));
+				monthlyDiscountPrice.setNet(Float.valueOf(mnthlydiscPrice
+						.getNet()));
 
-			monthlyDiscountPrice.setVat(Float.valueOf(mnthlydiscPrice.getVat()));
-
+				monthlyDiscountPrice.setVat(Float.valueOf(mnthlydiscPrice
+						.getVat()));
+			}
 			bundlePrice.setBundleId(bundlePrice1.getBundleId());
+			bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
 		}
-		bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
-
 		com.vodafone.pojos.fromjson.device.HardwarePrice hardwarePrice = new com.vodafone.pojos.fromjson.device.HardwarePrice();
 
-		com.vf.uk.dal.utility.solr.entity.HardwarePrice hardwarePrice1 = priceInfo.getHardwarePrice();
+		com.vf.uk.dal.utility.solr.entity.HardwarePrice hardwarePrice1 = priceInfo
+				.getHardwarePrice();
+		if (hardwarePrice1 != null) {
+			com.vodafone.pojos.fromjson.device.OneOffPrice oneOffPrice = new com.vodafone.pojos.fromjson.device.OneOffPrice();
 
-		com.vodafone.pojos.fromjson.device.OneOffPrice oneOffPrice = new com.vodafone.pojos.fromjson.device.OneOffPrice();
+			OneOffPrice oneOffPrice1 = hardwarePrice1.getOneOffPrice();
 
-		OneOffPrice oneOffPrice1 = hardwarePrice1.getOneOffPrice();
+			if (oneOffPrice1 != null && oneOffPrice1.getGross() != null) {
+				oneOffPrice.setGross(Float.valueOf(oneOffPrice1.getGross()));
 
-		if (oneOffPrice1 != null && oneOffPrice1.getGross() != null) {
-			oneOffPrice.setGross(Float.valueOf(oneOffPrice1.getGross()));
+				oneOffPrice.setNet(Float.valueOf(oneOffPrice1.getNet()));
 
-			oneOffPrice.setNet(Float.valueOf(oneOffPrice1.getNet()));
+				oneOffPrice.setVat(Float.valueOf(oneOffPrice1.getVat()));
+			}
+			hardwarePrice.setOneOffPrice(oneOffPrice);
 
-			oneOffPrice.setVat(Float.valueOf(oneOffPrice1.getVat()));
+			com.vodafone.pojos.fromjson.device.OneOffDiscountPrice oneOffDiscountPrice = new com.vodafone.pojos.fromjson.device.OneOffDiscountPrice();
+
+			OneOffDiscountPrice OneOffDiscountPrice1 = hardwarePrice1
+					.getOneOffDiscountPrice();
+
+			if (OneOffDiscountPrice1 != null
+					&& OneOffDiscountPrice1.getGross() != null) {
+				oneOffDiscountPrice.setGross(Float.valueOf(OneOffDiscountPrice1
+						.getGross()));
+
+				oneOffDiscountPrice.setNet(Float.valueOf(OneOffDiscountPrice1
+						.getNet()));
+
+				oneOffDiscountPrice.setVat(Float.valueOf(OneOffDiscountPrice1
+						.getVat()));
+			}
+
+			hardwarePrice.setOneOffDiscountPrice(oneOffDiscountPrice);
+			hardwarePrice.setHardwareId(hardwarePrice1.getHardwareId());
 		}
-		hardwarePrice.setOneOffPrice(oneOffPrice);
-
-		com.vodafone.pojos.fromjson.device.OneOffDiscountPrice oneOffDiscountPrice = new com.vodafone.pojos.fromjson.device.OneOffDiscountPrice();
-
-		OneOffDiscountPrice OneOffDiscountPrice1 = hardwarePrice1.getOneOffDiscountPrice();
-
-		if (OneOffDiscountPrice1 != null && OneOffDiscountPrice1.getGross() != null) {
-			oneOffDiscountPrice.setGross(Float.valueOf(OneOffDiscountPrice1.getGross()));
-
-			oneOffDiscountPrice.setNet(Float.valueOf(OneOffDiscountPrice1.getNet()));
-
-			oneOffDiscountPrice.setVat(Float.valueOf(OneOffDiscountPrice1.getVat()));
-		}
-
-		hardwarePrice.setOneOffDiscountPrice(oneOffDiscountPrice);
-
-		hardwarePrice.setHardwareId(hardwarePrice1.getHardwareId());
+		
 		priceInfoObject.setBundlePrice(bundlePrice);
 		priceInfoObject.setHardwarePrice(hardwarePrice);
-		priceInfoObject.setOfferAppliedPrices(listOfOfferAppliedPriceDetailsForSolr);
+		priceInfoObject
+				.setOfferAppliedPrices(listOfOfferAppliedPriceDetailsForSolr);
 		return priceInfoObject;
 	}
 
@@ -2068,7 +2082,6 @@ public class DaoUtils {
 		List<com.vodafone.pojos.fromjson.device.DevicePreCalculatedData> deviceListObjectList = new ArrayList<>();
 
 		preCalcPlanList.forEach(preCalList -> {
-
 			com.vodafone.pojos.fromjson.device.DevicePreCalculatedData deviceListObject = new com.vodafone.pojos.fromjson.device.DevicePreCalculatedData();
 
 			List<com.vodafone.pojos.fromjson.device.Media> mediaList = null;
@@ -2099,7 +2112,6 @@ public class DaoUtils {
 				deviceListObject.setMinimumCost(Float.valueOf(preCalList.getMinimumCost()));
 			}
 			deviceListObjectList.add(deviceListObject);
-
 		});
 		return deviceListObjectList;
 	}
