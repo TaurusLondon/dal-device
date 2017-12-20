@@ -551,6 +551,9 @@ definitions:
       preOrderable:
         type: boolean
         description: Pre orderable Flag
+      availableFrom:
+        type: string
+        description: Available from date of the product as provided in the product catalogue
       merchandisingControl:
         $ref: '#/definitions/MerchandisingControl'
       media:
@@ -936,6 +939,9 @@ definitions:
       preOrderable:
         type: boolean
         description: Is the device pre-orderable as per MEF
+      availableFrom:
+        type: string
+        description: Available from date of the product as provided in the product catalogue  
       isAffordable:
         type: boolean
         description: >-
