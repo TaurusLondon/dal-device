@@ -5,6 +5,7 @@ public class OfferAppliedPriceDetails {
 	private BundlePrice bundlePrice;
 	private HardwarePrice hardwarePrice;
 	private String offerCode;
+	private String journeyType;
 
 	public String getDeviceId() {
 		return this.deviceId;
@@ -37,9 +38,16 @@ public class OfferAppliedPriceDetails {
 	public void setOfferCode(String offerCode) {
 		this.offerCode = offerCode;
 	}
+	public String getJourneyType() {
+		return journeyType;
+	}
+
+	public void setJourneyType(String journeyType) {
+		this.journeyType = journeyType;
+	}
 
 	public String toString() {
 		return "OfferAppliedPriceDetails [deviceId=" + this.deviceId + ", bundlePrice=" + this.bundlePrice
-				+ ", hardwarePrice=" + this.hardwarePrice + ", offerCode=" + this.offerCode + "]";
+				+ ", hardwarePrice=" + this.hardwarePrice + ", offerCode=" + this.offerCode + ",journeyType=" +this.journeyType + "]";
 	}
 }

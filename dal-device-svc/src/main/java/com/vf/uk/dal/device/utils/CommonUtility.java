@@ -766,7 +766,7 @@ public  class CommonUtility {
 		return mediaList;
 	}
 	public static boolean isValidBundleForProduct(com.vf.uk.dal.utility.entity.PriceForBundleAndHardware price,
-			Map<String,CommercialBundle> commercialBundleMap,List<String> productLinesList)
+			Map<String,CommercialBundle> commercialBundleMap,List<String> productLinesList,String journeyType)
 	{
 		boolean flag =false;
 		String bundleId=price.getBundlePrice().getBundleId();
@@ -785,8 +785,13 @@ public  class CommonUtility {
 			}
 			//boolean isCompatible=commercialBundle.getProductLines().containsAll(productLinesList);
 			boolean isCompatible=commercialBundle.getProductLines().stream().anyMatch(productLinesList.get(0)::equalsIgnoreCase)?true:commercialBundle.getProductLines().stream().anyMatch(productLinesList.get(1)::equalsIgnoreCase)?true:false;
-			if(isCompatible && dateValidationForOffers(startDateTime,
+			if((StringUtils.isBlank(journeyType) || StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_ACQUISITION) || StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_SECONDLINE) )&& isCompatible && dateValidationForOffers(startDateTime,
 					endDateTime, Constants.DATE_FORMAT_COHERENCE) && !commercialBundle.getAvailability().getSalesExpired() && commercialBundle.getBundleControl().isDisplayableAcq() && commercialBundle.getBundleControl().isSellableAcq())
+			{
+				flag =true;
+			}
+			if((StringUtils.isNotBlank(journeyType) && StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_UPGRADE) )&& isCompatible && dateValidationForOffers(startDateTime,
+					endDateTime, Constants.DATE_FORMAT_COHERENCE) && !commercialBundle.getAvailability().getSalesExpired() && commercialBundle.getBundleControl().isDisplayableRet() && commercialBundle.getBundleControl().isSellableRet())
 			{
 				flag =true;
 			}

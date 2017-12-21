@@ -86,8 +86,8 @@ public class DeviceTileCacheDAO {
 			+ "BUNDLE_MNTHLY_DISC_PRICE_GROSS, BUNDLE_MNTHLY_DISC_PRICE_NET, BUNDLE_MNTHLY_DISC_PRICE_VAT,"
 			+ "HW_ONE_OFF_PRICE_GROSS, HW_ONE_OFF_PRICE_NET, HW_ONE_OFF_PRICE_VAT,"
 			+ "HW_ONE_OFF_DISC_PRICE_GROSS, HW_ONE_OFF_DISC_PRICE_NET, HW_ONE_OFF_DISC_PRICE_VAT, CREATE_UPDATE_TIME,"
-			+ "IS_LEAD_MEMBER, MINIMUM_COST)"
-			+" values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			+ "IS_LEAD_MEMBER, MINIMUM_COST,NON_UPGRADE_LEAD_DEVICE_ID,UPGRADE_LEAD_DEVICE_ID,NON_UPGRADE_LEAD_PLAN_ID,UPGRADE_LEAD_PLAN_ID)"
+			+" values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			int i[] = getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
 
 				@Override
@@ -146,6 +146,10 @@ public class DeviceTileCacheDAO {
 						ps.setTimestamp(18,timestamp);
 						ps.setString(19, productGroupForDeviceListing.getIsLeadMember());
 						ps.setString(20, productGroupForDeviceListing.getMinimumCost());
+						ps.setString(21, productGroupForDeviceListing.getNonUpgradeLeadDeviceId());
+						ps.setString(22, productGroupForDeviceListing.getUpgradeLeadDeviceId());
+						ps.setString(23, productGroupForDeviceListing.getNonUpgradeLeadPlanId());
+						ps.setString(24, productGroupForDeviceListing.getUpgradeLeadPlanId());
 				}
 				
 				@Override
@@ -211,8 +215,8 @@ public class DeviceTileCacheDAO {
 				+ "BUNDLE_MNTHLY_PRICE_GROSS,BUNDLE_MNTHLY_PRICE_NET, BUNDLE_MNTHLY_PRICE_VAT, "
 				+ "BUNDLE_MNTHLY_DISC_PRICE_GROSS, BUNDLE_MNTHLY_DISC_PRICE_NET, BUNDLE_MNTHLY_DISC_PRICE_VAT, "
 				+ "HW_ONE_OFF_PRICE_GROSS, HW_ONE_OFF_PRICE_NET, HW_ONE_OFF_PRICE_VAT, "
-				+ "HW_ONE_OFF_DISC_PRICE_GROSS ,HW_ONE_OFF_DISC_PRICE_NET, HW_ONE_OFF_DISC_PRICE_VAT,CREATE_UPDATE_TIME) "
-				+ "values (?,?,?,?, ?,?,?,?, ?,?,?,?, ?,?,?,?)";
+				+ "HW_ONE_OFF_DISC_PRICE_GROSS ,HW_ONE_OFF_DISC_PRICE_NET, HW_ONE_OFF_DISC_PRICE_VAT,CREATE_UPDATE_TIME,JOURNEY_TYPE) "
+				+ "values (?,?,?,?, ?,?,?,?, ?,?,?,?, ?,?,?,?,?)";
 		int i[] = getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
@@ -291,6 +295,7 @@ public class DeviceTileCacheDAO {
 				}
 				Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
 				ps.setTimestamp(16, timeStamp);
+				ps.setString(17, offerAppliedPriceDetails.getJourneyType());
 			}
 		}
 			@Override
