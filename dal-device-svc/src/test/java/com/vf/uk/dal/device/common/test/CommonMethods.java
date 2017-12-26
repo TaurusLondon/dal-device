@@ -2,6 +2,7 @@ package com.vf.uk.dal.device.common.test;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -91,6 +92,9 @@ import com.vodafone.solrmodels.ProductModel;
 import com.vodafone.stockAvailability.pojo.StockAvailability;
 
 public class CommonMethods {
+	
+	public static Timestamp timestamp;
+	
 	public static DeviceDetails getDevice(String id) {
 		DeviceDetails deviceDetails = new DeviceDetails();
 		deviceDetails.setDeviceId("93353");
@@ -743,7 +747,7 @@ public class CommonMethods {
 		productControl.setIsDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
-		productControl.setAvailableFrom((Date.valueOf("2003-09-05")));
+		productControl.setAvailableFrom(timestamp);
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -1004,7 +1008,8 @@ public class CommonMethods {
 		productControl.setIsDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
-		productControl.setAvailableFrom((Date.valueOf("2003-09-05")));
+		timestamp= new Timestamp(Date.valueOf("2003-09-05").getTime());
+		productControl.setAvailableFrom(timestamp);
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -2111,7 +2116,8 @@ public class CommonMethods {
 		productControl.setIsDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
-		productControl.setAvailableFrom((Date.valueOf("2003-09-05")));
+		timestamp= new Timestamp(Date.valueOf("2003-09-05").getTime());
+		productControl.setAvailableFrom(timestamp);
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -2248,7 +2254,8 @@ public class CommonMethods {
 		productControl.setIsDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
-		productControl.setAvailableFrom((Date.valueOf("2003-09-05")));
+		timestamp= new Timestamp(Date.valueOf("2003-09-05").getTime());
+		productControl.setAvailableFrom(timestamp);
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -2443,7 +2450,8 @@ public class CommonMethods {
 		productControl.setIsDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
-		productControl.setAvailableFrom((Date.valueOf("2003-09-05")));
+		timestamp = new Timestamp(Date.valueOf("2003-09-05").getTime());
+		productControl.setAvailableFrom(timestamp);
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -2655,7 +2663,8 @@ public class CommonMethods {
 		productControl.setIsDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
-		productControl.setAvailableFrom((Date.valueOf("2003-09-05")));
+		timestamp = new Timestamp(Date.valueOf("2003-09-05").getTime());
+		productControl.setAvailableFrom(timestamp);
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -2784,7 +2793,8 @@ public class CommonMethods {
 		productControl.setIsDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
-		productControl.setAvailableFrom((Date.valueOf("2003-09-05")));
+		timestamp = new Timestamp(Date.valueOf("2003-09-05").getTime());
+		productControl.setAvailableFrom(timestamp);
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -2909,7 +2919,8 @@ public class CommonMethods {
 		productControl.setIsDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
-		productControl.setAvailableFrom((Date.valueOf("2003-09-05")));
+		timestamp = new Timestamp(Date.valueOf("2003-09-05").getTime());
+		productControl.setAvailableFrom(timestamp);
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
