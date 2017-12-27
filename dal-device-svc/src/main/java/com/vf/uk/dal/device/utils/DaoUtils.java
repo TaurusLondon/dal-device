@@ -716,7 +716,7 @@ public class DaoUtils {
 	{
 		if(priceForAccessory!=null)
 		{
-			if(priceForAccessory.getHardwarePrice()!=null && priceForAccessory.getHardwarePrice().getOneOffPrice()!=null
+			if(priceForAccessory.getHardwarePrice()!=null && priceForAccessory.getHardwarePrice().getOneOffPrice()!=null && priceForAccessory.getHardwarePrice().getOneOffDiscountPrice()!=null
 				&& priceForAccessory.getHardwarePrice().getOneOffPrice().getGross()!=null && priceForAccessory.getHardwarePrice().getOneOffDiscountPrice().getGross()!=null
 				&& priceForAccessory.getHardwarePrice().getOneOffPrice().getGross().equalsIgnoreCase(priceForAccessory.getHardwarePrice().getOneOffDiscountPrice().getGross()))
 			{
