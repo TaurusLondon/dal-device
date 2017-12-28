@@ -798,4 +798,25 @@ public  class CommonUtility {
 		}
 		return flag;
 	}
+	public static Boolean dateValidationForProduct(String availableFromDate,String strDateFormat) {
+		boolean flag = false;
+		SimpleDateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+		Date currentDate = new Date();
+		Date startDate = null;
+
+		String currentDateStr = dateFormat.format(currentDate);
+
+		try {
+			currentDate = dateFormat.parse(currentDateStr);
+			startDate = dateFormat.parse(availableFromDate);
+
+		} catch (ParseException | DateTimeParseException e) {
+			LogHelper.error(CommonUtility.class, "ParseException: " + e);
+		}
+
+		if (startDate != null && currentDate.before(startDate)) {
+			flag = true;
+		}
+		return flag;
+	}
 }

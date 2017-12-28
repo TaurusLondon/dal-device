@@ -219,7 +219,7 @@ public class DevicePreCalculatedData {
 		return Objects.equals(this.deviceId, devicePreCalculatedData.deviceId)
 				&& Objects.equals(this.rating, devicePreCalculatedData.rating)
 				&& Objects.equals(this.nonUpgradeLeadPlanId, devicePreCalculatedData.nonUpgradeLeadPlanId)
-				& Objects.equals(this.upgradeLeadPlanId, devicePreCalculatedData.upgradeLeadPlanId)
+				&& Objects.equals(this.upgradeLeadPlanId, devicePreCalculatedData.upgradeLeadPlanId)
 				&& Objects.equals(this.productGroupName, devicePreCalculatedData.productGroupName)
 				&& Objects.equals(this.productGroupId, devicePreCalculatedData.productGroupId)
 				&& Objects.equals(this.media, devicePreCalculatedData.media)

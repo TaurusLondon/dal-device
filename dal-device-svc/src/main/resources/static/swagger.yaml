@@ -548,12 +548,6 @@ definitions:
       productClass:
         type: string
         description: 'Catalogue product class identifies products - SIMO, HANDSET etc.'
-      preOrderable:
-        type: boolean
-        description: Pre orderable Flag
-      availableFrom:
-        type: string
-        description: Available from date of the product as provided in the product catalogue
       merchandisingControl:
         $ref: '#/definitions/MerchandisingControl'
       media:
@@ -993,7 +987,6 @@ definitions:
         $ref: '#/definitions/Price'
       merchandisingPromotions:
         $ref: '#/definitions/MerchandisingPromotion'
-        description: Merchandising promotions applicable for the bundle
   MerchandisingPromotion:
     type: object
     properties:

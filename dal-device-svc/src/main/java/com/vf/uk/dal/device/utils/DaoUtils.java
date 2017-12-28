@@ -10,8 +10,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-import oracle.jdbc.Const;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.FacetField.Count;
@@ -99,7 +97,21 @@ public class DaoUtils {
 		PriceForBundleAndHardware priceInfo;
 		deviceSummary.setDeviceId(commercialProduct.getId());
 		deviceSummary.setDisplayName(commercialProduct.getDisplayName());
-		deviceSummary.setPreOrderable(commercialProduct.getProductControl().isPreOrderable());
+		if (commercialProduct.getProductControl() != null && commercialProduct.getProductControl().isPreOrderable()) {
+			String startDateTime;
+			startDateTime = CommonUtility.getDateToString(commercialProduct.getProductControl().getAvailableFrom(),
+					Constants.DATE_FORMAT_COHERENCE);
+			if (startDateTime != null
+					&& CommonUtility.dateValidationForProduct(startDateTime, Constants.DATE_FORMAT_COHERENCE)) {
+				deviceSummary.setPreOrderable(true);
+				deviceSummary.setAvailableFrom(startDateTime);
+			}else{
+				deviceSummary.setPreOrderable(false);
+			}
+		} else {
+			deviceSummary.setPreOrderable(false);
+		}
+		
 		if (memberPriority != null) {
 			deviceSummary.setPriority(String.valueOf(memberPriority));
 		}
@@ -716,7 +728,7 @@ public class DaoUtils {
 	{
 		if(priceForAccessory!=null)
 		{
-			if(priceForAccessory.getHardwarePrice()!=null && priceForAccessory.getHardwarePrice().getOneOffPrice()!=null
+			if(priceForAccessory.getHardwarePrice()!=null && priceForAccessory.getHardwarePrice().getOneOffPrice()!=null && priceForAccessory.getHardwarePrice().getOneOffDiscountPrice()!=null
 				&& priceForAccessory.getHardwarePrice().getOneOffPrice().getGross()!=null && priceForAccessory.getHardwarePrice().getOneOffDiscountPrice().getGross()!=null
 				&& priceForAccessory.getHardwarePrice().getOneOffPrice().getGross().equalsIgnoreCase(priceForAccessory.getHardwarePrice().getOneOffDiscountPrice().getGross()))
 			{
@@ -2188,8 +2200,6 @@ public class DaoUtils {
 								deviceDetails.setName(groupNameWithProdId.get(productModel.getProductId()));
 							}
 						}
-						deviceDetails.setPreOrderable(getPreOrBackOderable(productModel.getPreOrderable()));
-
 						deviceDetails.setProductClass(productModel.getProductClass());
 						if (productModel.getRating() != null && productModel.getRating() > 0.0) {
 							deviceDetails.setRating(String.valueOf(productModel.getRating()));
@@ -2216,8 +2226,17 @@ public class DaoUtils {
 						if (productModel.getOrder() != null) {
 							merchandisingControl.setOrder(Integer.valueOf(productModel.getOrder()));
 						}
-						merchandisingControl.setPreorderable(getPreOrBackOderable(productModel.getPreOrderable()));
-						merchandisingControl.setAvailableFrom(productModel.getAvailableFrom());
+						if (getPreOrBackOderable(productModel.getPreOrderable())) {
+							if (productModel.getAvailableFrom() != null
+									&& CommonUtility.dateValidationForProduct(productModel.getAvailableFrom(), Constants.DATE_FORMAT_SOLR)) {
+								merchandisingControl.setPreorderable(true);
+								merchandisingControl.setAvailableFrom(productModel.getAvailableFrom());
+							}else{
+								merchandisingControl.setPreorderable(false);
+							}
+						} else {
+							merchandisingControl.setPreorderable(false);
+						}
 						merchandisingControl.setBackorderable(getPreOrBackOderable(productModel.getBackOrderable()));
 						deviceDetails.setMerchandisingControl(merchandisingControl);
 						// Media Link
