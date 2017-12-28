@@ -2,6 +2,7 @@ package com.vf.uk.dal.device.common.test;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -91,6 +92,7 @@ import com.vodafone.solrmodels.ProductModel;
 import com.vodafone.stockAvailability.pojo.StockAvailability;
 
 public class CommonMethods {
+	public static Timestamp timeStamp;
 	public static DeviceDetails getDevice(String id) {
 		DeviceDetails deviceDetails = new DeviceDetails();
 		deviceDetails.setDeviceId("93353");
@@ -226,6 +228,8 @@ public class CommonMethods {
 		model.setBundleMonthlyPriceVat(9.0f);
 		model.setLeadPlanId("110154");
 		model.setLeadPlanIdNew("110154");
+		model.setUpgradeLeadPlanId("110154");
+		model.setNonUpgradeLeadPlanId("110154");
 		List<String> merchedn=new ArrayList<>();
 		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.label|40% off the phone|TEXT&&110154&&HW&&handset.conditional.full.GBP|Pricing_Automatic_Discount|NA|For 3 Months, then|095597");
 		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.priceEstablishedLabel|WAS|TEXT&&110154&&HW&&handset.conditional.full.GBP|Pricing_Automatic_Discount|NA|For 3 Months, then|095597");
@@ -242,6 +246,16 @@ public class CommonMethods {
 		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.label|40% off the phone|TEXT&&110154&&BP&&handset.conditional.full.GBP|Pricing_Discount|W_HH_OC_02|For 3 Months, then|095597");
 		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.priceEstablishedLabel|WAS|TEXT&&110154&&BP&&handset.conditional.full.GBP|Pricing_Discount|W_HH_OC_02|For 3 Months, then|095597");
 		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.description|For 3 Months, then|TEXT&&110154&&BP&&handset.conditional.full.GBP|Pricing_Discount|W_HH_OC_02|For 3 Months, then|095597");
+		
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.label|40% off the phone|TEXT&&110154&&HW&&handset.conditional.full.GBP|Pricing_Upgrade_Discount|NA|For 3 Months, then|095597");
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.priceEstablishedLabel|WAS|TEXT&&110154&&HW&&handset.conditional.full.GBP|Pricing_Upgrade_Discount|NA|For 3 Months, then|095597");
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.description|For 3 Months, then|TEXT&&110154&&HW&&handset.conditional.full.GBP|Pricing_Upgrade_Discount|NA|For 3 Months, then|095597");
+		
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.label|40% off the phone|TEXT&&110154&&BP&&handset.conditional.full.GBP|Pricing_Upgrade_Discount|NA|For 3 Months, then|095597");
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.priceEstablishedLabel|WAS|TEXT&&110154&&BP&&handset.conditional.full.GBP|Pricing_Upgrade_Discount|NA|For 3 Months, then|095597");
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.description|For 3 Months, then|TEXT&&110154&&BP&&handset.conditional.full.GBP|Pricing_Upgrade_Discount|NA|For 3 Months, then|095597");
+		
+		
 		model.setMerchandisingMedia(merchedn);
 		//List<String>
 		
@@ -289,6 +303,8 @@ public class CommonMethods {
 		model1.setBundleMonthlyPriceVat(9.0f);
 		model1.setLeadPlanId("110154");
 		model1.setLeadPlanIdNew("110154");
+		model1.setUpgradeLeadPlanId("110154");
+		model1.setNonUpgradeLeadPlanId("110154");
 		model1.setMerchandisingMedia(merchedn);
 		productModelList.add(model);
 		productModelList.add(model1);
@@ -743,7 +759,8 @@ public class CommonMethods {
 		productControl.setIsDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
-		productControl.setAvailableFrom((Date.valueOf("2003-09-05")));
+		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
+		productControl.setAvailableFrom(timeStamp);
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -1004,7 +1021,8 @@ public class CommonMethods {
 		productControl.setIsDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
-		productControl.setAvailableFrom((Date.valueOf("2003-09-05")));
+		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
+		productControl.setAvailableFrom(timeStamp);
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -1546,6 +1564,7 @@ public class CommonMethods {
 		List<String> listOfProducts = new ArrayList<>();
 		listOfProducts.add("088417");
 		listOfProducts.add("093353");
+		listOfProducts.add("092660");
 		listOfProducts.add("093354");
 		return listOfProducts;
 	}
@@ -1713,6 +1732,8 @@ public class CommonMethods {
 		ProductGroupModel group = new ProductGroupModel();
 		group.setId("093353");
 		group.setLeadDeviceId("093353");
+		group.setUpgradeLeadDeviceId("093353");
+		group.setNonUpgradeLeadDeviceId("093353");
 		ProductGroupModel group1 = new ProductGroupModel();
 		group1.setId("092660");
 		group1.setLeadDeviceId(null);
@@ -2111,7 +2132,8 @@ public class CommonMethods {
 		productControl.setIsDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
-		productControl.setAvailableFrom((Date.valueOf("2003-09-05")));
+		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
+		productControl.setAvailableFrom(timeStamp);
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -2248,7 +2270,8 @@ public class CommonMethods {
 		productControl.setIsDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
-		productControl.setAvailableFrom((Date.valueOf("2003-09-05")));
+		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
+		productControl.setAvailableFrom(timeStamp);
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -2443,7 +2466,8 @@ public class CommonMethods {
 		productControl.setIsDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
-		productControl.setAvailableFrom((Date.valueOf("2003-09-05")));
+		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
+		productControl.setAvailableFrom(timeStamp);
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -2655,7 +2679,8 @@ public class CommonMethods {
 		productControl.setIsDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
-		productControl.setAvailableFrom((Date.valueOf("2003-09-05")));
+		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
+		productControl.setAvailableFrom(timeStamp);
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -2784,7 +2809,8 @@ public class CommonMethods {
 		productControl.setIsDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
-		productControl.setAvailableFrom((Date.valueOf("2003-09-05")));
+		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
+		productControl.setAvailableFrom(timeStamp);
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -2909,7 +2935,8 @@ public class CommonMethods {
 		productControl.setIsDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
-		productControl.setAvailableFrom((Date.valueOf("2003-09-05")));
+		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
+		productControl.setAvailableFrom(timeStamp);
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -3138,6 +3165,7 @@ public class CommonMethods {
 		List<com.vodafone.solrmodels.MerchandisingPromotionModel> modelList=new ArrayList<>();
 		com.vodafone.solrmodels.MerchandisingPromotionModel model=new MerchandisingPromotionModel();
 		model.setTag("W_HH_OC_02");
+		model.setPackageType(Arrays.asList("Upgrade","SecondLine"));
 		modelList.add(model);
 		return modelList;
 	}

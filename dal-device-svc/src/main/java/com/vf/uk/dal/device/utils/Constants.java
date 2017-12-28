@@ -190,4 +190,12 @@ public class Constants {
 	 * @author manoj.bera 
 	 * @Sprint 6.5 Constants Start
 	 */
+	/**
+	 * Sprint-6.6 start
+	 */
+	public static final String PROMO_CATEGORY_PRICING_UPGRADE_DISCOUNT = "Pricing_Upgrade_Discount";
+	public static final String PROMO_CATEGORY_PRICING_SECONDLINE_DISCOUNT = "Pricing_SecondLine_Discount";
+	/**
+	 * Sprint-6.6 End
+	 */
 }
