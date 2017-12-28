@@ -2120,10 +2120,10 @@ public class DeviceDaoImpl implements DeviceDao {
 	}
 
 	@Override
-	public List<OfferAppliedPriceModel> getBundleAndHardwarePriceFromSolr(List<String> deviceIds, String offerCode) {
+	public List<OfferAppliedPriceModel> getBundleAndHardwarePriceFromSolr(List<String> deviceIds, String offerCode,String journeyType) {
 
 		LogHelper.info(this, "Start --> Calling  getOfferAppliedPrices_Solr");
-		List<OfferAppliedPriceModel> list = requestManager.getOfferAppliedPrices(deviceIds, offerCode);
+		List<OfferAppliedPriceModel> list = requestManager.getOfferAppliedPrices(deviceIds, offerCode,journeyType);
 		LogHelper.info(this, "End --> End -->  After calling  getOfferAppliedPrices_Solr");
 
 		return list;
@@ -2194,23 +2194,22 @@ public class DeviceDaoImpl implements DeviceDao {
 			if (requestManager == null) {
 				requestManager = SolrConnectionProvider.getSolrConnection();
 			}
-			/*
-			 * if (StringUtils.isNotBlank(journeyType) &&
-			 * journeyType.equalsIgnoreCase("upgrade")) { productGroupFacetModel
-			 * =
-			 * requestManager.getProductGroupsWithFacetsByJourneyType(filterKey,
-			 * filterCriteria, sortBy, sortOption, pageNumber, pageSize,
-			 * Arrays.asList(VodafoneConstants.UPGRADE)); } else {
-			 */
+			
 			LogHelper.info(this, "Start --> Calling  getProductGroupsWithFacets_Solr");
-			productGroupFacetModel = requestManager.getProductGroupsWithFacets(filterKey, filterCriteria, sortBy,
-					sortOption, pageNumber, pageSize);
+			/*productGroupFacetModel = requestManager.getProductGroupsWithFacets(filterKey, filterCriteria, sortBy,
+					sortOption, pageNumber, pageSize);*/
+			productGroupFacetModel = requestManager.getProductGroupsWithFacetsByJourneyType
+					(filterKey, filterCriteria, sortBy,sortOption, pageNumber, pageSize,Arrays.asList(journeyType));
 			LogHelper.info(this, "End --> After calling  getProductGroupsWithFacets_Solr");
 			// }
 		} catch (org.apache.solr.common.SolrException solrExcp) {
 			SolrConnectionProvider.closeSolrConnection();
 			LogHelper.error(this, "SolrException: " + solrExcp);
 			throw new ApplicationException(ExceptionMessages.SOLR_CONNECTION_EXCEPTION);
+		}catch (Exception exp) {
+			SolrConnectionProvider.closeSolrConnection();
+			LogHelper.error(this, "Exception: " + exp);
+			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_SOLR);
 		}
 		return productGroupFacetModel;
 	}
@@ -2219,19 +2218,23 @@ public class DeviceDaoImpl implements DeviceDao {
 	 * 
 	 */
 	@Override
-	public ProductGroupFacetModel getProductGroupsWithFacets(Filters filterKey) {
+	public ProductGroupFacetModel getProductGroupsWithFacets(Filters filterKey,String journeyType) {
 		ProductGroupFacetModel productGroupFacetModel = null;
 		try {
 			if (requestManager == null) {
 				requestManager = SolrConnectionProvider.getSolrConnection();
 			}
 			LogHelper.info(this, "Start --> Calling  getProductGroupsWithFacets_Solr");
-			productGroupFacetModel = requestManager.getProductGroupsWithFacets(filterKey);
+			productGroupFacetModel = requestManager.getProductGroupFacetModelByJourneyType(filterKey, Arrays.asList(journeyType));
 			LogHelper.info(this, "End --> After Calling  getProductGroupsWithFacets_Solr");
 		} catch (org.apache.solr.common.SolrException solrExcp) {
 			SolrConnectionProvider.closeSolrConnection();
 			LogHelper.error(this, "SolrException: " + solrExcp);
 			throw new ApplicationException(ExceptionMessages.SOLR_CONNECTION_EXCEPTION);
+		}catch (Exception exp) {
+			SolrConnectionProvider.closeSolrConnection();
+			LogHelper.error(this, "Exception: " + exp);
+			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_SOLR);
 		}
 		return productGroupFacetModel;
 	}
