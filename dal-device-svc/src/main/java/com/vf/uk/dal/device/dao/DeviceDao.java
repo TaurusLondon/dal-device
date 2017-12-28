@@ -51,7 +51,7 @@ public interface DeviceDao {
 	public void movePreCalcDataToSolr(List<DevicePreCalculatedData> preCalcPlanList);
 	public ProductGroupFacetModel getProductGroupsWithFacets(Filters filterKey,String filterCriteria,
 			String sortBy,String sortOption,Integer pageNumber,Integer pageSize,String journeyType);
-	public ProductGroupFacetModel getProductGroupsWithFacets(Filters filterKey);
+	public ProductGroupFacetModel getProductGroupsWithFacets(Filters filterKey,String journeyType);
 	public List<ProductModel> getProductModel(List<String> listOfProducts);
 	public List<BundleModel> getBundleDetails(List<String> listOfLeadPlanId);
 	public List<BazaarVoice> getReviewRatingList(List<String> listMemberIds);
@@ -64,10 +64,10 @@ public interface DeviceDao {
 	public void updateCacheDeviceToDb(String jobId, String jobStatus);
 	public CacheDeviceTileResponse getCacheDeviceJobStatus(String jobId)throws ApplicationException;
 	public Collection<CommercialBundle> getListCommercialBundleRepositoryByCompatiblePlanList(List<String> planIdList);
-	public  List<OfferAppliedPriceModel> getBundleAndHardwarePriceFromSolr(List<String> deviceIds, String offerCode);
+	public  List<OfferAppliedPriceModel> getBundleAndHardwarePriceFromSolr(List<String> deviceIds, String offerCode,String journeyType);
 	public Group getGroupByProdGroupName(String groupName,String groupType);
 	public List<CommercialProduct> getCommercialProductsList(List<String> productIdsList);
 	
 	public List<MerchandisingPromotionModel> getJourneyTypeCompatibleOfferCodes(String journeyType);
 	public List<MerchandisingPromotionModel> getJourneyTypeCompatibleOfferCodes(String bundleClass,String journeyType);
-}
+}
