@@ -36,6 +36,11 @@ import com.vf.uk.dal.device.utils.ExceptionMessages;
 import com.vf.uk.dal.device.validator.Validator;
 import com.vf.uk.dal.utility.entity.BundleDetails;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ApiResponse;
+
 /**
  * 1.Controller should able handle all the request and response for the device
  * services. 2.Controller should able to produce and consume Json Format for the
@@ -121,10 +126,15 @@ public class DeviceController {
 	 * 
 	 * @return DeviceDetails
 	 **/
-	@RequestMapping(value = "/device/{deviceId}", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
-	public DeviceDetails getDeviceDetails(@PathVariable(DEVICE_ID) String deviceId,
-			@RequestParam(value = JOURNEY_TYPE, required = false) String journeyType,
-			@RequestParam(value = OFFER_CODE, required = false) String offerCode) {
+	@ApiOperation(value = "Get the device details for the given device Id", notes = "The service gets the details of the device specially price, equipment, specification, features, merchandising, etc in the response.", response = DeviceDetails.class, tags={ "Device", })
+    @RequestMapping(value = "/device/{deviceId}", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
+	@ApiResponses(value = { 
+	        @ApiResponse(code = 200, message = "Success", response = DeviceDetails.class),
+	        @ApiResponse(code = 404, message = "Not found", response = Void.class),
+	        @ApiResponse(code = 500, message = "Internal Server Error", response = Error.class) })
+	public DeviceDetails getDeviceDetails(@ApiParam(value = "Unique Id of the device being requested",required=true ) @PathVariable("deviceId") String deviceId,
+	        @ApiParam(value = "Type of journey that the user undertakes e.g. \"Acquisition\", \"upgrade\", \"ils\" etc.") @RequestParam(value = "journeyType", required = false) String journeyType,
+	        @ApiParam(value = "Offer code that defines what type of promotional discount needs to be displaced.") @RequestParam(value = "offerCode", required = false) String offerCode) {
 		DeviceDetails deviceDetails;
 		LogHelper.info(this, ":::::::Test Logger for VSTS migration And Validate Pipeline Validation::::::::");
 		if (StringUtils.isNotBlank(deviceId)) {
