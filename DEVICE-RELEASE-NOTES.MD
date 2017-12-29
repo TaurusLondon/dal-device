@@ -386,3 +386,11 @@ Labels of hardware specific promotions- ExtraDiscount & AccessoryDiscount are no
 URL for above Defect:
 
 https://internal-digitalx-sit2-alb-mas-1938696969.eu-west-1.elb.amazonaws.com/devices/catalogue/deviceTile/?productClass=HANDSET&sort=Priority&pageSize=9&pageNumber=0&groupType=DEVICE_PAYM
+
+6.6(14-Dec-2017)
+-----------------
+User story # 11285
+[ 
+Compatible Accessories check for salesexpiry
+]
+https://internal-digitalx-sit2-alb-mas-1938696969.eu-west-1.elb.amazonaws.com/devices/catalogue/accessory/queries/byDeviceId/?deviceId=093353&journeyType=Upgrade&offerCode=W_HH_PAYM_01
