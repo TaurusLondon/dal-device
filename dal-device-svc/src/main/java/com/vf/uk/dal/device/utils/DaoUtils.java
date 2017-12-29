@@ -2652,7 +2652,7 @@ public class DaoUtils {
 										}
 									}
 									
-									if (StringUtils.isBlank(offerCode)
+									if (StringUtils.isBlank(offerCode) && StringUtils.isBlank(journeyType)
 											&& Constants.DATA_NOT_FOUND.equalsIgnoreCase(mediaStrList[i + 4])
 											&& Constants.PROMO_CATEGORY_PRICING_AUTOMETIC_DISCOUNT
 													.equalsIgnoreCase(mediaStrList[i + 3])
