@@ -417,6 +417,7 @@ public  class CommonUtility {
 		} catch (RestClientException e) {
 			// Stanley - Added error logging
 			LogHelper.error(CommonUtility.class, e+"");
+			throw new ApplicationException(ExceptionMessages.PROMOTION_API_EXCEPTION);
 		}
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.convertValue(response,
