@@ -147,11 +147,11 @@ public class DeviceServiceImplTest
 		bundleAndHardwareTupleList.add(bundleAndHardwareTuple);
 		given(this.deviceDAOMock.getPriceForBundleAndHardware(bundleAndHardwareTupleList,null,null)).willReturn(CommonMethods.getPriceForBundleAndHardware1());
 	}
-	@Test
+	/*@Test
 	public void notNullTestForGetDeviceTileList() {
 		List<DeviceTile> deviceTileList = deviceService.getListOfDeviceTile("Apple","iPhone-7","DEVICE", null, null,null,null,null);
 		Assert.assertNotNull(deviceTileList);
-	}
+	}*/
 
 	@Test
 	public void sizeTestForGetDeviceTileList() {
