@@ -342,10 +342,10 @@ public class DeviceServiceImpl implements DeviceService {
 				LogHelper.info(this, "Getting devices for conditional Accept, with credit limit :" + creditLimit);
 				facetedDevice = getDeviceListForConditionalAccept(productClass, make, model, groupType,
 						sortCriteria, pageNumber, pageSize, capacity, colour, operatingSystem, mustHaveFeatures,
-						creditLimit, journeyType);
+						creditLimit, journeytype);
 			} else {
 				facetedDevice = getDeviceListofFacetedDevice(productClass, make, model, groupType, sortCriteria,
-						pageNumber, pageSize, capacity, colour, operatingSystem, mustHaveFeatures, journeyType,
+						pageNumber, pageSize, capacity, colour, operatingSystem, mustHaveFeatures, journeytype,
 						offerCode);
 			}
 			if (facetedDevice != null && includeRecommendations) {

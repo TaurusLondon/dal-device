@@ -174,12 +174,12 @@
 		<dependency>
 			<groupId>com.vf.uk.dal.solr</groupId>
 			<artifactId>solr-query-manager</artifactId>
-			<version>6.6.3</version>  
+			<version>6.6.4</version>  
 		</dependency>
 		<dependency>
 			<groupId>Solr</groupId>
 			<artifactId>IndexManager</artifactId>
-			<version>6.6.3</version> 
+			<version>6.6.4</version> 
 		</dependency> 
 		<!-- Coherence Jars -->
 		<dependency>
