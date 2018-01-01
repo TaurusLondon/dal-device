@@ -2341,6 +2341,7 @@ public class DeviceDaoImpl implements DeviceDao {
 			}
 		} catch (Exception e) {
 			LogHelper.error(this, "Failed to get device review ratings, Exception: " + e);
+			throw new ApplicationException(ExceptionMessages.BAZAARVOICE_RESPONSE_EXCEPTION);
 		}
 		return bvReviewAndRateMap;
 	}
