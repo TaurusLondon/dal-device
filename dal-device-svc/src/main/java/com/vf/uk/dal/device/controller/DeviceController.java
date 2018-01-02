@@ -227,7 +227,7 @@ public class DeviceController {
 			String journeyType = queryParams.containsKey(JOURNEY_TYPE)?queryParams.get(JOURNEY_TYPE) : null;
 			String offerCode = queryParams.containsKey(OFFER_CODE)?queryParams.get(OFFER_CODE) : null;
 			if (StringUtils.isNotBlank(deviceId)) {
-				if (!deviceId.matches("[0-9]{6}")) {
+				if (!"[0-9]{6}".matches(deviceId)) {
 					LogHelper.error(this, "DeviceId is Invalid");
 					throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 				}
@@ -357,7 +357,7 @@ public class DeviceController {
 
 			}*/
 			if (StringUtils.isNotBlank(deviceId)) {
-				if (!deviceId.matches("[0-9]{6}")) {
+				if (!"[0-9]{6}".matches(deviceId)) {
 					LogHelper.error(this, "DeviceId is Invalid");
 					throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 				}
