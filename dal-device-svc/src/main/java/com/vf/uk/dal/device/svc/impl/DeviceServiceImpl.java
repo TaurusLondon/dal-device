@@ -1803,7 +1803,7 @@ public class DeviceServiceImpl implements DeviceService {
 								&& comProduct.getProductControl().isIsSellableRet())) {
 					memberFlag = true;
 				}		
-				else if ((comProduct.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)
+				else if (!Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType) && (comProduct.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)
 						|| comProduct.getProductClass().equalsIgnoreCase(Constants.STRING_DATA_DEVICE))
 						&& DaoUtils.dateValidation(startDateTime, endDateTime, preOrderableFlag)
 						&& (comProduct.getProductControl().isIsDisplayableAcq()
