@@ -143,10 +143,6 @@ public class DeviceController {
 		DeviceDetails deviceDetails;
 		LogHelper.info(this, ":::::::Test Logger for VSTS migration And Validate Pipeline Validation::::::::");
 		if (StringUtils.isNotBlank(deviceId)) {
-			if(deviceId !=null && !deviceId.matches("[0-9]{6}")) {
-					LogHelper.error(this, "DeviceId is Invalid");
-					throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
-			}
 			LogHelper.info(this, "Start -->  calling  getDeviceDetails");
 			deviceDetails = deviceService.getDeviceDetails(deviceId, journeyType, offerCode);
 			LogHelper.info(this, "End -->  calling  getDeviceDetails");
