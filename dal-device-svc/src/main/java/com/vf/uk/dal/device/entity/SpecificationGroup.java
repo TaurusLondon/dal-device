@@ -1,20 +1,33 @@
 package com.vf.uk.dal.device.entity;
 
 import java.util.Objects;
+
+import javax.validation.Valid;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 /**
  * SpecificationGroup
  */
 
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
+
 public class SpecificationGroup   {
+  @JsonProperty("groupName")
   private String groupName = null;
 
+  @JsonProperty("priority")
   private Integer priority = null;
 
+  @JsonProperty("comparable")
   private Boolean comparable = null;
 
-  private List<Specification> specifications = new ArrayList<Specification>();
+  @JsonProperty("specifications")
+  private List<Specification> specifications = null;
 
   public SpecificationGroup groupName(String groupName) {
     this.groupName = groupName;
@@ -25,6 +38,9 @@ public class SpecificationGroup   {
    * Name of the specification
    * @return groupName
   **/
+  @ApiModelProperty(value = "Name of the specification")
+
+
   public String getGroupName() {
     return groupName;
   }
@@ -42,6 +58,9 @@ public class SpecificationGroup   {
    * Display Priority of the specification
    * @return priority
   **/
+  @ApiModelProperty(value = "Display Priority of the specification")
+
+
   public Integer getPriority() {
     return priority;
   }
@@ -59,6 +78,9 @@ public class SpecificationGroup   {
    *  Identify if the feature is coparable
    * @return comparable
   **/
+  @ApiModelProperty(value = " Identify if the feature is coparable")
+
+
   public Boolean getComparable() {
     return comparable;
   }
@@ -73,6 +95,9 @@ public class SpecificationGroup   {
   }
 
   public SpecificationGroup addSpecificationsItem(Specification specificationsItem) {
+    if (this.specifications == null) {
+      this.specifications = new ArrayList<Specification>();
+    }
     this.specifications.add(specificationsItem);
     return this;
   }
@@ -81,6 +106,10 @@ public class SpecificationGroup   {
    * Get specifications
    * @return specifications
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
   public List<Specification> getSpecifications() {
     return specifications;
   }
