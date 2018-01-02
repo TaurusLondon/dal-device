@@ -3,6 +3,7 @@ package com.vf.uk.dal.device.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.lang.StringUtils;
@@ -10,6 +11,8 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -74,32 +77,41 @@ public class DeviceController {
 	 * 
 	 * @return Device
 	 **/
+	@ExceptionHandler(MissingServletRequestParameterException.class)
+	public void handleMissingParams(MissingServletRequestParameterException ex) {
+	    throw new ApplicationException(ex.getParameterName() + " parameter is missing");
+	}
+	@ApiOperation(value = "Get the list of device tiles based on the filter criteria. Pagination also defined", notes = "The service gets the details of the device tiles from coherence based on the filter criteria in the response.", response = DeviceTile.class, responseContainer = "List", tags={ "DeviceTile", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "Success", response = DeviceTile.class, responseContainer = "List"),
+        @ApiResponse(code = 404, message = "Not found", response = Void.class),
+        @ApiResponse(code = 500, message = "Internal Server Error", response = Error.class) })
 	@RequestMapping(value = "/deviceTile/queries/byMakeModel/", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
-	public List<DeviceTile> getListOfDeviceTile(@RequestParam Map<String, String> queryParams) {
-		if (!queryParams.isEmpty() && Validator.validateGetListOfDeviceTile(queryParams)) {
+	public List<DeviceTile> getListOfDeviceTile(@NotNull@ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"apple\".", required = true) @RequestParam(value = "make", required = true) String make,
+	         @NotNull@ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"iphone7\".", required = true) @RequestParam(value = "model", required = true) String model,
+	         @NotNull@ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"Handset\" or \"Accessory\".", required = true) @RequestParam(value = "groupType", required = true) String groupType,
+	        @ApiParam(value = "The journey that user undertakes \"acquisition\", \"upgrade\", \"ils\" etc.") @RequestParam(value = "journeyType", required = false) String journeyType,
+	        @ApiParam(value = "Promotional offer code applicable") @RequestParam(value = "offerCode", required = false) String offerCode,
+	        @ApiParam(value = "bundle Id for comaptible devices needs to displayed") @RequestParam(value = "bundleId", required = false) String bundleId,
+	        @ApiParam(value = "device Id for comaptible devices needs to displayed") @RequestParam(value = "deviceId", required = false) String deviceId,
+	        @ApiParam(value = "creditLimit applicable for the customer in case of conditional accept state") @RequestParam(value = "creditLimit", required = false) String creditLimit) {
+		
 			List<DeviceTile> listOfDeviceTile;
-			String make = queryParams.containsKey(DEVICE_MAKE) ? queryParams.get(DEVICE_MAKE) : null;
-			String model = queryParams.containsKey(DEVICE_MODEL) ? queryParams.get(DEVICE_MODEL) : null;
-			String groupType = queryParams.containsKey(GROUP_TYPE) ? queryParams.get(GROUP_TYPE) : null;
-			String deviceId = queryParams.containsKey(DEVICE_ID) ? queryParams.get(DEVICE_ID) : null;
-			String journeyType = queryParams.containsKey(JOURNEY_TYPE) ? queryParams.get(JOURNEY_TYPE) : null;
-			String offerCode = queryParams.containsKey(OFFER_CODE) ? queryParams.get(OFFER_CODE) : null;
-			String bundleId = queryParams.containsKey(BUNDLE_ID) ? queryParams.get(BUNDLE_ID) : null;
-			Double creditLimit = null;
+			Double creditLimitParam = null;
 			if (deviceId != null && !deviceId.matches("[0-9]{6}")) {
 				LogHelper.error(this, "DeviceId is Invalid");
 				throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 			}
-			if (queryParams.containsKey(Constants.CREDIT_LIMIT)) {
-				if (StringUtils.isNotBlank(queryParams.get(Constants.CREDIT_LIMIT))) {
+			if (creditLimit != null) {
+				if (StringUtils.isNotBlank(creditLimit)) {
 					try {
-						creditLimit = Double.parseDouble(queryParams.get(Constants.CREDIT_LIMIT));
+						creditLimitParam = Double.parseDouble(creditLimit);
 					} catch (NumberFormatException ex) {
 						LogHelper.error(this, "Credit limit value not correct " + ex);
 						throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
 					}
 
-				} else if (StringUtils.isBlank(queryParams.get(Constants.CREDIT_LIMIT))) {
+				} else if (StringUtils.isBlank(creditLimit)) {
 					throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
 				}
 
@@ -119,11 +131,10 @@ public class DeviceController {
 			}
 			LogHelper.info(this, "Start -->  calling  getListofDeviceTile");
 			listOfDeviceTile = deviceService.getListOfDeviceTile(make, model, groupType, deviceId,
-					creditLimit, journeyType, offerCode, bundleId);
+					creditLimitParam, journeyType, offerCode, bundleId);
 			LogHelper.info(this, "End -->  calling  getListofDeviceTile");
 			return listOfDeviceTile;
-		} else
-			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
+		
 	}
 
 	/**

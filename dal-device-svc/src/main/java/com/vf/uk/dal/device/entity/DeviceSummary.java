@@ -8,10 +8,12 @@ import javax.validation.Valid;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * DeviceSummary
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-27T14:25:54.863Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-30T13:33:13.488Z")
 
 public class DeviceSummary   {
   @JsonProperty("deviceId")
@@ -83,6 +85,7 @@ public class DeviceSummary   {
    * Device Id of the member
    * @return deviceId
   **/
+  @ApiModelProperty(value = "Device Id of the member")
 
 
   public String getDeviceId() {
@@ -102,6 +105,7 @@ public class DeviceSummary   {
    * Display Name of a device This should come form MEF content file
    * @return displayName
   **/
+  @ApiModelProperty(value = "Display Name of a device This should come form MEF content file")
 
 
   public String getDisplayName() {
@@ -121,6 +125,7 @@ public class DeviceSummary   {
    * Display priority of the Member
    * @return priority
   **/
+  @ApiModelProperty(value = "Display priority of the Member")
 
 
   public String getPriority() {
@@ -140,6 +145,7 @@ public class DeviceSummary   {
    * Description of the device as provided in the merchandising content file, preDec of product/handset, eg.With 3D Touch, Live Photos, 7000 series ...
    * @return displayDescription
   **/
+  @ApiModelProperty(value = "Description of the device as provided in the merchandising content file, preDec of product/handset, eg.With 3D Touch, Live Photos, 7000 series ...")
 
 
   public String getDisplayDescription() {
@@ -159,6 +165,7 @@ public class DeviceSummary   {
    * Color of the HandSet - Default colour, eg. Gold
    * @return colourName
   **/
+  @ApiModelProperty(value = "Color of the HandSet - Default colour, eg. Gold")
 
 
   public String getColourName() {
@@ -178,6 +185,7 @@ public class DeviceSummary   {
    *  Hex representation of the colour
    * @return colourHex
   **/
+  @ApiModelProperty(value = " Hex representation of the colour")
 
 
   public String getColourHex() {
@@ -197,6 +205,7 @@ public class DeviceSummary   {
    * Storage Capacity of the Device  32GB, 64 GB, 128 GB, Default to be highlighted
    * @return memory
   **/
+  @ApiModelProperty(value = "Storage Capacity of the Device  32GB, 64 GB, 128 GB, Default to be highlighted")
 
 
   public String getMemory() {
@@ -216,6 +225,7 @@ public class DeviceSummary   {
    * Lead Plan ID for the device
    * @return leadPlanId
   **/
+  @ApiModelProperty(value = "Lead Plan ID for the device")
 
 
   public String getLeadPlanId() {
@@ -235,6 +245,7 @@ public class DeviceSummary   {
    * Plan Name of the lead plan, from MEF Content file
    * @return leadPlanDisplayName
   **/
+  @ApiModelProperty(value = "Plan Name of the lead plan, from MEF Content file")
 
 
   public String getLeadPlanDisplayName() {
@@ -254,6 +265,7 @@ public class DeviceSummary   {
    * Associated Plan UOM
    * @return uom
   **/
+  @ApiModelProperty(value = "Associated Plan UOM")
 
 
   public String getUom() {
@@ -273,6 +285,7 @@ public class DeviceSummary   {
    * Associated Plan UOM Value
    * @return uomValue
   **/
+  @ApiModelProperty(value = "Associated Plan UOM Value")
 
 
   public String getUomValue() {
@@ -292,6 +305,7 @@ public class DeviceSummary   {
    * Associated Bundle Type
    * @return bundleType
   **/
+  @ApiModelProperty(value = "Associated Bundle Type")
 
 
   public String getBundleType() {
@@ -311,6 +325,7 @@ public class DeviceSummary   {
    * Concatenation of Make/Model
    * @return productGroupURI
   **/
+  @ApiModelProperty(value = "Concatenation of Make/Model")
 
 
   public String getProductGroupURI() {
@@ -338,6 +353,7 @@ public class DeviceSummary   {
    * Get merchandisingMedia
    * @return merchandisingMedia
   **/
+  @ApiModelProperty(value = "")
 
   @Valid
 
@@ -358,6 +374,7 @@ public class DeviceSummary   {
    * Get priceInfo
    * @return priceInfo
   **/
+  @ApiModelProperty(value = "")
 
   @Valid
 
@@ -378,6 +395,7 @@ public class DeviceSummary   {
    * Is the device compatible with the given bundle
    * @return isCompatible
   **/
+  @ApiModelProperty(value = "Is the device compatible with the given bundle")
 
 
   public Boolean getIsCompatible() {
@@ -397,6 +415,7 @@ public class DeviceSummary   {
    * Is the device pre-orderable as per MEF
    * @return preOrderable
   **/
+  @ApiModelProperty(value = "Is the device pre-orderable as per MEF")
 
 
   public Boolean getPreOrderable() {
@@ -416,6 +435,7 @@ public class DeviceSummary   {
    * Available from date of the product as provided in the product catalogue
    * @return availableFrom
   **/
+  @ApiModelProperty(value = "Available from date of the product as provided in the product catalogue")
 
 
   public String getAvailableFrom() {
@@ -435,6 +455,7 @@ public class DeviceSummary   {
    * flag to showcase whether the device is affordable or not in conditional accept scenario
    * @return isAffordable
   **/
+  @ApiModelProperty(value = "flag to showcase whether the device is affordable or not in conditional accept scenario")
 
 
   public Boolean getIsAffordable() {
@@ -454,6 +475,7 @@ public class DeviceSummary   {
    * flag to show associated/from price
    * @return fromPricing
   **/
+  @ApiModelProperty(value = "flag to show associated/from price")
 
 
   public Boolean getFromPricing() {
