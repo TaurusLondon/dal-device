@@ -2241,7 +2241,11 @@ public class DaoUtils {
 							}else{
 								merchandisingControl.setPreorderable(false);
 							}
+						} else {
+							merchandisingControl.setPreorderable(false);
 						}
+						merchandisingControl.setBackorderable(getPreOrBackOderable(productModel.getBackOrderable()));
+						deviceDetails.setMerchandisingControl(merchandisingControl);
 						// Price Info Device
 						boolean offerFlag = false;
 						BundleModel bundleModel = null;
