@@ -162,7 +162,11 @@ public class DeviceServiceImpl implements DeviceService {
 		if (groupType == null || groupType.isEmpty()) {
 			LogHelper.error(this, "Group Type is null");
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_GROUPTYPE);
-		} else {
+		} else if (!Validator.validateGroupType(groupType)){
+			LogHelper.error(this, "Invalid Group Type");
+			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_GROUP_TYPE);
+		}
+		else {
 			deviceTileList = deviceDao.getListOfDeviceTile(make, model, groupType, deviceId, journeyType, creditLimit,
 					offerCode, bundleId);
 		}

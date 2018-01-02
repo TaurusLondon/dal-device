@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.vf.uk.dal.common.context.ServiceContext;
 import com.vf.uk.dal.common.exception.ApplicationException;
+import com.vf.uk.dal.common.exception.SystemException;
 import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.common.urlparams.FilterCriteria;
 import com.vf.uk.dal.common.urlparams.PaginationCriteria;
@@ -85,6 +86,10 @@ public class DeviceController {
 			String offerCode = queryParams.containsKey(OFFER_CODE) ? queryParams.get(OFFER_CODE) : null;
 			String bundleId = queryParams.containsKey(BUNDLE_ID) ? queryParams.get(BUNDLE_ID) : null;
 			Double creditLimit = null;
+			if (deviceId != null && !deviceId.matches("[0-9]{6}")) {
+				LogHelper.error(this, "DeviceId is Invalid");
+				throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
+			}
 			if (queryParams.containsKey(Constants.CREDIT_LIMIT)) {
 				if (StringUtils.isNotBlank(queryParams.get(Constants.CREDIT_LIMIT))) {
 					try {
@@ -222,6 +227,10 @@ public class DeviceController {
 			String journeyType = queryParams.containsKey(JOURNEY_TYPE)?queryParams.get(JOURNEY_TYPE) : null;
 			String offerCode = queryParams.containsKey(OFFER_CODE)?queryParams.get(OFFER_CODE) : null;
 			if (StringUtils.isNotBlank(deviceId)) {
+				if (!deviceId.matches("[0-9]{6}")) {
+					LogHelper.error(this, "DeviceId is Invalid");
+					throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
+				}
 				LogHelper.info(this, "Start -->  calling  getAccessoriesOfDevice");
 				listOfAccessoryTileGroup = deviceService.getAccessoriesOfDevice(deviceId,journeyType,offerCode);
 				LogHelper.info(this, "End -->  calling  getAccessoriesOfDevice");
@@ -260,6 +269,34 @@ public class DeviceController {
 					String offerCode = queryParams.containsKey(OFFER_CODE) ? queryParams.get(OFFER_CODE) : null;
 					String msisdn = queryParams.containsKey("msisdn") ? queryParams.get("msisdn") : null;
 					String showRrecommendations = queryParams.containsKey("includeRecommendations") ? queryParams.get("includeRecommendations") : null;
+					
+					/**
+					 * @author suranjit_kashyap 
+					 * @Sprint 6.6 Start
+					 */
+					
+					if (!Validator.validateIncludeRecommendation(showRrecommendations)) {
+						throw new ApplicationException(ExceptionMessages.INVALID_INCLUDERECOMMENDATION);
+					}
+					int pageSizeParam = queryParams.containsKey(Constants.STRING_PAGESIZE) ? Integer.parseInt(queryParams.get("pageSize")) : 0;
+					int pageNumberParam = queryParams.containsKey(Constants.STRING_PAGENUMBER) ? Integer.parseInt(queryParams.get("pageNumber")) : 0;
+					
+					if (!Validator.validatePageSize(pageSizeParam)) {
+						throw new SystemException(ExceptionMessages.PAGESIZE_NEGATIVE_ERROR);
+					}
+					
+					if (!Validator.validatePageNumber(pageNumberParam)) {
+						throw new SystemException(ExceptionMessages.PAGENUMBER_NEGATIVE_ERROR);
+					}
+					
+					if (!Validator.validateMSISDN(msisdn) && showRrecommendations.equalsIgnoreCase(Constants.STRING_TRUE)) {
+						throw new ApplicationException(ExceptionMessages.INVALID_MSISDN);
+					}
+					
+					/**
+					 * @author suranjit_kashyap
+					 * @Sprint 6.6 End
+					 */
 					
 					includeRecommendations = Boolean.valueOf(showRrecommendations);
 					Float creditLimit = null;
@@ -323,6 +360,10 @@ public class DeviceController {
 
 			}*/
 			if (StringUtils.isNotBlank(deviceId)) {
+				if (!deviceId.matches("[0-9]{6}")) {
+					LogHelper.error(this, "DeviceId is Invalid");
+					throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
+				}
 				LogHelper.info(this, "Start -->  calling  getInusranceByDeviceId");
 				insurance = deviceService.getInsuranceByDeviceId(deviceId,journeyType);
 				LogHelper.info(this, "End -->  calling  getInsuranceDeviceId");
