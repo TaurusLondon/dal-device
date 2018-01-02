@@ -88,7 +88,7 @@ public class Validator {
 	 * @Sprint 6.6 Validator Start
 	 */
 	public static boolean validatePageSize(int pageSize) {
-		if (pageSize <= 0) {
+		if (pageSize < 0) {
 			return false;
 		} else {
 			return true;
@@ -96,7 +96,7 @@ public class Validator {
 	}
 	
 	public static boolean validatePageNumber(int pageNumber) {
-		if (pageNumber <= 0) {
+		if (pageNumber < 0) {
 			return false;
 		} else {
 			return true;

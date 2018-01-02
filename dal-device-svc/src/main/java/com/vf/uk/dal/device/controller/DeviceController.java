@@ -275,21 +275,28 @@ public class DeviceController {
 					 * @Sprint 6.6 Start
 					 */
 					
-					if (!Validator.validateIncludeRecommendation(showRrecommendations)) {
+					if (StringUtils.isNotBlank(showRrecommendations) && !Validator.validateIncludeRecommendation(showRrecommendations)) {
 						throw new ApplicationException(ExceptionMessages.INVALID_INCLUDERECOMMENDATION);
 					}
-					int pageSizeParam = queryParams.containsKey(Constants.STRING_PAGESIZE) ? Integer.parseInt(queryParams.get("pageSize")) : 0;
-					int pageNumberParam = queryParams.containsKey(Constants.STRING_PAGENUMBER) ? Integer.parseInt(queryParams.get("pageNumber")) : 0;
-					
-					if (!Validator.validatePageSize(pageSizeParam)) {
+					//Retrieving Pagesize and Pagenumber
+                    PaginationCriteria paginationCriteria = ServiceContext.getPaginationCriteria();
+                    int pageNumber=0;
+					int pageSize=0;
+                    
+                    if(paginationCriteria!=null)
+                    {
+                    	pageNumber = paginationCriteria.getPageNumber();
+                    	pageSize = paginationCriteria.getPageSize();
+                    }
+					if (!Validator.validatePageSize(pageSize)) {
 						throw new SystemException(ExceptionMessages.PAGESIZE_NEGATIVE_ERROR);
 					}
 					
-					if (!Validator.validatePageNumber(pageNumberParam)) {
+					if (!Validator.validatePageNumber(pageNumber)) {
 						throw new SystemException(ExceptionMessages.PAGENUMBER_NEGATIVE_ERROR);
 					}
 					
-					if (!Validator.validateMSISDN(msisdn) && showRrecommendations.equalsIgnoreCase(Constants.STRING_TRUE)) {
+					if (StringUtils.isNotBlank(msisdn) && !Validator.validateMSISDN(msisdn) && Constants.STRING_TRUE.equalsIgnoreCase(showRrecommendations)) {
 						throw new ApplicationException(ExceptionMessages.INVALID_MSISDN);
 					}
 					
@@ -316,22 +323,12 @@ public class DeviceController {
 						
 					} 					
 					
-					//Retrieving Pagesize and Pagenumber
-					PaginationCriteria paginationCriteria = ServiceContext.getPaginationCriteria();
-					int pageNumber=0;
-					int pageSize=0;
-					
-					if(paginationCriteria!=null)
-					{
-					 pageNumber = paginationCriteria.getPageNumber();
-					 pageSize = paginationCriteria.getPageSize();
-					}
-					
 					//Retrieving sort value
 					String sortCriteria = ServiceContext.getSortCriteria();
 					LogHelper.info(this, "Start -->  calling  getDeviceList");
 					facetedDevice = deviceService.getDeviceList(productClass,make,model,groupType,sortCriteria,pageNumber,
-							pageSize,capacity,colour,operatingSystem,mustHaveFeatures,journeyType, creditLimit,offerCode, msisdn, includeRecommendations);
+							pageSize,capacity,colour,operatingSystem,mustHaveFeatures,
+							journeyType, creditLimit,offerCode, msisdn, includeRecommendations);
 					LogHelper.info(this, "End -->  calling  getDeviceList");
 				} else {
 					throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
