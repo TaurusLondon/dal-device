@@ -987,7 +987,6 @@ definitions:
         $ref: '#/definitions/Price'
       merchandisingPromotions:
         $ref: '#/definitions/MerchandisingPromotion'
-        description: Merchandising promotions applicable for the bundle
   MerchandisingPromotion:
     type: object
     properties:

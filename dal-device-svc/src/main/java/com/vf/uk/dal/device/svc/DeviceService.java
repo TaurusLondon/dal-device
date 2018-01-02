@@ -46,8 +46,8 @@ public interface DeviceService {
 	public CacheDeviceTileResponse getCacheDeviceJobStatus(String jobId);
 	List<DevicePreCalculatedData> getDeviceListFromPricing(String groupType);
 	List<Member> getListOfMembers(List<String> variantsList);
-	String getMemeberBasedOnRules1(List<Member> listOfDeviceGroupMember);
-	Boolean validateMemeber1(String memberId);
+	String getMemeberBasedOnRules1(List<Member> listOfDeviceGroupMember,String journeyType);
+	Boolean validateMemeber1(String memberId,String journeyType);
 	FacetedDevice getDeviceListForConditionalAccept(String productClass, String make, String model, String groupType,
 			String sortCriteria, int pageNumber, int pageSize, String capacity, String colour, String operatingSystem,
 			String mustHaveFeatures, Float creditLimit,String journeyType);
@@ -55,4 +55,4 @@ public interface DeviceService {
 	public String getLeadPlanIdForDeviceId(String deviceId);
 	public Boolean validateMemeber(String memberId,String journeyType);
 	Insurances getInsuranceByDeviceId(String deviceId,String journeyType);
-}
+}

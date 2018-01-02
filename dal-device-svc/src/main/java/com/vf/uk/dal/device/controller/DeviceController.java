@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.vf.uk.dal.common.context.ServiceContext;
 import com.vf.uk.dal.common.exception.ApplicationException;
+import com.vf.uk.dal.common.exception.SystemException;
 import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.common.urlparams.FilterCriteria;
 import com.vf.uk.dal.common.urlparams.PaginationCriteria;
@@ -35,6 +36,11 @@ import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 import com.vf.uk.dal.device.validator.Validator;
 import com.vf.uk.dal.utility.entity.BundleDetails;
+
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ApiResponse;
 
 /**
  * 1.Controller should able handle all the request and response for the device
@@ -80,6 +86,10 @@ public class DeviceController {
 			String offerCode = queryParams.containsKey(OFFER_CODE) ? queryParams.get(OFFER_CODE) : null;
 			String bundleId = queryParams.containsKey(BUNDLE_ID) ? queryParams.get(BUNDLE_ID) : null;
 			Double creditLimit = null;
+			if (deviceId != null && !deviceId.matches("[0-9]{6}")) {
+				LogHelper.error(this, "DeviceId is Invalid");
+				throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
+			}
 			if (queryParams.containsKey(Constants.CREDIT_LIMIT)) {
 				if (StringUtils.isNotBlank(queryParams.get(Constants.CREDIT_LIMIT))) {
 					try {
@@ -121,10 +131,15 @@ public class DeviceController {
 	 * 
 	 * @return DeviceDetails
 	 **/
-	@RequestMapping(value = "/device/{deviceId}", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
-	public DeviceDetails getDeviceDetails(@PathVariable(DEVICE_ID) String deviceId,
-			@RequestParam(value = JOURNEY_TYPE, required = false) String journeyType,
-			@RequestParam(value = OFFER_CODE, required = false) String offerCode) {
+	@ApiOperation(value = "Get the device details for the given device Id", notes = "The service gets the details of the device specially price, equipment, specification, features, merchandising, etc in the response.", response = DeviceDetails.class, tags={ "Device", })
+    @RequestMapping(value = "/device/{deviceId}", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
+	@ApiResponses(value = { 
+	        @ApiResponse(code = 200, message = "Success", response = DeviceDetails.class),
+	        @ApiResponse(code = 404, message = "Not found", response = Void.class),
+	        @ApiResponse(code = 500, message = "Internal Server Error", response = Error.class) })
+	public DeviceDetails getDeviceDetails(@ApiParam(value = "Unique Id of the device being requested",required=true ) @PathVariable("deviceId") String deviceId,
+	        @ApiParam(value = "Type of journey that the user undertakes e.g. \"Acquisition\", \"upgrade\", \"ils\" etc.") @RequestParam(value = "journeyType", required = false) String journeyType,
+	        @ApiParam(value = "Offer code that defines what type of promotional discount needs to be displaced.") @RequestParam(value = "offerCode", required = false) String offerCode) {
 		DeviceDetails deviceDetails;
 		LogHelper.info(this, ":::::::Test Logger for VSTS migration And Validate Pipeline Validation::::::::");
 		if (StringUtils.isNotBlank(deviceId)) {
@@ -212,6 +227,10 @@ public class DeviceController {
 			String journeyType = queryParams.containsKey(JOURNEY_TYPE)?queryParams.get(JOURNEY_TYPE) : null;
 			String offerCode = queryParams.containsKey(OFFER_CODE)?queryParams.get(OFFER_CODE) : null;
 			if (StringUtils.isNotBlank(deviceId)) {
+				if (!"[0-9]{6}".matches(deviceId)) {
+					LogHelper.error(this, "DeviceId is Invalid");
+					throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
+				}
 				LogHelper.info(this, "Start -->  calling  getAccessoriesOfDevice");
 				listOfAccessoryTileGroup = deviceService.getAccessoriesOfDevice(deviceId,journeyType,offerCode);
 				LogHelper.info(this, "End -->  calling  getAccessoriesOfDevice");
@@ -251,6 +270,41 @@ public class DeviceController {
 					String msisdn = queryParams.containsKey("msisdn") ? queryParams.get("msisdn") : null;
 					String showRrecommendations = queryParams.containsKey("includeRecommendations") ? queryParams.get("includeRecommendations") : null;
 					
+					/**
+					 * @author suranjit_kashyap 
+					 * @Sprint 6.6 Start
+					 */
+					
+					if (StringUtils.isNotBlank(showRrecommendations) && !Validator.validateIncludeRecommendation(showRrecommendations)) {
+						throw new ApplicationException(ExceptionMessages.INVALID_INCLUDERECOMMENDATION);
+					}
+					//Retrieving Pagesize and Pagenumber
+                    PaginationCriteria paginationCriteria = ServiceContext.getPaginationCriteria();
+                    int pageNumber=0;
+					int pageSize=0;
+                    
+                    if(paginationCriteria!=null)
+                    {
+                    	pageNumber = paginationCriteria.getPageNumber();
+                    	pageSize = paginationCriteria.getPageSize();
+                    }
+					if (!Validator.validatePageSize(pageSize)) {
+						throw new SystemException(ExceptionMessages.PAGESIZE_NEGATIVE_ERROR);
+					}
+					
+					if (!Validator.validatePageNumber(pageNumber)) {
+						throw new SystemException(ExceptionMessages.PAGENUMBER_NEGATIVE_ERROR);
+					}
+					
+					if (StringUtils.isNotBlank(msisdn) && !Validator.validateMSISDN(msisdn) && Constants.STRING_TRUE.equalsIgnoreCase(showRrecommendations)) {
+						throw new ApplicationException(ExceptionMessages.INVALID_MSISDN);
+					}
+					
+					/**
+					 * @author suranjit_kashyap
+					 * @Sprint 6.6 End
+					 */
+					
 					includeRecommendations = Boolean.valueOf(showRrecommendations);
 					Float creditLimit = null;
 					
@@ -269,22 +323,12 @@ public class DeviceController {
 						
 					} 					
 					
-					//Retrieving Pagesize and Pagenumber
-					PaginationCriteria paginationCriteria = ServiceContext.getPaginationCriteria();
-					int pageNumber=0;
-					int pageSize=0;
-					
-					if(paginationCriteria!=null)
-					{
-					 pageNumber = paginationCriteria.getPageNumber();
-					 pageSize = paginationCriteria.getPageSize();
-					}
-					
 					//Retrieving sort value
 					String sortCriteria = ServiceContext.getSortCriteria();
 					LogHelper.info(this, "Start -->  calling  getDeviceList");
 					facetedDevice = deviceService.getDeviceList(productClass,make,model,groupType,sortCriteria,pageNumber,
-							pageSize,capacity,colour,operatingSystem,mustHaveFeatures,journeyType, creditLimit,offerCode, msisdn, includeRecommendations);
+							pageSize,capacity,colour,operatingSystem,mustHaveFeatures,
+							journeyType, creditLimit,offerCode, msisdn, includeRecommendations);
 					LogHelper.info(this, "End -->  calling  getDeviceList");
 				} else {
 					throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
@@ -313,6 +357,10 @@ public class DeviceController {
 
 			}*/
 			if (StringUtils.isNotBlank(deviceId)) {
+				if (!"[0-9]{6}".matches(deviceId)) {
+					LogHelper.error(this, "DeviceId is Invalid");
+					throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
+				}
 				LogHelper.info(this, "Start -->  calling  getInusranceByDeviceId");
 				insurance = deviceService.getInsuranceByDeviceId(deviceId,journeyType);
 				LogHelper.info(this, "End -->  calling  getInsuranceDeviceId");

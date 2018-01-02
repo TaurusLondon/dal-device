@@ -64,6 +64,7 @@ import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
 import com.vodafone.common.Filters;
 import com.vodafone.dal.bundle.pojo.CommercialBundle;
 import com.vodafone.product.pojo.CommercialProduct;
+import com.vodafone.solrmodels.OfferAppliedPriceModel;
 import com.vodafone.solrmodels.ProductGroupFacetModel;
 
 @RunWith(SpringRunner.class)
@@ -146,11 +147,11 @@ public class DeviceServiceImplTest
 		bundleAndHardwareTupleList.add(bundleAndHardwareTuple);
 		given(this.deviceDAOMock.getPriceForBundleAndHardware(bundleAndHardwareTupleList,null,null)).willReturn(CommonMethods.getPriceForBundleAndHardware1());
 	}
-	@Test
+	/*@Test
 	public void notNullTestForGetDeviceTileList() {
 		List<DeviceTile> deviceTileList = deviceService.getListOfDeviceTile("Apple","iPhone-7","DEVICE", null, null,null,null,null);
 		Assert.assertNotNull(deviceTileList);
-	}
+	}*/
 
 	@Test
 	public void sizeTestForGetDeviceTileList() {
@@ -437,19 +438,123 @@ public class DeviceServiceImplTest
 	/**
 	 * need to modify
 	 */
-	/*@Test
+	@Test
 	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList() {
 		Map<String,String> groupNameWithProdId=new HashMap<String, String>();
 		groupNameWithProdId.put("Apple", "10936");
 		groupNameWithProdId.put("Samsung","7630");
-		FacetedDevice deviceList = DaoUtils.convertProductModelListToDeviceList(CommonMethods.getProductModel(),CommonMethods.getListOfProducts(), groupNameWithProdId ,CommonMethods.getPriceForBundleAndHardware(),null, "DEVICE_PAYM",null);
+		Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice = new HashMap<>();
+		listOfOfferAppliedPrice.put("093353", Arrays.asList(CommonMethods.getOfferAppliedPriceModel().get(1)));
+		listOfOfferAppliedPrice.put("092660", Arrays.asList(CommonMethods.getOfferAppliedPriceModel().get(0)));
+		Map<String,Boolean> isLeadMemberFromSolr = new HashMap<>();
+		isLeadMemberFromSolr.put("leadMember", true);
+		FacetedDevice deviceList = DaoUtils.convertProductModelListToDeviceList(CommonMethods.getProductModel(),
+				CommonMethods.getListOfProducts(),CommonMethods.getProductGroupFacetModel1().getListOfFacetsFields(),
+				"DEVICE_PAYM",null,null,listOfOfferAppliedPrice,"W_HH_OC_02",
+				groupNameWithProdId ,null,null,
+				isLeadMemberFromSolr,listOfOfferAppliedPrice,"Upgrade");
 		Assert.assertNotNull(deviceList);
-	}@Test
+	}
+	@Test
+	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList1() {
+		Map<String,String> groupNameWithProdId=new HashMap<String, String>();
+		groupNameWithProdId.put("Apple", "10936");
+		groupNameWithProdId.put("Samsung","7630");
+		Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice = new HashMap<>();
+		listOfOfferAppliedPrice.put("093353", Arrays.asList(CommonMethods.getOfferAppliedPriceModel().get(1)));
+		listOfOfferAppliedPrice.put("092660", Arrays.asList(CommonMethods.getOfferAppliedPriceModel().get(0)));
+		Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice1 = new HashMap<>();
+		listOfOfferAppliedPrice1.put("093353", new ArrayList<>());
+		listOfOfferAppliedPrice1.put("092660", new ArrayList<>());
+		Map<String,Boolean> isLeadMemberFromSolr = new HashMap<>();
+		isLeadMemberFromSolr.put("leadMember", true);
+		FacetedDevice deviceList = DaoUtils.convertProductModelListToDeviceList(CommonMethods.getProductModel(),
+				CommonMethods.getListOfProducts(),CommonMethods.getProductGroupFacetModel1().getListOfFacetsFields(),
+				"DEVICE_PAYM",null,null,listOfOfferAppliedPrice1,null,
+				groupNameWithProdId ,null,null,
+				isLeadMemberFromSolr,listOfOfferAppliedPrice,"Upgrade");
+		Assert.assertNotNull(deviceList);
+	}
+	@Test
+	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList2() {
+		Map<String,String> groupNameWithProdId=new HashMap<String, String>();
+		groupNameWithProdId.put("Apple", "10936");
+		groupNameWithProdId.put("Samsung","7630");
+		Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice1 = new HashMap<>();
+		listOfOfferAppliedPrice1.put("093353", new ArrayList<>());
+		listOfOfferAppliedPrice1.put("092660", new ArrayList<>());
+		Map<String,Boolean> isLeadMemberFromSolr = new HashMap<>();
+		isLeadMemberFromSolr.put("leadMember", true);
+		FacetedDevice deviceList = DaoUtils.convertProductModelListToDeviceList(CommonMethods.getProductModel(),
+				CommonMethods.getListOfProducts(),CommonMethods.getProductGroupFacetModel1().getListOfFacetsFields(),
+				"DEVICE_PAYM",null,null,listOfOfferAppliedPrice1,null,
+				groupNameWithProdId ,null,null,
+				isLeadMemberFromSolr,listOfOfferAppliedPrice1,"Upgrade");
+		Assert.assertNotNull(deviceList);
+	}
+	
+	@Test
+	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList3() {
+		Map<String,String> groupNameWithProdId=new HashMap<String, String>();
+		groupNameWithProdId.put("Apple", "10936");
+		groupNameWithProdId.put("Samsung","7630");
+		Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice1 = new HashMap<>();
+		listOfOfferAppliedPrice1.put("093353", new ArrayList<>());
+		listOfOfferAppliedPrice1.put("092660", new ArrayList<>());
+		Map<String,Boolean> isLeadMemberFromSolr = new HashMap<>();
+		isLeadMemberFromSolr.put("leadMember", true);
+		FacetedDevice deviceList = DaoUtils.convertProductModelListToDeviceList(CommonMethods.getProductModel(),
+				CommonMethods.getListOfProducts(),CommonMethods.getProductGroupFacetModel1().getListOfFacetsFields(),
+				"DEVICE_PAYM",null,null,listOfOfferAppliedPrice1,null,
+				groupNameWithProdId ,null,null,
+				isLeadMemberFromSolr,listOfOfferAppliedPrice1,null);
+		Assert.assertNotNull(deviceList);
+	}
+	
+	@Test
+	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList4() {
+		Map<String,String> groupNameWithProdId=new HashMap<String, String>();
+		groupNameWithProdId.put("Apple", "10936");
+		groupNameWithProdId.put("Samsung","7630");
+		Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice = new HashMap<>();
+		listOfOfferAppliedPrice.put("093353", Arrays.asList(CommonMethods.getOfferAppliedPriceModel().get(1)));
+		listOfOfferAppliedPrice.put("092660", Arrays.asList(CommonMethods.getOfferAppliedPriceModel().get(0)));
+		Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice1 = new HashMap<>();
+		listOfOfferAppliedPrice1.put("093353", new ArrayList<>());
+		listOfOfferAppliedPrice1.put("092660", new ArrayList<>());
+		Map<String,Boolean> isLeadMemberFromSolr = new HashMap<>();
+		isLeadMemberFromSolr.put("leadMember", true);
+		FacetedDevice deviceList = DaoUtils.convertProductModelListToDeviceList(CommonMethods.getProductModel(),
+				CommonMethods.getListOfProducts(),CommonMethods.getProductGroupFacetModel1().getListOfFacetsFields(),
+				"DEVICE_PAYM",null,null,listOfOfferAppliedPrice1,"W_HH_OC_02",
+				groupNameWithProdId ,null,null,
+				isLeadMemberFromSolr,listOfOfferAppliedPrice,"Upgrade");
+		Assert.assertNotNull(deviceList);
+	}
+	@Test
+	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList5() {
+		Map<String,String> groupNameWithProdId=new HashMap<String, String>();
+		groupNameWithProdId.put("Apple", "10936");
+		groupNameWithProdId.put("Samsung","7630");
+		Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice1 = new HashMap<>();
+		listOfOfferAppliedPrice1.put("093353", new ArrayList<>());
+		listOfOfferAppliedPrice1.put("092660", new ArrayList<>());
+		Map<String,Boolean> isLeadMemberFromSolr = new HashMap<>();
+		isLeadMemberFromSolr.put("leadMember", true);
+		FacetedDevice deviceList = DaoUtils.convertProductModelListToDeviceList(CommonMethods.getProductModel(),
+				CommonMethods.getListOfProducts(),CommonMethods.getProductGroupFacetModel1().getListOfFacetsFields(),
+				"DEVICE_PAYM",null,null,listOfOfferAppliedPrice1,"W_HH_OC_02",
+				groupNameWithProdId ,null,null,
+				isLeadMemberFromSolr,listOfOfferAppliedPrice1,"Upgrade");
+		Assert.assertNotNull(deviceList);
+	}
+	
+	/*@Test
 	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList_Data_PAYG() {
 		Map<String,String> groupNameWithProdId=new HashMap<String, String>();
 		groupNameWithProdId.put("Apple", "10936");
 		groupNameWithProdId.put("Samsung","7630");
-		FacetedDevice deviceList = DaoUtils.convertProductModelListToDeviceList(CommonMethods.getProductModel(),CommonMethods.getListOfProducts(), groupNameWithProdId ,CommonMethods.getPriceForBundleAndHardware(),null, "DEVICE_PAYG",CommonMethods.getListofdataPayGCoherence());
+		FacetedDevice deviceList = DaoUtils.convertProductModelListToDeviceList(CommonMethods.getProductModel(),CommonMethods.getListOfProducts(), groupNameWithProdId ,getProductGroupFacetModel1,CommonMethods.getPriceForBundleAndHardware(),null, "DEVICE_PAYG",CommonMethods.getListofdataPayGCoherence());
 		Assert.assertNotNull(deviceList);
 	}*/
 	
@@ -815,7 +920,7 @@ public class DeviceServiceImplTest
 		{
 			List<String> list = new ArrayList<>();
 			list.add("abd|def");
-			deviceService.getMemeberBasedOnRules1(listOfDeviceGroupMember);
+			deviceService.getMemeberBasedOnRules1(listOfDeviceGroupMember,"Upgrade");
 		}
 		catch(Exception e)
 		{
@@ -828,7 +933,7 @@ public class DeviceServiceImplTest
 		given(this.deviceDAOMock.getProductModel(Matchers.anyList())).willReturn(CommonMethods.getProductModel());
 		try
 		{
-			deviceService.validateMemeber1("12345");
+			deviceService.validateMemeber1("12345","Upgrade");
 		}
 		catch(Exception e)
 		{
@@ -842,7 +947,7 @@ public class DeviceServiceImplTest
 		productGroupFacetModel.setListOfProductGroups(CommonMethods.getProductGroupModel());
 		given(this.deviceDAOMock.getProductGroupsWithFacets(Matchers.any(), Matchers.any(), Matchers.any(),
 				Matchers.any(), Matchers.any(), Matchers.any(),Matchers.any())).willReturn(productGroupFacetModel);
-		given(this.deviceDAOMock.getProductGroupsWithFacets(Matchers.any())).willReturn(CommonMethods.getProductGroupFacetModel1());
+		given(this.deviceDAOMock.getProductGroupsWithFacets(Matchers.any(),Matchers.anyString())).willReturn(CommonMethods.getProductGroupFacetModel1());
 		try
 		{
 			deviceService.getDeviceListForConditionalAccept("HANDSET", "make", "model", "DEVICE_PAYM", "Order", 5, 6, "12", "red", "os", "somefeature", (float) 500.00,"");
@@ -1043,7 +1148,7 @@ public class DeviceServiceImplTest
 	public void nullTestForGetDeviceListForGroupTypeWithOutConditionalAcceptance() {
 		given(deviceDAOMock.getProductGroupsWithFacets(Matchers.any(), Matchers.any(), Matchers.any(),
 				Matchers.any(), Matchers.any(), Matchers.any(),Matchers.any())).willReturn(CommonMethods.getProductGroupFacetModel1());
-		given(deviceDAOMock.getProductGroupsWithFacets(Filters.HANDSET)).willReturn(CommonMethods.getProductGroupFacetModel1());
+		given(deviceDAOMock.getProductGroupsWithFacets(Filters.HANDSET,"Upgrade")).willReturn(CommonMethods.getProductGroupFacetModel1());
 		given(deviceDAOMock.getProductModel(Matchers.anyList())).willReturn(CommonMethods.getProductModel());
 		
 		FacetedDevice deviceLists=null;
@@ -1061,9 +1166,9 @@ public class DeviceServiceImplTest
 	public void nullTestForGetDeviceListForGroupTypeWithOutConditionalAcceptance1() {
 		given(deviceDAOMock.getProductGroupsWithFacets(Matchers.any(), Matchers.any(), Matchers.any(),
 				Matchers.any(), Matchers.any(), Matchers.any(),Matchers.any())).willReturn(CommonMethods.getProductGroupFacetModel1());
-		given(deviceDAOMock.getProductGroupsWithFacets(Filters.HANDSET)).willReturn(CommonMethods.getProductGroupFacetModel1());
+		given(deviceDAOMock.getProductGroupsWithFacets(Filters.HANDSET,"SecondLine")).willReturn(CommonMethods.getProductGroupFacetModel1());
 		given(deviceDAOMock.getProductModel(Matchers.anyList())).willReturn(CommonMethods.getProductModel());
-		given(deviceDAOMock.getBundleAndHardwarePriceFromSolr(Matchers.anyList(),Matchers.anyString())).willReturn(CommonMethods.getOfferAppliedPriceModel());
+		given(deviceDAOMock.getBundleAndHardwarePriceFromSolr(Matchers.anyList(),Matchers.anyString(),Matchers.anyString())).willReturn(CommonMethods.getOfferAppliedPriceModel());
 		given(this.deviceDAOMock.getJourneyTypeCompatibleOfferCodes("Upgrade")).willReturn(CommonMethods.getMerChandisingPromotion1());
 		
 		

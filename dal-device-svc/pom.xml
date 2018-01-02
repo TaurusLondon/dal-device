@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>com.vf.uk.dal</groupId>
 	<artifactId>dal-device-svc</artifactId>
-	<version>6.6.1</version>
+	<version>6.6.5</version>
 	<packaging>jar</packaging>  
 	<build> 
 		<plugins>
@@ -174,12 +174,12 @@
 		<dependency>
 			<groupId>com.vf.uk.dal.solr</groupId>
 			<artifactId>solr-query-manager</artifactId>
-			<version>6.6.3</version>  
+			<version>6.6.4</version>  
 		</dependency>
 		<dependency>
 			<groupId>Solr</groupId>
 			<artifactId>IndexManager</artifactId>
-			<version>6.6.3</version> 
+			<version>6.6.4</version> 
 		</dependency> 
 		<!-- Coherence Jars -->
 		<dependency>
@@ -238,6 +238,18 @@
 			<artifactId>commons-collections</artifactId>
 			<version>3.2.2</version>
 		</dependency>
+		<dependency>
+    <groupId>io.springfox</groupId>
+    <artifactId>springfox-swagger2</artifactId>
+    <version>2.7.0</version>
+   <scope>compile</scope>
+</dependency>
+<dependency>
+    <groupId>io.springfox</groupId>
+    <artifactId>springfox-swagger-ui</artifactId>
+    <version>2.7.0</version>
+     <scope>compile</scope>
+</dependency>
 	</dependencies>
 	<!-- To Support Sonar Code Fixes we have added the JDK Version 1.8 -->
 	<properties>
