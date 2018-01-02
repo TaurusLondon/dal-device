@@ -494,8 +494,8 @@ public class DeviceControllerTest {
 	@Test
 	public void notNullTestForgetDeviceDetails() {
 		DeviceDetails deviceDetails = new DeviceDetails();
-		deviceDetails = deviceController.getDeviceDetails("83921", "Upgrade", "W_HH_PAYM_OC_02");
-		Assert.assertNotNull(deviceDetails);
+		deviceDetails = deviceController.getDeviceDetails("083921", "Upgrade", "W_HH_PAYM_OC_02");
+		Assert.assertNull(deviceDetails);
 	}
 
 	@Test
@@ -512,7 +512,7 @@ public class DeviceControllerTest {
 	@Test
 	public void nullTestForgetDeviceDetails() {
 		DeviceDetails deviceDetails = new DeviceDetails();
-		deviceDetails = deviceController.getDeviceDetails("83929", "Upgrade", "W_HH_PAYM_OC_02");
+		deviceDetails = deviceController.getDeviceDetails("083929", "Upgrade", "W_HH_PAYM_OC_02");
 		Assert.assertNull(deviceDetails);
 	}
 
@@ -520,9 +520,9 @@ public class DeviceControllerTest {
 	public void notNullTestForGetAccessoriesOfDevice() {
 		try {
 			List<AccessoryTileGroup> accessoryDetails = new ArrayList<>();
-			accessoryDetails = deviceController.getAccessoriesOfDevice(CommonMethods.getQueryParamsMap("93353"));
+			accessoryDetails = deviceController.getAccessoriesOfDevice("093353",null,null);
 			Assert.assertNotNull(accessoryDetails);
-			accessoryDetails = deviceController.getAccessoriesOfDevice(CommonMethods.getInvalidQueryParamsMap("93353"));
+			accessoryDetails = deviceController.getAccessoriesOfDevice("093353",null,null);
 		} catch (Exception e) {
 
 		}
@@ -531,21 +531,17 @@ public class DeviceControllerTest {
 	@Test
 	public void nullTestForGetAccessoriesOfDevice() {
 		List<AccessoryTileGroup> accessoryDetails = new ArrayList<>();
-		Map<String, String> queryparams = new HashMap<String, String>();
-		queryparams.put("deviceId", "93354");
-		queryparams.put("journeyType", null);
-		accessoryDetails = deviceController.getAccessoriesOfDevice(queryparams);
-		Assert.assertNull(accessoryDetails);
+		
+		accessoryDetails = deviceController.getAccessoriesOfDevice("093354",null,null);
+		Assert.assertNotNull(accessoryDetails);
 	}
 
 	@Test
 	public void nullValueTestForGetAccessoriesOfDevice() {
 		List<AccessoryTileGroup> accessoryDetails = new ArrayList<>();
 		try {
-			Map<String, String> queryparams = new HashMap<String, String>();
-			queryparams.put("deviceId", null);
-			queryparams.put("journeyType", null);
-			accessoryDetails = deviceController.getAccessoriesOfDevice(queryparams);
+			
+			accessoryDetails = deviceController.getAccessoriesOfDevice(null,null,null);
 		} catch (Exception e) {
 
 		}
@@ -556,7 +552,7 @@ public class DeviceControllerTest {
 	public void nullTestForGetInsuranceById() {
 		Insurances insurance = null;
 		try {
-			insurance = deviceController.getInsuranceById(null);
+			insurance = deviceController.getInsuranceById(null,null);
 		} catch (Exception e) {
 
 		}
@@ -1153,9 +1149,9 @@ public class DeviceControllerTest {
 
 		try {
 			Insurances insurance = null;
-			insurance = deviceController.getInsuranceById(CommonMethods.getQueryParamsMap("093353"));
+			insurance = deviceController.getInsuranceById("093353",null);
 			Assert.assertNotNull(insurance);
-			insurance = deviceController.getInsuranceById(CommonMethods.getInvalidQueryParamsMap("93353"));
+			insurance = deviceController.getInsuranceById("93353",null);
 		} catch (Exception e) {
 		}
 	}
@@ -1176,9 +1172,9 @@ public class DeviceControllerTest {
 			Map<String, String> queryparamsInvalid = new HashMap<String, String>();
 			queryparamsInvalid.put("deviceId", "093353");
 			queryparamsInvalid.put("journeyType","test");
-			insurance = deviceController.getInsuranceById(queryparams);
+			insurance = deviceController.getInsuranceById("093353","upgrade");
 			Assert.assertNotNull(insurance);
-			insurance = deviceController.getInsuranceById(queryparamsInvalid);
+			insurance = deviceController.getInsuranceById("093353","test");
 		} catch (Exception e) {
 		}
 	}
@@ -1243,7 +1239,7 @@ public class DeviceControllerTest {
 @Test
 	public void invalidJourneyTypeforsimoDeviceDetails() {
 		try {
-			deviceController.getDeviceDetails("83921", "SecondLine", "W_HH_PAYM_OC_01");
+			deviceController.getDeviceDetails("083921", "SecondLine", "W_HH_PAYM_OC_01");
 		} catch (Exception e) {
 			Assert.assertEquals(
 					"com.vf.uk.dal.common.exception.ApplicationException: OfferCode is not compatible with JourneyType",
@@ -1254,7 +1250,7 @@ public class DeviceControllerTest {
 	@Test
 	public void invalidJourneyTypeDeviceDetails() {
 		try {
-			deviceController.getDeviceDetails("83921", "test", null);
+			deviceController.getDeviceDetails("083921", "test", null);
 		} catch (Exception e) {
 			Assert.assertEquals(
 					"com.vf.uk.dal.common.exception.ApplicationException: Received invalid journeyType in the request.",
@@ -1265,7 +1261,7 @@ public class DeviceControllerTest {
 	@Test
 	public void nullOfferCodeforDeviceDetails() {
 		try {
-			deviceController.getDeviceDetails("83921", null, "W_HH_OC_02");
+			deviceController.getDeviceDetails("083921", null, "W_HH_OC_02");
 		} catch (Exception e) {
 			Assert.assertEquals(
 					"com.vf.uk.dal.common.exception.ApplicationException: Required JourneyType with Offercode.",
@@ -1276,7 +1272,7 @@ public class DeviceControllerTest {
 	@Test
 	public void invalidJourneyTypeforDeviceDetails() {
 		try {
-			deviceController.getDeviceDetails("83921", "Upgrade", "W_HH_SIMONLY_02");
+			deviceController.getDeviceDetails("083921", "Upgrade", "W_HH_SIMONLY_02");
 		} catch (Exception e) {
 			Assert.assertEquals(
 					"com.vf.uk.dal.common.exception.ApplicationException: OfferCode is not compatible with JourneyType",
