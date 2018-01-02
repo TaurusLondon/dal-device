@@ -1355,6 +1355,7 @@ public class DeviceControllerTest {
 	@Test
 	public void nullOfferCodeforDeviceList() {
 		try {
+			ServiceContext.urlParamContext.remove(); 
 			PaginationCriteria paginationCriteria = new PaginationCriteria(9, 0);
 			ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
 			deviceController.getDeviceList(CommonMethods.getQueryParamsMap("Apple", "iPhone-7", "DEVICE_PAYG",
@@ -1369,13 +1370,13 @@ public class DeviceControllerTest {
 	@Test
 	public void invalidJourneyTypeDeviceList() {
 		try {
+			ServiceContext.urlParamContext.remove(); 
 			PaginationCriteria paginationCriteria = new PaginationCriteria(9, 0);
 			ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
 			deviceController.getDeviceList(CommonMethods.getQueryParamsMap("Apple", "iPhone-7", "DEVICE_PAYG",
 					"HANDSET", "32 GB", "White", "iOS", "Great Camera", "",null));
-
 		} catch (Exception e) {
-			Assert.assertNotEquals(
+			Assert.assertEquals(
 					"com.vf.uk.dal.common.exception.ApplicationException: No Devices Found for the given input search criteria",
 					e.toString());
 		}
