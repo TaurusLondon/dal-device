@@ -3,10 +3,12 @@ package com.vf.uk.dal.device.entity;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 /**
  * Attributes
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-06-29T07:14:47.786Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
 
 public class Attributes   {
   @JsonProperty("key")
@@ -30,6 +32,9 @@ public class Attributes   {
    * Item Attribute Key
    * @return key
   **/
+  @ApiModelProperty(value = "Item Attribute Key")
+
+
   public String getKey() {
     return key;
   }
@@ -47,6 +52,9 @@ public class Attributes   {
    * Item Attribute Type
    * @return type
   **/
+  @ApiModelProperty(value = "Item Attribute Type")
+
+
   public String getType() {
     return type;
   }
@@ -64,6 +72,9 @@ public class Attributes   {
    * Item Attribute Value
    * @return value
   **/
+  @ApiModelProperty(value = "Item Attribute Value")
+
+
   public String getValue() {
     return value;
   }
@@ -81,6 +92,9 @@ public class Attributes   {
    * Item Attribute Value UOM
    * @return valueUOM
   **/
+  @ApiModelProperty(value = "Item Attribute Value UOM")
+
+
   public String getValueUOM() {
     return valueUOM;
   }
