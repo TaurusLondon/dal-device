@@ -2907,7 +2907,7 @@ public class DeviceServiceImpl implements DeviceService {
 			//BazaarReviewRepository repo = new BazaarReviewRepository();==
 			List<BazaarVoice> response = new ArrayList<>();
 			for (String skuId : listMemberIds) {
-				response.add(deviceDao.getBazaarVoice(CommonUtility.appendPrefixString(skuId)));//repo.get(CommonUtility.appendPrefixString(skuId))
+				response.add(deviceDao.getBazaarVoice(skuId));//repo.get(CommonUtility.appendPrefixString(skuId))
 			}
 			LogHelper.info(this, "End --> After calling  BazaarReviewRepository.get");
 			return response;
