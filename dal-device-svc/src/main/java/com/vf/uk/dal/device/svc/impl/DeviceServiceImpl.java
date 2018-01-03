@@ -2,6 +2,7 @@ package com.vf.uk.dal.device.svc.impl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -256,7 +257,7 @@ public class DeviceServiceImpl implements DeviceService {
 		 * INVALID_JOURNEY_TYPE_AND_OFFER_CODE_COMBINATION); } }
 		 */
 
-		deviceDetails = deviceDao.getDeviceDetails(deviceId, journeyType, offerCode);
+		deviceDetails = getDeviceDetails_Implementation(deviceId, journeyType, offerCode);
 		return deviceDetails;
 	}
 
@@ -3119,5 +3120,191 @@ public class DeviceServiceImpl implements DeviceService {
 
 		return (null != grossPrice && grossPrice <= creditLimit);
 
+	}
+	
+	/**
+	 * Returns device details based on the deviceId.
+	 * 
+	 * @param id
+	 * @return DeviceDetails
+	 */
+	public DeviceDetails getDeviceDetails_Implementation(String deviceId, String journeyType, String offerCode) {
+
+		LogHelper.info(this, "Start -->  calling  CommercialProductRepository.get");
+		CommercialProduct commercialProduct = deviceDao.getCommercialProductFromCommercialProductRepository(deviceId);//commercialProductRepository.get(deviceId);
+		LogHelper.info(this, "End -->  After calling  CommercialProductRepository.get");
+
+		DeviceDetails deviceDetails = new DeviceDetails();
+		if (commercialProduct != null && commercialProduct.getId() != null && commercialProduct.getIsDeviceProduct()
+				&& (commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)
+						|| commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_DATA_DEVICE))) {
+			List<BundleAndHardwareTuple> bundleAndHardwareTupleList;
+
+			bundleAndHardwareTupleList = getListOfPriceForBundleAndHardware_Implementation(commercialProduct);
+			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = null;
+			// Calling Pricing Api
+			if (bundleAndHardwareTupleList != null && !bundleAndHardwareTupleList.isEmpty()) {
+				listOfPriceForBundleAndHardware = CommonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode,
+						registryclnt, journeyType);
+			}
+
+			// Media Link from merchandising Promotion
+			String leadPlanId = null;
+			if (commercialProduct.getLeadPlanId() != null) {
+				leadPlanId = commercialProduct.getLeadPlanId();
+				LogHelper.info(this, "::::: LeadPlanId " + leadPlanId + " :::::");
+			} else if (bundleAndHardwareTupleList != null && !bundleAndHardwareTupleList.isEmpty()) {
+				leadPlanId = bundleAndHardwareTupleList.get(0).getBundleId();
+				LogHelper.info(this, "::::: LeadPlanId " + leadPlanId + " :::::");
+			}
+
+			LogHelper.info(this, "Start -->  calling  bundleRepository.get");
+			
+			CommercialBundle commercialBundle = deviceDao.getCommercialBundleFromCommercialBundleRepository(leadPlanId);//commercialBundleRepository.get(leadPlanId);
+			LogHelper.info(this, "End -->  After calling  bundleRepository.get");
+			/**
+			 * @author manoj.bera Added Promotion API calling
+			 */
+			/*
+			 * List<OfferPacks> listOfOfferPacks = new ArrayList<>(); if
+			 * (commercialBundle != null) {
+			 * listOfOfferPacks.addAll(offerPacksMediaListForBundleDetails(
+			 * commercialBundle)); }
+			 * listOfOfferPacks.addAll(offerPacksMediaListForDeviceDetails(
+			 * commercialProduct));
+			 */
+			List<BundleAndHardwarePromotions> promotions = null;
+			List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
+			if (commercialBundle != null) {
+				BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
+				bundleAndHardwareTuple.setBundleId(commercialBundle.getId());
+				bundleAndHardwareTuple.setHardwareId(deviceId);
+				bundleHardwareTupleList.add(bundleAndHardwareTuple);
+			}
+			if (!bundleHardwareTupleList.isEmpty()) {
+				promotions = CommonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList,
+						journeyType, registryclnt);
+			}
+			if (StringUtils.isNotBlank(journeyType) && Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
+					&& commercialProduct.getProductControl() != null
+					&& commercialProduct.getProductControl().isIsSellableRet()
+					&& commercialProduct.getProductControl().isIsDisplayableRet()) {
+				deviceDetails = DaoUtils.convertCoherenceDeviceToDeviceDetails(commercialProduct,
+						listOfPriceForBundleAndHardware, promotions);
+			} else if (!Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
+					&& commercialProduct.getProductControl() != null
+					&& commercialProduct.getProductControl().isIsDisplayableAcq()
+					&& commercialProduct.getProductControl().isIsSellableAcq()) {
+				deviceDetails = DaoUtils.convertCoherenceDeviceToDeviceDetails(commercialProduct,
+						listOfPriceForBundleAndHardware, promotions);
+			} else {
+				LogHelper.error(this, "No data found for given journeyType :" + deviceId);
+				throw new ApplicationException(ExceptionMessages.NO_DATA_FOR_GIVEN_SEARCH_CRITERIA);
+			}
+			if (StringUtils.isNotEmpty(offerCode) && StringUtils.isNotEmpty(journeyType)) {
+				deviceDetails.setValidOffer(validateOfferValidForDevice_Implementation(commercialProduct, journeyType, offerCode));
+			}
+
+		} else {
+			LogHelper.error(this, "No data found for given Device Id :" + deviceId);
+			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID);
+		}
+		return deviceDetails;
+	}
+
+	public boolean validateOfferValidForDevice_Implementation(CommercialProduct commercialProduct, String journeyType,
+			String offerCode) {
+		List<String> offerCodes = new ArrayList<>();
+		boolean validOffer = false;
+		
+		if (commercialProduct.getPromoteAs() != null && commercialProduct.getPromoteAs().getPromotionName() != null
+				&& !commercialProduct.getPromoteAs().getPromotionName().isEmpty()) {
+			LogHelper.info(this, "Start -->  calling  MerchandisingPromotion.get");
+			for (String promotionName : commercialProduct.getPromoteAs().getPromotionName()) {
+				com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion merchandisingPromotion = deviceDao.getMerchandisingPromotionBasedOnPromotionName(promotionName);//merchandisingPromotionRepository.get(promotionName);
+				if (merchandisingPromotion != null) {
+					String startDateTime = CommonUtility.getDateToString(merchandisingPromotion.getStartDateTime(),
+							Constants.DATE_FORMAT_COHERENCE);
+					String endDateTime = CommonUtility.getDateToString(merchandisingPromotion.getEndDateTime(),
+							Constants.DATE_FORMAT_COHERENCE);
+					String promotionPackageType = merchandisingPromotion.getCondition().getPackageType();
+					List<String> promotionPackagesList = new ArrayList<String>();
+					if (StringUtils.isNotEmpty(promotionPackageType)) {
+						promotionPackagesList = Arrays.asList(promotionPackageType.toLowerCase().split(","));
+					}
+
+					LogHelper.info(this, ":::::::: MERCHE_PROMOTION_TAG :::: " + merchandisingPromotion.getTag()
+							+ "::::: START DATE :: " + startDateTime + ":::: END DATE ::: " + endDateTime + " :::: ");
+					if (promotionName != null && promotionName.equals(merchandisingPromotion.getTag())
+							&& dateValidationForOffers_Implementation(startDateTime, endDateTime, Constants.DATE_FORMAT_COHERENCE)
+							&& promotionPackagesList.contains(journeyType.toLowerCase())) {
+						offerCodes.add(promotionName);
+					}
+				}
+			}
+			LogHelper.info(this, "End -->  After calling  MerchandisingPromotion.get");
+		}
+		validOffer = offerCodes.contains(offerCode) ? true : false;
+		return validOffer;
+	}
+	
+	/**
+	 * Date validation
+	 * 
+	 * @param startDateTime
+	 * @param endDateTime
+	 * @return flag
+	 */
+	public Boolean dateValidationForOffers_Implementation(String startDateTime, String endDateTime, String strDateFormat) {
+		boolean flag = false;
+		SimpleDateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+		Date currentDate = new Date();
+
+		String currentDateStr = dateFormat.format(currentDate);
+
+		try {
+			currentDate = dateFormat.parse(currentDateStr);
+
+		} catch (ParseException | DateTimeParseException e) {
+			LogHelper.error(this, "ParseException: " + e);
+		}
+
+		Date startDate = null;
+		Date endDate = null;
+
+		try {
+			if (startDateTime != null) {
+				startDate = dateFormat.parse(startDateTime);
+				LogHelper.info(this, "::::: startDate " + startDate + " :::::");
+			}
+
+		} catch (ParseException | DateTimeParseException e) {
+			LogHelper.error(this, "ParseException: " + e);
+		}
+
+		try {
+			if (endDateTime != null) {
+				endDate = dateFormat.parse(endDateTime);
+				LogHelper.info(this, "::::: EndDate " + endDate + " :::::");
+			}
+		} catch (ParseException | DateTimeParseException e) {
+			LogHelper.error(this, "ParseException: " + e);
+		}
+
+		if (startDate != null && endDate != null && ((currentDate.after(startDate) || currentDate.equals(startDate))
+				&& (currentDate.before(endDate) || currentDate.equals(endDate)))) {
+			flag = true;
+		}
+		if (startDate == null && endDate != null && currentDate.before(endDate)) {
+			flag = true;
+		}
+		if (startDate != null && endDate == null && currentDate.after(startDate)) {
+			flag = true;
+		}
+		if (startDate == null && endDate == null) {
+			flag = true;
+		}
+
+		return flag;
 	}
 }

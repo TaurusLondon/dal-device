@@ -116,144 +116,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	private MerchandisingPromotionRepository merchandisingPromotionRepository = null;
 	private BazaarReviewRepository bazaarReviewRepository = null;
 
-	
-
-	/**
-	 * Returns device details based on the deviceId.
-	 * 
-	 * @param id
-	 * @return DeviceDetails
-	 */
-	@Override
-	public DeviceDetails getDeviceDetails(String deviceId, String journeyType, String offerCode) {
-
-		LogHelper.info(this, "Start -->  calling  CommercialProductRepository.get");
-		if (commercialProductRepository == null) {
-			commercialProductRepository = CoherenceConnectionProvider.getCommercialProductRepoConnection();
-		}
-		CommercialProduct commercialProduct = commercialProductRepository.get(deviceId);
-		LogHelper.info(this, "End -->  After calling  CommercialProductRepository.get");
-
-		DeviceDetails deviceDetails = new DeviceDetails();
-		if (commercialProduct != null && commercialProduct.getId() != null && commercialProduct.getIsDeviceProduct()
-				&& (commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)
-						|| commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_DATA_DEVICE))) {
-			List<BundleAndHardwareTuple> bundleAndHardwareTupleList;
-
-			bundleAndHardwareTupleList = getListOfPriceForBundleAndHardware(commercialProduct);
-			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = null;
-
-			// Calling Pricing Api
-			if (bundleAndHardwareTupleList != null && !bundleAndHardwareTupleList.isEmpty()) {
-				listOfPriceForBundleAndHardware = CommonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode,
-						registryclnt, journeyType);
-			}
-
-			// Media Link from merchandising Promotion
-			String leadPlanId = null;
-			if (commercialProduct.getLeadPlanId() != null) {
-				leadPlanId = commercialProduct.getLeadPlanId();
-				LogHelper.info(this, "::::: LeadPlanId " + leadPlanId + " :::::");
-			} else if (bundleAndHardwareTupleList != null && !bundleAndHardwareTupleList.isEmpty()) {
-				leadPlanId = bundleAndHardwareTupleList.get(0).getBundleId();
-				LogHelper.info(this, "::::: LeadPlanId " + leadPlanId + " :::::");
-			}
-
-			LogHelper.info(this, "Start -->  calling  bundleRepository.get");
-			if (commercialBundleRepository == null) {
-				commercialBundleRepository = CoherenceConnectionProvider.getCommercialBundleRepoConnection();
-			}
-			CommercialBundle commercialBundle = commercialBundleRepository.get(leadPlanId);
-			LogHelper.info(this, "End -->  After calling  bundleRepository.get");
-			/**
-			 * @author manoj.bera Added Promotion API calling
-			 */
-			/*
-			 * List<OfferPacks> listOfOfferPacks = new ArrayList<>(); if
-			 * (commercialBundle != null) {
-			 * listOfOfferPacks.addAll(offerPacksMediaListForBundleDetails(
-			 * commercialBundle)); }
-			 * listOfOfferPacks.addAll(offerPacksMediaListForDeviceDetails(
-			 * commercialProduct));
-			 */
-			List<BundleAndHardwarePromotions> promotions = null;
-			List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
-			if (commercialBundle != null) {
-				BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
-				bundleAndHardwareTuple.setBundleId(commercialBundle.getId());
-				bundleAndHardwareTuple.setHardwareId(deviceId);
-				bundleHardwareTupleList.add(bundleAndHardwareTuple);
-			}
-			if (!bundleHardwareTupleList.isEmpty()) {
-				promotions = CommonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList,
-						journeyType, registryclnt);
-			}
-			if (StringUtils.isNotBlank(journeyType) && Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
-					&& commercialProduct.getProductControl() != null
-					&& commercialProduct.getProductControl().isIsSellableRet()
-					&& commercialProduct.getProductControl().isIsDisplayableRet()) {
-				deviceDetails = DaoUtils.convertCoherenceDeviceToDeviceDetails(commercialProduct,
-						listOfPriceForBundleAndHardware, promotions);
-			} else if (!Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
-					&& commercialProduct.getProductControl() != null
-					&& commercialProduct.getProductControl().isIsDisplayableAcq()
-					&& commercialProduct.getProductControl().isIsSellableAcq()) {
-				deviceDetails = DaoUtils.convertCoherenceDeviceToDeviceDetails(commercialProduct,
-						listOfPriceForBundleAndHardware, promotions);
-			} else {
-				LogHelper.error(this, "No data found for given journeyType :" + deviceId);
-				throw new ApplicationException(ExceptionMessages.NO_DATA_FOR_GIVEN_SEARCH_CRITERIA);
-			}
-			if (StringUtils.isNotEmpty(offerCode) && StringUtils.isNotEmpty(journeyType)) {
-				deviceDetails.setValidOffer(validateOfferValidForDevice(commercialProduct, journeyType, offerCode));
-			}
-
-		} else {
-			LogHelper.error(this, "No data found for given Device Id :" + deviceId);
-			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID);
-		}
-		return deviceDetails;
-	}
-
-	public boolean validateOfferValidForDevice(CommercialProduct commercialProduct, String journeyType,
-			String offerCode) {
-		List<String> offerCodes = new ArrayList<>();
-		boolean validOffer = false;
-		if (merchandisingPromotionRepository == null) {
-			merchandisingPromotionRepository = CoherenceConnectionProvider.getMerchandisingRepoConnection();
-		}
-		if (commercialProduct.getPromoteAs() != null && commercialProduct.getPromoteAs().getPromotionName() != null
-				&& !commercialProduct.getPromoteAs().getPromotionName().isEmpty()) {
-			LogHelper.info(this, "Start -->  calling  MerchandisingPromotion.get");
-			for (String promotionName : commercialProduct.getPromoteAs().getPromotionName()) {
-				com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion merchandisingPromotion = merchandisingPromotionRepository
-						.get(promotionName);
-				if (merchandisingPromotion != null) {
-					String startDateTime = CommonUtility.getDateToString(merchandisingPromotion.getStartDateTime(),
-							Constants.DATE_FORMAT_COHERENCE);
-					String endDateTime = CommonUtility.getDateToString(merchandisingPromotion.getEndDateTime(),
-							Constants.DATE_FORMAT_COHERENCE);
-					String promotionPackageType = merchandisingPromotion.getCondition().getPackageType();
-					List<String> promotionPackagesList = new ArrayList<String>();
-					if (StringUtils.isNotEmpty(promotionPackageType)) {
-						promotionPackagesList = Arrays.asList(promotionPackageType.toLowerCase().split(","));
-					}
-
-					LogHelper.info(this, ":::::::: MERCHE_PROMOTION_TAG :::: " + merchandisingPromotion.getTag()
-							+ "::::: START DATE :: " + startDateTime + ":::: END DATE ::: " + endDateTime + " :::: ");
-					if (promotionName != null && promotionName.equals(merchandisingPromotion.getTag())
-							&& dateValidationForOffers(startDateTime, endDateTime, Constants.DATE_FORMAT_COHERENCE)
-							&& promotionPackagesList.contains(journeyType.toLowerCase())) {
-						offerCodes.add(promotionName);
-					}
-				}
-			}
-			LogHelper.info(this, "End -->  After calling  MerchandisingPromotion.get");
-		}
-		validOffer = offerCodes.contains(offerCode) ? true : false;
-		return validOffer;
-	}
-
+		
 	/**
 	 * Return list of DeviceTile based on the deviceId.
 	 * 
@@ -2189,7 +2052,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	 * @return MerchandisingPromotion
 	 */
 	@Override
-	public com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion getMerchandisingPromotionFromMerchandisingPromotionRepositoryBasedOnPromotionName(String promotionName)
+	public com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion getMerchandisingPromotionBasedOnPromotionName(String promotionName)
 	{
 		getMerchandisingPromotionRepository();
 		return merchandisingPromotionRepository.get(promotionName);

@@ -3353,4 +3353,64 @@ public class CommonMethods {
 	 return product;
 	}
 	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static CommercialBundle getCommercialBundleFromCommercialBundleRepository() {
+
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			// mapper = new
+			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
+			// true);
+			String bundleModel = new String(
+					Utility.readFile("\\TEST-MOCK\\Coherence_CommercialBundleRepo_CommercialBundle"));
+			CommercialBundle bundleModelList = mapper.readValue(bundleModel, CommercialBundle.class);
+
+			return mapper.convertValue(bundleModelList, new TypeReference<CommercialBundle>() {
+			});
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion getMerchandisingPromotion() {
+
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			// mapper = new
+			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
+			// true);
+			String merchPromotion = new String(
+					Utility.readFile("\\TEST-MOCK\\merchandisingPromotion_hardware_discount.json"));
+			com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion merchPromo = mapper.readValue(merchPromotion, com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion.class);
+
+			return mapper.convertValue(merchPromo, new TypeReference<com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion>() {
+			});
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 }
