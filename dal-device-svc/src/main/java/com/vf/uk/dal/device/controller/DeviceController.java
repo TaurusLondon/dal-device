@@ -514,9 +514,15 @@ public class DeviceController {
 	 * @param deviceId
 	 * @return
 	 */
+	 @ApiOperation(value = "Get the reviews for a specific device Id. Response is coming from Bazar Voice(third party) API.", notes = "The service gets the reviews of a particular device variant",tags={ "Review", })
+	    @ApiResponses(value = { 
+	        @ApiResponse(code = 200, message = "Success"),
+	        @ApiResponse(code = 404, message = "Not found", response = Void.class),
+	        @ApiResponse(code = 500, message = "Internal Server Error", response = Error.class) })
 	@RequestMapping(value = "/device/{deviceId}/review", method = RequestMethod.GET, produces = {
 			MediaType.APPLICATION_JSON })
-	public JSONObject getDeviceReviewDetails(@PathVariable(DEVICE_ID) String deviceId) {
+	public JSONObject getDeviceReviewDetails(@NotNull@ApiParam(value = "Unique Id of the device for which the review is being requested",
+	required = true) @PathVariable(DEVICE_ID) String deviceId) {
 
 		Validator.validateDeviceId(deviceId);
 		LogHelper.info(this, "Start -->  calling  getDeviceReviewDetails");
