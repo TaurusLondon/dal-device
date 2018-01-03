@@ -297,18 +297,20 @@ public class DeviceController {
 					if (StringUtils.isNotBlank(includeRecommendations) && !Validator.validateIncludeRecommendation(includeRecommendations)) {
 						throw new ApplicationException(ExceptionMessages.INVALID_INCLUDERECOMMENDATION);
 					}
+					int pageNumberParam =0;
+					int pageSizeParam=0;
 					//Retrieving Pagesize and Pagenumber
                     PaginationCriteria paginationCriteria = ServiceContext.getPaginationCriteria();
                    if(paginationCriteria!=null)
                     {
-                    	pageNumber = paginationCriteria.getPageNumber();
-                    	pageSize = paginationCriteria.getPageSize();
+                	   pageNumberParam = paginationCriteria.getPageNumber();
+                	   pageSizeParam = paginationCriteria.getPageSize();
                     }
-					if (!Validator.validatePageSize(pageSize)) {
+					if (!Validator.validatePageSize(pageSizeParam)) {
 						throw new SystemException(ExceptionMessages.PAGESIZE_NEGATIVE_ERROR);
 					}
 					
-					if (!Validator.validatePageNumber(pageNumber)) {
+					if (!Validator.validatePageNumber(pageNumberParam)) {
 						throw new SystemException(ExceptionMessages.PAGENUMBER_NEGATIVE_ERROR);
 					}
 					
@@ -342,8 +344,8 @@ public class DeviceController {
 					//Retrieving sort value
 					String sortCriteria = ServiceContext.getSortCriteria();
 					LogHelper.info(this, "Start -->  calling  getDeviceList");
-					facetedDevice = deviceService.getDeviceList(productClass,make,model,groupType,sortCriteria,pageNumber,
-							pageSize,capacity,color,operatingSystem,mustHaveFeatures,
+					facetedDevice = deviceService.getDeviceList(productClass,make,model,groupType,sortCriteria,pageNumberParam,
+							pageSizeParam,capacity,color,operatingSystem,mustHaveFeatures,
 							journeyType, creditLimitparam,offerCode, msisdn, includeRecommendationsParam);
 					LogHelper.info(this, "End -->  calling  getDeviceList");
 				
