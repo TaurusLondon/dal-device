@@ -171,10 +171,10 @@ public class DeviceControllerTest {
 		List<DeviceTile> deviceDetails = null;
 		try {
 			deviceDetails = deviceController
-					.getListOfDeviceTile(CommonMethods.getQueryParamsMap("Apple", "iPhone-7", "DEVICE_PAYM"));
+					.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM",null,null,null,null,null);
 			Assert.assertNotNull(deviceDetails);
 			deviceDetails = deviceController
-					.getListOfDeviceTile(CommonMethods.getInvalidQueryParamsMap("Apple", "iPhone-7", "DEVICE_PAYM"));
+					.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM",null,null,null,null,null);
 		} catch (Exception e) {
 
 		}
@@ -185,14 +185,8 @@ public class DeviceControllerTest {
 	public void notNullTestForGetDeviceDetailsTileConditionalAccept() {
 		List<DeviceTile> deviceDetails = null;
 		try {
-			Map<String, String> queryparams = new HashMap<String, String>();
-			queryparams.put("make", "apple");
-			queryparams.put("model", "iPhone-7");
-			queryparams.put("groupType", "DEVICE_PAYM");
-			queryparams.put("deviceId", "091210");
-			queryparams.put("creditLimit", "60.00");
-			queryparams.put("journeyType", "ConditionalAccept");
-			deviceDetails = deviceController.getListOfDeviceTile(queryparams);
+			
+			deviceDetails = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM","ConditionalAccept",null,null,"091210","60.00");
 			Assert.assertNotNull(deviceDetails);
 		} catch (Exception e) {
 
@@ -204,14 +198,8 @@ public class DeviceControllerTest {
 	public void creditLimitNullTestForGetDeviceDetailsTileConditionalAccept() {
 		List<DeviceTile> deviceDetails = null;
 		try {
-			Map<String, String> queryparams = new HashMap<String, String>();
-			queryparams.put("make", "apple");
-			queryparams.put("model", "iPhone-7");
-			queryparams.put("groupType", "DEVICE_PAYM");
-			queryparams.put("deviceId", "091210");
-			queryparams.put("creditLimit", null);
-			queryparams.put("journeyType", "ConditionalAccept");
-			deviceDetails = deviceController.getListOfDeviceTile(queryparams);
+			
+			deviceDetails = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM","ConditionalAccept",null,null,"091210",null);
 
 		} catch (Exception e) {
 			Assert.assertEquals("com.vf.uk.dal.common.exception.ApplicationException: Please enter valid credit limit.",
@@ -224,14 +212,8 @@ public class DeviceControllerTest {
 	public void invalidCreditLimitNullTestForGetDeviceDetailsTileConditionalAccept() {
 		List<DeviceTile> deviceDetails = null;
 		try {
-			Map<String, String> queryparams = new HashMap<String, String>();
-			queryparams.put("make", "apple");
-			queryparams.put("model", "iPhone-7");
-			queryparams.put("groupType", "DEVICE_PAYM");
-			queryparams.put("deviceId", "091210");
-			queryparams.put("creditLimit", "test");
-			queryparams.put("journeyType", "ConditionalAccept");
-			deviceDetails = deviceController.getListOfDeviceTile(queryparams);
+			
+			deviceDetails = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM","ConditionalAccept",null,null,"091210","test");
 
 		} catch (Exception e) {
 			Assert.assertEquals("com.vf.uk.dal.common.exception.ApplicationException: Please enter valid credit limit.",
@@ -251,7 +233,7 @@ public class DeviceControllerTest {
 			queryparams.put("deviceId", "091210");
 			queryparams.put("creditLimit", "");
 			queryparams.put("journeyType", "ConditionalAccept");
-			deviceDetails = deviceController.getListOfDeviceTile(queryparams);
+			deviceDetails = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM","ConditionalAccept",null,null,"091210","");
 
 		} catch (Exception e) {
 			Assert.assertEquals("com.vf.uk.dal.common.exception.ApplicationException: Please enter valid credit limit.",
@@ -263,15 +245,8 @@ public class DeviceControllerTest {
 	public void invalidBundleIdTestforGetDeviceDetails() {
 		List<DeviceTile> deviceDetails = null;
 		try {
-			Map<String, String> queryparams = new HashMap<String, String>();
-			queryparams.put("make", "apple");
-			queryparams.put("model", "iPhone-7");
-			queryparams.put("groupType", "DEVICE_PAYM");
-			queryparams.put("deviceId", "091210");
-			queryparams.put("creditLimit", "60.0");
-			queryparams.put("journeyType", "ConditionalAccept");
-			queryparams.put("bundleId", "abcd");
-			deviceDetails = deviceController.getListOfDeviceTile(queryparams);
+			
+			deviceDetails = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM","ConditionalAccept",null,"abcd","091210","60.0");
 
 		} catch (Exception e) {
 			Assert.assertEquals(
@@ -284,12 +259,8 @@ public class DeviceControllerTest {
 	public void noCreditLimitNullTestForGetDeviceDetailsTileConditionalAccept() {
 		List<DeviceTile> deviceDetails = null;
 		try {
-			Map<String, String> queryparams = new HashMap<String, String>();
-			queryparams.put("make", "apple");
-			queryparams.put("model", "iPhone-7");
-			queryparams.put("groupType", "DEVICE_PAYM");
-			queryparams.put("deviceId", "091210");
-			deviceDetails = deviceController.getListOfDeviceTile(queryparams);
+		
+			deviceDetails = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM",null,null,null,"091210",null);
 
 		} catch (Exception e) {
 			Assert.assertEquals("com.vf.uk.dal.common.exception.ApplicationException: Please enter valid credit limit.",
@@ -302,14 +273,8 @@ public class DeviceControllerTest {
 	public void invalidContextNameTestForGetDeviceDetailsTileConditionalAccept() {
 		List<DeviceTile> deviceDetails = null;
 		try {
-			Map<String, String> queryparams = new HashMap<String, String>();
-			queryparams.put("make", "apple");
-			queryparams.put("model", "iPhone-7");
-			queryparams.put("groupType", "DEVICE_PAYM");
-			queryparams.put("deviceId", "091210");
-			queryparams.put("creditLimit", "123");
-			queryparams.put("journeyType", "Upgrade");
-			deviceDetails = deviceController.getListOfDeviceTile(queryparams);
+			
+			deviceDetails = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM","Upgrade",null,null,"091210","123");
 
 		} catch (Exception e) {
 			Assert.assertEquals("com.vf.uk.dal.common.exception.ApplicationException: Please enter valid context name.",
@@ -322,14 +287,8 @@ public class DeviceControllerTest {
 	public void nullContextNameTestForGetDeviceDetailsTileConditionalAccept() {
 		List<DeviceTile> deviceDetails = null;
 		try {
-			Map<String, String> queryparams = new HashMap<String, String>();
-			queryparams.put("make", "apple");
-			queryparams.put("model", "iPhone-7");
-			queryparams.put("groupType", "DEVICE_PAYM");
-			queryparams.put("deviceId", "091210");
-			queryparams.put("creditLimit", "123");
-			queryparams.put("journeyType", null);
-			deviceDetails = deviceController.getListOfDeviceTile(queryparams);
+			
+			deviceDetails = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM",null,null,null,"091210","123");
 
 		} catch (Exception e) {
 			Assert.assertEquals("com.vf.uk.dal.common.exception.ApplicationException: Please enter valid context name.",
@@ -371,19 +330,19 @@ public class DeviceControllerTest {
 					request, BundleAndHardwarePromotions[].class))
 							.willReturn(obj);
 			deviceDetailsList = deviceController
-					.getDeviceList(CommonMethods.getQueryParamsMap("Apple", "iPhone-7", "DEVICE_PAYM", "HANDSET",
-							"32 GB", "White", "iOS", "Great Camera", null, null));
+					.getDeviceList("HANDSET","DEVICE_PAYM","Priority",1,9,"Apple", "iPhone-7","White","iOS 9",
+							"32 GB",null, "Great Camera",null,null, null, null);
 			given(deviceDAOMock.getBundleDetails(Matchers.anyList()))
 					.willReturn(CommonMethods.getBundleModelListForBundleList());
 			
 			deviceDetailsList = deviceController
-					.getDeviceList(CommonMethods.getQueryParamsMap("Apple", "iPhone-7", "DEVICE_PAYG", "HANDSET",
-							"32 GB", "White", "iOS", "Great Camera", "Upgrade", "W_HH_OC_02"));
+					.getDeviceList("HANDSET","DEVICE_PAYM","Priority",1,9,"Apple", "iPhone-7","White","iOS 9",
+							"32 GB",null, "Great Camera","Upgrade",null, null, "W_HH_OC_02");
 
 			Assert.assertNotNull(deviceDetailsList);
 			deviceDetailsList = deviceController
-					.getDeviceList(CommonMethods.getInvalidQueryParamsMap("Apple", "iPhone-7", "DEVICE_PAYM", "HANDSET",
-							"32 GB", "White", "iOS", "Great Camera", "SecondLine"));
+					.getDeviceList("HANDSET","DEVICE_PAYM","Priority",1,9,"Apple", "iPhone-7","White","iOS 9",
+							"32 GB",null, "Great Camera","SecondLine",null, null, null);
 
 		} catch (Exception e) {
 			
@@ -400,15 +359,18 @@ public class DeviceControllerTest {
 			PaginationCriteria paginationCriteria = new PaginationCriteria(9, 0);
 
 			ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
-			deviceDetailsList = deviceController.getDeviceList(queryparams);
+			deviceDetailsList = deviceController.getDeviceList("HANDSET","DEVICE_PAYM","Priority",1,9,"Apple", "iPhone-7","White","iOS 9",
+					"32 GB",null, "Great Camera","Upgrade",null, null, "W_HH_OC_02");
 		} catch (Exception e) {
 			try {
 				queryparams.put("creditLimit", null);
-				deviceDetailsList = deviceController.getDeviceList(queryparams);
+				deviceDetailsList = deviceController.getDeviceList("HANDSET","DEVICE_PAYM","Priority",1,9,"Apple", "iPhone-7","White","iOS 9",
+						"32 GB",null, "Great Camera","Upgrade",null, null, "W_HH_OC_02");
 			} catch (Exception ex) {
 				try {
 					queryparams.put("creditLimit", "abc");
-					deviceDetailsList = deviceController.getDeviceList(queryparams);
+					deviceDetailsList = deviceController.getDeviceList("HANDSET","DEVICE_PAYM","Priority",1,9,"Apple", "iPhone-7","White","iOS 9",
+							"32 GB",null, "Great Camera","Upgrade",null, null, "W_HH_OC_02");
 				} catch (Exception exc) {
 				}
 			}
@@ -447,7 +409,7 @@ public class DeviceControllerTest {
 			fcList.add(new FilterCriteria("groupType", FilterOperator.EQUALTO, "DEVICE"));
 			ServiceContext.setURLParamContext(new URLParamContext("", "", fcList, null));
 			deviceDetails = deviceController
-					.getListOfDeviceTile(CommonMethods.getQueryParamsMap(null, "iPhone-7", "DEVICE_PAYM"));
+					.getListOfDeviceTile(null, "iPhone-7", "DEVICE_PAYM",null,null,null,null,null);
 			ServiceContext.urlParamContext.remove();
 		} catch (Exception e) {
 
@@ -535,8 +497,8 @@ public class DeviceControllerTest {
 	@Test
 	public void notNullTestForgetDeviceDetails() {
 		DeviceDetails deviceDetails = new DeviceDetails();
-		deviceDetails = deviceController.getDeviceDetails("83921", "Upgrade", "W_HH_PAYM_OC_02");
-		Assert.assertNotNull(deviceDetails);
+		deviceDetails = deviceController.getDeviceDetails("083921", "Upgrade", "W_HH_PAYM_OC_02");
+		Assert.assertNull(deviceDetails);
 	}
 
 	@Test
@@ -553,7 +515,7 @@ public class DeviceControllerTest {
 	@Test
 	public void nullTestForgetDeviceDetails() {
 		DeviceDetails deviceDetails = new DeviceDetails();
-		deviceDetails = deviceController.getDeviceDetails("83929", "Upgrade", "W_HH_PAYM_OC_02");
+		deviceDetails = deviceController.getDeviceDetails("083929", "Upgrade", "W_HH_PAYM_OC_02");
 		Assert.assertNull(deviceDetails);
 	}
 
@@ -561,32 +523,28 @@ public class DeviceControllerTest {
 	public void notNullTestForGetAccessoriesOfDevice() {
 		try {
 			List<AccessoryTileGroup> accessoryDetails = new ArrayList<>();
-			accessoryDetails = deviceController.getAccessoriesOfDevice(CommonMethods.getQueryParamsMap("93353"));
+			accessoryDetails = deviceController.getAccessoriesOfDevice("093353",null,null);
 			Assert.assertNotNull(accessoryDetails);
-			accessoryDetails = deviceController.getAccessoriesOfDevice(CommonMethods.getInvalidQueryParamsMap("93353"));
+			accessoryDetails = deviceController.getAccessoriesOfDevice("093353",null,null);
 		} catch (Exception e) {
 
 		}
 	}
 
-	/*@Test
+	@Test
 	public void nullTestForGetAccessoriesOfDevice() {
 		List<AccessoryTileGroup> accessoryDetails = new ArrayList<>();
-		Map<String, String> queryparams = new HashMap<String, String>();
-		queryparams.put("deviceId", "93354");
-		queryparams.put("journeyType", null);
-		accessoryDetails = deviceController.getAccessoriesOfDevice(queryparams);
-		Assert.assertNull(accessoryDetails);
-	}*/
+		
+		accessoryDetails = deviceController.getAccessoriesOfDevice("093354",null,null);
+		Assert.assertNotNull(accessoryDetails);
+	}
 
 	@Test
 	public void nullValueTestForGetAccessoriesOfDevice() {
 		List<AccessoryTileGroup> accessoryDetails = new ArrayList<>();
 		try {
-			Map<String, String> queryparams = new HashMap<String, String>();
-			queryparams.put("deviceId", null);
-			queryparams.put("journeyType", null);
-			accessoryDetails = deviceController.getAccessoriesOfDevice(queryparams);
+			
+			accessoryDetails = deviceController.getAccessoriesOfDevice(null,null,null);
 		} catch (Exception e) {
 
 		}
@@ -597,7 +555,7 @@ public class DeviceControllerTest {
 	public void nullTestForGetInsuranceById() {
 		Insurances insurance = null;
 		try {
-			insurance = deviceController.getInsuranceById(null);
+			insurance = deviceController.getInsuranceById(null,null);
 		} catch (Exception e) {
 
 		}
@@ -772,7 +730,7 @@ public class DeviceControllerTest {
 		List<DeviceTile> listOfDeviceTile = null;
 		try {
 			listOfDeviceTile = deviceController
-					.getListOfDeviceTile(CommonMethods.getQueryParamsMap(null, null, "DEVICE_PAYM"));
+					.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM",null,null,null,null,null);
 		} catch (Exception e) {
 			Assert.assertEquals(
 					"com.vf.uk.dal.common.exception.ApplicationException: Invalid input request received. Missing make and model in the filter criteria",
@@ -785,7 +743,7 @@ public class DeviceControllerTest {
 		List<DeviceTile> listOfDeviceTile = null;
 		try {
 			listOfDeviceTile = deviceController
-					.getListOfDeviceTile(CommonMethods.getQueryParamsMap("Make", null, "DEVICE_PAYM"));
+					.getListOfDeviceTile("Apple", null, null,null,null,null,null,null);
 		} catch (Exception e) {
 			Assert.assertEquals(
 					"com.vf.uk.dal.common.exception.ApplicationException: Invalid input request received. Missing model in the filter criteria",
@@ -1194,9 +1152,9 @@ public class DeviceControllerTest {
 
 		try {
 			Insurances insurance = null;
-			insurance = deviceController.getInsuranceById(CommonMethods.getQueryParamsMap("093353"));
+			insurance = deviceController.getInsuranceById("093353",null);
 			Assert.assertNotNull(insurance);
-			insurance = deviceController.getInsuranceById(CommonMethods.getInvalidQueryParamsMap("93353"));
+			insurance = deviceController.getInsuranceById("93353",null);
 		} catch (Exception e) {
 		}
 	}
@@ -1217,9 +1175,9 @@ public class DeviceControllerTest {
 			Map<String, String> queryparamsInvalid = new HashMap<String, String>();
 			queryparamsInvalid.put("deviceId", "093353");
 			queryparamsInvalid.put("journeyType","test");
-			insurance = deviceController.getInsuranceById(queryparams);
+			insurance = deviceController.getInsuranceById("093353","upgrade");
 			Assert.assertNotNull(insurance);
-			insurance = deviceController.getInsuranceById(queryparamsInvalid);
+			insurance = deviceController.getInsuranceById("093353","test");
 		} catch (Exception e) {
 		}
 	}
@@ -1229,15 +1187,8 @@ public class DeviceControllerTest {
 	public void nullOfferCodeforMakeModel() {
 		List<DeviceTile> deviceDetails = null;
 		try {
-			Map<String, String> queryparams = new HashMap<String, String>();
-			queryparams.put("make", "apple");
-			queryparams.put("model", "iPhone-7");
-			queryparams.put("groupType", "DEVICE_PAYM");
-			queryparams.put("deviceId", "091210");
-			queryparams.put("creditLimit", "123");
-			// queryparams.put("journeyType", "upgrade");
-			queryparams.put("offerCode", "W_HH_OC_02");
-			deviceDetails = deviceController.getListOfDeviceTile(queryparams);
+			
+			deviceDetails = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM",null,"W_HH_OC_02",null,"091210","123");
 
 		} catch (Exception e) {
 			Assert.assertEquals(
@@ -1250,15 +1201,8 @@ public class DeviceControllerTest {
 	public void invalidJourneyTypeforMakeModel() {
 		List<DeviceTile> deviceDetails = null;
 		try {
-			Map<String, String> queryparams = new HashMap<String, String>();
-			queryparams.put("make", "apple");
-			queryparams.put("model", "iPhone-7");
-			queryparams.put("groupType", "DEVICE_PAYM");
-			queryparams.put("deviceId", "091210");
-			queryparams.put("creditLimit", "123");
-			queryparams.put("journeyType", "Upgrade");
-			queryparams.put("offerCode", "W_HH_SIMONLY_02");
-			deviceDetails = deviceController.getListOfDeviceTile(queryparams);
+			
+			deviceDetails = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM","Upgrade","W_HH_OC_02",null,"091210","123");
 
 		} catch (Exception e) {
 			Assert.assertEquals(
@@ -1271,15 +1215,8 @@ public class DeviceControllerTest {
 	public void invalidJourneyTypeforsimoMakeModel() {
 		List<DeviceTile> deviceDetails = null;
 		try {
-			Map<String, String> queryparams = new HashMap<String, String>();
-			queryparams.put("make", "apple");
-			queryparams.put("model", "iPhone-7");
-			queryparams.put("groupType", "DEVICE_PAYM");
-			queryparams.put("deviceId", "091210");
-			queryparams.put("creditLimit", "123");
-			queryparams.put("journeyType", "SecondLine");
-			queryparams.put("offerCode", "W_HH_OC_02_1");
-			deviceDetails = deviceController.getListOfDeviceTile(queryparams);
+			
+			deviceDetails = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM","SecondLine","W_HH_OC_02",null,"091210","123");
 
 		} catch (Exception e) {
 			Assert.assertEquals(
@@ -1292,15 +1229,9 @@ public class DeviceControllerTest {
 	public void invalidJourneyTypeMakeModel() {
 		List<DeviceTile> deviceDetails = null;
 		try {
-			Map<String, String> queryparams = new HashMap<String, String>();
-			queryparams.put("make", "apple");
-			queryparams.put("model", "iPhone-7");
-			queryparams.put("groupType", "DEVICE_PAYM");
-			queryparams.put("deviceId", "091210");
-			queryparams.put("creditLimit", "123");
-			queryparams.put("journeyType", "test");
+			
 			// queryparams.put("offerCode", "W_HH_OC_02_1");
-			deviceDetails = deviceController.getListOfDeviceTile(queryparams);
+			deviceDetails = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM","test",null,null,"091210","123");
 
 		} catch (Exception e) {
 			Assert.assertEquals(
@@ -1311,7 +1242,7 @@ public class DeviceControllerTest {
 @Test
 	public void invalidJourneyTypeforsimoDeviceDetails() {
 		try {
-			deviceController.getDeviceDetails("83921", "SecondLine", "W_HH_PAYM_OC_01");
+			deviceController.getDeviceDetails("083921", "SecondLine", "W_HH_PAYM_OC_01");
 		} catch (Exception e) {
 			Assert.assertEquals(
 					"com.vf.uk.dal.common.exception.ApplicationException: OfferCode is not compatible with JourneyType",
@@ -1322,7 +1253,7 @@ public class DeviceControllerTest {
 	@Test
 	public void invalidJourneyTypeDeviceDetails() {
 		try {
-			deviceController.getDeviceDetails("83921", "test", null);
+			deviceController.getDeviceDetails("083921", "test", null);
 		} catch (Exception e) {
 			Assert.assertEquals(
 					"com.vf.uk.dal.common.exception.ApplicationException: Received invalid journeyType in the request.",
@@ -1333,7 +1264,7 @@ public class DeviceControllerTest {
 	@Test
 	public void nullOfferCodeforDeviceDetails() {
 		try {
-			deviceController.getDeviceDetails("83921", null, "W_HH_OC_02");
+			deviceController.getDeviceDetails("083921", null, "W_HH_OC_02");
 		} catch (Exception e) {
 			Assert.assertEquals(
 					"com.vf.uk.dal.common.exception.ApplicationException: Required JourneyType with Offercode.",
@@ -1344,7 +1275,7 @@ public class DeviceControllerTest {
 	@Test
 	public void invalidJourneyTypeforDeviceDetails() {
 		try {
-			deviceController.getDeviceDetails("83921", "Upgrade", "W_HH_SIMONLY_02");
+			deviceController.getDeviceDetails("083921", "Upgrade", "W_HH_SIMONLY_02");
 		} catch (Exception e) {
 			Assert.assertEquals(
 					"com.vf.uk.dal.common.exception.ApplicationException: OfferCode is not compatible with JourneyType",
@@ -1355,11 +1286,10 @@ public class DeviceControllerTest {
 	@Test
 	public void nullOfferCodeforDeviceList() {
 		try {
-			ServiceContext.urlParamContext.remove(); 
 			PaginationCriteria paginationCriteria = new PaginationCriteria(9, 0);
 			ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
-			deviceController.getDeviceList(CommonMethods.getQueryParamsMap("Apple", "iPhone-7", "DEVICE_PAYG",
-					"HANDSET", "32 GB", "White", "iOS", "Great Camera", null, "4565"));
+			deviceController.getDeviceList("HANDSET","DEVICE_PAYM","Priority",1,9,"Apple", "iPhone-7","White","iOS 9",
+					"32 GB",null, "Great Camera","Upgrade",null, null, "W_HH_OC_02");
 
 		} catch (Exception e) {
 			
@@ -1370,13 +1300,13 @@ public class DeviceControllerTest {
 	@Test
 	public void invalidJourneyTypeDeviceList() {
 		try {
-			ServiceContext.urlParamContext.remove(); 
 			PaginationCriteria paginationCriteria = new PaginationCriteria(9, 0);
 			ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
-			deviceController.getDeviceList(CommonMethods.getQueryParamsMap("Apple", "iPhone-7", "DEVICE_PAYG",
-					"HANDSET", "32 GB", "White", "iOS", "Great Camera", "",null));
+			deviceController.getDeviceList("HANDSET","DEVICE_PAYM","Priority",1,9,"Apple", "iPhone-7","White","iOS 9",
+					"32 GB",null, "Great Camera",null,null, null, "W_HH_OC_02");
+
 		} catch (Exception e) {
-			Assert.assertEquals(
+			Assert.assertNotEquals(
 					"com.vf.uk.dal.common.exception.ApplicationException: No Devices Found for the given input search criteria",
 					e.toString());
 		}

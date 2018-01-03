@@ -4,20 +4,33 @@ import java.util.Objects;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import javax.validation.Valid;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 /**
  * MetaData
  */
 
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
+
 public class MetaData   {
+  @JsonProperty("seoCanonical")
   private String seoCanonical = null;
 
+  @JsonProperty("seoDescription")
   private String seoDescription = null;
 
+  @JsonProperty("seoKeyWords")
   private String seoKeyWords = null;
 
+  @JsonProperty("seoIndex")
   private String seoIndex = null;
 
-  private List<UUID> seoRobots = new ArrayList<UUID>();
+  @JsonProperty("seoRobots")
+  private List<UUID> seoRobots = null;
 
   public MetaData seoCanonical(String seoCanonical) {
     this.seoCanonical = seoCanonical;
@@ -28,6 +41,9 @@ public class MetaData   {
    * SEO Canonical
    * @return seoCanonical
   **/
+  @ApiModelProperty(value = "SEO Canonical")
+
+
   public String getSeoCanonical() {
     return seoCanonical;
   }
@@ -45,6 +61,9 @@ public class MetaData   {
    * SEO Description
    * @return seoDescription
   **/
+  @ApiModelProperty(value = "SEO Description")
+
+
   public String getSeoDescription() {
     return seoDescription;
   }
@@ -62,6 +81,9 @@ public class MetaData   {
    * SEO DKey words
    * @return seoKeyWords
   **/
+  @ApiModelProperty(value = "SEO DKey words")
+
+
   public String getSeoKeyWords() {
     return seoKeyWords;
   }
@@ -79,6 +101,9 @@ public class MetaData   {
    * SEO Index
    * @return seoIndex
   **/
+  @ApiModelProperty(value = "SEO Index")
+
+
   public String getSeoIndex() {
     return seoIndex;
   }
@@ -93,6 +118,9 @@ public class MetaData   {
   }
 
   public MetaData addSeoRobotsItem(UUID seoRobotsItem) {
+    if (this.seoRobots == null) {
+      this.seoRobots = new ArrayList<UUID>();
+    }
     this.seoRobots.add(seoRobotsItem);
     return this;
   }
@@ -101,6 +129,10 @@ public class MetaData   {
    * List of robots
    * @return seoRobots
   **/
+  @ApiModelProperty(value = "List of robots")
+
+  @Valid
+
   public List<UUID> getSeoRobots() {
     return seoRobots;
   }
