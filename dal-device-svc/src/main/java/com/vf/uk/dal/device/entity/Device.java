@@ -8,10 +8,12 @@ import javax.validation.Valid;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * Device
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-27T15:23:01.152Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
 
 public class Device   {
   @JsonProperty("deviceId")
@@ -56,6 +58,7 @@ public class Device   {
    * Product id of the requested device from the product catalogue
    * @return deviceId
   **/
+  @ApiModelProperty(value = "Product id of the requested device from the product catalogue")
 
 
   public String getDeviceId() {
@@ -75,6 +78,7 @@ public class Device   {
    * Name of the product group as provided in the product catalogue
    * @return name
   **/
+  @ApiModelProperty(value = "Name of the product group as provided in the product catalogue")
 
 
   public String getName() {
@@ -94,6 +98,7 @@ public class Device   {
    * Make of the product
    * @return make
   **/
+  @ApiModelProperty(value = "Make of the product")
 
 
   public String getMake() {
@@ -113,6 +118,7 @@ public class Device   {
    * Model of the product
    * @return model
   **/
+  @ApiModelProperty(value = "Model of the product")
 
 
   public String getModel() {
@@ -132,6 +138,7 @@ public class Device   {
    * Group type of product group DEVICE_PAYM, DEVICE_PAYG
    * @return groupType
   **/
+  @ApiModelProperty(value = "Group type of product group DEVICE_PAYM, DEVICE_PAYG")
 
 
   public String getGroupType() {
@@ -151,6 +158,7 @@ public class Device   {
    * This will indicate the number of rating starts to be displayed on screen.
    * @return rating
   **/
+  @ApiModelProperty(value = "This will indicate the number of rating starts to be displayed on screen.")
 
 
   public String getRating() {
@@ -170,6 +178,7 @@ public class Device   {
    * Description of the product as provided in the product catalogue
    * @return description
   **/
+  @ApiModelProperty(value = "Description of the product as provided in the product catalogue")
 
 
   public String getDescription() {
@@ -189,6 +198,7 @@ public class Device   {
    * Catalogue product class identifies products - SIMO, HANDSET etc.
    * @return productClass
   **/
+  @ApiModelProperty(value = "Catalogue product class identifies products - SIMO, HANDSET etc.")
 
 
   public String getProductClass() {
@@ -208,6 +218,7 @@ public class Device   {
    * Get merchandisingControl
    * @return merchandisingControl
   **/
+  @ApiModelProperty(value = "")
 
   @Valid
 
@@ -236,6 +247,7 @@ public class Device   {
    * Get media
    * @return media
   **/
+  @ApiModelProperty(value = "")
 
   @Valid
 
@@ -256,6 +268,7 @@ public class Device   {
    * Get priceInfo
    * @return priceInfo
   **/
+  @ApiModelProperty(value = "")
 
   @Valid
 

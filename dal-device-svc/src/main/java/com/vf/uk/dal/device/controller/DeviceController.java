@@ -263,42 +263,43 @@ public class DeviceController {
 			 * 
 			 * @return FacetedDevice
 			 * **/
-			
+	 @ApiOperation(value = "Get the list of devices based on the filter criteria, like productGroup brand Name. Pagination, sorting, filteration also defined", notes = "The service gets the details of the device list from Solr based on the filter criteria in the response.", response = FacetedDevice.class, tags={ "DeviceTile", })
+	    @ApiResponses(value = { 
+	        @ApiResponse(code = 200, message = "Success", response = FacetedDevice.class),
+	        @ApiResponse(code = 404, message = "Not found", response = Void.class),
+	        @ApiResponse(code = 500, message = "Internal Server Error", response = Error.class) })
 			@RequestMapping(value = "/deviceTile", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
-			public FacetedDevice getDeviceList(@RequestParam Map<String, String> queryParams){
+			public FacetedDevice getDeviceList(@NotNull@ApiParam(value = "Values on which the attributes should be filtered upon.", required = true) @RequestParam(value = "productClass", required = true) String productClass,
+			         @NotNull@ApiParam(value = "Values on which the attributes should be filtered upon.", required = true) @RequestParam(value = "groupType", required = true) String groupType,
+			         @NotNull@ApiParam(value = "Values of attributes based on which solr will provide the sorted response, like Most Popular(Priority),Rating, New Releases, Brand(a-z)(z-a) but need to pass EquipmentMake to api, MonthlyPrice(lo-hi)(hi-lo)(Need to pass RecurringCharge).", required = true) @RequestParam(value = "sort", required = true) String sort,
+			        @ApiParam(value = "Page Number") @RequestParam(value = "pageNumber", required = false) Integer pageNumber,
+			        @ApiParam(value = "Page Size") @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			        @ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"apple\". Make is also known as Manufacturer.") @RequestParam(value = "make", required = false) String make,
+			        @ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"iphone7\".", required = false) @RequestParam(value = "model", required = false) String model,
+			        @ApiParam(value = "Filter by Colour of the device as in specification groups. Please note the value of this filter should be passed in double quotes. example: colour = \"Black\",\"Gold\"") @RequestParam(value = "color", required = false) String color,
+			        @ApiParam(value = "Filter by OS of the device as in specification groups. Please note the value of this filter should be passed in double quotes. example: operatingSystem = \"iOS 10\",\"iOS 9\"") @RequestParam(value = "operatingSystem", required = false) String operatingSystem,
+			        @ApiParam(value = "Filter by capacity of the device as in specification groups. Please note the value of this filter should be passed in double quotes. example: capacity = \"32 GB\",\"8 GB\"") @RequestParam(value = "capacity", required = false) String capacity,
+			        @ApiParam(value = "Msisdn of the customer.") @RequestParam(value = "msisdn", required = false) String msisdn,
+			        @ApiParam(value = "One or more of the following token separated by comma. \"physicalKeyboard\", \"greatCamera\", \"goodBattery\", \"bigScreen\", \"4GEnabled\", 'lightWeight\"") @RequestParam(value = "mustHaveFeatures", required = false) String mustHaveFeatures,
+			        @ApiParam(value = "When user selects device for Upgrade.") @RequestParam(value = "journeyType", required = false) String journeyType,
+			        @ApiParam(value = "When user selects device for Upgrade.") @RequestParam(value = "includeRecommendations", required = false) String includeRecommendations,
+			        @ApiParam(value = "Promotional offer code applicable.") @RequestParam(value = "offerCode", required = false) String offerCode,
+			        @ApiParam(value = "Monthly credit limit applicable in case of conditional accept.") @RequestParam(value = "creditLimit", required = false) String creditLimit){
 				
-				boolean includeRecommendations = false;
+				boolean includeRecommendationsParam = false;
 				FacetedDevice facetedDevice;
-				if(!queryParams.isEmpty() && Validator.validateGetDeviceList(queryParams))
-				{
-					
-					String make = queryParams.containsKey(DEVICE_MAKE) ? queryParams.get(DEVICE_MAKE) : null;
-					String model = queryParams.containsKey(DEVICE_MODEL) ? queryParams.get(DEVICE_MODEL) : null;
-					String groupType = queryParams.containsKey(GROUP_TYPE) ? queryParams.get(GROUP_TYPE) : null;
-					String productClass = queryParams.containsKey("productClass") ? queryParams.get("productClass") : null;
-					String capacity = queryParams.containsKey("capacity") ? queryParams.get("capacity") : null;
-					String colour = queryParams.containsKey("colour") ? queryParams.get("colour") : null;
-					String operatingSystem = queryParams.containsKey("operatingSystem") ? queryParams.get("operatingSystem") : null;
-					String mustHaveFeatures = queryParams.containsKey("mustHaveFeatures") ? queryParams.get("mustHaveFeatures") : null;
-					String journeyType = queryParams.containsKey(JOURNEY_TYPE) ? queryParams.get(JOURNEY_TYPE) : null;
-					String offerCode = queryParams.containsKey(OFFER_CODE) ? queryParams.get(OFFER_CODE) : null;
-					String msisdn = queryParams.containsKey("msisdn") ? queryParams.get("msisdn") : null;
-					String showRrecommendations = queryParams.containsKey("includeRecommendations") ? queryParams.get("includeRecommendations") : null;
 					
 					/**
 					 * @author suranjit_kashyap 
 					 * @Sprint 6.6 Start
 					 */
 					
-					if (StringUtils.isNotBlank(showRrecommendations) && !Validator.validateIncludeRecommendation(showRrecommendations)) {
+					if (StringUtils.isNotBlank(includeRecommendations) && !Validator.validateIncludeRecommendation(includeRecommendations)) {
 						throw new ApplicationException(ExceptionMessages.INVALID_INCLUDERECOMMENDATION);
 					}
 					//Retrieving Pagesize and Pagenumber
                     PaginationCriteria paginationCriteria = ServiceContext.getPaginationCriteria();
-                    int pageNumber=0;
-					int pageSize=0;
-                    
-                    if(paginationCriteria!=null)
+                   if(paginationCriteria!=null)
                     {
                     	pageNumber = paginationCriteria.getPageNumber();
                     	pageSize = paginationCriteria.getPageSize();
@@ -311,7 +312,7 @@ public class DeviceController {
 						throw new SystemException(ExceptionMessages.PAGENUMBER_NEGATIVE_ERROR);
 					}
 					
-					if (StringUtils.isNotBlank(msisdn) && !Validator.validateMSISDN(msisdn) && Constants.STRING_TRUE.equalsIgnoreCase(showRrecommendations)) {
+					if (StringUtils.isNotBlank(msisdn) && !Validator.validateMSISDN(msisdn) && Constants.STRING_TRUE.equalsIgnoreCase(includeRecommendations)) {
 						throw new ApplicationException(ExceptionMessages.INVALID_MSISDN);
 					}
 					
@@ -320,19 +321,19 @@ public class DeviceController {
 					 * @Sprint 6.6 End
 					 */
 					
-					includeRecommendations = Boolean.valueOf(showRrecommendations);
-					Float creditLimit = null;
+					includeRecommendationsParam = Boolean.valueOf(includeRecommendations);
+					Float creditLimitparam = null;
 					
-					if (queryParams.containsKey(Constants.CREDIT_LIMIT)) {
-						if(StringUtils.isNotBlank(queryParams.get(Constants.CREDIT_LIMIT))){
+					if (creditLimit != null) {
+						if(StringUtils.isNotBlank(creditLimit)){
 							try{
-								creditLimit = Float.parseFloat(queryParams.get(Constants.CREDIT_LIMIT));
+								creditLimitparam = Float.parseFloat(creditLimit);
 							} catch(NumberFormatException ex){
 								LogHelper.error(this, "Credit limit value not correct " + ex);
 								throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
 							}
 							
-						} else if(StringUtils.isBlank(queryParams.get(Constants.CREDIT_LIMIT))){
+						} else if(StringUtils.isBlank(creditLimit)){
 							throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
 						}
 						
@@ -342,12 +343,10 @@ public class DeviceController {
 					String sortCriteria = ServiceContext.getSortCriteria();
 					LogHelper.info(this, "Start -->  calling  getDeviceList");
 					facetedDevice = deviceService.getDeviceList(productClass,make,model,groupType,sortCriteria,pageNumber,
-							pageSize,capacity,colour,operatingSystem,mustHaveFeatures,
-							journeyType, creditLimit,offerCode, msisdn, includeRecommendations);
+							pageSize,capacity,color,operatingSystem,mustHaveFeatures,
+							journeyType, creditLimitparam,offerCode, msisdn, includeRecommendationsParam);
 					LogHelper.info(this, "End -->  calling  getDeviceList");
-				} else {
-					throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
-			}
+				
 			return facetedDevice;
 	}
 
@@ -365,15 +364,7 @@ public class DeviceController {
 	public Insurances getInsuranceById(@NotNull@ApiParam(value = "Values based on which inssurnace will be fetched.", required = true) @RequestParam(value = "deviceId", required = true) String deviceId,
 	        @ApiParam(value = "user journey") @RequestParam(value = "journeyType", required = false) String journeyType) {
 
-		
-			Insurances insurance;
-
-			/*
-			if (StringUtils.isNotBlank(journeyType) && !Validator.validateJourneyType(journeyType)) {
-				LogHelper.info(this, "Received JourneyType is invalid.");
-				throw new ApplicationException(ExceptionMessages.INVALID_JOURNEY_TYPE);
-
-			}*/
+		Insurances insurance;
 			if (StringUtils.isNotBlank(deviceId)) {
 				if (!deviceId.matches("[0-9]{6}")) {
 					LogHelper.error(this, "DeviceId is Invalid");
