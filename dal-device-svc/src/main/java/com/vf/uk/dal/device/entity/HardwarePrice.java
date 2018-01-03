@@ -1,19 +1,32 @@
 package com.vf.uk.dal.device.entity;
 
 import java.util.Objects;
+
+import javax.validation.Valid;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 /**
  * HardwarePrice
  */
 
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
+
 public class HardwarePrice   {
+  @JsonProperty("hardwareId")
   private String hardwareId = null;
 
+  @JsonProperty("oneOffPrice")
   private Price oneOffPrice = null;
 
+  @JsonProperty("oneOffDiscountPrice")
   private Price oneOffDiscountPrice = null;
 
+  @JsonProperty("merchandisingPromotions")
   private MerchandisingPromotion merchandisingPromotions = null;
 
   public HardwarePrice hardwareId(String hardwareId) {
@@ -25,6 +38,9 @@ public class HardwarePrice   {
    * Hardware id of the price to be calculated
    * @return hardwareId
   **/
+  @ApiModelProperty(value = "Hardware id of the price to be calculated")
+
+
   public String getHardwareId() {
     return hardwareId;
   }
@@ -42,6 +58,10 @@ public class HardwarePrice   {
    * Get oneOffPrice
    * @return oneOffPrice
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
   public Price getOneOffPrice() {
     return oneOffPrice;
   }
@@ -59,6 +79,10 @@ public class HardwarePrice   {
    * Get oneOffDiscountPrice
    * @return oneOffDiscountPrice
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
   public Price getOneOffDiscountPrice() {
     return oneOffDiscountPrice;
   }
@@ -71,10 +95,15 @@ public class HardwarePrice   {
     this.merchandisingPromotions = merchandisingPromotions;
     return this;
   }
+
    /**
-   * Merchandising promotions applicable for the bundle
+   * Get merchandisingPromotions
    * @return merchandisingPromotions
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
   public MerchandisingPromotion getMerchandisingPromotions() {
     return merchandisingPromotions;
   }
