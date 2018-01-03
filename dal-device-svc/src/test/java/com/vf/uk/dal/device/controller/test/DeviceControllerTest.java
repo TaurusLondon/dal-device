@@ -330,19 +330,19 @@ public class DeviceControllerTest {
 					request, BundleAndHardwarePromotions[].class))
 							.willReturn(obj);
 			deviceDetailsList = deviceController
-					.getDeviceList(CommonMethods.getQueryParamsMap("Apple", "iPhone-7", "DEVICE_PAYM", "HANDSET",
-							"32 GB", "White", "iOS", "Great Camera", null, null));
+					.getDeviceList("HANDSET","DEVICE_PAYM","Priority",1,9,"Apple", "iPhone-7","White","iOS 9",
+							"32 GB",null, "Great Camera",null,null, null, null);
 			given(deviceDAOMock.getBundleDetails(Matchers.anyList()))
 					.willReturn(CommonMethods.getBundleModelListForBundleList());
 			
 			deviceDetailsList = deviceController
-					.getDeviceList(CommonMethods.getQueryParamsMap("Apple", "iPhone-7", "DEVICE_PAYG", "HANDSET",
-							"32 GB", "White", "iOS", "Great Camera", "Upgrade", "W_HH_OC_02"));
+					.getDeviceList("HANDSET","DEVICE_PAYM","Priority",1,9,"Apple", "iPhone-7","White","iOS 9",
+							"32 GB",null, "Great Camera","Upgrade",null, null, "W_HH_OC_02");
 
 			Assert.assertNotNull(deviceDetailsList);
 			deviceDetailsList = deviceController
-					.getDeviceList(CommonMethods.getInvalidQueryParamsMap("Apple", "iPhone-7", "DEVICE_PAYM", "HANDSET",
-							"32 GB", "White", "iOS", "Great Camera", "SecondLine"));
+					.getDeviceList("HANDSET","DEVICE_PAYM","Priority",1,9,"Apple", "iPhone-7","White","iOS 9",
+							"32 GB",null, "Great Camera","SecondLine",null, null, null);
 
 		} catch (Exception e) {
 			
@@ -359,15 +359,18 @@ public class DeviceControllerTest {
 			PaginationCriteria paginationCriteria = new PaginationCriteria(9, 0);
 
 			ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
-			deviceDetailsList = deviceController.getDeviceList(queryparams);
+			deviceDetailsList = deviceController.getDeviceList("HANDSET","DEVICE_PAYM","Priority",1,9,"Apple", "iPhone-7","White","iOS 9",
+					"32 GB",null, "Great Camera","Upgrade",null, null, "W_HH_OC_02");
 		} catch (Exception e) {
 			try {
 				queryparams.put("creditLimit", null);
-				deviceDetailsList = deviceController.getDeviceList(queryparams);
+				deviceDetailsList = deviceController.getDeviceList("HANDSET","DEVICE_PAYM","Priority",1,9,"Apple", "iPhone-7","White","iOS 9",
+						"32 GB",null, "Great Camera","Upgrade",null, null, "W_HH_OC_02");
 			} catch (Exception ex) {
 				try {
 					queryparams.put("creditLimit", "abc");
-					deviceDetailsList = deviceController.getDeviceList(queryparams);
+					deviceDetailsList = deviceController.getDeviceList("HANDSET","DEVICE_PAYM","Priority",1,9,"Apple", "iPhone-7","White","iOS 9",
+							"32 GB",null, "Great Camera","Upgrade",null, null, "W_HH_OC_02");
 				} catch (Exception exc) {
 				}
 			}
@@ -1285,8 +1288,8 @@ public class DeviceControllerTest {
 		try {
 			PaginationCriteria paginationCriteria = new PaginationCriteria(9, 0);
 			ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
-			deviceController.getDeviceList(CommonMethods.getQueryParamsMap("Apple", "iPhone-7", "DEVICE_PAYG",
-					"HANDSET", "32 GB", "White", "iOS", "Great Camera", null, "4565"));
+			deviceController.getDeviceList("HANDSET","DEVICE_PAYM","Priority",1,9,"Apple", "iPhone-7","White","iOS 9",
+					"32 GB",null, "Great Camera","Upgrade",null, null, "W_HH_OC_02");
 
 		} catch (Exception e) {
 			
@@ -1299,11 +1302,11 @@ public class DeviceControllerTest {
 		try {
 			PaginationCriteria paginationCriteria = new PaginationCriteria(9, 0);
 			ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
-			deviceController.getDeviceList(CommonMethods.getQueryParamsMap("Apple", "iPhone-7", "DEVICE_PAYG",
-					"HANDSET", "32 GB", "White", "iOS", "Great Camera", "",null));
+			deviceController.getDeviceList("HANDSET","DEVICE_PAYM","Priority",1,9,"Apple", "iPhone-7","White","iOS 9",
+					"32 GB",null, "Great Camera",null,null, null, "W_HH_OC_02");
 
 		} catch (Exception e) {
-			Assert.assertEquals(
+			Assert.assertNotEquals(
 					"com.vf.uk.dal.common.exception.ApplicationException: No Devices Found for the given input search criteria",
 					e.toString());
 		}

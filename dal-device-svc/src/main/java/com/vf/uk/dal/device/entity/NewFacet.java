@@ -1,16 +1,27 @@
 package com.vf.uk.dal.device.entity;
 
 import java.util.Objects;
+
+import javax.validation.Valid;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 /**
  * NewFacet
  */
 
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
+
 public class NewFacet   {
+  @JsonProperty("facetName")
   private String facetName = null;
 
-  private List<FacetWithCount> facetList = new ArrayList<FacetWithCount>();
+  @JsonProperty("facetList")
+  private List<FacetWithCount> facetList = null;
 
   public NewFacet facetName(String facetName) {
     this.facetName = facetName;
@@ -21,6 +32,9 @@ public class NewFacet   {
    * Facet Name like colour,os,capacity
    * @return facetName
   **/
+  @ApiModelProperty(value = "Facet Name like colour,os,capacity")
+
+
   public String getFacetName() {
     return facetName;
   }
@@ -35,6 +49,9 @@ public class NewFacet   {
   }
 
   public NewFacet addFacetListItem(FacetWithCount facetListItem) {
+    if (this.facetList == null) {
+      this.facetList = new ArrayList<FacetWithCount>();
+    }
     this.facetList.add(facetListItem);
     return this;
   }
@@ -43,6 +60,10 @@ public class NewFacet   {
    * List of facets with count
    * @return facetList
   **/
+  @ApiModelProperty(value = "List of facets with count")
+
+  @Valid
+
   public List<FacetWithCount> getFacetList() {
     return facetList;
   }
