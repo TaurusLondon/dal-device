@@ -113,10 +113,10 @@ public class DeviceServiceImplTest
          given(registry.getRestTemplate()).willReturn(restTemplate);
          given(restTemplate.postForObject("http://CUSTOMER-V1/customer/getRecommendedProductList/",recomProductListReq,RecommendedProductListResponse.class)).willReturn(obj1);
 
-		given(this.deviceDAOMock.getListOfDeviceTile("Apple","iPhone-7","DEVICE", null, null, null,null,null)).willReturn(CommonMethods.getDeviceTile("Apple","iPhone-7","DEVICE"));
+		/*given(this.deviceDAOMock.getListOfDeviceTile("Apple","iPhone-7","DEVICE", null, null, null,null,null)).willReturn(CommonMethods.getDeviceTile("Apple","iPhone-7","DEVICE"));
 		given(this.deviceDAOMock.getListOfDeviceTile(null,"iPhone-7","DEVICE", null, null, null,null,null)).willReturn(null);
 		given(this.deviceDAOMock.getListOfDeviceTile("Apple",null,"DEVICE", null, null, null,null,null)).willReturn(null);
-		given(this.deviceDAOMock.getListOfDeviceTile("Apple","iPhone-7",null, null, null, null,null,null)).willReturn(null);
+		given(this.deviceDAOMock.getListOfDeviceTile("Apple","iPhone-7",null, null, null, null,null,null)).willReturn(null);*/
 	
 		given(this.deviceDAOMock.getProductGroupByGroupTypeGroupName("DEVICE","Apple iPhone 6s")).willReturn(CommonMethods.getProductGroupByGroupTypeGroupName("DEVICE","Apple IPhone 6s"));
 		given(this.deviceDAOMock.getProductGroupByGroupTypeGroupName(null,"Apple iPhone 7")).willReturn(null);

@@ -113,12 +113,12 @@ public class DeviceControllerTest {
 		given(registry.getRestTemplate()).willReturn(restTemplate);
 		given(restTemplate.postForObject("http://CUSTOMER-V1/customer/getRecommendedProductList/", recomProductListReq,
 				RecommendedProductListResponse.class)).willReturn(obj1);
-		given(this.deviceDAOMock.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM", null, null, null, null, null))
+		/*given(this.deviceDAOMock.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM", null, null, null, null, null))
 				.willReturn(CommonMethods.getDeviceTile("", "", ""));
 		given(this.deviceDAOMock.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM", "091210", "ConditionalAccept",
 				60.00, "W_HH_SIMONLY", null)).willReturn(CommonMethods.getDeviceTile("", "", ""));
 		given(this.deviceDAOMock.getListOfDeviceTile(null, "iPhone-7", "DEVICE_PAYM", null, null, null, null, null))
-				.willReturn(null);
+				.willReturn(null);*/
 		given(this.deviceDAOMock.getProductGroupByGroupTypeGroupName("DEVICE", "Apple iPhone 7"))
 				.willReturn(CommonMethods.getProductGroupByGroupTypeGroupName("", ""));
 		given(this.deviceDAOMock.getProductGroupByGroupTypeGroupName("ValidData", null)).willReturn(null);
@@ -163,7 +163,12 @@ public class DeviceControllerTest {
 				.willReturn(CommonMethods.getCommercialBundle());
 		given(deviceDAOMock.getMerchandisingPromotionByPromotionName("EXTRA.1GB.DATA"))
 				.willReturn(CommonMethods.getMerchPromotion());
-
+		
+		given(deviceDAOMock.getListOfCommercialProductsFromCommercialProductRepository("Apple", "iPhone-7")).willReturn(CommonMethods.getCommercialProductsListOfMakeAndModel());
+		
+		given(deviceDAOMock.getListOfProductGroupFromProductGroupRepository("DEVICE_PAYM")).willReturn(CommonMethods.getListOfProductGroupFromProductGroupRepository());
+		given(deviceDAOMock.getCommercialProductFromCommercialProductRepository("088417")).willReturn(CommonMethods.getCommercialProductByDeviceId());
+		given(deviceDAOMock.getBazaarVoice(Matchers.anyString())).willReturn(CommonMethods.getBazaarVoice());
 	}
 
 	@Test

@@ -1670,7 +1670,7 @@ public class CommonMethods {
 		BundleDetails bundleDetails = new BundleDetails();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			bundleDetails = mapper.readValue(Utility.readFile("\\BUNDLESV1_compatibleList.json"), BundleDetails.class);
+			bundleDetails = mapper.readValue(Utility.readFile("\\TEST-MOCK\\BUNDLESV1_compatibleList.json"), BundleDetails.class);
 			return bundleDetails;
 
 		} catch (Exception e) {
@@ -1683,7 +1683,7 @@ public class CommonMethods {
 		BundleDetails bundleDetails = new BundleDetails();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			bundleDetails = mapper.readValue(Utility.readFile("\\BUNDLESV1_compatibleList3.json"), BundleDetails.class);
+			bundleDetails = mapper.readValue(Utility.readFile("\\TEST-MOCK\\BUNDLESV1_compatibleList3.json"), BundleDetails.class);
 			return bundleDetails;
 
 		} catch (Exception e) {
@@ -1696,7 +1696,7 @@ public class CommonMethods {
 		BundleDetails bundleDetails = new BundleDetails();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			bundleDetails = mapper.readValue(Utility.readFile("\\BUNDLESV2_compatibleList.json"), BundleDetails.class);
+			bundleDetails = mapper.readValue(Utility.readFile("\\TEST-MOCK\\\\BUNDLESV2_compatibleList.json"), BundleDetails.class);
 			return bundleDetails;
 
 		} catch (Exception e) {
@@ -1709,7 +1709,7 @@ public class CommonMethods {
 		BundleDetails bundleDetails = new BundleDetails();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			bundleDetails = mapper.readValue(Utility.readFile("\\BUNDLESV3_compatibleList.json"), BundleDetails.class);
+			bundleDetails = mapper.readValue(Utility.readFile("\\TEST-MOCK\\BUNDLESV3_compatibleList.json"), BundleDetails.class);
 			return bundleDetails;
 
 		} catch (Exception e) {
@@ -1750,7 +1750,7 @@ public class CommonMethods {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			bundleDetails = mapper.readValue(Utility.readFile("\\ProductGroupForFacets.json"),
+			bundleDetails = mapper.readValue(Utility.readFile("\\TEST-MOCK\\ProductGroupForFacets.json"),
 					ProductGroupFacetModel.class);
 			return bundleDetails;
 
@@ -1764,7 +1764,7 @@ public class CommonMethods {
 		BundleDetails bundleDetails = new BundleDetails();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			bundleDetails = mapper.readValue(Utility.readFile("\\BUNDLESV1_compatibleList1.json"), BundleDetails.class);
+			bundleDetails = mapper.readValue(Utility.readFile("\\TEST-MOCK\\BUNDLESV1_compatibleList1.json"), BundleDetails.class);
 			return bundleDetails;
 
 		} catch (Exception e) {
@@ -1984,7 +1984,7 @@ public class CommonMethods {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-		String productModel = new String(Utility.readFile("\\BazaarVoiceResponse.json"));
+		String productModel = new String(Utility.readFile("\\TEST-MOCK\\BazaarVoiceResponse.json"));
 		List<BazaarVoice> bazaarList = new ArrayList<>();
 		BazaarVoice bazaar = new BazaarVoice();
 		bazaar.setJsonsource(productModel);
@@ -3175,7 +3175,7 @@ public class CommonMethods {
 			
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-			String bundle=new String(Utility.readFile("\\BundleandhardwarePromotuions.json"));
+			String bundle=new String(Utility.readFile("\\TEST-MOCK\\BundleandhardwarePromotuions.json"));
 			BundleAndHardwarePromotions[] bundleList=mapper.readValue(bundle, BundleAndHardwarePromotions[].class);
 
 			return  mapper.convertValue(bundleList, new TypeReference<List<BundleAndHardwarePromotions>>(){});
@@ -3247,6 +3247,110 @@ public class CommonMethods {
 		priceInfo.setOneOffPrice(price);
 		priceInfo.setHardwarePrice(hardwarePrice);
 		return priceInfo;
+	}
+	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static List<CommercialProduct> getCommercialProductsListOfMakeAndModel() {
+
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			// mapper = new
+			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
+			// true);
+			String commercialProduct = new String(
+					Utility.readFile("\\TEST-MOCK\\CommercialProductListOfMakeAndModel.json"));
+			CommercialProduct[] commercialProductList = mapper.readValue(commercialProduct, CommercialProduct[].class);
+
+			return mapper.convertValue(commercialProductList, new TypeReference<List<CommercialProduct>>() {
+			});
+		} catch (JsonParseException e) {
+
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+
+			e.printStackTrace();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static List<Group> getListOfProductGroupFromProductGroupRepository() 
+	{
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			String listOfGroupsString = new String(
+					Utility.readFile("\\TEST-MOCK\\ListOfProductGroupFromProductGroupRepository.json"));
+			Group[] groupList = mapper.readValue(listOfGroupsString, Group[].class);
+
+			return mapper.convertValue(groupList, new TypeReference<List<Group>>() {
+			});
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static CommercialProduct getCommercialProductByDeviceId() {
+
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			// mapper = new
+			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
+			// true);
+			String commercialProduct = new String(
+					Utility.readFile("\\TEST-MOCK\\Coherence_CommercialProductRepo_CommercialProductByDeviceId"));
+			CommercialProduct commercialProductList = mapper.readValue(commercialProduct, CommercialProduct.class);
+
+			return mapper.convertValue(commercialProductList, new TypeReference<CommercialProduct>() {
+			});
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public static BazaarVoice getBazaarVoice(){
+		ObjectMapper mapper = new ObjectMapper();
+	 mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+	 mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+	 String productModel;
+	 BazaarVoice  product=null;
+	try {
+		productModel = new
+		 String(Utility.readFile("\\TEST-MOCK\\BazaarVoiceResponse.json"));
+		   product=mapper.readValue(productModel, BazaarVoice.class);
+		   product.setJsonsource(productModel);
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} 
+	
+	  
+	 return product;
 	}
 	
 }
