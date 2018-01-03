@@ -1,27 +1,42 @@
 package com.vf.uk.dal.device.entity;
 
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 /**
  * Specification
  */
 
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
+
 public class Specification   {
+  @JsonProperty("name")
   private String name = null;
 
+  @JsonProperty("value")
   private String value = null;
 
+  @JsonProperty("priority")
   private Integer priority = null;
 
+  @JsonProperty("comparable")
   private Boolean comparable = null;
 
+  @JsonProperty("isKey")
   private Boolean isKey = null;
 
+  @JsonProperty("valueType")
   private String valueType = null;
 
+  @JsonProperty("valueUOM")
   private String valueUOM = null;
 
+  @JsonProperty("description")
   private String description = null;
 
+  @JsonProperty("footNote")
   private String footNote = null;
 
   public Specification name(String name) {
@@ -33,6 +48,9 @@ public class Specification   {
    * Name of the specification, color, storage, vedeo recording, etc
    * @return name
   **/
+  @ApiModelProperty(value = "Name of the specification, color, storage, vedeo recording, etc")
+
+
   public String getName() {
     return name;
   }
@@ -50,6 +68,9 @@ public class Specification   {
    * Value of the field
    * @return value
   **/
+  @ApiModelProperty(value = "Value of the field")
+
+
   public String getValue() {
     return value;
   }
@@ -67,6 +88,9 @@ public class Specification   {
    * display Priority of the specification field
    * @return priority
   **/
+  @ApiModelProperty(value = "display Priority of the specification field")
+
+
   public Integer getPriority() {
     return priority;
   }
@@ -84,6 +108,9 @@ public class Specification   {
    * Identify if the feature is coparable
    * @return comparable
   **/
+  @ApiModelProperty(value = "Identify if the feature is coparable")
+
+
   public Boolean getComparable() {
     return comparable;
   }
@@ -101,6 +128,9 @@ public class Specification   {
    * Identify if this a key feature
    * @return isKey
   **/
+  @ApiModelProperty(value = "Identify if this a key feature")
+
+
   public Boolean getIsKey() {
     return isKey;
   }
@@ -118,6 +148,9 @@ public class Specification   {
    * Type of the value, TEXT, INTEGER, DECOMAL, BOOLEAN
    * @return valueType
   **/
+  @ApiModelProperty(value = "Type of the value, TEXT, INTEGER, DECOMAL, BOOLEAN")
+
+
   public String getValueType() {
     return valueType;
   }
@@ -135,6 +168,9 @@ public class Specification   {
    * Unit of measure of the value if applicable
    * @return valueUOM
   **/
+  @ApiModelProperty(value = "Unit of measure of the value if applicable")
+
+
   public String getValueUOM() {
     return valueUOM;
   }
@@ -152,6 +188,9 @@ public class Specification   {
    * Friendly description, Alternative to tabular name value
    * @return description
   **/
+  @ApiModelProperty(value = "Friendly description, Alternative to tabular name value")
+
+
   public String getDescription() {
     return description;
   }
@@ -169,6 +208,9 @@ public class Specification   {
    * A foot note to the specification
    * @return footNote
   **/
+  @ApiModelProperty(value = "A foot note to the specification")
+
+
   public String getFootNote() {
     return footNote;
   }

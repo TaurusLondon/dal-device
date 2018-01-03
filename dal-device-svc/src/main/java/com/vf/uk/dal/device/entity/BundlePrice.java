@@ -1,17 +1,29 @@
 package com.vf.uk.dal.device.entity;
 
 import java.util.Objects;
+
+import javax.validation.Valid;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 /**
  * BundlePrice
  */
 
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
+
 public class BundlePrice   {
+  @JsonProperty("bundleId")
   private String bundleId = null;
 
+  @JsonProperty("monthlyPrice")
   private Price monthlyPrice = null;
 
+  @JsonProperty("monthlyDiscountPrice")
   private Price monthlyDiscountPrice = null;
 
+  @JsonProperty("merchandisingPromotions")
   private MerchandisingPromotion merchandisingPromotions = null;
 
   public BundlePrice bundleId(String bundleId) {
@@ -23,6 +35,9 @@ public class BundlePrice   {
    * Bundle id of the price to be calculated
    * @return bundleId
   **/
+  @ApiModelProperty(value = "Bundle id of the price to be calculated")
+
+
   public String getBundleId() {
     return bundleId;
   }
@@ -40,6 +55,10 @@ public class BundlePrice   {
    * Get monthlyPrice
    * @return monthlyPrice
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
   public Price getMonthlyPrice() {
     return monthlyPrice;
   }
@@ -57,6 +76,10 @@ public class BundlePrice   {
    * Get monthlyDiscountPrice
    * @return monthlyDiscountPrice
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
   public Price getMonthlyDiscountPrice() {
     return monthlyDiscountPrice;
   }
@@ -74,6 +97,10 @@ public class BundlePrice   {
    * Get merchandisingPromotions
    * @return merchandisingPromotions
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
   public MerchandisingPromotion getMerchandisingPromotions() {
     return merchandisingPromotions;
   }
