@@ -40,7 +40,7 @@ import com.vodafone.stockAvailability.pojo.StockAvailability;
 
 public interface DeviceDao {
 	//public List<DeviceTile> getListOfDeviceTile(String make,String model,String groupType, String deviceId, String journeyType, Double creditLimit, String offerCode, String bundleId);
-	public DeviceDetails getDeviceDetails(String deviceId,String journeyType,String offerCode);
+	//public DeviceDetails getDeviceDetails(String deviceId,String journeyType,String offerCode);
 	public List<DeviceTile> getDeviceTileById(String id, String offerCode, String journeyType);
 	public List<ProductGroup> getProductGroupByGroupTypeGroupName(String groupType, String groupName);
 	public List<AccessoryTileGroup> getAccessoriesOfDevice(String deviceId,String journeyType,String offerCode);
@@ -104,7 +104,7 @@ public interface DeviceDao {
 	public ProductGroupFacetModel getProductGroupFacetModelForFilterKeyfromSolr(Filters filterKey);
 	public List<BundleModel> getBundleModelListFromSolr(List<String> listOfLeadPlanId);
 	public Group getGroupFromProductGroupRepository(String groupName, String groupType);
-	public MerchandisingPromotion getMerchandisingPromotionFromMerchandisingPromotionRepositoryBasedOnPromotionName(
+	public MerchandisingPromotion getMerchandisingPromotionBasedOnPromotionName(
 			String promotionName);
 	public List<MerchandisingPromotionModel> getListOfMerchandisingPromotionModelFromSolr(String groupType,
 			String journeyType);

@@ -126,13 +126,13 @@ public class DeviceControllerTest {
 		given(this.deviceDAOMock.getDeviceTileById("83921", null,null)).willReturn(CommonMethods.getDeviceTileById("83921"));
 		given(this.deviceDAOMock.getDeviceTileById("83987", null,null)).willReturn(null);
 		given(this.deviceDAOMock.getDeviceTileById(null, null,null)).willReturn(null);
-		given(this.deviceDAOMock.getDeviceDetails("83921", "upgrade", "34543"))
+		/*given(this.deviceDAOMock.getDeviceDetails("83921", "upgrade", "34543"))
 				.willReturn(CommonMethods.getDevice("83921"));
 
 		given(this.deviceDAOMock.getDeviceDetails("83921", "Upgrade", "W_HH_PAYM_OC_02"))
 				.willReturn(CommonMethods.getDevice("83921"));
 		given(this.deviceDAOMock.getDeviceDetails("83929", "upgrade", "34543")).willReturn(null);
-		given(this.deviceDAOMock.getDeviceDetails(null, null, null)).willReturn(null);
+		given(this.deviceDAOMock.getDeviceDetails(null, null, null)).willReturn(null);*/
 		given(this.deviceDAOMock.getAccessoriesOfDevice("93353","Upgrade","W_HH_PAYM_OC_02"))
 				.willReturn(CommonMethods.getAccessoriesTileGroup("93353"));
 		given(this.deviceDAOMock.getAccessoriesOfDevice("93354",null,null)).willReturn(null);
@@ -164,11 +164,14 @@ public class DeviceControllerTest {
 		given(deviceDAOMock.getMerchandisingPromotionByPromotionName("EXTRA.1GB.DATA"))
 				.willReturn(CommonMethods.getMerchPromotion());
 		
+		// Test Cases After Refactor the code  
 		given(deviceDAOMock.getListOfCommercialProductsFromCommercialProductRepository("Apple", "iPhone-7")).willReturn(CommonMethods.getCommercialProductsListOfMakeAndModel());
-		
 		given(deviceDAOMock.getListOfProductGroupFromProductGroupRepository("DEVICE_PAYM")).willReturn(CommonMethods.getListOfProductGroupFromProductGroupRepository());
-		given(deviceDAOMock.getCommercialProductFromCommercialProductRepository("088417")).willReturn(CommonMethods.getCommercialProductByDeviceId());
+		given(deviceDAOMock.getCommercialProductFromCommercialProductRepository(Matchers.anyString())).willReturn(CommonMethods.getCommercialProductByDeviceId());
 		given(deviceDAOMock.getBazaarVoice(Matchers.anyString())).willReturn(CommonMethods.getBazaarVoice());
+		given(deviceDAOMock.getCommercialBundleFromCommercialBundleRepository(Matchers.anyString())).willReturn(CommonMethods.getCommercialBundleFromCommercialBundleRepository());
+		given(deviceDAOMock.getMerchandisingPromotionBasedOnPromotionName(Matchers.anyString())).willReturn(CommonMethods.getMerchandisingPromotion());
+		
 	}
 
 	@Test
@@ -500,10 +503,10 @@ public class DeviceControllerTest {
 	}
 
 	@Test
-	public void notNullTestForgetDeviceDetails() {
+	public void notNullTestForgetDeviceDetailsWithJourneyType() {
 		DeviceDetails deviceDetails = new DeviceDetails();
 		deviceDetails = deviceController.getDeviceDetails("083921", "Upgrade", "W_HH_PAYM_OC_02");
-		Assert.assertNull(deviceDetails);
+		Assert.assertNotNull(deviceDetails);
 	}
 
 	@Test
@@ -518,10 +521,10 @@ public class DeviceControllerTest {
 	}
 
 	@Test
-	public void nullTestForgetDeviceDetails() {
+	public void notNullTestForgetDeviceDetails() {
 		DeviceDetails deviceDetails = new DeviceDetails();
-		deviceDetails = deviceController.getDeviceDetails("083929", "Upgrade", "W_HH_PAYM_OC_02");
-		Assert.assertNull(deviceDetails);
+		deviceDetails = deviceController.getDeviceDetails("083929","","");
+		Assert.assertNotNull(deviceDetails);
 	}
 
 	@Test

@@ -125,9 +125,10 @@ public class DeviceServiceImplTest
 		given(this.deviceDAOMock.getProductGroupByGroupTypeGroupName(null,null)).willReturn(null);
 		given(this.deviceDAOMock.getDeviceTileById("83921",null,null)).willReturn(CommonMethods.getDeviceTileById("83921"));
 		given(this.deviceDAOMock.getDeviceTileById("83964",null,null)).willReturn(null);
-		given(this.deviceDAOMock.getDeviceDetails("83921","upgrade","34543")).willReturn(CommonMethods.getDevice("83921"));
+		/*given(this.deviceDAOMock.getDeviceDetails("83921","upgrade","34543")).willReturn(CommonMethods.getDevice("83921"));
 		given(this.deviceDAOMock.getDeviceDetails("83921","Upgrade","W_HH_PAYM_OC_02")).willReturn(CommonMethods.getDevice("83921"));
-		given(this.deviceDAOMock.getDeviceDetails("83929","upgrade","34543")).willReturn(null);
+		given(this.deviceDAOMock.getDeviceDetails("83929","upgrade","34543")).willReturn(null);*/
+		given(deviceDAOMock.getCommercialProductFromCommercialProductRepository(Matchers.anyString())).willReturn(CommonMethods.getCommercialProductByDeviceId());
 		given(this.deviceDAOMock.getAccessoriesOfDevice("93353","Upgrade","W_HH_PAYM_OC_02")).willReturn(CommonMethods.getAccessoriesTileGroup("93353"));
 		given(this.deviceDAOMock.getAccessoriesOfDevice("93354","Upgrade","W_HH_PAYM_OC_02")).willReturn(null);
 		given(this.deviceDAOMock.getAccessoriesOfDevice(null,null,null)).willReturn(null);
@@ -250,12 +251,7 @@ public class DeviceServiceImplTest
 		deviceDetails=deviceService.getDeviceDetails("83921","Upgrade","W_HH_PAYM_OC_02");
 		Assert.assertNotNull(deviceDetails);
 	}
-	@Test
-	public void nullTestForGetDeviceDetais() {
-		DeviceDetails deviceDetails=new DeviceDetails();
-		deviceDetails=deviceService.getDeviceDetails("83929","Upgrade","W_HH_PAYM_OC_02");
-		Assert.assertNull(deviceDetails);
-	}
+		
 	@Test
 	public void notNullTestForGetAccessoriesOfDevice() {
 		List<AccessoryTileGroup> accessory=new ArrayList<>();
