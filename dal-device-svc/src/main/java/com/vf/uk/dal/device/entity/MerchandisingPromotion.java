@@ -58,7 +58,6 @@ public class MerchandisingPromotion   {
   **/
   @ApiModelProperty(value = "Tag value of the merchandising promotion")
 
-
   public String getTag() {
     return tag;
   }
