@@ -43,7 +43,6 @@ import com.vf.uk.dal.utility.entity.BundleDetails;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponses;
-import springfox.documentation.annotations.ApiIgnore;
 import io.swagger.annotations.ApiResponse;
 
 /**
@@ -175,7 +174,6 @@ public class DeviceController {
 	 * 
 	 * @return List<DeviceTile>
 	 **/
-	@ApiIgnore
 	@RequestMapping(value = "/deviceTile/queries/byDeviceVariant/", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	public List<DeviceTile> getDeviceTileById(@RequestParam Map<String, String> queryParams) {
 
@@ -215,7 +213,6 @@ public class DeviceController {
 	 * 
 	 * @return List<ProductGroup>
 	 **/
-	@ApiIgnore
 	@RequestMapping(value = "/productGroup", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	public List<ProductGroup> getProductGroup() {
 		List<ProductGroup> productGroup;
@@ -360,7 +357,6 @@ public class DeviceController {
 	 * 
 	 * @return insurance
 	 */
-	 
 			 @ApiOperation(value = "Get the list of insurance", notes = "The service gets the details of insurance available with device.", response = Insurances.class, tags={ "Insurances", })
 			    @ApiResponses(value = { 
 			        @ApiResponse(code = 200, message = "Success", response = Insurances.class),
@@ -392,7 +388,6 @@ public class DeviceController {
 	 * 
 	 * @param groupType.
 	 */
-			 @ApiIgnore
 	@RequestMapping(value = "/deviceTile/cacheDeviceTile", method = RequestMethod.POST, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	public ResponseEntity<CacheDeviceTileResponse> cacheDeviceTile() {
 		String groupType = getFilterValue(GROUP_TYPE);
@@ -468,7 +463,6 @@ public class DeviceController {
 	 * @param allowedRecurringPriceLimit
 	 * @return
 	 */
-	@ApiIgnore
 	@RequestMapping(value = "/plan/action/keepDeviceChangePlan", method = RequestMethod.POST, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	public BundleDetails getKeepDeviceChangePlan(@RequestBody KeepDeviceChangePlanRequest keepDeviceChangePlanRequest) {
 		BundleDetails bundleDetails;
@@ -544,7 +538,6 @@ public class DeviceController {
 	 * @param deviceId
 	 * @return
 	 */
-	 @ApiIgnore
 	@RequestMapping(value = "/device/", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON })
 	public List<DeviceDetails> getListOfDeviceDetails(@RequestParam Map<String, String> queryParams) {
 
@@ -578,7 +571,7 @@ public class DeviceController {
 		}
 
 	}
-@ApiIgnore
+
 	@RequestMapping(value = "/deviceTile/cacheDeviceTile/{jobId}/status", method = RequestMethod.GET, produces = {
 			MediaType.APPLICATION_JSON })
 	public CacheDeviceTileResponse getCacheDeviceJobStatus(@PathVariable("jobId") String jobId) {
