@@ -1,31 +1,48 @@
 package com.vf.uk.dal.device.entity;
 
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 /**
  * MerchandisingControl
  */
 
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
+
 public class MerchandisingControl   {
+  @JsonProperty("isDisplayableECare")
   private Boolean isDisplayableECare = null;
 
+  @JsonProperty("isSellableECare")
   private Boolean isSellableECare = null;
 
+  @JsonProperty("isDisplayableAcq")
   private Boolean isDisplayableAcq = null;
 
+  @JsonProperty("isSellableRet")
   private Boolean isSellableRet = null;
 
+  @JsonProperty("isDisplayableRet")
   private Boolean isDisplayableRet = null;
 
+  @JsonProperty("isSellableAcq")
   private Boolean isSellableAcq = null;
 
+  @JsonProperty("isDisplayableSavedBasket")
   private Boolean isDisplayableSavedBasket = null;
 
+  @JsonProperty("order")
   private Integer order = null;
 
+  @JsonProperty("preorderable")
   private Boolean preorderable = null;
 
+  @JsonProperty("availableFrom")
   private String availableFrom = null;
 
+  @JsonProperty("backorderable")
   private Boolean backorderable = null;
 
   public MerchandisingControl isDisplayableECare(Boolean isDisplayableECare) {
@@ -37,6 +54,9 @@ public class MerchandisingControl   {
    * IS the device Disellable in ECare
    * @return isDisplayableECare
   **/
+  @ApiModelProperty(value = "IS the device Disellable in ECare")
+
+
   public Boolean getIsDisplayableECare() {
     return isDisplayableECare;
   }
@@ -54,6 +74,9 @@ public class MerchandisingControl   {
    * IS the device sellable ECare
    * @return isSellableECare
   **/
+  @ApiModelProperty(value = "IS the device sellable ECare")
+
+
   public Boolean getIsSellableECare() {
     return isSellableECare;
   }
@@ -71,6 +94,9 @@ public class MerchandisingControl   {
    * IS the prdevice Dsellable
    * @return isDisplayableAcq
   **/
+  @ApiModelProperty(value = "IS the prdevice Dsellable")
+
+
   public Boolean getIsDisplayableAcq() {
     return isDisplayableAcq;
   }
@@ -88,6 +114,9 @@ public class MerchandisingControl   {
    * IS the prdevice Dsellable
    * @return isSellableRet
   **/
+  @ApiModelProperty(value = "IS the prdevice Dsellable")
+
+
   public Boolean getIsSellableRet() {
     return isSellableRet;
   }
@@ -105,6 +134,9 @@ public class MerchandisingControl   {
    * IS the device Disellable Ret
    * @return isDisplayableRet
   **/
+  @ApiModelProperty(value = "IS the device Disellable Ret")
+
+
   public Boolean getIsDisplayableRet() {
     return isDisplayableRet;
   }
@@ -122,6 +154,9 @@ public class MerchandisingControl   {
    * IS the device sellable acq
    * @return isSellableAcq
   **/
+  @ApiModelProperty(value = "IS the device sellable acq")
+
+
   public Boolean getIsSellableAcq() {
     return isSellableAcq;
   }
@@ -139,6 +174,9 @@ public class MerchandisingControl   {
    * IS the device Displayable in basket
    * @return isDisplayableSavedBasket
   **/
+  @ApiModelProperty(value = "IS the device Displayable in basket")
+
+
   public Boolean getIsDisplayableSavedBasket() {
     return isDisplayableSavedBasket;
   }
@@ -156,6 +194,9 @@ public class MerchandisingControl   {
    * Order number
    * @return order
   **/
+  @ApiModelProperty(value = "Order number")
+
+
   public Integer getOrder() {
     return order;
   }
@@ -173,6 +214,9 @@ public class MerchandisingControl   {
    * Can the device pre order
    * @return preorderable
   **/
+  @ApiModelProperty(value = "Can the device pre order")
+
+
   public Boolean getPreorderable() {
     return preorderable;
   }
@@ -190,6 +234,9 @@ public class MerchandisingControl   {
    * Date from which the device can be available
    * @return availableFrom
   **/
+  @ApiModelProperty(value = "Date from which the device can be available")
+
+
   public String getAvailableFrom() {
     return availableFrom;
   }
@@ -207,6 +254,9 @@ public class MerchandisingControl   {
    * Can the device back order
    * @return backorderable
   **/
+  @ApiModelProperty(value = "Can the device back order")
+
+
   public Boolean getBackorderable() {
     return backorderable;
   }
