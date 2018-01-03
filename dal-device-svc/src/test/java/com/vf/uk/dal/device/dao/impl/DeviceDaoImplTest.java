@@ -137,7 +137,7 @@ public class DeviceDaoImplTest {
 		return deviceSummary;
 	}
 
-	@Test
+	/*@Test
 	public void testIsPlanAffordableComBundleNull() {
 		DeviceSummary deviceSummary = getDeviceSummary();
 		deviceDaoImpl.isPlanAffordable(deviceSummary, null, new Double(60.00), true);
@@ -156,6 +156,6 @@ public class DeviceDaoImplTest {
 		DeviceSummary deviceSummary = getDeviceSummary();
 		deviceDaoImpl.isPlanAffordable(deviceSummary, new CommercialBundle(), new Double(110.00), true);
 		Assert.assertTrue(deviceSummary.getIsAffordable());
-	}
+	}*/
 	
 }
