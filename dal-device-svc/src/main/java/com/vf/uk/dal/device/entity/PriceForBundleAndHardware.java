@@ -17,32 +17,38 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.validation.Valid;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
+
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * PriceForBundleAndHardware
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2017-09-26T04:49:35.392Z")
-public class PriceForBundleAndHardware {
-  @SerializedName("bundlePrice")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
+
+public class PriceForBundleAndHardware   {
+  @JsonProperty("bundlePrice")
   private BundlePrice bundlePrice = null;
 
-  @SerializedName("hardwarePrice")
+  @JsonProperty("hardwarePrice")
   private HardwarePrice hardwarePrice = null;
 
-  @SerializedName("oneOffPrice")
+  @JsonProperty("oneOffPrice")
   private Price oneOffPrice = null;
 
-  @SerializedName("oneOffDiscountPrice")
+  @JsonProperty("oneOffDiscountPrice")
   private Price oneOffDiscountPrice = null;
 
-  @SerializedName("monthlyPrice")
+  @JsonProperty("monthlyPrice")
   private Price monthlyPrice = null;
 
-  @SerializedName("monthlyDiscountPrice")
+  @JsonProperty("monthlyDiscountPrice")
   private Price monthlyDiscountPrice = null;
 
-  @SerializedName("stepPrices")
+  @JsonProperty("stepPrices")
   private List<StepPricingInfo> stepPrices = null;
 
   public PriceForBundleAndHardware bundlePrice(BundlePrice bundlePrice) {
@@ -54,6 +60,10 @@ public class PriceForBundleAndHardware {
    * Get bundlePrice
    * @return bundlePrice
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
   public BundlePrice getBundlePrice() {
     return bundlePrice;
   }
@@ -71,6 +81,10 @@ public class PriceForBundleAndHardware {
    * Get hardwarePrice
    * @return hardwarePrice
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
   public HardwarePrice getHardwarePrice() {
     return hardwarePrice;
   }
@@ -88,6 +102,10 @@ public class PriceForBundleAndHardware {
    * Get oneOffPrice
    * @return oneOffPrice
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
   public Price getOneOffPrice() {
     return oneOffPrice;
   }
@@ -105,6 +123,10 @@ public class PriceForBundleAndHardware {
    * Get oneOffDiscountPrice
    * @return oneOffDiscountPrice
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
   public Price getOneOffDiscountPrice() {
     return oneOffDiscountPrice;
   }
@@ -122,6 +144,10 @@ public class PriceForBundleAndHardware {
    * Get monthlyPrice
    * @return monthlyPrice
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
   public Price getMonthlyPrice() {
     return monthlyPrice;
   }
@@ -139,6 +165,10 @@ public class PriceForBundleAndHardware {
    * Get monthlyDiscountPrice
    * @return monthlyDiscountPrice
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
   public Price getMonthlyDiscountPrice() {
     return monthlyDiscountPrice;
   }
@@ -164,6 +194,10 @@ public class PriceForBundleAndHardware {
    * Get stepPrices
    * @return stepPrices
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
   public List<StepPricingInfo> getStepPrices() {
     return stepPrices;
   }
@@ -196,7 +230,6 @@ public class PriceForBundleAndHardware {
     return Objects.hash(bundlePrice, hardwarePrice, oneOffPrice, oneOffDiscountPrice, monthlyPrice, monthlyDiscountPrice, stepPrices);
   }
 
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
@@ -223,6 +256,5 @@ public class PriceForBundleAndHardware {
     }
     return o.toString().replace("\n", "\n    ");
   }
-  
 }
 

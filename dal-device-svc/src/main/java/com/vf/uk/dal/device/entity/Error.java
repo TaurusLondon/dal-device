@@ -1,15 +1,24 @@
 package com.vf.uk.dal.device.entity;
 
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 /**
  * Error
  */
 
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
+
 public class Error   {
+  @JsonProperty("code")
   private String code = null;
 
+  @JsonProperty("message")
   private String message = null;
 
+  @JsonProperty("referenceId")
   private String referenceId = null;
 
   public Error code(String code) {
@@ -21,6 +30,9 @@ public class Error   {
    * Get code
    * @return code
   **/
+  @ApiModelProperty(value = "")
+
+
   public String getCode() {
     return code;
   }
@@ -38,6 +50,9 @@ public class Error   {
    * Get message
    * @return message
   **/
+  @ApiModelProperty(value = "")
+
+
   public String getMessage() {
     return message;
   }
@@ -55,6 +70,9 @@ public class Error   {
    * Get referenceId
    * @return referenceId
   **/
+  @ApiModelProperty(value = "")
+
+
   public String getReferenceId() {
     return referenceId;
   }

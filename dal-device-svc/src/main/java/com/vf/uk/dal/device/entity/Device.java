@@ -1,34 +1,52 @@
 package com.vf.uk.dal.device.entity;
 
-import java.util.Objects;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import javax.validation.Valid;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * Device
  */
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
 
 public class Device   {
+  @JsonProperty("deviceId")
   private String deviceId = null;
 
+  @JsonProperty("name")
   private String name = null;
 
+  @JsonProperty("make")
   private String make = null;
 
+  @JsonProperty("model")
   private String model = null;
 
+  @JsonProperty("groupType")
   private String groupType = null;
 
+  @JsonProperty("rating")
   private String rating = null;
 
+  @JsonProperty("description")
   private String description = null;
 
+  @JsonProperty("productClass")
   private String productClass = null;
-  private Boolean preOrderable= null;
 
+  @JsonProperty("merchandisingControl")
   private MerchandisingControl merchandisingControl = null;
 
-  private List<MediaLink> media = new ArrayList<>();
+  @JsonProperty("media")
+  private List<MediaLink> media = null;
 
+  @JsonProperty("priceInfo")
   private PriceForBundleAndHardware priceInfo = null;
 
   public Device deviceId(String deviceId) {
@@ -40,6 +58,9 @@ public class Device   {
    * Product id of the requested device from the product catalogue
    * @return deviceId
   **/
+  @ApiModelProperty(value = "Product id of the requested device from the product catalogue")
+
+
   public String getDeviceId() {
     return deviceId;
   }
@@ -48,21 +69,7 @@ public class Device   {
     this.deviceId = deviceId;
   }
 
-  
-  public Device preOrderable(Boolean preOrderable) {
-	    this.preOrderable = preOrderable;
-	    return this;
-	  }
-  
-  public Boolean getPreOrderable() {
-	return preOrderable;
-}
-
-public void setPreOrderable(Boolean preOrderable) {
-	this.preOrderable = preOrderable;
-}
-
-public Device name(String name) {
+  public Device name(String name) {
     this.name = name;
     return this;
   }
@@ -71,6 +78,9 @@ public Device name(String name) {
    * Name of the product group as provided in the product catalogue
    * @return name
   **/
+  @ApiModelProperty(value = "Name of the product group as provided in the product catalogue")
+
+
   public String getName() {
     return name;
   }
@@ -88,6 +98,9 @@ public Device name(String name) {
    * Make of the product
    * @return make
   **/
+  @ApiModelProperty(value = "Make of the product")
+
+
   public String getMake() {
     return make;
   }
@@ -105,6 +118,9 @@ public Device name(String name) {
    * Model of the product
    * @return model
   **/
+  @ApiModelProperty(value = "Model of the product")
+
+
   public String getModel() {
     return model;
   }
@@ -122,6 +138,9 @@ public Device name(String name) {
    * Group type of product group DEVICE_PAYM, DEVICE_PAYG
    * @return groupType
   **/
+  @ApiModelProperty(value = "Group type of product group DEVICE_PAYM, DEVICE_PAYG")
+
+
   public String getGroupType() {
     return groupType;
   }
@@ -130,23 +149,38 @@ public Device name(String name) {
     this.groupType = groupType;
   }
 
-	public String getRating() {
-		return rating;
-	}
+  public Device rating(String rating) {
+    this.rating = rating;
+    return this;
+  }
 
-	public void setRating(String rating) {
-		this.rating = rating;
-	}
+   /**
+   * This will indicate the number of rating starts to be displayed on screen.
+   * @return rating
+  **/
+  @ApiModelProperty(value = "This will indicate the number of rating starts to be displayed on screen.")
 
-	public Device description(String description) {
-		this.description = description;
-		return this;
-	}
+
+  public String getRating() {
+    return rating;
+  }
+
+  public void setRating(String rating) {
+    this.rating = rating;
+  }
+
+  public Device description(String description) {
+    this.description = description;
+    return this;
+  }
 
    /**
    * Description of the product as provided in the product catalogue
    * @return description
   **/
+  @ApiModelProperty(value = "Description of the product as provided in the product catalogue")
+
+
   public String getDescription() {
     return description;
   }
@@ -164,6 +198,9 @@ public Device name(String name) {
    * Catalogue product class identifies products - SIMO, HANDSET etc.
    * @return productClass
   **/
+  @ApiModelProperty(value = "Catalogue product class identifies products - SIMO, HANDSET etc.")
+
+
   public String getProductClass() {
     return productClass;
   }
@@ -181,6 +218,10 @@ public Device name(String name) {
    * Get merchandisingControl
    * @return merchandisingControl
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
   public MerchandisingControl getMerchandisingControl() {
     return merchandisingControl;
   }
@@ -195,6 +236,9 @@ public Device name(String name) {
   }
 
   public Device addMediaItem(MediaLink mediaItem) {
+    if (this.media == null) {
+      this.media = new ArrayList<MediaLink>();
+    }
     this.media.add(mediaItem);
     return this;
   }
@@ -203,6 +247,10 @@ public Device name(String name) {
    * Get media
    * @return media
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
   public List<MediaLink> getMedia() {
     return media;
   }
@@ -220,6 +268,10 @@ public Device name(String name) {
    * Get priceInfo
    * @return priceInfo
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
   public PriceForBundleAndHardware getPriceInfo() {
     return priceInfo;
   }
@@ -246,7 +298,6 @@ public Device name(String name) {
         Objects.equals(this.rating, device.rating) &&
         Objects.equals(this.description, device.description) &&
         Objects.equals(this.productClass, device.productClass) &&
-        Objects.equals(this.preOrderable, device.preOrderable) &&
         Objects.equals(this.merchandisingControl, device.merchandisingControl) &&
         Objects.equals(this.media, device.media) &&
         Objects.equals(this.priceInfo, device.priceInfo);
@@ -270,7 +321,6 @@ public Device name(String name) {
     sb.append("    rating: ").append(toIndentedString(rating)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    productClass: ").append(toIndentedString(productClass)).append("\n");
-    sb.append("    preOrderable: ").append(toIndentedString(preOrderable)).append("\n");
     sb.append("    merchandisingControl: ").append(toIndentedString(merchandisingControl)).append("\n");
     sb.append("    media: ").append(toIndentedString(media)).append("\n");
     sb.append("    priceInfo: ").append(toIndentedString(priceInfo)).append("\n");

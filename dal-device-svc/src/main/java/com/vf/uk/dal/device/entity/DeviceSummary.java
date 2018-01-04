@@ -4,11 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.validation.Valid;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * DeviceSummary
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-07-02T21:05:20.521Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-30T13:33:13.488Z")
 
 public class DeviceSummary   {
   @JsonProperty("deviceId")
@@ -16,12 +21,6 @@ public class DeviceSummary   {
 
   @JsonProperty("displayName")
   private String displayName = null;
-  
-  @JsonProperty("isCompatible")
-  private Boolean isCompatible = null;
-  
-  @JsonProperty("preOrderable")
-  private Boolean preOrderable = null;
 
   @JsonProperty("priority")
   private String priority = null;
@@ -57,16 +56,25 @@ public class DeviceSummary   {
   private String productGroupURI = null;
 
   @JsonProperty("merchandisingMedia")
-  private List<MediaLink> merchandisingMedia = new ArrayList<MediaLink>();
+  private List<MediaLink> merchandisingMedia = null;
 
   @JsonProperty("priceInfo")
   private PriceForBundleAndHardware priceInfo = null;
-  
+
+  @JsonProperty("isCompatible")
+  private Boolean isCompatible = null;
+
+  @JsonProperty("preOrderable")
+  private Boolean preOrderable = null;
+
+  @JsonProperty("availableFrom")
+  private String availableFrom = null;
+
   @JsonProperty("isAffordable")
-  private Boolean isAffordable = true;
-  
+  private Boolean isAffordable = null;
+
   @JsonProperty("fromPricing")
-  private Boolean fromPricing = null; 
+  private Boolean fromPricing = null;
 
   public DeviceSummary deviceId(String deviceId) {
     this.deviceId = deviceId;
@@ -77,6 +85,9 @@ public class DeviceSummary   {
    * Device Id of the member
    * @return deviceId
   **/
+  @ApiModelProperty(value = "Device Id of the member")
+
+
   public String getDeviceId() {
     return deviceId;
   }
@@ -84,45 +95,6 @@ public class DeviceSummary   {
   public void setDeviceId(String deviceId) {
     this.deviceId = deviceId;
   }
-  
-  public DeviceSummary preOrderable(Boolean preOrderable) {
-	this.preOrderable = preOrderable;
-	return this;
-  }
-
-  public Boolean getPreOrderable() {
-	return preOrderable;
-  }
-
-  public void setPreOrderable(Boolean preOrderable) {
-	this.preOrderable = preOrderable;
-  }
-  
-  public DeviceSummary isCompatible(Boolean isCompatible) {
-	this.isCompatible = isCompatible;
-	return this;
-  }
-
-  public Boolean getIsCompatible() {
-	return isCompatible;
-  }
-
-  public void setIsCompatible(Boolean isCompatible) {
-	this.isCompatible = isCompatible;
-  }
-  
-  public DeviceSummary fromPricing(Boolean fromPricing) {
-		this.fromPricing = fromPricing;
-		return this;
-	  }
-
-	  public Boolean getFromPricing() {
-		return fromPricing;
-	  }
-
-	  public void setFromPricing(Boolean fromPricing) {
-		this.fromPricing = fromPricing;
-	  } 
 
   public DeviceSummary displayName(String displayName) {
     this.displayName = displayName;
@@ -133,6 +105,9 @@ public class DeviceSummary   {
    * Display Name of a device This should come form MEF content file
    * @return displayName
   **/
+  @ApiModelProperty(value = "Display Name of a device This should come form MEF content file")
+
+
   public String getDisplayName() {
     return displayName;
   }
@@ -150,6 +125,9 @@ public class DeviceSummary   {
    * Display priority of the Member
    * @return priority
   **/
+  @ApiModelProperty(value = "Display priority of the Member")
+
+
   public String getPriority() {
     return priority;
   }
@@ -167,6 +145,9 @@ public class DeviceSummary   {
    * Description of the device as provided in the merchandising content file, preDec of product/handset, eg.With 3D Touch, Live Photos, 7000 series ...
    * @return displayDescription
   **/
+  @ApiModelProperty(value = "Description of the device as provided in the merchandising content file, preDec of product/handset, eg.With 3D Touch, Live Photos, 7000 series ...")
+
+
   public String getDisplayDescription() {
     return displayDescription;
   }
@@ -184,6 +165,9 @@ public class DeviceSummary   {
    * Color of the HandSet - Default colour, eg. Gold
    * @return colourName
   **/
+  @ApiModelProperty(value = "Color of the HandSet - Default colour, eg. Gold")
+
+
   public String getColourName() {
     return colourName;
   }
@@ -201,6 +185,9 @@ public class DeviceSummary   {
    *  Hex representation of the colour
    * @return colourHex
   **/
+  @ApiModelProperty(value = " Hex representation of the colour")
+
+
   public String getColourHex() {
     return colourHex;
   }
@@ -218,6 +205,9 @@ public class DeviceSummary   {
    * Storage Capacity of the Device  32GB, 64 GB, 128 GB, Default to be highlighted
    * @return memory
   **/
+  @ApiModelProperty(value = "Storage Capacity of the Device  32GB, 64 GB, 128 GB, Default to be highlighted")
+
+
   public String getMemory() {
     return memory;
   }
@@ -235,6 +225,9 @@ public class DeviceSummary   {
    * Lead Plan ID for the device
    * @return leadPlanId
   **/
+  @ApiModelProperty(value = "Lead Plan ID for the device")
+
+
   public String getLeadPlanId() {
     return leadPlanId;
   }
@@ -252,6 +245,9 @@ public class DeviceSummary   {
    * Plan Name of the lead plan, from MEF Content file
    * @return leadPlanDisplayName
   **/
+  @ApiModelProperty(value = "Plan Name of the lead plan, from MEF Content file")
+
+
   public String getLeadPlanDisplayName() {
     return leadPlanDisplayName;
   }
@@ -269,6 +265,9 @@ public class DeviceSummary   {
    * Associated Plan UOM
    * @return uom
   **/
+  @ApiModelProperty(value = "Associated Plan UOM")
+
+
   public String getUom() {
     return uom;
   }
@@ -286,6 +285,9 @@ public class DeviceSummary   {
    * Associated Plan UOM Value
    * @return uomValue
   **/
+  @ApiModelProperty(value = "Associated Plan UOM Value")
+
+
   public String getUomValue() {
     return uomValue;
   }
@@ -303,6 +305,9 @@ public class DeviceSummary   {
    * Associated Bundle Type
    * @return bundleType
   **/
+  @ApiModelProperty(value = "Associated Bundle Type")
+
+
   public String getBundleType() {
     return bundleType;
   }
@@ -320,6 +325,9 @@ public class DeviceSummary   {
    * Concatenation of Make/Model
    * @return productGroupURI
   **/
+  @ApiModelProperty(value = "Concatenation of Make/Model")
+
+
   public String getProductGroupURI() {
     return productGroupURI;
   }
@@ -334,6 +342,9 @@ public class DeviceSummary   {
   }
 
   public DeviceSummary addMerchandisingMediaItem(MediaLink merchandisingMediaItem) {
+    if (this.merchandisingMedia == null) {
+      this.merchandisingMedia = new ArrayList<MediaLink>();
+    }
     this.merchandisingMedia.add(merchandisingMediaItem);
     return this;
   }
@@ -342,6 +353,10 @@ public class DeviceSummary   {
    * Get merchandisingMedia
    * @return merchandisingMedia
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
   public List<MediaLink> getMerchandisingMedia() {
     return merchandisingMedia;
   }
@@ -359,6 +374,10 @@ public class DeviceSummary   {
    * Get priceInfo
    * @return priceInfo
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
   public PriceForBundleAndHardware getPriceInfo() {
     return priceInfo;
   }
@@ -367,27 +386,108 @@ public class DeviceSummary   {
     this.priceInfo = priceInfo;
   }
 
+  public DeviceSummary isCompatible(Boolean isCompatible) {
+    this.isCompatible = isCompatible;
+    return this;
+  }
+
+   /**
+   * Is the device compatible with the given bundle
+   * @return isCompatible
+  **/
+  @ApiModelProperty(value = "Is the device compatible with the given bundle")
+
+
+  public Boolean getIsCompatible() {
+    return isCompatible;
+  }
+
+  public void setIsCompatible(Boolean isCompatible) {
+    this.isCompatible = isCompatible;
+  }
+
+  public DeviceSummary preOrderable(Boolean preOrderable) {
+    this.preOrderable = preOrderable;
+    return this;
+  }
+
+   /**
+   * Is the device pre-orderable as per MEF
+   * @return preOrderable
+  **/
+  @ApiModelProperty(value = "Is the device pre-orderable as per MEF")
+
+
+  public Boolean getPreOrderable() {
+    return preOrderable;
+  }
+
+  public void setPreOrderable(Boolean preOrderable) {
+    this.preOrderable = preOrderable;
+  }
+
+  public DeviceSummary availableFrom(String availableFrom) {
+    this.availableFrom = availableFrom;
+    return this;
+  }
+
+   /**
+   * Available from date of the product as provided in the product catalogue
+   * @return availableFrom
+  **/
+  @ApiModelProperty(value = "Available from date of the product as provided in the product catalogue")
+
+
+  public String getAvailableFrom() {
+    return availableFrom;
+  }
+
+  public void setAvailableFrom(String availableFrom) {
+    this.availableFrom = availableFrom;
+  }
+
   public DeviceSummary isAffordable(Boolean isAffordable) {
-	    this.isAffordable = isAffordable;
-	    return this;
-	  }
- 
+    this.isAffordable = isAffordable;
+    return this;
+  }
 
-/**
- * @return the isAffordable
- */
-public Boolean getIsAffordable() {
-	return isAffordable;
-}
+   /**
+   * flag to showcase whether the device is affordable or not in conditional accept scenario
+   * @return isAffordable
+  **/
+  @ApiModelProperty(value = "flag to showcase whether the device is affordable or not in conditional accept scenario")
 
-/**
- * @param isAffordable the isAffordable to set
- */
-public void setIsAffordable(Boolean isAffordable) {
-	this.isAffordable = isAffordable;
-}
 
-@Override
+  public Boolean getIsAffordable() {
+    return isAffordable;
+  }
+
+  public void setIsAffordable(Boolean isAffordable) {
+    this.isAffordable = isAffordable;
+  }
+
+  public DeviceSummary fromPricing(Boolean fromPricing) {
+    this.fromPricing = fromPricing;
+    return this;
+  }
+
+   /**
+   * flag to show associated/from price
+   * @return fromPricing
+  **/
+  @ApiModelProperty(value = "flag to show associated/from price")
+
+
+  public Boolean getFromPricing() {
+    return fromPricing;
+  }
+
+  public void setFromPricing(Boolean fromPricing) {
+    this.fromPricing = fromPricing;
+  }
+
+
+  @Override
   public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
@@ -398,7 +498,6 @@ public void setIsAffordable(Boolean isAffordable) {
     DeviceSummary deviceSummary = (DeviceSummary) o;
     return Objects.equals(this.deviceId, deviceSummary.deviceId) &&
         Objects.equals(this.displayName, deviceSummary.displayName) &&
-        Objects.equals(this.preOrderable, deviceSummary.preOrderable) &&
         Objects.equals(this.priority, deviceSummary.priority) &&
         Objects.equals(this.displayDescription, deviceSummary.displayDescription) &&
         Objects.equals(this.colourName, deviceSummary.colourName) &&
@@ -411,12 +510,17 @@ public void setIsAffordable(Boolean isAffordable) {
         Objects.equals(this.bundleType, deviceSummary.bundleType) &&
         Objects.equals(this.productGroupURI, deviceSummary.productGroupURI) &&
         Objects.equals(this.merchandisingMedia, deviceSummary.merchandisingMedia) &&
-        Objects.equals(this.priceInfo, deviceSummary.priceInfo);
+        Objects.equals(this.priceInfo, deviceSummary.priceInfo) &&
+        Objects.equals(this.isCompatible, deviceSummary.isCompatible) &&
+        Objects.equals(this.preOrderable, deviceSummary.preOrderable) &&
+        Objects.equals(this.availableFrom, deviceSummary.availableFrom) &&
+        Objects.equals(this.isAffordable, deviceSummary.isAffordable) &&
+        Objects.equals(this.fromPricing, deviceSummary.fromPricing);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(deviceId, displayName, priority, displayDescription, colourName, colourHex, memory, leadPlanId, leadPlanDisplayName, uom, uomValue, bundleType, productGroupURI, merchandisingMedia, priceInfo);
+    return Objects.hash(deviceId, displayName, priority, displayDescription, colourName, colourHex, memory, leadPlanId, leadPlanDisplayName, uom, uomValue, bundleType, productGroupURI, merchandisingMedia, priceInfo, isCompatible, preOrderable, availableFrom, isAffordable, fromPricing);
   }
 
   @Override
@@ -426,7 +530,6 @@ public void setIsAffordable(Boolean isAffordable) {
     
     sb.append("    deviceId: ").append(toIndentedString(deviceId)).append("\n");
     sb.append("    displayName: ").append(toIndentedString(displayName)).append("\n");
-    sb.append("    preOrderable: ").append(toIndentedString(preOrderable)).append("\n");
     sb.append("    priority: ").append(toIndentedString(priority)).append("\n");
     sb.append("    displayDescription: ").append(toIndentedString(displayDescription)).append("\n");
     sb.append("    colourName: ").append(toIndentedString(colourName)).append("\n");
@@ -440,6 +543,11 @@ public void setIsAffordable(Boolean isAffordable) {
     sb.append("    productGroupURI: ").append(toIndentedString(productGroupURI)).append("\n");
     sb.append("    merchandisingMedia: ").append(toIndentedString(merchandisingMedia)).append("\n");
     sb.append("    priceInfo: ").append(toIndentedString(priceInfo)).append("\n");
+    sb.append("    isCompatible: ").append(toIndentedString(isCompatible)).append("\n");
+    sb.append("    preOrderable: ").append(toIndentedString(preOrderable)).append("\n");
+    sb.append("    availableFrom: ").append(toIndentedString(availableFrom)).append("\n");
+    sb.append("    isAffordable: ").append(toIndentedString(isAffordable)).append("\n");
+    sb.append("    fromPricing: ").append(toIndentedString(fromPricing)).append("\n");
     sb.append("}");
     return sb.toString();
   }

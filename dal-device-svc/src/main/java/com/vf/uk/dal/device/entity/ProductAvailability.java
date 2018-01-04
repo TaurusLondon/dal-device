@@ -1,15 +1,24 @@
 package com.vf.uk.dal.device.entity;
 
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 /**
  * ProductAvailability
  */
 
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
+
 public class ProductAvailability   {
+  @JsonProperty("startDate")
   private String startDate = null;
 
+  @JsonProperty("endDate")
   private String endDate = null;
 
+  @JsonProperty("salesExpired")
   private Boolean salesExpired = null;
 
   public ProductAvailability startDate(String startDate) {
@@ -21,6 +30,9 @@ public class ProductAvailability   {
    * Start Date of the Product \"2012-04-01+05:30\"
    * @return startDate
   **/
+  @ApiModelProperty(value = "Start Date of the Product \"2012-04-01+05:30\"")
+
+
   public String getStartDate() {
     return startDate;
   }
@@ -38,6 +50,9 @@ public class ProductAvailability   {
    * End date of the Product 2012-04-21+05:30\"
    * @return endDate
   **/
+  @ApiModelProperty(value = "End date of the Product 2012-04-21+05:30\"")
+
+
   public String getEndDate() {
     return endDate;
   }
@@ -55,6 +70,9 @@ public class ProductAvailability   {
    * Whether the sale of the product has been expired, Yes or No
    * @return salesExpired
   **/
+  @ApiModelProperty(value = "Whether the sale of the product has been expired, Yes or No")
+
+
   public Boolean getSalesExpired() {
     return salesExpired;
   }

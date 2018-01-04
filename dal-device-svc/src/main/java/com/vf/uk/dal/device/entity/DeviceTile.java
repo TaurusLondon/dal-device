@@ -1,24 +1,38 @@
 package com.vf.uk.dal.device.entity;
 
-import java.util.Objects;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import javax.validation.Valid;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 /**
  * DeviceTile
  */
 
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-12-30T13:33:13.488Z")
+
 public class DeviceTile   {
+  @JsonProperty("deviceId")
   private String deviceId = null;
 
+  @JsonProperty("groupName")
   private String groupName = null;
 
+  @JsonProperty("groupType")
   private String groupType = null;
 
+  @JsonProperty("rating")
   private String rating = null;
 
+  @JsonProperty("reviewCount")
   private String reviewCount = null;
 
-  private List<DeviceSummary> deviceSummary = new ArrayList<DeviceSummary>();
+  @JsonProperty("deviceSummary")
+  private List<DeviceSummary> deviceSummary = null;
 
   public DeviceTile deviceId(String deviceId) {
     this.deviceId = deviceId;
@@ -29,6 +43,9 @@ public class DeviceTile   {
    * Device of the Lead Member within the group
    * @return deviceId
   **/
+  @ApiModelProperty(value = "Device of the Lead Member within the group")
+
+
   public String getDeviceId() {
     return deviceId;
   }
@@ -46,6 +63,9 @@ public class DeviceTile   {
    * Group Name of the Device
    * @return groupName
   **/
+  @ApiModelProperty(value = "Group Name of the Device")
+
+
   public String getGroupName() {
     return groupName;
   }
@@ -63,6 +83,9 @@ public class DeviceTile   {
    * Group Type this devide belongs to, like Handset
    * @return groupType
   **/
+  @ApiModelProperty(value = "Group Type this devide belongs to, like Handset")
+
+
   public String getGroupType() {
     return groupType;
   }
@@ -80,6 +103,9 @@ public class DeviceTile   {
    * Rating for the device Id
    * @return rating
   **/
+  @ApiModelProperty(value = "Rating for the device Id")
+
+
   public String getRating() {
     return rating;
   }
@@ -97,6 +123,9 @@ public class DeviceTile   {
    * Rating for the device Id
    * @return reviewCount
   **/
+  @ApiModelProperty(value = "Rating for the device Id")
+
+
   public String getReviewCount() {
     return reviewCount;
   }
@@ -111,6 +140,9 @@ public class DeviceTile   {
   }
 
   public DeviceTile addDeviceSummaryItem(DeviceSummary deviceSummaryItem) {
+    if (this.deviceSummary == null) {
+      this.deviceSummary = new ArrayList<DeviceSummary>();
+    }
     this.deviceSummary.add(deviceSummaryItem);
     return this;
   }
@@ -119,6 +151,10 @@ public class DeviceTile   {
    * Device Summary of the each device within the product group
    * @return deviceSummary
   **/
+  @ApiModelProperty(value = "Device Summary of the each device within the product group")
+
+  @Valid
+
   public List<DeviceSummary> getDeviceSummary() {
     return deviceSummary;
   }

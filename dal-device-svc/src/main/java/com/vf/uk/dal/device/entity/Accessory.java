@@ -9,10 +9,12 @@ import javax.validation.Valid;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.vf.uk.dal.utility.entity.PriceForAccessory;
 
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * Accessory
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-09-04T15:01:47.933Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
 
 public class Accessory   {
   @JsonProperty("skuId")
@@ -45,6 +47,7 @@ public class Accessory   {
    * Unique Accessory id as available from the product catalogue
    * @return skuId
   **/
+  @ApiModelProperty(value = "Unique Accessory id as available from the product catalogue")
 
 
   public String getSkuId() {
@@ -64,6 +67,7 @@ public class Accessory   {
    * Name of the Accessory as provided in the product catalogue
    * @return name
   **/
+  @ApiModelProperty(value = "Name of the Accessory as provided in the product catalogue")
 
 
   public String getName() {
@@ -83,6 +87,7 @@ public class Accessory   {
    * Colour of the Accessory as provided in the product catalogue
    * @return colour
   **/
+  @ApiModelProperty(value = "Colour of the Accessory as provided in the product catalogue")
 
 
   public String getColour() {
@@ -102,6 +107,7 @@ public class Accessory   {
    * Description of the Accessory as provided in the product catalogue
    * @return description
   **/
+  @ApiModelProperty(value = "Description of the Accessory as provided in the product catalogue")
 
 
   public String getDescription() {
@@ -129,6 +135,7 @@ public class Accessory   {
    * Get merchandisingMedia
    * @return merchandisingMedia
   **/
+  @ApiModelProperty(value = "")
 
   @Valid
 
@@ -149,6 +156,7 @@ public class Accessory   {
    * Get deviceCost
    * @return deviceCost
   **/
+  @ApiModelProperty(value = "")
 
   @Valid
 
@@ -177,6 +185,7 @@ public class Accessory   {
    * Get attributes
    * @return attributes
   **/
+  @ApiModelProperty(value = "")
 
   @Valid
 
