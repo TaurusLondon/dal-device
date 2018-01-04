@@ -1,0 +1,40 @@
+{
+  "tag" : "handset.hardware.percentage",
+  "label" : "25% off the Samsung",
+  "description" : null,
+  "type" : "hardware_discount",
+  "platform" : null,
+  "promotionMedia" : null,
+  "priority" : 83,
+  "incompatibleMPs" : {
+    "tag" : null
+  },
+  "actionOnRemove" : null,
+  "startDateTime" : 1483250400000,
+  "endDateTime" : null,
+  "confirmRequired" : false,
+  "version" : null,
+  "condition" : {
+    "productPath" : null,
+    "packageType" : "Upgrade,SecondLine",
+    "complexConditions" : [ ]
+  },
+  "products" : [ {
+    "promotionId" : null,
+    "productLine" : null,
+    "productPath" : null,
+    "action" : "DISCOUNT",
+    "discounts" : [ {
+      "type" : "Percentage",
+      "value" : 25.0,
+      "qualifyingRecurringCost" : 0.0,
+      "priority" : 52
+    } ]
+  } ],
+  "belowTheLine" : false,
+  "priceEstablishedLabel" : "Was",
+  "id" : "handset.hardware.percentage",
+  "implVersion" : 12,
+  "dataVersion" : 12,
+  "futureData" : null
+}

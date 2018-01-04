@@ -3,10 +3,12 @@ package com.vf.uk.dal.device.entity;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 /**
  * Member
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-03-03T09:08:40.062Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
 
 public class Member   {
   @JsonProperty("id")
@@ -21,9 +23,12 @@ public class Member   {
   }
 
    /**
-   * Product id from the product group member
+   * identifier (product sku id)
    * @return id
   **/
+  @ApiModelProperty(value = "identifier (product sku id)")
+
+
   public String getId() {
     return id;
   }
@@ -38,9 +43,12 @@ public class Member   {
   }
 
    /**
-   * Priority of the product in the group, Highest priority is the lead item
+   * Priority defined for the product group in MEF
    * @return priority
   **/
+  @ApiModelProperty(value = "Priority defined for the product group in MEF")
+
+
   public String getPriority() {
     return priority;
   }

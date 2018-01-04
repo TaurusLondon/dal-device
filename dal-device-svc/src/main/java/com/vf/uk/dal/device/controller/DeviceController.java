@@ -43,6 +43,7 @@ import com.vf.uk.dal.utility.entity.BundleDetails;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponses;
+import springfox.documentation.annotations.ApiIgnore;
 import io.swagger.annotations.ApiResponse;
 
 /**
@@ -174,6 +175,7 @@ public class DeviceController {
 	 * 
 	 * @return List<DeviceTile>
 	 **/
+	@ApiIgnore
 	@RequestMapping(value = "/deviceTile/queries/byDeviceVariant/", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	public List<DeviceTile> getDeviceTileById(@RequestParam Map<String, String> queryParams) {
 
@@ -213,6 +215,7 @@ public class DeviceController {
 	 * 
 	 * @return List<ProductGroup>
 	 **/
+	@ApiIgnore
 	@RequestMapping(value = "/productGroup", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	public List<ProductGroup> getProductGroup() {
 		List<ProductGroup> productGroup;
@@ -297,18 +300,20 @@ public class DeviceController {
 					if (StringUtils.isNotBlank(includeRecommendations) && !Validator.validateIncludeRecommendation(includeRecommendations)) {
 						throw new ApplicationException(ExceptionMessages.INVALID_INCLUDERECOMMENDATION);
 					}
+					int pageNumberParam =0;
+					int pageSizeParam=0;
 					//Retrieving Pagesize and Pagenumber
                     PaginationCriteria paginationCriteria = ServiceContext.getPaginationCriteria();
                    if(paginationCriteria!=null)
                     {
-                    	pageNumber = paginationCriteria.getPageNumber();
-                    	pageSize = paginationCriteria.getPageSize();
+                	   pageNumberParam = paginationCriteria.getPageNumber();
+                	   pageSizeParam = paginationCriteria.getPageSize();
                     }
-					if (!Validator.validatePageSize(pageSize)) {
+					if (!Validator.validatePageSize(pageSizeParam)) {
 						throw new SystemException(ExceptionMessages.PAGESIZE_NEGATIVE_ERROR);
 					}
 					
-					if (!Validator.validatePageNumber(pageNumber)) {
+					if (!Validator.validatePageNumber(pageNumberParam)) {
 						throw new SystemException(ExceptionMessages.PAGENUMBER_NEGATIVE_ERROR);
 					}
 					
@@ -342,8 +347,8 @@ public class DeviceController {
 					//Retrieving sort value
 					String sortCriteria = ServiceContext.getSortCriteria();
 					LogHelper.info(this, "Start -->  calling  getDeviceList");
-					facetedDevice = deviceService.getDeviceList(productClass,make,model,groupType,sortCriteria,pageNumber,
-							pageSize,capacity,color,operatingSystem,mustHaveFeatures,
+					facetedDevice = deviceService.getDeviceList(productClass,make,model,groupType,sortCriteria,pageNumberParam,
+							pageSizeParam,capacity,color,operatingSystem,mustHaveFeatures,
 							journeyType, creditLimitparam,offerCode, msisdn, includeRecommendationsParam);
 					LogHelper.info(this, "End -->  calling  getDeviceList");
 				
@@ -355,6 +360,7 @@ public class DeviceController {
 	 * 
 	 * @return insurance
 	 */
+	 
 			 @ApiOperation(value = "Get the list of insurance", notes = "The service gets the details of insurance available with device.", response = Insurances.class, tags={ "Insurances", })
 			    @ApiResponses(value = { 
 			        @ApiResponse(code = 200, message = "Success", response = Insurances.class),
@@ -386,6 +392,7 @@ public class DeviceController {
 	 * 
 	 * @param groupType.
 	 */
+			 @ApiIgnore
 	@RequestMapping(value = "/deviceTile/cacheDeviceTile", method = RequestMethod.POST, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	public ResponseEntity<CacheDeviceTileResponse> cacheDeviceTile() {
 		String groupType = getFilterValue(GROUP_TYPE);
@@ -461,6 +468,7 @@ public class DeviceController {
 	 * @param allowedRecurringPriceLimit
 	 * @return
 	 */
+	@ApiIgnore
 	@RequestMapping(value = "/plan/action/keepDeviceChangePlan", method = RequestMethod.POST, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	public BundleDetails getKeepDeviceChangePlan(@RequestBody KeepDeviceChangePlanRequest keepDeviceChangePlanRequest) {
 		BundleDetails bundleDetails;
@@ -514,9 +522,15 @@ public class DeviceController {
 	 * @param deviceId
 	 * @return
 	 */
+	 @ApiOperation(value = "Get the reviews for a specific device Id. Response is coming from Bazar Voice(third party) API.", notes = "The service gets the reviews of a particular device variant",tags={ "Review", })
+	    @ApiResponses(value = { 
+	        @ApiResponse(code = 200, message = "Success"),
+	        @ApiResponse(code = 404, message = "Not found", response = Void.class),
+	        @ApiResponse(code = 500, message = "Internal Server Error", response = Error.class) })
 	@RequestMapping(value = "/device/{deviceId}/review", method = RequestMethod.GET, produces = {
 			MediaType.APPLICATION_JSON })
-	public JSONObject getDeviceReviewDetails(@PathVariable(DEVICE_ID) String deviceId) {
+	public JSONObject getDeviceReviewDetails(@NotNull@ApiParam(value = "Unique Id of the device for which the review is being requested",
+	required = true) @PathVariable(DEVICE_ID) String deviceId) {
 
 		Validator.validateDeviceId(deviceId);
 		LogHelper.info(this, "Start -->  calling  getDeviceReviewDetails");
