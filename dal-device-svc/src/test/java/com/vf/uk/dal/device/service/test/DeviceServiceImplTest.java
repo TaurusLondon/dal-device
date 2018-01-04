@@ -129,9 +129,9 @@ public class DeviceServiceImplTest
 		given(this.deviceDAOMock.getDeviceDetails("83921","Upgrade","W_HH_PAYM_OC_02")).willReturn(CommonMethods.getDevice("83921"));
 		given(this.deviceDAOMock.getDeviceDetails("83929","upgrade","34543")).willReturn(null);*/
 		given(deviceDAOMock.getCommercialProductFromCommercialProductRepository(Matchers.anyString())).willReturn(CommonMethods.getCommercialProductByDeviceId());
-		given(this.deviceDAOMock.getAccessoriesOfDevice("93353","Upgrade","W_HH_PAYM_OC_02")).willReturn(CommonMethods.getAccessoriesTileGroup("93353"));
+		/*given(this.deviceDAOMock.getAccessoriesOfDevice("93353","Upgrade","W_HH_PAYM_OC_02")).willReturn(CommonMethods.getAccessoriesTileGroup("93353"));
 		given(this.deviceDAOMock.getAccessoriesOfDevice("93354","Upgrade","W_HH_PAYM_OC_02")).willReturn(null);
-		given(this.deviceDAOMock.getAccessoriesOfDevice(null,null,null)).willReturn(null);
+		given(this.deviceDAOMock.getAccessoriesOfDevice(null,null,null)).willReturn(null);*/
 		//given(this.deviceDAOMock.getDeviceList("HANDSET","apple", "iPhone-7","DEVICE_PAYM", "Priority", 1, 2,"32 GB","White","iOS","Great Camera")).willReturn(CommonMethods.getFacetedDevice("HANDSET","apple", "iPhone 7", "DEVICE_PAYM", "asc", 1, 2,"123"));
 		//given(this.deviceDAOMock.getDeviceList(null,null,null,null,null,1,0,"32 GB","White","iOS","Great Camera")).willReturn(null);
 		//given(this.deviceDAOMock.getDeviceList("productclass","make","model",null,"",1,0,"32 GB","White","iOS","Great Camera")).willReturn(null);
@@ -147,6 +147,15 @@ public class DeviceServiceImplTest
 		bundleAndHardwareTuple.setBundleId("110154");
 		bundleAndHardwareTupleList.add(bundleAndHardwareTuple);
 		given(this.deviceDAOMock.getPriceForBundleAndHardware(bundleAndHardwareTupleList,null,null)).willReturn(CommonMethods.getPriceForBundleAndHardware1());
+		given(deviceDAOMock.getCommercialProductFromCommercialProductRepository("093353"))
+		.willReturn(CommonMethods.getCommercialProductByDeviceId_093353());
+		given(deviceDAOMock.getListOfGroupsFromProductGroupRepository(Matchers.anyList()))
+		.willReturn(CommonMethods.getListOfProductGroupForAccessory());
+		given(restTemplate.postForObject("http://PRICE-V1/price/product",
+		CommonMethods.bundleDeviceAndProductsList_For_GetAccessoriesOfDevice(), PriceForProduct.class))
+				.willReturn(CommonMethods.getPriceForProduct_For_GetAccessoriesForDevice());
+		given(deviceDAOMock.getCommercialProductListFromCommercialProductRepository(Matchers.anyList()))
+		.willReturn(CommonMethods.getCommercialProductsListOfAccessories());
 	}
 	/*@Test
 	public void notNullTestForGetDeviceTileList() {
@@ -255,20 +264,20 @@ public class DeviceServiceImplTest
 	@Test
 	public void notNullTestForGetAccessoriesOfDevice() {
 		List<AccessoryTileGroup> accessory=new ArrayList<>();
-		accessory=deviceService.getAccessoriesOfDevice("93353","Upgrade","W_HH_PAYM_OC_02");
+		accessory=deviceService.getAccessoriesOfDevice("093353","Upgrade","W_HH_PAYM_OC_02");
 		Assert.assertNotNull(accessory); 
 	}
 	@Test
 	public void nullTestForGetAccessoriesOfDevice() {
-		List<AccessoryTileGroup> accessory=new ArrayList<>();
+		List<AccessoryTileGroup> accessory = null;
 		try{
 		accessory=deviceService.getAccessoriesOfDevice(null,null,null);
 		}
 		catch(Exception e)
 		{
-			
+			Assert.assertNull(accessory); 
 		}
-		Assert.assertNull(accessory); 
+		
 	}
 	
 	/*@Test

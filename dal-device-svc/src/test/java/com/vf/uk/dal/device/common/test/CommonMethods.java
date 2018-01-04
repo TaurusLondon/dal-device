@@ -50,6 +50,7 @@ import com.vf.uk.dal.device.entity.StepPricingInfo;
 import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 import com.vf.uk.dal.utility.entity.BundleDetails;
+import com.vf.uk.dal.utility.entity.BundleDeviceAndProductsList;
 import com.vf.uk.dal.utility.entity.BundleHeader;
 import com.vf.uk.dal.utility.entity.ExtraPrice;
 import com.vf.uk.dal.utility.entity.PriceForAccessory;
@@ -69,7 +70,6 @@ import com.vodafone.dal.bundle.pojo.Commitment;
 import com.vodafone.dal.bundle.pojo.DevicePrice;
 import com.vodafone.dal.bundle.pojo.ImageURL;
 import com.vodafone.dal.bundle.pojo.LineRental;
-import com.vodafone.dal.bundle.pojo.Relationship;
 import com.vodafone.dal.bundle.pojo.ServiceProduct;
 import com.vodafone.dal.domain.bazaarvoice.BazaarVoice;
 import com.vodafone.product.pojo.CommercialProduct;
@@ -3408,6 +3408,146 @@ public class CommonMethods {
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static CommercialProduct getCommercialProductByDeviceId_093353() {
+
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			// mapper = new
+			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
+			// true);
+			String commercialProduct = new String(
+					Utility.readFile("\\TEST-MOCK\\CommercialProduct_093353.json"));
+			CommercialProduct commercialProductList = mapper.readValue(commercialProduct, CommercialProduct.class);
+
+			return mapper.convertValue(commercialProductList, new TypeReference<CommercialProduct>() {
+			});
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static List<Group> getListOfProductGroupForAccessory() 
+	{
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			String listOfGroupsString = new String(
+					Utility.readFile("\\TEST-MOCK\\ListOfAccessoryGroup.json"));
+			Group[] groupList = mapper.readValue(listOfGroupsString, Group[].class);
+
+			return mapper.convertValue(groupList, new TypeReference<List<Group>>() {
+			});
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static PriceForProduct getPriceForProduct_For_GetAccessoriesForDevice() {
+		PriceForProduct navigation = new PriceForProduct();
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			String bundle = new String(Utility
+					.readFile("\\TEST-MOCK\\priceForProduct_For_GetAccessoriesForDevice.json"));
+			PriceForProduct bundleList = new ObjectMapper().readValue(bundle,
+					PriceForProduct.class);
+
+			return mapper.convertValue(bundleList, new TypeReference<PriceForProduct>() {
+			});
+
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return navigation;
+	}
+	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static BundleDeviceAndProductsList bundleDeviceAndProductsList_For_GetAccessoriesOfDevice() {
+		BundleDeviceAndProductsList navigation = new BundleDeviceAndProductsList();
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			String bundle = new String(Utility
+					.readFile("\\TEST-MOCK\\bundleDeviceAndProductsList_For_GetAccessoriesOfDevice.json"));
+			BundleDeviceAndProductsList bundleList = new ObjectMapper().readValue(bundle,
+					BundleDeviceAndProductsList.class);
+
+			return mapper.convertValue(bundleList, new TypeReference<BundleDeviceAndProductsList>() {
+			});
+
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return navigation;
+	}
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static List<CommercialProduct> getCommercialProductsListOfAccessories() {
+
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			// mapper = new
+			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
+			// true);
+			String commercialProduct = new String(
+					Utility.readFile("\\TEST-MOCK\\CommercialProductListOfAccessory.json"));
+			CommercialProduct[] commercialProductList = mapper.readValue(commercialProduct, CommercialProduct[].class);
+
+			return mapper.convertValue(commercialProductList, new TypeReference<List<CommercialProduct>>() {
+			});
+		} catch (JsonParseException e) {
+
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+
+			e.printStackTrace();
+		} catch (IOException e) {
+
 			e.printStackTrace();
 		}
 		return null;

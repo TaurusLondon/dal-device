@@ -12,9 +12,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
@@ -32,6 +34,7 @@ import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.common.registry.client.RegistryClient;
 import com.vf.uk.dal.device.dao.DeviceDao;
+import com.vf.uk.dal.device.entity.Accessory;
 import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
@@ -62,10 +65,13 @@ import com.vf.uk.dal.device.validator.Validator;
 import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 import com.vf.uk.dal.utility.entity.BundleDetails;
 import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
+import com.vf.uk.dal.utility.entity.BundleDeviceAndProductsList;
 import com.vf.uk.dal.utility.entity.BundleHeader;
 import com.vf.uk.dal.utility.entity.BundleModelAndPrice;
 import com.vf.uk.dal.utility.entity.BundlePrice;
 import com.vf.uk.dal.utility.entity.CoupleRelation;
+import com.vf.uk.dal.utility.entity.PriceForAccessory;
+import com.vf.uk.dal.utility.entity.PriceForProduct;
 import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
 import com.vf.uk.dal.utility.solr.entity.OfferAppliedPriceDetails;
 import com.vodafone.common.Filters;
@@ -271,7 +277,7 @@ public class DeviceServiceImpl implements DeviceService {
 	@Override
 	public List<AccessoryTileGroup> getAccessoriesOfDevice(String deviceId, String journeyType, String offerCode) {
 		List<AccessoryTileGroup> listOfAccessoryTileGroup;
-		listOfAccessoryTileGroup = deviceDao.getAccessoriesOfDevice(deviceId, journeyType, offerCode);
+		listOfAccessoryTileGroup = getAccessoriesOfDevice_Implementation(deviceId, journeyType, offerCode);
 		return listOfAccessoryTileGroup;
 	}
 
@@ -3306,5 +3312,223 @@ public class DeviceServiceImpl implements DeviceService {
 		}
 
 		return flag;
+	}
+	
+	public List<AccessoryTileGroup> getAccessoriesOfDevice_Implementation(String deviceId, String journeyType, String offerCode) {
+		List<AccessoryTileGroup> listOfAccessoryTile = new ArrayList<>();
+
+		LogHelper.info(this, "Start -->  calling  CommercialProductRepository.get");
+		
+		CommercialProduct commercialProduct = deviceDao.getCommercialProductFromCommercialProductRepository(deviceId);//commercialProductRepository.get(deviceId);
+		LogHelper.info(this, "End -->  After calling  CommercialProductRepository.get");
+
+		if (commercialProduct != null && commercialProduct.getId() != null) {
+
+			if (commercialProduct.getIsDeviceProduct()
+					&& commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)) {
+
+				LogHelper.info(this, "Start -->  calling  CommercialProduct.getProductGroups");
+				ProductGroups productGroups = commercialProduct.getProductGroups();
+				LogHelper.info(this, "End -->  After calling  CommercialProduct.getProductGroups");
+
+				List<String> listOfDeviceGroupName = new ArrayList<>();
+				List<String> finalAccessoryList = new ArrayList<>();
+				if (productGroups != null && productGroups.getProductGroup() != null
+						&& !productGroups.getProductGroup().isEmpty()) {
+					for (com.vodafone.product.pojo.ProductGroup productGroup : productGroups.getProductGroup()) {
+						if (productGroup.getProductGroupRole()
+								.equalsIgnoreCase(Constants.STRING_COMPATIBLE_ACCESSORIES)) {
+							listOfDeviceGroupName.add(productGroup.getProductGroupName()
+									+ Constants.STRING_PRODUCTGROUP_OPERATOR + productGroup.getProductGroupRole());
+						}
+					}
+
+					if (listOfDeviceGroupName.isEmpty()) {
+						LogHelper.error(this, "No Compatible Accessories found for given device Id:" + deviceId);
+						throw new ApplicationException(ExceptionMessages.NULL_COMPATIBLE_VALUE_FOR_DEVICE_ID);
+					}
+
+					// HashMap for groupName and list of accessories ID
+					Map<String, List<String>> mapForGroupName = new LinkedHashMap<>();
+
+					LogHelper.info(this, "Start -->  calling  productGroupRepository.getAll");
+					
+					List<Group> listOfProductGroup = new ArrayList<Group>(deviceDao.getListOfGroupsFromProductGroupRepository(listOfDeviceGroupName));//productGroupRepository.getAll(listOfDeviceGroupName)
+					LogHelper.info(this, "End -->  After calling  productGroupRepository.getAll");
+
+					listOfProductGroup = getGroupBasedOnPriority(listOfProductGroup);
+
+					for (Group productGroup : listOfProductGroup) {
+						List<Member> listOfAccesoriesMembers = new ArrayList<>();
+						if (productGroup != null && StringUtils.containsIgnoreCase(Constants.STRING_ACCESSORY,
+								productGroup.getGroupType())) {
+							listOfAccesoriesMembers.addAll(productGroup.getMembers());
+							if (!listOfAccesoriesMembers.isEmpty()) {
+								listOfAccesoriesMembers = getAccessoryMembersBasedOnPriority_Implementation(listOfAccesoriesMembers);
+							}
+						}
+
+						List<String> accessoryList = new ArrayList<>();
+						if (listOfAccesoriesMembers != null && !listOfAccesoriesMembers.isEmpty()) {
+							for (com.vodafone.productGroups.pojo.Member member : listOfAccesoriesMembers) {
+								if (member.getId() != null) {
+									accessoryList.add(member.getId().trim());
+								}
+							}
+							mapForGroupName.put(productGroup.getName(), accessoryList);
+							finalAccessoryList.addAll(accessoryList);
+						}
+					}
+					LogHelper.info(this, "Start -->  calling  CommercialProduct.getAll");
+					// Getting all commercial products for all accessories
+					Collection<CommercialProduct> comercialProductList = deviceDao.getCommercialProductListFromCommercialProductRepository(finalAccessoryList);//commercialProductRepository.getAll(finalAccessoryList);
+					LogHelper.info(this, "End -->  After calling  CommercialProduct.getAll");
+
+					List<CommercialProduct> listOfFilteredAccessories = comercialProductList.stream()
+							.filter(commercialProductAccessories -> CommonUtility
+									.isProductNotExpired(commercialProductAccessories)
+									&& CommonUtility.isProductJourneySpecific(commercialProductAccessories,
+											journeyType))
+							.collect(Collectors.toList());
+
+					List<String> listOfValidAccesoryIds = listOfFilteredAccessories.stream().filter(Objects::nonNull)
+							.map(CommercialProduct::getId).filter(Objects::nonNull).collect(Collectors.toList());
+
+					// Preparing bundleDeviceAndAccessoryList and fetching price
+					// for
+					// accessories from Pricing API
+					BundleDeviceAndProductsList bundleDeviceAndProductsList = new BundleDeviceAndProductsList();
+					bundleDeviceAndProductsList.setAccessoryList(listOfValidAccesoryIds);
+					bundleDeviceAndProductsList.setDeviceId(deviceId);
+					bundleDeviceAndProductsList.setExtraList(new ArrayList<>());
+					bundleDeviceAndProductsList.setOfferCode(offerCode);
+					bundleDeviceAndProductsList.setPackageType(journeyType);
+					PriceForProduct priceForProduct = null;
+					if (bundleDeviceAndProductsList != null) {
+						priceForProduct = CommonUtility.getAccessoryPriceDetails(bundleDeviceAndProductsList,
+								registryclnt);
+					}
+					
+					// HashMap for deviceId and PriceForAccessory
+					Map<String, PriceForAccessory> mapforPrice = new HashMap<>();
+					if (priceForProduct != null && priceForProduct.getPriceForAccessoryes() != null) {
+						for (PriceForAccessory priceForAccessory : priceForProduct.getPriceForAccessoryes()) {
+							String hardwareId = priceForAccessory.getHardwarePrice().getHardwareId();
+							if (listOfValidAccesoryIds.contains(hardwareId))
+								mapforPrice.put(hardwareId, priceForAccessory);
+						}
+					} else {
+						LogHelper.info(this, "Null values received from Price API");
+						throw new ApplicationException(ExceptionMessages.NULL_VALUES_FROM_PRICING_API);
+					}
+
+					// HashMap for deviceId and Commercial Product
+					Map<String, CommercialProduct> mapforCommercialProduct = new HashMap<>();
+					for (CommercialProduct product : listOfFilteredAccessories) {
+						String id = product.getId();
+						if (listOfValidAccesoryIds.contains(id))
+							mapforCommercialProduct.put(id, product);
+					}
+
+					for (Map.Entry<String, List<String>> entry : mapForGroupName.entrySet()) {
+						AccessoryTileGroup accessoryTileGroup = new AccessoryTileGroup();
+						List<Accessory> listOfAccessory = new ArrayList<>();
+
+						for (String hardwareId : entry.getValue()) {
+							// US-6717 start
+							Accessory accessory = null;
+							if (mapforCommercialProduct.containsKey(hardwareId)
+									&& mapforPrice.containsKey(hardwareId)) {
+								accessory = DaoUtils.convertCoherenceAccesoryToAccessory(
+										mapforCommercialProduct.get(hardwareId), mapforPrice.get(hardwareId));
+								// Us-6717 end
+							}
+							if (accessory != null) {
+								listOfAccessory.add(accessory);
+							}
+						}
+						if (listOfAccessory != null && !listOfAccessory.isEmpty()) {
+							accessoryTileGroup.setGroupName(entry.getKey());
+							accessoryTileGroup.setAccessories(listOfAccessory);
+							listOfAccessoryTile.add(accessoryTileGroup);
+						} else {
+							LogHelper.error(this, "Accessories not found for the given :" + entry.getKey());
+						}
+					}
+				} else {
+					LogHelper.error(this, "No Compatible Accessories found for given device Id:" + deviceId);
+					throw new ApplicationException(ExceptionMessages.NULL_COMPATIBLE_VALUE_FOR_DEVICE_ID);
+				}
+
+			} else {
+				LogHelper.error(this, "Given DeviceId is not ProductClass Handset  :" + deviceId);
+				throw new ApplicationException(ExceptionMessages.DEVICE_ID_NOT_HANDSET);
+			}
+		} else {
+			LogHelper.error(this, "No data found for given device Id:" + deviceId);
+			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID);
+		}
+		if (listOfAccessoryTile.isEmpty()) {
+			LogHelper.error(this, "No Compatible Accessories found for given device Id:" + deviceId);
+			throw new ApplicationException(ExceptionMessages.NULL_COMPATIBLE_VALUE_FOR_DEVICE_ID);
+		}
+		return listOfAccessoryTile;
+	}
+	/**
+	 * 
+	 * @param listOfDeviceGroupMember
+	 * @return
+	 */
+	public List<Member> getAccessoryMembersBasedOnPriority_Implementation(List<Member> listOfDeviceGroupMember) {
+		Collections.sort(listOfDeviceGroupMember, new SortedAccessoryPriorityList());
+
+		return listOfDeviceGroupMember;
+	}
+
+	class SortedAccessoryPriorityList implements Comparator<Member> {
+
+		@Override
+		public int compare(Member member1, Member member2) {
+
+			if (member1.getPriority() != null && member2.getPriority() != null) {
+				if (member1.getPriority() < member2.getPriority()) {
+					return -1;
+				} else
+					return 1;
+
+			}
+
+			else
+				return -1;
+		}
+
+	}
+	/**
+	 * 
+	 * @param collectionOfGroup
+	 * @return collectionOfGroup(sorted based on priority)
+	 */
+
+	public static List<Group> getGroupBasedOnPriority(List<Group> listOfGroup) {
+		Collections.sort(listOfGroup, new SortedExtrasGroupPriorityList());
+
+		return listOfGroup;
+	}
+
+	static class SortedExtrasGroupPriorityList implements Comparator<Group> {
+
+		@Override
+		public int compare(Group member1, Group member2) {
+			if (member1.getGroupPriority() != null && member2.getGroupPriority() != null) {
+				if (member1.getGroupPriority() < member2.getGroupPriority()) {
+					return -1;
+				} else
+					return 1;
+			}
+
+			else
+				return -1;
+		}
+
 	}
 }
