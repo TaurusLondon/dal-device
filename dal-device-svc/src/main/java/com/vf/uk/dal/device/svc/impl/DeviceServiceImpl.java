@@ -1210,7 +1210,6 @@ public class DeviceServiceImpl implements DeviceService {
 		Map<String, String> leadMemberMapForUpgrade = new HashMap<>();
 		Map<String, String> groupIdAndNameMap = new HashMap<>();
 		com.vf.uk.dal.utility.entity.PriceForBundleAndHardware bundleHeaderForDevice = null;
-		Map<String, Map<String, List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>>> entireOfferedPriceMap = new HashMap<>();
 		Map<String,Map<String, Map<String, List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>>>> ilsOfferPriceWithJourneyAware = new HashMap<>();
 		if (listOfProductGroup != null && !listOfProductGroup.isEmpty()) {
 			for (Group productGroup : listOfProductGroup) {
@@ -1452,6 +1451,7 @@ public class DeviceServiceImpl implements DeviceService {
 					String jouneyType = null;
 					for (Entry<String, List<BundleAndHardwareTuple>> entry : bundleHardwareTroupleMap.entrySet()) {
 						if (entry.getValue() != null && !entry.getValue().isEmpty()) {
+							Map<String, List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>> iLSPriceMapLocalMain = new HashMap<>();
 							if (listOfOfferCodesForUpgrade.contains(entry.getKey())
 									&& listOfSecondLineOfferCode.contains(entry.getKey())) {
 								jouneyType = Constants.JOURNEY_TYPE_UPGRADE;
@@ -1465,18 +1465,27 @@ public class DeviceServiceImpl implements DeviceService {
 											jouneyType, registryclnt);
 							if (listOfPriceForBundleAndHardwareForOffer != null
 									&& !listOfPriceForBundleAndHardwareForOffer.isEmpty()) {
-								iLSPriceMap.put(entry.getKey(), listOfPriceForBundleAndHardwareForOffer);
+								iLSPriceMapLocalMain.put(entry.getKey(), listOfPriceForBundleAndHardwareForOffer);
+								if(ilsPriceForJourneyAwareOfferCodeMap.containsKey(jouneyType))
+								{
+									Map<String, List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>> iLSPriceMapLocal=	ilsPriceForJourneyAwareOfferCodeMap.get(jouneyType);
+									iLSPriceMapLocal.putAll(iLSPriceMapLocalMain);
+									ilsPriceForJourneyAwareOfferCodeMap.put(jouneyType, iLSPriceMapLocal);
+								}else{
+									ilsPriceForJourneyAwareOfferCodeMap.put(jouneyType, iLSPriceMapLocalMain);
+								}
 							}
 						}
 					}
-					ilsPriceForJourneyAwareOfferCodeMap.put(jouneyType, iLSPriceMap);
+					
+					
 				}
-				
 				if(!ilsPriceForJourneyAwareOfferCodeMap.isEmpty())
 				{
 					for (Entry<String, Map<String, List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>>> journeyEntry : ilsPriceForJourneyAwareOfferCodeMap
 							.entrySet()) {
 						
+					Map<String, Map<String, List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>>> entireOfferedPriceMap = new HashMap<>();
 					
 					Map<String, List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>> ilsPriceJourney = journeyEntry.getValue();
 				if (!ilsPriceJourney.isEmpty()) {
@@ -1506,7 +1515,6 @@ public class DeviceServiceImpl implements DeviceService {
 				}
 				ilsOfferPriceWithJourneyAware.put(journeyEntry.getKey(), entireOfferedPriceMap);
 			}
-					
 			}
 				if (!groupNamePriceMap.isEmpty()) {
 					for (Entry<String, List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>> entry : groupNamePriceMap
