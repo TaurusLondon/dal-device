@@ -3065,6 +3065,7 @@ public class DeviceServiceImpl implements DeviceService {
 		return null;
 
 	}
+	@Override
 	public Double getBundlePriceBasedOnDiscountDuration_Implementation(DeviceSummary deviceSummary, String discountType) {
 		Double monthlyPrice = null;
 		if (null != discountType && discountType.equals(Constants.FULL_DURATION_DISCOUNT)) {

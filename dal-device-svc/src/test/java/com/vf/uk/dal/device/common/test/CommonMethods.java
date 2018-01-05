@@ -760,7 +760,7 @@ public class CommonMethods {
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
-		productControl.setAvailableFrom(timeStamp);
+		productControl.setAvailableFrom(Date.valueOf("2003-09-05"));
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -1022,7 +1022,7 @@ public class CommonMethods {
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
-		productControl.setAvailableFrom(timeStamp);
+		productControl.setAvailableFrom(Date.valueOf("2003-09-05"));
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -2133,7 +2133,7 @@ public class CommonMethods {
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
-		productControl.setAvailableFrom(timeStamp);
+		productControl.setAvailableFrom(Date.valueOf("2003-09-05"));
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -2271,7 +2271,7 @@ public class CommonMethods {
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
-		productControl.setAvailableFrom(timeStamp);
+		productControl.setAvailableFrom(Date.valueOf("2003-09-05"));
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -2467,7 +2467,7 @@ public class CommonMethods {
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
-		productControl.setAvailableFrom(timeStamp);
+		productControl.setAvailableFrom(Date.valueOf("2003-09-05"));
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -2680,7 +2680,7 @@ public class CommonMethods {
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
-		productControl.setAvailableFrom(timeStamp);
+		productControl.setAvailableFrom(Date.valueOf("2003-09-05"));
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -2810,7 +2810,7 @@ public class CommonMethods {
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
-		productControl.setAvailableFrom(timeStamp);
+		productControl.setAvailableFrom(Date.valueOf("2003-09-05"));
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -2936,7 +2936,7 @@ public class CommonMethods {
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
-		productControl.setAvailableFrom(timeStamp);
+		productControl.setAvailableFrom(Date.valueOf("2003-09-05"));
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -3552,5 +3552,49 @@ public class CommonMethods {
 		}
 		return null;
 	}
+
+	public static String getReviewsJson() throws IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+		String productModel = new String(Utility.readFile("\\TEST-MOCK\\BazaarVoiceResponse.json"));
+		BazaarVoice product = new BazaarVoice();
+		 product=mapper.readValue(productModel, BazaarVoice.class);
+		 product.setJsonsource(productModel);
+		 
+		return  product.getJsonsource();
+		
+	}
 	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static List<ProductGroupModel> getListOfProductGroupModels() {
+
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			// mapper = new
+			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
+			// true);
+			String productGroupModel = new String(Utility
+					.readFile("\\TEST-MOCK\\listOfProductGroupModel_For_DevicePAYM_apple.json"));
+			ProductGroupModel[] productGroupModelList = mapper
+					.readValue(productGroupModel, ProductGroupModel[].class);
+
+			return mapper.convertValue(productGroupModelList,
+					new TypeReference<List<ProductGroupModel>>() {
+					});
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

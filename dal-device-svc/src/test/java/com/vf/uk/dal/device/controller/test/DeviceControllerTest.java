@@ -1,5 +1,6 @@
 package com.vf.uk.dal.device.controller.test;
 
+import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.given;
 
 import java.io.IOException;
@@ -27,6 +28,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.deser.DataFormatReaders.Match;
 import com.netflix.discovery.EurekaClient;
 import com.vf.uk.dal.common.context.ServiceContext;
 import com.vf.uk.dal.common.context.URLParamContext;
@@ -1432,4 +1434,25 @@ public class DeviceControllerTest {
 
 		}
 	}
+	
+	/**
+	 * Start test suit for getDeviceReviewDetails API
+	 * @author suresh.kumar
+	 */
+	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	@JsonIgnore
+	@Test
+	public void test_Controller_getDeviceReviewDetailsValidInput(){
+		try{
+			given(deviceDAOMock.getDeviceReviewDetails(Matchers.anyString())).willReturn(CommonMethods.getReviewsJson());
+			deviceController.getDeviceReviewDetails("093353");
+		}catch(Exception exception){
+			//assertEquals("com.vf.uk.dal.common.exception.ApplicationException: No reviews found for the given deviceId", exception.toString());
+		}
+	}
+	
+	/**
+	 * End
+	 */
 }
