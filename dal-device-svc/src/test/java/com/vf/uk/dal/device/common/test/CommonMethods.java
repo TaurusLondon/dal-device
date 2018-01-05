@@ -760,7 +760,7 @@ public class CommonMethods {
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
-		productControl.setAvailableFrom(Date.valueOf("2003-09-05"));
+		productControl.setAvailableFrom(timeStamp);
 		productControl.setBackOrderable(true); 
  
 		commercialProduct.setProductControl(productControl);
@@ -1022,7 +1022,7 @@ public class CommonMethods {
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
-		productControl.setAvailableFrom(Date.valueOf("2003-09-05"));
+		productControl.setAvailableFrom(timeStamp);
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -2133,7 +2133,7 @@ public class CommonMethods {
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
-		productControl.setAvailableFrom(Date.valueOf("2003-09-05"));
+		productControl.setAvailableFrom(timeStamp);
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -2271,7 +2271,7 @@ public class CommonMethods {
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
-		productControl.setAvailableFrom(Date.valueOf("2003-09-05"));
+		productControl.setAvailableFrom(timeStamp);
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -2467,7 +2467,7 @@ public class CommonMethods {
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
-		productControl.setAvailableFrom(Date.valueOf("2003-09-05"));
+		productControl.setAvailableFrom(timeStamp);
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -2680,7 +2680,7 @@ public class CommonMethods {
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
-		productControl.setAvailableFrom(Date.valueOf("2003-09-05"));
+		productControl.setAvailableFrom(timeStamp);
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -2810,7 +2810,7 @@ public class CommonMethods {
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
-		productControl.setAvailableFrom(Date.valueOf("2003-09-05"));
+		productControl.setAvailableFrom(timeStamp);
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -2936,7 +2936,7 @@ public class CommonMethods {
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
-		productControl.setAvailableFrom(Date.valueOf("2003-09-05"));
+		productControl.setAvailableFrom(timeStamp);
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
