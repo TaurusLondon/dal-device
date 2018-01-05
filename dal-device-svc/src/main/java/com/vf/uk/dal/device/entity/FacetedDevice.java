@@ -16,7 +16,7 @@ import io.swagger.annotations.ApiModelProperty;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
 
 public class FacetedDevice   {
-  @JsonProperty("newFacet")
+  @JsonProperty("facet")
   private List<NewFacet> newFacet = null;
 
   @JsonProperty("device")
