@@ -121,7 +121,9 @@ public class Validator {
 	
 	public static boolean validateGroupType(String groupType) {
 		if (!groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYM)
-				&& !groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG)) {
+				&& !groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG)
+				&& !groupType.equalsIgnoreCase(Constants.STRING_DATA_DEVICE_PAYM)
+				&& !groupType.equalsIgnoreCase(Constants.STRING_DATA_DEVICE_PAYG)) {
 			return false;
 		} else {
 			return true;
