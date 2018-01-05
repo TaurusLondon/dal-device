@@ -105,19 +105,6 @@ public  class CommonUtility {
 		
 	}
 	
-	/*public static List<StockInfo> getStockAvailabilityForDevice(String deviceIds, RegistryClient registryClient) {
-		String stockId=ConfigHelper.getString(Constants.STRING_WAREHOUSE_ID, Constants.STRING_DEFAULT_STOCKID);
-		RestTemplate restTemplate =registryClient.getRestTemplate();
-		StockInfo[] client= restTemplate.getForObject("http://UTILITY-V1/utility/?filter[skuId]="+deviceIds+"&filter[sourceId]="+stockId , StockInfo[].class  );
- 		ObjectMapper mapper = new ObjectMapper();
-		return mapper.convertValue(client, new TypeReference<List<StockInfo>>(){});
-		
-	}*/
-	/*public static CurrentJourney getCurrentJourney(String journeyId,RegistryClient registryClient) {
-		RestTemplate restTemplate =registryClient.getRestTemplate();
-		return restTemplate.getForObject("http://COMMON-V1/common/journey/"+journeyId+"/queries/currentJourney" ,CurrentJourney.class);
-	}*/
-	
 	public static RecommendedProductListResponse getRecommendedProductList(RecommendedProductListRequest recomProductList,RegistryClient registryClient) {
 		RestTemplate restTemplate =registryClient.getRestTemplate();
 		return restTemplate.postForObject("http://CUSTOMER-V1/customer/getRecommendedProductList/",recomProductList,RecommendedProductListResponse.class);

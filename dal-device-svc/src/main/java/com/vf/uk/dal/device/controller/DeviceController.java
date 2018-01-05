@@ -185,12 +185,7 @@ public class DeviceController {
 			String deviceId = queryParams.containsKey(DEVICE_ID) ? queryParams.get(DEVICE_ID) : null;
 			String journeyType = queryParams.containsKey(JOURNEY_TYPE) ? queryParams.get(JOURNEY_TYPE) : null;
 			String offerCode = queryParams.containsKey(OFFER_CODE) ? queryParams.get(OFFER_CODE) : null;
-			/*if (StringUtils.isNotBlank(offerCode) && (StringUtils.isBlank(journeyType)
-					|| (StringUtils.isNotBlank(journeyType) && !Validator.validateJourneyType(journeyType)))) {
-
-				LogHelper.info(this, "Required JourneyType with Offercode.");
-				throw new ApplicationException(ExceptionMessages.REQUIRED_JOURNEY_TYPE);
-			}	*/
+			
 			if (deviceId != null) {
 				if(!deviceId.matches("[0-9]{6}")) {
 					LogHelper.error(this, "DeviceId is Invalid");
@@ -415,30 +410,6 @@ public class DeviceController {
 	}
 
 	/**
-	 * Returns Stock Availability for list of device IDs
-	 * 
-	 * @param groupType.
-	 */
-	/*
-	 * @RequestMapping(value = "/cacheStockAvailability/", method =
-	 * RequestMethod.GET, produces =
-	 * javax.ws.rs.core.MediaType.APPLICATION_JSON) public List<StockInfo>
-	 * getStockAvailabilityForDeviceList() { List<StockInfo>
-	 * stockAvailabilityForGroupType; String
-	 * groupType=getFilterValue(GROUP_TYPE);
-	 * if(StringUtils.isNotBlank(groupType)) {
-	 * if(groupType.equals(Constants.STRING_DEVICE_PAYG) ||
-	 * groupType.equals(Constants.STRING_DEVICE_PAYM) ||
-	 * groupType.equals(Constants.STRING_DEVICE_NEARLY_NEW))
-	 * stockAvailabilityForGroupType =
-	 * deviceService.getStockAvailability(groupType); else throw new
-	 * ApplicationException(ExceptionMessages.INVALID_INPUT_GROUP_TYPE); } else
-	 * { LogHelper.error(this, "Group Type is null or Empty String"); throw new
-	 * ApplicationException(ExceptionMessages.NULL_OR_EMPTY_GROUP_TYPE); }
-	 * return stockAvailabilityForGroupType; }
-	 */
-
-	/**
 	 * 
 	 * Checks the filterValue coming from ServiceContext based on incoming
 	 * filterName.
@@ -555,12 +526,7 @@ public class DeviceController {
 			String deviceId = queryParams.containsKey(DEVICE_ID) ? queryParams.get(DEVICE_ID) : null;
 			String journeyType = queryParams.containsKey(JOURNEY_TYPE) ? queryParams.get(JOURNEY_TYPE) : null;
 			String offerCode = queryParams.containsKey(OFFER_CODE) ? queryParams.get(OFFER_CODE) : null;
-			/*if (StringUtils.isNotBlank(offerCode) && (StringUtils.isBlank(journeyType)
-					|| (StringUtils.isNotBlank(journeyType) && !Validator.validateJourneyType(journeyType)))) {
-
-				LogHelper.info(this, "Required JourneyType with Offercode.");
-				throw new ApplicationException(ExceptionMessages.REQUIRED_JOURNEY_TYPE);
-			}*/	
+			
 			if (deviceId != null) {
 				LogHelper.info(this, "Get the list of device details for the device id passed as request params "+deviceId);
 				LogHelper.info(this, "Start -->  calling  getListOfDeviceDetails");
