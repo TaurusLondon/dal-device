@@ -761,7 +761,7 @@ public class CommonMethods {
 		productControl.setPreOrderable(true);
 		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
 		productControl.setAvailableFrom(Date.valueOf("2003-09-05"));
-		productControl.setBackOrderable(true);
+		productControl.setBackOrderable(true); 
  
 		commercialProduct.setProductControl(productControl);
 		Equipment equipment = new Equipment();
