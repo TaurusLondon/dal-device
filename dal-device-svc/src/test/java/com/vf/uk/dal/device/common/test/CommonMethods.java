@@ -762,7 +762,7 @@ public class CommonMethods {
 		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
 		productControl.setAvailableFrom(Date.valueOf("2003-09-05"));
 		productControl.setBackOrderable(true);
-
+ 
 		commercialProduct.setProductControl(productControl);
 		Equipment equipment = new Equipment();
 		equipment.setMake("SetMake");
