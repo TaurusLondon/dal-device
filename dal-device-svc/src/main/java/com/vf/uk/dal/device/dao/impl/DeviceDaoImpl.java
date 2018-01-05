@@ -152,7 +152,6 @@ public class DeviceDaoImpl implements DeviceDao {
 			} else if (commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_DATA_DEVICE)) {
 				strGroupType = Constants.STRING_DATADEVICE_PAYM;
 			}
-			// ******** start ofUserStory No 6860 ****//
 
 			LogHelper.info(this, "Start -->  calling  productGroupRepository.getProductGroupsByType");
 			if (productGroupRepository == null) {
@@ -203,20 +202,6 @@ public class DeviceDaoImpl implements DeviceDao {
 			CommercialBundle comBundle = commercialBundleRepository.get(leadPlanId);
 			LogHelper.info(this, "End -->  After calling  bundleRepository.get");
 
-			/**
-			 * @author manoj.bera Added Promotion API calling
-			 */
-			// Media Link from merchandising Promotion
-			/*
-			 * List<OfferPacks> listOfOfferPacks = new ArrayList<>();
-			 * 
-			 * if (comBundle != null) {
-			 * 
-			 * listOfOfferPacks.addAll(offerPacksMediaListForBundleDetails(
-			 * comBundle)); }
-			 * listOfOfferPacks.addAll(offerPacksMediaListForDeviceDetails(
-			 * commercialProduct));
-			 */
 			List<BundleAndHardwarePromotions> promotions = null;
 			PriceForBundleAndHardware priceForBundleAndHardware = null;
 			List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
@@ -320,59 +305,6 @@ public class DeviceDaoImpl implements DeviceDao {
 	}
 	
 
-	/*
-	 * @Override public Insurances getInsuranceById(String deviceId) {
-	 * 
-	 * Insurances insurance = null; CommercialProductRepository
-	 * commercialProductRepository = new CommercialProductRepository();
-	 * CommercialProduct cohProduct = commercialProductRepository.get(deviceId);
-	 * String insuranceProductLine = null; if (cohProduct != null &&
-	 * cohProduct.getIsDeviceProduct() &&
-	 * cohProduct.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET))
-	 * { List<String> listOfProductLines = cohProduct.getProductLines();
-	 * 
-	 * if (listOfProductLines != null && !listOfProductLines.isEmpty()) { for
-	 * (String s : listOfProductLines) { if
-	 * (s.contains(Constants.STRING_INSURANCE)) { insuranceProductLine = s;
-	 * break; } }
-	 * 
-	 * ProductCompatibilityRepository compatibilityRepository = new
-	 * ProductCompatibilityRepository(); List<ProductCompatibility>
-	 * listProductCompatibility;
-	 * 
-	 * listProductCompatibility = compatibilityRepository
-	 * .getProductLineFromCompatibility(insuranceProductLine); if
-	 * (listProductCompatibility != null && !listProductCompatibility.isEmpty())
-	 * { String insuranceProdLine = null;
-	 * 
-	 * for (ProductCompatibility compatibility : listProductCompatibility) { if
-	 * (compatibility.getType().equalsIgnoreCase(Constants.STRING_REQUIRES)) {
-	 * if (compatibility.getProductLine() != null) { insuranceProdLine =
-	 * compatibility.getProductLine(); } } } if (insuranceProdLine != null) {
-	 * List<CommercialProduct> cohProductForRelative =
-	 * commercialProductRepository .getProductByProductLine(insuranceProdLine);
-	 * if (cohProductForRelative != null && !cohProductForRelative.isEmpty()) {
-	 * insurance =
-	 * DaoUtils.convertCommercialProductToInsurance(cohProductForRelative); } }
-	 * else { LogHelper.error(this,
-	 * "No Insurance Product Line found for given compatibility :"); throw new
-	 * ApplicationException(ExceptionMessages.
-	 * NO_INSURANCE_PRODUCT_FOR_GIVEN_COMPATABILITY); } } else {
-	 * LogHelper.error(this,
-	 * "No Product compatability found for given InsuranceProductLine :" +
-	 * insuranceProductLine); throw new ApplicationException(
-	 * ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_INSURANCE_PRODUCTLINE_ID)
-	 * ; } } else { LogHelper.error(this,
-	 * "No Product Line found for given Device Id :" + deviceId); throw new
-	 * ApplicationException(ExceptionMessages.
-	 * NO_PRODUCT_LINE_FOUND_FOR_GIVEN_DEVICE_ID); } } else {
-	 * LogHelper.error(this, "No data found for given Device Id :" + deviceId);
-	 * throw new ApplicationException(ExceptionMessages.
-	 * NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID); } if (insurance != null) {
-	 * getFormattedPriceForGetCompatibleInsurances(insurance);
-	 * insurance.setMinCost(FormatPrice(insurance.getMinCost())); } return
-	 * insurance; }
-	 */
 	/**
 	 * Returns leadSkuId based on the priority
 	 * 
@@ -498,31 +430,6 @@ public class DeviceDaoImpl implements DeviceDao {
 	}
 
 	/**
-	 * Date validation
-	 * 
-	 * @param startDateTime
-	 * @param endDateTime
-	 * @param preOrderableFlag
-	 * @return flag
-	 *//*
-		 * public Boolean dateValidation(Date startDateTime, Date endDateTime,
-		 * boolean preOrderableFlag) { Date currentDate = new Date(); boolean
-		 * flag = false;
-		 * 
-		 * if (startDateTime != null && endDateTime != null) { Boolean x =
-		 * currentDate.before(startDateTime); Boolean y = preOrderableFlag;
-		 * boolean z = x && y;
-		 * 
-		 * Boolean a = currentDate.after(startDateTime); Boolean b =
-		 * currentDate.before(endDateTime); Boolean c = a && b; if (z || c) {
-		 * flag = true; } } if (startDateTime == null && endDateTime != null &&
-		 * currentDate.before(endDateTime)) { flag = true; } if (startDateTime
-		 * != null && endDateTime == null && currentDate.after(startDateTime)) {
-		 * flag = true; } if (startDateTime == null && endDateTime == null) {
-		 * flag = true; } return flag; }
-		 */
-
-	/**
 	 * calculation of price
 	 * 
 	 * @param grossPrice
@@ -539,132 +446,6 @@ public class DeviceDaoImpl implements DeviceDao {
 		price.setVat(CommonUtility.getDecimalFormat().format(vat));
 		return price;
 	}
-	/**
-	 * @author manoj.bera I commented out below code
-	 */
-	/*
-	 * public List<OfferPacks>
-	 * offerPacksMediaListForBundleDetails(CommercialBundle commercialBundle) {
-	 * List<OfferPacks> listOfOfferPacks = new ArrayList<>(); List<MediaLink>
-	 * listOfMediaLink = new ArrayList<>(); OfferPacks offerPacks;
-	 * 
-	 * if (merchandisingPromotionRepository == null) {
-	 * merchandisingPromotionRepository =
-	 * CoherenceConnectionProvider.getMerchandisingRepoConnection(); }
-	 * 
-	 * if (commercialBundle.getPromoteAs() != null &&
-	 * commercialBundle.getPromoteAs().getPromotionName() != null &&
-	 * !commercialBundle.getPromoteAs().getPromotionName().isEmpty()) {
-	 * offerPacks = new OfferPacks(); LogHelper.info(this,
-	 * "Start -->  calling  MerchandisingPromotion.get"); for (String
-	 * promotionName : commercialBundle.getPromoteAs().getPromotionName()) {
-	 * 
-	 * com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion
-	 * merchandisingPromotion = merchandisingPromotionRepository
-	 * .get(promotionName);
-	 * 
-	 * if (merchandisingPromotion != null) { String startDateTime =
-	 * CommonUtility.getDateToString(merchandisingPromotion.getStartDateTime(),
-	 * Constants.DATE_FORMAT_COHERENCE); String endDateTime =
-	 * CommonUtility.getDateToString(merchandisingPromotion.getEndDateTime(),
-	 * Constants.DATE_FORMAT_COHERENCE); LogHelper.info(this,
-	 * ":::::::: MERCHE_PROMOTION_TAG :::: " +merchandisingPromotion.getTag() +
-	 * "::::: START DATE :: " + startDateTime + ":::: END DATE ::: " +
-	 * endDateTime + " :::: ");
-	 * 
-	 * if (promotionName != null &&
-	 * promotionName.equals(merchandisingPromotion.getTag()) &&
-	 * dateValidationForOffers(startDateTime, endDateTime,
-	 * Constants.DATE_FORMAT_COHERENCE)) {
-	 * listOfMediaLink.addAll(listOfMediaLinkBasedOnMerchandising(
-	 * merchandisingPromotion)); } } } LogHelper.info(this,
-	 * "End -->  After calling  MerchandisingPromotion.get");
-	 * offerPacks.setBundleId(commercialBundle.getId());
-	 * offerPacks.setMediaLinkList(listOfMediaLink);
-	 * listOfOfferPacks.add(offerPacks); } return listOfOfferPacks;
-	 * 
-	 * }
-	 * 
-	 * public List<OfferPacks>
-	 * offerPacksMediaListForDeviceDetails(CommercialProduct commercialProduct)
-	 * { List<OfferPacks> listOfOfferPacks = new ArrayList<>(); List<MediaLink>
-	 * listOfMediaLink = new ArrayList<>(); OfferPacks offerPacks;
-	 * 
-	 * if (merchandisingPromotionRepository == null) {
-	 * merchandisingPromotionRepository =
-	 * CoherenceConnectionProvider.getMerchandisingRepoConnection(); }
-	 * 
-	 * if (commercialProduct.getPromoteAs() != null &&
-	 * commercialProduct.getPromoteAs().getPromotionName() != null &&
-	 * !commercialProduct.getPromoteAs().getPromotionName().isEmpty()) {
-	 * offerPacks = new OfferPacks(); LogHelper.info(this,
-	 * "Start -->  calling  MerchandisingPromotion.get"); for (String
-	 * promotionName : commercialProduct.getPromoteAs().getPromotionName()) {
-	 * com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion
-	 * merchandisingPromotion = merchandisingPromotionRepository
-	 * .get(promotionName); if (merchandisingPromotion != null) { String
-	 * startDateTime =
-	 * CommonUtility.getDateToString(merchandisingPromotion.getStartDateTime(),
-	 * Constants.DATE_FORMAT_COHERENCE); String endDateTime =
-	 * CommonUtility.getDateToString(merchandisingPromotion.getEndDateTime(),
-	 * Constants.DATE_FORMAT_COHERENCE); LogHelper.info(this,
-	 * ":::::::: MERCHE_PROMOTION_TAG :::: " +merchandisingPromotion.getTag() +
-	 * "::::: START DATE :: " + startDateTime + ":::: END DATE ::: " +
-	 * endDateTime + " :::: ");
-	 * 
-	 * if (promotionName != null &&
-	 * promotionName.equals(merchandisingPromotion.getTag()) &&
-	 * dateValidationForOffers(startDateTime, endDateTime,
-	 * Constants.DATE_FORMAT_COHERENCE)) {
-	 * listOfMediaLink.addAll(listOfMediaLinkBasedOnMerchandising(
-	 * merchandisingPromotion)); } } } LogHelper.info(this,
-	 * "End -->  After calling  MerchandisingPromotion.get");
-	 * offerPacks.setBundleId(commercialProduct.getId());
-	 * offerPacks.setMediaLinkList(listOfMediaLink);
-	 * listOfOfferPacks.add(offerPacks); } return listOfOfferPacks;
-	 * 
-	 * }
-	 * 
-	 * public List<MediaLink>
-	 * listOfMediaLinkBasedOnMerchandising(MerchandisingPromotion
-	 * merchandisingPromotion) { MediaLink mediaLinkForDescription; MediaLink
-	 * mediaLinkForLabel; MediaLink mediaLinkForUrlGrid; List<MediaLink>
-	 * listOfMediaLink = new ArrayList<>(); if
-	 * (!merchandisingPromotion.getType().equalsIgnoreCase("full_duration") &&
-	 * !merchandisingPromotion.getType().equalsIgnoreCase("limited_time") &&
-	 * !merchandisingPromotion.getType().equalsIgnoreCase("hardware_discount")
-	 * && !merchandisingPromotion.getType().equalsIgnoreCase(
-	 * "conditional_full_discount") &&
-	 * !merchandisingPromotion.getType().equalsIgnoreCase(
-	 * "conditional_limited_discount`")) { mediaLinkForLabel = new MediaLink();
-	 * mediaLinkForLabel.setId(merchandisingPromotion.getType() + "." +
-	 * Constants.STRING_OFFERS_LABEL);
-	 * mediaLinkForLabel.setType(Constants.STRING_TEXT_ALLOWANCE);
-	 * mediaLinkForLabel.setValue(merchandisingPromotion.getLabel());
-	 * if(merchandisingPromotion.getPriority()!=null){
-	 * mediaLinkForLabel.setPriority(merchandisingPromotion.getPriority().
-	 * intValue()); } listOfMediaLink.add(mediaLinkForLabel);
-	 * 
-	 * mediaLinkForDescription = new MediaLink();
-	 * mediaLinkForDescription.setId(merchandisingPromotion.getType() + "." +
-	 * Constants.STRING_OFFERS_DESCRIPTION);
-	 * mediaLinkForDescription.setType(Constants.STRING_TEXT_ALLOWANCE);
-	 * mediaLinkForDescription.setValue(merchandisingPromotion.getDescription())
-	 * ; if(merchandisingPromotion.getPriority()!=null){
-	 * mediaLinkForDescription.setPriority(merchandisingPromotion.getPriority().
-	 * intValue()); } listOfMediaLink.add(mediaLinkForDescription); if
-	 * (merchandisingPromotion.getType() != null && StringUtils
-	 * .containsIgnoreCase(merchandisingPromotion.getType(),
-	 * Constants.STRING_FOR_ENTERTAINMENT)) { mediaLinkForUrlGrid = new
-	 * MediaLink(); mediaLinkForUrlGrid.setId(merchandisingPromotion.getType() +
-	 * "." + Constants.STRING_PROMOTION_MEDIA);
-	 * mediaLinkForUrlGrid.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-	 * mediaLinkForUrlGrid.setValue(merchandisingPromotion.getPromotionMedia());
-	 * if(merchandisingPromotion.getPriority()!=null){
-	 * mediaLinkForUrlGrid.setPriority(merchandisingPromotion.getPriority().
-	 * intValue()); } listOfMediaLink.add(mediaLinkForUrlGrid); } } return
-	 * listOfMediaLink; }
-	 */
 
 	/**
 	 * Date validation
@@ -748,11 +529,6 @@ public class DeviceDaoImpl implements DeviceDao {
 
 				bundleDetailsForDevice = CommonUtility.getPriceDetailsForCompatibaleBundle(commercialProduct.getId(),
 						registryclnt);
-				/*
-				 * List<String> listOfCompatiblePlan=
-				 * bundleDetailsForDevice=CommonUtility.
-				 * getPriceDetailsUsingBundleHarwareTrouple()
-				 */
 				listOfBundles = bundleDetailsForDevice.getStandalonePlansList();
 				listOfCoupleRelationForMcs = bundleDetailsForDevice.getCouplePlansList();
 				listOfBundleHeaderForDevice.addAll(listOfBundles);
@@ -970,75 +746,6 @@ public class DeviceDaoImpl implements DeviceDao {
 		return listOfMember;
 	}
 	
-	/*
-	 * Identifies the status of the stock from coherence cache.
-	 * 
-	 * @param memberId
-	 * 
-	 * @return status
-	 */
-	/*
-	 * @Override public boolean getStockInfo(String memberId) { boolean status =
-	 * false; if (memberId != null) {
-	 * 
-	 * String memberId1 = Constants.STRING_ZERO_STOCK_DEVICE_ID + memberId;
-	 * 
-	 * StockAvailabilityRepository stockrepository = new
-	 * StockAvailabilityRepository(); StockAvailability stockAvailability =
-	 * stockrepository.get(memberId); if (stockAvailability != null &&
-	 * stockAvailability.getStatus() != null) { if
-	 * (Constants.STRING_STOCK_STATUS.equalsIgnoreCase(stockAvailability.
-	 * getStatus()) && stockAvailability.getQuantity() > 0) {
-	 * LogHelper.info(this, "MemberId With Status: " + memberId + " Status : " +
-	 * stockAvailability.getStatus() + " Quantity :" +
-	 * stockAvailability.getQuantity()); status = true; } } }
-	 * 
-	 * return status; }
-	 */
-	/**
-	 * Retrieves the stock details
-	 * 
-	 * @param groupType
-	 * @return List<StockInfo>
-	 */
-	/*
-	 * @Override public List<StockInfo> getStockAvailability(String groupType) {
-	 * ProductGroupRepository productGroupRepository = new
-	 * ProductGroupRepository(); List<String> listOfDeviceGroupMember = new
-	 * ArrayList<>(); String commaSeperatedDeviceId; List<StockInfo>
-	 * stockAvailabilityForGroupType; List<Group> listOfProductGroup =
-	 * productGroupRepository.getProductGroupsByType(groupType); if
-	 * (listOfProductGroup != null && !listOfProductGroup.isEmpty()) { for
-	 * (Group productGroup : listOfProductGroup) { if (productGroup.getMembers()
-	 * != null && !productGroup.getMembers().isEmpty()) { for (Member member :
-	 * productGroup.getMembers()) { listOfDeviceGroupMember.add(member.getId());
-	 * } } } } commaSeperatedDeviceId =
-	 * DaoUtils.convertStringListToString(listOfDeviceGroupMember); try {
-	 * stockAvailabilityForGroupType =
-	 * CommonUtility.getStockAvailabilityForDevice(commaSeperatedDeviceId,
-	 * registryclnt); if (stockAvailabilityForGroupType == null ||
-	 * stockAvailabilityForGroupType.isEmpty()) { throw new
-	 * ApplicationException(ExceptionMessages.NULL_VALUES_FOR_STOCK_AVAILABILITY
-	 * ); } } catch (Exception e) { LogHelper.info(this,
-	 * "Recieved Null values From Stock Availability Api : " + e); throw new
-	 * ApplicationException(ExceptionMessages.NULL_VALUES_FOR_STOCK_AVAILABILITY
-	 * ); }
-	 * 
-	 * return stockAvailabilityForGroupType; }
-	 */
-
-	/**
-	 * Saves the stock information into coherence cache
-	 * 
-	 * @param listOfStockAvailability
-	 */
-
-	/*
-	 * @Override public void cacheStockInfo(List<StockAvailability>
-	 * listOfStockAvailability) { StockAvailabilityRepository stockrepository =
-	 * new StockAvailabilityRepository();
-	 * stockrepository.saveAll(listOfStockAvailability); }
-	 */
 
 	public Insurances getFormattedPriceForGetCompatibleInsurances(Insurances insurances) {
 
@@ -1254,8 +961,6 @@ public class DeviceDaoImpl implements DeviceDao {
 			}
 			
 			LogHelper.info(this, "Start --> Calling  getProductGroupsWithFacets_Solr");
-			/*productGroupFacetModel = requestManager.getProductGroupsWithFacets(filterKey, filterCriteria, sortBy,
-					sortOption, pageNumber, pageSize);*/
 			productGroupFacetModel = requestManager.getProductGroupsWithFacetsByJourneyType
 					(filterKey, filterCriteria, sortBy,sortOption, pageNumber, pageSize,Arrays.asList(journeyType));
 			LogHelper.info(this, "End --> After calling  getProductGroupsWithFacets_Solr");
