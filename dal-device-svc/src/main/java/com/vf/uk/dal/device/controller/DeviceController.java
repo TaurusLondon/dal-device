@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vf.uk.dal.common.context.ServiceContext;
@@ -79,8 +80,12 @@ public class DeviceController {
 	 * @return Device
 	 **/
 	@ExceptionHandler(MissingServletRequestParameterException.class)
-	public void handleMissingParams(MissingServletRequestParameterException ex) {
-	    throw new ApplicationException(ex.getParameterName() + " parameter is missing");
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public com.vf.uk.dal.common.exception.ErrorResponse handleMissingParams(MissingServletRequestParameterException ex) {
+		
+		com.vf.uk.dal.common.exception.ErrorResponse error = new com.vf.uk.dal.common.exception.ErrorResponse(400, "DEVICE_INVALID_INPUT", "Missing mandatory parameter "+ex.getParameterName()); 
+		
+		return error;
 	}
 	@ApiOperation(value = "Get the list of device tiles based on the filter criteria. Pagination also defined", notes = "The service gets the details of the device tiles from coherence based on the filter criteria in the response.", response = DeviceTile.class, responseContainer = "List", tags={ "DeviceTile", })
     @ApiResponses(value = { 
@@ -326,13 +331,16 @@ public class DeviceController {
 					
 					if (creditLimit != null) {
 						if(StringUtils.isNotBlank(creditLimit)){
+							if (!Validator.validateCreditLimit(creditLimit)) {
+								throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
+							} else {
 							try{
 								creditLimitparam = Float.parseFloat(creditLimit);
 							} catch(NumberFormatException ex){
 								LogHelper.error(this, "Credit limit value not correct " + ex);
 								throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
 							}
-							
+							}
 						} else if(StringUtils.isBlank(creditLimit)){
 							throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
 						}
