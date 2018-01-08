@@ -129,7 +129,8 @@ paths:
           description: >-
             Values of attributes based on which solr will provide the sorted
             response, like Most Popular(Priority),Rating, New Releases,
-            Brand(a-z)(z-a) but need to pass EquipmentMake to api, MonthlyPrice(lo-hi)(hi-lo)(Need to pass RecurringCharge).
+            Brand(a-z)(z-a) but need to pass EquipmentMake to api,
+            MonthlyPrice(lo-hi)(hi-lo)(Need to pass RecurringCharge).
           required: true
           type: string
         - name: journeyType
@@ -475,12 +476,16 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/Error'
-  /devices/catalogue/subscription/{ctn}/upgrade/recommendedPackages:
+  '/devices/catalogue/subscription/{ctn}/upgrade/recommendedPackages':
     get:
       summary: >-
-        Added as part of sprint 7.1 to get the list of package recommendations based on the the response from recommendation engine (currently Chrodiant)
+        Added as part of sprint 7.1 to get the list of package recommendations
+        based on the the response from recommendation engine (currently
+        Chrodiant)
       description: >-
-        This service evaluates the soource package for the CTN from GIPL and get recommended packages by invoking GetRecommendedPromotionList TIL call and enhance the product information from Solr.
+        This service evaluates the soource package for the CTN from GIPL and get
+        recommended packages by invoking GetRecommendedPromotionList TIL call
+        and enhance the product information from Solr.
       operationId: CAT_020_GetRECOMMENDEDPACKAGES
       parameters:
         - name: ctn
@@ -490,19 +495,23 @@ paths:
           type: string
         - name: brandPreference
           in: query
-          description: brand preference that will be passed to TIL. Default value will be all. Example - all/apple.
+          description: >-
+            brand preference that will be passed to TIL. Default value will be
+            all. Example - all/apple.
           required: false
           type: string
         - name: eligibilityType
           in: query
           description: >-
-            Upgrade Eligibility Type, Example = Normal/ SimoFlex. This should be the value returned from CheckRetentionEligibility.
+            Upgrade Eligibility Type, Example = Normal/ SimoFlex. This should be
+            the value returned from CheckRetentionEligibility.
           required: true
           type: string
         - name: offset
           in: query
           description: >-
-            number of recommendation packages , to be passed to GRPL .Default value is 3 if not set .
+            number of recommendation packages , to be passed to GRPL .Default
+            value is 3 if not set .
           required: false
           type: string
         - name: offerCode
@@ -511,7 +520,7 @@ paths:
           required: false
           type: string
       tags:
-        - DeviceTile, Upgrade, Recommendations
+        - 'DeviceTile, Upgrade, Recommendations'
       responses:
         '200':
           description: Success
@@ -611,7 +620,6 @@ definitions:
         $ref: '#/definitions/BundlePrice'
       hardwarePrice:
         $ref: '#/definitions/HardwarePrice'
-  
   PackageBundle:
     type: object
     properties:
@@ -935,6 +943,9 @@ definitions:
       footNote:
         type: string
         description: A foot note to the specification
+      hideInList:
+        type: string
+        description: A hiden note to the specification
   MediaLink:
     type: object
     properties:
@@ -1120,7 +1131,9 @@ definitions:
         description: Is the device pre-orderable as per MEF
       availableFrom:
         type: string
-        description: Available from date of the product as provided in the product catalogue  
+        description: >-
+          Available from date of the product as provided in the product
+          catalogue
       isAffordable:
         type: boolean
         description: >-

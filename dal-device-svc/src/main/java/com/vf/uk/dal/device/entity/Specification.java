@@ -1,15 +1,12 @@
 package com.vf.uk.dal.device.entity;
 
 import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
 /**
  * Specification
  */
-
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
 
 public class Specification   {
   @JsonProperty("name")
@@ -38,6 +35,9 @@ public class Specification   {
 
   @JsonProperty("footNote")
   private String footNote = null;
+
+  @JsonProperty("hideInList")
+  private String hideInList = null;
 
   public Specification name(String name) {
     this.name = name;
@@ -219,6 +219,26 @@ public class Specification   {
     this.footNote = footNote;
   }
 
+  public Specification hideInList(String hideInList) {
+    this.hideInList = hideInList;
+    return this;
+  }
+
+   /**
+   * A hiden note to the specification
+   * @return hideInList
+  **/
+  @ApiModelProperty(value = "A hiden note to the specification")
+
+
+  public String getHideInList() {
+    return hideInList;
+  }
+
+  public void setHideInList(String hideInList) {
+    this.hideInList = hideInList;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -237,12 +257,13 @@ public class Specification   {
         Objects.equals(this.valueType, specification.valueType) &&
         Objects.equals(this.valueUOM, specification.valueUOM) &&
         Objects.equals(this.description, specification.description) &&
-        Objects.equals(this.footNote, specification.footNote);
+        Objects.equals(this.footNote, specification.footNote) &&
+        Objects.equals(this.hideInList, specification.hideInList);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, value, priority, comparable, isKey, valueType, valueUOM, description, footNote);
+    return Objects.hash(name, value, priority, comparable, isKey, valueType, valueUOM, description, footNote, hideInList);
   }
 
   @Override
@@ -259,6 +280,7 @@ public class Specification   {
     sb.append("    valueUOM: ").append(toIndentedString(valueUOM)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    footNote: ").append(toIndentedString(footNote)).append("\n");
+    sb.append("    hideInList: ").append(toIndentedString(hideInList)).append("\n");
     sb.append("}");
     return sb.toString();
   }
