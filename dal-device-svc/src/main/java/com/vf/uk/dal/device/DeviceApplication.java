@@ -26,7 +26,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Service
 @EnableTransactionManagement
 @EnableAsync
-@EnableSwagger2
+@EnableSwagger2 
 public class DeviceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DeviceApplication.class, args);

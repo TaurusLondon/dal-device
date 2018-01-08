@@ -109,18 +109,24 @@ public class DeviceController {
 				throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 			}
 			if (creditLimit != null) {
-				if (StringUtils.isNotBlank(creditLimit)) {
-					try {
+				if(StringUtils.isNotBlank(creditLimit)){
+					if(!creditLimit.matches("[0-9]")) {
+						throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
+					}
+					if (!Validator.validateCreditLimit(creditLimit)) {
+						throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
+					} else {
+					try{
 						creditLimitParam = Double.parseDouble(creditLimit);
-					} catch (NumberFormatException ex) {
+					} catch(NumberFormatException ex){
 						LogHelper.error(this, "Credit limit value not correct " + ex);
 						throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
 					}
-
-				} else if (StringUtils.isBlank(creditLimit)) {
+					}
+				} else if(StringUtils.isBlank(creditLimit)){
 					throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
 				}
-
+				
 			}
 			if ((StringUtils.isBlank(make) || "\"\"".equals(make))
 					&& (StringUtils.isBlank(model) || "\"\"".equals(model))) {
@@ -331,6 +337,9 @@ public class DeviceController {
 					
 					if (creditLimit != null) {
 						if(StringUtils.isNotBlank(creditLimit)){
+							if(!creditLimit.matches("[0-9]")) {
+								throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
+							}
 							if (!Validator.validateCreditLimit(creditLimit)) {
 								throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
 							} else {
