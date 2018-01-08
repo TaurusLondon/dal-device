@@ -130,6 +130,23 @@ public class Validator {
 		}
 	}
 	
+	public static boolean validateCreditLimit(String creditLimit) {
+		int creditLimitParam = Integer.parseInt(creditLimit);
+		if (creditLimitParam < 0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	public static boolean validateCreditLimitValue(String creditLimit) {
+		if (creditLimit.matches("[0-9]")) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
 	/**
 	 * @author suranjit_kashyap
 	 * @Sprint 6.6 Validator Start
