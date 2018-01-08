@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>com.vf.uk.dal</groupId>
 	<artifactId>dal-device-svc</artifactId>
-	<version>6.6.8</version>
+	<version>7.0.2</version>
 	<packaging>jar</packaging>  
 	<build> 
 		<plugins>
@@ -42,7 +42,7 @@
 			<groupId>com.vf.uk.dal</groupId>
 			<artifactId>dal-core</artifactId>
 			<version>4.5.0</version>
-			<exclusions>
+			<!-- <exclusions>
 				<exclusion>
 					<artifactId>slf4j-log4j12</artifactId>
 					<groupId>org.slf4j</groupId>
@@ -59,7 +59,7 @@
 					<artifactId>log4j-over-slf4j</artifactId>
 					<groupId>org.slf4j</groupId>
 				</exclusion>
-			</exclusions>
+			</exclusions> -->
 		</dependency>
 		<dependency>
 			<groupId>com.vf.uk.dal</groupId>
@@ -255,6 +255,14 @@
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+		 <sonar.coverage.exclusions>
+            **/dao/**,
+            **/utils/DeviceTileCacheDAO.java,
+            **/utils/CohAddressProvider.java,
+            **/utils/CoherenceConnectionProvider.java,
+            **/utils/SolrConnectionProvider.java,
+            **/DeviceApplication.java
+        </sonar.coverage.exclusions>
 	</properties>
 	<!-- Ends here -->
 </project>

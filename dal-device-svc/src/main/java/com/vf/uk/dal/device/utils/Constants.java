@@ -205,6 +205,8 @@ public class Constants {
 	 */
 	public static final String STRING_PAGESIZE="pageSize";
 	public static final String STRING_PAGENUMBER="pageNumber";
+	public static final String STRING_DATA_DEVICE_PAYM="DATA_DEVICE_PAYM";
+	public static final String STRING_DATA_DEVICE_PAYG="DATA_DEVICE_PAYG";
 	
 	/**
 	 * @author suranjit_kashyap

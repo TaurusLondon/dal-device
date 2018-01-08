@@ -121,7 +121,26 @@ public class Validator {
 	
 	public static boolean validateGroupType(String groupType) {
 		if (!groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYM)
-				&& !groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG)) {
+				&& !groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG)
+				&& !groupType.equalsIgnoreCase(Constants.STRING_DATA_DEVICE_PAYM)
+				&& !groupType.equalsIgnoreCase(Constants.STRING_DATA_DEVICE_PAYG)) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	public static boolean validateCreditLimit(String creditLimit) {
+		int creditLimitParam = Integer.parseInt(creditLimit);
+		if (creditLimitParam < 0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	public static boolean validateCreditLimitValue(String creditLimit) {
+		if (creditLimit.matches("[0-9]")) {
 			return false;
 		} else {
 			return true;

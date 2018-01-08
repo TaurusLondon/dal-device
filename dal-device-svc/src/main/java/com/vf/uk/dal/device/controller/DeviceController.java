@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vf.uk.dal.common.context.ServiceContext;
@@ -79,8 +80,12 @@ public class DeviceController {
 	 * @return Device
 	 **/
 	@ExceptionHandler(MissingServletRequestParameterException.class)
-	public void handleMissingParams(MissingServletRequestParameterException ex) {
-	    throw new ApplicationException(ex.getParameterName() + " parameter is missing");
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public com.vf.uk.dal.common.exception.ErrorResponse handleMissingParams(MissingServletRequestParameterException ex) {
+		
+		com.vf.uk.dal.common.exception.ErrorResponse error = new com.vf.uk.dal.common.exception.ErrorResponse(400, "DEVICE_INVALID_INPUT", "Missing mandatory parameter "+ex.getParameterName()); 
+		
+		return error;
 	}
 	@ApiOperation(value = "Get the list of device tiles based on the filter criteria. Pagination also defined", notes = "The service gets the details of the device tiles from coherence based on the filter criteria in the response.", response = DeviceTile.class, responseContainer = "List", tags={ "DeviceTile", })
     @ApiResponses(value = { 
@@ -104,18 +109,24 @@ public class DeviceController {
 				throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 			}
 			if (creditLimit != null) {
-				if (StringUtils.isNotBlank(creditLimit)) {
-					try {
+				if(StringUtils.isNotBlank(creditLimit)){
+					if(!creditLimit.matches("[0-9]")) {
+						throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
+					}
+					if (!Validator.validateCreditLimit(creditLimit)) {
+						throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
+					} else {
+					try{
 						creditLimitParam = Double.parseDouble(creditLimit);
-					} catch (NumberFormatException ex) {
+					} catch(NumberFormatException ex){
 						LogHelper.error(this, "Credit limit value not correct " + ex);
 						throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
 					}
-
-				} else if (StringUtils.isBlank(creditLimit)) {
+					}
+				} else if(StringUtils.isBlank(creditLimit)){
 					throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
 				}
-
+				
 			}
 			if ((StringUtils.isBlank(make) || "\"\"".equals(make))
 					&& (StringUtils.isBlank(model) || "\"\"".equals(model))) {
@@ -185,12 +196,7 @@ public class DeviceController {
 			String deviceId = queryParams.containsKey(DEVICE_ID) ? queryParams.get(DEVICE_ID) : null;
 			String journeyType = queryParams.containsKey(JOURNEY_TYPE) ? queryParams.get(JOURNEY_TYPE) : null;
 			String offerCode = queryParams.containsKey(OFFER_CODE) ? queryParams.get(OFFER_CODE) : null;
-			/*if (StringUtils.isNotBlank(offerCode) && (StringUtils.isBlank(journeyType)
-					|| (StringUtils.isNotBlank(journeyType) && !Validator.validateJourneyType(journeyType)))) {
-
-				LogHelper.info(this, "Required JourneyType with Offercode.");
-				throw new ApplicationException(ExceptionMessages.REQUIRED_JOURNEY_TYPE);
-			}	*/
+			
 			if (deviceId != null) {
 				if(!deviceId.matches("[0-9]{6}")) {
 					LogHelper.error(this, "DeviceId is Invalid");
@@ -331,13 +337,19 @@ public class DeviceController {
 					
 					if (creditLimit != null) {
 						if(StringUtils.isNotBlank(creditLimit)){
+							if(!creditLimit.matches("[0-9]")) {
+								throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
+							}
+							if (!Validator.validateCreditLimit(creditLimit)) {
+								throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
+							} else {
 							try{
 								creditLimitparam = Float.parseFloat(creditLimit);
 							} catch(NumberFormatException ex){
 								LogHelper.error(this, "Credit limit value not correct " + ex);
 								throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
 							}
-							
+							}
 						} else if(StringUtils.isBlank(creditLimit)){
 							throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
 						}
@@ -413,30 +425,6 @@ public class DeviceController {
 			throw new ApplicationException(ExceptionMessages.NULL_OR_EMPTY_GROUP_TYPE);
 
 	}
-
-	/**
-	 * Returns Stock Availability for list of device IDs
-	 * 
-	 * @param groupType.
-	 */
-	/*
-	 * @RequestMapping(value = "/cacheStockAvailability/", method =
-	 * RequestMethod.GET, produces =
-	 * javax.ws.rs.core.MediaType.APPLICATION_JSON) public List<StockInfo>
-	 * getStockAvailabilityForDeviceList() { List<StockInfo>
-	 * stockAvailabilityForGroupType; String
-	 * groupType=getFilterValue(GROUP_TYPE);
-	 * if(StringUtils.isNotBlank(groupType)) {
-	 * if(groupType.equals(Constants.STRING_DEVICE_PAYG) ||
-	 * groupType.equals(Constants.STRING_DEVICE_PAYM) ||
-	 * groupType.equals(Constants.STRING_DEVICE_NEARLY_NEW))
-	 * stockAvailabilityForGroupType =
-	 * deviceService.getStockAvailability(groupType); else throw new
-	 * ApplicationException(ExceptionMessages.INVALID_INPUT_GROUP_TYPE); } else
-	 * { LogHelper.error(this, "Group Type is null or Empty String"); throw new
-	 * ApplicationException(ExceptionMessages.NULL_OR_EMPTY_GROUP_TYPE); }
-	 * return stockAvailabilityForGroupType; }
-	 */
 
 	/**
 	 * 
@@ -544,6 +532,7 @@ public class DeviceController {
 	 * @param deviceId
 	 * @return
 	 */
+	 @ApiIgnore
 	@RequestMapping(value = "/device/", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON })
 	public List<DeviceDetails> getListOfDeviceDetails(@RequestParam Map<String, String> queryParams) {
 
@@ -555,12 +544,7 @@ public class DeviceController {
 			String deviceId = queryParams.containsKey(DEVICE_ID) ? queryParams.get(DEVICE_ID) : null;
 			String journeyType = queryParams.containsKey(JOURNEY_TYPE) ? queryParams.get(JOURNEY_TYPE) : null;
 			String offerCode = queryParams.containsKey(OFFER_CODE) ? queryParams.get(OFFER_CODE) : null;
-			/*if (StringUtils.isNotBlank(offerCode) && (StringUtils.isBlank(journeyType)
-					|| (StringUtils.isNotBlank(journeyType) && !Validator.validateJourneyType(journeyType)))) {
-
-				LogHelper.info(this, "Required JourneyType with Offercode.");
-				throw new ApplicationException(ExceptionMessages.REQUIRED_JOURNEY_TYPE);
-			}*/	
+			
 			if (deviceId != null) {
 				LogHelper.info(this, "Get the list of device details for the device id passed as request params "+deviceId);
 				LogHelper.info(this, "Start -->  calling  getListOfDeviceDetails");
@@ -577,7 +561,7 @@ public class DeviceController {
 		}
 
 	}
-
+@ApiIgnore
 	@RequestMapping(value = "/deviceTile/cacheDeviceTile/{jobId}/status", method = RequestMethod.GET, produces = {
 			MediaType.APPLICATION_JSON })
 	public CacheDeviceTileResponse getCacheDeviceJobStatus(@PathVariable("jobId") String jobId) {

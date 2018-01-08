@@ -53,6 +53,7 @@ import com.vf.uk.dal.device.utils.CommonUtility;
 import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.DaoUtils;
 import com.vf.uk.dal.device.utils.SolrConnectionProvider;
+import com.vf.uk.dal.device.validator.Validator;
 import com.vf.uk.dal.utility.entity.BundleDetails;
 import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
 import com.vf.uk.dal.utility.entity.BundleDeviceAndProductsList;
@@ -156,6 +157,12 @@ public class DeviceServiceImplTest
 				.willReturn(CommonMethods.getPriceForProduct_For_GetAccessoriesForDevice());
 		given(deviceDAOMock.getCommercialProductListFromCommercialProductRepository(Matchers.anyList()))
 		.willReturn(CommonMethods.getCommercialProductsListOfAccessories());
+		
+		given(this.deviceDAOMock.getJourneyTypeCompatibleOfferCodes("journeyType")).willReturn(CommonMethods.getMerChandisingPromotion());
+		ProductGroupFacetModel productGroupFacetModel = CommonMethods.getProductGroupFacetModel();
+		productGroupFacetModel.setListOfProductGroups(CommonMethods.getListOfProductGroupModels());
+		given(this.deviceDAOMock.getProductGroupFacetModelfromSolr(Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any())).willReturn(productGroupFacetModel);
+		
 	}
 	/*@Test
 	public void notNullTestForGetDeviceTileList() {
@@ -836,9 +843,8 @@ public class DeviceServiceImplTest
 		}
 	}
 	@Test
-	public void testGetDeviceListForErrors()
-	{
-		given(this.deviceDAOMock.getJourneyTypeCompatibleOfferCodes("journeyType")).willReturn(CommonMethods.getMerChandisingPromotion());
+	public void testGetDeviceListForErrors(){
+		 
 		try
 		{    
 			deviceService.getDeviceList("productClass", "listOfMake", "model", "groupType", null,2, 2, "capacity", "colour", "operatingSystem", "mustHaveFeatures", "journeyType", (float) 14.0, "offerCode", "msisdn", false);
@@ -887,8 +893,52 @@ public class DeviceServiceImplTest
 									}
 									catch(Exception edfg)
 									{
-										
+										try
+										{
+											deviceService.getDeviceList(null, "listOfMake", "model", "DEVICE_PAYM", "Rating",2, 2, "capacity", "colour", "operatingSystem", "mustHaveFeatures", "conditionalaccept", (float) 14.0, "offerCode", "msisdn", true);
+										}
+										catch(Exception ex)
+										{
+											try
+											{
+												deviceService.getDeviceList("HandsetHandset", "listOfMake", "model", "DEVICE_PAYM", "Rating",2, 2, "capacity", "colour", "operatingSystem", "mustHaveFeatures", "conditionalaccept", (float) 14.0, "offerCode", "msisdn", true);
+											}
+											catch(Exception ex1)
+											{
+												try
+												{
+													deviceService.getDeviceList("Handset", "listOfMake", "model", "DEVICE_PAYMDEVICE_PAYM", "Rating",2, 2, "capacity", "colour", "operatingSystem", "mustHaveFeatures", "conditionalaccept", (float) 14.0, "offerCode", "msisdn", true);
+												}
+												catch(Exception ex2)
+												{
+													try
+													{
+														deviceService.getDeviceList("Handset", "listOfMake", null, "DEVICE_PAYM", "Rating",2, 2, "capacity", "colour", "operatingSystem", "mustHaveFeatures", "conditionalaccept", (float) 14.0, "offerCode", "msisdn", true);
+													}
+													catch(Exception ex3)
+													{
+														try
+														{
+															deviceService.getDeviceList("Handset", "listOfMake", "model", "DEVICE_PAYM", "Rating",2, 2, "capacity", "colour", "operatingSystem", "mustHaveFeatures", null, (float) 14.0, "offerCode", "msisdn", true);
+														}
+														catch(Exception ex4)
+														{
+															try
+															{
+																deviceService.getDeviceList("Handset", "listOfMake", "model", "DEVICE_PAYM", "Rating",2, 2, "capacity", "colour", "operatingSystem", "mustHaveFeatures", "conditionalaccept", (float) 14.0, "offerCode", null, true);
+															}
+															catch(Exception ex5)
+															{
+																
+															}
+														}
+													}	
+												}	
+											}
+											
+										}	
 									}
+									
 								}
 							}
 						}
@@ -1238,6 +1288,25 @@ public class DeviceServiceImplTest
 		productLinesList.add(Constants.STRING_MBB_SELLABLE);
 		Assert.assertNotNull(CommonUtility.isValidBundleForProduct(CommonMethods.getUtilityPriceForBundleAndHardware(),
 				 commercialBundleMap,productLinesList,Acquistion));
+	}
+	
+	@Test
+	public void getBundlePriceBasedOnDiscountDuration_Implementation(){
+		DeviceSummary deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile((long)1, CommonMethods.getCommercialProduct(),CommonMethods.getCommercialBundle(),CommonMethods.getPriceForBundleAndHardware().get(0),CommonMethods.getListOfBundleAndHardwarePromotions(),null, false,null);
+		deviceService.getBundlePriceBasedOnDiscountDuration_Implementation(deviceSummary,"full_duration");
+		deviceService.getBundlePriceBasedOnDiscountDuration_Implementation(deviceSummary,"limited_time");
+	}
+	@Test
+	public void validatorTest(){
+		Validator.validateGroupType("DEVICE_PAYM");
+		Validator.validateGroupType("DEVICE_PAYM1");
+		Validator.validateMSISDN("12331354");
+		Validator.validateMSISDN("AS46");
+		Validator.validateIncludeRecommendation("true");
+		Validator.validateIncludeRecommendation("FALSE");
+		Validator.validateGetListOfDeviceTile(new HashMap());
+		Validator.validateGetDeviceList(new HashMap());
+		Validator.validateJourneyType("acquisition");
 	}
 	
 }
