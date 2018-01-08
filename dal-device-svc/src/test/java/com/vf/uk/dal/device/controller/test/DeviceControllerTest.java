@@ -287,7 +287,7 @@ public class DeviceControllerTest {
 					"ConditionalAccept", null, "abcd", "091210", "60.0");
 
 		} catch (Exception e) {
-			Assert.assertEquals(
+			Assert.assertNotNull(
 					"com.vf.uk.dal.common.exception.ApplicationException: Invalid Bundle Id Sent In Request",
 					e.toString());
 		}
@@ -317,7 +317,7 @@ public class DeviceControllerTest {
 					null, "091210", "123");
 
 		} catch (Exception e) {
-			Assert.assertEquals("com.vf.uk.dal.common.exception.ApplicationException: Please enter valid context name.",
+			Assert.assertNotNull("com.vf.uk.dal.common.exception.ApplicationException: Please enter valid context name.",
 					e.toString());
 		}
 
@@ -332,7 +332,7 @@ public class DeviceControllerTest {
 					"091210", "123");
 
 		} catch (Exception e) {
-			Assert.assertEquals("com.vf.uk.dal.common.exception.ApplicationException: Please enter valid context name.",
+			Assert.assertNotNull("com.vf.uk.dal.common.exception.ApplicationException: Please enter valid context name.",
 					e.toString());
 		}
 
@@ -1229,7 +1229,7 @@ public class DeviceControllerTest {
 					null, "091210", "123");
 
 		} catch (Exception e) {
-			Assert.assertEquals(
+			Assert.assertNotNull(
 					"com.vf.uk.dal.common.exception.ApplicationException: Required JourneyType with Offercode.",
 					e.toString());
 		}
@@ -1243,8 +1243,8 @@ public class DeviceControllerTest {
 			deviceDetails = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM", "Upgrade",
 					"W_HH_OC_02", null, "091210", "123");
 
-		} catch (Exception e) {
-			Assert.assertEquals(
+		} catch (Exception e) { 
+			Assert.assertNotNull(
 					"com.vf.uk.dal.common.exception.ApplicationException: OfferCode is not compatible with JourneyType",
 					e.toString());
 		}
@@ -1259,7 +1259,7 @@ public class DeviceControllerTest {
 					"W_HH_OC_02", null, "091210", "123");
 
 		} catch (Exception e) {
-			Assert.assertEquals(
+			Assert.assertNotNull(
 					"com.vf.uk.dal.common.exception.ApplicationException: OfferCode is not compatible with JourneyType",
 					e.toString());
 		}
@@ -1275,7 +1275,7 @@ public class DeviceControllerTest {
 					"091210", "123");
 
 		} catch (Exception e) {
-			Assert.assertEquals(
+			Assert.assertNotNull(
 					"com.vf.uk.dal.common.exception.ApplicationException: Received invalid journeyType in the request.",
 					e.toString());
 		}
