@@ -532,6 +532,7 @@ public class DeviceController {
 	 * @param deviceId
 	 * @return
 	 */
+	 @ApiIgnore
 	@RequestMapping(value = "/device/", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON })
 	public List<DeviceDetails> getListOfDeviceDetails(@RequestParam Map<String, String> queryParams) {
 
@@ -560,7 +561,7 @@ public class DeviceController {
 		}
 
 	}
-
+@ApiIgnore
 	@RequestMapping(value = "/deviceTile/cacheDeviceTile/{jobId}/status", method = RequestMethod.GET, produces = {
 			MediaType.APPLICATION_JSON })
 	public CacheDeviceTileResponse getCacheDeviceJobStatus(@PathVariable("jobId") String jobId) {

@@ -1,7 +1,9 @@
 spring:
   application:
     name: DEVICES-V1
-
+info:
+  build:
+    version: @project.version@
 server:
   contextPath: /devices/catalogue
   port: 8080
@@ -66,3 +68,5 @@ icp:
     enableLogStreaming: false
   security:
     enabled: true
+   
+
