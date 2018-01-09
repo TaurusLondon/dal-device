@@ -1131,6 +1131,8 @@ public class DeviceControllerTest {
 	@Test
 	public void notNullTestForgetListOfDeviceDetails() {
 		List<DeviceDetails> deviceDetails;
+		given(deviceDAOMock.getPriceForBundleAndHardware(Matchers.anyList(), Matchers.anyString(),
+				Matchers.anyString())).willReturn(CommonMethods.getPriceForBundleAndHardwareListFromTupleList());
 		deviceDetails = deviceController
 				.getListOfDeviceDetails(CommonMethods.getQueryParamsMapForDeviceDetails("093353"));
 		Assert.assertNotNull(deviceDetails);
