@@ -26,6 +26,11 @@ public class BundlePrice   {
   @JsonProperty("merchandisingPromotions")
   private MerchandisingPromotion merchandisingPromotions = null;
 
+  /**
+   * 
+   * @param bundleId
+   * @return
+   */
   public BundlePrice bundleId(String bundleId) {
     this.bundleId = bundleId;
     return this;

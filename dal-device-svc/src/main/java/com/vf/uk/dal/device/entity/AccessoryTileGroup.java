@@ -11,7 +11,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
-
+/**
+ * 
+ * AccessoryTileGroup
+ *
+ */
 public class AccessoryTileGroup   {
   @JsonProperty("groupName")
   private String groupName = null;

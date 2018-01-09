@@ -122,8 +122,7 @@ public class DeviceDaoImpl implements DeviceDao {
 
 		List<DeviceTile> listOfDeviceTile;
 		Long memberPriority = null;
-		if (commercialProduct != null && commercialProduct.getId() != null && commercialProduct.getIsDeviceProduct()
-				&& (commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)
+		if (commercialProduct != null && commercialProduct.getId() != null && commercialProduct.getIsDeviceProduct() && (commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)
 						|| commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_DATA_DEVICE))) {
 			listOfDeviceTile = new ArrayList<>();
 			DeviceTile deviceTile = new DeviceTile();
@@ -319,9 +318,9 @@ public class DeviceDaoImpl implements DeviceDao {
 
 	/**
 	 * Identifies members based on the validation rules.
-	 * 
-	 * @param listOfDeviceGroupMembers
-	 * @return leadDeviceSkuId
+	 * @param listOfDeviceGroupMember
+	 * @param journeyType
+	 * @return
 	 */
 	public String getMemeberBasedOnRules(List<com.vf.uk.dal.device.entity.Member> listOfDeviceGroupMember,
 			String journeyType) {
@@ -340,9 +339,9 @@ public class DeviceDaoImpl implements DeviceDao {
 
 	/**
 	 * validates the member based on the memberId.
-	 * 
 	 * @param memberId
-	 * @return memberFlag
+	 * @param journeyType
+	 * @return
 	 */
 	public Boolean validateMemeber(String memberId, String journeyType) {
 		Boolean memberFlag = false;
@@ -377,6 +376,11 @@ public class DeviceDaoImpl implements DeviceDao {
 
 	}
 
+	/**
+	 * 
+	 * @param memberId
+	 * @return
+	 */
 	public Boolean validateMemeber1(String memberId) {
 		Boolean memberFlag = false;
 		List<String> listOfProduct = new ArrayList<>();
@@ -417,9 +421,8 @@ public class DeviceDaoImpl implements DeviceDao {
 
 	/**
 	 * calculation of price
-	 * 
 	 * @param grossPrice
-	 * @return Price
+	 * @return
 	 */
 	public static Price getPriceFromGross(double grossPrice) {
 		float vatPercentage = Float
@@ -435,10 +438,10 @@ public class DeviceDaoImpl implements DeviceDao {
 
 	/**
 	 * Date validation
-	 * 
 	 * @param startDateTime
 	 * @param endDateTime
-	 * @return flag
+	 * @param strDateFormat
+	 * @return
 	 */
 	public Boolean dateValidationForOffers(String startDateTime, String endDateTime, String strDateFormat) {
 		boolean flag = false;
@@ -493,6 +496,11 @@ public class DeviceDaoImpl implements DeviceDao {
 		return flag;
 	}
 
+	/**
+	 * 
+	 * @param commercialProduct
+	 * @return
+	 */
 	public List<BundleAndHardwareTuple> getListOfPriceForBundleAndHardware(CommercialProduct commercialProduct) {
 
 		BundleAndHardwareTuple bundleAndHardwareTuple;
@@ -601,6 +609,11 @@ public class DeviceDaoImpl implements DeviceDao {
 
 	}
 
+	/**
+	 * 
+	 * @param bundleHeaderForDeviceSorted
+	 * @return
+	 */
 	public List<com.vf.uk.dal.utility.entity.BundleHeader> getAscendingOrderForOneoffPrice(
 			List<com.vf.uk.dal.utility.entity.BundleHeader> bundleHeaderForDeviceSorted) {
 		Collections.sort(bundleHeaderForDeviceSorted, new SortedOneOffPriceList());
@@ -645,7 +658,11 @@ public class DeviceDaoImpl implements DeviceDao {
 		}
 
 	}
-
+/**
+ * 
+ * @param bundleHeaderForDeviceSorted
+ * @return
+ */
 	public List<com.vf.uk.dal.utility.entity.BundleHeader> getAscendingOrderForBundlePrice(
 			List<com.vf.uk.dal.utility.entity.BundleHeader> bundleHeaderForDeviceSorted) {
 		Collections.sort(bundleHeaderForDeviceSorted, new SortedBundlePriceList());
@@ -689,7 +706,11 @@ public class DeviceDaoImpl implements DeviceDao {
 		}
 
 	}
-
+/**
+ * 
+ * @param prioritySorted
+ * @return
+ */
 	public List<com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion> getAscendingOrderForMerchndisingPriority(
 			List<com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion> prioritySorted) {
 		Collections.sort(prioritySorted, new SortedPriorityList());
@@ -716,7 +737,11 @@ public class DeviceDaoImpl implements DeviceDao {
 		}
 
 	}
-
+/**
+ * 
+ * @param variantsList
+ * @return
+ */
 	public List<com.vf.uk.dal.device.entity.Member> getListOfMembers(List<String> variantsList) {
 		com.vf.uk.dal.device.entity.Member member;
 		List<com.vf.uk.dal.device.entity.Member> listOfMember = new ArrayList<>();
@@ -732,7 +757,11 @@ public class DeviceDaoImpl implements DeviceDao {
 		return listOfMember;
 	}
 	
-
+/**
+ * 
+ * @param insurances
+ * @return
+ */
 	public Insurances getFormattedPriceForGetCompatibleInsurances(Insurances insurances) {
 
 		if (insurances.getInsuranceList() != null && !insurances.getInsuranceList().isEmpty()) {
@@ -756,6 +785,11 @@ public class DeviceDaoImpl implements DeviceDao {
 		return insurances;
 	}
 
+	/**
+	 * 
+	 * @param price
+	 * @return
+	 */
 	public String FormatPrice(String price) {
 		if (price.contains(".")) {
 			String[] decimalSplit = price.split("\\.");
@@ -811,9 +845,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		return jsonObject;
 	}
 
-	/**
-	 * 
-	 */
+	
 	@Override
 	public com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion getMerchandisingPromotionByPromotionName(
 			String promotionName) {
@@ -828,9 +860,6 @@ public class DeviceDaoImpl implements DeviceDao {
 		return merchandisingPromotion;
 	}
 
-	/**
-	 * 
-	 */
 	@Override
 	public List<Group> getProductGroupsByType(String groupType) {
 		try {

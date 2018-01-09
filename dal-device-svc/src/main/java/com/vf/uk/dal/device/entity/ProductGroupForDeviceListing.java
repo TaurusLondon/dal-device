@@ -2,6 +2,11 @@ package com.vf.uk.dal.device.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * 
+ * ProductGroupForDeviceListing
+ *
+ */
 public class ProductGroupForDeviceListing {
 	@JsonProperty("groupId")
 	  private String groupId = null;

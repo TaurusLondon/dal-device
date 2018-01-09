@@ -85,6 +85,18 @@ public class DeviceController {
 		return new com.vf.uk.dal.common.exception.ErrorResponse(400, "DEVICE_INVALID_INPUT", "Missing mandatory parameter "+ex.getParameterName()); 
 		
 	}
+	/**
+	 * 
+	 * @param make
+	 * @param model
+	 * @param groupType
+	 * @param journeyType
+	 * @param offerCode
+	 * @param bundleId
+	 * @param deviceId
+	 * @param creditLimit
+	 * @return
+	 */
 	@ApiOperation(value = "Get the list of device tiles based on the filter criteria. Pagination also defined", notes = "The service gets the details of the device tiles from coherence based on the filter criteria in the response.", response = DeviceTile.class, responseContainer = "List", tags={ "DeviceTile", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Success", response = DeviceTile.class, responseContainer = "List"),
@@ -147,9 +159,11 @@ public class DeviceController {
 
 	/**
 	 * Handles requests for getDeviceDetails Service with input as deviceId.
-	 * 
-	 * @return DeviceDetails
-	 **/
+	 * @param deviceId
+	 * @param journeyType
+	 * @param offerCode
+	 * @return
+	 */
 	@ApiOperation(value = "Get the device details for the given device Id", notes = "The service gets the details of the device specially price, equipment, specification, features, merchandising, etc in the response.", response = DeviceDetails.class, tags={ "Device", })
     @RequestMapping(value = "/device/{deviceId}", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	@ApiResponses(value = { 
@@ -177,9 +191,9 @@ public class DeviceController {
 
 	/**
 	 * Handles requests for getDeviceTile Service with input as deviceId.
-	 * 
-	 * @return List<DeviceTile>
-	 **/
+	 * @param queryParams
+	 * @return
+	 */
 	@ApiIgnore
 	@RequestMapping(value = "/deviceTile/queries/byDeviceVariant/", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	public List<DeviceTile> getDeviceTileById(@RequestParam Map<String, String> queryParams) {
@@ -209,10 +223,8 @@ public class DeviceController {
 
 	/**
 	 * Handles requests for GetProductList Service with input as SIMO in URL as
-	 * query.
-	 * 
-	 * @return List<ProductGroup>
-	 **/
+	 * @return
+	 */
 	@ApiIgnore
 	@RequestMapping(value = "/productGroup", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	public List<ProductGroup> getProductGroup() {
@@ -226,11 +238,12 @@ public class DeviceController {
 	}
 
 	/**
-	 * Handles requests for getComaptibleAccessories Service with input as
-	 * deviceId.
-	 * 
-	 * @return List<Accessory>
-	 **/
+	 * Handles requests for getComaptibleAccessories Service with input as deviceId.
+	 * @param deviceId
+	 * @param journeyType
+	 * @param offerCode
+	 * @return
+	 */
 	@ApiOperation(value = "Get compatible accessory details for the given device Id", notes = "The service gets the details of compatible accessory along with the necessary information in the response.", response = AccessoryTileGroup.class, responseContainer = "List", tags={ "AccessoryTileGroup", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Success", response = AccessoryTileGroup.class, responseContainer = "List"),
@@ -257,11 +270,26 @@ public class DeviceController {
 		
 	}
 			
-			/**
-			 * Handles requests for getDeviceList Service .
-			 * 
-			 * @return FacetedDevice
-			 * **/
+		/**
+		 * Handles requests for getDeviceList Service
+		 * @param productClass
+		 * @param groupType
+		 * @param sort
+		 * @param pageNumber
+		 * @param pageSize
+		 * @param make
+		 * @param model
+		 * @param color
+		 * @param operatingSystem
+		 * @param capacity
+		 * @param msisdn
+		 * @param mustHaveFeatures
+		 * @param journeyType
+		 * @param includeRecommendations
+		 * @param offerCode
+		 * @param creditLimit
+		 * @return
+		 */
 	 @ApiOperation(value = "Get the list of devices based on the filter criteria, like productGroup brand Name. Pagination, sorting, filteration also defined", notes = "The service gets the details of the device list from Solr based on the filter criteria in the response.", response = FacetedDevice.class, tags={ "DeviceTile", })
 	    @ApiResponses(value = { 
 	        @ApiResponse(code = 200, message = "Success", response = FacetedDevice.class),
@@ -357,12 +385,12 @@ public class DeviceController {
 			return facetedDevice;
 	}
 
-	/*
+	/**
 	 * Handles requests for getInsuranceById Service with input as deviceId.
-	 * 
-	 * @return insurance
+	 * @param deviceId
+	 * @param journeyType
+	 * @return
 	 */
-	 
 			 @ApiOperation(value = "Get the list of insurance", notes = "The service gets the details of insurance available with device.", response = Insurances.class, tags={ "Insurances", })
 			    @ApiResponses(value = { 
 			        @ApiResponse(code = 200, message = "Success", response = Insurances.class),
@@ -389,10 +417,9 @@ public class DeviceController {
 		
 	}
 
-	/*
+	/**
 	 * Saves the details of the devices into database
-	 * 
-	 * @param groupType.
+	 * @return
 	 */
 			 @ApiIgnore
 	@RequestMapping(value = "/deviceTile/cacheDeviceTile", method = RequestMethod.POST, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
@@ -518,8 +545,7 @@ public class DeviceController {
 
 	/**
 	 * Returns List of Device details for the given List of devices
-	 * 
-	 * @param deviceId
+	 * @param queryParams
 	 * @return
 	 */
 	 @ApiIgnore
@@ -551,6 +577,11 @@ public class DeviceController {
 		}
 
 	}
+/**
+ * 
+ * @param jobId
+ * @return
+ */
 @ApiIgnore
 	@RequestMapping(value = "/deviceTile/cacheDeviceTile/{jobId}/status", method = RequestMethod.GET, produces = {
 			MediaType.APPLICATION_JSON })
