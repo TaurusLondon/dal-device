@@ -177,22 +177,6 @@ public class DaoUtils {
 			}
 		}
 
-		// Offer Packs
-		/*MediaLink mediaEntertainmentLink;
-		if (listOfOfferPacks != null && !listOfOfferPacks.isEmpty()) {
-			for (OfferPacks entertainmentPacks : listOfOfferPacks) {
-				if (entertainmentPacks.getMediaLinkList() != null && !entertainmentPacks.getMediaLinkList().isEmpty()) {
-					for (MediaLink link : entertainmentPacks.getMediaLinkList()) {
-						mediaEntertainmentLink = new MediaLink();
-						mediaEntertainmentLink.setId(link.getId());
-						mediaEntertainmentLink.setType(link.getType());
-						mediaEntertainmentLink.setValue(link.getValue());
-						mediaEntertainmentLink.setPriority(link.getPriority());
-						merchandisingMedia.add(mediaEntertainmentLink);
-					}
-				}
-			}
-		}*/
 		/**
 		 * @author manoj.bera
 		 * @Sprint 6.4
@@ -217,10 +201,6 @@ public class DaoUtils {
 
 		// MediaLink for PricePromotions
 		if (priceforBundleAndHardware != null ) {
-			//for (PriceForBundleAndHardware priceforBundleAndHardware : listOfPriceForBundleAndHardware) {
-				/*if (priceforBundleAndHardware != null && priceforBundleAndHardware.getHardwarePrice() != null
-						&& priceforBundleAndHardware.getHardwarePrice().getHardwareId()
-								.equalsIgnoreCase(commercialProduct.getId())) {*/
 
 					// Hardware Promotion
 					MerchandisingPromotion merchPromoForHardware = priceforBundleAndHardware.getHardwarePrice()
@@ -302,19 +282,6 @@ public class DaoUtils {
 				//}
 			//}
 		}
-
-		/*
-		 * Looping to check if any null values in Merchandising Media List
-		 */
-		/*List<MediaLink> finalListOfMediaLink = new ArrayList<>();
-		if (merchandisingMedia != null && !merchandisingMedia.isEmpty()) {
-			for (MediaLink merchandisingMediaLink : merchandisingMedia) {
-				if (merchandisingMediaLink != null && merchandisingMediaLink.getValue() != null
-						&& !"".equals(merchandisingMediaLink.getValue())) {
-					finalListOfMediaLink.add(merchandisingMediaLink);
-				}
-			}
-		}*/
 
 		deviceSummary.setMerchandisingMedia(merchandisingMedia);
 
@@ -460,21 +427,7 @@ public class DaoUtils {
 			}
 		}
 
-		// Offer Packs
-		/*MediaLink mediaEntertainmentLink;
-		if (listOfOfferPacks != null && !listOfOfferPacks.isEmpty()) {
-			for (OfferPacks entertainmentPacks : listOfOfferPacks) {
-				if (entertainmentPacks.getMediaLinkList() != null && !entertainmentPacks.getMediaLinkList().isEmpty()) {
-					for (MediaLink link : entertainmentPacks.getMediaLinkList()) {
-						mediaEntertainmentLink = new MediaLink();
-						mediaEntertainmentLink.setId(link.getId());
-						mediaEntertainmentLink.setType(link.getType());
-						mediaEntertainmentLink.setValue(link.getValue());
-						merchandisingMedia.add(mediaEntertainmentLink);
-					}
-				}
-			}
-		}*/
+		
 		/**
 		 * @author manoj.bera
 		 * I called promotion API
@@ -497,18 +450,6 @@ public class DaoUtils {
 			List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccForHardwares=promotions.getFreeAccForHardware();
 			merchandisingMedia.addAll(CommonUtility.getMediaListForBundleAndHardware(entertainmentPacks, dataAllowances, planCouplingPromotions, sash, secureNet, sashBannerForHardware, freeExtras, freeAccessories, freeExtrasForPlans, freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares));
 		}
-		/*
-		 * Looping to check if any null values in Merchandising Media List
-		 */
-		/*List<MediaLink> finalListOfMediaLink = new ArrayList<>();
-		if (merchandisingMedia != null && !merchandisingMedia.isEmpty()) {
-			for (MediaLink merchandisingMediaLink : merchandisingMedia) {
-				if (merchandisingMediaLink != null && merchandisingMediaLink.getValue() != null
-						&& !"".equals(merchandisingMediaLink.getValue())) {
-					finalListOfMediaLink.add(merchandisingMediaLink);
-				}
-			}
-		}*/
 
 		List<com.vodafone.product.pojo.Group> listOfSpecificationGroups = cohProduct.getSpecificationGroups();
 		List<Specification> listOfSpecification;
@@ -819,26 +760,8 @@ public class DaoUtils {
 				 * @author manoj.bera below for loop not required Null check
 				 *         done before
 				 */
-				/*
-				 * List<MediaLink> finalListOfMediaLink = new ArrayList<>(); if
-				 * (merchandisingMedia != null && !merchandisingMedia.isEmpty())
-				 * { for (MediaLink merchandisingMediaLink : merchandisingMedia)
-				 * { if (merchandisingMediaLink != null &&
-				 * merchandisingMediaLink.getValue() != null &&
-				 * !"".equals(merchandisingMediaLink.getValue())) {
-				 * finalListOfMediaLink.add(merchandisingMediaLink); } } }
-				 */
+				
 				accessory.setMerchandisingMedia(merchandisingMedia);
-				/*
-				 * Price price; price = new Price();
-				 * 
-				 * PriceDetail priceDetail = commercialProduct.getPriceDetail();
-				 * if(priceDetail!=null && priceDetail.getPriceGross()!=null){
-				 * price.setGross(String.valueOf(priceDetail.getPriceGross()));
-				 * price.setNet(String.valueOf(priceDetail.getPriceNet()));
-				 * price.setVat(String.valueOf(priceDetail.getPriceVAT()));
-				 * accessory.setDeviceCost(price); }
-				 */
 
 				List<Attributes> attList = new ArrayList<>();
 				Attributes attribute;
@@ -1123,17 +1046,7 @@ public class DaoUtils {
 					.get("media");
 			productGroupForDeviceListing.setMedia(listOfMedia);
 		}
-		/*
-		 * if (bundleHeaderForDevice != null) {
-		 * com.vf.uk.dal.utility.entity.PriceForBundleAndHardware
-		 * priceForBundleAndHardware = bundleHeaderForDevice .getPriceInfo();
-		 * productGroupForDeviceListing.setLeadPlanId(bundleHeaderForDevice.
-		 * getSkuId()); productGroupForDeviceListing.setPriceInfo(
-		 * getPriceInfoForSolr(priceForBundleAndHardware,
-		 * listOfPriceForBundleAndHardwareWithOfferCode)); } else{ throw new
-		 * ApplicationException(ExceptionMessages.
-		 * NULL_VALUES_FOR_COMPATIBLE_BUNDLES); }
-		 */
+		
 		return productGroupForDeviceListing;
 	}
 
@@ -1312,14 +1225,7 @@ public class DaoUtils {
 		com.vf.uk.dal.utility.solr.entity.PriceInfo priceinfo = new com.vf.uk.dal.utility.solr.entity.PriceInfo();
 		priceinfo.setBundlePrice(bp);
 		priceinfo.setHardwarePrice(hw);
-		/*
-		 * List<OfferAppliedPriceDetails> listOfOfferAppliedPrice = null; if
-		 * (listOfPriceForBundleAndHardwareWithOfferCode != null &&
-		 * !listOfPriceForBundleAndHardwareWithOfferCode.isEmpty()) {
-		 * listOfOfferAppliedPrice = getListOfOfferAppliedPrice(
-		 * listOfPriceForBundleAndHardwareWithOfferCode); }
-		 * priceinfo.setOfferAppliedPrices(listOfOfferAppliedPrice);
-		 */
+		
 		result.put("price", priceinfo);
 		result.put("media", listOfMedia);
 		return result;
@@ -1708,11 +1614,7 @@ public class DaoUtils {
 					if (bundleId != null && !bundleId.isEmpty()) {
 						bundleHeaderForDevice1 = listOfBundelMonthlyPriceForBundleHeader.get(0);
 					}
-					/*
-					 * LogHelper.info(this,
-					 * "List Of product Group For DeviceListing:Inside compatible "
-					 * + bundleHeaderForDevice1);
-					 */
+					
 				}
 			}
 		} catch (Exception e) {
@@ -2241,7 +2143,11 @@ public class DaoUtils {
 							}else{
 								merchandisingControl.setPreorderable(false);
 							}
+						} else {
+							merchandisingControl.setPreorderable(false);
 						}
+						merchandisingControl.setBackorderable(getPreOrBackOderable(productModel.getBackOrderable()));
+						deviceDetails.setMerchandisingControl(merchandisingControl);
 						// Price Info Device
 						boolean offerFlag = false;
 						BundleModel bundleModel = null;
@@ -2843,11 +2749,6 @@ public class DaoUtils {
 						mediaIconLink.setValue(productModel.getImageURLsIcon());
 						mediaList.add(mediaIconLink);
 						}
-						/*MediaLink mediaVideoLink = new MediaLink();
-						mediaVideoLink.setId(MediaConstants.STRING_FOR_IMAGE_VIDEO);
-						mediaVideoLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-						mediaVideoLink.setValue("");
-						mediaList.add(mediaVideoLink);*/
 						
 						if(StringUtils.isNotBlank(productModel.getThreeDSpin())){
 						MediaLink media3DSpinLink = new MediaLink();
@@ -3238,11 +3139,7 @@ public class DaoUtils {
 					if (bundleId != null && !bundleId.isEmpty()) {
 						bundleHeaderForDevice1 = listOfBundelMonthlyPriceForBundleHeader.get(0);
 					}
-					/*
-					 * LogHelper.info(this,
-					 * "List Of product Group For DeviceListing:Inside compatible "
-					 * + bundleHeaderForDevice1);
-					 */
+					
 				}
 			}
 		} catch (Exception e) {

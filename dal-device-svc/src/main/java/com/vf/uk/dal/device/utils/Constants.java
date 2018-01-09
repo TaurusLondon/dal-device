@@ -198,4 +198,18 @@ public class Constants {
 	/**
 	 * Sprint-6.6 End
 	 */
+	
+	/**
+	 * @author suranjit_kashyap 
+	 * @Sprint 6.6 Constants Start
+	 */
+	public static final String STRING_PAGESIZE="pageSize";
+	public static final String STRING_PAGENUMBER="pageNumber";
+	public static final String STRING_DATA_DEVICE_PAYM="DATA_DEVICE_PAYM";
+	public static final String STRING_DATA_DEVICE_PAYG="DATA_DEVICE_PAYG";
+	
+	/**
+	 * @author suranjit_kashyap
+	 * @Sprint 6.6 Constants Start
+	 */
 }

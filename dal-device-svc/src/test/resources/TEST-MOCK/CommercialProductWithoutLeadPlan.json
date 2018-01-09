@@ -1,0 +1,1533 @@
+{
+  "id" : "093353",
+  "order" : 164050,
+  "name" : "Apple iPhone 7 128GB jet black",
+  "productClass" : "Handset",
+  "isServicesProduct" : false,
+  "duration" : {
+    "uom" : null,
+    "starts" : null,
+    "value" : null
+  },
+  "discount" : {
+    "amount" : 0.0,
+    "type" : null
+  },
+  "warranty" : "24 months",
+  "condition" : "Nearly New",
+  "categories" : [ "Apple", "Mobile phones" ],
+  "productLines" : [ "Acc Sol", "Apple Insurance Band A", "Band 4", "Insurance Band A", "Nano", "Non Blackberry", "Postpay Handsets", "Postpay Mobile Phones" ],
+  "priceDetail" : {
+    "priceType" : "one-time",
+    "isInvoiceChargeable" : false,
+    "priceNet" : 540.83,
+    "priceGross" : 649.0,
+    "priceVAT" : 108.17,
+    "vatCode" : 0.2,
+    "priceStartDate" : null,
+    "priceEndDate" : null,
+    "recurrence" : null
+  },
+  "productAllowance" : [ ],
+  "boxPrice" : {
+    "priceNet" : 510.0,
+    "priceGross" : 612.0,
+    "priceVAT" : 102.0
+  },
+  "productAvailability" : {
+    "start" : "2016-09-08",
+    "end" : null,
+    "salesExpired" : false
+  },
+  "productRelationshipList" : [ ],
+  "isDeviceProduct" : true,
+  "inclusiveEligibility" : null,
+  "omniChannelDiscountEligible" : false,
+  "version" : null,
+  "seoCanonical" : "http://www.vodafone.co.uk/mobile/apple/iphone-7",
+  "seoDescription" : "Discover the best deals on the new iPhone 7 from Vodafone. Available on Pay monthly contract in Jet Black, Black, Silver, Gold and Rose Gold",
+  "seoKeywords" : null,
+  "seoIndex" : null,
+  "seoRobots" : null,
+  "productSubClass" : null,
+  "equipment" : {
+    "make" : "apple",
+    "model" : "iphone-7"
+  },
+  "eligibilitySubflow" : null,
+  "allowanceDisplay" : [ ],
+  "ageRestricted" : false,
+  "delivery" : {
+    "classification" : null,
+    "partner" : null,
+    "soaDeliveryMethod" : null,
+    "weekend" : false
+  },
+  "metadataVersion" : null,
+  "displayName" : "Apple iPhone 7",
+  "preDesc" : "12-megapixel camera. Retina HD display. High performance and great battery life. And stereo speakers. This is iPhone 7.",
+  "postDesc" : null,
+  "preDescMobile" : null,
+  "postDescMobile" : null,
+  "listOfimageURLs" : [ {
+    "imageName" : "PR_IMAGE_URLS_THUMBS_FRONT",
+    "imageURL" : "/images/desktop/Apple_iPhone_7_Jet_Black_WS2-thumbs-front.png"
+  }, {
+    "imageName" : "PR_IMAGE_URLS_THUMBS_LEFT",
+    "imageURL" : null
+  }, {
+    "imageName" : "PR_IMAGE_URLS_THUMBS_RIGHT",
+    "imageURL" : null
+  }, {
+    "imageName" : "PR_IMAGE_URLS_THUMBS_SIDE",
+    "imageURL" : "/images/desktop/Apple_iPhone_7_Jet_Black_WS2-thumbs-side.png"
+  }, {
+    "imageName" : "PR_IMAGE_URLS_THUMBS_BACK",
+    "imageURL" : "/images/desktop/Apple_iPhone_7_Jet_Black_WS2-thumbs-back.png"
+  }, {
+    "imageName" : "PR_IMAGE_URLS_FULL_HERO",
+    "imageURL" : "/images/desktop/Apple_iPhone_7_Jet_Black_WS2-full-product-front.png"
+  }, {
+    "imageName" : "PR_IMAGE_URLS_FULL_FRONT",
+    "imageURL" : "/images/desktop/Apple_iPhone_7_Jet_Black_WS2-full-product-front.png"
+  }, {
+    "imageName" : "PR_IMAGE_URLS_FULL_LEFT",
+    "imageURL" : null
+  }, {
+    "imageName" : "PR_IMAGE_URLS_FULL_RIGHT",
+    "imageURL" : null
+  }, {
+    "imageName" : "PR_IMAGE_URLS_FULL_SIDE",
+    "imageURL" : "/images/desktop/Apple_iPhone_7_Jet_Black_WS2-full-product-side.png"
+  }, {
+    "imageName" : "PR_IMAGE_URLS_FULL_BACK",
+    "imageURL" : "/images/desktop/Apple_iPhone_7_Jet_Black_WS2-full-product-back.png"
+  }, {
+    "imageName" : "PR_IMAGE_URLS_GRID",
+    "imageURL" : "/images/desktop/Apple_iPhone_7_Jet_Black_WS2-grid-product-front.png"
+  }, {
+    "imageName" : "PR_IMAGE_URLS_SMALL",
+    "imageURL" : null
+  }, {
+    "imageName" : "PR_IMAGE_URLS_STICKER",
+    "imageURL" : null
+  }, {
+    "imageName" : "PR_IMAGE_URLS_ICON",
+    "imageURL" : null
+  }, {
+    "imageName" : "PR_IMAGE_URLS_THUMBS_MRKTING1",
+    "imageURL" : null
+  }, {
+    "imageName" : "PR_IMAGE_URLS_THUMBS_MRKTING2",
+    "imageURL" : null
+  }, {
+    "imageName" : "PR_IMAGE_URLS_THUMBS_MRKTING3",
+    "imageURL" : null
+  }, {
+    "imageName" : "PR_IMAGE_URLS_THUMBS_FRNTANGLE",
+    "imageURL" : null
+  }, {
+    "imageName" : "PR_IMAGE_URLS_THUMBS_BACKANGLE",
+    "imageURL" : null
+  }, {
+    "imageName" : "PR_IMAGE_URLS_FULL_MARKETING1",
+    "imageURL" : null
+  }, {
+    "imageName" : "PR_IMAGE_URLS_FULL_MARKETING2",
+    "imageURL" : null
+  }, {
+    "imageName" : "PR_IMAGE_URLS_FULL_MARKETING3",
+    "imageURL" : null
+  }, {
+    "imageName" : "PR_IMAGE_URLS_FULL_FRONTANGLE",
+    "imageURL" : null
+  }, {
+    "imageName" : "PR_IMAGE_URLS_FULL_BACKANGLE",
+    "imageURL" : null
+  } ],
+  "listOfmediaURLs" : [ {
+    "mediaName" : "PR_MEDIA_URLS_VIDEO",
+    "mediaURL" : null
+  }, {
+    "mediaName" : "PR_MEDIA_URLS_3DSPIN",
+    "mediaURL" : null
+  }, {
+    "mediaName" : "PR_MEDIA_URLS_SUPPORT",
+    "mediaURL" : null
+  } ],
+  "listOfhelpURLs" : [ {
+    "url" : "Find out more",
+    "text" : "[!--$VFLinkReplace('http://help.vodafone.co.uk')--]/system/selfservice.controller?CONFIGURATION=1001&PARTITION_ID=1&CMD=STARTPAGE&USERTYPE=1&LANGUAGE=en&COUNTRY=us&requestedPage=DevicePage"
+  } ],
+  "specificationGroups" : [ {
+    "groupName" : "Audio Playback",
+    "priority" : 15,
+    "comparable" : false,
+    "specifications" : [ {
+      "name" : "Audio Playback",
+      "value" : "User-configurable maximum volume limit",
+      "priority" : 2,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    } ],
+    "type" : null
+  }, {
+    "groupName" : "Battery Life",
+    "priority" : 21,
+    "comparable" : true,
+    "specifications" : [ {
+      "name" : "Battery Life",
+      "value" : "Up to 2 hours longer battery life than iPhone 6s",
+      "priority" : 1,
+      "comparable" : true,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    } ],
+    "type" : null
+  }, {
+    "groupName" : "Camera",
+    "priority" : 9,
+    "comparable" : false,
+    "specifications" : [ {
+      "name" : "Camera",
+      "value" : "&#402;/1.8 aperture",
+      "priority" : 3,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    }, {
+      "name" : "Camera",
+      "value" : "12MP camera",
+      "priority" : 2,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    }, {
+      "name" : "Camera",
+      "value" : "Auto HDR for photos",
+      "priority" : 20,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    }, {
+      "name" : "Camera",
+      "value" : "Auto image stabilisation",
+      "priority" : 21,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    }, {
+      "name" : "Camera",
+      "value" : "Autofocus with Focus Pixels",
+      "priority" : 12,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    }, {
+      "name" : "Camera",
+      "value" : "Backside illumination sensor",
+      "priority" : 10,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    }, {
+      "name" : "Camera",
+      "value" : "Body and face detection",
+      "priority" : 17,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    }, {
+      "name" : "Camera",
+      "value" : "Burst mode",
+      "priority" : 22,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    }, {
+      "name" : "Camera",
+      "value" : "Digital zoom up to 5x",
+      "priority" : 4,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    }, {
+      "name" : "Camera",
+      "value" : "Exposure control",
+      "priority" : 18,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    }, {
+      "name" : "Camera",
+      "value" : "Hybrid IR filter",
+      "priority" : 11,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    }, {
+      "name" : "Camera",
+      "value" : "Improved local tone mappin",
+      "priority" : 16,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    }, {
+      "name" : "Camera",
+      "value" : "Live Photos with stabilisation",
+      "priority" : 14,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    }, {
+      "name" : "Camera",
+      "value" : "Noise reduction",
+      "priority" : 19,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    }, {
+      "name" : "Camera",
+      "value" : "Optical image stabilisation",
+      "priority" : 5,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    }, {
+      "name" : "Camera",
+      "value" : "Panorama (up to 63 megapixels)",
+      "priority" : 8,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    }, {
+      "name" : "Camera",
+      "value" : "Photo eotain",
+      "priority" : 24,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    }, {
+      "name" : "Camera",
+      "value" : "Quad-LED True Tone flash",
+      "priority" : 7,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    }, {
+      "name" : "Camera",
+      "value" : "Sapphire crystal lens cover",
+      "priority" : 9,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    }, {
+      "name" : "Camera",
+      "value" : "Six&#8209;element lens",
+      "priority" : 6,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    }, {
+      "name" : "Camera",
+      "value" : "Tap to focus with Focus Pixels",
+      "priority" : 13,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    }, {
+      "name" : "Camera",
+      "value" : "Timer mode",
+      "priority" : 23,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    }, {
+      "name" : "Camera",
+      "value" : "Wide colour capture for photos and Live Photos",
+      "priority" : 15,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    }, {
+      "name" : "Camera megapixel",
+      "value" : "12",
+      "priority" : 25,
+      "comparable" : false,
+      "valueType" : "Integer",
+      "valueUOM" : "MP",
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    }, {
+      "name" : "item",
+      "value" : "Camera",
+      "priority" : 1,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    } ],
+    "type" : null
+  }, {
+    "groupName" : "Capacity",
+    "priority" : 5,
+    "comparable" : false,
+    "specifications" : [ {
+      "name" : "Capacity",
+      "value" : "128",
+      "priority" : 1,
+      "comparable" : false,
+      "valueType" : "Integer",
+      "valueUOM" : "GB",
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    } ],
+    "type" : null
+  }, {
+    "groupName" : "Chip",
+    "priority" : 8,
+    "comparable" : false,
+    "specifications" : [ {
+      "name" : "Chip",
+      "value" : "A10 Fusion chip with 64-bit architecture",
+      "priority" : 1,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Chip",
+      "value" : "M10 motion coprocessor",
+      "priority" : 2,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    } ],
+    "type" : null
+  }, {
+    "groupName" : "Colour",
+    "priority" : 20,
+    "comparable" : true,
+    "specifications" : [ {
+      "name" : "Colour",
+      "value" : "Jet Black",
+      "priority" : 1,
+      "comparable" : true,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Hexvalue",
+      "value" : "#000000",
+      "priority" : 2,
+      "comparable" : true,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Icon",
+      "value" : "Colour",
+      "priority" : 3,
+      "comparable" : true,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "facet-colour",
+      "value" : "Black",
+      "priority" : 4,
+      "comparable" : true,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    } ],
+    "type" : null
+  }, {
+    "groupName" : "Dimensions",
+    "priority" : 1,
+    "comparable" : false,
+    "specifications" : [ {
+      "name" : "Dimensions",
+      "value" : "138.3 x 67.1 x 7.1",
+      "priority" : 1,
+      "comparable" : false,
+      "valueType" : "Double",
+      "valueUOM" : "mm",
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    } ],
+    "type" : null
+  }, {
+    "groupName" : "Display",
+    "priority" : 4,
+    "comparable" : false,
+    "specifications" : [ {
+      "name" : "Display Size",
+      "value" : "4.7",
+      "priority" : 1,
+      "comparable" : false,
+      "valueType" : "Integer",
+      "valueUOM" : "Inch",
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    } ],
+    "type" : null
+  }, {
+    "groupName" : "Display Details",
+    "priority" : 6,
+    "comparable" : false,
+    "specifications" : [ {
+      "name" : "Display",
+      "value" : "1334x750-pixel resolution at 326 ppi",
+      "priority" : 5,
+      "comparable" : false,
+      "valueType" : "Double",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    }, {
+      "name" : "Display",
+      "value" : "1400:1 contrast ratio (typical)",
+      "priority" : 6,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    }, {
+      "name" : "Display",
+      "value" : "4.7-inch (diagonal) LED-backlit widescreen",
+      "priority" : 3,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    }, {
+      "name" : "Display",
+      "value" : "Multi-Touch display with IPS technology",
+      "priority" : 4,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    }, {
+      "name" : "Display",
+      "value" : "Retina HD display",
+      "priority" : 2,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    }, {
+      "name" : "item",
+      "value" : "Display",
+      "priority" : 1,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    } ],
+    "type" : null
+  }, {
+    "groupName" : "FaceTime HD Camera",
+    "priority" : 11,
+    "comparable" : false,
+    "specifications" : [ {
+      "name" : "FaceTime HD Camera",
+      "value" : "&#402;/2.2 aperture",
+      "priority" : 4,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "FaceTime HD Camera",
+      "value" : "1080p HD video recordin",
+      "priority" : 2,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "FaceTime HD Camera",
+      "value" : "7-megapixel photos",
+      "priority" : 1,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "FaceTime HD Camera",
+      "value" : "Auto HDR",
+      "priority" : 6,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "FaceTime HD Camera",
+      "value" : "Auto image stabilisation",
+      "priority" : 9,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "FaceTime HD Camera",
+      "value" : "Backside illumination sensor",
+      "priority" : 7,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "FaceTime HD Camera",
+      "value" : "Body and face detection",
+      "priority" : 8,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "FaceTime HD Camera",
+      "value" : "Burst mode",
+      "priority" : 10,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "FaceTime HD Camera",
+      "value" : "Exposure control",
+      "priority" : 11,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "FaceTime HD Camera",
+      "value" : "Retina Flash",
+      "priority" : 3,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "FaceTime HD Camera",
+      "value" : "Timer mode",
+      "priority" : 12,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "FaceTime HD Camera",
+      "value" : "Wide colour capture for photos and Live Photos",
+      "priority" : 5,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    } ],
+    "type" : null
+  }, {
+    "groupName" : "In the box",
+    "priority" : 19,
+    "comparable" : false,
+    "specifications" : [ {
+      "name" : "In the box",
+      "value" : "Documentation",
+      "priority" : 6,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "In the box",
+      "value" : "EarPods with Lightning Connector",
+      "priority" : 2,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "In the box",
+      "value" : "Lightning to 3.5mm Headphone Jack Adapter",
+      "priority" : 3,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "In the box",
+      "value" : "Lightning to USB Cable",
+      "priority" : 4,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "In the box",
+      "value" : "USB Power Adapter",
+      "priority" : 5,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "In the box",
+      "value" : "iPhone with iOS 10",
+      "priority" : 1,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    } ],
+    "type" : null
+  }, {
+    "groupName" : "Location",
+    "priority" : 13,
+    "comparable" : false,
+    "specifications" : [ {
+      "name" : "Location",
+      "value" : "Assisted GPS and GLONASS",
+      "priority" : 1,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Location",
+      "value" : "Digital compass",
+      "priority" : 2,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Location",
+      "value" : "Mobile data",
+      "priority" : 4,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Location",
+      "value" : "Wi&#8209;Fi",
+      "priority" : 3,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    } ],
+    "type" : null
+  }, {
+    "groupName" : "Operating system",
+    "priority" : 3,
+    "comparable" : false,
+    "specifications" : [ {
+      "name" : "OS",
+      "value" : "iOS",
+      "priority" : 1,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Operating system",
+      "value" : "iOS 10",
+      "priority" : 2,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    } ],
+    "type" : null
+  }, {
+    "groupName" : "Power and Battery",
+    "priority" : 17,
+    "comparable" : false,
+    "specifications" : [ {
+      "name" : "Power and Battery",
+      "value" : "Built-in rechargeable lithium-ion battery",
+      "priority" : 14,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Power and Battery",
+      "value" : "Charging via USB to computer system or power adapter",
+      "priority" : 15,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Power and Battery",
+      "value" : "Internet use:",
+      "priority" : 6,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Power and Battery",
+      "value" : "Standby:",
+      "priority" : 4,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Power and Battery",
+      "value" : "Talk time (wireless):",
+      "priority" : 2,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Power and Battery",
+      "value" : "Up to 10 days",
+      "priority" : 5,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Power and Battery",
+      "value" : "Up to 12 hours on 3G",
+      "priority" : 7,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Power and Battery",
+      "value" : "Up to 12 hours on 4G LTE",
+      "priority" : 8,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Power and Battery",
+      "value" : "Up to 13 hours",
+      "priority" : 11,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Power and Battery",
+      "value" : "Up to 14 hours on 3G",
+      "priority" : 3,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Power and Battery",
+      "value" : "Up to 14 hours on Wi&#8209;Fi",
+      "priority" : 9,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Power and Battery",
+      "value" : "Up to 2 hours longer battery life than iPhone 6s",
+      "priority" : 1,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : "All battery claims depend on network configuration and many other factors; actual results will vary. Battery has limited recharge cycles and may eventually need to be replaced by an Apple service provider. Battery life and charge cycles vary by use and settings. See www.apple.com/uk/batteries and www.apple.com/uk/iphone/battery.html for more information.",
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Power and Battery",
+      "value" : "Up to 40 hours",
+      "priority" : 13,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Power and Battery",
+      "value" : "Wireless audio playback:",
+      "priority" : 12,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Power and Battery",
+      "value" : "Wireless video playback:",
+      "priority" : 10,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    } ],
+    "type" : null
+  }, {
+    "groupName" : "Sensors",
+    "priority" : 18,
+    "comparable" : false,
+    "specifications" : [ {
+      "name" : "Sensors",
+      "value" : "Accelerometer",
+      "priority" : 4,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Sensors",
+      "value" : "Ambient light sensor",
+      "priority" : 6,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Sensors",
+      "value" : "Barometer",
+      "priority" : 2,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Sensors",
+      "value" : "Proximity sensor",
+      "priority" : 5,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Sensors",
+      "value" : "Three-axis gyro",
+      "priority" : 3,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Sensors",
+      "value" : "Touch ID fingerprint sensor",
+      "priority" : 1,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    } ],
+    "type" : null
+  }, {
+    "groupName" : "Siri",
+    "priority" : 16,
+    "comparable" : false,
+    "specifications" : [ {
+      "name" : "Siri",
+      "value" : "Get proactive suggestions",
+      "priority" : 2,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Siri",
+      "value" : "Listen to and identify songs",
+      "priority" : 4,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Siri",
+      "value" : "Use hands-free",
+      "priority" : 3,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Siri",
+      "value" : "Use your voice to send messages, set reminders and more",
+      "priority" : 1,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    } ],
+    "type" : null
+  }, {
+    "groupName" : "Splash, Water and Dust Resistant",
+    "priority" : 7,
+    "comparable" : false,
+    "specifications" : [ {
+      "name" : "Splash, Water and Dust Resistant",
+      "value" : "Rated IP67 under IEC standard 60529",
+      "priority" : 1,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    } ],
+    "type" : null
+  }, {
+    "groupName" : "Touch ID",
+    "priority" : 12,
+    "comparable" : false,
+    "specifications" : [ {
+      "name" : "Touch ID",
+      "value" : "Fingerprint sensor built into the new Home button",
+      "priority" : 1,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    } ],
+    "type" : null
+  }, {
+    "groupName" : "Video Recording",
+    "priority" : 10,
+    "comparable" : false,
+    "specifications" : [ {
+      "name" : "Video Recording",
+      "value" : "1080p HD video recording at 30 fps or 60 fps",
+      "priority" : 2,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Video Recording",
+      "value" : "4K video recording at 30 fps",
+      "priority" : 1,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Video Recording",
+      "value" : "720p HD video recording at 30 fps",
+      "priority" : 3,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Video Recording",
+      "value" : "Body and face detection",
+      "priority" : 11,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Video Recording",
+      "value" : "Cinematic video stabilisation (1080p and 720p)",
+      "priority" : 9,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Video Recording",
+      "value" : "Continuous autofocus video",
+      "priority" : 10,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Video Recording",
+      "value" : "Noise reduction",
+      "priority" : 12,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Video Recording",
+      "value" : "Optical image stabilisation for video",
+      "priority" : 4,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Video Recording",
+      "value" : "Optical zoom at 2x; digital zoom up to 6x (iPhone 7 Plus only)",
+      "priority" : 5,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Video Recording",
+      "value" : "Playback zoom",
+      "priority" : 14,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Video Recording",
+      "value" : "Quad-LED True Tone flash",
+      "priority" : 6,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Video Recording",
+      "value" : "Slo&#8209;mo video support for 1080p at 120 fps and 720p at 240 fps",
+      "priority" : 7,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Video Recording",
+      "value" : "Take 8-megapixel still photos while recording 4K video",
+      "priority" : 13,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Video Recording",
+      "value" : "Time&#8209;lapse video with stabilisation",
+      "priority" : 8,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Video Recording",
+      "value" : "Video eotain",
+      "priority" : 15,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    } ],
+    "type" : null
+  }, {
+    "groupName" : "Video and audio calling",
+    "priority" : 14,
+    "comparable" : false,
+    "specifications" : [ {
+      "name" : "Video and audio calling",
+      "value" : "FaceTime audio6",
+      "priority" : 2,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Video and audio calling",
+      "value" : "FaceTime video calling over Wi&#8209;Fi or a mobile network",
+      "priority" : 1,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : " FaceTime calling requires a FaceTime-enabled device for the caller and recipient and a Wi-Fi connection. Availability over a mobile network depends on carrier policies; data charges may apply.",
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Video and audio calling",
+      "value" : "Voice over LTE (VoLTE)6",
+      "priority" : 3,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    }, {
+      "name" : "Video and audio calling",
+      "value" : "Wi&#8209;Fi calling6",
+      "priority" : 4,
+      "comparable" : false,
+      "valueType" : "Text",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    } ],
+    "type" : null
+  }, {
+    "groupName" : "Weight",
+    "priority" : 2,
+    "comparable" : false,
+    "specifications" : [ {
+      "name" : "Weight",
+      "value" : "138",
+      "priority" : 1,
+      "comparable" : false,
+      "valueType" : "Integer",
+      "valueUOM" : "gms",
+      "footNote" : null,
+      "description" : null,
+      "key" : true
+    } ],
+    "type" : null
+  }, {
+    "groupName" : "keypad",
+    "priority" : 21,
+    "comparable" : false,
+    "specifications" : [ {
+      "name" : "physical keyboard",
+      "value" : "NO",
+      "priority" : 1,
+      "comparable" : false,
+      "valueType" : "Boolean",
+      "valueUOM" : null,
+      "footNote" : null,
+      "description" : null,
+      "key" : false
+    } ],
+    "type" : null
+  } ],
+  "inTheBox" : null,
+  "contentVersion" : null,
+  "productControl" : {
+    "isDisplayableinLife" : false,
+    "isSellableinLife" : false,
+    "isDisplayableAcq" : true,
+    "isSellableRet" : true,
+    "isDisplayableRet" : true,
+    "isSellableAcq" : true,
+    "isDisplayableSavedBasket" : false,
+    "order" : 0,
+    "preOrderable" : true,
+    "availableFrom" : 1483336800000,
+    "backOrderable" : false,
+    "affiliateExport" : false,
+    "compareWith" : null,
+    "backOrderMessage" : null
+  },
+  "productGroups" : {
+    "productGroup" : [ {
+      "productGroupName" : "Apple Airpods",
+      "productGroupRole" : "Compatible Accessories"
+    }, {
+      "productGroupName" : "CompatibleDeliveryMethods_CnC_PremiumDelivery",
+      "productGroupRole" : "Compatible Delivery"
+    }, {
+      "productGroupName" : "Insurance Tier 1 + apple care",
+      "productGroupRole" : "Compatible Insurance"
+    }, {
+      "productGroupName" : "Zagg Glass iPhone 8/7/6",
+      "productGroupRole" : "Compatible Accessories"
+    }, {
+      "productGroupName" : "iPhone 7 Silicone Case mid blue",
+      "productGroupRole" : "Compatible Accessories"
+    } ]
+  },
+  "misc" : {
+    "itemAttribute" : [ {
+      "key" : "USP1",
+      "value" : "4G Ready",
+      "type" : null,
+      "valueUOM" : null
+    }, {
+      "key" : "USP2",
+      "value" : "Seamless Performance",
+      "type" : null,
+      "valueUOM" : null
+    }, {
+      "key" : "USP3",
+      "value" : "Premium Design",
+      "type" : null,
+      "valueUOM" : null
+    }, {
+      "key" : "USP4",
+      "value" : "Ultra Power Saving Mode",
+      "type" : null,
+      "valueUOM" : null
+    } ]
+  },
+  "productPriceOverride" : {
+    "priceNet" : 0.0,
+    "priceGross" : 0.0,
+    "priceVAT" : 0.0
+  },
+  "promoteAs" : {
+    "promotionName" : [ "handset.hardware.percentage", "handset.hardware.percentage.2", "10GB.Iphone.2017", "accessories.conditional.expired", "accessories.conditional.future", "accessory.free.expire", "banner.paym", "voucher.handset.hardware.gbp", "voucher.handset.hardware.percentage" ]
+  },
+  "leadPlanId" : null,
+  "recommendataions" : null,
+  "listOfCompatiblePlanIds" : [ "110348", "110349", "110350", "110074", "109075", "110120", "109076", "110121", "109078", "109079", "110073", "109080", "110375", "110376", "110312", "110313", "110314", "110072", "109077", "110374", "109501", "110122", "110298", "110077", "110078", "110149", "110075", "110076", "110311", "110123", "110124" ],
+  "fastMoving" : true,
+  "stockThresholdLimit" : "10",
+  "listOfEligibleChannels" : [ {
+    "channelName" : "Alexa",
+    "startDate" : null,
+    "endDate" : null
+  }, {
+    "channelName" : "Chatbot",
+    "startDate" : null,
+    "endDate" : null
+  }, {
+    "channelName" : "Youth",
+    "startDate" : null,
+    "endDate" : null
+  }, {
+    "channelName" : "eCare",
+    "startDate" : null,
+    "endDate" : null
+  }, {
+    "channelName" : "eShop",
+    "startDate" : null,
+    "endDate" : null
+  } ],
+  "merchandisingVersion" : null,
+  "implVersion" : 0,
+  "battery" : false,
+  "dataVersion" : 0,
+  "futureData" : null
+}

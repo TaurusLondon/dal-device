@@ -6,9 +6,9 @@ package com.vf.uk.dal.device.utils;
 public class ExceptionMessages 
 {
 	public static final String INVALID_INPUT_MISSING_MAKE_MODEL = "Invalid input request received. Missing make and model in the filter criteria";
-	public static final String NULL_VALUE_GROUP_NAME = "Receieved Null Values for the given product group name";
-	public static final String NULL_VALUE_GROUP_TYPE = "Receieved Null Values for the given product group type";
-	public static final String NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID = "Receieved Null Values for the given device id";
+	public static final String NULL_VALUE_GROUP_NAME = "Received Null Values for the given product group name";
+	public static final String NULL_VALUE_GROUP_TYPE = "Received Null Values for the given product group type";
+	public static final String NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID = "Received Null Values for the given device id";
 	public static final String INVALID_INPUT_MISSING_GROUPNAME = "Invalid input request received. Missing groupName in the filter criteria";
 	public static final String INVALID_INPUT_MISSING_DEVICEID = "Invalid input request received. Missing Device Id";
 	public static final String INVALID_INPUT_MISSING_GROUPTYPE = "Invalid input request received. Missing groupType in the filter criteria";
@@ -20,7 +20,7 @@ public class ExceptionMessages
 	public static final String INVALID_INPUT_MISSING_MAKE = "Invalid input request received. Missing make in the filter criteria";
 	public static final String INVALID_INPUT_MISSING_SORT = "Invalid input request received. Missing Sort in the filter criteria";
 	public static final String INVALID_INPUT_MISSING_MODEL = "Invalid input request received. Missing model in the filter criteria";
-	public static final String NULL_VALUE_FOR_MAKE_AND_MODEL = "Receieved Null Values for the given make and model";
+	public static final String NULL_VALUE_FOR_MAKE_AND_MODEL = "Received Null Values for the given make and model";
 	public static final String NULL_COMPATIBLE_VALUE_FOR_DEVICE_ID = "No Compatible Accessories found for given device Id";
 	public static final String NO_DATA_FOUND_FOR_MAKE = "No Data Found for the Given Make";
 	public static final String NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST = "No Devices Found for the given input search criteria";
@@ -99,5 +99,21 @@ public class ExceptionMessages
 		/*
 		 * Sprint 6.6 End
 		 */
+		
+		/**
+		 * Sprint 6.6
+		 * @author suranjit.kashyap
+		 * Start
+		 */
+			public static final String PROMOTION_API_EXCEPTION = "Promotion API throwing exception while calling";
+			public static final String BAZAARVOICE_RESPONSE_EXCEPTION = "Unable to get expected BazaarVoice API response from Coherence";
+			public static final String INVALID_INCLUDERECOMMENDATION = "Invalid include recommendation value passed";
+			public static final String INVALID_MSISDN = "Invalid MSISDN passed in the request";
+			public static final String PAGESIZE_NEGATIVE_ERROR = "Page Size Value cannot be negative";
+			public static final String PAGENUMBER_NEGATIVE_ERROR = "Page Number Value cannot be negative";
+
+		 /**
+		  * Spring 6.6 End
+		  */
 }
 

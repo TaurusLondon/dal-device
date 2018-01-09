@@ -7,6 +7,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
+import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 
 public class Validator {
@@ -82,4 +83,73 @@ public class Validator {
 		else          
 			return false;    
 		}
+	/**
+	 * @author suranjit_kashyap 
+	 * @Sprint 6.6 Validator Start
+	 */
+	public static boolean validatePageSize(int pageSize) {
+		if (pageSize < 0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	public static boolean validatePageNumber(int pageNumber) {
+		if (pageNumber < 0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	public static boolean validateIncludeRecommendation(String showRecommendations) {
+		if(!showRecommendations.equalsIgnoreCase(Constants.STRING_TRUE) && !showRecommendations.equalsIgnoreCase(Constants.STRING_FALSE)) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	public static boolean validateMSISDN(String msisdn) {
+		if (!msisdn.matches("[0-9]{10}")) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	public static boolean validateGroupType(String groupType) {
+		if (!groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYM)
+				&& !groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG)
+				&& !groupType.equalsIgnoreCase(Constants.STRING_DATA_DEVICE_PAYM)
+				&& !groupType.equalsIgnoreCase(Constants.STRING_DATA_DEVICE_PAYG)) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	public static boolean validateCreditLimit(String creditLimit) {
+		int creditLimitParam = Integer.parseInt(creditLimit);
+		if (creditLimitParam < 0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	public static boolean validateCreditLimitValue(String creditLimit) {
+		if (creditLimit.matches("[0-9]")) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	/**
+	 * @author suranjit_kashyap
+	 * @Sprint 6.6 Validator Start
+	 */
+
 }

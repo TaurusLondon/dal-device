@@ -1,0 +1,80 @@
+[
+      {
+      "bundlePrice":       {
+         "bundleId": "110154",
+         "monthlyPrice":          {
+            "gross": "9.50",
+            "net": "7.92",
+            "vat": "1.58"
+         },
+         "monthlyDiscountPrice":          {
+            "gross": "9.50",
+            "net": "7.92",
+            "vat": "1.58"
+         },
+         "merchandisingPromotions": {
+                  "tag": "handset.full.percentage",
+                  "label": "40% of the plan",
+                  "description": null,
+                  "discountId": "107542",
+                  "mpType": "full_duration",
+                  "priceEstablishedLabel": "Normally",
+                  "priority": 64,
+                  "packageType":                   [
+                     "Acquisition",
+                     "Upgrade",
+                     "SecondLine"
+                  ]
+               }
+      },
+      "hardwarePrice":       {
+         "hardwareId": "093353",
+         "oneOffPrice":          {
+            "gross": "0",
+            "net": "0",
+            "vat": "0"
+         },
+         "oneOffDiscountPrice":          {
+            "gross": "0",
+            "net": "0",
+            "vat": "0"
+         },
+         "merchandisingPromotions": {
+                  "tag": "handset.hardware.percentage.2",
+                  "label": "40% off the phone",
+                  "description": null,
+                  "discountId": null,
+                  "mpType": "hardware_discount",
+                  "priceEstablishedLabel": "Was",
+                  "priority": 84,
+                  "packageType":                   [
+                     "Acquisition",
+                     "Upgrade",
+                     "SecondLine"
+                  ]
+               }
+      },
+      "oneOffPrice":       {
+         "gross": "0",
+         "net": "0",
+         "vat": "0"
+      },
+      "oneOffDiscountPrice":       {
+         "gross": "0",
+         "net": "0",
+         "vat": "0"
+      },
+      "monthlyPrice":       {
+         "gross": "9.50",
+         "net": "7.92",
+         "vat": "1.58"
+      },
+      "monthlyDiscountPrice":       {
+         "gross": "9.50",
+         "net": "7.92",
+         "vat": "1.58"
+      },
+      "stepPrices": [],
+      "accessoryDiscountList": []
+   }
+]

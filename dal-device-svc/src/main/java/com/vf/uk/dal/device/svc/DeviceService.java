@@ -11,6 +11,7 @@ import com.vf.uk.dal.device.entity.Accessory;
 import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.entity.DeviceDetails;
+import com.vf.uk.dal.device.entity.DeviceSummary;
 import com.vf.uk.dal.device.entity.DeviceTile;
 import com.vf.uk.dal.device.entity.FacetedDevice;
 import com.vf.uk.dal.device.entity.Insurances;
@@ -55,4 +56,5 @@ public interface DeviceService {
 	public String getLeadPlanIdForDeviceId(String deviceId);
 	public Boolean validateMemeber(String memberId,String journeyType);
 	Insurances getInsuranceByDeviceId(String deviceId,String journeyType);
+	Double getBundlePriceBasedOnDiscountDuration_Implementation(DeviceSummary deviceSummary, String discountType);
 }

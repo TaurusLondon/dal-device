@@ -178,11 +178,6 @@ public class DeviceServiceImplHelper {
 				}
 
 			}
-			// listOfBundleDetails.forEach(bundleModel -> {
-			// if (listOfLeadPlanIdNew.contains(bundleModel.getBundleId())) {
-			// bundleModelMapNew.put(bundleModel.getBundleId(), bundleModel);
-			// }
-			// });
 
 			listOfProductModelNew.addAll(listOfProductModel);
 		}
