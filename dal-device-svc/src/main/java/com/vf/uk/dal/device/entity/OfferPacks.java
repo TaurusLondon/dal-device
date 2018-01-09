@@ -2,6 +2,11 @@ package com.vf.uk.dal.device.entity;
 
 import java.util.List;
 
+/**
+ * 
+ * OfferPacks
+ *
+ */
 public class OfferPacks {
 	
 	private String bundleId;

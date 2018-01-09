@@ -3,7 +3,11 @@ package com.vf.uk.dal.device.entity;
 import java.util.Objects;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Subscription
+ * 
+ *
+ */
 public class Subscription {
 	private String privateInstalledProductId = null;
 

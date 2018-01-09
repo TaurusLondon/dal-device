@@ -34,6 +34,11 @@ public class DeviceTile   {
   @JsonProperty("deviceSummary")
   private List<DeviceSummary> deviceSummary = null;
 
+  /**
+   * 
+   * @param deviceId
+   * @return
+   */
   public DeviceTile deviceId(String deviceId) {
     this.deviceId = deviceId;
     return this;

@@ -16,8 +16,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 
 /**
+ *  
  * Swagger configuration class for Device API
  * 
+ *
  */
 public class SwaggerConfiguration {
 	@Value("${info.build.version}")

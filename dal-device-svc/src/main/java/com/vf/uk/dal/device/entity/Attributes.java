@@ -23,6 +23,11 @@ public class Attributes   {
   @JsonProperty("valueUOM")
   private String valueUOM = null;
 
+  /**
+   * 
+   * @param key
+   * @return
+   */
   public Attributes key(String key) {
     this.key = key;
     return this;

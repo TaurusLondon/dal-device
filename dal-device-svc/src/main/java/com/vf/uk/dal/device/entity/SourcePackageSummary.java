@@ -4,7 +4,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 /**
- * Source
+ * SourcePackageSummary
  */
 public class SourcePackageSummary   {
   @JsonProperty("promotionId")

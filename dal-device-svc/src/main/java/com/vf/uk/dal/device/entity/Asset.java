@@ -2,7 +2,11 @@ package com.vf.uk.dal.device.entity;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * 
+ * Asset
+ *
+ */
 public class Asset {
 	private String privateInstalledProductId = null;
 

@@ -38,6 +38,11 @@ public class Accessory   {
   @JsonProperty("attributes")
   private List<Attributes> attributes = null;
 
+  /**
+   * 
+   * @param skuId
+   * @return
+   */
   public Accessory skuId(String skuId) {
     this.skuId = skuId;
     return this;

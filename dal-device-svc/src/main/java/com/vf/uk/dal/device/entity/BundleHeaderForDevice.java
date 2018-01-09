@@ -50,6 +50,11 @@ public class BundleHeaderForDevice   {
   @JsonProperty("priceInfo")
   private PriceForBundleAndHardware priceInfo = null;
 
+  /**
+   * 
+   * @param skuId
+   * @return
+   */
   public BundleHeaderForDevice skuId(String skuId) {
     this.skuId = skuId;
     return this;
