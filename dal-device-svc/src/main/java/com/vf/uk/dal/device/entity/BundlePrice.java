@@ -37,15 +37,24 @@ public class BundlePrice   {
   **/
   @ApiModelProperty(value = "Bundle id of the price to be calculated")
 
-
+  /**
+	 * 
+	 * @return
+	 */
   public String getBundleId() {
     return bundleId;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public void setBundleId(String bundleId) {
     this.bundleId = bundleId;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public BundlePrice monthlyPrice(Price monthlyPrice) {
     this.monthlyPrice = monthlyPrice;
     return this;
@@ -58,15 +67,24 @@ public class BundlePrice   {
   @ApiModelProperty(value = "")
 
   @Valid
-
+  /**
+	 * 
+	 * @return
+	 */
   public Price getMonthlyPrice() {
     return monthlyPrice;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public void setMonthlyPrice(Price monthlyPrice) {
     this.monthlyPrice = monthlyPrice;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public BundlePrice monthlyDiscountPrice(Price monthlyDiscountPrice) {
     this.monthlyDiscountPrice = monthlyDiscountPrice;
     return this;
@@ -79,15 +97,24 @@ public class BundlePrice   {
   @ApiModelProperty(value = "")
 
   @Valid
-
+  /**
+	 * 
+	 * @return
+	 */
   public Price getMonthlyDiscountPrice() {
     return monthlyDiscountPrice;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public void setMonthlyDiscountPrice(Price monthlyDiscountPrice) {
     this.monthlyDiscountPrice = monthlyDiscountPrice;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public BundlePrice merchandisingPromotions(MerchandisingPromotion merchandisingPromotions) {
     this.merchandisingPromotions = merchandisingPromotions;
     return this;
@@ -100,11 +127,17 @@ public class BundlePrice   {
   @ApiModelProperty(value = "")
 
   @Valid
-
+  /**
+	 * 
+	 * @return
+	 */
   public MerchandisingPromotion getMerchandisingPromotions() {
     return merchandisingPromotions;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public void setMerchandisingPromotions(MerchandisingPromotion merchandisingPromotions) {
     this.merchandisingPromotions = merchandisingPromotions;
   }

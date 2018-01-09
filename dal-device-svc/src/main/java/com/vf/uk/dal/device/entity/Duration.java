@@ -18,6 +18,11 @@ public class Duration   {
   @JsonProperty("value")
   private String value = null;
 
+  /**
+   * 
+   * @param uom
+   * @return
+   */
   public Duration uom(String uom) {
     this.uom = uom;
     return this;
@@ -29,15 +34,25 @@ public class Duration   {
   **/
   @ApiModelProperty(value = "Unit of measurement for duration value")
 
-
+/**
+ * 
+ * @return
+ */
   public String getUom() {
     return uom;
   }
-
+/**
+ * 
+ * @param uom
+ */
   public void setUom(String uom) {
     this.uom = uom;
   }
-
+/**
+ * 
+ * @param value
+ * @return
+ */
   public Duration value(String value) {
     this.value = value;
     return this;
@@ -49,11 +64,17 @@ public class Duration   {
   **/
   @ApiModelProperty(value = "Duration value")
 
-
+/**
+ * 
+ * @return
+ */
   public String getValue() {
     return value;
   }
-
+/**
+ * 
+ * @param value
+ */
   public void setValue(String value) {
     this.value = value;
   }

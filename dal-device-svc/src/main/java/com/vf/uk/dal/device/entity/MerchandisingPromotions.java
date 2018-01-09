@@ -14,7 +14,11 @@ import io.swagger.annotations.ApiModelProperty;
 public class MerchandisingPromotions   {
   @JsonProperty("promotionName")
   private String promotionName = null;
-
+/**
+ * 
+ * @param promotionName
+ * @return
+ */
   public MerchandisingPromotions promotionName(String promotionName) {
     this.promotionName = promotionName;
     return this;
@@ -30,7 +34,10 @@ public class MerchandisingPromotions   {
   public String getPromotionName() {
     return promotionName;
   }
-
+/**
+ * 
+ * @param promotionName
+ */
   public void setPromotionName(String promotionName) {
     this.promotionName = promotionName;
   }

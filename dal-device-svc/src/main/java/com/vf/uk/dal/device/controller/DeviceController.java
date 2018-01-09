@@ -65,12 +65,11 @@ public class DeviceController {
 	private static final String GROUP_TYPE = "groupType";
 	private static final String GROUP_NAME = "groupName";
 	private static final String DEVICE_ID_IS_EMPTY = "Device Id is Empty";
-	private static final String DEVICE_MAKE = "make";
-	private static final String DEVICE_MODEL = "model";
 	private static final String DEVICE_ID = "deviceId";
 	private static final String JOURNEY_TYPE = "journeyType";
 	private static final String OFFER_CODE = "offerCode";
-	private static final String BUNDLE_ID = "bundleId";
+	private static final String numberExpression = "[0-9]{6}";
+	private static final String creditLimit = "[0-9]";
 	
 	/**
 	 * Handles requests for getDeviceTile Service with input as
@@ -83,9 +82,8 @@ public class DeviceController {
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public com.vf.uk.dal.common.exception.ErrorResponse handleMissingParams(MissingServletRequestParameterException ex) {
 		
-		com.vf.uk.dal.common.exception.ErrorResponse error = new com.vf.uk.dal.common.exception.ErrorResponse(400, "DEVICE_INVALID_INPUT", "Missing mandatory parameter "+ex.getParameterName()); 
+		return new com.vf.uk.dal.common.exception.ErrorResponse(400, "DEVICE_INVALID_INPUT", "Missing mandatory parameter "+ex.getParameterName()); 
 		
-		return error;
 	}
 	@ApiOperation(value = "Get the list of device tiles based on the filter criteria. Pagination also defined", notes = "The service gets the details of the device tiles from coherence based on the filter criteria in the response.", response = DeviceTile.class, responseContainer = "List", tags={ "DeviceTile", })
     @ApiResponses(value = { 
@@ -104,13 +102,13 @@ public class DeviceController {
 		
 			List<DeviceTile> listOfDeviceTile;
 			Double creditLimitParam = null;
-			if (deviceId != null && !deviceId.matches("[0-9]{6}")) {
-				LogHelper.error(this, "DeviceId is Invalid");
+			if (deviceId != null && !deviceId.matches(numberExpression)) {
+				LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
 				throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 			}
 			if (creditLimit != null) {
 				if(StringUtils.isNotBlank(creditLimit)){
-					if(!creditLimit.matches("[0-9]")) {
+					if(!creditLimit.matches(creditLimit)) {
 						throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
 					}
 					if (!Validator.validateCreditLimit(creditLimit)) {
@@ -137,14 +135,12 @@ public class DeviceController {
 				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_MODEL);
 			}
 			
-			if(bundleId != null && (!bundleId.matches("[0-9]{6}") || bundleId.matches("[0]*"))) {
-				LogHelper.error(this, "BundleId is Invalid");
+			if(bundleId != null && (!bundleId.matches(numberExpression) || bundleId.matches("[0]*"))) {
+				LogHelper.error(this,ExceptionMessages.INVALID_BUNDLE);
 				throw new ApplicationException(ExceptionMessages.INVALID_BUNDLE_ID);
 			}
-			LogHelper.info(this, "Start -->  calling  getListofDeviceTile");
 			listOfDeviceTile = deviceService.getListOfDeviceTile(make, model, groupType, deviceId,
 					creditLimitParam, journeyType, offerCode, bundleId);
-			LogHelper.info(this, "End -->  calling  getListofDeviceTile");
 			return listOfDeviceTile;
 		
 	}
@@ -166,13 +162,11 @@ public class DeviceController {
 		DeviceDetails deviceDetails;
 		LogHelper.info(this, ":::::::Test Logger for VSTS migration And Validate Pipeline Validation::::::::");
 		if (StringUtils.isNotBlank(deviceId)) {
-			if (!deviceId.matches("[0-9]{6}")) {
-				LogHelper.error(this, "DeviceId is Invalid");
+			if (!deviceId.matches(numberExpression)) {
+				LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
 				throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 			}
-			LogHelper.info(this, "Start -->  calling  getDeviceDetails");
 			deviceDetails = deviceService.getDeviceDetails(deviceId, journeyType, offerCode);
-			LogHelper.info(this, "End -->  calling  getDeviceDetails");
 		} else {
 			LogHelper.error(this, DEVICE_ID_IS_EMPTY);
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
@@ -198,13 +192,11 @@ public class DeviceController {
 			String offerCode = queryParams.containsKey(OFFER_CODE) ? queryParams.get(OFFER_CODE) : null;
 			
 			if (deviceId != null) {
-				if(!deviceId.matches("[0-9]{6}")) {
-					LogHelper.error(this, "DeviceId is Invalid");
+				if(!deviceId.matches(numberExpression)) {
+					LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
 					throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 				}
-				LogHelper.info(this, "Start -->  calling  getDeviceTileById");
 				listOfDeviceTile = deviceService.getDeviceTileById(deviceId,offerCode,journeyType);
-				LogHelper.info(this, "End -->  calling  getDeviceTileById");
 			} else {
 				LogHelper.error(this, DEVICE_ID_IS_EMPTY);
 				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
@@ -229,9 +221,7 @@ public class DeviceController {
 		String groupName;
 		groupType = getFilterValue(GROUP_TYPE);
 		groupName = getFilterValue(GROUP_NAME);
-		LogHelper.info(this, "Start -->  calling  getProductGroupByGroupTypeGroupName");
 		productGroup = deviceService.getProductGroupByGroupTypeGroupName(groupType, groupName);
-		LogHelper.info(this, "End -->  calling  getProductGroupByGroupTypeGroupName");
 		return productGroup;
 	}
 
@@ -252,8 +242,8 @@ public class DeviceController {
 	        @ApiParam(value = "Promotional offer applicable") @RequestParam(value = "offerCode", required = false) String offerCode) {
 		List<AccessoryTileGroup> listOfAccessoryTileGroup;
 		if (StringUtils.isNotBlank(deviceId)) {
-				if (!deviceId.matches("[0-9]{6}")) {
-					LogHelper.error(this, "DeviceId is Invalid");
+				if (!deviceId.matches(numberExpression)) {
+					LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
 					throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 				}
 				LogHelper.info(this, "Start -->  calling  getAccessoriesOfDevice");
@@ -337,7 +327,7 @@ public class DeviceController {
 					
 					if (creditLimit != null) {
 						if(StringUtils.isNotBlank(creditLimit)){
-							if(!creditLimit.matches("[0-9]")) {
+							if(!creditLimit.matches(creditLimit)) {
 								throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
 							}
 							if (!Validator.validateCreditLimit(creditLimit)) {
@@ -384,8 +374,8 @@ public class DeviceController {
 
 		Insurances insurance;
 			if (StringUtils.isNotBlank(deviceId)) {
-				if (!deviceId.matches("[0-9]{6}")) {
-					LogHelper.error(this, "DeviceId is Invalid");
+				if (!deviceId.matches(numberExpression)) {
+					LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
 					throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 				}
 				LogHelper.info(this, "Start -->  calling  getInusranceByDeviceId");

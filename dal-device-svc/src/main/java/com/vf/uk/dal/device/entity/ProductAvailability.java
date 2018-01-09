@@ -20,7 +20,11 @@ public class ProductAvailability   {
 
   @JsonProperty("salesExpired")
   private Boolean salesExpired = null;
-
+/**
+ * 
+ * @param startDate
+ * @return
+ */
   public ProductAvailability startDate(String startDate) {
     this.startDate = startDate;
     return this;
@@ -36,11 +40,18 @@ public class ProductAvailability   {
   public String getStartDate() {
     return startDate;
   }
-
+/**
+ * 
+ * @param startDate
+ */
   public void setStartDate(String startDate) {
     this.startDate = startDate;
   }
-
+/**
+ * 
+ * @param endDate
+ * @return
+ */
   public ProductAvailability endDate(String endDate) {
     this.endDate = endDate;
     return this;
@@ -56,11 +67,18 @@ public class ProductAvailability   {
   public String getEndDate() {
     return endDate;
   }
-
+/**
+ * 
+ * @param endDate
+ */
   public void setEndDate(String endDate) {
     this.endDate = endDate;
   }
-
+/**
+ * 
+ * @param salesExpired
+ * @return
+ */
   public ProductAvailability salesExpired(Boolean salesExpired) {
     this.salesExpired = salesExpired;
     return this;
@@ -76,7 +94,10 @@ public class ProductAvailability   {
   public Boolean getSalesExpired() {
     return salesExpired;
   }
-
+/**
+ * 
+ * @param salesExpired
+ */
   public void setSalesExpired(Boolean salesExpired) {
     this.salesExpired = salesExpired;
   }

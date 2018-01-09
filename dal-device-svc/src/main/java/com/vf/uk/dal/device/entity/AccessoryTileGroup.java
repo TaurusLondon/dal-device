@@ -19,6 +19,11 @@ public class AccessoryTileGroup   {
   @JsonProperty("accessories")
   private List<Accessory> accessories = null;
 
+  /**
+   * 
+   * @param groupName
+   * @return
+   */
   public AccessoryTileGroup groupName(String groupName) {
     this.groupName = groupName;
     return this;
@@ -30,20 +35,37 @@ public class AccessoryTileGroup   {
   **/
   @ApiModelProperty(value = "Accessory product group name like \" Apple iPhone 6 cases\"")
 
-
+ /**
+ * 
+ * @return
+ */
   public String getGroupName() {
     return groupName;
   }
 
+  /**
+   * 
+   * @param groupName
+   */
   public void setGroupName(String groupName) {
     this.groupName = groupName;
   }
 
+  /**
+   * 
+   * @param accessories
+   * @return
+   */
   public AccessoryTileGroup accessories(List<Accessory> accessories) {
     this.accessories = accessories;
     return this;
   }
 
+  /**
+   * 
+   * @param accessoriesItem
+   * @return
+   */
   public AccessoryTileGroup addAccessoriesItem(Accessory accessoriesItem) {
     if (this.accessories == null) {
       this.accessories = new ArrayList<Accessory>();
@@ -64,6 +86,10 @@ public class AccessoryTileGroup   {
     return accessories;
   }
 
+  /**
+   * 
+   * @param accessories
+   */
   public void setAccessories(List<Accessory> accessories) {
     this.accessories = accessories;
   }

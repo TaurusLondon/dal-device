@@ -15,6 +15,10 @@ public class BundleAndHardwareTuple   {
   @JsonProperty("bundleId")
   private String bundleId = null;
 
+  /**
+	 * 
+	 * @return
+	 */
   public BundleAndHardwareTuple hardwareId(String hardwareId) {
     this.hardwareId = hardwareId;
     return this;
@@ -28,10 +32,18 @@ public class BundleAndHardwareTuple   {
     return hardwareId;
   }
 
+  /**
+	 * 
+	 * @return
+	 */
   public void setHardwareId(String hardwareId) {
     this.hardwareId = hardwareId;
   }
 
+  /**
+	 * 
+	 * @return
+	 */
   public BundleAndHardwareTuple bundleId(String bundleId) {
     this.bundleId = bundleId;
     return this;
@@ -45,6 +57,10 @@ public class BundleAndHardwareTuple   {
     return bundleId;
   }
 
+  /**
+	 * 
+	 * @return
+	 */
   public void setBundleId(String bundleId) {
     this.bundleId = bundleId;
   }

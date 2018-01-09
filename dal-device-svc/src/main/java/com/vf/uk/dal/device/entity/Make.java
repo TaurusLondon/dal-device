@@ -10,6 +10,11 @@ public class Make   {
 
   private long count;
 
+  /**
+   * 
+   * @param name
+   * @return
+   */
   public Make name(String name) {
     this.name = name;
     return this;
@@ -22,11 +27,18 @@ public class Make   {
   public String getName() {
     return name;
   }
-
+/**
+ * 
+ * @param name
+ */
   public void setName(String name) {
     this.name = name;
   }
-
+/**
+ * 
+ * @param count
+ * @return
+ */
   public Make count(long count) {
     this.count = count;
     return this;
@@ -39,7 +51,10 @@ public class Make   {
   public long getCount() {
     return count;
   }
-
+/**
+ * 
+ * @param count
+ */
   public void setCount(long count) {
     this.count = count;
   }

@@ -21,14 +21,25 @@ public class BundleAllowance   {
   @JsonProperty("displayUom")
   private String displayUom = null;
 
+  /**
+	 * 
+	 * @return
+	 */
   public String getDisplayUom() {
 	return displayUom;
 }
 
+  /**
+	 * 
+	 * @return
+	 */
 public void setDisplayUom(String displayUom) {
 	this.displayUom = displayUom;
 }
-
+/**
+ * 
+ * @return
+ */
 public BundleAllowance type(String type) {
     this.type = type;
     return this;
@@ -41,11 +52,19 @@ public BundleAllowance type(String type) {
   public String getType() {
     return type;
   }
-
+  
+  /**
+	 * 
+	 * @return
+	 */
   public void setType(String type) {
     this.type = type;
   }
 
+  /**
+	 * 
+	 * @return
+	 */
   public BundleAllowance value(String value) {
     this.value = value;
     return this;
@@ -59,10 +78,18 @@ public BundleAllowance type(String type) {
     return value;
   }
 
+  /**
+	 * 
+	 * @return
+	 */
   public void setValue(String value) {
     this.value = value;
   }
 
+  /**
+	 * 
+	 * @return
+	 */
   public BundleAllowance uom(String uom) {
     this.uom = uom;
     return this;
@@ -76,6 +103,10 @@ public BundleAllowance type(String type) {
     return uom;
   }
 
+  /**
+	 * 
+	 * @return
+	 */
   public void setUom(String uom) {
     this.uom = uom;
   }
