@@ -16,7 +16,11 @@ public class Member   {
 
   @JsonProperty("priority")
   private String priority = null;
-
+/**
+ * 
+ * @param id
+ * @return
+ */
   public Member id(String id) {
     this.id = id;
     return this;
@@ -32,11 +36,18 @@ public class Member   {
   public String getId() {
     return id;
   }
-
+/**
+ * 
+ * @param id
+ */
   public void setId(String id) {
     this.id = id;
   }
-
+/**
+ * 
+ * @param priority
+ * @return
+ */
   public Member priority(String priority) {
     this.priority = priority;
     return this;
@@ -52,7 +63,10 @@ public class Member   {
   public String getPriority() {
     return priority;
   }
-
+/**
+ * 
+ * @param priority
+ */
   public void setPriority(String priority) {
     this.priority = priority;
   }

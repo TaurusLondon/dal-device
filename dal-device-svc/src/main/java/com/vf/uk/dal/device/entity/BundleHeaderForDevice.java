@@ -50,6 +50,11 @@ public class BundleHeaderForDevice   {
   @JsonProperty("priceInfo")
   private PriceForBundleAndHardware priceInfo = null;
 
+  /**
+   * 
+   * @param skuId
+   * @return
+   */
   public BundleHeaderForDevice skuId(String skuId) {
     this.skuId = skuId;
     return this;
@@ -63,10 +68,17 @@ public class BundleHeaderForDevice   {
     return skuId;
   }
 
+  /**
+	 * 
+	 * @return
+	 */
   public void setSkuId(String skuId) {
     this.skuId = skuId;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public BundleHeaderForDevice name(String name) {
     this.name = name;
     return this;
@@ -79,11 +91,18 @@ public class BundleHeaderForDevice   {
   public String getName() {
     return name;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public void setName(String name) {
     this.name = name;
   }
 
+ /**
+	 * 
+	 * @return
+	 */
   public BundleHeaderForDevice description(String description) {
     this.description = description;
     return this;
@@ -96,11 +115,17 @@ public class BundleHeaderForDevice   {
   public String getDescription() {
     return description;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public void setDescription(String description) {
     this.description = description;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public BundleHeaderForDevice bundleName(String bundleName) {
     this.bundleName = bundleName;
     return this;
@@ -113,7 +138,10 @@ public class BundleHeaderForDevice   {
   public String getBundleName() {
     return bundleName;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public void setBundleName(String bundleName) {
     this.bundleName = bundleName;
   }
@@ -130,11 +158,17 @@ public class BundleHeaderForDevice   {
   public String getBundleDescription() {
     return bundleDescription;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public void setBundleDescription(String bundleDescription) {
     this.bundleDescription = bundleDescription;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public BundleHeaderForDevice bundleClass(String bundleClass) {
     this.bundleClass = bundleClass;
     return this;
@@ -147,11 +181,17 @@ public class BundleHeaderForDevice   {
   public String getBundleClass() {
     return bundleClass;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public void setBundleClass(String bundleClass) {
     this.bundleClass = bundleClass;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public BundleHeaderForDevice paymentType(String paymentType) {
     this.paymentType = paymentType;
     return this;
@@ -164,11 +204,17 @@ public class BundleHeaderForDevice   {
   public String getPaymentType() {
     return paymentType;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public void setPaymentType(String paymentType) {
     this.paymentType = paymentType;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public BundleHeaderForDevice bundleType(String bundleType) {
     this.bundleType = bundleType;
     return this;
@@ -181,11 +227,17 @@ public class BundleHeaderForDevice   {
   public String getBundleType() {
     return bundleType;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public void setBundleType(String bundleType) {
     this.bundleType = bundleType;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public BundleHeaderForDevice commitmentPeriod(String commitmentPeriod) {
     this.commitmentPeriod = commitmentPeriod;
     return this;
@@ -198,16 +250,25 @@ public class BundleHeaderForDevice   {
   public String getCommitmentPeriod() {
     return commitmentPeriod;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public void setCommitmentPeriod(String commitmentPeriod) {
     this.commitmentPeriod = commitmentPeriod;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public BundleHeaderForDevice allowance(List<BundleAllowance> allowance) {
     this.allowance = allowance;
     return this;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public BundleHeaderForDevice addAllowanceItem(BundleAllowance allowanceItem) {
     this.allowance.add(allowanceItem);
     return this;
@@ -220,16 +281,25 @@ public class BundleHeaderForDevice   {
   public List<BundleAllowance> getAllowance() {
     return allowance;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public void setAllowance(List<BundleAllowance> allowance) {
     this.allowance = allowance;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public BundleHeaderForDevice roamingAllowance(List<BundleAllowance> roamingAllowance) {
     this.roamingAllowance = roamingAllowance;
     return this;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public BundleHeaderForDevice addRoamingAllowanceItem(BundleAllowance roamingAllowanceItem) {
     this.roamingAllowance.add(roamingAllowanceItem);
     return this;
@@ -242,16 +312,25 @@ public class BundleHeaderForDevice   {
   public List<BundleAllowance> getRoamingAllowance() {
     return roamingAllowance;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public void setRoamingAllowance(List<BundleAllowance> roamingAllowance) {
     this.roamingAllowance = roamingAllowance;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public BundleHeaderForDevice merchandisingMedia(List<MediaLink> merchandisingMedia) {
     this.merchandisingMedia = merchandisingMedia;
     return this;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public BundleHeaderForDevice addMerchandisingMediaItem(MediaLink merchandisingMediaItem) {
     this.merchandisingMedia.add(merchandisingMediaItem);
     return this;
@@ -264,11 +343,17 @@ public class BundleHeaderForDevice   {
   public List<MediaLink> getMerchandisingMedia() {
     return merchandisingMedia;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public void setMerchandisingMedia(List<MediaLink> merchandisingMedia) {
     this.merchandisingMedia = merchandisingMedia;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public BundleHeaderForDevice priceInfo(PriceForBundleAndHardware priceInfo) {
     this.priceInfo = priceInfo;
     return this;
@@ -281,7 +366,10 @@ public class BundleHeaderForDevice   {
   public PriceForBundleAndHardware getPriceInfo() {
     return priceInfo;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public void setPriceInfo(PriceForBundleAndHardware priceInfo) {
     this.priceInfo = priceInfo;
   }

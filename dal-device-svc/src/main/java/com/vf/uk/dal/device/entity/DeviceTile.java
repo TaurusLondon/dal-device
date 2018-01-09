@@ -34,6 +34,11 @@ public class DeviceTile   {
   @JsonProperty("deviceSummary")
   private List<DeviceSummary> deviceSummary = null;
 
+  /**
+   * 
+   * @param deviceId
+   * @return
+   */
   public DeviceTile deviceId(String deviceId) {
     this.deviceId = deviceId;
     return this;
@@ -45,15 +50,25 @@ public class DeviceTile   {
   **/
   @ApiModelProperty(value = "Device of the Lead Member within the group")
 
-
+/**
+ * 
+ * @return
+ */
   public String getDeviceId() {
     return deviceId;
   }
-
+/**
+ * 
+ * @param deviceId
+ */
   public void setDeviceId(String deviceId) {
     this.deviceId = deviceId;
   }
-
+/**
+ * 
+ * @param groupName
+ * @return
+ */
   public DeviceTile groupName(String groupName) {
     this.groupName = groupName;
     return this;
@@ -65,15 +80,25 @@ public class DeviceTile   {
   **/
   @ApiModelProperty(value = "Group Name of the Device")
 
-
+/**
+ * 
+ * @return
+ */
   public String getGroupName() {
     return groupName;
   }
-
+/**
+ * 
+ * @param groupName
+ */
   public void setGroupName(String groupName) {
     this.groupName = groupName;
   }
-
+/**
+ * 
+ * @param groupType
+ * @return
+ */
   public DeviceTile groupType(String groupType) {
     this.groupType = groupType;
     return this;
@@ -85,15 +110,25 @@ public class DeviceTile   {
   **/
   @ApiModelProperty(value = "Group Type this devide belongs to, like Handset")
 
-
+/**
+ * 
+ * @return
+ */
   public String getGroupType() {
     return groupType;
   }
-
+/**
+ * 
+ * @param groupType
+ */
   public void setGroupType(String groupType) {
     this.groupType = groupType;
   }
-
+/**
+ * 
+ * @param rating
+ * @return
+ */
   public DeviceTile rating(String rating) {
     this.rating = rating;
     return this;
@@ -105,15 +140,25 @@ public class DeviceTile   {
   **/
   @ApiModelProperty(value = "Rating for the device Id")
 
-
+/**
+ * 
+ * @return
+ */
   public String getRating() {
     return rating;
   }
-
+/**
+ * 
+ * @param rating
+ */
   public void setRating(String rating) {
     this.rating = rating;
   }
-
+/**
+ * 
+ * @param reviewCount
+ * @return
+ */
   public DeviceTile reviewCount(String reviewCount) {
     this.reviewCount = reviewCount;
     return this;
@@ -124,21 +169,33 @@ public class DeviceTile   {
    * @return reviewCount
   **/
   @ApiModelProperty(value = "Rating for the device Id")
-
-
   public String getReviewCount() {
     return reviewCount;
   }
 
+  /**
+   * 
+   * @param reviewCount
+   */
   public void setReviewCount(String reviewCount) {
     this.reviewCount = reviewCount;
   }
 
+  /**
+   * 
+   * @param deviceSummary
+   * @return
+   */
   public DeviceTile deviceSummary(List<DeviceSummary> deviceSummary) {
     this.deviceSummary = deviceSummary;
     return this;
   }
 
+  /**
+   * 
+   * @param deviceSummaryItem
+   * @return
+   */
   public DeviceTile addDeviceSummaryItem(DeviceSummary deviceSummaryItem) {
     if (this.deviceSummary == null) {
       this.deviceSummary = new ArrayList<DeviceSummary>();
@@ -154,11 +211,17 @@ public class DeviceTile   {
   @ApiModelProperty(value = "Device Summary of the each device within the product group")
 
   @Valid
-
+/**
+ * 
+ * @return
+ */
   public List<DeviceSummary> getDeviceSummary() {
     return deviceSummary;
   }
-
+/**
+ * 
+ * @param deviceSummary
+ */
   public void setDeviceSummary(List<DeviceSummary> deviceSummary) {
     this.deviceSummary = deviceSummary;
   }

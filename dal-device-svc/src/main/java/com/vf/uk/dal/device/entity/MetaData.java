@@ -31,7 +31,11 @@ public class MetaData   {
 
   @JsonProperty("seoRobots")
   private List<UUID> seoRobots = null;
-
+/**
+ * 
+ * @param seoCanonical
+ * @return
+ */
   public MetaData seoCanonical(String seoCanonical) {
     this.seoCanonical = seoCanonical;
     return this;
@@ -47,11 +51,18 @@ public class MetaData   {
   public String getSeoCanonical() {
     return seoCanonical;
   }
-
+/**
+ * 
+ * @param seoCanonical
+ */
   public void setSeoCanonical(String seoCanonical) {
     this.seoCanonical = seoCanonical;
   }
-
+/**
+ * 
+ * @param seoDescription
+ * @return
+ */
   public MetaData seoDescription(String seoDescription) {
     this.seoDescription = seoDescription;
     return this;
@@ -67,11 +78,18 @@ public class MetaData   {
   public String getSeoDescription() {
     return seoDescription;
   }
-
+/**
+ * 
+ * @param seoDescription
+ */
   public void setSeoDescription(String seoDescription) {
     this.seoDescription = seoDescription;
   }
-
+/**
+ * 
+ * @param seoKeyWords
+ * @return
+ */
   public MetaData seoKeyWords(String seoKeyWords) {
     this.seoKeyWords = seoKeyWords;
     return this;
@@ -87,11 +105,18 @@ public class MetaData   {
   public String getSeoKeyWords() {
     return seoKeyWords;
   }
-
+/**
+ * 
+ * @param seoKeyWords
+ */
   public void setSeoKeyWords(String seoKeyWords) {
     this.seoKeyWords = seoKeyWords;
   }
-
+/**
+ * 
+ * @param seoIndex
+ * @return
+ */
   public MetaData seoIndex(String seoIndex) {
     this.seoIndex = seoIndex;
     return this;
@@ -107,16 +132,27 @@ public class MetaData   {
   public String getSeoIndex() {
     return seoIndex;
   }
-
+/**
+ * 
+ * @param seoIndex
+ */
   public void setSeoIndex(String seoIndex) {
     this.seoIndex = seoIndex;
   }
-
+/**
+ * 
+ * @param seoRobots
+ * @return
+ */
   public MetaData seoRobots(List<UUID> seoRobots) {
     this.seoRobots = seoRobots;
     return this;
   }
-
+/**
+ * 
+ * @param seoRobotsItem
+ * @return
+ */
   public MetaData addSeoRobotsItem(UUID seoRobotsItem) {
     if (this.seoRobots == null) {
       this.seoRobots = new ArrayList<UUID>();
@@ -136,7 +172,10 @@ public class MetaData   {
   public List<UUID> getSeoRobots() {
     return seoRobots;
   }
-
+/**
+ * 
+ * @param seoRobots
+ */
   public void setSeoRobots(List<UUID> seoRobots) {
     this.seoRobots = seoRobots;
   }

@@ -476,6 +476,7 @@ public class DaoUtils {
 						specification.setValueUOM(spec.getValueUOM());
 						specification.setDescription(spec.getDescription());
 						specification.setFootNote(spec.getFootNote());
+						//specification.setHideInList(spec.getHideInList());
 						listOfSpecification.add(specification);
 					}
 					specificationGroups.setSpecifications(listOfSpecification);
@@ -1042,8 +1043,7 @@ public class DaoUtils {
 			com.vf.uk.dal.utility.solr.entity.PriceInfo priceInfo = (com.vf.uk.dal.utility.solr.entity.PriceInfo) priceMediaMap
 					.get("price");
 			productGroupForDeviceListing.setPriceInfo(priceInfo);
-			List<com.vf.uk.dal.utility.solr.entity.Media> listOfMedia = (List<com.vf.uk.dal.utility.solr.entity.Media>) priceMediaMap
-					.get("media");
+			List<com.vf.uk.dal.utility.solr.entity.Media> listOfMedia = (List<com.vf.uk.dal.utility.solr.entity.Media>) priceMediaMap.get("media");
 			productGroupForDeviceListing.setMedia(listOfMedia);
 		}
 		

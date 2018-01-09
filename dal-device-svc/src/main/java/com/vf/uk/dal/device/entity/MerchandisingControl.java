@@ -45,6 +45,11 @@ public class MerchandisingControl   {
   @JsonProperty("backorderable")
   private Boolean backorderable = null;
 
+  /**
+   * 
+   * @param isDisplayableECare
+   * @return
+   */
   public MerchandisingControl isDisplayableECare(Boolean isDisplayableECare) {
     this.isDisplayableECare = isDisplayableECare;
     return this;
@@ -60,11 +65,18 @@ public class MerchandisingControl   {
   public Boolean getIsDisplayableECare() {
     return isDisplayableECare;
   }
-
+/**
+ * 
+ * @param isDisplayableECare
+ */
   public void setIsDisplayableECare(Boolean isDisplayableECare) {
     this.isDisplayableECare = isDisplayableECare;
   }
-
+/**
+ * 
+ * @param isSellableECare
+ * @return
+ */
   public MerchandisingControl isSellableECare(Boolean isSellableECare) {
     this.isSellableECare = isSellableECare;
     return this;
@@ -80,11 +92,18 @@ public class MerchandisingControl   {
   public Boolean getIsSellableECare() {
     return isSellableECare;
   }
-
+/**
+ * 
+ * @param isSellableECare
+ */
   public void setIsSellableECare(Boolean isSellableECare) {
     this.isSellableECare = isSellableECare;
   }
-
+/**
+ * 
+ * @param isDisplayableAcq
+ * @return
+ */
   public MerchandisingControl isDisplayableAcq(Boolean isDisplayableAcq) {
     this.isDisplayableAcq = isDisplayableAcq;
     return this;
@@ -100,11 +119,18 @@ public class MerchandisingControl   {
   public Boolean getIsDisplayableAcq() {
     return isDisplayableAcq;
   }
-
+/**
+ * 
+ * @param isDisplayableAcq
+ */
   public void setIsDisplayableAcq(Boolean isDisplayableAcq) {
     this.isDisplayableAcq = isDisplayableAcq;
   }
-
+/**
+ * 
+ * @param isSellableRet
+ * @return
+ */
   public MerchandisingControl isSellableRet(Boolean isSellableRet) {
     this.isSellableRet = isSellableRet;
     return this;
@@ -120,11 +146,18 @@ public class MerchandisingControl   {
   public Boolean getIsSellableRet() {
     return isSellableRet;
   }
-
+/**
+ * 
+ * @param isSellableRet
+ */
   public void setIsSellableRet(Boolean isSellableRet) {
     this.isSellableRet = isSellableRet;
   }
-
+/**
+ * 
+ * @param isDisplayableRet
+ * @return
+ */
   public MerchandisingControl isDisplayableRet(Boolean isDisplayableRet) {
     this.isDisplayableRet = isDisplayableRet;
     return this;
@@ -136,15 +169,25 @@ public class MerchandisingControl   {
   **/
   @ApiModelProperty(value = "IS the device Disellable Ret")
 
-
+/**
+ * 
+ * @return
+ */
   public Boolean getIsDisplayableRet() {
     return isDisplayableRet;
   }
-
+/**
+ * 
+ * @param isDisplayableRet
+ */
   public void setIsDisplayableRet(Boolean isDisplayableRet) {
     this.isDisplayableRet = isDisplayableRet;
   }
-
+/**
+ * 
+ * @param isSellableAcq
+ * @return
+ */
   public MerchandisingControl isSellableAcq(Boolean isSellableAcq) {
     this.isSellableAcq = isSellableAcq;
     return this;
@@ -160,11 +203,18 @@ public class MerchandisingControl   {
   public Boolean getIsSellableAcq() {
     return isSellableAcq;
   }
-
+/**
+ * 
+ * @param isSellableAcq
+ */
   public void setIsSellableAcq(Boolean isSellableAcq) {
     this.isSellableAcq = isSellableAcq;
   }
-
+/**
+ * 
+ * @param isDisplayableSavedBasket
+ * @return
+ */
   public MerchandisingControl isDisplayableSavedBasket(Boolean isDisplayableSavedBasket) {
     this.isDisplayableSavedBasket = isDisplayableSavedBasket;
     return this;
@@ -180,11 +230,18 @@ public class MerchandisingControl   {
   public Boolean getIsDisplayableSavedBasket() {
     return isDisplayableSavedBasket;
   }
-
+/**
+ * 
+ * @param isDisplayableSavedBasket
+ */
   public void setIsDisplayableSavedBasket(Boolean isDisplayableSavedBasket) {
     this.isDisplayableSavedBasket = isDisplayableSavedBasket;
   }
-
+/**
+ * 
+ * @param order
+ * @return
+ */
   public MerchandisingControl order(Integer order) {
     this.order = order;
     return this;
@@ -200,11 +257,18 @@ public class MerchandisingControl   {
   public Integer getOrder() {
     return order;
   }
-
+/**
+ * 
+ * @param order
+ */
   public void setOrder(Integer order) {
     this.order = order;
   }
-
+/**
+ * 
+ * @param preorderable
+ * @return
+ */
   public MerchandisingControl preorderable(Boolean preorderable) {
     this.preorderable = preorderable;
     return this;
@@ -220,11 +284,18 @@ public class MerchandisingControl   {
   public Boolean getPreorderable() {
     return preorderable;
   }
-
+/**
+ * 
+ * @param preorderable
+ */
   public void setPreorderable(Boolean preorderable) {
     this.preorderable = preorderable;
   }
-
+/**
+ * 
+ * @param availableFrom
+ * @return
+ */
   public MerchandisingControl availableFrom(String availableFrom) {
     this.availableFrom = availableFrom;
     return this;
@@ -240,11 +311,18 @@ public class MerchandisingControl   {
   public String getAvailableFrom() {
     return availableFrom;
   }
-
+/**
+ * 
+ * @param availableFrom
+ */
   public void setAvailableFrom(String availableFrom) {
     this.availableFrom = availableFrom;
   }
-
+/**
+ * 
+ * @param backorderable
+ * @return
+ */
   public MerchandisingControl backorderable(Boolean backorderable) {
     this.backorderable = backorderable;
     return this;
@@ -260,7 +338,10 @@ public class MerchandisingControl   {
   public Boolean getBackorderable() {
     return backorderable;
   }
-
+/**
+ * 
+ * @param backorderable
+ */
   public void setBackorderable(Boolean backorderable) {
     this.backorderable = backorderable;
   }
