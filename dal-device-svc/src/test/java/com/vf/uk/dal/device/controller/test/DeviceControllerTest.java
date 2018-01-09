@@ -252,7 +252,7 @@ public class DeviceControllerTest {
 					"ConditionalAccept", null, null, "091210", "test");
 
 		} catch (Exception e) {
-			//Assert.assertEquals("com.vf.uk.dal.common.exception.ApplicationException: Please enter valid credit limit.",		e.toString());
+			Assert.assertEquals("com.vf.uk.dal.common.exception.ApplicationException: Please enter valid credit limit.",		e.toString());
 		}
 
 	}
