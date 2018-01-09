@@ -1466,4 +1466,5 @@ public class DeviceControllerTest {
 		deviceDetails = deviceController.getDeviceDetails("093353",null,null);
 		Assert.assertNotNull(deviceDetails);
 	}
+	
 }
