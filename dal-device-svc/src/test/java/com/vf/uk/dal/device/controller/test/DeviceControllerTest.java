@@ -1455,4 +1455,14 @@ public class DeviceControllerTest {
 	/**
 	 * End
 	 */
+	
+	@Test
+	public void notNullTestForgetDeviceDetails1() {
+		DeviceDetails deviceDetails = new DeviceDetails();
+		given(deviceDAOMock.getCommercialProductFromCommercialProductRepository("093353"))
+		.willReturn(CommonMethods.getCommercialProductWithoutLeadPlan());
+		given(restTemplate.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=093353", BundleDetailsForAppSrv.class)).willReturn(CommonMethods.getCoupledBundleListForDevice());
+		deviceDetails = deviceController.getDeviceDetails("093353",null,null);
+		Assert.assertNotNull(deviceDetails);
+	}
 }
