@@ -3656,4 +3656,33 @@ public class CommonMethods {
 		}
 		return null;
 	}
+	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static List<PriceForBundleAndHardware> getPriceForBundleAndHardwareListFromTupleList() {
+
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			// mapper = new
+			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
+			// true);
+			String price = new String(Utility.readFile("\\TEST-MOCK\\PriceForBundleAndHardware.json"));
+			PriceForBundleAndHardware[] priceList = mapper.readValue(price, PriceForBundleAndHardware[].class);
+
+			return mapper.convertValue(priceList, new TypeReference<List<PriceForBundleAndHardware>>() {
+			});
+		} catch (JsonParseException e) {
+
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+
+			e.printStackTrace();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+		return null;
+	}
 }
