@@ -50,6 +50,7 @@ import com.vf.uk.dal.device.entity.StepPricingInfo;
 import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 import com.vf.uk.dal.utility.entity.BundleDetails;
+import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
 import com.vf.uk.dal.utility.entity.BundleDeviceAndProductsList;
 import com.vf.uk.dal.utility.entity.BundleHeader;
 import com.vf.uk.dal.utility.entity.ExtraPrice;
@@ -3593,6 +3594,93 @@ public class CommonMethods {
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static CommercialProduct getCommercialProductWithoutLeadPlan() {
+
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			// mapper = new
+			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
+			// true);
+			String commercialProduct = new String(
+					Utility.readFile("\\TEST-MOCK\\CommercialProductWithoutLeadPlan.json"));
+			CommercialProduct commercialProductList = mapper.readValue(commercialProduct, CommercialProduct.class);
+
+			return mapper.convertValue(commercialProductList, new TypeReference<CommercialProduct>() {
+			});
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static BundleDetailsForAppSrv getCoupledBundleListForDevice() {
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			// mapper = new
+			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
+			// true);
+			String bundleDetailsForAppSrv = new String(
+					Utility.readFile("\\TEST-MOCK\\ByCoupledBundleList.json"));
+			BundleDetailsForAppSrv bundleDetails = mapper.readValue(bundleDetailsForAppSrv, BundleDetailsForAppSrv.class);
+
+			return mapper.convertValue(bundleDetails, new TypeReference<BundleDetailsForAppSrv>() {
+			});
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static List<PriceForBundleAndHardware> getPriceForBundleAndHardwareListFromTupleList() {
+
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			// mapper = new
+			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
+			// true);
+			String price = new String(Utility.readFile("\\TEST-MOCK\\PriceForBundleAndHardware.json"));
+			PriceForBundleAndHardware[] priceList = mapper.readValue(price, PriceForBundleAndHardware[].class);
+
+			return mapper.convertValue(priceList, new TypeReference<List<PriceForBundleAndHardware>>() {
+			});
+		} catch (JsonParseException e) {
+
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+
+			e.printStackTrace();
+		} catch (IOException e) {
+
 			e.printStackTrace();
 		}
 		return null;
