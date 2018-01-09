@@ -19,7 +19,11 @@ public class KeepDeviceChangePlanRequest   {
 
   @JsonProperty("plansLimit")
   private String plansLimit = null;
-
+/**
+ * 
+ * @param deviceId
+ * @return
+ */
   public KeepDeviceChangePlanRequest deviceId(String deviceId) {
     this.deviceId = deviceId;
     return this;
@@ -29,16 +33,21 @@ public class KeepDeviceChangePlanRequest   {
    * Device Id to get compatible plans
    * @return deviceId
   **/
-
-
-  public String getDeviceId() {
+ public String getDeviceId() {
     return deviceId;
   }
-
+/**
+ * 
+ * @param deviceId
+ */
   public void setDeviceId(String deviceId) {
     this.deviceId = deviceId;
   }
-
+/**
+ * 
+ * @param bundleId
+ * @return
+ */
   public KeepDeviceChangePlanRequest bundleId(String bundleId) {
     this.bundleId = bundleId;
     return this;
@@ -48,16 +57,21 @@ public class KeepDeviceChangePlanRequest   {
    * Bundle Id to identify the plan which user selected initially
    * @return bundleId
   **/
-
-
   public String getBundleId() {
     return bundleId;
   }
-
+/**
+ * 
+ * @param bundleId
+ */
   public void setBundleId(String bundleId) {
     this.bundleId = bundleId;
   }
-
+/**
+ * 
+ * @param allowedRecurringPriceLimit
+ * @return
+ */
   public KeepDeviceChangePlanRequest allowedRecurringPriceLimit(String allowedRecurringPriceLimit) {
     this.allowedRecurringPriceLimit = allowedRecurringPriceLimit;
     return this;
@@ -67,16 +81,21 @@ public class KeepDeviceChangePlanRequest   {
    * Allowed monthly price limit
    * @return allowedRecurringPriceLimit
   **/
-
-
   public String getAllowedRecurringPriceLimit() {
     return allowedRecurringPriceLimit;
   }
-
+/**
+ * 
+ * @param allowedRecurringPriceLimit
+ */
   public void setAllowedRecurringPriceLimit(String allowedRecurringPriceLimit) {
     this.allowedRecurringPriceLimit = allowedRecurringPriceLimit;
   }
-
+/**
+ * 
+ * @param plansLimit
+ * @return
+ */
   public KeepDeviceChangePlanRequest plansLimit(String plansLimit) {
     this.plansLimit = plansLimit;
     return this;
@@ -86,12 +105,13 @@ public class KeepDeviceChangePlanRequest   {
    * Expected no. of plans in response
    * @return plansLimit
   **/
-
-
   public String getPlansLimit() {
     return plansLimit;
   }
-
+/**
+ * 
+ * @param plansLimit
+ */
   public void setPlansLimit(String plansLimit) {
     this.plansLimit = plansLimit;
   }

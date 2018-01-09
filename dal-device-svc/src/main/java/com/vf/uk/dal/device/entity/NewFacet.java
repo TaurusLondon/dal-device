@@ -22,7 +22,11 @@ public class NewFacet   {
 
   @JsonProperty("facetList")
   private List<FacetWithCount> facetList = null;
-
+/**
+ * 
+ * @param facetName
+ * @return
+ */
   public NewFacet facetName(String facetName) {
     this.facetName = facetName;
     return this;
@@ -38,16 +42,27 @@ public class NewFacet   {
   public String getFacetName() {
     return facetName;
   }
-
+/**
+ * 
+ * @param facetName
+ */
   public void setFacetName(String facetName) {
     this.facetName = facetName;
   }
-
+/**
+ * 
+ * @param facetList
+ * @return
+ */
   public NewFacet facetList(List<FacetWithCount> facetList) {
     this.facetList = facetList;
     return this;
   }
-
+/**
+ * 
+ * @param facetListItem
+ * @return
+ */
   public NewFacet addFacetListItem(FacetWithCount facetListItem) {
     if (this.facetList == null) {
       this.facetList = new ArrayList<FacetWithCount>();
@@ -67,7 +82,10 @@ public class NewFacet   {
   public List<FacetWithCount> getFacetList() {
     return facetList;
   }
-
+/**
+ * 
+ * @param facetList
+ */
   public void setFacetList(List<FacetWithCount> facetList) {
     this.facetList = facetList;
   }

@@ -14,18 +14,12 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -38,12 +32,8 @@ import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.common.registry.client.RegistryClient;
 import com.vf.uk.dal.device.dao.DeviceDao;
-import com.vf.uk.dal.device.entity.Accessory;
-import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
-import com.vf.uk.dal.device.entity.BundlePrice;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
-import com.vf.uk.dal.device.entity.DeviceDetails;
 import com.vf.uk.dal.device.entity.DeviceSummary;
 import com.vf.uk.dal.device.entity.DeviceTile;
 import com.vf.uk.dal.device.entity.Insurance;
@@ -60,10 +50,7 @@ import com.vf.uk.dal.device.utils.SolrConnectionProvider;
 import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 import com.vf.uk.dal.utility.entity.BundleDetails;
 import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
-import com.vf.uk.dal.utility.entity.BundleDeviceAndProductsList;
 import com.vf.uk.dal.utility.entity.CoupleRelation;
-import com.vf.uk.dal.utility.entity.PriceForAccessory;
-import com.vf.uk.dal.utility.entity.PriceForProduct;
 import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
 import com.vodafone.business.service.RequestManager;
 import com.vodafone.common.Filters;
@@ -76,7 +63,6 @@ import com.vodafone.dal.domain.repository.MerchandisingPromotionRepository;
 import com.vodafone.dal.domain.repository.ProductGroupRepository;
 import com.vodafone.dal.domain.repository.StockAvailabilityRepository;
 import com.vodafone.product.pojo.CommercialProduct;
-import com.vodafone.product.pojo.ProductGroups;
 import com.vodafone.productGroups.pojo.Group;
 import com.vodafone.productGroups.pojo.Member;
 import com.vodafone.solrmodels.BundleModel;
@@ -128,7 +114,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		String strGroupType = null;
 
 		LogHelper.info(this, "Start -->  calling  CommercialProductRepository.get");
-		if (commercialProductRepository == null) {
+		if (null==commercialProductRepository) {
 			commercialProductRepository = CoherenceConnectionProvider.getCommercialProductRepoConnection();
 		}
 		CommercialProduct commercialProduct = commercialProductRepository.get(id);

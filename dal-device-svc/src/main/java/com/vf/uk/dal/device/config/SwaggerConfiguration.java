@@ -2,7 +2,6 @@ package com.vf.uk.dal.device.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -15,10 +14,19 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableSwagger2
 @Configuration
+
+/**
+ * Swagger configuration class for Device API
+ * 
+ */
 public class SwaggerConfiguration {
 	@Value("${info.build.version}")
 	private String versionNumber;
 
+	/**
+	 * Generates documentation for all the services under com.vf.uk.dal.device.controller
+	 * @return
+	 */
 	@Bean
 	public Docket deviceApi() {
 		return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select()
