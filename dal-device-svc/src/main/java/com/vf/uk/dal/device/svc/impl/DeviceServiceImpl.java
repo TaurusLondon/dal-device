@@ -1247,7 +1247,7 @@ public class DeviceServiceImpl implements DeviceService {
 			Set<String> setOfCompatiblePlanIds = new HashSet<>();
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList = new ArrayList<>();
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleListForNonLeanPlanId = new ArrayList<>();
-			List<BundleAndHardwareTuple> bundleAndHardwareTupleListJourneyAware = new ArrayList<>();
+			Set<BundleAndHardwareTuple> bundleAndHardwareTupleListJourneyAware = new HashSet<>();
 			if (!listOfDeviceId.isEmpty()) {
 				Map<String, String> listOfLeadPlanId = new HashMap<>();
 				Map<String, List<String>> listOfCimpatiblePlanMap = new HashMap<>();
@@ -1257,16 +1257,35 @@ public class DeviceServiceImpl implements DeviceService {
 					listOfCommercialProduct.forEach(commercialProduct -> {
 						if (commercialProduct.getListOfCompatiblePlanIds() != null
 								&& !commercialProduct.getListOfCompatiblePlanIds().isEmpty()) {
+							List<String> compatibleBundleIds=commercialProduct.getListOfCompatiblePlanIds();
 							listOfCimpatiblePlanMap.put(commercialProduct.getId(),
-									commercialProduct.getListOfCompatiblePlanIds());
-							setOfCompatiblePlanIds.addAll(commercialProduct.getListOfCompatiblePlanIds());
+									compatibleBundleIds);
+							setOfCompatiblePlanIds.addAll(compatibleBundleIds);
+							compatibleBundleIds.forEach(compatiblePlanId->{
+								BundleAndHardwareTuple bundleAndHardwareTupleLocal = new BundleAndHardwareTuple();
+								bundleAndHardwareTupleLocal.setBundleId(compatiblePlanId);
+								bundleAndHardwareTupleLocal.setHardwareId(commercialProduct.getId());
+								bundleAndHardwareTupleListForNonLeanPlanId.add(bundleAndHardwareTupleLocal);
+								bundleAndHardwareTupleListJourneyAware.add(bundleAndHardwareTupleLocal);
+							});
 						}
-						if (commercialProduct.getLeadPlanId() != null) {
+						if (StringUtils.isNotBlank(commercialProduct.getLeadPlanId())) {
+							if(listOfCimpatiblePlanMap.containsKey(commercialProduct.getId()))
+							{
+								Set<String> deviceSpecificeCompatiblePlan=new HashSet<String>(listOfCimpatiblePlanMap.get(commercialProduct.getId()));
+								deviceSpecificeCompatiblePlan.add(commercialProduct.getLeadPlanId());
+								listOfCimpatiblePlanMap.put(commercialProduct.getId(), new ArrayList<String>(deviceSpecificeCompatiblePlan));
+							}else{
+								List<String> compatiblePlan=new ArrayList<>();
+								compatiblePlan.add(commercialProduct.getLeadPlanId());
+								listOfCimpatiblePlanMap.put(commercialProduct.getId(),compatiblePlan);
+							}
 							listOfLeadPlanId.put(commercialProduct.getId(), commercialProduct.getLeadPlanId());
 							BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
 							bundleAndHardwareTuple.setBundleId(commercialProduct.getLeadPlanId());
 							bundleAndHardwareTuple.setHardwareId(commercialProduct.getId());
 							bundleAndHardwareTupleList.add(bundleAndHardwareTuple);
+							bundleAndHardwareTupleListJourneyAware.add(bundleAndHardwareTuple);
 						} else {
 							if (commercialProduct.getListOfCompatiblePlanIds() != null
 									&& !commercialProduct.getListOfCompatiblePlanIds().isEmpty()) {
@@ -1292,7 +1311,6 @@ public class DeviceServiceImpl implements DeviceService {
 				}
 				List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware> listOfPriceForBundleAndHardwareForLeadPlanIds = null;
 				if (bundleAndHardwareTupleList != null && !bundleAndHardwareTupleList.isEmpty()) {
-					bundleAndHardwareTupleListJourneyAware.addAll(bundleAndHardwareTupleList);
 					listOfPriceForBundleAndHardwareForLeadPlanIds = CommonUtility.getPriceDetailsUsingBundleHarwareTrouple(bundleAndHardwareTupleList, null, null,registryclnt);
 					if (listOfPriceForBundleAndHardwareForLeadPlanIds != null
 							&& !listOfPriceForBundleAndHardwareForLeadPlanIds.isEmpty()) {
@@ -1307,7 +1325,6 @@ public class DeviceServiceImpl implements DeviceService {
 				}
 				List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware> listOfPriceForBundleAndHardwareForNonLeadPlanIds = null;
 				if (bundleAndHardwareTupleListForNonLeanPlanId != null && !bundleAndHardwareTupleListForNonLeanPlanId.isEmpty()) {
-					bundleAndHardwareTupleListJourneyAware.addAll(bundleAndHardwareTupleListForNonLeanPlanId);
 					listOfPriceForBundleAndHardwareForNonLeadPlanIds = CommonUtility
 							.getPriceDetailsUsingBundleHarwareTrouple(bundleAndHardwareTupleListForNonLeanPlanId, null,
 									null, registryclnt);
@@ -1531,12 +1548,11 @@ public class DeviceServiceImpl implements DeviceService {
 			 * ILSPrice Price With Journey Without OfferCode
 			 */
 			List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware> listOfPriceForBundleAndHardwareWithoutOfferCodeForUpgrade = CommonUtility
-					.getPriceDetailsUsingBundleHarwareTrouple(bundleAndHardwareTupleListJourneyAware, null,
+					.getPriceDetailsUsingBundleHarwareTrouple(new ArrayList<com.vf.uk.dal.device.entity.BundleAndHardwareTuple>(bundleAndHardwareTupleListJourneyAware), null,
 							Constants.JOURNEY_TYPE_UPGRADE, registryclnt);
 			
-			
 			List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware> listOfPriceForBundleAndHardwareWithoutOfferCodeForSecondLine = CommonUtility
-					.getPriceDetailsUsingBundleHarwareTrouple(bundleAndHardwareTupleListJourneyAware, null,
+					.getPriceDetailsUsingBundleHarwareTrouple(new ArrayList<com.vf.uk.dal.device.entity.BundleAndHardwareTuple>(bundleAndHardwareTupleListJourneyAware), null,
 							Constants.JOURNEY_TYPE_SECONDLINE, registryclnt);
 			
 			Map<String,Map<String,List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>>> mapOfIlsPriceWithoutOfferCode = new HashMap<>();
