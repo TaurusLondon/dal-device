@@ -3,7 +3,11 @@ package com.vf.uk.dal.device.entity;
 import java.util.Objects;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Subscription
+ * 
+ *
+ */
 public class Subscription {
 	private String privateInstalledProductId = null;
 
@@ -96,606 +100,1070 @@ public class Subscription {
 	private List<Asset> asset = new ArrayList<Asset>();
 
 	private Boolean isInFlightOrderPresent = null;
-
+/**
+ * 
+ * @return
+ */
 	public Boolean getIsInFlightOrderPresent() {
 		return isInFlightOrderPresent;
 	}
-
+/**
+ * 
+ * @param isInFlightOrderPresent
+ */
 	public void setIsInFlightOrderPresent(Boolean isInFlightOrderPresent) {
 		this.isInFlightOrderPresent = isInFlightOrderPresent;
 	}
-
+/**
+ * 
+ * @param isInFlightOrderPresent
+ * @return
+ */
 	public Subscription isInFlightOrderPresent(Boolean isInFlightOrderPresent) {
 		this.isInFlightOrderPresent = isInFlightOrderPresent;
 		return this;
 	}
-
+/**
+ * 
+ * @param privateInstalledProductId
+ * @return
+ */
 	public Subscription privateInstalledProductId(String privateInstalledProductId) {
 		this.privateInstalledProductId = privateInstalledProductId;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getPrivateInstalledProductId() {
 		return privateInstalledProductId;
 	}
-
+/**
+ * 
+ * @param privateInstalledProductId
+ */
 	public void setPrivateInstalledProductId(String privateInstalledProductId) {
 		this.privateInstalledProductId = privateInstalledProductId;
 	}
-
+/**
+ * 
+ * @param productName
+ * @return
+ */
 	public Subscription productName(String productName) {
 		this.productName = productName;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getProductName() {
 		return productName;
 	}
-
+/**
+ * 
+ * @param productName
+ */
 	public void setProductName(String productName) {
 		this.productName = productName;
 	}
-
+/**
+ * 
+ * @param assetIntegrationId
+ * @return
+ */
 	public Subscription assetIntegrationId(String assetIntegrationId) {
 		this.assetIntegrationId = assetIntegrationId;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getAssetIntegrationId() {
 		return assetIntegrationId;
 	}
-
+/**
+ * 
+ * @param assetIntegrationId
+ */
 	public void setAssetIntegrationId(String assetIntegrationId) {
 		this.assetIntegrationId = assetIntegrationId;
 	}
-
+/**
+ * 
+ * @param msisdnId
+ * @return
+ */
 	public Subscription msisdnId(String msisdnId) {
 		this.msisdnId = msisdnId;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getMsisdnId() {
 		return msisdnId;
 	}
-
+/**
+ * 
+ * @param msisdnId
+ */
 	public void setMsisdnId(String msisdnId) {
 		this.msisdnId = msisdnId;
 	}
-
+/**
+ * 
+ * @param productDescription
+ * @return
+ */
 	public Subscription productDescription(String productDescription) {
 		this.productDescription = productDescription;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getProductDescription() {
 		return productDescription;
 	}
-
+/**
+ * 
+ * @param productDescription
+ */
 	public void setProductDescription(String productDescription) {
 		this.productDescription = productDescription;
 	}
-
+/**
+ * 
+ * @param productId
+ * @return
+ */
 	public Subscription productId(String productId) {
 		this.productId = productId;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getProductId() {
 		return productId;
 	}
-
+/**
+ * 
+ * @param productId
+ */
 	public void setProductId(String productId) {
 		this.productId = productId;
 	}
-
+/**
+ * 
+ * @param privateRootInstalledProductId
+ * @return
+ */
 	public Subscription privateRootInstalledProductId(String privateRootInstalledProductId) {
 		this.privateRootInstalledProductId = privateRootInstalledProductId;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getPrivateRootInstalledProductId() {
 		return privateRootInstalledProductId;
 	}
-
+/**
+ * 
+ * @param privateRootInstalledProductId
+ */
 	public void setPrivateRootInstalledProductId(String privateRootInstalledProductId) {
 		this.privateRootInstalledProductId = privateRootInstalledProductId;
 	}
-
+/**
+ * 
+ * @param privateParentInstalledProductId
+ * @return
+ */
 	public Subscription privateParentInstalledProductId(String privateParentInstalledProductId) {
 		this.privateParentInstalledProductId = privateParentInstalledProductId;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getPrivateParentInstalledProductId() {
 		return privateParentInstalledProductId;
 	}
-
+/**
+ * 
+ * @param privateParentInstalledProductId
+ */
 	public void setPrivateParentInstalledProductId(String privateParentInstalledProductId) {
 		this.privateParentInstalledProductId = privateParentInstalledProductId;
 	}
-
+/**
+ * 
+ * @param customerPartyAccountName
+ * @return
+ */
 	public Subscription customerPartyAccountName(String customerPartyAccountName) {
 		this.customerPartyAccountName = customerPartyAccountName;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getCustomerPartyAccountName() {
 		return customerPartyAccountName;
 	}
-
+/**
+ * 
+ * @param customerPartyAccountName
+ */
 	public void setCustomerPartyAccountName(String customerPartyAccountName) {
 		this.customerPartyAccountName = customerPartyAccountName;
 	}
-
+/**
+ * 
+ * @param serviceAccountId
+ * @return
+ */
 	public Subscription serviceAccountId(String serviceAccountId) {
 		this.serviceAccountId = serviceAccountId;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getServiceAccountId() {
 		return serviceAccountId;
 	}
-
+/**
+ *
+ * @param serviceAccountId
+ */
 	public void setServiceAccountId(String serviceAccountId) {
 		this.serviceAccountId = serviceAccountId;
 	}
-
+/**
+ * 
+ * @param owningAccountLocationName
+ * @return
+ */
 	public Subscription owningAccountLocationName(String owningAccountLocationName) {
 		this.owningAccountLocationName = owningAccountLocationName;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getOwningAccountLocationName() {
 		return owningAccountLocationName;
 	}
-
+/**
+ * 
+ * @param owningAccountLocationName
+ */
 	public void setOwningAccountLocationName(String owningAccountLocationName) {
 		this.owningAccountLocationName = owningAccountLocationName;
 	}
-
+/**
+ * 
+ * @param owningAccountFullName
+ * @return
+ */
 	public Subscription owningAccountFullName(String owningAccountFullName) {
 		this.owningAccountFullName = owningAccountFullName;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getOwningAccountFullName() {
 		return owningAccountFullName;
 	}
-
+/**
+ * 
+ * @param owningAccountFullName
+ */
 	public void setOwningAccountFullName(String owningAccountFullName) {
 		this.owningAccountFullName = owningAccountFullName;
 	}
-
+/**
+ * 
+ * @param owningAccountId
+ * @return
+ */
 	public Subscription owningAccountId(String owningAccountId) {
 		this.owningAccountId = owningAccountId;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getOwningAccountId() {
 		return owningAccountId;
 	}
-
+/**
+ * 
+ * @param owningAccountId
+ */
 	public void setOwningAccountId(String owningAccountId) {
 		this.owningAccountId = owningAccountId;
 	}
-
+/**
+ * 
+ * @param owningContactFirstName
+ * @return
+ */
 	public Subscription owningContactFirstName(String owningContactFirstName) {
 		this.owningContactFirstName = owningContactFirstName;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getOwningContactFirstName() {
 		return owningContactFirstName;
 	}
-
+/**
+ * 
+ * @param owningContactFirstName
+ */
 	public void setOwningContactFirstName(String owningContactFirstName) {
 		this.owningContactFirstName = owningContactFirstName;
 	}
-
+/**
+ * 
+ * @param owningContactFamilyName
+ * @return
+ */
 	public Subscription owningContactFamilyName(String owningContactFamilyName) {
 		this.owningContactFamilyName = owningContactFamilyName;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getOwningContactFamilyName() {
 		return owningContactFamilyName;
 	}
-
+/**
+ * 
+ * @param owningContactFamilyName
+ */
 	public void setOwningContactFamilyName(String owningContactFamilyName) {
 		this.owningContactFamilyName = owningContactFamilyName;
 	}
-
+/**
+ * 
+ * @param owningAccountContactId
+ * @return
+ */
 	public Subscription owningAccountContactId(String owningAccountContactId) {
 		this.owningAccountContactId = owningAccountContactId;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getOwningAccountContactId() {
 		return owningAccountContactId;
 	}
-
+/**
+ * 
+ * @param owningAccountContactId
+ */
 	public void setOwningAccountContactId(String owningAccountContactId) {
 		this.owningAccountContactId = owningAccountContactId;
 	}
-
+/**
+ * 
+ * @param billingAccountFullName
+ * @return
+ */
 	public Subscription billingAccountFullName(String billingAccountFullName) {
 		this.billingAccountFullName = billingAccountFullName;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getBillingAccountFullName() {
 		return billingAccountFullName;
 	}
-
+/**
+ * 
+ * @param billingAccountFullName
+ */
 	public void setBillingAccountFullName(String billingAccountFullName) {
 		this.billingAccountFullName = billingAccountFullName;
 	}
-
+/**
+ * 
+ * @param billingAccountId
+ * @return
+ */
 	public Subscription billingAccountId(String billingAccountId) {
 		this.billingAccountId = billingAccountId;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getBillingAccountId() {
 		return billingAccountId;
 	}
-
+/**
+ * 
+ * @param billingAccountId
+ */
 	public void setBillingAccountId(String billingAccountId) {
 		this.billingAccountId = billingAccountId;
 	}
-
+/**
+ * 
+ * @param billingProfileId
+ * @return
+ */
 	public Subscription billingProfileId(String billingProfileId) {
 		this.billingProfileId = billingProfileId;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getBillingProfileId() {
 		return billingProfileId;
 	}
-
+/**
+ * 
+ * @param billingProfileId
+ */
 	public void setBillingProfileId(String billingProfileId) {
 		this.billingProfileId = billingProfileId;
 	}
-
+/**
+ * 
+ * @param billingProfileType
+ * @return
+ */
 	public Subscription billingProfileType(String billingProfileType) {
 		this.billingProfileType = billingProfileType;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getBillingProfileType() {
 		return billingProfileType;
 	}
-
+/**
+ * 
+ * @param billingProfileType
+ */
 	public void setBillingProfileType(String billingProfileType) {
 		this.billingProfileType = billingProfileType;
 	}
-
+/**
+ * 
+ * @param installationDate
+ * @return
+ */
 	public Subscription installationDate(String installationDate) {
 		this.installationDate = installationDate;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getInstallationDate() {
 		return installationDate;
 	}
-
+/**
+ * 
+ * @param installationDate
+ */
 	public void setInstallationDate(String installationDate) {
 		this.installationDate = installationDate;
 	}
-
+/**
+ * 
+ * @param startDate
+ * @return
+ */
 	public Subscription startDate(String startDate) {
 		this.startDate = startDate;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getStartDate() {
 		return startDate;
 	}
-
+/**
+ * 
+ * @param startDate
+ */
 	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
-
+/**
+ * 
+ * @param endDate
+ * @return
+ */
 	public Subscription endDate(String endDate) {
 		this.endDate = endDate;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getEndDate() {
 		return endDate;
 	}
-
+/**
+ * 
+ * @param endDate
+ */
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
-
+/**
+ * 
+ * @param primaryContactId
+ * @return
+ */
 	public Subscription primaryContactId(String primaryContactId) {
 		this.primaryContactId = primaryContactId;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getPrimaryContactId() {
 		return primaryContactId;
 	}
-
+/**
+ * 
+ * @param primaryContactId
+ */
 	public void setPrimaryContactId(String primaryContactId) {
 		this.primaryContactId = primaryContactId;
 	}
-
+/**
+ * 
+ * @param associatedEmployee
+ * @return
+ */
 	public Subscription associatedEmployee(String associatedEmployee) {
 		this.associatedEmployee = associatedEmployee;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getAssociatedEmployee() {
 		return associatedEmployee;
 	}
-
+/**
+ * 
+ * @param associatedEmployee
+ */
 	public void setAssociatedEmployee(String associatedEmployee) {
 		this.associatedEmployee = associatedEmployee;
 	}
-
+/**
+ * 
+ * @param trackingQuantity
+ * @return
+ */
 	public Subscription trackingQuantity(Double trackingQuantity) {
 		this.trackingQuantity = trackingQuantity;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public Double getTrackingQuantity() {
 		return trackingQuantity;
 	}
-
+/**
+ * 
+ * @param trackingQuantity
+ */
 	public void setTrackingQuantity(Double trackingQuantity) {
 		this.trackingQuantity = trackingQuantity;
 	}
-
+/**
+ * 
+ * @param registrationDate
+ * @return
+ */
 	public Subscription registrationDate(String registrationDate) {
 		this.registrationDate = registrationDate;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getRegistrationDate() {
 		return registrationDate;
 	}
-
+/**
+ * 
+ * @param registrationDate
+ */
 	public void setRegistrationDate(String registrationDate) {
 		this.registrationDate = registrationDate;
 	}
-
+/**
+ * 
+ * @param serialNumber
+ * @return
+ */
 	public Subscription serialNumber(String serialNumber) {
 		this.serialNumber = serialNumber;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getSerialNumber() {
 		return serialNumber;
 	}
-
+/**
+ * 
+ * @param serialNumber
+ */
 	public void setSerialNumber(String serialNumber) {
 		this.serialNumber = serialNumber;
 	}
-
+/**
+ * 
+ * @param status
+ * @return
+ */
 	public Subscription status(String status) {
 		this.status = status;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getStatus() {
 		return status;
 	}
-
+/**
+ * 
+ * @param status
+ */
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
+/**
+ * 
+ * @param statusEffectiveDate
+ * @return
+ */
 	public Subscription statusEffectiveDate(String statusEffectiveDate) {
 		this.statusEffectiveDate = statusEffectiveDate;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getStatusEffectiveDate() {
 		return statusEffectiveDate;
 	}
-
+/**
+ * 
+ * @param statusEffectiveDate
+ */
 	public void setStatusEffectiveDate(String statusEffectiveDate) {
 		this.statusEffectiveDate = statusEffectiveDate;
 	}
-
+/**
+ * 
+ * @param promotionId
+ * @return
+ */
 	public Subscription promotionId(String promotionId) {
 		this.promotionId = promotionId;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getPromotionId() {
 		return promotionId;
 	}
-
+/**
+ * 
+ * @param promotionId
+ */
 	public void setPromotionId(String promotionId) {
 		this.promotionId = promotionId;
 	}
-
+/**
+ * 
+ * @param publicInstalledProductId
+ * @return
+ */
 	public Subscription publicInstalledProductId(String publicInstalledProductId) {
 		this.publicInstalledProductId = publicInstalledProductId;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getPublicInstalledProductId() {
 		return publicInstalledProductId;
 	}
-
+/**
+ * 
+ * @param publicInstalledProductId
+ */
 	public void setPublicInstalledProductId(String publicInstalledProductId) {
 		this.publicInstalledProductId = publicInstalledProductId;
 	}
-
+/**
+ * 
+ * @param headerChildAssetId
+ * @return
+ */
 	public Subscription headerChildAssetId(String headerChildAssetId) {
 		this.headerChildAssetId = headerChildAssetId;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getHeaderChildAssetId() {
 		return headerChildAssetId;
 	}
-
+/**
+ * 
+ * @param headerChildAssetId
+ */
 	public void setHeaderChildAssetId(String headerChildAssetId) {
 		this.headerChildAssetId = headerChildAssetId;
 	}
-
+/**
+ * 
+ * @param agreementId
+ * @return
+ */
 	public Subscription agreementId(String agreementId) {
 		this.agreementId = agreementId;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getAgreementId() {
 		return agreementId;
 	}
-
+/**
+ * 
+ * @param agreementId
+ */
 	public void setAgreementId(String agreementId) {
 		this.agreementId = agreementId;
 	}
-
+/**
+ * 
+ * @param alternateTrackingNumber
+ * @return
+ */
 	public Subscription alternateTrackingNumber(String alternateTrackingNumber) {
 		this.alternateTrackingNumber = alternateTrackingNumber;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getAlternateTrackingNumber() {
 		return alternateTrackingNumber;
 	}
-
+/**
+ * 
+ * @param alternateTrackingNumber
+ */
 	public void setAlternateTrackingNumber(String alternateTrackingNumber) {
 		this.alternateTrackingNumber = alternateTrackingNumber;
 	}
-
+/**
+ * 
+ * @param inventoryLocationReference
+ * @return
+ */
 	public Subscription inventoryLocationReference(String inventoryLocationReference) {
 		this.inventoryLocationReference = inventoryLocationReference;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getInventoryLocationReference() {
 		return inventoryLocationReference;
 	}
-
+/**
+ * 
+ * @param inventoryLocationReference
+ */
 	public void setInventoryLocationReference(String inventoryLocationReference) {
 		this.inventoryLocationReference = inventoryLocationReference;
 	}
-
+/**
+ * 
+ * @param salesOrderRef
+ * @return
+ */
 	public Subscription salesOrderRef(String salesOrderRef) {
 		this.salesOrderRef = salesOrderRef;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getSalesOrderRef() {
 		return salesOrderRef;
 	}
-
+/**
+ * 
+ * @param salesOrderRef
+ */
 	public void setSalesOrderRef(String salesOrderRef) {
 		this.salesOrderRef = salesOrderRef;
 	}
-
+/**
+ * 
+ * @param price
+ * @return
+ */
 	public Subscription price(Double price) {
 		this.price = price;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public Double getPrice() {
 		return price;
 	}
-
+/**
+ * 
+ * @param price
+ */
 	public void setPrice(Double price) {
 		this.price = price;
 	}
-
+/**
+ * 
+ * @param priceType
+ * @return
+ */
 	public Subscription priceType(String priceType) {
 		this.priceType = priceType;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getPriceType() {
 		return priceType;
 	}
-
+/**
+ * 
+ * @param priceType
+ */
 	public void setPriceType(String priceType) {
 		this.priceType = priceType;
 	}
-
+/**
+ * 
+ * @param priceCategory
+ * @return
+ */
 	public Subscription priceCategory(String priceCategory) {
 		this.priceCategory = priceCategory;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getPriceCategory() {
 		return priceCategory;
 	}
-
+/**
+ * 
+ * @param priceCategory
+ */
 	public void setPriceCategory(String priceCategory) {
 		this.priceCategory = priceCategory;
 	}
-
+/**
+ * 
+ * @param manufacturedDate
+ * @return
+ */
 	public Subscription manufacturedDate(String manufacturedDate) {
 		this.manufacturedDate = manufacturedDate;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getManufacturedDate() {
 		return manufacturedDate;
 	}
-
+/**
+ * 
+ * @param manufacturedDate
+ */
 	public void setManufacturedDate(String manufacturedDate) {
 		this.manufacturedDate = manufacturedDate;
 	}
-
+/**
+ * 
+ * @param installedProductName
+ * @return
+ */
 	public Subscription installedProductName(String installedProductName) {
 		this.installedProductName = installedProductName;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getInstalledProductName() {
 		return installedProductName;
 	}
-
+/**
+ * 
+ * @param installedProductName
+ */
 	public void setInstalledProductName(String installedProductName) {
 		this.installedProductName = installedProductName;
 	}
-
+/**
+ * 
+ * @param productCost
+ * @return
+ */
 	public Subscription productCost(Double productCost) {
 		this.productCost = productCost;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public Double getProductCost() {
 		return productCost;
 	}
-
+/**
+ * 
+ * @param productCost
+ */
 	public void setProductCost(Double productCost) {
 		this.productCost = productCost;
 	}
-
+/**
+ * 
+ * @param uomCode
+ * @return
+ */
 	public Subscription uomCode(String uomCode) {
 		this.uomCode = uomCode;
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public String getUomCode() {
 		return uomCode;
 	}
-
+/**
+ * 
+ * @param uomCode
+ */
 	public void setUomCode(String uomCode) {
 		this.uomCode = uomCode;
 	}
-
+/**
+ * 
+ * @param asset
+ * @return
+ */
 	public Subscription asset(List<Asset> asset) {
 		this.asset = asset;
 		return this;
 	}
-
+/**
+ * 
+ * @param assetItem
+ * @return
+ */
 	public Subscription addAssetItem(Asset assetItem) {
 		this.asset.add(assetItem);
 		return this;
 	}
-
+/**
+ * 
+ * @return
+ */
 	public List<Asset> getAsset() {
 		return asset;
 	}
-
+/**
+ * 
+ * @param asset
+ */
 	public void setAsset(List<Asset> asset) {
 		this.asset = asset;
 	}

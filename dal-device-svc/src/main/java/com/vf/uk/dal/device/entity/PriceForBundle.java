@@ -22,7 +22,11 @@ public class PriceForBundle   {
 
   @JsonProperty("stepPrices")
   private List<StepPricingInfo> stepPrices = new ArrayList<>();
-
+/**
+ * 
+ * @param bundlePrice
+ * @return
+ */
   public PriceForBundle bundlePrice(BundlePrice bundlePrice) {
     this.bundlePrice = bundlePrice;
     return this;
@@ -35,11 +39,18 @@ public class PriceForBundle   {
   public BundlePrice getBundlePrice() {
     return bundlePrice;
   }
-
+/**
+ * 
+ * @param bundlePrice
+ */
   public void setBundlePrice(BundlePrice bundlePrice) {
     this.bundlePrice = bundlePrice;
   }
-
+/**
+ * 
+ * @param monthlyPrice
+ * @return
+ */
   public PriceForBundle monthlyPrice(Price monthlyPrice) {
     this.monthlyPrice = monthlyPrice;
     return this;
@@ -52,11 +63,18 @@ public class PriceForBundle   {
   public Price getMonthlyPrice() {
     return monthlyPrice;
   }
-
+/**
+ * 
+ * @param monthlyPrice
+ */
   public void setMonthlyPrice(Price monthlyPrice) {
     this.monthlyPrice = monthlyPrice;
   }
-
+/**
+ * 
+ * @param monthlyDiscountPrice
+ * @return
+ */
   public PriceForBundle monthlyDiscountPrice(Price monthlyDiscountPrice) {
     this.monthlyDiscountPrice = monthlyDiscountPrice;
     return this;
@@ -69,16 +87,27 @@ public class PriceForBundle   {
   public Price getMonthlyDiscountPrice() {
     return monthlyDiscountPrice;
   }
-
+/**
+ * 
+ * @param monthlyDiscountPrice
+ */
   public void setMonthlyDiscountPrice(Price monthlyDiscountPrice) {
     this.monthlyDiscountPrice = monthlyDiscountPrice;
   }
-
+/**
+ * 
+ * @param stepPrices
+ * @return
+ */
   public PriceForBundle stepPrices(List<StepPricingInfo> stepPrices) {
     this.stepPrices = stepPrices;
     return this;
   }
-
+/**
+ * 
+ * @param stepPricesItem
+ * @return
+ */
   public PriceForBundle addStepPricesItem(StepPricingInfo stepPricesItem) {
     this.stepPrices.add(stepPricesItem);
     return this;
@@ -91,6 +120,10 @@ public class PriceForBundle   {
   public List<StepPricingInfo> getStepPrices() {
     return stepPrices;
   }
+/**
+ * 
+ * @param stepPrices
+ */
 
   public void setStepPrices(List<StepPricingInfo> stepPrices) {
     this.stepPrices = stepPrices;

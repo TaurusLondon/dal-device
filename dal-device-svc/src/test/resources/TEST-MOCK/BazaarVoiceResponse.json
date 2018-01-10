@@ -1,0 +1,175 @@
+{
+	"Includes": {
+		"Products": {
+			"sku23": {
+				"CategoryId": "cat5830036",
+				"EANs": [],
+				"Description": null,
+				"ModelNumbers": [],
+				"Attributes": {
+					"BV_WB_FAMILY": {
+						"Values": [{
+							"Locale": null,
+							"Value": "Samsung-Xcover-3"
+						}],
+						"Id": "BV_WB_FAMILY"
+					},
+					"BV_WB_EXPAND": {
+						"Values": [{
+							"Locale": null,
+							"Value": "BV_WB_FAMILY:Samsung-Xcover-3"
+						}],
+						"Id": "BV_WB_EXPAND"
+					}
+				},
+				"ImageUrl": null,
+				"BrandExternalId": null,
+				"UPCs": [],
+				"ReviewStatistics": {
+					"FeaturedReviewCount": 0,
+					"RecommendedCount": 0,
+					"SecondaryRatingsAveragesOrder": ["EaseOfUse", "BatteryLife", "Camera", "ScreenQuality"],
+					"AverageOverallRating": 5.0,
+					"NotHelpfulVoteCount": 0,
+					"RatingDistribution": [{
+						"RatingValue": 5,
+						"Count": 1
+					}],
+					"RatingsOnlyReviewCount": 0,
+					"FirstSubmissionTime": "2017-05-15T00:56:05.000+00:00",
+					"TagDistribution": {},
+					"ContextDataDistribution": {},
+					"TotalReviewCount": 1,
+					"LastSubmissionTime": "2017-05-15T00:56:05.000+00:00",
+					"TagDistributionOrder": [],
+					"OverallRatingRange": 5,
+					"NotRecommendedCount": 0,
+					"HelpfulVoteCount": 28,
+					"SecondaryRatingsAverages": {
+						"EaseOfUse": {
+							"AverageRating": 5.0,
+							"Id": "EaseOfUse"
+						},
+						"BatteryLife": {
+							"AverageRating": 5.0,
+							"Id": "BatteryLife"
+						},
+						"ScreenQuality": {
+							"AverageRating": 5.0,
+							"Id": "ScreenQuality"
+						},
+						"Camera": {
+							"AverageRating": 5.0,
+							"Id": "Camera"
+						}
+					},
+					"ContextDataDistributionOrder": []
+				},
+				"Name": "Samsung Galaxy Xcover 3 Silver",
+				"Brand": {},
+				"TotalReviewCount": 1,
+				"QuestionIds": [],
+				"FamilyIds": ["Samsung-Xcover-3"],
+				"ReviewIds": [],
+				"ProductPageUrl": "http://plive-shop.vodafone.co.uk/shop/contracts-and-deals/samsung-galaxy-xcover-3/sku91054",
+				"ISBNs": [],
+				"Id": "sku91054",
+				"AttributesOrder": ["BV_WB_EXPAND", "BV_WB_FAMILY"],
+				"ManufacturerPartNumbers": [],
+				"StoryIds": []
+			}
+		},
+		"ProductsOrder": ["sku91054"]
+	},
+	"Locale": "en_GB",
+	"Errors": [],
+	"Results": [{
+		"UserNickname": "mikemr2",
+		"Rating": 5,
+		"ReviewText": "superb phone if your after something cheap and tough this is it. \r\nDoes all that the other phones do, well lets face it there all android nowadays anyway once you set them up most phones are pretty much the same. i did buy a bigger card 64gb but shes yet to fill it with daft videos. \r\nMy 11 year old daughter carries destruction around with her like a black cloud over her head yet it still works she breaks everything and i mean everything.. over the last 12 months i seen her countless times drop this thing on the pavement and still all good, screen perfect. i even seen her drop it whilst riding her bike and bounced down the road and guess what all good.. i would hate to think the amount of times she's dropped this when i'am not looking will never waste 1000's plus on\r\n i phones etc when this does it all and it won't need a new screen every 3 months... so if your worried about the kids breaking the screen etc buy this you wont be disappointed i'am now thinking of upgrading to the Xcover4 and hopes this will be just as tough..",
+		"ContextDataValues": {},
+		"ProductId": "sku91054",
+		"Videos": [],
+		"CommentIds": [],
+		"Photos": [],
+		"TotalNegativeFeedbackCount": 0,
+		"RatingRange": 5,
+		"CampaignId": "BV_REVIEW_DISPLAY_ZERO_REVIEWS",
+		"SecondaryRatingsOrder": ["EaseOfUse", "BatteryLife", "Camera", "ScreenQuality"],
+		"UserLocation": null,
+		"TotalCommentCount": 0,
+		"ContextDataValuesOrder": [],
+		"ClientResponses": [],
+		"TagDimensionsOrder": [],
+		"TotalPositiveFeedbackCount": 28,
+		"IsRatingsOnly": false,
+		"LastModificationTime": "2017-05-16T01:45:12.000+00:00",
+		"Pros": null,
+		"ProductRecommendationIds": [],
+		"BadgesOrder": [],
+		"AuthorId": "zljv4kiqedsuxb04xng56bb3pu",
+		"Helpfulness": 1.0,
+		"SubmissionTime": "2017-05-15T00:56:05.000+00:00",
+		"AdditionalFields": {},
+		"Title": "xcover 3 and my test dummy daughter",
+		"TotalFeedbackCount": 28,
+		"AdditionalFieldsOrder": [],
+		"ModerationStatus": "APPROVED",
+		"IsFeatured": false,
+		"Cons": null,
+		"SecondaryRatings": {
+			"EaseOfUse": {
+				"ValueRange": 5,
+				"DisplayType": "NORMAL",
+				"Value": 5,
+				"Label": "Ease of Use",
+				"MinLabel": null,
+				"MaxLabel": null,
+				"Id": "EaseOfUse",
+				"ValueLabel": null
+			},
+			"BatteryLife": {
+				"ValueRange": 5,
+				"DisplayType": "NORMAL",
+				"Value": 5,
+				"Label": "Battery Life",
+				"MinLabel": null,
+				"MaxLabel": null,
+				"Id": "BatteryLife",
+				"ValueLabel": null
+			},
+			"ScreenQuality": {
+				"ValueRange": 5,
+				"DisplayType": "NORMAL",
+				"Value": 5,
+				"Label": "Screen Quality",
+				"MinLabel": null,
+				"MaxLabel": null,
+				"Id": "ScreenQuality",
+				"ValueLabel": null
+			},
+			"Camera": {
+				"ValueRange": 5,
+				"DisplayType": "NORMAL",
+				"Value": 5,
+				"Label": "Camera",
+				"MinLabel": null,
+				"MaxLabel": null,
+				"Id": "Camera",
+				"ValueLabel": null
+			}
+		},
+		"TagDimensions": {},
+		"Badges": {},
+		"SubmissionId": "so7mkjn6dlu2hs5x9xk89xwtr",
+		"IsSyndicated": false,
+		"IsRecommended": null,
+		"LastModeratedTime": "2017-05-16T01:45:12.000+00:00",
+		"Id": "86495098",
+		"ContentLocale": "en_US"
+	}],
+	"TotalResults": 1,
+	"Limit": 10,
+	"HasErrors": false,
+	"Offset": 0
+}

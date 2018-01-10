@@ -53,6 +53,7 @@ import com.vf.uk.dal.device.utils.CommonUtility;
 import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.DaoUtils;
 import com.vf.uk.dal.device.utils.SolrConnectionProvider;
+import com.vf.uk.dal.device.validator.Validator;
 import com.vf.uk.dal.utility.entity.BundleDetails;
 import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
 import com.vf.uk.dal.utility.entity.BundleDeviceAndProductsList;
@@ -62,7 +63,9 @@ import com.vf.uk.dal.utility.entity.RecommendedProductListRequest;
 import com.vf.uk.dal.utility.entity.RecommendedProductListResponse;
 import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
 import com.vodafone.common.Filters;
+import com.vodafone.dal.bundle.pojo.CommercialBundle;
 import com.vodafone.product.pojo.CommercialProduct;
+import com.vodafone.solrmodels.OfferAppliedPriceModel;
 import com.vodafone.solrmodels.ProductGroupFacetModel;
 
 @RunWith(SpringRunner.class)
@@ -111,10 +114,10 @@ public class DeviceServiceImplTest
          given(registry.getRestTemplate()).willReturn(restTemplate);
          given(restTemplate.postForObject("http://CUSTOMER-V1/customer/getRecommendedProductList/",recomProductListReq,RecommendedProductListResponse.class)).willReturn(obj1);
 
-		given(this.deviceDAOMock.getListOfDeviceTile("Apple","iPhone-7","DEVICE", null, null, null,null,null)).willReturn(CommonMethods.getDeviceTile("Apple","iPhone-7","DEVICE"));
+		/*given(this.deviceDAOMock.getListOfDeviceTile("Apple","iPhone-7","DEVICE", null, null, null,null,null)).willReturn(CommonMethods.getDeviceTile("Apple","iPhone-7","DEVICE"));
 		given(this.deviceDAOMock.getListOfDeviceTile(null,"iPhone-7","DEVICE", null, null, null,null,null)).willReturn(null);
 		given(this.deviceDAOMock.getListOfDeviceTile("Apple",null,"DEVICE", null, null, null,null,null)).willReturn(null);
-		given(this.deviceDAOMock.getListOfDeviceTile("Apple","iPhone-7",null, null, null, null,null,null)).willReturn(null);
+		given(this.deviceDAOMock.getListOfDeviceTile("Apple","iPhone-7",null, null, null, null,null,null)).willReturn(null);*/
 	
 		given(this.deviceDAOMock.getProductGroupByGroupTypeGroupName("DEVICE","Apple iPhone 6s")).willReturn(CommonMethods.getProductGroupByGroupTypeGroupName("DEVICE","Apple IPhone 6s"));
 		given(this.deviceDAOMock.getProductGroupByGroupTypeGroupName(null,"Apple iPhone 7")).willReturn(null);
@@ -123,12 +126,13 @@ public class DeviceServiceImplTest
 		given(this.deviceDAOMock.getProductGroupByGroupTypeGroupName(null,null)).willReturn(null);
 		given(this.deviceDAOMock.getDeviceTileById("83921",null,null)).willReturn(CommonMethods.getDeviceTileById("83921"));
 		given(this.deviceDAOMock.getDeviceTileById("83964",null,null)).willReturn(null);
-		given(this.deviceDAOMock.getDeviceDetails("83921","upgrade","34543")).willReturn(CommonMethods.getDevice("83921"));
+		/*given(this.deviceDAOMock.getDeviceDetails("83921","upgrade","34543")).willReturn(CommonMethods.getDevice("83921"));
 		given(this.deviceDAOMock.getDeviceDetails("83921","Upgrade","W_HH_PAYM_OC_02")).willReturn(CommonMethods.getDevice("83921"));
-		given(this.deviceDAOMock.getDeviceDetails("83929","upgrade","34543")).willReturn(null);
-		given(this.deviceDAOMock.getAccessoriesOfDevice("93353","Upgrade","W_HH_PAYM_OC_02")).willReturn(CommonMethods.getAccessoriesTileGroup("93353"));
+		given(this.deviceDAOMock.getDeviceDetails("83929","upgrade","34543")).willReturn(null);*/
+		given(deviceDAOMock.getCommercialProductFromCommercialProductRepository(Matchers.anyString())).willReturn(CommonMethods.getCommercialProductByDeviceId());
+		/*given(this.deviceDAOMock.getAccessoriesOfDevice("93353","Upgrade","W_HH_PAYM_OC_02")).willReturn(CommonMethods.getAccessoriesTileGroup("93353"));
 		given(this.deviceDAOMock.getAccessoriesOfDevice("93354","Upgrade","W_HH_PAYM_OC_02")).willReturn(null);
-		given(this.deviceDAOMock.getAccessoriesOfDevice(null,null,null)).willReturn(null);
+		given(this.deviceDAOMock.getAccessoriesOfDevice(null,null,null)).willReturn(null);*/
 		//given(this.deviceDAOMock.getDeviceList("HANDSET","apple", "iPhone-7","DEVICE_PAYM", "Priority", 1, 2,"32 GB","White","iOS","Great Camera")).willReturn(CommonMethods.getFacetedDevice("HANDSET","apple", "iPhone 7", "DEVICE_PAYM", "asc", 1, 2,"123"));
 		//given(this.deviceDAOMock.getDeviceList(null,null,null,null,null,1,0,"32 GB","White","iOS","Great Camera")).willReturn(null);
 		//given(this.deviceDAOMock.getDeviceList("productclass","make","model",null,"",1,0,"32 GB","White","iOS","Great Camera")).willReturn(null);
@@ -144,12 +148,27 @@ public class DeviceServiceImplTest
 		bundleAndHardwareTuple.setBundleId("110154");
 		bundleAndHardwareTupleList.add(bundleAndHardwareTuple);
 		given(this.deviceDAOMock.getPriceForBundleAndHardware(bundleAndHardwareTupleList,null,null)).willReturn(CommonMethods.getPriceForBundleAndHardware1());
+		given(deviceDAOMock.getCommercialProductFromCommercialProductRepository("093353"))
+		.willReturn(CommonMethods.getCommercialProductByDeviceId_093353());
+		given(deviceDAOMock.getListOfGroupsFromProductGroupRepository(Matchers.anyList()))
+		.willReturn(CommonMethods.getListOfProductGroupForAccessory());
+		given(restTemplate.postForObject("http://PRICE-V1/price/product",
+		CommonMethods.bundleDeviceAndProductsList_For_GetAccessoriesOfDevice(), PriceForProduct.class))
+				.willReturn(CommonMethods.getPriceForProduct_For_GetAccessoriesForDevice());
+		given(deviceDAOMock.getCommercialProductListFromCommercialProductRepository(Matchers.anyList()))
+		.willReturn(CommonMethods.getCommercialProductsListOfAccessories());
+		
+		given(this.deviceDAOMock.getJourneyTypeCompatibleOfferCodes("journeyType")).willReturn(CommonMethods.getMerChandisingPromotion());
+		ProductGroupFacetModel productGroupFacetModel = CommonMethods.getProductGroupFacetModel();
+		productGroupFacetModel.setListOfProductGroups(CommonMethods.getListOfProductGroupModels());
+		given(this.deviceDAOMock.getProductGroupFacetModelfromSolr(Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any())).willReturn(productGroupFacetModel);
+		
 	}
-	@Test
+	/*@Test
 	public void notNullTestForGetDeviceTileList() {
 		List<DeviceTile> deviceTileList = deviceService.getListOfDeviceTile("Apple","iPhone-7","DEVICE", null, null,null,null,null);
 		Assert.assertNotNull(deviceTileList);
-	}
+	}*/
 
 	@Test
 	public void sizeTestForGetDeviceTileList() {
@@ -248,29 +267,24 @@ public class DeviceServiceImplTest
 		deviceDetails=deviceService.getDeviceDetails("83921","Upgrade","W_HH_PAYM_OC_02");
 		Assert.assertNotNull(deviceDetails);
 	}
-	@Test
-	public void nullTestForGetDeviceDetais() {
-		DeviceDetails deviceDetails=new DeviceDetails();
-		deviceDetails=deviceService.getDeviceDetails("83929","Upgrade","W_HH_PAYM_OC_02");
-		Assert.assertNull(deviceDetails);
-	}
+		
 	@Test
 	public void notNullTestForGetAccessoriesOfDevice() {
 		List<AccessoryTileGroup> accessory=new ArrayList<>();
-		accessory=deviceService.getAccessoriesOfDevice("93353","Upgrade","W_HH_PAYM_OC_02");
+		accessory=deviceService.getAccessoriesOfDevice("093353","Upgrade","W_HH_PAYM_OC_02");
 		Assert.assertNotNull(accessory); 
 	}
 	@Test
 	public void nullTestForGetAccessoriesOfDevice() {
-		List<AccessoryTileGroup> accessory=new ArrayList<>();
+		List<AccessoryTileGroup> accessory = null;
 		try{
 		accessory=deviceService.getAccessoriesOfDevice(null,null,null);
 		}
 		catch(Exception e)
 		{
-			
+			Assert.assertNull(accessory); 
 		}
-		Assert.assertNull(accessory); 
+		
 	}
 	
 	/*@Test
@@ -388,27 +402,27 @@ public class DeviceServiceImplTest
 	}
 	@Test
 	public void NotNullTestForDaoUtilsconvertCoherenceDeviceToDeviceTile() {
-		DeviceSummary deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile((long)1, CommonMethods.getCommercialProduct(),CommonMethods.getCommercialBundle(),CommonMethods.getPriceForBundleAndHardware(),CommonMethods.getListOfOfferPacks(),null, false,null);
+		DeviceSummary deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile((long)1, CommonMethods.getCommercialProduct(),CommonMethods.getCommercialBundle(),CommonMethods.getPriceForBundleAndHardware().get(0),CommonMethods.getListOfBundleAndHardwarePromotions(),null, false,null);
 		Assert.assertNotNull(deviceSummary);
 	}
 	@Test
 	public void NotNullTestDateForDaoUtilsconvertCoherenceDeviceToDeviceTile() {
-		DeviceSummary deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile((long)1, CommonMethods.getCommercialProduct1(),CommonMethods.getCommercialBundle1(),CommonMethods.getPriceForBundleAndHardware(),CommonMethods.getListOfOfferPacks(),null, false,null);
+		DeviceSummary deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile((long)1, CommonMethods.getCommercialProduct1(),CommonMethods.getCommercialBundle1(),CommonMethods.getPriceForBundleAndHardware().get(0),CommonMethods.getListOfBundleAndHardwarePromotions(),null, false,null);
 		Assert.assertNotNull(deviceSummary);
 	}
 	@Test
 	public void NullTestStartDateForDaoUtilsconvertCoherenceDeviceToDeviceTile() {
-		DeviceSummary deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile((long)1, CommonMethods.getCommercialProduct1(),CommonMethods.getCommercialBundle2(),CommonMethods.getPriceForBundleAndHardware(),CommonMethods.getListOfOfferPacks(),null, false,null);
+		DeviceSummary deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile((long)1, CommonMethods.getCommercialProduct1(),CommonMethods.getCommercialBundle2(),CommonMethods.getPriceForBundleAndHardware().get(0),CommonMethods.getListOfBundleAndHardwarePromotions(),null, false,null);
 		Assert.assertNotNull(deviceSummary);
 	}
 	@Test
 	public void NullTestEndDateForDaoUtilsconvertCoherenceDeviceToDeviceTile() {
-		DeviceSummary deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile((long)1, CommonMethods.getCommercialProduct1(),CommonMethods.getCommercialBundle3(),CommonMethods.getPriceForBundleAndHardware(),CommonMethods.getListOfOfferPacks(),null, false,null);
+		DeviceSummary deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile((long)1, CommonMethods.getCommercialProduct1(),CommonMethods.getCommercialBundle3(),CommonMethods.getPriceForBundleAndHardware().get(0),CommonMethods.getListOfBundleAndHardwarePromotions(),null, false,null);
 		Assert.assertNotNull(deviceSummary);
 	}
 	@Test
 	public void NotNullTestForDaoUtilsconvertCoherenceDeviceToDeviceDetails() {
-		DeviceDetails deviceDetails = DaoUtils.convertCoherenceDeviceToDeviceDetails(CommonMethods.getCommercialProduct(),CommonMethods.getPriceForBundleAndHardware(),CommonMethods.getListOfOfferPacks());
+		DeviceDetails deviceDetails = DaoUtils.convertCoherenceDeviceToDeviceDetails(CommonMethods.getCommercialProduct(),CommonMethods.getPriceForBundleAndHardware(),CommonMethods.getListOfBundleAndHardwarePromotions());
 		Assert.assertNotNull(deviceDetails);
 	}
 	
@@ -436,19 +450,123 @@ public class DeviceServiceImplTest
 	/**
 	 * need to modify
 	 */
-	/*@Test
+	@Test
 	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList() {
 		Map<String,String> groupNameWithProdId=new HashMap<String, String>();
 		groupNameWithProdId.put("Apple", "10936");
 		groupNameWithProdId.put("Samsung","7630");
-		FacetedDevice deviceList = DaoUtils.convertProductModelListToDeviceList(CommonMethods.getProductModel(),CommonMethods.getListOfProducts(), groupNameWithProdId ,CommonMethods.getPriceForBundleAndHardware(),null, "DEVICE_PAYM",null);
+		Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice = new HashMap<>();
+		listOfOfferAppliedPrice.put("093353", Arrays.asList(CommonMethods.getOfferAppliedPriceModel().get(1)));
+		listOfOfferAppliedPrice.put("092660", Arrays.asList(CommonMethods.getOfferAppliedPriceModel().get(0)));
+		Map<String,Boolean> isLeadMemberFromSolr = new HashMap<>();
+		isLeadMemberFromSolr.put("leadMember", true);
+		FacetedDevice deviceList = DaoUtils.convertProductModelListToDeviceList(CommonMethods.getProductModel(),
+				CommonMethods.getListOfProducts(),CommonMethods.getProductGroupFacetModel1().getListOfFacetsFields(),
+				"DEVICE_PAYM",null,null,listOfOfferAppliedPrice,"W_HH_OC_02",
+				groupNameWithProdId ,null,null,
+				isLeadMemberFromSolr,listOfOfferAppliedPrice,"Upgrade");
 		Assert.assertNotNull(deviceList);
-	}@Test
+	}
+	@Test
+	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList1() {
+		Map<String,String> groupNameWithProdId=new HashMap<String, String>();
+		groupNameWithProdId.put("Apple", "10936");
+		groupNameWithProdId.put("Samsung","7630");
+		Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice = new HashMap<>();
+		listOfOfferAppliedPrice.put("093353", Arrays.asList(CommonMethods.getOfferAppliedPriceModel().get(1)));
+		listOfOfferAppliedPrice.put("092660", Arrays.asList(CommonMethods.getOfferAppliedPriceModel().get(0)));
+		Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice1 = new HashMap<>();
+		listOfOfferAppliedPrice1.put("093353", new ArrayList<>());
+		listOfOfferAppliedPrice1.put("092660", new ArrayList<>());
+		Map<String,Boolean> isLeadMemberFromSolr = new HashMap<>();
+		isLeadMemberFromSolr.put("leadMember", true);
+		FacetedDevice deviceList = DaoUtils.convertProductModelListToDeviceList(CommonMethods.getProductModel(),
+				CommonMethods.getListOfProducts(),CommonMethods.getProductGroupFacetModel1().getListOfFacetsFields(),
+				"DEVICE_PAYM",null,null,listOfOfferAppliedPrice1,null,
+				groupNameWithProdId ,null,null,
+				isLeadMemberFromSolr,listOfOfferAppliedPrice,"Upgrade");
+		Assert.assertNotNull(deviceList);
+	}
+	@Test
+	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList2() {
+		Map<String,String> groupNameWithProdId=new HashMap<String, String>();
+		groupNameWithProdId.put("Apple", "10936");
+		groupNameWithProdId.put("Samsung","7630");
+		Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice1 = new HashMap<>();
+		listOfOfferAppliedPrice1.put("093353", new ArrayList<>());
+		listOfOfferAppliedPrice1.put("092660", new ArrayList<>());
+		Map<String,Boolean> isLeadMemberFromSolr = new HashMap<>();
+		isLeadMemberFromSolr.put("leadMember", true);
+		FacetedDevice deviceList = DaoUtils.convertProductModelListToDeviceList(CommonMethods.getProductModel(),
+				CommonMethods.getListOfProducts(),CommonMethods.getProductGroupFacetModel1().getListOfFacetsFields(),
+				"DEVICE_PAYM",null,null,listOfOfferAppliedPrice1,null,
+				groupNameWithProdId ,null,null,
+				isLeadMemberFromSolr,listOfOfferAppliedPrice1,"Upgrade");
+		Assert.assertNotNull(deviceList);
+	}
+	
+	@Test
+	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList3() {
+		Map<String,String> groupNameWithProdId=new HashMap<String, String>();
+		groupNameWithProdId.put("Apple", "10936");
+		groupNameWithProdId.put("Samsung","7630");
+		Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice1 = new HashMap<>();
+		listOfOfferAppliedPrice1.put("093353", new ArrayList<>());
+		listOfOfferAppliedPrice1.put("092660", new ArrayList<>());
+		Map<String,Boolean> isLeadMemberFromSolr = new HashMap<>();
+		isLeadMemberFromSolr.put("leadMember", true);
+		FacetedDevice deviceList = DaoUtils.convertProductModelListToDeviceList(CommonMethods.getProductModel(),
+				CommonMethods.getListOfProducts(),CommonMethods.getProductGroupFacetModel1().getListOfFacetsFields(),
+				"DEVICE_PAYM",null,null,listOfOfferAppliedPrice1,null,
+				groupNameWithProdId ,null,null,
+				isLeadMemberFromSolr,listOfOfferAppliedPrice1,null);
+		Assert.assertNotNull(deviceList);
+	}
+	
+	@Test
+	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList4() {
+		Map<String,String> groupNameWithProdId=new HashMap<String, String>();
+		groupNameWithProdId.put("Apple", "10936");
+		groupNameWithProdId.put("Samsung","7630");
+		Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice = new HashMap<>();
+		listOfOfferAppliedPrice.put("093353", Arrays.asList(CommonMethods.getOfferAppliedPriceModel().get(1)));
+		listOfOfferAppliedPrice.put("092660", Arrays.asList(CommonMethods.getOfferAppliedPriceModel().get(0)));
+		Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice1 = new HashMap<>();
+		listOfOfferAppliedPrice1.put("093353", new ArrayList<>());
+		listOfOfferAppliedPrice1.put("092660", new ArrayList<>());
+		Map<String,Boolean> isLeadMemberFromSolr = new HashMap<>();
+		isLeadMemberFromSolr.put("leadMember", true);
+		FacetedDevice deviceList = DaoUtils.convertProductModelListToDeviceList(CommonMethods.getProductModel(),
+				CommonMethods.getListOfProducts(),CommonMethods.getProductGroupFacetModel1().getListOfFacetsFields(),
+				"DEVICE_PAYM",null,null,listOfOfferAppliedPrice1,"W_HH_OC_02",
+				groupNameWithProdId ,null,null,
+				isLeadMemberFromSolr,listOfOfferAppliedPrice,"Upgrade");
+		Assert.assertNotNull(deviceList);
+	}
+	@Test
+	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList5() {
+		Map<String,String> groupNameWithProdId=new HashMap<String, String>();
+		groupNameWithProdId.put("Apple", "10936");
+		groupNameWithProdId.put("Samsung","7630");
+		Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice1 = new HashMap<>();
+		listOfOfferAppliedPrice1.put("093353", new ArrayList<>());
+		listOfOfferAppliedPrice1.put("092660", new ArrayList<>());
+		Map<String,Boolean> isLeadMemberFromSolr = new HashMap<>();
+		isLeadMemberFromSolr.put("leadMember", true);
+		FacetedDevice deviceList = DaoUtils.convertProductModelListToDeviceList(CommonMethods.getProductModel(),
+				CommonMethods.getListOfProducts(),CommonMethods.getProductGroupFacetModel1().getListOfFacetsFields(),
+				"DEVICE_PAYM",null,null,listOfOfferAppliedPrice1,"W_HH_OC_02",
+				groupNameWithProdId ,null,null,
+				isLeadMemberFromSolr,listOfOfferAppliedPrice1,"Upgrade");
+		Assert.assertNotNull(deviceList);
+	}
+	
+	/*@Test
 	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList_Data_PAYG() {
 		Map<String,String> groupNameWithProdId=new HashMap<String, String>();
 		groupNameWithProdId.put("Apple", "10936");
 		groupNameWithProdId.put("Samsung","7630");
-		FacetedDevice deviceList = DaoUtils.convertProductModelListToDeviceList(CommonMethods.getProductModel(),CommonMethods.getListOfProducts(), groupNameWithProdId ,CommonMethods.getPriceForBundleAndHardware(),null, "DEVICE_PAYG",CommonMethods.getListofdataPayGCoherence());
+		FacetedDevice deviceList = DaoUtils.convertProductModelListToDeviceList(CommonMethods.getProductModel(),CommonMethods.getListOfProducts(), groupNameWithProdId ,getProductGroupFacetModel1,CommonMethods.getPriceForBundleAndHardware(),null, "DEVICE_PAYG",CommonMethods.getListofdataPayGCoherence());
 		Assert.assertNotNull(deviceList);
 	}*/
 	
@@ -536,7 +654,7 @@ public class DeviceServiceImplTest
 		iLSPriceMap.put("093353", CommonMethods.getOfferAppliedPrice());
 		DevicePreCalculatedData	productGroupForDeviceListing=DaoUtils
 		.convertBundleHeaderForDeviceToProductGroupForDeviceListing("093353","leadPlanId","groupname"
-				,"groupId", CommonMethods.getPrice(), CommonMethods.getleadMemberMap(),iLSPriceMap);
+				,"groupId", CommonMethods.getPrice(), CommonMethods.getleadMemberMap(),iLSPriceMap,CommonMethods.getleadMemberMap(),"upgradeLeadPlanId");
 
 		Assert.assertNotNull(productGroupForDeviceListing);
 	}
@@ -547,7 +665,7 @@ public class DeviceServiceImplTest
 		iLSPriceMap.put("093353", CommonMethods.getOfferAppliedPrice());
 		DevicePreCalculatedData	productGroupForDeviceListing=DaoUtils
 		.convertBundleHeaderForDeviceToProductGroupForDeviceListing("093353",null,"groupname"
-				,"groupId", CommonMethods.getPrice(),CommonMethods.getleadMemberMap(),iLSPriceMap);
+				,"groupId", CommonMethods.getPrice(),CommonMethods.getleadMemberMap(),iLSPriceMap,CommonMethods.getleadMemberMap(),null);
 
 		Assert.assertNotNull(productGroupForDeviceListing);
 	}
@@ -725,9 +843,8 @@ public class DeviceServiceImplTest
 		}
 	}
 	@Test
-	public void testGetDeviceListForErrors()
-	{
-		given(this.deviceDAOMock.getJourneyTypeCompatibleOfferCodes("journeyType")).willReturn(CommonMethods.getMerChandisingPromotion());
+	public void testGetDeviceListForErrors(){
+		 
 		try
 		{    
 			deviceService.getDeviceList("productClass", "listOfMake", "model", "groupType", null,2, 2, "capacity", "colour", "operatingSystem", "mustHaveFeatures", "journeyType", (float) 14.0, "offerCode", "msisdn", false);
@@ -776,8 +893,52 @@ public class DeviceServiceImplTest
 									}
 									catch(Exception edfg)
 									{
-										
+										try
+										{
+											deviceService.getDeviceList(null, "listOfMake", "model", "DEVICE_PAYM", "Rating",2, 2, "capacity", "colour", "operatingSystem", "mustHaveFeatures", "conditionalaccept", (float) 14.0, "offerCode", "msisdn", true);
+										}
+										catch(Exception ex)
+										{
+											try
+											{
+												deviceService.getDeviceList("HandsetHandset", "listOfMake", "model", "DEVICE_PAYM", "Rating",2, 2, "capacity", "colour", "operatingSystem", "mustHaveFeatures", "conditionalaccept", (float) 14.0, "offerCode", "msisdn", true);
+											}
+											catch(Exception ex1)
+											{
+												try
+												{
+													deviceService.getDeviceList("Handset", "listOfMake", "model", "DEVICE_PAYMDEVICE_PAYM", "Rating",2, 2, "capacity", "colour", "operatingSystem", "mustHaveFeatures", "conditionalaccept", (float) 14.0, "offerCode", "msisdn", true);
+												}
+												catch(Exception ex2)
+												{
+													try
+													{
+														deviceService.getDeviceList("Handset", "listOfMake", null, "DEVICE_PAYM", "Rating",2, 2, "capacity", "colour", "operatingSystem", "mustHaveFeatures", "conditionalaccept", (float) 14.0, "offerCode", "msisdn", true);
+													}
+													catch(Exception ex3)
+													{
+														try
+														{
+															deviceService.getDeviceList("Handset", "listOfMake", "model", "DEVICE_PAYM", "Rating",2, 2, "capacity", "colour", "operatingSystem", "mustHaveFeatures", null, (float) 14.0, "offerCode", "msisdn", true);
+														}
+														catch(Exception ex4)
+														{
+															try
+															{
+																deviceService.getDeviceList("Handset", "listOfMake", "model", "DEVICE_PAYM", "Rating",2, 2, "capacity", "colour", "operatingSystem", "mustHaveFeatures", "conditionalaccept", (float) 14.0, "offerCode", null, true);
+															}
+															catch(Exception ex5)
+															{
+																
+															}
+														}
+													}	
+												}	
+											}
+											
+										}	
 									}
+									
 								}
 							}
 						}
@@ -814,7 +975,7 @@ public class DeviceServiceImplTest
 		{
 			List<String> list = new ArrayList<>();
 			list.add("abd|def");
-			deviceService.getMemeberBasedOnRules1(listOfDeviceGroupMember);
+			deviceService.getMemeberBasedOnRules1(listOfDeviceGroupMember,"Upgrade");
 		}
 		catch(Exception e)
 		{
@@ -827,7 +988,7 @@ public class DeviceServiceImplTest
 		given(this.deviceDAOMock.getProductModel(Matchers.anyList())).willReturn(CommonMethods.getProductModel());
 		try
 		{
-			deviceService.validateMemeber1("12345");
+			deviceService.validateMemeber1("12345","Upgrade");
 		}
 		catch(Exception e)
 		{
@@ -841,7 +1002,7 @@ public class DeviceServiceImplTest
 		productGroupFacetModel.setListOfProductGroups(CommonMethods.getProductGroupModel());
 		given(this.deviceDAOMock.getProductGroupsWithFacets(Matchers.any(), Matchers.any(), Matchers.any(),
 				Matchers.any(), Matchers.any(), Matchers.any(),Matchers.any())).willReturn(productGroupFacetModel);
-		given(this.deviceDAOMock.getProductGroupsWithFacets(Matchers.any())).willReturn(CommonMethods.getProductGroupFacetModel1());
+		given(this.deviceDAOMock.getProductGroupsWithFacets(Matchers.any(),Matchers.anyString())).willReturn(CommonMethods.getProductGroupFacetModel1());
 		try
 		{
 			deviceService.getDeviceListForConditionalAccept("HANDSET", "make", "model", "DEVICE_PAYM", "Order", 5, 6, "12", "red", "os", "somefeature", (float) 500.00,"");
@@ -892,15 +1053,21 @@ public class DeviceServiceImplTest
 		Assert.assertNotNull(deviceService.getLeadPlanIdForDeviceId("123"));
 	}
 	@Test
+	public void notNullValidateMemeberForUpgrade()throws IOException {
+		CommercialProduct commercialProduct=CommonMethods.getCommercialProduct5();
+		given(this.deviceDAOMock.getCommercialProductRepositoryByLeadMemberId(Matchers.any())).willReturn(commercialProduct);
+		Assert.assertNotNull(deviceService.validateMemeber("123","Upgrade"));
+	}
+	@Test
 	public void notNullValidateMemeber()throws IOException {
 		CommercialProduct commercialProduct=CommonMethods.getCommercialProduct5();
 		given(this.deviceDAOMock.getCommercialProductRepositoryByLeadMemberId(Matchers.any())).willReturn(commercialProduct);
-		Assert.assertNotNull(deviceService.validateMemeber("123"));
+		Assert.assertNotNull(deviceService.validateMemeber("123","Acquisition"));
 	}
 	@Test
 	public void notNullValidateMemeberForException() {
 		given(this.deviceDAOMock.getCommercialProductRepositoryByLeadMemberId("123")).willThrow(new NullPointerException());
-		Assert.assertNotNull(deviceService.validateMemeber("123"));
+		Assert.assertNotNull(deviceService.validateMemeber("123",null));
 	}
 	
 	/*@Test
@@ -1036,7 +1203,7 @@ public class DeviceServiceImplTest
 	public void nullTestForGetDeviceListForGroupTypeWithOutConditionalAcceptance() {
 		given(deviceDAOMock.getProductGroupsWithFacets(Matchers.any(), Matchers.any(), Matchers.any(),
 				Matchers.any(), Matchers.any(), Matchers.any(),Matchers.any())).willReturn(CommonMethods.getProductGroupFacetModel1());
-		given(deviceDAOMock.getProductGroupsWithFacets(Filters.HANDSET)).willReturn(CommonMethods.getProductGroupFacetModel1());
+		given(deviceDAOMock.getProductGroupsWithFacets(Filters.HANDSET,"Upgrade")).willReturn(CommonMethods.getProductGroupFacetModel1());
 		given(deviceDAOMock.getProductModel(Matchers.anyList())).willReturn(CommonMethods.getProductModel());
 		
 		FacetedDevice deviceLists=null;
@@ -1054,9 +1221,9 @@ public class DeviceServiceImplTest
 	public void nullTestForGetDeviceListForGroupTypeWithOutConditionalAcceptance1() {
 		given(deviceDAOMock.getProductGroupsWithFacets(Matchers.any(), Matchers.any(), Matchers.any(),
 				Matchers.any(), Matchers.any(), Matchers.any(),Matchers.any())).willReturn(CommonMethods.getProductGroupFacetModel1());
-		given(deviceDAOMock.getProductGroupsWithFacets(Filters.HANDSET)).willReturn(CommonMethods.getProductGroupFacetModel1());
+		given(deviceDAOMock.getProductGroupsWithFacets(Filters.HANDSET,"SecondLine")).willReturn(CommonMethods.getProductGroupFacetModel1());
 		given(deviceDAOMock.getProductModel(Matchers.anyList())).willReturn(CommonMethods.getProductModel());
-		given(deviceDAOMock.getBundleAndHardwarePriceFromSolr(Matchers.anyList(),Matchers.anyString())).willReturn(CommonMethods.getOfferAppliedPriceModel());
+		given(deviceDAOMock.getBundleAndHardwarePriceFromSolr(Matchers.anyList(),Matchers.anyString(),Matchers.anyString())).willReturn(CommonMethods.getOfferAppliedPriceModel());
 		given(this.deviceDAOMock.getJourneyTypeCompatibleOfferCodes("Upgrade")).willReturn(CommonMethods.getMerChandisingPromotion1());
 		
 		
@@ -1100,4 +1267,46 @@ public class DeviceServiceImplTest
 					"Priority", 0, 9,"32 GB","White","iOS","Great Camera","SecondLine",null,"W_HH_PAYM_02", null, true);
 		
 	}
+	@Test
+	public void nullTestIsValidBundleForProductUpgrade() {
+		Map<String,CommercialBundle> commercialBundleMap=new HashMap<>();
+		commercialBundleMap.put("110154", CommonMethods.getCommercialBundle());
+		List<String> productLinesList = new ArrayList<>();
+		String upgrade="Upgrade";
+		productLinesList.add(Constants.STRING_MOBILE_PHONE_SERVICE_SELLABLE);
+		productLinesList.add(Constants.STRING_MBB_SELLABLE);
+		Assert.assertNotNull(CommonUtility.isValidBundleForProduct(CommonMethods.getUtilityPriceForBundleAndHardware(),
+				 commercialBundleMap,productLinesList,upgrade));
+	}
+	@Test
+	public void nullTestIsValidBundleForProduct() {
+		Map<String,CommercialBundle> commercialBundleMap=new HashMap<>();
+		commercialBundleMap.put("110154", CommonMethods.getCommercialBundle());
+		List<String> productLinesList = new ArrayList<>();
+		String Acquistion="Acquistion";
+		productLinesList.add(Constants.STRING_MOBILE_PHONE_SERVICE_SELLABLE);
+		productLinesList.add(Constants.STRING_MBB_SELLABLE);
+		Assert.assertNotNull(CommonUtility.isValidBundleForProduct(CommonMethods.getUtilityPriceForBundleAndHardware(),
+				 commercialBundleMap,productLinesList,Acquistion));
+	}
+	
+	@Test
+	public void getBundlePriceBasedOnDiscountDuration_Implementation(){
+		DeviceSummary deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile((long)1, CommonMethods.getCommercialProduct(),CommonMethods.getCommercialBundle(),CommonMethods.getPriceForBundleAndHardware().get(0),CommonMethods.getListOfBundleAndHardwarePromotions(),null, false,null);
+		deviceService.getBundlePriceBasedOnDiscountDuration_Implementation(deviceSummary,"full_duration");
+		deviceService.getBundlePriceBasedOnDiscountDuration_Implementation(deviceSummary,"limited_time");
+	}
+	@Test
+	public void validatorTest(){
+		Validator.validateGroupType("DEVICE_PAYM");
+		Validator.validateGroupType("DEVICE_PAYM1");
+		Validator.validateMSISDN("12331354");
+		Validator.validateMSISDN("AS46");
+		Validator.validateIncludeRecommendation("true");
+		Validator.validateIncludeRecommendation("FALSE");
+		Validator.validateGetListOfDeviceTile(new HashMap());
+		Validator.validateGetDeviceList(new HashMap());
+		Validator.validateJourneyType("acquisition");
+	}
+	
 }

@@ -1,19 +1,36 @@
 package com.vf.uk.dal.device.entity;
 
 import java.util.Objects;
+
+import javax.validation.Valid;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 /**
  * BundlePrice
  */
 
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
+
 public class BundlePrice   {
+  @JsonProperty("bundleId")
   private String bundleId = null;
 
+  @JsonProperty("monthlyPrice")
   private Price monthlyPrice = null;
 
+  @JsonProperty("monthlyDiscountPrice")
   private Price monthlyDiscountPrice = null;
 
+  @JsonProperty("merchandisingPromotions")
   private MerchandisingPromotion merchandisingPromotions = null;
 
+  /**
+   * 
+   * @param bundleId
+   * @return
+   */
   public BundlePrice bundleId(String bundleId) {
     this.bundleId = bundleId;
     return this;
@@ -23,14 +40,26 @@ public class BundlePrice   {
    * Bundle id of the price to be calculated
    * @return bundleId
   **/
+  @ApiModelProperty(value = "Bundle id of the price to be calculated")
+
+  /**
+	 * 
+	 * @return
+	 */
   public String getBundleId() {
     return bundleId;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public void setBundleId(String bundleId) {
     this.bundleId = bundleId;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public BundlePrice monthlyPrice(Price monthlyPrice) {
     this.monthlyPrice = monthlyPrice;
     return this;
@@ -40,14 +69,27 @@ public class BundlePrice   {
    * Get monthlyPrice
    * @return monthlyPrice
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+  /**
+	 * 
+	 * @return
+	 */
   public Price getMonthlyPrice() {
     return monthlyPrice;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public void setMonthlyPrice(Price monthlyPrice) {
     this.monthlyPrice = monthlyPrice;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public BundlePrice monthlyDiscountPrice(Price monthlyDiscountPrice) {
     this.monthlyDiscountPrice = monthlyDiscountPrice;
     return this;
@@ -57,14 +99,27 @@ public class BundlePrice   {
    * Get monthlyDiscountPrice
    * @return monthlyDiscountPrice
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+  /**
+	 * 
+	 * @return
+	 */
   public Price getMonthlyDiscountPrice() {
     return monthlyDiscountPrice;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public void setMonthlyDiscountPrice(Price monthlyDiscountPrice) {
     this.monthlyDiscountPrice = monthlyDiscountPrice;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public BundlePrice merchandisingPromotions(MerchandisingPromotion merchandisingPromotions) {
     this.merchandisingPromotions = merchandisingPromotions;
     return this;
@@ -74,10 +129,20 @@ public class BundlePrice   {
    * Get merchandisingPromotions
    * @return merchandisingPromotions
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+  /**
+	 * 
+	 * @return
+	 */
   public MerchandisingPromotion getMerchandisingPromotions() {
     return merchandisingPromotions;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public void setMerchandisingPromotions(MerchandisingPromotion merchandisingPromotions) {
     this.merchandisingPromotions = merchandisingPromotions;
   }

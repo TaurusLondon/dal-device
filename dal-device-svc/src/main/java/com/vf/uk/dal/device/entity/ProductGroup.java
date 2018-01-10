@@ -25,7 +25,11 @@ public class ProductGroup   {
 
   @JsonProperty("members")
   private List<Member> members = new ArrayList<>();
-
+/**
+ * 
+ * @param id
+ * @return
+ */
   public ProductGroup id(Integer id) {
     this.id = id;
     return this;
@@ -38,11 +42,18 @@ public class ProductGroup   {
   public Integer getId() {
     return id;
   }
-
+/**
+ * 
+ * @param id
+ */
   public void setId(Integer id) {
     this.id = id;
   }
-
+/**
+ * 
+ * @param groupName
+ * @return
+ */
   public ProductGroup groupName(String groupName) {
     this.groupName = groupName;
     return this;
@@ -55,11 +66,18 @@ public class ProductGroup   {
   public String getGroupName() {
     return groupName;
   }
-
+/**
+ * 
+ * @param groupName
+ */
   public void setGroupName(String groupName) {
     this.groupName = groupName;
   }
-
+/**
+ * 
+ * @param groupPriority
+ * @return
+ */
   public ProductGroup groupPriority(String groupPriority) {
     this.groupPriority = groupPriority;
     return this;
@@ -72,11 +90,18 @@ public class ProductGroup   {
   public String getGroupPriority() {
     return groupPriority;
   }
-
+/**
+ * 
+ * @param groupPriority
+ */
   public void setGroupPriority(String groupPriority) {
     this.groupPriority = groupPriority;
   }
-
+/**
+ * 
+ * @param groupType
+ * @return
+ */
   public ProductGroup groupType(String groupType) {
     this.groupType = groupType;
     return this;
@@ -89,16 +114,27 @@ public class ProductGroup   {
   public String getGroupType() {
     return groupType;
   }
-
+/**
+ * 
+ * @param groupType
+ */
   public void setGroupType(String groupType) {
     this.groupType = groupType;
   }
-
+/**
+ * 
+ * @param members
+ * @return
+ */
   public ProductGroup members(List<Member> members) {
     this.members = members;
     return this;
   }
-
+/**
+ * 
+ * @param membersItem
+ * @return
+ */
   public ProductGroup addMembersItem(Member membersItem) {
     this.members.add(membersItem);
     return this;
@@ -111,7 +147,10 @@ public class ProductGroup   {
   public List<Member> getMembers() {
     return members;
   }
-
+/**
+ * 
+ * @param members
+ */
   public void setMembers(List<Member> members) {
     this.members = members;
   }

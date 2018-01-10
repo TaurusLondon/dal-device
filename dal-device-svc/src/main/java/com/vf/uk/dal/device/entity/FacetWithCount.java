@@ -1,15 +1,29 @@
 package com.vf.uk.dal.device.entity;
 
 import java.util.Objects;
+
+import javax.validation.Valid;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 /**
  * FacetWithCount
  */
 
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
+
 public class FacetWithCount   {
+  @JsonProperty("name")
   private String name = null;
 
+  @JsonProperty("count")
   private long count;
-
+/**
+ * 
+ * @param name
+ * @return
+ */
   public FacetWithCount name(String name) {
     this.name = name;
     return this;
@@ -19,14 +33,27 @@ public class FacetWithCount   {
    * equipment name
    * @return name
   **/
+  @ApiModelProperty(value = "equipment name")
+
+/**
+ * 
+ * @return
+ */
   public String getName() {
     return name;
   }
-
+/**
+ * 
+ * @param name
+ */
   public void setName(String name) {
     this.name = name;
   }
-
+/**
+ * 
+ * @param count
+ * @return
+ */
   public FacetWithCount count(long count) {
     this.count = count;
     return this;
@@ -36,10 +63,20 @@ public class FacetWithCount   {
    * euipment count
    * @return count
   **/
+  @ApiModelProperty(value = "euipment count")
+
+  @Valid
+/**
+ * 
+ * @return
+ */
   public long getCount() {
     return count;
   }
-
+/**
+ * 
+ * @param count
+ */
   public void setCount(long count) {
     this.count = count;
   }

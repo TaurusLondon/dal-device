@@ -172,8 +172,44 @@ public class Constants {
 	public static final String STRING_MEDIA_PRICEESTABLISH = "priceEstablishedLabel";
 	public static final String STRING_MEDIA_DESCRIPTION = "description";
 	public static final String STRING_MEDIA_LABEL = "label";
+	public static final String STRING_URL_ALLOWANCE = "URL";
+	public static final String DATE_FORMAT = "yyyy-MM-dd";
 	/**
 	 * @author manoj.bera 
 	 * @Sprint 6.4 Constants End
+	 */
+	
+	public static final String JOURNEY_TYPE_ACQUISITION = "Acquisition";
+	/**
+	 * @author manoj.bera 
+	 * @Sprint 6.5 Constants Start
+	 */
+	
+	public static final String STRING_MBB_SELLABLE="MBB Sellable";
+	/**
+	 * @author manoj.bera 
+	 * @Sprint 6.5 Constants Start
+	 */
+	/**
+	 * Sprint-6.6 start
+	 */
+	public static final String PROMO_CATEGORY_PRICING_UPGRADE_DISCOUNT = "Pricing_Upgrade_Discount";
+	public static final String PROMO_CATEGORY_PRICING_SECONDLINE_DISCOUNT = "Pricing_SecondLine_Discount";
+	/**
+	 * Sprint-6.6 End
+	 */
+	
+	/**
+	 * @author suranjit_kashyap 
+	 * @Sprint 6.6 Constants Start
+	 */
+	public static final String STRING_PAGESIZE="pageSize";
+	public static final String STRING_PAGENUMBER="pageNumber";
+	public static final String STRING_DATA_DEVICE_PAYM="DATA_DEVICE_PAYM";
+	public static final String STRING_DATA_DEVICE_PAYG="DATA_DEVICE_PAYG";
+	
+	/**
+	 * @author suranjit_kashyap
+	 * @Sprint 6.6 Constants Start
 	 */
 }

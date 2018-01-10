@@ -8,10 +8,12 @@ import javax.validation.Valid;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * DeviceDetails
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-09-15T08:45:19.115Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
 
 public class DeviceDetails   {
   @JsonProperty("deviceId")
@@ -25,7 +27,7 @@ public class DeviceDetails   {
 
   @JsonProperty("validOffer")
   private Boolean validOffer = null;
-  
+
   @JsonProperty("productClass")
   private String productClass = null;
 
@@ -68,6 +70,11 @@ public class DeviceDetails   {
   @JsonProperty("metaData")
   private MetaData metaData = null;
 
+  /**
+   * 
+   * @param deviceId
+   * @return
+   */
   public DeviceDetails deviceId(String deviceId) {
     this.deviceId = deviceId;
     return this;
@@ -77,16 +84,27 @@ public class DeviceDetails   {
    * Product id of the requested device from the product catalogue
    * @return deviceId
   **/
+  @ApiModelProperty(value = "Product id of the requested device from the product catalogue")
 
-
+/**
+ * 
+ * @return
+ */
   public String getDeviceId() {
     return deviceId;
   }
-
+/**
+ * 
+ * @param deviceId
+ */
   public void setDeviceId(String deviceId) {
     this.deviceId = deviceId;
   }
-
+/**
+ * 
+ * @param name
+ * @return
+ */
   public DeviceDetails name(String name) {
     this.name = name;
     return this;
@@ -96,16 +114,27 @@ public class DeviceDetails   {
    * Name of the product as provided in the product catalogue
    * @return name
   **/
+  @ApiModelProperty(value = "Name of the product as provided in the product catalogue")
 
-
+/**
+ * 
+ * @return
+ */
   public String getName() {
     return name;
   }
-
+/**
+ * 
+ * @param name
+ */
   public void setName(String name) {
     this.name = name;
   }
-
+/**
+ * 
+ * @param description
+ * @return
+ */
   public DeviceDetails description(String description) {
     this.description = description;
     return this;
@@ -115,31 +144,57 @@ public class DeviceDetails   {
    * Description of the product as provided in the product catalogue
    * @return description
   **/
+  @ApiModelProperty(value = "Description of the product as provided in the product catalogue")
 
-
+/**
+ * 
+ * @return
+ */
   public String getDescription() {
     return description;
   }
-
+/**
+ * 
+ * @param description
+ */
   public void setDescription(String description) {
     this.description = description;
   }
-  
-  
-  /**
-   * Informs offercode passed is valid for the journey and device
+/**
+ * 
+ * @param validOffer
+ * @return
+ */
+  public DeviceDetails validOffer(Boolean validOffer) {
+    this.validOffer = validOffer;
+    return this;
+  }
+
+   /**
+   * Is Valid Offer Present
    * @return validOffer
   **/
-  
+  @ApiModelProperty(value = "Is Valid Offer Present")
 
-
+/**
+ * 
+ * @return
+ */
   public Boolean getValidOffer() {
     return validOffer;
   }
-
+/**
+ * 
+ * @param validOffer
+ */
   public void setValidOffer(Boolean validOffer) {
     this.validOffer = validOffer;
   }
+/**
+ * 
+ * @param productClass
+ * @return
+ */
   public DeviceDetails productClass(String productClass) {
     this.productClass = productClass;
     return this;
@@ -149,21 +204,36 @@ public class DeviceDetails   {
    * Catalogue product class identifies products - SIMO, HANDSET etc.
    * @return productClass
   **/
+  @ApiModelProperty(value = "Catalogue product class identifies products - SIMO, HANDSET etc.")
 
-
+/**
+ * 
+ * @return
+ */
   public String getProductClass() {
     return productClass;
   }
-
+/**
+ * 
+ * @param productClass
+ */
   public void setProductClass(String productClass) {
     this.productClass = productClass;
   }
-
+/**
+ * 
+ * @param productLines
+ * @return
+ */
   public DeviceDetails productLines(List<String> productLines) {
     this.productLines = productLines;
     return this;
   }
-
+/**
+ * 
+ * @param productLinesItem
+ * @return
+ */
   public DeviceDetails addProductLinesItem(String productLinesItem) {
     if (this.productLines == null) {
       this.productLines = new ArrayList<String>();
@@ -176,16 +246,27 @@ public class DeviceDetails   {
    * Get productLines
    * @return productLines
   **/
+  @ApiModelProperty(value = "")
 
-
+/**
+ * 
+ * @return
+ */
   public List<String> getProductLines() {
     return productLines;
   }
-
+/**
+ * 
+ * @param productLines
+ */
   public void setProductLines(List<String> productLines) {
     this.productLines = productLines;
   }
-
+/**
+ * 
+ * @param merchandisingControl
+ * @return
+ */
   public DeviceDetails merchandisingControl(MerchandisingControl merchandisingControl) {
     this.merchandisingControl = merchandisingControl;
     return this;
@@ -195,22 +276,37 @@ public class DeviceDetails   {
    * Get merchandisingControl
    * @return merchandisingControl
   **/
+  @ApiModelProperty(value = "")
 
   @Valid
-
+/**
+ * 
+ * @return
+ */
   public MerchandisingControl getMerchandisingControl() {
     return merchandisingControl;
   }
-
+/**
+ * 
+ * @param merchandisingControl
+ */
   public void setMerchandisingControl(MerchandisingControl merchandisingControl) {
     this.merchandisingControl = merchandisingControl;
   }
-
+/**
+ * 
+ * @param merchandisingPromotion
+ * @return
+ */
   public DeviceDetails merchandisingPromotion(List<MerchandisingPromotions> merchandisingPromotion) {
     this.merchandisingPromotion = merchandisingPromotion;
     return this;
   }
-
+/**
+ * 
+ * @param merchandisingPromotionItem
+ * @return
+ */
   public DeviceDetails addMerchandisingPromotionItem(MerchandisingPromotions merchandisingPromotionItem) {
     if (this.merchandisingPromotion == null) {
       this.merchandisingPromotion = new ArrayList<MerchandisingPromotions>();
@@ -223,74 +319,118 @@ public class DeviceDetails   {
    * Get merchandisingPromotion
    * @return merchandisingPromotion
   **/
+  @ApiModelProperty(value = "")
 
   @Valid
-
+/**
+ * 
+ * @return
+ */
   public List<MerchandisingPromotions> getMerchandisingPromotion() {
     return merchandisingPromotion;
   }
-
+/**
+ * 
+ * @param merchandisingPromotion
+ */
   public void setMerchandisingPromotion(List<MerchandisingPromotions> merchandisingPromotion) {
     this.merchandisingPromotion = merchandisingPromotion;
   }
-
+/**
+ * 
+ * @param stockAvailability
+ * @return
+ */
   public DeviceDetails stockAvailability(String stockAvailability) {
     this.stockAvailability = stockAvailability;
     return this;
   }
 
    /**
-   * Stock Availability for Product
+   * Availability of Stock
    * @return stockAvailability
   **/
+  @ApiModelProperty(value = "Availability of Stock")
 
-
+/**
+ * 
+ * @return
+ */
   public String getStockAvailability() {
     return stockAvailability;
   }
-
+/**
+ * 
+ * @param stockAvailability
+ */
   public void setStockAvailability(String stockAvailability) {
     this.stockAvailability = stockAvailability;
   }
-
+/**
+ * 
+ * @param rating
+ * @return
+ */
   public DeviceDetails rating(String rating) {
     this.rating = rating;
     return this;
   }
 
    /**
-   * Rating for the Product
+   * Bazaar voice rating of the product
    * @return rating
   **/
+  @ApiModelProperty(value = "Bazaar voice rating of the product")
 
-
+/**
+ * 
+ * @return
+ */
   public String getRating() {
     return rating;
   }
-
+/**
+ * 
+ * @param rating
+ */
   public void setRating(String rating) {
     this.rating = rating;
   }
-
+/**
+ * 
+ * @param productPageURI
+ * @return
+ */
   public DeviceDetails productPageURI(String productPageURI) {
     this.productPageURI = productPageURI;
     return this;
   }
 
    /**
-   * Concatenation of Make/Model
+   * Product Page URI
    * @return productPageURI
   **/
+  @ApiModelProperty(value = "Product Page URI")
 
-
+/**
+ * 
+ * @return
+ */
   public String getProductPageURI() {
     return productPageURI;
   }
-
+/**
+ * 
+ * @param productPageURI
+ */
   public void setProductPageURI(String productPageURI) {
     this.productPageURI = productPageURI;
   }
-
+/**
+ * 
+ * @param equipmentDetail
+ * @return
+ */
   public DeviceDetails equipmentDetail(Equipment equipmentDetail) {
     this.equipmentDetail = equipmentDetail;
     return this;
@@ -300,17 +440,28 @@ public class DeviceDetails   {
    * Get equipmentDetail
    * @return equipmentDetail
   **/
+  @ApiModelProperty(value = "")
 
   @Valid
-
+/**
+ * 
+ * @return
+ */
   public Equipment getEquipmentDetail() {
     return equipmentDetail;
   }
-
+/**
+ * 
+ * @param equipmentDetail
+ */
   public void setEquipmentDetail(Equipment equipmentDetail) {
     this.equipmentDetail = equipmentDetail;
   }
-
+/**
+ * 
+ * @param leadPlanId
+ * @return
+ */
   public DeviceDetails leadPlanId(String leadPlanId) {
     this.leadPlanId = leadPlanId;
     return this;
@@ -320,16 +471,27 @@ public class DeviceDetails   {
    * Lead Plan ID for Product
    * @return leadPlanId
   **/
+  @ApiModelProperty(value = "Lead Plan ID for Product")
 
-
+/**
+ * 
+ * @return
+ */
   public String getLeadPlanId() {
     return leadPlanId;
   }
-
+/**
+ * 
+ * @param leadPlanId
+ */
   public void setLeadPlanId(String leadPlanId) {
     this.leadPlanId = leadPlanId;
   }
-
+/**
+ * 
+ * @param productAvailability
+ * @return
+ */
   public DeviceDetails productAvailability(ProductAvailability productAvailability) {
     this.productAvailability = productAvailability;
     return this;
@@ -339,22 +501,37 @@ public class DeviceDetails   {
    * Get productAvailability
    * @return productAvailability
   **/
+  @ApiModelProperty(value = "")
 
   @Valid
-
+/**
+ * 
+ * @return
+ */
   public ProductAvailability getProductAvailability() {
     return productAvailability;
   }
-
+/**
+ * 
+ * @param productAvailability
+ */
   public void setProductAvailability(ProductAvailability productAvailability) {
     this.productAvailability = productAvailability;
   }
-
+/**
+ * 
+ * @param media
+ * @return
+ */
   public DeviceDetails media(List<MediaLink> media) {
     this.media = media;
     return this;
   }
-
+/**
+ * 
+ * @param mediaItem
+ * @return
+ */
   public DeviceDetails addMediaItem(MediaLink mediaItem) {
     if (this.media == null) {
       this.media = new ArrayList<MediaLink>();
@@ -367,22 +544,37 @@ public class DeviceDetails   {
    * Get media
    * @return media
   **/
+  @ApiModelProperty(value = "")
 
   @Valid
-
+/**
+ * 
+ * @return
+ */
   public List<MediaLink> getMedia() {
     return media;
   }
-
+/**
+ * 
+ * @param media
+ */
   public void setMedia(List<MediaLink> media) {
     this.media = media;
   }
-
+/**
+ * 
+ * @param specificationsGroups
+ * @return
+ */
   public DeviceDetails specificationsGroups(List<SpecificationGroup> specificationsGroups) {
     this.specificationsGroups = specificationsGroups;
     return this;
   }
-
+/**
+ * 
+ * @param specificationsGroupsItem
+ * @return
+ */
   public DeviceDetails addSpecificationsGroupsItem(SpecificationGroup specificationsGroupsItem) {
     if (this.specificationsGroups == null) {
       this.specificationsGroups = new ArrayList<SpecificationGroup>();
@@ -395,17 +587,28 @@ public class DeviceDetails   {
    * Get specificationsGroups
    * @return specificationsGroups
   **/
+  @ApiModelProperty(value = "")
 
   @Valid
-
+/**
+ * 
+ * @return
+ */
   public List<SpecificationGroup> getSpecificationsGroups() {
     return specificationsGroups;
   }
-
+/**
+ * 
+ * @param specificationsGroups
+ */
   public void setSpecificationsGroups(List<SpecificationGroup> specificationsGroups) {
     this.specificationsGroups = specificationsGroups;
   }
-
+/**
+ * 
+ * @param priceInfo
+ * @return
+ */
   public DeviceDetails priceInfo(PriceForBundleAndHardware priceInfo) {
     this.priceInfo = priceInfo;
     return this;
@@ -415,17 +618,28 @@ public class DeviceDetails   {
    * Get priceInfo
    * @return priceInfo
   **/
+  @ApiModelProperty(value = "")
 
   @Valid
-
+/**
+ * 
+ * @return
+ */
   public PriceForBundleAndHardware getPriceInfo() {
     return priceInfo;
   }
-
+/**
+ * 
+ * @param priceInfo
+ */
   public void setPriceInfo(PriceForBundleAndHardware priceInfo) {
     this.priceInfo = priceInfo;
   }
-
+/**
+ * 
+ * @param metaData
+ * @return
+ */
   public DeviceDetails metaData(MetaData metaData) {
     this.metaData = metaData;
     return this;
@@ -435,13 +649,20 @@ public class DeviceDetails   {
    * Get metaData
    * @return metaData
   **/
+  @ApiModelProperty(value = "")
 
   @Valid
-
+/**
+ * 
+ * @return
+ */
   public MetaData getMetaData() {
     return metaData;
   }
-
+/**
+ * 
+ * @param metaData
+ */
   public void setMetaData(MetaData metaData) {
     this.metaData = metaData;
   }
@@ -459,6 +680,7 @@ public class DeviceDetails   {
     return Objects.equals(this.deviceId, deviceDetails.deviceId) &&
         Objects.equals(this.name, deviceDetails.name) &&
         Objects.equals(this.description, deviceDetails.description) &&
+        Objects.equals(this.validOffer, deviceDetails.validOffer) &&
         Objects.equals(this.productClass, deviceDetails.productClass) &&
         Objects.equals(this.productLines, deviceDetails.productLines) &&
         Objects.equals(this.merchandisingControl, deviceDetails.merchandisingControl) &&
@@ -477,7 +699,7 @@ public class DeviceDetails   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(deviceId, name, description, productClass, productLines, merchandisingControl, merchandisingPromotion, stockAvailability, rating, productPageURI, equipmentDetail, leadPlanId, productAvailability, media, specificationsGroups, priceInfo, metaData);
+    return Objects.hash(deviceId, name, description, validOffer, productClass, productLines, merchandisingControl, merchandisingPromotion, stockAvailability, rating, productPageURI, equipmentDetail, leadPlanId, productAvailability, media, specificationsGroups, priceInfo, metaData);
   }
 
   @Override
@@ -488,6 +710,7 @@ public class DeviceDetails   {
     sb.append("    deviceId: ").append(toIndentedString(deviceId)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
+    sb.append("    validOffer: ").append(toIndentedString(validOffer)).append("\n");
     sb.append("    productClass: ").append(toIndentedString(productClass)).append("\n");
     sb.append("    productLines: ").append(toIndentedString(productLines)).append("\n");
     sb.append("    merchandisingControl: ").append(toIndentedString(merchandisingControl)).append("\n");

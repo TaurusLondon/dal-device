@@ -1,0 +1,43 @@
+[ {
+  "name" : "Zagg Glass iPhone 8/7/6",
+  "groupPriority" : 128,
+  "groupType" : "Compatible Accessories",
+  "version" : null,
+  "members" : [ {
+    "id" : "085145",
+    "priority" : 1
+  } ],
+  "groupId" : 178,
+  "id" : "Zagg Glass iPhone 8/7/6~Compatible Accessories",
+  "implVersion" : 3,
+  "dataVersion" : 3,
+  "futureData" : null
+}, {
+  "name" : "iPhone 7 Silicone Case mid blue",
+  "groupPriority" : 129,
+  "groupType" : "Compatible Accessories",
+  "version" : null,
+  "members" : [ {
+    "id" : "093329",
+    "priority" : 1
+  } ],
+  "groupId" : 179,
+  "id" : "iPhone 7 Silicone Case mid blue~Compatible Accessories",
+  "implVersion" : 3,
+  "dataVersion" : 3,
+  "futureData" : null
+}, {
+  "name" : "Apple Airpods",
+  "groupPriority" : 127,
+  "groupType" : "Compatible Accessories",
+  "version" : null,
+  "members" : [ {
+    "id" : "094081",
+    "priority" : 1
+  } ],
+  "groupId" : 177,
+  "id" : "Apple Airpods~Compatible Accessories",
+  "implVersion" : 3,
+  "dataVersion" : 3,
+  "futureData" : null
+} ]
