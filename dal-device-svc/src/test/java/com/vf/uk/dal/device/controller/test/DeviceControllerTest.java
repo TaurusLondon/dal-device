@@ -107,18 +107,12 @@ public class DeviceControllerTest {
 				"http://COMMON-V1/common/journey/" + "c1a42269-6562-4c96-b3be-1ca2a6681d57" + "/queries/currentJourney",
 				CurrentJourney.class)).willReturn(obj);
 
-		List<String> listOfRecommendedProductTypes;
-		RecommendedProductListRequest recomProductListReq = new RecommendedProductListRequest();
-		listOfRecommendedProductTypes = new ArrayList<>();
-		listOfRecommendedProductTypes.add(Constants.STRING_DEVICE);
-		recomProductListReq.setSerialNumber("07003145001");
-		recomProductListReq.setRecommendedProductTypes(listOfRecommendedProductTypes);
 		String jsonString1 = new String(Utility.readFile("\\rest-mock\\CUSTOMER-V1.json"));
 		RecommendedProductListResponse obj1 = new ObjectMapper().readValue(jsonString1,
 				RecommendedProductListResponse.class);
 		given(registry.getRestTemplate()).willReturn(restTemplate);
-		given(restTemplate.postForObject("http://CUSTOMER-V1/customer/getRecommendedProductList/", recomProductListReq,
-				RecommendedProductListResponse.class)).willReturn(obj1);
+		given(restTemplate.postForObject("http://CUSTOMER-V1/customer/getRecommendedProductList/", 
+				CommonMethods.getRecommendedDeviceListRequest("7741655541", "109381"), RecommendedProductListResponse.class)).willReturn(obj1);
 		/*
 		 * given(this.deviceDAOMock.getListOfDeviceTile("Apple", "iPhone-7",
 		 * "DEVICE_PAYM", null, null, null, null, null))
@@ -232,21 +226,6 @@ public class DeviceControllerTest {
 	}
 
 	@Test
-	public void creditLimitNullTestForGetDeviceDetailsTileConditionalAccept() {
-		List<DeviceTile> deviceDetails = null;
-		try {
-
-			deviceDetails = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM",
-					"ConditionalAccept", null, null, "091210", null);
-
-		} catch (Exception e) {
-			Assert.assertEquals("com.vf.uk.dal.common.exception.ApplicationException: Please enter valid credit limit.",
-					e.toString());
-		}
-
-	}
-
-	@Test
 	public void invalidCreditLimitNullTestForGetDeviceDetailsTileConditionalAccept() {
 		List<DeviceTile> deviceDetails = null;
 		try {
@@ -264,13 +243,6 @@ public class DeviceControllerTest {
 	public void nullCreditLimitNullTestForGetDeviceDetailsTileConditionalAccept() {
 		List<DeviceTile> deviceDetails = null;
 		try {
-			Map<String, String> queryparams = new HashMap<String, String>();
-			queryparams.put("make", "apple");
-			queryparams.put("model", "iPhone-7");
-			queryparams.put("groupType", "DEVICE_PAYM");
-			queryparams.put("deviceId", "091210");
-			queryparams.put("creditLimit", "");
-			queryparams.put("journeyType", "ConditionalAccept");
 			deviceDetails = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM",
 					"ConditionalAccept", null, null, "091210", "");
 
@@ -398,8 +370,15 @@ public class DeviceControllerTest {
 			deviceDetailsList = deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "-Priority", 1, 9, "Apple",
 					"iPhone-7", "White", "iOS 9", "32 GB", "7741655541", "Great Camera", "SecondLine", "true", null, null);
 			Assert.assertNotNull(deviceDetailsList);
+			url = "http://CUSTOMER-V1/customer/subscription/msisdn:7741655542/sourcePackageSummary";
+			given(restTemplate.getForObject(url, SourcePackageSummary.class)).willReturn(CommonMethods.getSourcePackageSummary());
+			deviceDetailsList = deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "-Priority", 1, 9, "Apple",
+					"iPhone-7", "White", "iOS 9", "32 GB", "7741655542", "Great Camera", "SecondLine", "true", null, null);
+			Assert.assertNotNull(deviceDetailsList);
+			deviceDetailsList = deviceController.getDeviceList("HANDSET", "DEVICE_PAYG", "-Priority", 1, 9, "Apple",
+					"iPhone-7", "White", "iOS 9", "32 GB", "7741655542", "Great Camera", "Acquisition", "true", null, null);
+			Assert.assertNotNull(deviceDetailsList);
 		} catch (Exception e) {
-			LogHelper.info(this, e.toString());
 		}
 		ServiceContext.urlParamContext.remove();
 
@@ -408,26 +387,35 @@ public class DeviceControllerTest {
 	@Test
 	public void nullTestForGetDeviceList() {
 		FacetedDevice deviceDetailsList = null;
-		Map<String, String> queryparams = new HashMap<String, String>();
 		try {
 			PaginationCriteria paginationCriteria = new PaginationCriteria(9, 0);
 
 			ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
 			deviceDetailsList = deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple",
-					"iPhone-7", "White", "iOS 9", "32 GB", null, "Great Camera", "Upgrade", null, null, "W_HH_OC_02");
+					"iPhone-7", "White", "iOS 9", "32 GB", null, "Great Camera", "Upgrade", null, "W_HH_OC_02", "-1");
 		} catch (Exception e) {
 			try {
-				queryparams.put("creditLimit", null);
 				deviceDetailsList = deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple",
-						"iPhone-7", "White", "iOS 9", "32 GB", null, "Great Camera", "Upgrade", null, null,
-						"W_HH_OC_02");
+						"iPhone-7", "White", "iOS 9", "32 GB", null, "Great Camera", "Upgrade", null, "W_HH_OC_02",
+						null);
 			} catch (Exception ex) {
 				try {
-					queryparams.put("creditLimit", "abc");
 					deviceDetailsList = deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9,
-							"Apple", "iPhone-7", "White", "iOS 9", "32 GB", null, "Great Camera", "Upgrade", null, null,
-							"W_HH_OC_02");
+							"Apple", "iPhone-7", "White", "iOS 9", "32 GB", null, "Great Camera", "Upgrade", null, "W_HH_OC_02",
+							"abc");
 				} catch (Exception exc) {
+					try {
+						deviceDetailsList = deviceController.getDeviceList("HANDSET", "DEVICE_PAYG", "Priority", 1, 9,
+								"Apple", "iPhone-7", "White", "iOS 9", "32 GB", null, "Great Camera", "Upgrade", null, "W_HH_OC_02",
+								null);
+					} catch (Exception ex1) {
+						try {
+							deviceDetailsList = deviceController.getDeviceList("HANDSET", "DEVICE_PAYG", "Priority", 1, 9,
+									"Apple", "iPhone-7", "White", "iOS 9", "32 GB", null, "Great Camera", "Acquisition", null, "W_HH_OC_02",
+									null);
+						} catch (Exception ex2) {
+						}
+					}
 				}
 			}
 		}
@@ -776,6 +764,36 @@ public class DeviceControllerTest {
 	 * 
 	 * }
 	 */
+	@Test
+	public void testGetListOfDeviceTileForNullDeviceID() {
+		List<DeviceTile> listOfDeviceTile = null;
+		try {
+			listOfDeviceTile = deviceController.getListOfDeviceTile(null, "iPhone-7", "DEVICE_PAYM", null, null,
+					null, "123", null);
+		} catch (Exception e) {
+		}
+	}
+	
+	@Test
+	public void testGetListOfDeviceTileForNullBundleID() {
+		List<DeviceTile> listOfDeviceTile = null;
+		try {
+			listOfDeviceTile = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM", null, null,
+					"123", null, null);
+		} catch (Exception e) {
+		}
+	}
+	
+	@Test
+	public void testGetListOfDeviceTileForNullMakeAndModel() {
+		List<DeviceTile> listOfDeviceTile = null;
+		try {
+			listOfDeviceTile = deviceController.getListOfDeviceTile(null, null, "DEVICE_PAYM", null, null,
+					null, null, null);
+		} catch (Exception e) {
+		}
+	}
+	
 	@Test
 	public void testGetListOfDeviceTileForNullMake() {
 		List<DeviceTile> listOfDeviceTile = null;
