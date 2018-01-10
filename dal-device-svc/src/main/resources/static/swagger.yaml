@@ -944,8 +944,8 @@ definitions:
         type: string
         description: A foot note to the specification
       hideInList:
-        type: string
-        description: A hiden note to the specification
+        type: boolean
+        description: A hidden note to the specification
   MediaLink:
     type: object
     properties:
