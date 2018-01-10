@@ -1016,7 +1016,7 @@ public class DaoUtils {
 			List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware> listOfPriceForBundleAndHardware,
 			Map<String, String> leadMemberMap,
 			Map<String, List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>> listOfPriceForBundleAndHardwareWithOfferCode,
-			Map<String, String> leadMemberMapForUpgrade,String upgradeLeadPlanId) {
+			Map<String, String> leadMemberMapForUpgrade,String upgradeLeadPlanId,String groupType) {
 		DevicePreCalculatedData productGroupForDeviceListing = null;
 		productGroupForDeviceListing = new DevicePreCalculatedData();
 		productGroupForDeviceListing.setDeviceId(deviceId);
@@ -1030,10 +1030,11 @@ public class DaoUtils {
 		} else {
 			productGroupForDeviceListing.setIsLeadMember(Constants.IS_LEAD_MEMEBER_NO);
 		}
-		if (leadMemberMapForUpgrade.containsKey(deviceId)) {
+		if (leadMemberMapForUpgrade!=null && !leadMemberMapForUpgrade.isEmpty() && leadMemberMapForUpgrade.containsKey(deviceId)) {
 			productGroupForDeviceListing.setUpgradeLeadDeviceId(deviceId);
 		} 
-		if (StringUtils.isNotBlank(leadPlanId)) {
+		if ((StringUtils.isNotBlank(leadPlanId) && StringUtils.equalsIgnoreCase(groupType, Constants.STRING_DEVICE_PAYM)) || 
+				StringUtils.equalsIgnoreCase(groupType, Constants.STRING_DEVICE_PAYG)) {
 			com.vf.uk.dal.utility.entity.PriceForBundleAndHardware priceForBundleAndHardware1 = listOfPriceForBundleAndHardware
 					.get(0);
 			productGroupForDeviceListing.setNonUpgradeLeadPlanId(leadPlanId);

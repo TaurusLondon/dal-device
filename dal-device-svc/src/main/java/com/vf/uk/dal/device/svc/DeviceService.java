@@ -221,4 +221,11 @@ public interface DeviceService {
 	 * @return
 	 */
 	Double getBundlePriceBasedOnDiscountDuration_Implementation(DeviceSummary deviceSummary, String discountType);
+
+	/**
+	 * 
+	 * @param groupType
+	 * @return
+	 */
+	public List<DevicePreCalculatedData> getDeviceListFromPricingForPayG(String groupType);
 }

@@ -1103,11 +1103,17 @@ public class DeviceServiceImpl implements DeviceService {
 		List<OfferAppliedPriceDetails> offerAppliedPrices = new ArrayList<>();
 
 		boolean exceptionFlag = false;
-		List<DevicePreCalculatedData> devicePreCalculatedData;
+		List<DevicePreCalculatedData> devicePreCalculatedData=new ArrayList<>();
+		List<DevicePreCalculatedData> devicePreCalculatedDataForPayG=null;
 		try {
 			deviceTileCacheDAO.beginTransaction();
-			devicePreCalculatedData = getDeviceListFromPricing(groupType);
-
+			if(StringUtils.containsIgnoreCase(groupType, Constants.STRING_DEVICE_PAYM))
+			{
+				devicePreCalculatedData = getDeviceListFromPricing(Constants.STRING_DEVICE_PAYM);
+			}if(StringUtils.containsIgnoreCase(groupType, Constants.STRING_DEVICE_PAYG)){
+				devicePreCalculatedDataForPayG=getDeviceListFromPricingForPayG(Constants.STRING_DEVICE_PAYG);
+				devicePreCalculatedData.addAll(devicePreCalculatedDataForPayG);
+			}
 			if (devicePreCalculatedData != null && !devicePreCalculatedData.isEmpty()) {
 				i = deviceTileCacheDAO.saveDeviceListPreCalcData(devicePreCalculatedData);
 				// ILS Store
@@ -1434,7 +1440,7 @@ public class DeviceServiceImpl implements DeviceService {
 						productGroupForDeviceListing = DaoUtils
 								.convertBundleHeaderForDeviceToProductGroupForDeviceListing(deviceId, nonUpgradeLeadPlanId,
 										groupname, groupId, listOfPriceForBundleAndHardware, leadMemberMap,
-										iLSPriceMap,leadMemberMapForUpgrade,upgradeLeadPlanId);
+										iLSPriceMap,leadMemberMapForUpgrade,upgradeLeadPlanId,groupType);
 						if (productGroupForDeviceListing != null) {
 							deviceIds.add(productGroupForDeviceListing.getDeviceId());
 							listOfProductGroupRepository.add(productGroupForDeviceListing);
@@ -3323,6 +3329,148 @@ public class DeviceServiceImpl implements DeviceService {
 			else
 				return -1;
 		}
+
+	}
+	
+	
+	@Override
+	public List<DevicePreCalculatedData> getDeviceListFromPricingForPayG(String groupType) {
+		List<String> deviceIds = new ArrayList<>();
+		Map<String, String> minimumPriceMap = new HashMap<>();
+		List<DevicePreCalculatedData> listOfProductGroupRepository = new ArrayList<>();
+		DevicePreCalculatedData productGroupForDeviceListing;
+		com.vf.uk.dal.device.entity.Member entityMember;
+		List<Group> listOfProductGroup = deviceDao.getProductGroupsByType(groupType);
+		List<String> listOfDeviceId = new ArrayList<>();
+		String minimumPrice = null;
+
+		Map<String, String> leadMemberMap = new HashMap<>();
+		Map<String, String> groupIdAndNameMap = new HashMap<>();
+		if (listOfProductGroup != null && !listOfProductGroup.isEmpty()) {
+			for (Group productGroup : listOfProductGroup) {
+
+				List<com.vf.uk.dal.device.entity.Member> listOfDeviceGroupMember = new ArrayList<>();
+				String groupId = String.valueOf(productGroup.getGroupId());
+				String groupname = productGroup.getName();
+				if (productGroup.getMembers() != null && !productGroup.getMembers().isEmpty()) {
+					for (Member member : productGroup.getMembers()) {
+						entityMember = new com.vf.uk.dal.device.entity.Member();
+						entityMember.setId(member.getId());
+						entityMember.setPriority(String.valueOf(member.getPriority()));
+						listOfDeviceGroupMember.add(entityMember);
+						listOfDeviceId.add(member.getId());
+						groupIdAndNameMap.put(member.getId(), groupname + "&&" + groupId);
+					}
+				}
+				String leadMemberId = null;
+				leadMemberId = getMemeberBasedOnRulesForStock(listOfDeviceGroupMember,
+						Constants.JOURNEY_TYPE_ACQUISITION);
+				if (leadMemberId != null) {
+					leadMemberMap.put(leadMemberId, Constants.IS_LEAD_MEMEBER_YES);
+				}
+			}
+			Map<String, com.vf.uk.dal.utility.entity.PriceForBundleAndHardware> leadPlanIdPriceMap = new HashMap<>();
+			Map<String, List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>> groupNamePriceMap = new HashMap<>();
+			List<BundleAndHardwareTuple> bundleAndHardwareTupleList = new ArrayList<>();
+			if (!listOfDeviceId.isEmpty()) {
+				Collection<CommercialProduct> listOfCommercialProduct = deviceDao
+						.getListCommercialProductRepositoryByLeadMemberId(listOfDeviceId);
+				if (listOfCommercialProduct != null && !listOfCommercialProduct.isEmpty()) {
+					listOfCommercialProduct.forEach(commercialProduct -> {
+						BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
+						bundleAndHardwareTuple.setBundleId(null);
+						bundleAndHardwareTuple.setHardwareId(commercialProduct.getId());
+						bundleAndHardwareTupleList.add(bundleAndHardwareTuple);
+					});
+				}
+				List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware> listOfPriceForBundleAndHardwareForLeadPlanIds = null;
+				if (bundleAndHardwareTupleList != null && !bundleAndHardwareTupleList.isEmpty()) {
+					listOfPriceForBundleAndHardwareForLeadPlanIds = CommonUtility
+							.getPriceDetailsUsingBundleHarwareTrouple(bundleAndHardwareTupleList, null, null,
+									registryclnt);
+					if (listOfPriceForBundleAndHardwareForLeadPlanIds != null
+							&& !listOfPriceForBundleAndHardwareForLeadPlanIds.isEmpty()) {
+						listOfPriceForBundleAndHardwareForLeadPlanIds.forEach(priceForBundleAndHardware -> {
+							if (priceForBundleAndHardware != null
+									&& priceForBundleAndHardware.getHardwarePrice() != null) {
+								leadPlanIdPriceMap.put(priceForBundleAndHardware.getHardwarePrice().getHardwareId(),
+										priceForBundleAndHardware);
+							}
+						});
+					}
+				}
+				List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware> listOfPriceForBundleAndHardware = new ArrayList<>();
+				for (String deviceId : listOfDeviceId) {
+					String groupId = null;
+					String groupname = null;
+					List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware> listOfPriceForGroupName = null;
+					if (groupIdAndNameMap.containsKey(deviceId)) {
+						String[] groupDetails = groupIdAndNameMap.get(deviceId).split("&&");
+						groupname = groupDetails[0];
+						groupId = groupDetails[1];
+					}
+					try {
+						if (!leadPlanIdPriceMap.isEmpty() && leadPlanIdPriceMap.containsKey(deviceId)) {
+							listOfPriceForBundleAndHardware.add(leadPlanIdPriceMap.get(deviceId));
+							if (groupNamePriceMap.containsKey(groupname)) {
+								listOfPriceForGroupName = groupNamePriceMap.get(groupname);
+								listOfPriceForGroupName.add(leadPlanIdPriceMap.get(deviceId));
+							} else {
+								listOfPriceForGroupName = new ArrayList<>();
+								listOfPriceForGroupName.add(leadPlanIdPriceMap.get(deviceId));
+								groupNamePriceMap.put(groupname, listOfPriceForGroupName);
+							}
+						}
+						productGroupForDeviceListing = DaoUtils
+								.convertBundleHeaderForDeviceToProductGroupForDeviceListing(deviceId, null, groupname,
+										groupId, listOfPriceForBundleAndHardware, leadMemberMap, null, null, null,
+										groupType);
+						if (productGroupForDeviceListing != null) {
+							deviceIds.add(productGroupForDeviceListing.getDeviceId());
+							listOfProductGroupRepository.add(productGroupForDeviceListing);
+						}
+						listOfPriceForBundleAndHardware.clear();
+					} catch (Exception e) {
+						listOfPriceForBundleAndHardware.clear();
+						LogHelper.error(this, "Exception occured when call happen to compatible bundles api: " + e);
+					}
+				}
+				if (!groupNamePriceMap.isEmpty()) {
+					for (Entry<String, List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>> entry : groupNamePriceMap
+							.entrySet()) {
+						if (entry.getValue() != null && !entry.getValue().isEmpty()) {
+							minimumPrice = DeviceUtils.leastMonthlyPriceForpayG(entry.getValue());
+						}
+						minimumPriceMap.put(entry.getKey(), minimumPrice);
+					}
+
+				}
+			}
+
+			// Ratings population logic
+			Map<String, String> ratingsReviewMap = deviceDao.getDeviceReviewRating(deviceIds);
+			listOfProductGroupRepository.forEach(deviceDataRating -> {
+				if (minimumPriceMap.containsKey(deviceDataRating.getProductGroupName())) {
+					deviceDataRating.setMinimumCost(minimumPriceMap.get(deviceDataRating.getProductGroupName()));
+				}
+				if (ratingsReviewMap.containsKey(CommonUtility.appendPrefixString(deviceDataRating.getDeviceId()))) {
+					String avarageOverallRating = ratingsReviewMap
+							.get(CommonUtility.appendPrefixString(deviceDataRating.getDeviceId()));
+					if (avarageOverallRating != null
+							&& !Constants.DEVICE_RATING_NA.equalsIgnoreCase(avarageOverallRating)) {
+						deviceDataRating.setRating(Float.parseFloat(avarageOverallRating));
+					} else {
+						deviceDataRating.setRating(null);
+					}
+				} else {
+					deviceDataRating.setRating(null);
+				}
+			});
+		} else {
+			LogHelper.error(this, "Receieved Null Values for the given product group type");
+			throw new ApplicationException(ExceptionMessages.NULL_VALUE_GROUP_TYPE);
+		}
+		return listOfProductGroupRepository;
 
 	}
 }
