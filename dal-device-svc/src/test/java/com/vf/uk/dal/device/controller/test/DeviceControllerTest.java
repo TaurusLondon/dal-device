@@ -1496,7 +1496,7 @@ public class DeviceControllerTest {
 		.willReturn(CommonMethods.getCommercialProductWithoutLeadPlan());
 		given(restTemplate.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=093353", BundleDetailsForAppSrv.class)).willReturn(CommonMethods.getCoupledBundleListForDevice());
 		deviceDetails = deviceController.getDeviceDetails("093353",null,null);
-		Assert.assertNull(deviceDetails);
+		Assert.assertNotNull(deviceDetails);
 	}
 	
 }
