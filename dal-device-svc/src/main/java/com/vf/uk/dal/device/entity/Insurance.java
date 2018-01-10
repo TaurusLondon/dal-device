@@ -1,15 +1,14 @@
 package com.vf.uk.dal.device.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import javax.validation.Valid;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-import java.util.ArrayList;
-import java.util.List;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * Insurance
@@ -31,6 +30,11 @@ public class Insurance   {
   @JsonProperty("specsGroup")
   private List<SpecificationGroup> specsGroup = null;
 
+  /**
+   * 
+   * @param id
+   * @return
+   */
   public Insurance id(String id) {
     this.id = id;
     return this;
@@ -42,15 +46,25 @@ public class Insurance   {
   **/
   @ApiModelProperty(value = "Unique id of the insurance product as available from the product catalogue")
 
-
+/**
+ * 
+ * @return
+ */
   public String getId() {
     return id;
   }
-
+/**
+ * 
+ * @param id
+ */
   public void setId(String id) {
     this.id = id;
   }
-
+/**
+ * 
+ * @param name
+ * @return
+ */
   public Insurance name(String name) {
     this.name = name;
     return this;
@@ -62,15 +76,25 @@ public class Insurance   {
   **/
   @ApiModelProperty(value = "Name of the Insurance as provided in the product catalogue")
 
-
+/**
+ * 
+ * @return
+ */
   public String getName() {
     return name;
   }
-
+/**
+ * 
+ * @param name
+ */
   public void setName(String name) {
     this.name = name;
   }
-
+/**
+ * 
+ * @param price
+ * @return
+ */
   public Insurance price(Price price) {
     this.price = price;
     return this;
@@ -83,20 +107,34 @@ public class Insurance   {
   @ApiModelProperty(value = "")
 
   @Valid
-
+/**
+ * 
+ * @return
+ */
   public Price getPrice() {
     return price;
   }
-
+/**
+ * 
+ * @param price
+ */
   public void setPrice(Price price) {
     this.price = price;
   }
-
+/**
+ * 
+ * @param specsGroup
+ * @return
+ */
   public Insurance specsGroup(List<SpecificationGroup> specsGroup) {
     this.specsGroup = specsGroup;
     return this;
   }
-
+/**
+ * 
+ * @param specsGroupItem
+ * @return
+ */
   public Insurance addSpecsGroupItem(SpecificationGroup specsGroupItem) {
     if (this.specsGroup == null) {
       this.specsGroup = new ArrayList<SpecificationGroup>();
@@ -112,20 +150,34 @@ public class Insurance   {
   @ApiModelProperty(value = "")
 
   @Valid
-
+/**
+ * 
+ * @return
+ */
   public List<SpecificationGroup> getSpecsGroup() {
     return specsGroup;
   }
-
+/**
+ * 
+ * @param specsGroup
+ */
   public void setSpecsGroup(List<SpecificationGroup> specsGroup) {
     this.specsGroup = specsGroup;
   }
-
+/**
+ * 
+ * @param merchandisingMedia
+ * @return
+ */
   public Insurance merchandisingMedia(List<MediaLink> merchandisingMedia) {
 	    this.merchandisingMedia = merchandisingMedia;
 	    return this;
 	  }
-
+/**
+ * 
+ * @param merchandisingMediaItem
+ * @return
+ */
 	  public Insurance addMerchandisingMediaItem(MediaLink merchandisingMediaItem) {
 	    if (this.merchandisingMedia == null) {
 	      this.merchandisingMedia = new ArrayList<MediaLink>();
@@ -140,11 +192,17 @@ public class Insurance   {
 	  **/
 
 	  @Valid
-
+/**
+ * 
+ * @return
+ */
 	  public List<MediaLink> getMerchandisingMedia() {
 	    return merchandisingMedia;
 	  }
-
+/**
+ * 
+ * @param merchandisingMedia
+ */
 	  public void setMerchandisingMedia(List<MediaLink> merchandisingMedia) {
 	    this.merchandisingMedia = merchandisingMedia;
 	  }

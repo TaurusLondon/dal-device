@@ -7,9 +7,6 @@ import javax.validation.Valid;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
-
-import java.util.ArrayList;
-import java.util.List;
 /**
  * HardwarePrice
  */
@@ -28,7 +25,11 @@ public class HardwarePrice   {
 
   @JsonProperty("merchandisingPromotions")
   private MerchandisingPromotion merchandisingPromotions = null;
-
+/**
+ * 
+ * @param hardwareId
+ * @return
+ */
   public HardwarePrice hardwareId(String hardwareId) {
     this.hardwareId = hardwareId;
     return this;
@@ -40,15 +41,25 @@ public class HardwarePrice   {
   **/
   @ApiModelProperty(value = "Hardware id of the price to be calculated")
 
-
+/**
+ * 
+ * @return
+ */
   public String getHardwareId() {
     return hardwareId;
   }
-
+/**
+ * 
+ * @param hardwareId
+ */
   public void setHardwareId(String hardwareId) {
     this.hardwareId = hardwareId;
   }
-
+/**
+ * 
+ * @param oneOffPrice
+ * @return
+ */
   public HardwarePrice oneOffPrice(Price oneOffPrice) {
     this.oneOffPrice = oneOffPrice;
     return this;
@@ -61,15 +72,25 @@ public class HardwarePrice   {
   @ApiModelProperty(value = "")
 
   @Valid
-
+/**
+ * 
+ * @return
+ */
   public Price getOneOffPrice() {
     return oneOffPrice;
   }
-
+/**
+ * 
+ * @param oneOffPrice
+ */
   public void setOneOffPrice(Price oneOffPrice) {
     this.oneOffPrice = oneOffPrice;
   }
-
+/**
+ * 
+ * @param oneOffDiscountPrice
+ * @return
+ */
   public HardwarePrice oneOffDiscountPrice(Price oneOffDiscountPrice) {
     this.oneOffDiscountPrice = oneOffDiscountPrice;
     return this;
@@ -82,15 +103,24 @@ public class HardwarePrice   {
   @ApiModelProperty(value = "")
 
   @Valid
-
+/**
+ * 
+ * @return
+ */
   public Price getOneOffDiscountPrice() {
     return oneOffDiscountPrice;
   }
-
+/*
+ * 
+ */
   public void setOneOffDiscountPrice(Price oneOffDiscountPrice) {
     this.oneOffDiscountPrice = oneOffDiscountPrice;
   }
-
+/**
+ * 
+ * @param merchandisingPromotions
+ * @return
+ */
   public HardwarePrice merchandisingPromotions(MerchandisingPromotion merchandisingPromotions) {
     this.merchandisingPromotions = merchandisingPromotions;
     return this;
@@ -103,11 +133,17 @@ public class HardwarePrice   {
   @ApiModelProperty(value = "")
 
   @Valid
-
+/**
+ * 
+ * @return
+ */
   public MerchandisingPromotion getMerchandisingPromotions() {
     return merchandisingPromotions;
   }
-
+/**
+ * 
+ * @param merchandisingPromotions
+ */
   public void setMerchandisingPromotions(MerchandisingPromotion merchandisingPromotions) {
     this.merchandisingPromotions = merchandisingPromotions;
   }

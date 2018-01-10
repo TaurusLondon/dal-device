@@ -18,6 +18,11 @@ public class Equipment   {
   @JsonProperty("model")
   private String model = null;
 
+  /**
+   *   
+   * @param make
+   * @return
+   */
   public Equipment make(String make) {
     this.make = make;
     return this;
@@ -29,15 +34,25 @@ public class Equipment   {
   **/
   @ApiModelProperty(value = "Make of the device")
 
-
+/**
+ * 
+ * @return
+ */
   public String getMake() {
     return make;
   }
-
+/**
+ * 
+ * @param make
+ */
   public void setMake(String make) {
     this.make = make;
   }
-
+/**
+ * 
+ * @param model
+ * @return
+ */
   public Equipment model(String model) {
     this.model = model;
     return this;
@@ -49,11 +64,17 @@ public class Equipment   {
   **/
   @ApiModelProperty(value = "Model of the device")
 
-
+/**
+ * 
+ * @return
+ */
   public String getModel() {
     return model;
   }
-
+/**
+ * 
+ * @param model
+ */
   public void setModel(String model) {
     this.model = model;
   }

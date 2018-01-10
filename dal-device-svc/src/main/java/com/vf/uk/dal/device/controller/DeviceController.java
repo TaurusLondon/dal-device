@@ -65,12 +65,11 @@ public class DeviceController {
 	private static final String GROUP_TYPE = "groupType";
 	private static final String GROUP_NAME = "groupName";
 	private static final String DEVICE_ID_IS_EMPTY = "Device Id is Empty";
-	private static final String DEVICE_MAKE = "make";
-	private static final String DEVICE_MODEL = "model";
 	private static final String DEVICE_ID = "deviceId";
 	private static final String JOURNEY_TYPE = "journeyType";
 	private static final String OFFER_CODE = "offerCode";
-	private static final String BUNDLE_ID = "bundleId";
+	private static final String numberExpression = "[0-9]{6}";
+	private static final String creditLimitExpression = "[0-9]";
 	
 	/**
 	 * Handles requests for getDeviceTile Service with input as
@@ -83,10 +82,21 @@ public class DeviceController {
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public com.vf.uk.dal.common.exception.ErrorResponse handleMissingParams(MissingServletRequestParameterException ex) {
 		
-		com.vf.uk.dal.common.exception.ErrorResponse error = new com.vf.uk.dal.common.exception.ErrorResponse(400, "DEVICE_INVALID_INPUT", "Missing mandatory parameter "+ex.getParameterName()); 
+		return new com.vf.uk.dal.common.exception.ErrorResponse(400, "DEVICE_INVALID_INPUT", "Missing mandatory parameter "+ex.getParameterName()); 
 		
-		return error;
 	}
+	/**
+	 * 
+	 * @param make
+	 * @param model
+	 * @param groupType
+	 * @param journeyType
+	 * @param offerCode
+	 * @param bundleId
+	 * @param deviceId
+	 * @param creditLimit
+	 * @return
+	 */
 	@ApiOperation(value = "Get the list of device tiles based on the filter criteria. Pagination also defined", notes = "The service gets the details of the device tiles from coherence based on the filter criteria in the response.", response = DeviceTile.class, responseContainer = "List", tags={ "DeviceTile", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Success", response = DeviceTile.class, responseContainer = "List"),
@@ -104,13 +114,13 @@ public class DeviceController {
 		
 			List<DeviceTile> listOfDeviceTile;
 			Double creditLimitParam = null;
-			if (deviceId != null && !deviceId.matches("[0-9]{6}")) {
-				LogHelper.error(this, "DeviceId is Invalid");
+			if (deviceId != null && !deviceId.matches(numberExpression)) {
+				LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
 				throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 			}
 			if (creditLimit != null) {
 				if(StringUtils.isNotBlank(creditLimit)){
-					if(!creditLimit.matches("[0-9]")) {
+					if(!creditLimit.matches(creditLimitExpression)) {
 						throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
 					}
 					if (!Validator.validateCreditLimit(creditLimit)) {
@@ -137,23 +147,23 @@ public class DeviceController {
 				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_MODEL);
 			}
 			
-			if(bundleId != null && (!bundleId.matches("[0-9]{6}") || bundleId.matches("[0]*"))) {
-				LogHelper.error(this, "BundleId is Invalid");
+			if(bundleId != null && (!bundleId.matches(numberExpression) || bundleId.matches("[0]*"))) {
+				LogHelper.error(this,ExceptionMessages.INVALID_BUNDLE);
 				throw new ApplicationException(ExceptionMessages.INVALID_BUNDLE_ID);
 			}
-			LogHelper.info(this, "Start -->  calling  getListofDeviceTile");
 			listOfDeviceTile = deviceService.getListOfDeviceTile(make, model, groupType, deviceId,
 					creditLimitParam, journeyType, offerCode, bundleId);
-			LogHelper.info(this, "End -->  calling  getListofDeviceTile");
 			return listOfDeviceTile;
 		
 	}
 
 	/**
 	 * Handles requests for getDeviceDetails Service with input as deviceId.
-	 * 
-	 * @return DeviceDetails
-	 **/
+	 * @param deviceId
+	 * @param journeyType
+	 * @param offerCode
+	 * @return
+	 */
 	@ApiOperation(value = "Get the device details for the given device Id", notes = "The service gets the details of the device specially price, equipment, specification, features, merchandising, etc in the response.", response = DeviceDetails.class, tags={ "Device", })
     @RequestMapping(value = "/device/{deviceId}", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	@ApiResponses(value = { 
@@ -166,13 +176,11 @@ public class DeviceController {
 		DeviceDetails deviceDetails;
 		LogHelper.info(this, ":::::::Test Logger for VSTS migration And Validate Pipeline Validation::::::::");
 		if (StringUtils.isNotBlank(deviceId)) {
-			if (!deviceId.matches("[0-9]{6}")) {
-				LogHelper.error(this, "DeviceId is Invalid");
+			if (!deviceId.matches(numberExpression)) {
+				LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
 				throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 			}
-			LogHelper.info(this, "Start -->  calling  getDeviceDetails");
 			deviceDetails = deviceService.getDeviceDetails(deviceId, journeyType, offerCode);
-			LogHelper.info(this, "End -->  calling  getDeviceDetails");
 		} else {
 			LogHelper.error(this, DEVICE_ID_IS_EMPTY);
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
@@ -183,9 +191,9 @@ public class DeviceController {
 
 	/**
 	 * Handles requests for getDeviceTile Service with input as deviceId.
-	 * 
-	 * @return List<DeviceTile>
-	 **/
+	 * @param queryParams
+	 * @return
+	 */
 	@ApiIgnore
 	@RequestMapping(value = "/deviceTile/queries/byDeviceVariant/", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	public List<DeviceTile> getDeviceTileById(@RequestParam Map<String, String> queryParams) {
@@ -198,13 +206,11 @@ public class DeviceController {
 			String offerCode = queryParams.containsKey(OFFER_CODE) ? queryParams.get(OFFER_CODE) : null;
 			
 			if (deviceId != null) {
-				if(!deviceId.matches("[0-9]{6}")) {
-					LogHelper.error(this, "DeviceId is Invalid");
+				if(!deviceId.matches(numberExpression)) {
+					LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
 					throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 				}
-				LogHelper.info(this, "Start -->  calling  getDeviceTileById");
 				listOfDeviceTile = deviceService.getDeviceTileById(deviceId,offerCode,journeyType);
-				LogHelper.info(this, "End -->  calling  getDeviceTileById");
 			} else {
 				LogHelper.error(this, DEVICE_ID_IS_EMPTY);
 				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
@@ -217,10 +223,8 @@ public class DeviceController {
 
 	/**
 	 * Handles requests for GetProductList Service with input as SIMO in URL as
-	 * query.
-	 * 
-	 * @return List<ProductGroup>
-	 **/
+	 * @return
+	 */
 	@ApiIgnore
 	@RequestMapping(value = "/productGroup", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	public List<ProductGroup> getProductGroup() {
@@ -229,18 +233,17 @@ public class DeviceController {
 		String groupName;
 		groupType = getFilterValue(GROUP_TYPE);
 		groupName = getFilterValue(GROUP_NAME);
-		LogHelper.info(this, "Start -->  calling  getProductGroupByGroupTypeGroupName");
 		productGroup = deviceService.getProductGroupByGroupTypeGroupName(groupType, groupName);
-		LogHelper.info(this, "End -->  calling  getProductGroupByGroupTypeGroupName");
 		return productGroup;
 	}
 
 	/**
-	 * Handles requests for getComaptibleAccessories Service with input as
-	 * deviceId.
-	 * 
-	 * @return List<Accessory>
-	 **/
+	 * Handles requests for getComaptibleAccessories Service with input as deviceId.
+	 * @param deviceId
+	 * @param journeyType
+	 * @param offerCode
+	 * @return
+	 */
 	@ApiOperation(value = "Get compatible accessory details for the given device Id", notes = "The service gets the details of compatible accessory along with the necessary information in the response.", response = AccessoryTileGroup.class, responseContainer = "List", tags={ "AccessoryTileGroup", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Success", response = AccessoryTileGroup.class, responseContainer = "List"),
@@ -252,8 +255,8 @@ public class DeviceController {
 	        @ApiParam(value = "Promotional offer applicable") @RequestParam(value = "offerCode", required = false) String offerCode) {
 		List<AccessoryTileGroup> listOfAccessoryTileGroup;
 		if (StringUtils.isNotBlank(deviceId)) {
-				if (!deviceId.matches("[0-9]{6}")) {
-					LogHelper.error(this, "DeviceId is Invalid");
+				if (!deviceId.matches(numberExpression)) {
+					LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
 					throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 				}
 				LogHelper.info(this, "Start -->  calling  getAccessoriesOfDevice");
@@ -267,11 +270,26 @@ public class DeviceController {
 		
 	}
 			
-			/**
-			 * Handles requests for getDeviceList Service .
-			 * 
-			 * @return FacetedDevice
-			 * **/
+		/**
+		 * Handles requests for getDeviceList Service
+		 * @param productClass
+		 * @param groupType
+		 * @param sort
+		 * @param pageNumber
+		 * @param pageSize
+		 * @param make
+		 * @param model
+		 * @param color
+		 * @param operatingSystem
+		 * @param capacity
+		 * @param msisdn
+		 * @param mustHaveFeatures
+		 * @param journeyType
+		 * @param includeRecommendations
+		 * @param offerCode
+		 * @param creditLimit
+		 * @return
+		 */
 	 @ApiOperation(value = "Get the list of devices based on the filter criteria, like productGroup brand Name. Pagination, sorting, filteration also defined", notes = "The service gets the details of the device list from Solr based on the filter criteria in the response.", response = FacetedDevice.class, tags={ "DeviceTile", })
 	    @ApiResponses(value = { 
 	        @ApiResponse(code = 200, message = "Success", response = FacetedDevice.class),
@@ -337,7 +355,7 @@ public class DeviceController {
 					
 					if (creditLimit != null) {
 						if(StringUtils.isNotBlank(creditLimit)){
-							if(!creditLimit.matches("[0-9]")) {
+							if(!creditLimit.matches(creditLimitExpression)) {
 								throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
 							}
 							if (!Validator.validateCreditLimit(creditLimit)) {
@@ -367,12 +385,12 @@ public class DeviceController {
 			return facetedDevice;
 	}
 
-	/*
+	/**
 	 * Handles requests for getInsuranceById Service with input as deviceId.
-	 * 
-	 * @return insurance
+	 * @param deviceId
+	 * @param journeyType
+	 * @return
 	 */
-	 
 			 @ApiOperation(value = "Get the list of insurance", notes = "The service gets the details of insurance available with device.", response = Insurances.class, tags={ "Insurances", })
 			    @ApiResponses(value = { 
 			        @ApiResponse(code = 200, message = "Success", response = Insurances.class),
@@ -384,8 +402,8 @@ public class DeviceController {
 
 		Insurances insurance;
 			if (StringUtils.isNotBlank(deviceId)) {
-				if (!deviceId.matches("[0-9]{6}")) {
-					LogHelper.error(this, "DeviceId is Invalid");
+				if (!deviceId.matches(numberExpression)) {
+					LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
 					throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 				}
 				LogHelper.info(this, "Start -->  calling  getInusranceByDeviceId");
@@ -399,10 +417,9 @@ public class DeviceController {
 		
 	}
 
-	/*
+	/**
 	 * Saves the details of the devices into database
-	 * 
-	 * @param groupType.
+	 * @return
 	 */
 			 @ApiIgnore
 	@RequestMapping(value = "/deviceTile/cacheDeviceTile", method = RequestMethod.POST, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
@@ -528,8 +545,7 @@ public class DeviceController {
 
 	/**
 	 * Returns List of Device details for the given List of devices
-	 * 
-	 * @param deviceId
+	 * @param queryParams
 	 * @return
 	 */
 	 @ApiIgnore
@@ -561,6 +577,11 @@ public class DeviceController {
 		}
 
 	}
+/**
+ * 
+ * @param jobId
+ * @return
+ */
 @ApiIgnore
 	@RequestMapping(value = "/deviceTile/cacheDeviceTile/{jobId}/status", method = RequestMethod.GET, produces = {
 			MediaType.APPLICATION_JSON })

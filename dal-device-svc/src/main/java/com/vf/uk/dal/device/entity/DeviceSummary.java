@@ -76,6 +76,11 @@ public class DeviceSummary   {
   @JsonProperty("fromPricing")
   private Boolean fromPricing = null;
 
+  /**
+   * 
+   * @param deviceId
+   * @return
+   */
   public DeviceSummary deviceId(String deviceId) {
     this.deviceId = deviceId;
     return this;
@@ -87,15 +92,25 @@ public class DeviceSummary   {
   **/
   @ApiModelProperty(value = "Device Id of the member")
 
-
+/**
+ * 
+ * @return
+ */
   public String getDeviceId() {
     return deviceId;
   }
-
+/**
+ * 
+ * @param deviceId
+ */
   public void setDeviceId(String deviceId) {
     this.deviceId = deviceId;
   }
-
+/**
+ * 
+ * @param displayName
+ * @return
+ */
   public DeviceSummary displayName(String displayName) {
     this.displayName = displayName;
     return this;
@@ -107,15 +122,25 @@ public class DeviceSummary   {
   **/
   @ApiModelProperty(value = "Display Name of a device This should come form MEF content file")
 
-
+/**
+ * 
+ * @return
+ */
   public String getDisplayName() {
     return displayName;
   }
-
+/**
+ * 
+ * @param displayName
+ */
   public void setDisplayName(String displayName) {
     this.displayName = displayName;
   }
-
+/**
+ * 
+ * @param priority
+ * @return
+ */
   public DeviceSummary priority(String priority) {
     this.priority = priority;
     return this;
@@ -127,15 +152,25 @@ public class DeviceSummary   {
   **/
   @ApiModelProperty(value = "Display priority of the Member")
 
-
+/**
+ * 
+ * @return
+ */
   public String getPriority() {
     return priority;
   }
-
+/**
+ * 
+ * @param priority
+ */
   public void setPriority(String priority) {
     this.priority = priority;
   }
-
+/**
+ * 
+ * @param displayDescription
+ * @return
+ */
   public DeviceSummary displayDescription(String displayDescription) {
     this.displayDescription = displayDescription;
     return this;
@@ -147,15 +182,25 @@ public class DeviceSummary   {
   **/
   @ApiModelProperty(value = "Description of the device as provided in the merchandising content file, preDec of product/handset, eg.With 3D Touch, Live Photos, 7000 series ...")
 
-
+/**
+ * 
+ * @return
+ */
   public String getDisplayDescription() {
     return displayDescription;
   }
-
+/**
+ * 
+ * @param displayDescription
+ */
   public void setDisplayDescription(String displayDescription) {
     this.displayDescription = displayDescription;
   }
-
+/**
+ * 
+ * @param colourName
+ * @return
+ */
   public DeviceSummary colourName(String colourName) {
     this.colourName = colourName;
     return this;
@@ -167,15 +212,25 @@ public class DeviceSummary   {
   **/
   @ApiModelProperty(value = "Color of the HandSet - Default colour, eg. Gold")
 
-
+/**
+ * 
+ * @return
+ */
   public String getColourName() {
     return colourName;
   }
-
+/**
+ * 
+ * @param colourName
+ */
   public void setColourName(String colourName) {
     this.colourName = colourName;
   }
-
+/**
+ * 
+ * @param colourHex
+ * @return
+ */
   public DeviceSummary colourHex(String colourHex) {
     this.colourHex = colourHex;
     return this;
@@ -187,15 +242,25 @@ public class DeviceSummary   {
   **/
   @ApiModelProperty(value = " Hex representation of the colour")
 
-
+/**
+ * 
+ * @return
+ */
   public String getColourHex() {
     return colourHex;
   }
-
+/**
+ * 
+ * @param colourHex
+ */
   public void setColourHex(String colourHex) {
     this.colourHex = colourHex;
   }
-
+/**
+ * 
+ * @param memory
+ * @return
+ */
   public DeviceSummary memory(String memory) {
     this.memory = memory;
     return this;
@@ -207,15 +272,25 @@ public class DeviceSummary   {
   **/
   @ApiModelProperty(value = "Storage Capacity of the Device  32GB, 64 GB, 128 GB, Default to be highlighted")
 
-
+/**
+ * 
+ * @return
+ */
   public String getMemory() {
     return memory;
   }
-
+/**
+ * 
+ * @param memory
+ */
   public void setMemory(String memory) {
     this.memory = memory;
   }
-
+/**
+ * 
+ * @param leadPlanId
+ * @return
+ */
   public DeviceSummary leadPlanId(String leadPlanId) {
     this.leadPlanId = leadPlanId;
     return this;
@@ -227,15 +302,25 @@ public class DeviceSummary   {
   **/
   @ApiModelProperty(value = "Lead Plan ID for the device")
 
-
+/**
+ * 
+ * @return
+ */
   public String getLeadPlanId() {
     return leadPlanId;
   }
-
+/**
+ * 
+ * @param leadPlanId
+ */
   public void setLeadPlanId(String leadPlanId) {
     this.leadPlanId = leadPlanId;
   }
-
+/**
+ * 
+ * @param leadPlanDisplayName
+ * @return
+ */
   public DeviceSummary leadPlanDisplayName(String leadPlanDisplayName) {
     this.leadPlanDisplayName = leadPlanDisplayName;
     return this;
@@ -247,15 +332,25 @@ public class DeviceSummary   {
   **/
   @ApiModelProperty(value = "Plan Name of the lead plan, from MEF Content file")
 
-
+/**
+ * 
+ * @return
+ */
   public String getLeadPlanDisplayName() {
     return leadPlanDisplayName;
   }
-
+/**
+ * 
+ * @param leadPlanDisplayName
+ */
   public void setLeadPlanDisplayName(String leadPlanDisplayName) {
     this.leadPlanDisplayName = leadPlanDisplayName;
   }
-
+/**
+ * 
+ * @param uom
+ * @return
+ */
   public DeviceSummary uom(String uom) {
     this.uom = uom;
     return this;
@@ -267,15 +362,25 @@ public class DeviceSummary   {
   **/
   @ApiModelProperty(value = "Associated Plan UOM")
 
-
+/**
+ * 
+ * @return
+ */
   public String getUom() {
     return uom;
   }
-
+/**
+ * 
+ * @param uom
+ */
   public void setUom(String uom) {
     this.uom = uom;
   }
-
+/**
+ * 
+ * @param uomValue
+ * @return
+ */
   public DeviceSummary uomValue(String uomValue) {
     this.uomValue = uomValue;
     return this;
@@ -287,15 +392,25 @@ public class DeviceSummary   {
   **/
   @ApiModelProperty(value = "Associated Plan UOM Value")
 
-
+/**
+ * 
+ * @return
+ */
   public String getUomValue() {
     return uomValue;
   }
-
+/**
+ * 
+ * @param uomValue
+ */
   public void setUomValue(String uomValue) {
     this.uomValue = uomValue;
   }
-
+/**
+ * 
+ * @param bundleType
+ * @return
+ */
   public DeviceSummary bundleType(String bundleType) {
     this.bundleType = bundleType;
     return this;
@@ -306,16 +421,26 @@ public class DeviceSummary   {
    * @return bundleType
   **/
   @ApiModelProperty(value = "Associated Bundle Type")
-
+/**
+ * 
+ * @return
+ */
 
   public String getBundleType() {
     return bundleType;
   }
-
+/**
+ * 
+ * @param bundleType
+ */
   public void setBundleType(String bundleType) {
     this.bundleType = bundleType;
   }
-
+/**
+ * 
+ * @param productGroupURI
+ * @return
+ */
   public DeviceSummary productGroupURI(String productGroupURI) {
     this.productGroupURI = productGroupURI;
     return this;
@@ -327,20 +452,34 @@ public class DeviceSummary   {
   **/
   @ApiModelProperty(value = "Concatenation of Make/Model")
 
-
+/**
+ * 
+ * @return
+ */
   public String getProductGroupURI() {
     return productGroupURI;
   }
-
+/**
+ * 
+ * @param productGroupURI
+ */
   public void setProductGroupURI(String productGroupURI) {
     this.productGroupURI = productGroupURI;
   }
-
+/**
+ * 
+ * @param merchandisingMedia
+ * @return
+ */
   public DeviceSummary merchandisingMedia(List<MediaLink> merchandisingMedia) {
     this.merchandisingMedia = merchandisingMedia;
     return this;
   }
-
+/**
+ * 
+ * @param merchandisingMediaItem
+ * @return
+ */
   public DeviceSummary addMerchandisingMediaItem(MediaLink merchandisingMediaItem) {
     if (this.merchandisingMedia == null) {
       this.merchandisingMedia = new ArrayList<MediaLink>();
@@ -356,15 +495,25 @@ public class DeviceSummary   {
   @ApiModelProperty(value = "")
 
   @Valid
-
+/**
+ * 
+ * @return
+ */
   public List<MediaLink> getMerchandisingMedia() {
     return merchandisingMedia;
   }
-
+/**
+ * 
+ * @param merchandisingMedia
+ */
   public void setMerchandisingMedia(List<MediaLink> merchandisingMedia) {
     this.merchandisingMedia = merchandisingMedia;
   }
-
+/**
+ * 
+ * @param priceInfo
+ * @return
+ */
   public DeviceSummary priceInfo(PriceForBundleAndHardware priceInfo) {
     this.priceInfo = priceInfo;
     return this;
@@ -377,15 +526,25 @@ public class DeviceSummary   {
   @ApiModelProperty(value = "")
 
   @Valid
-
+/**
+ * 
+ * @return
+ */
   public PriceForBundleAndHardware getPriceInfo() {
     return priceInfo;
   }
-
+/**
+ * 
+ * @param priceInfo
+ */
   public void setPriceInfo(PriceForBundleAndHardware priceInfo) {
     this.priceInfo = priceInfo;
   }
-
+/**
+ * 
+ * @param isCompatible
+ * @return
+ */
   public DeviceSummary isCompatible(Boolean isCompatible) {
     this.isCompatible = isCompatible;
     return this;
@@ -397,15 +556,25 @@ public class DeviceSummary   {
   **/
   @ApiModelProperty(value = "Is the device compatible with the given bundle")
 
-
+/**
+ * 
+ * @return
+ */
   public Boolean getIsCompatible() {
     return isCompatible;
   }
-
+/**
+ * 
+ * @param isCompatible
+ */
   public void setIsCompatible(Boolean isCompatible) {
     this.isCompatible = isCompatible;
   }
-
+/**
+ * 
+ * @param preOrderable
+ * @return
+ */
   public DeviceSummary preOrderable(Boolean preOrderable) {
     this.preOrderable = preOrderable;
     return this;
@@ -417,15 +586,25 @@ public class DeviceSummary   {
   **/
   @ApiModelProperty(value = "Is the device pre-orderable as per MEF")
 
-
+/**
+ * 
+ * @return
+ */
   public Boolean getPreOrderable() {
     return preOrderable;
   }
-
+/**
+ * 
+ * @param preOrderable
+ */
   public void setPreOrderable(Boolean preOrderable) {
     this.preOrderable = preOrderable;
   }
-
+/**
+ * 
+ * @param availableFrom
+ * @return
+ */
   public DeviceSummary availableFrom(String availableFrom) {
     this.availableFrom = availableFrom;
     return this;
@@ -437,15 +616,25 @@ public class DeviceSummary   {
   **/
   @ApiModelProperty(value = "Available from date of the product as provided in the product catalogue")
 
-
+/**
+ * 
+ * @return
+ */
   public String getAvailableFrom() {
     return availableFrom;
   }
-
+/**
+ * 
+ * @param availableFrom
+ */
   public void setAvailableFrom(String availableFrom) {
     this.availableFrom = availableFrom;
   }
-
+/**
+ * 
+ * @param isAffordable
+ * @return
+ */
   public DeviceSummary isAffordable(Boolean isAffordable) {
     this.isAffordable = isAffordable;
     return this;
@@ -457,15 +646,25 @@ public class DeviceSummary   {
   **/
   @ApiModelProperty(value = "flag to showcase whether the device is affordable or not in conditional accept scenario")
 
-
+/**
+ * 
+ * @return
+ */
   public Boolean getIsAffordable() {
     return isAffordable;
   }
-
+/**
+ * 
+ * @param isAffordable
+ */
   public void setIsAffordable(Boolean isAffordable) {
     this.isAffordable = isAffordable;
   }
-
+/**
+ * 
+ * @param fromPricing
+ * @return
+ */
   public DeviceSummary fromPricing(Boolean fromPricing) {
     this.fromPricing = fromPricing;
     return this;
@@ -477,11 +676,17 @@ public class DeviceSummary   {
   **/
   @ApiModelProperty(value = "flag to show associated/from price")
 
-
+/**
+ * 
+ * @return
+ */
   public Boolean getFromPricing() {
     return fromPricing;
   }
-
+/**
+ * 
+ * @param fromPricing
+ */
   public void setFromPricing(Boolean fromPricing) {
     this.fromPricing = fromPricing;
   }

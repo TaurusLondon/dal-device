@@ -23,7 +23,11 @@ public class MediaLink   {
 
   @JsonProperty("priority")
   private Integer priority = null;
-
+/**
+ * 
+ * @param id
+ * @return
+ */
   public MediaLink id(String id) {
     this.id = id;
     return this;
@@ -35,15 +39,25 @@ public class MediaLink   {
   **/
   @ApiModelProperty(value = "Unique id given for this link which provide a reference for UI to place this on the screen")
 
-
+/**
+ * 
+ * @return
+ */
   public String getId() {
     return id;
   }
-
+/**
+ * 
+ * @param id
+ */
   public void setId(String id) {
     this.id = id;
   }
-
+/**
+ * 
+ * @param value
+ * @return
+ */
   public MediaLink value(String value) {
     this.value = value;
     return this;
@@ -59,11 +73,18 @@ public class MediaLink   {
   public String getValue() {
     return value;
   }
-
+/**
+ * 
+ * @param value
+ */
   public void setValue(String value) {
     this.value = value;
   }
-
+/**
+ * 
+ * @param type
+ * @return
+ */
   public MediaLink type(String type) {
     this.type = type;
     return this;
@@ -79,11 +100,18 @@ public class MediaLink   {
   public String getType() {
     return type;
   }
-
+/**
+ * 
+ * @param type
+ */
   public void setType(String type) {
     this.type = type;
   }
-
+/**
+ * 
+ * @param priority
+ * @return
+ */
   public MediaLink priority(Integer priority) {
     this.priority = priority;
     return this;
@@ -99,7 +127,10 @@ public class MediaLink   {
   public Integer getPriority() {
     return priority;
   }
-
+/**
+ * 
+ * @param priority
+ */
   public void setPriority(Integer priority) {
     this.priority = priority;
   }

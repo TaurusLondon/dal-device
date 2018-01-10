@@ -20,7 +20,11 @@ public class Price   {
 
   @JsonProperty("vat")
   private String vat = null;
-
+/**
+ * 
+ * @param gross
+ * @return
+ */
   public Price gross(String gross) {
     this.gross = gross;
     return this;
@@ -36,11 +40,18 @@ public class Price   {
   public String getGross() {
     return gross;
   }
-
+/**
+ * 
+ * @param gross
+ */
   public void setGross(String gross) {
     this.gross = gross;
   }
-
+/**
+ * 
+ * @param net
+ * @return
+ */
   public Price net(String net) {
     this.net = net;
     return this;
@@ -56,11 +67,18 @@ public class Price   {
   public String getNet() {
     return net;
   }
-
+/**
+ * 
+ * @param net
+ */
   public void setNet(String net) {
     this.net = net;
   }
-
+/**
+ * 
+ * @param vat
+ * @return
+ */
   public Price vat(String vat) {
     this.vat = vat;
     return this;
@@ -76,7 +94,10 @@ public class Price   {
   public String getVat() {
     return vat;
   }
-
+/**
+ * 
+ * @param vat
+ */
   public void setVat(String vat) {
     this.vat = vat;
   }

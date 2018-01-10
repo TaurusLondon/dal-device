@@ -9,13 +9,11 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Component;
 
-import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 import com.vf.uk.dal.common.configuration.DataSourceInitializer;
 import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.utility.solr.entity.BundlePrice;
