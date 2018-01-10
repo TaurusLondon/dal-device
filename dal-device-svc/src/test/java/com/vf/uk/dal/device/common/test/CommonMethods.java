@@ -44,6 +44,7 @@ import com.vf.uk.dal.device.entity.OfferPacks;
 import com.vf.uk.dal.device.entity.Price;
 import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
 import com.vf.uk.dal.device.entity.ProductGroup;
+import com.vf.uk.dal.device.entity.SourcePackageSummary;
 import com.vf.uk.dal.device.entity.Specification;
 import com.vf.uk.dal.device.entity.SpecificationGroup;
 import com.vf.uk.dal.device.entity.StepPricingInfo;
@@ -1742,6 +1743,7 @@ public class CommonMethods {
 		groupList.add(group);
 		groupList.add(group1);
 		product.setListOfProductGroups(groupList);
+		product.setNumFound((long)2);
 		return product;
 	}
 
@@ -3684,5 +3686,11 @@ public class CommonMethods {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public static SourcePackageSummary getSourcePackageSummary() {
+		SourcePackageSummary s = new SourcePackageSummary();
+		s.setPromotionId("109381");
+		return s;	
 	}
 }
