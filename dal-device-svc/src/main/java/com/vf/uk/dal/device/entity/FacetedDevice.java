@@ -4,36 +4,48 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.validation.Valid;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+
+import io.swagger.annotations.ApiModelProperty;
 /**
  * FacetedDevice
  */
-@JsonPropertyOrder({ "facet", "device", "noOfRecordsFound", "message" })
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
+
 public class FacetedDevice   {
+  @JsonProperty("facet")
+  private List<NewFacet> newFacet = null;
 
-  private List<NewFacet> facet = new ArrayList<>();
+  @JsonProperty("device")
+  private List<Device> device = null;
 
-  private List<Device> device = new ArrayList<>();
-
+  @JsonProperty("noOfRecordsFound")
   private long noOfRecordsFound;
 
-  private String message;
-  
-
-   /**
-   * Get facet
-   * @return facet
-  **/
-
-
+  @JsonProperty("message")
+  private String message = null;
+/**
+ * 
+ * @param newFacet
+ * @return
+ */
   public FacetedDevice newFacet(List<NewFacet> newFacet) {
-    this.facet = newFacet;
+    this.newFacet = newFacet;
     return this;
   }
-
+/**
+ * 
+ * @param newFacetItem
+ * @return
+ */
   public FacetedDevice addNewFacetItem(NewFacet newFacetItem) {
-    this.facet.add(newFacetItem);
+    if (this.newFacet == null) {
+      this.newFacet = new ArrayList<NewFacet>();
+    }
+    this.newFacet.add(newFacetItem);
     return this;
   }
 
@@ -41,21 +53,41 @@ public class FacetedDevice   {
    * Get newFacet
    * @return newFacet
   **/
-  @JsonProperty(value="facet")
+  @ApiModelProperty(value = "")
+
+  @Valid
+/**
+ * 
+ * @return
+ */
   public List<NewFacet> getNewFacet() {
-    return facet;
+    return newFacet;
   }
-
+/**
+ * 
+ * @param newFacet
+ */
   public void setNewFacet(List<NewFacet> newFacet) {
-    this.facet = newFacet;
+    this.newFacet = newFacet;
   }
-
+/**
+ * 
+ * @param device
+ * @return
+ */
   public FacetedDevice device(List<Device> device) {
     this.device = device;
     return this;
   }
-
+/**
+ * 
+ * @param deviceItem
+ * @return
+ */
   public FacetedDevice addDeviceItem(Device deviceItem) {
+    if (this.device == null) {
+      this.device = new ArrayList<Device>();
+    }
     this.device.add(deviceItem);
     return this;
   }
@@ -64,14 +96,28 @@ public class FacetedDevice   {
    * Get device
    * @return device
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+/**
+ * 
+ * @return
+ */
   public List<Device> getDevice() {
     return device;
   }
-
+/**
+ * 
+ * @param device
+ */
   public void setDevice(List<Device> device) {
     this.device = device;
   }
-
+/**
+ * 
+ * @param noOfRecordsFound
+ * @return
+ */
   public FacetedDevice noOfRecordsFound(long noOfRecordsFound) {
     this.noOfRecordsFound = noOfRecordsFound;
     return this;
@@ -81,20 +127,86 @@ public class FacetedDevice   {
    * Number of Records found
    * @return noOfRecordsFound
   **/
+  @ApiModelProperty(value = "Number of Records found")
+
+  @Valid
+/**
+ * 
+ * @return
+ */
   public long getNoOfRecordsFound() {
     return noOfRecordsFound;
   }
-
+/**
+ * 
+ * @param noOfRecordsFound
+ */
   public void setNoOfRecordsFound(long noOfRecordsFound) {
     this.noOfRecordsFound = noOfRecordsFound;
   }
-  
-  public String getMessage() {
-	return message;
+/**
+ * 
+ * @param message
+ * @return
+ */
+  public FacetedDevice message(String message) {
+    this.message = message;
+    return this;
   }
-  
+
+   /**
+   * GRPL error message for Tealium to be checked
+   * @return message
+  **/
+  @ApiModelProperty(value = "GRPL error message for Tealium to be checked")
+
+/**
+ * 
+ * @return
+ */
+  public String getMessage() {
+    return message;
+  }
+/**
+ * 
+ * @param message
+ */
   public void setMessage(String message) {
-	  this.message = message;
+    this.message = message;
+  }
+
+
+  @Override
+  public boolean equals(java.lang.Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    FacetedDevice facetedDevice = (FacetedDevice) o;
+    return Objects.equals(this.newFacet, facetedDevice.newFacet) &&
+        Objects.equals(this.device, facetedDevice.device) &&
+        Objects.equals(this.noOfRecordsFound, facetedDevice.noOfRecordsFound) &&
+        Objects.equals(this.message, facetedDevice.message);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(newFacet, device, noOfRecordsFound, message);
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("class FacetedDevice {\n");
+    
+    sb.append("    newFacet: ").append(toIndentedString(newFacet)).append("\n");
+    sb.append("    device: ").append(toIndentedString(device)).append("\n");
+    sb.append("    noOfRecordsFound: ").append(toIndentedString(noOfRecordsFound)).append("\n");
+    sb.append("    message: ").append(toIndentedString(message)).append("\n");
+    sb.append("}");
+    return sb.toString();
   }
 
   /**
@@ -107,54 +219,5 @@ public class FacetedDevice   {
     }
     return o.toString().replace("\n", "\n    ");
   }
-
-  
-@Override
-public String toString() {
-	return "FacetedDevice [newFacet=" + facet + ", device=" + device + ", noOfRecordsFound=" + noOfRecordsFound
-			+ ", message=" + message + "]";
-}
-
-@Override
-public int hashCode() {
-	final int prime = 31;
-	int result = 1;
-	result = prime * result + ((device == null) ? 0 : device.hashCode());
-	result = prime * result + ((message == null) ? 0 : message.hashCode());
-	result = prime * result + ((facet == null) ? 0 : facet.hashCode());
-	result = prime * result + (int) (noOfRecordsFound ^ (noOfRecordsFound >>> 32));
-	return result;
-}
-
-@Override
-public boolean equals(Object obj) {
-	if (this == obj)
-		return true;
-	if (obj == null)
-		return false;
-	if (getClass() != obj.getClass())
-		return false;
-	FacetedDevice other = (FacetedDevice) obj;
-	if (device == null) {
-		if (other.device != null)
-			return false;
-	} else if (!device.equals(other.device))
-		return false;
-	if (message == null) {
-		if (other.message != null)
-			return false;
-	} else if (!message.equals(other.message))
-		return false;
-	if (facet == null) {
-		if (other.facet != null)
-			return false;
-	} else if (!facet.equals(other.facet))
-		return false;
-	if (noOfRecordsFound != other.noOfRecordsFound)
-		return false;
-	return true;
-}
-  
-  
 }
 

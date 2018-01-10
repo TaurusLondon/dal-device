@@ -7,8 +7,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.json.simple.JSONObject;
@@ -42,6 +41,7 @@ import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForHardwareSash;
 import com.vf.uk.dal.utility.entity.PriceForProduct;
 import com.vf.uk.dal.utility.entity.RecommendedProductListRequest;
 import com.vf.uk.dal.utility.entity.RecommendedProductListResponse;
+import com.vodafone.dal.bundle.pojo.CommercialBundle;
 import com.vodafone.product.pojo.CommercialProduct;
 /**
  * 
@@ -103,19 +103,6 @@ public  class CommonUtility {
 		return mapper.convertValue(client, new TypeReference<List<PriceForBundleAndHardware>>(){});
 		
 	}
-	
-	/*public static List<StockInfo> getStockAvailabilityForDevice(String deviceIds, RegistryClient registryClient) {
-		String stockId=ConfigHelper.getString(Constants.STRING_WAREHOUSE_ID, Constants.STRING_DEFAULT_STOCKID);
-		RestTemplate restTemplate =registryClient.getRestTemplate();
-		StockInfo[] client= restTemplate.getForObject("http://UTILITY-V1/utility/?filter[skuId]="+deviceIds+"&filter[sourceId]="+stockId , StockInfo[].class  );
- 		ObjectMapper mapper = new ObjectMapper();
-		return mapper.convertValue(client, new TypeReference<List<StockInfo>>(){});
-		
-	}*/
-	/*public static CurrentJourney getCurrentJourney(String journeyId,RegistryClient registryClient) {
-		RestTemplate restTemplate =registryClient.getRestTemplate();
-		return restTemplate.getForObject("http://COMMON-V1/common/journey/"+journeyId+"/queries/currentJourney" ,CurrentJourney.class);
-	}*/
 	
 	public static RecommendedProductListResponse getRecommendedProductList(RecommendedProductListRequest recomProductList,RegistryClient registryClient) {
 		RestTemplate restTemplate =registryClient.getRestTemplate();
@@ -416,6 +403,7 @@ public  class CommonUtility {
 		} catch (RestClientException e) {
 			// Stanley - Added error logging
 			LogHelper.error(CommonUtility.class, e+"");
+			throw new ApplicationException(ExceptionMessages.PROMOTION_API_EXCEPTION);
 		}
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.convertValue(response,
@@ -763,5 +751,59 @@ public  class CommonUtility {
 		}
 		
 		return mediaList;
+	}
+	public static boolean isValidBundleForProduct(com.vf.uk.dal.utility.entity.PriceForBundleAndHardware price,
+			Map<String,CommercialBundle> commercialBundleMap,List<String> productLinesList,String journeyType)
+	{
+		boolean flag =false;
+		String bundleId=price.getBundlePrice().getBundleId();
+		if(commercialBundleMap.containsKey(bundleId))
+		{
+			CommercialBundle commercialBundle= commercialBundleMap.get(bundleId);
+			String startDateTime = null;
+			String endDateTime = null;
+			if (commercialBundle.getAvailability().getStart() != null) {
+				startDateTime = getDateToString(commercialBundle.getAvailability().getStart(),
+						Constants.DATE_FORMAT_COHERENCE);
+			}
+			if (commercialBundle.getAvailability().getEnd() != null) {
+				endDateTime = getDateToString(commercialBundle.getAvailability().getEnd(),
+						Constants.DATE_FORMAT_COHERENCE);
+			}
+			//boolean isCompatible=commercialBundle.getProductLines().containsAll(productLinesList);
+			boolean isCompatible=commercialBundle.getProductLines().stream().anyMatch(productLinesList.get(0)::equalsIgnoreCase)?true:commercialBundle.getProductLines().stream().anyMatch(productLinesList.get(1)::equalsIgnoreCase)?true:false;
+			if((StringUtils.isBlank(journeyType) || StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_ACQUISITION) || StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_SECONDLINE) )&& isCompatible && dateValidationForOffers(startDateTime,
+					endDateTime, Constants.DATE_FORMAT_COHERENCE) && !commercialBundle.getAvailability().getSalesExpired() && commercialBundle.getBundleControl().isDisplayableAcq() && commercialBundle.getBundleControl().isSellableAcq())
+			{
+				flag =true;
+			}
+			if((StringUtils.isNotBlank(journeyType) && StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_UPGRADE) )&& isCompatible && dateValidationForOffers(startDateTime,
+					endDateTime, Constants.DATE_FORMAT_COHERENCE) && !commercialBundle.getAvailability().getSalesExpired() && commercialBundle.getBundleControl().isDisplayableRet() && commercialBundle.getBundleControl().isSellableRet())
+			{
+				flag =true;
+			}
+		}
+		return flag;
+	}
+	public static Boolean dateValidationForProduct(String availableFromDate,String strDateFormat) {
+		boolean flag = false;
+		SimpleDateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+		Date currentDate = new Date();
+		Date startDate = null;
+
+		String currentDateStr = dateFormat.format(currentDate);
+
+		try {
+			currentDate = dateFormat.parse(currentDateStr);
+			startDate = dateFormat.parse(availableFromDate);
+
+		} catch (ParseException | DateTimeParseException e) {
+			LogHelper.error(CommonUtility.class, "ParseException: " + e);
+		}
+
+		if (startDate != null && currentDate.before(startDate)) {
+			flag = true;
+		}
+		return flag;
 	}
 }

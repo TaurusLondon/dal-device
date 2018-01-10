@@ -1,33 +1,55 @@
 package com.vf.uk.dal.device.entity;
 
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 /**
  * MerchandisingControl
  */
 
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
+
 public class MerchandisingControl   {
+  @JsonProperty("isDisplayableECare")
   private Boolean isDisplayableECare = null;
 
+  @JsonProperty("isSellableECare")
   private Boolean isSellableECare = null;
 
+  @JsonProperty("isDisplayableAcq")
   private Boolean isDisplayableAcq = null;
 
+  @JsonProperty("isSellableRet")
   private Boolean isSellableRet = null;
 
+  @JsonProperty("isDisplayableRet")
   private Boolean isDisplayableRet = null;
 
+  @JsonProperty("isSellableAcq")
   private Boolean isSellableAcq = null;
 
+  @JsonProperty("isDisplayableSavedBasket")
   private Boolean isDisplayableSavedBasket = null;
 
+  @JsonProperty("order")
   private Integer order = null;
 
+  @JsonProperty("preorderable")
   private Boolean preorderable = null;
 
+  @JsonProperty("availableFrom")
   private String availableFrom = null;
 
+  @JsonProperty("backorderable")
   private Boolean backorderable = null;
 
+  /**
+   * 
+   * @param isDisplayableECare
+   * @return
+   */
   public MerchandisingControl isDisplayableECare(Boolean isDisplayableECare) {
     this.isDisplayableECare = isDisplayableECare;
     return this;
@@ -37,14 +59,24 @@ public class MerchandisingControl   {
    * IS the device Disellable in ECare
    * @return isDisplayableECare
   **/
+  @ApiModelProperty(value = "IS the device Disellable in ECare")
+
+
   public Boolean getIsDisplayableECare() {
     return isDisplayableECare;
   }
-
+/**
+ * 
+ * @param isDisplayableECare
+ */
   public void setIsDisplayableECare(Boolean isDisplayableECare) {
     this.isDisplayableECare = isDisplayableECare;
   }
-
+/**
+ * 
+ * @param isSellableECare
+ * @return
+ */
   public MerchandisingControl isSellableECare(Boolean isSellableECare) {
     this.isSellableECare = isSellableECare;
     return this;
@@ -54,14 +86,24 @@ public class MerchandisingControl   {
    * IS the device sellable ECare
    * @return isSellableECare
   **/
+  @ApiModelProperty(value = "IS the device sellable ECare")
+
+
   public Boolean getIsSellableECare() {
     return isSellableECare;
   }
-
+/**
+ * 
+ * @param isSellableECare
+ */
   public void setIsSellableECare(Boolean isSellableECare) {
     this.isSellableECare = isSellableECare;
   }
-
+/**
+ * 
+ * @param isDisplayableAcq
+ * @return
+ */
   public MerchandisingControl isDisplayableAcq(Boolean isDisplayableAcq) {
     this.isDisplayableAcq = isDisplayableAcq;
     return this;
@@ -71,14 +113,24 @@ public class MerchandisingControl   {
    * IS the prdevice Dsellable
    * @return isDisplayableAcq
   **/
+  @ApiModelProperty(value = "IS the prdevice Dsellable")
+
+
   public Boolean getIsDisplayableAcq() {
     return isDisplayableAcq;
   }
-
+/**
+ * 
+ * @param isDisplayableAcq
+ */
   public void setIsDisplayableAcq(Boolean isDisplayableAcq) {
     this.isDisplayableAcq = isDisplayableAcq;
   }
-
+/**
+ * 
+ * @param isSellableRet
+ * @return
+ */
   public MerchandisingControl isSellableRet(Boolean isSellableRet) {
     this.isSellableRet = isSellableRet;
     return this;
@@ -88,14 +140,24 @@ public class MerchandisingControl   {
    * IS the prdevice Dsellable
    * @return isSellableRet
   **/
+  @ApiModelProperty(value = "IS the prdevice Dsellable")
+
+
   public Boolean getIsSellableRet() {
     return isSellableRet;
   }
-
+/**
+ * 
+ * @param isSellableRet
+ */
   public void setIsSellableRet(Boolean isSellableRet) {
     this.isSellableRet = isSellableRet;
   }
-
+/**
+ * 
+ * @param isDisplayableRet
+ * @return
+ */
   public MerchandisingControl isDisplayableRet(Boolean isDisplayableRet) {
     this.isDisplayableRet = isDisplayableRet;
     return this;
@@ -105,14 +167,27 @@ public class MerchandisingControl   {
    * IS the device Disellable Ret
    * @return isDisplayableRet
   **/
+  @ApiModelProperty(value = "IS the device Disellable Ret")
+
+/**
+ * 
+ * @return
+ */
   public Boolean getIsDisplayableRet() {
     return isDisplayableRet;
   }
-
+/**
+ * 
+ * @param isDisplayableRet
+ */
   public void setIsDisplayableRet(Boolean isDisplayableRet) {
     this.isDisplayableRet = isDisplayableRet;
   }
-
+/**
+ * 
+ * @param isSellableAcq
+ * @return
+ */
   public MerchandisingControl isSellableAcq(Boolean isSellableAcq) {
     this.isSellableAcq = isSellableAcq;
     return this;
@@ -122,14 +197,24 @@ public class MerchandisingControl   {
    * IS the device sellable acq
    * @return isSellableAcq
   **/
+  @ApiModelProperty(value = "IS the device sellable acq")
+
+
   public Boolean getIsSellableAcq() {
     return isSellableAcq;
   }
-
+/**
+ * 
+ * @param isSellableAcq
+ */
   public void setIsSellableAcq(Boolean isSellableAcq) {
     this.isSellableAcq = isSellableAcq;
   }
-
+/**
+ * 
+ * @param isDisplayableSavedBasket
+ * @return
+ */
   public MerchandisingControl isDisplayableSavedBasket(Boolean isDisplayableSavedBasket) {
     this.isDisplayableSavedBasket = isDisplayableSavedBasket;
     return this;
@@ -139,14 +224,24 @@ public class MerchandisingControl   {
    * IS the device Displayable in basket
    * @return isDisplayableSavedBasket
   **/
+  @ApiModelProperty(value = "IS the device Displayable in basket")
+
+
   public Boolean getIsDisplayableSavedBasket() {
     return isDisplayableSavedBasket;
   }
-
+/**
+ * 
+ * @param isDisplayableSavedBasket
+ */
   public void setIsDisplayableSavedBasket(Boolean isDisplayableSavedBasket) {
     this.isDisplayableSavedBasket = isDisplayableSavedBasket;
   }
-
+/**
+ * 
+ * @param order
+ * @return
+ */
   public MerchandisingControl order(Integer order) {
     this.order = order;
     return this;
@@ -156,14 +251,24 @@ public class MerchandisingControl   {
    * Order number
    * @return order
   **/
+  @ApiModelProperty(value = "Order number")
+
+
   public Integer getOrder() {
     return order;
   }
-
+/**
+ * 
+ * @param order
+ */
   public void setOrder(Integer order) {
     this.order = order;
   }
-
+/**
+ * 
+ * @param preorderable
+ * @return
+ */
   public MerchandisingControl preorderable(Boolean preorderable) {
     this.preorderable = preorderable;
     return this;
@@ -173,14 +278,24 @@ public class MerchandisingControl   {
    * Can the device pre order
    * @return preorderable
   **/
+  @ApiModelProperty(value = "Can the device pre order")
+
+
   public Boolean getPreorderable() {
     return preorderable;
   }
-
+/**
+ * 
+ * @param preorderable
+ */
   public void setPreorderable(Boolean preorderable) {
     this.preorderable = preorderable;
   }
-
+/**
+ * 
+ * @param availableFrom
+ * @return
+ */
   public MerchandisingControl availableFrom(String availableFrom) {
     this.availableFrom = availableFrom;
     return this;
@@ -190,14 +305,24 @@ public class MerchandisingControl   {
    * Date from which the device can be available
    * @return availableFrom
   **/
+  @ApiModelProperty(value = "Date from which the device can be available")
+
+
   public String getAvailableFrom() {
     return availableFrom;
   }
-
+/**
+ * 
+ * @param availableFrom
+ */
   public void setAvailableFrom(String availableFrom) {
     this.availableFrom = availableFrom;
   }
-
+/**
+ * 
+ * @param backorderable
+ * @return
+ */
   public MerchandisingControl backorderable(Boolean backorderable) {
     this.backorderable = backorderable;
     return this;
@@ -207,10 +332,16 @@ public class MerchandisingControl   {
    * Can the device back order
    * @return backorderable
   **/
+  @ApiModelProperty(value = "Can the device back order")
+
+
   public Boolean getBackorderable() {
     return backorderable;
   }
-
+/**
+ * 
+ * @param backorderable
+ */
   public void setBackorderable(Boolean backorderable) {
     this.backorderable = backorderable;
   }

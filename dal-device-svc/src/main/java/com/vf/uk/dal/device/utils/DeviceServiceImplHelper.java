@@ -62,11 +62,7 @@ public class DeviceServiceImplHelper {
 			}
 		}
 		if (mustHaveFeatures != null && !"\"\"".equals(mustHaveFeatures)) {
-			musthaveFeatureUpdated = mustHaveFeatures;
-			if (musthaveFeatureUpdated.contains(" ")) {
-				musthaveFeatureUpdated = "\"" + musthaveFeatureUpdated + "\"";
-			}
-			newMustHaveFeatures = getFilterForDeviceList(musthaveFeatureUpdated,
+			newMustHaveFeatures = getFilterForDeviceList(mustHaveFeatures,
 					Constants.STRING_MUST_HAVE_FEATURES_WITH_COLON);
 			if (StringUtils.isNotEmpty(filterCriteria)) {
 				filterCriteria = filterCriteria + Constants.STRING_AND + newMustHaveFeatures;
@@ -182,11 +178,6 @@ public class DeviceServiceImplHelper {
 				}
 
 			}
-			// listOfBundleDetails.forEach(bundleModel -> {
-			// if (listOfLeadPlanIdNew.contains(bundleModel.getBundleId())) {
-			// bundleModelMapNew.put(bundleModel.getBundleId(), bundleModel);
-			// }
-			// });
 
 			listOfProductModelNew.addAll(listOfProductModel);
 		}

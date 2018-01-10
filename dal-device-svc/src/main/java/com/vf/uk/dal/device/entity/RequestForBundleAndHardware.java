@@ -14,6 +14,11 @@ public class RequestForBundleAndHardware {
 
   private List<BundleAndHardwareTuple> bundleAndHardwareList = null;
 
+  /**
+   * 
+   * @param offerCode
+   * @return
+   */
   public RequestForBundleAndHardware offerCode(String offerCode) {
     this.offerCode = offerCode;
     return this;
@@ -27,24 +32,42 @@ public class RequestForBundleAndHardware {
     return offerCode;
   }
 
+  /**
+   * 
+   * @param offerCode
+   */
   public void setOfferCode(String offerCode) {
     this.offerCode = offerCode;
   }
 
-  
+  /**
+   * 
+   * @return
+   */
   public String getPackageType() {
 	return packageType;
 }
-
+/**
+ * 
+ * @param packageType
+ */
 public void setPackageType(String packageType) {
 	this.packageType = packageType;
 }
-
+/**
+ * 
+ * @param bundleAndHardwareList
+ * @return
+ */
 public RequestForBundleAndHardware bundleAndHardwareList(List<BundleAndHardwareTuple> bundleAndHardwareList) {
     this.bundleAndHardwareList = bundleAndHardwareList;
     return this;
   }
-
+/**
+ * 
+ * @param bundleAndHardwareListItem
+ * @return
+ */
   public RequestForBundleAndHardware addBundleAndHardwareListItem(BundleAndHardwareTuple bundleAndHardwareListItem) {
     if (this.bundleAndHardwareList == null) {
       this.bundleAndHardwareList = new ArrayList<BundleAndHardwareTuple>();
@@ -60,7 +83,10 @@ public RequestForBundleAndHardware bundleAndHardwareList(List<BundleAndHardwareT
   public List<BundleAndHardwareTuple> getBundleAndHardwareList() {
     return bundleAndHardwareList;
   }
-
+/**
+ * 
+ * @param bundleAndHardwareList
+ */
   public void setBundleAndHardwareList(List<BundleAndHardwareTuple> bundleAndHardwareList) {
     this.bundleAndHardwareList = bundleAndHardwareList;
   }

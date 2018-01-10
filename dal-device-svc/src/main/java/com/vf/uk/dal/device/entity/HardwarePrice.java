@@ -1,21 +1,35 @@
 package com.vf.uk.dal.device.entity;
 
 import java.util.Objects;
-import java.util.ArrayList;
-import java.util.List;
+
+import javax.validation.Valid;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 /**
  * HardwarePrice
  */
 
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
+
 public class HardwarePrice   {
+  @JsonProperty("hardwareId")
   private String hardwareId = null;
 
+  @JsonProperty("oneOffPrice")
   private Price oneOffPrice = null;
 
+  @JsonProperty("oneOffDiscountPrice")
   private Price oneOffDiscountPrice = null;
 
+  @JsonProperty("merchandisingPromotions")
   private MerchandisingPromotion merchandisingPromotions = null;
-
+/**
+ * 
+ * @param hardwareId
+ * @return
+ */
   public HardwarePrice hardwareId(String hardwareId) {
     this.hardwareId = hardwareId;
     return this;
@@ -25,14 +39,27 @@ public class HardwarePrice   {
    * Hardware id of the price to be calculated
    * @return hardwareId
   **/
+  @ApiModelProperty(value = "Hardware id of the price to be calculated")
+
+/**
+ * 
+ * @return
+ */
   public String getHardwareId() {
     return hardwareId;
   }
-
+/**
+ * 
+ * @param hardwareId
+ */
   public void setHardwareId(String hardwareId) {
     this.hardwareId = hardwareId;
   }
-
+/**
+ * 
+ * @param oneOffPrice
+ * @return
+ */
   public HardwarePrice oneOffPrice(Price oneOffPrice) {
     this.oneOffPrice = oneOffPrice;
     return this;
@@ -42,14 +69,28 @@ public class HardwarePrice   {
    * Get oneOffPrice
    * @return oneOffPrice
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+/**
+ * 
+ * @return
+ */
   public Price getOneOffPrice() {
     return oneOffPrice;
   }
-
+/**
+ * 
+ * @param oneOffPrice
+ */
   public void setOneOffPrice(Price oneOffPrice) {
     this.oneOffPrice = oneOffPrice;
   }
-
+/**
+ * 
+ * @param oneOffDiscountPrice
+ * @return
+ */
   public HardwarePrice oneOffDiscountPrice(Price oneOffDiscountPrice) {
     this.oneOffDiscountPrice = oneOffDiscountPrice;
     return this;
@@ -59,26 +100,50 @@ public class HardwarePrice   {
    * Get oneOffDiscountPrice
    * @return oneOffDiscountPrice
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+/**
+ * 
+ * @return
+ */
   public Price getOneOffDiscountPrice() {
     return oneOffDiscountPrice;
   }
-
+/*
+ * 
+ */
   public void setOneOffDiscountPrice(Price oneOffDiscountPrice) {
     this.oneOffDiscountPrice = oneOffDiscountPrice;
   }
-
+/**
+ * 
+ * @param merchandisingPromotions
+ * @return
+ */
   public HardwarePrice merchandisingPromotions(MerchandisingPromotion merchandisingPromotions) {
     this.merchandisingPromotions = merchandisingPromotions;
     return this;
   }
+
    /**
-   * Merchandising promotions applicable for the bundle
+   * Get merchandisingPromotions
    * @return merchandisingPromotions
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+/**
+ * 
+ * @return
+ */
   public MerchandisingPromotion getMerchandisingPromotions() {
     return merchandisingPromotions;
   }
-
+/**
+ * 
+ * @param merchandisingPromotions
+ */
   public void setMerchandisingPromotions(MerchandisingPromotion merchandisingPromotions) {
     this.merchandisingPromotions = merchandisingPromotions;
   }

@@ -1,23 +1,46 @@
 package com.vf.uk.dal.device.entity;
 
 import java.util.Objects;
+
+import javax.validation.Valid;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 /**
  * Insurances
  */
 
-public class Insurances   {
-  private List<Insurance> insuranceList = new ArrayList<Insurance>();
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
 
+public class Insurances   {
+  @JsonProperty("insuranceList")
+  private List<Insurance> insuranceList = null;
+
+  @JsonProperty("minCost")
   private String minCost = null;
 
+  /**
+   * 
+   * @param insuranceList
+   * @return
+   */
   public Insurances insuranceList(List<Insurance> insuranceList) {
     this.insuranceList = insuranceList;
     return this;
   }
-
+/**
+ * 
+ * @param insuranceListItem
+ * @return
+ */
   public Insurances addInsuranceListItem(Insurance insuranceListItem) {
+    if (this.insuranceList == null) {
+      this.insuranceList = new ArrayList<Insurance>();
+    }
     this.insuranceList.add(insuranceListItem);
     return this;
   }
@@ -26,14 +49,28 @@ public class Insurances   {
    * Get insuranceList
    * @return insuranceList
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+/**
+ * 
+ * @return
+ */
   public List<Insurance> getInsuranceList() {
     return insuranceList;
   }
-
+/**
+ * 
+ * @param insuranceList
+ */
   public void setInsuranceList(List<Insurance> insuranceList) {
     this.insuranceList = insuranceList;
   }
-
+/**
+ * 
+ * @param minCost
+ * @return
+ */
   public Insurances minCost(String minCost) {
     this.minCost = minCost;
     return this;
@@ -43,10 +80,19 @@ public class Insurances   {
    * Contains minimum cost of Insurance
    * @return minCost
   **/
+  @ApiModelProperty(value = "Contains minimum cost of Insurance")
+
+/**
+ * 
+ * @return
+ */
   public String getMinCost() {
     return minCost;
   }
-
+/**
+ * 
+ * @param minCost
+ */
   public void setMinCost(String minCost) {
     this.minCost = minCost;
   }

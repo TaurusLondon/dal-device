@@ -17,13 +17,21 @@ import com.vf.uk.dal.common.annotation.Service;
 
 @Service
 @EnableTransactionManagement
-@EnableAsync
+@EnableAsync 
 public class DeviceApplication {
+	/**
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		SpringApplication.run(DeviceApplication.class, args);
 	}
 
 	@Bean
+	/**
+	 * 
+	 * @return
+	 */
 	public Executor asyncExecutor() {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(2);
@@ -33,4 +41,6 @@ public class DeviceApplication {
 		executor.initialize();
 		return executor;
 	}
+	
+	
 }

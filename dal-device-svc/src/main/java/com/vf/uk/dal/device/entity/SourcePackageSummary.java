@@ -4,7 +4,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 /**
- * Source
+ * SourcePackageSummary
  */
 public class SourcePackageSummary   {
   @JsonProperty("promotionId")
@@ -24,7 +24,11 @@ public class SourcePackageSummary   {
 
   @JsonProperty("subscriptionId")
   private String subscriptionId = null;
-
+/**
+ * 
+ * @param promotionId
+ * @return
+ */
   public SourcePackageSummary promotionId(String promotionId) {
     this.promotionId = promotionId;
     return this;
@@ -38,10 +42,19 @@ public class SourcePackageSummary   {
     return promotionId;
   }
 
+  /**
+   * 
+   * @param promotionId
+   */
   public void setPromotionId(String promotionId) {
     this.promotionId = promotionId;
   }
 
+  /**
+   * 
+   * @param name
+   * @return
+   */
   public SourcePackageSummary displayName(String name) {
     this.displayName = name;
     return this;
@@ -55,10 +68,19 @@ public class SourcePackageSummary   {
     return displayName;
   }
 
+  /**
+   * 
+   * @param name
+   */
   public void setDisplayName(String name) {
     this.displayName = name;
   }
 
+  /**
+   * 
+   * @param desc
+   * @return
+   */
   public SourcePackageSummary desc(String desc) {
     this.desc = desc;
     return this;
@@ -72,10 +94,19 @@ public class SourcePackageSummary   {
     return desc;
   }
 
+  /**
+   * 
+   * @param desc
+   */
   public void setDesc(String desc) {
     this.desc = desc;
   }
 
+  /**
+   * 
+   * @param imageUrl
+   * @return
+   */
   public SourcePackageSummary imageUrl(String imageUrl) {
     this.imageUrl = imageUrl;
     return this;
@@ -89,10 +120,18 @@ public class SourcePackageSummary   {
     return imageUrl;
   }
 
+  /**
+   * 
+   * @param imageUrl
+   */
   public void setImageUrl(String imageUrl) {
     this.imageUrl = imageUrl;
   }
-
+/**
+ * 
+ * @param assetId
+ * @return
+ */
   public SourcePackageSummary assetId(String assetId) {
     this.assetId = assetId;
     return this;
@@ -105,11 +144,18 @@ public class SourcePackageSummary   {
   public String getAssetId() {
     return assetId;
   }
-
+/**
+ * 
+ * @param assetId
+ */
   public void setAssetId(String assetId) {
     this.assetId = assetId;
   }
-
+/**
+ * 
+ * @param subscriptionId
+ * @return
+ */
   public SourcePackageSummary subscriptionId(String subscriptionId) {
     this.subscriptionId = subscriptionId;
     return this;
@@ -122,7 +168,10 @@ public class SourcePackageSummary   {
   public String getSubscriptionId() {
     return subscriptionId;
   }
-
+/**
+ * 
+ * @param subscriptionId
+ */
   public void setSubscriptionId(String subscriptionId) {
     this.subscriptionId = subscriptionId;
   }

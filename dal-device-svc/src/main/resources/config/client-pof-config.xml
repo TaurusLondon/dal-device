@@ -502,5 +502,10 @@
 			</class-name>
 		</user-type>
 
+		<user-type>
+			<type-id>7039</type-id>
+			<class-name>com.vodafone.checkout.pojo.BusinessData</class-name>
+		</user-type>
+
 	</user-type-list>
 </pof-config>

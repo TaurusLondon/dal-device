@@ -1,29 +1,48 @@
 package com.vf.uk.dal.device.entity;
 
 import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 /**
  * Specification
  */
 
 public class Specification   {
+  @JsonProperty("name")
   private String name = null;
 
+  @JsonProperty("value")
   private String value = null;
 
+  @JsonProperty("priority")
   private Integer priority = null;
 
+  @JsonProperty("comparable")
   private Boolean comparable = null;
 
+  @JsonProperty("isKey")
   private Boolean isKey = null;
 
+  @JsonProperty("valueType")
   private String valueType = null;
 
+  @JsonProperty("valueUOM")
   private String valueUOM = null;
 
+  @JsonProperty("description")
   private String description = null;
 
+  @JsonProperty("footNote")
   private String footNote = null;
 
+  @JsonProperty("hideInList")
+  private String hideInList = null;
+/**
+ * 
+ * @param name
+ * @return
+ */
   public Specification name(String name) {
     this.name = name;
     return this;
@@ -33,14 +52,27 @@ public class Specification   {
    * Name of the specification, color, storage, vedeo recording, etc
    * @return name
   **/
+  @ApiModelProperty(value = "Name of the specification, color, storage, vedeo recording, etc")
+
+/**
+ * 
+ * @return
+ */
   public String getName() {
     return name;
   }
-
+/**
+ * 
+ * @param name
+ */
   public void setName(String name) {
     this.name = name;
   }
-
+/**
+ * 
+ * @param value
+ * @return
+ */
   public Specification value(String value) {
     this.value = value;
     return this;
@@ -50,6 +82,9 @@ public class Specification   {
    * Value of the field
    * @return value
   **/
+  @ApiModelProperty(value = "Value of the field")
+
+
   public String getValue() {
     return value;
   }
@@ -57,7 +92,11 @@ public class Specification   {
   public void setValue(String value) {
     this.value = value;
   }
-
+/**
+ * 
+ * @param priority
+ * @return
+ */
   public Specification priority(Integer priority) {
     this.priority = priority;
     return this;
@@ -67,14 +106,24 @@ public class Specification   {
    * display Priority of the specification field
    * @return priority
   **/
+  @ApiModelProperty(value = "display Priority of the specification field")
+
+
   public Integer getPriority() {
     return priority;
   }
-
+/**
+ * 
+ * @param priority
+ */
   public void setPriority(Integer priority) {
     this.priority = priority;
   }
-
+/**
+ * 
+ * @param comparable
+ * @return
+ */
   public Specification comparable(Boolean comparable) {
     this.comparable = comparable;
     return this;
@@ -84,14 +133,24 @@ public class Specification   {
    * Identify if the feature is coparable
    * @return comparable
   **/
+  @ApiModelProperty(value = "Identify if the feature is coparable")
+
+
   public Boolean getComparable() {
     return comparable;
   }
-
+/**
+ * 
+ * @param comparable
+ */
   public void setComparable(Boolean comparable) {
     this.comparable = comparable;
   }
-
+/**
+ * 
+ * @param isKey
+ * @return
+ */
   public Specification isKey(Boolean isKey) {
     this.isKey = isKey;
     return this;
@@ -101,14 +160,24 @@ public class Specification   {
    * Identify if this a key feature
    * @return isKey
   **/
+  @ApiModelProperty(value = "Identify if this a key feature")
+
+
   public Boolean getIsKey() {
     return isKey;
   }
-
+/**
+ * 
+ * @param isKey
+ */
   public void setIsKey(Boolean isKey) {
     this.isKey = isKey;
   }
-
+/**
+ * 
+ * @param valueType
+ * @return
+ */
   public Specification valueType(String valueType) {
     this.valueType = valueType;
     return this;
@@ -118,14 +187,24 @@ public class Specification   {
    * Type of the value, TEXT, INTEGER, DECOMAL, BOOLEAN
    * @return valueType
   **/
+  @ApiModelProperty(value = "Type of the value, TEXT, INTEGER, DECOMAL, BOOLEAN")
+
+
   public String getValueType() {
     return valueType;
   }
-
+/**
+ * 
+ * @param valueType
+ */
   public void setValueType(String valueType) {
     this.valueType = valueType;
   }
-
+/**
+ * 
+ * @param valueUOM
+ * @return
+ */
   public Specification valueUOM(String valueUOM) {
     this.valueUOM = valueUOM;
     return this;
@@ -135,14 +214,24 @@ public class Specification   {
    * Unit of measure of the value if applicable
    * @return valueUOM
   **/
+  @ApiModelProperty(value = "Unit of measure of the value if applicable")
+
+
   public String getValueUOM() {
     return valueUOM;
   }
-
+/**
+ * 
+ * @param valueUOM
+ */
   public void setValueUOM(String valueUOM) {
     this.valueUOM = valueUOM;
   }
-
+/**
+ * 
+ * @param description
+ * @return
+ */
   public Specification description(String description) {
     this.description = description;
     return this;
@@ -152,14 +241,24 @@ public class Specification   {
    * Friendly description, Alternative to tabular name value
    * @return description
   **/
+  @ApiModelProperty(value = "Friendly description, Alternative to tabular name value")
+
+
   public String getDescription() {
     return description;
   }
-
+/**
+ * 
+ * @param description
+ */
   public void setDescription(String description) {
     this.description = description;
   }
-
+/**
+ * 
+ * @param footNote
+ * @return
+ */
   public Specification footNote(String footNote) {
     this.footNote = footNote;
     return this;
@@ -169,12 +268,46 @@ public class Specification   {
    * A foot note to the specification
    * @return footNote
   **/
+  @ApiModelProperty(value = "A foot note to the specification")
+
+
   public String getFootNote() {
     return footNote;
   }
-
+/**
+ * 
+ * @param footNote
+ */
+ 
   public void setFootNote(String footNote) {
     this.footNote = footNote;
+  }
+/**
+ * 
+ * @param hideInList
+ * @return
+ */
+  public Specification hideInList(String hideInList) {
+    this.hideInList = hideInList;
+    return this;
+  }
+
+   /**
+   * A hiden note to the specification
+   * @return hideInList
+  **/
+  @ApiModelProperty(value = "A hiden note to the specification")
+
+
+  public String getHideInList() {
+    return hideInList;
+  }
+/**
+ * 
+ * @param hideInList
+ */
+  public void setHideInList(String hideInList) {
+    this.hideInList = hideInList;
   }
 
 
@@ -195,12 +328,13 @@ public class Specification   {
         Objects.equals(this.valueType, specification.valueType) &&
         Objects.equals(this.valueUOM, specification.valueUOM) &&
         Objects.equals(this.description, specification.description) &&
-        Objects.equals(this.footNote, specification.footNote);
+        Objects.equals(this.footNote, specification.footNote) &&
+        Objects.equals(this.hideInList, specification.hideInList);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, value, priority, comparable, isKey, valueType, valueUOM, description, footNote);
+    return Objects.hash(name, value, priority, comparable, isKey, valueType, valueUOM, description, footNote, hideInList);
   }
 
   @Override
@@ -217,6 +351,7 @@ public class Specification   {
     sb.append("    valueUOM: ").append(toIndentedString(valueUOM)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    footNote: ").append(toIndentedString(footNote)).append("\n");
+    sb.append("    hideInList: ").append(toIndentedString(hideInList)).append("\n");
     sb.append("}");
     return sb.toString();
   }

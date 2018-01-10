@@ -12,6 +12,11 @@ public class Facet   {
 
   private List<Make> makeList = new ArrayList<Make>();
 
+  /**
+   * 
+   * @param equipmentMake
+   * @return
+   */
   public Facet equipmentMake(String equipmentMake) {
     this.equipmentMake = equipmentMake;
     return this;
@@ -24,16 +29,27 @@ public class Facet   {
   public String getEquipmentMake() {
     return equipmentMake;
   }
-
+/**
+ * 
+ * @param equipmentMake
+ */
   public void setEquipmentMake(String equipmentMake) {
     this.equipmentMake = equipmentMake;
   }
-
+/**
+ * 
+ * @param makeList
+ * @return
+ */
   public Facet makeList(List<Make> makeList) {
     this.makeList = makeList;
     return this;
   }
-
+/**
+ * 
+ * @param makeListItem
+ * @return
+ */
   public Facet addMakeListItem(Make makeListItem) {
     this.makeList.add(makeListItem);
     return this;
@@ -46,7 +62,10 @@ public class Facet   {
   public List<Make> getMakeList() {
     return makeList;
   }
-
+/**
+ * 
+ * @param makeList
+ */
   public void setMakeList(List<Make> makeList) {
     this.makeList = makeList;
   }

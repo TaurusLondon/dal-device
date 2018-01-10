@@ -1,4 +1,4 @@
-package com.vf.uk.dal.device.dao.impl;
+/*package com.vf.uk.dal.device.dao.impl;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
@@ -66,18 +66,18 @@ import com.vf.uk.dal.utility.entity.RecommendedProductListResponse;
 import com.vodafone.dal.bundle.pojo.CommercialBundle;
 import com.vodafone.product.pojo.CommercialProduct;
 
-/**
+*//**
  * In order to run the controller class a bean of the ProductController is
  * initialized in @SpringBootTest
- */
+ *//*
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = DeviceTestBeans.class)
 
 public class DeviceDaoImplTest {
-	/*
+	
 	 * @MockBean DeviceDao deviceDAOMock;
-	 */
+	 
 
 	@Autowired
 	DeviceDaoImpl deviceDaoImpl;
@@ -159,3 +159,4 @@ public class DeviceDaoImplTest {
 	}
 	
 }
+*/

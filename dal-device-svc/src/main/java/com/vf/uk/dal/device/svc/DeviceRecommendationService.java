@@ -11,10 +11,26 @@ import com.vf.uk.dal.utility.entity.RecommendedProductListResponse;
  **/
 
 public interface DeviceRecommendationService {
-	
+	/**
+	 * 
+	 * @param msisdn
+	 * @param deviceId
+	 * @return
+	 */
 	public RecommendedProductListRequest getRecommendedDeviceListRequest(String msisdn, String deviceId);
-	
+	/**
+	 * 
+	 * @param msisdn
+	 * @param deviceId
+	 * @param facetedDevice
+	 * @return
+	 */
 	public FacetedDevice getRecommendedDeviceList(String msisdn, String deviceId, FacetedDevice facetedDevice);
-	
+	/**
+	 * 
+	 * @param objectsToOrder
+	 * @param orderedObjects
+	 * @return
+	 */
 	public FacetedDevice sortList(FacetedDevice objectsToOrder, RecommendedProductListResponse orderedObjects);
 }
