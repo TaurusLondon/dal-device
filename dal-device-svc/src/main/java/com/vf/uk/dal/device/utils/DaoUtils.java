@@ -476,7 +476,7 @@ public class DaoUtils {
 						specification.setValueUOM(spec.getValueUOM());
 						specification.setDescription(spec.getDescription());
 						specification.setFootNote(spec.getFootNote());
-						//specification.setHideInList(spec.getHideInList());
+						specification.setHideInList(spec.isHideInList());
 						listOfSpecification.add(specification);
 					}
 					specificationGroups.setSpecifications(listOfSpecification);
