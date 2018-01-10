@@ -16,6 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Matchers;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -33,6 +34,7 @@ import com.netflix.discovery.EurekaClient;
 import com.vf.uk.dal.common.context.ServiceContext;
 import com.vf.uk.dal.common.context.URLParamContext;
 import com.vf.uk.dal.common.exception.ApplicationException;
+import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.common.registry.client.RegistryClient;
 import com.vf.uk.dal.common.registry.client.Utility;
 import com.vf.uk.dal.common.urlparams.FilterCriteria;
@@ -53,6 +55,7 @@ import com.vf.uk.dal.device.entity.Insurances;
 import com.vf.uk.dal.device.entity.KeepDeviceChangePlanRequest;
 import com.vf.uk.dal.device.entity.ProductGroup;
 import com.vf.uk.dal.device.entity.RequestForBundleAndHardware;
+import com.vf.uk.dal.device.entity.SourcePackageSummary;
 import com.vf.uk.dal.device.utils.CommonUtility;
 import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.DaoUtils;
@@ -372,20 +375,31 @@ public class DeviceControllerTest {
 					BundleAndHardwarePromotions[].class);
 			given(restTemplate.postForObject("http://PROMOTION-V1/promotion/queries/ForBundleAndHardware", request,
 					BundleAndHardwarePromotions[].class)).willReturn(obj);
+			String url = "http://CUSTOMER-V1/customer/subscription/msisdn:7741655541/sourcePackageSummary";
+			given(restTemplate.getForObject(url, SourcePackageSummary.class)).willReturn(CommonMethods.getSourcePackageSummary());
 			deviceDetailsList = deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple",
 					"iPhone-7", "White", "iOS 9", "32 GB", null, "Great Camera", null, null, null, null);
+			Assert.assertNotNull(deviceDetailsList);
 			given(deviceDAOMock.getBundleDetails(Matchers.anyList()))
 					.willReturn(CommonMethods.getBundleModelListForBundleList());
 
 			deviceDetailsList = deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple",
-					"iPhone-7", "White", "iOS 9", "32 GB", null, "Great Camera", "Upgrade", null, null, "W_HH_OC_02");
+					"iPhone-7", "White", "iOS 9", "32 GB", null, "Great Camera", "Upgrade", null, null, "2");
 
 			Assert.assertNotNull(deviceDetailsList);
 			deviceDetailsList = deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple",
 					"iPhone-7", "White", "iOS 9", "32 GB", null, "Great Camera", "SecondLine", null, null, null);
-
+			Assert.assertNotNull(deviceDetailsList);
+			ServiceContext.urlParamContext.remove();
+			ServiceContext.setURLParamContext(new URLParamContext("-Priority", "", null, paginationCriteria));
+			deviceDetailsList = deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "-Priority", 1, 9, "Apple",
+					"iPhone-7", "White", "iOS 9", "32 GB", null, "Great Camera", "SecondLine", null, null, null);
+			Assert.assertNotNull(deviceDetailsList);
+			deviceDetailsList = deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "-Priority", 1, 9, "Apple",
+					"iPhone-7", "White", "iOS 9", "32 GB", "7741655541", "Great Camera", "SecondLine", "true", null, null);
+			Assert.assertNotNull(deviceDetailsList);
 		} catch (Exception e) {
-
+			LogHelper.info(this, e.toString());
 		}
 		ServiceContext.urlParamContext.remove();
 
@@ -766,11 +780,11 @@ public class DeviceControllerTest {
 	public void testGetListOfDeviceTileForNullMake() {
 		List<DeviceTile> listOfDeviceTile = null;
 		try {
-			listOfDeviceTile = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM", null, null,
+			listOfDeviceTile = deviceController.getListOfDeviceTile(null, "iPhone-7", "DEVICE_PAYM", null, null,
 					null, null, null);
 		} catch (Exception e) {
 			Assert.assertEquals(
-					"com.vf.uk.dal.common.exception.ApplicationException: Invalid input request received. Missing make and model in the filter criteria",
+					"com.vf.uk.dal.common.exception.ApplicationException: Invalid input request received. Missing make in the filter criteria",
 					e.toString());
 		}
 	}
