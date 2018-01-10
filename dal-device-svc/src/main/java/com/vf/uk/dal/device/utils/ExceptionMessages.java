@@ -111,6 +111,9 @@ public class ExceptionMessages
 			public static final String INVALID_MSISDN = "Invalid MSISDN passed in the request";
 			public static final String PAGESIZE_NEGATIVE_ERROR = "Page Size Value cannot be negative";
 			public static final String PAGENUMBER_NEGATIVE_ERROR = "Page Number Value cannot be negative";
+			
+			public static final String  INVALID_DEVICE= "DeviceId is Invalid";
+			public static final String  INVALID_BUNDLE= "BundleId is Invalid";
 
 		 /**
 		  * Spring 6.6 End

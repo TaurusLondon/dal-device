@@ -48,7 +48,10 @@ public class Device   {
 
   @JsonProperty("priceInfo")
   private PriceForBundleAndHardware priceInfo = null;
-
+  /**
+	 * 
+	 * @return
+	 */
   public Device deviceId(String deviceId) {
     this.deviceId = deviceId;
     return this;
@@ -60,15 +63,24 @@ public class Device   {
   **/
   @ApiModelProperty(value = "Product id of the requested device from the product catalogue")
 
-
+  /**
+	 * 
+	 * @return
+	 */
   public String getDeviceId() {
     return deviceId;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public void setDeviceId(String deviceId) {
     this.deviceId = deviceId;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public Device name(String name) {
     this.name = name;
     return this;
@@ -80,15 +92,24 @@ public class Device   {
   **/
   @ApiModelProperty(value = "Name of the product group as provided in the product catalogue")
 
-
+  /**
+	 * 
+	 * @return
+	 */
   public String getName() {
     return name;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public void setName(String name) {
     this.name = name;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public Device make(String make) {
     this.make = make;
     return this;
@@ -100,15 +121,24 @@ public class Device   {
   **/
   @ApiModelProperty(value = "Make of the product")
 
-
+  /**
+	 * 
+	 * @return
+	 */
   public String getMake() {
     return make;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public void setMake(String make) {
     this.make = make;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public Device model(String model) {
     this.model = model;
     return this;
@@ -120,15 +150,24 @@ public class Device   {
   **/
   @ApiModelProperty(value = "Model of the product")
 
-
+  /**
+	 * 
+	 * @return
+	 */
   public String getModel() {
     return model;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public void setModel(String model) {
     this.model = model;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public Device groupType(String groupType) {
     this.groupType = groupType;
     return this;
@@ -140,15 +179,24 @@ public class Device   {
   **/
   @ApiModelProperty(value = "Group type of product group DEVICE_PAYM, DEVICE_PAYG")
 
-
+  /**
+	 * 
+	 * @return
+	 */
   public String getGroupType() {
     return groupType;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public void setGroupType(String groupType) {
     this.groupType = groupType;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public Device rating(String rating) {
     this.rating = rating;
     return this;
@@ -160,15 +208,25 @@ public class Device   {
   **/
   @ApiModelProperty(value = "This will indicate the number of rating starts to be displayed on screen.")
 
-
+  /**
+	 * 
+	 * @return
+	 */
   public String getRating() {
     return rating;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public void setRating(String rating) {
     this.rating = rating;
   }
-
+/**
+ * 
+ * @param description
+ * @return
+ */
   public Device description(String description) {
     this.description = description;
     return this;
@@ -180,15 +238,25 @@ public class Device   {
   **/
   @ApiModelProperty(value = "Description of the product as provided in the product catalogue")
 
-
+/**
+ * 
+ * @return
+ */
   public String getDescription() {
     return description;
   }
-
+/**
+ * 
+ * @param description
+ */
   public void setDescription(String description) {
     this.description = description;
   }
-
+/**
+ * 
+ * @param productClass
+ * @return
+ */
   public Device productClass(String productClass) {
     this.productClass = productClass;
     return this;
@@ -200,15 +268,25 @@ public class Device   {
   **/
   @ApiModelProperty(value = "Catalogue product class identifies products - SIMO, HANDSET etc.")
 
-
+/**
+ * 
+ * @return
+ */
   public String getProductClass() {
     return productClass;
   }
-
+/**
+ * 
+ * @param productClass
+ */
   public void setProductClass(String productClass) {
     this.productClass = productClass;
   }
-
+/**
+ * 
+ * @param merchandisingControl
+ * @return
+ */
   public Device merchandisingControl(MerchandisingControl merchandisingControl) {
     this.merchandisingControl = merchandisingControl;
     return this;
@@ -221,20 +299,34 @@ public class Device   {
   @ApiModelProperty(value = "")
 
   @Valid
-
+/**
+ * 
+ * @return
+ */
   public MerchandisingControl getMerchandisingControl() {
     return merchandisingControl;
   }
-
+/**
+ * 
+ * @param merchandisingControl
+ */
   public void setMerchandisingControl(MerchandisingControl merchandisingControl) {
     this.merchandisingControl = merchandisingControl;
   }
-
+/**
+ * 
+ * @param media
+ * @return
+ */
   public Device media(List<MediaLink> media) {
     this.media = media;
     return this;
   }
-
+/**
+ * 
+ * @param mediaItem
+ * @return
+ */
   public Device addMediaItem(MediaLink mediaItem) {
     if (this.media == null) {
       this.media = new ArrayList<MediaLink>();
@@ -250,15 +342,25 @@ public class Device   {
   @ApiModelProperty(value = "")
 
   @Valid
-
+/**
+ * 
+ * @return
+ */
   public List<MediaLink> getMedia() {
     return media;
   }
-
+/**
+ * 
+ * @param media
+ */
   public void setMedia(List<MediaLink> media) {
     this.media = media;
   }
-
+/**
+ * 
+ * @param priceInfo
+ * @return
+ */
   public Device priceInfo(PriceForBundleAndHardware priceInfo) {
     this.priceInfo = priceInfo;
     return this;
@@ -271,11 +373,17 @@ public class Device   {
   @ApiModelProperty(value = "")
 
   @Valid
-
+/**
+ * 
+ * @return
+ */
   public PriceForBundleAndHardware getPriceInfo() {
     return priceInfo;
   }
-
+/**
+ * 
+ * @param priceInfo
+ */
   public void setPriceInfo(PriceForBundleAndHardware priceInfo) {
     this.priceInfo = priceInfo;
   }
