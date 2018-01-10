@@ -10,10 +10,10 @@
 	<groupId>com.vf.uk.dal</groupId>
 	<artifactId>dal-device-svc</artifactId>
 	<version>7.1.4</version>
-	<packaging>jar</packaging>  
-	<build> 
+	<packaging>jar</packaging>
+	<build>
 		<plugins>
-			<plugin> 
+			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
@@ -24,7 +24,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 			<exclusions>
-			   <exclusion>
+				<exclusion>
 					<groupId>ch.qos.logback</groupId>
 					<artifactId>logback-classic</artifactId>
 				</exclusion>
@@ -174,13 +174,13 @@
 		<dependency>
 			<groupId>com.vf.uk.dal.solr</groupId>
 			<artifactId>solr-query-manager</artifactId>
-			<version>6.6.4</version>  
+			<version>6.6.4</version>
 		</dependency>
 		<dependency>
 			<groupId>Solr</groupId>
 			<artifactId>IndexManager</artifactId>
-			<version>6.6.4</version> 
-		</dependency> 
+			<version>6.6.4</version>
+		</dependency>
 		<!-- Coherence Jars -->
 		<dependency>
 			<groupId>com.vf.uk.dal</groupId>
@@ -207,7 +207,7 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-ext</artifactId>
-			<version>1.7.20</version> 
+			<version>1.7.20</version>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.json-simple</groupId>
@@ -231,7 +231,21 @@
 			<artifactId>gson</artifactId>
 			<version>2.7</version>
 		</dependency>
-
+		<dependency>
+			<groupId>net.sf.dozer</groupId>
+			<artifactId>dozer</artifactId>
+			<version>5.4.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>log4j-over-slf4j</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/commons-collections/commons-collections -->
 		<dependency>
 			<groupId>commons-collections</groupId>
@@ -239,30 +253,30 @@
 			<version>3.2.2</version>
 		</dependency>
 		<dependency>
-    <groupId>io.springfox</groupId>
-    <artifactId>springfox-swagger2</artifactId>
-    <version>2.7.0</version>
-   <scope>compile</scope>
-</dependency>
-<dependency>
-    <groupId>io.springfox</groupId>
-    <artifactId>springfox-swagger-ui</artifactId>
-    <version>2.7.0</version>
-     <scope>compile</scope>
-</dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.7.0</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.7.0</version>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 	<!-- To Support Sonar Code Fixes we have added the JDK Version 1.8 -->
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		 <sonar.coverage.exclusions>
-            **/dao/**,
-            **/utils/DeviceTileCacheDAO.java,
-            **/utils/CohAddressProvider.java,
-            **/utils/CoherenceConnectionProvider.java,
-            **/utils/SolrConnectionProvider.java,
-            **/DeviceApplication.java
-        </sonar.coverage.exclusions>
+		<sonar.coverage.exclusions>
+			**/dao/**,
+			**/utils/DeviceTileCacheDAO.java,
+			**/utils/CohAddressProvider.java,
+			**/utils/CoherenceConnectionProvider.java,
+			**/utils/SolrConnectionProvider.java,
+			**/DeviceApplication.java
+		</sonar.coverage.exclusions>
 	</properties>
 	<!-- Ends here -->
 </project>
