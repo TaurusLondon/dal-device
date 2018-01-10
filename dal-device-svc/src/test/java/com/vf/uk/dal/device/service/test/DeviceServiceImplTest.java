@@ -209,6 +209,20 @@ public class DeviceServiceImplTest
 		}
 		Assert.assertNull(deviceTileList);
 	}
+	
+	@Test
+	public void invalidTestGroupTypeForGetDeviceTileList() throws Exception {
+		List<DeviceTile> deviceTileList=null;
+		try
+		{
+		 deviceTileList = deviceService.getListOfDeviceTile("Apple","iPhone-7","INVALID_GT", null, null,"upgrade","34543",null);
+		}
+		catch(Exception e)
+		{
+			
+		}
+		Assert.assertNull(deviceTileList);
+	}
 
 	@Test
 	public void notNullTestForgetProductGroupListByGroupTypeGroupName() {
@@ -721,23 +735,14 @@ public class DeviceServiceImplTest
 		
 		String subscriptionId = "07741655541";
 		String subscriptionType = "msisdn";
-		SourcePackageSummary s = getSourcePackageSummary();
 		
 		Mockito.when(registry.getRestTemplate()).thenReturn(restTemplate);
 		String url = "http://CUSTOMER-V1/customer/subscription/" + subscriptionType + ":" + subscriptionId + "/sourcePackageSummary";
 		
 
-		given(restTemplate.getForObject(url, SourcePackageSummary.class)).willReturn(s);
+		given(restTemplate.getForObject(url, SourcePackageSummary.class)).willReturn(CommonMethods.getSourcePackageSummary());
 		String deviceId = CommonUtility.getSubscriptionBundleId(subscriptionId, Constants.SUBSCRIPTION_TYPE_MSISDN, registry);
 		Assert.assertEquals("109381", deviceId);
-	}
-
-	
-	private SourcePackageSummary getSourcePackageSummary() {
-		SourcePackageSummary s = new SourcePackageSummary();
-		s.setPromotionId("109381");
-		return s;
-		
 	}
 	
 	@Test
