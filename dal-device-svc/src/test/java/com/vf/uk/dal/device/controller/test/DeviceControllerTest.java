@@ -178,6 +178,8 @@ public class DeviceControllerTest {
 				.willReturn(CommonMethods.getCommercialProductsListOfMakeAndModel());
 		given(deviceDAOMock.getListOfProductGroupFromProductGroupRepository("DEVICE_PAYM"))
 				.willReturn(CommonMethods.getListOfProductGroupFromProductGroupRepository());
+		given(deviceDAOMock.getListOfProductGroupFromProductGroupRepository("DEVICE_PAYG"))
+		.willReturn(CommonMethods.getListOfProductGroupFromProductGroupRepository());
 		given(deviceDAOMock.getCommercialProductFromCommercialProductRepository(Matchers.anyString()))
 				.willReturn(CommonMethods.getCommercialProductByDeviceId());
 		given(deviceDAOMock.getBazaarVoice(Matchers.anyString())).willReturn(CommonMethods.getBazaarVoice());
@@ -559,6 +561,16 @@ public class DeviceControllerTest {
 	}
 
 	@Test
+	public void invalidInputTestForgetDeviceDetails1() throws Exception {
+		DeviceDetails deviceDetails = new DeviceDetails();
+		try {
+			deviceDetails = deviceController.getDeviceDetails("1234", null, null);
+		} catch (Exception e) {
+
+		}
+	}
+
+	@Test
 	public void notNullTestForgetDeviceDetails() {
 		DeviceDetails deviceDetails = new DeviceDetails();
 		deviceDetails = deviceController.getDeviceDetails("083929", "", "");
@@ -569,7 +581,7 @@ public class DeviceControllerTest {
 	public void notNullTestForGetAccessoriesOfDevice() {
 		try {
 			List<AccessoryTileGroup> accessoryDetails = new ArrayList<>();
-			accessoryDetails = deviceController.getAccessoriesOfDevice("093353", null, null);
+			accessoryDetails = deviceController.getAccessoriesOfDevice("093353", "Upgrade", "W_HH_PAYM_OC_02");
 			Assert.assertNotNull(accessoryDetails);
 			// accessoryDetails =
 			// deviceController.getAccessoriesOfDevice("093353",null,null);
@@ -585,7 +597,10 @@ public class DeviceControllerTest {
 
 			accessoryDetails = deviceController.getAccessoriesOfDevice(null, null, null);
 		} catch (Exception e) {
+			try {
 
+				accessoryDetails = deviceController.getAccessoriesOfDevice("1234", null, null);
+			} catch (Exception ex) {}
 		}
 		Assert.assertEquals(0, accessoryDetails.size());
 	}
@@ -1371,6 +1386,50 @@ public class DeviceControllerTest {
 		}
 
 	}
+	
+	@Test
+	public void invalidRequestDeviceList() {
+		PaginationCriteria paginationCriteria;
+		try {
+			paginationCriteria = new PaginationCriteria(-9, -1);
+			ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
+			deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple", "iPhone-7", "White",
+					"iOS 9", "32 GB", null, "Great Camera", null, "invalid", null, "W_HH_OC_02");
+		} catch (Exception e) {
+			try{
+				deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple", "iPhone-7", "White",
+						"iOS 9", "32 GB", null, "Great Camera", null, "true", null, "W_HH_OC_02");
+			}
+			catch (Exception ex) {
+				try{
+					ServiceContext.urlParamContext.remove();
+					paginationCriteria = new PaginationCriteria(9, -1);
+					ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
+					deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple", "iPhone-7", "White",
+							"iOS 9", "32 GB", null, "Great Camera", null, "true", null, "W_HH_OC_02");
+				}
+				catch (Exception ex1) {
+					try{
+						ServiceContext.urlParamContext.remove();
+						paginationCriteria = new PaginationCriteria(9, 0);
+						ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
+						deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple", "iPhone-7", "White",
+								"iOS 9", "32 GB", "123456", "Great Camera", null, "true", null, "W_HH_OC_02");
+					}
+					catch (Exception ex2) {
+						try{
+							deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple", "iPhone-7", "White",
+									"iOS 9", "32 GB", "1234567890", "Great Camera", null, "true", null, "");
+						}
+						catch (Exception ex3) {
+							
+						}
+					}
+				}
+			}
+		}
+	}
+
 
 	@Test
 	public void invalidJourneyTypeDeviceList() {
@@ -1450,6 +1509,7 @@ public class DeviceControllerTest {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
 			List<BundleAndHardwareTuple> bundleList = new ArrayList<>();
 			RequestForBundleAndHardware requestForBundleAndHardware = new RequestForBundleAndHardware();
 			BundleAndHardwareTuple bundle = new BundleAndHardwareTuple();
@@ -1464,7 +1524,27 @@ public class DeviceControllerTest {
 							.willReturn(obj);
 
 			deviceController.cacheDeviceTile();
-
+	}
+	
+	@Test
+	public void nullTestForCacheDeviceTile()
+	{
+		ServiceContext.urlParamContext.remove();
+		List<FilterCriteria> fcList = new ArrayList<FilterCriteria>();
+		fcList.add(new FilterCriteria("groupType", FilterOperator.EQUALTO, ""));
+		ServiceContext.setURLParamContext(new URLParamContext("", "", fcList, null));
+		try{
+			deviceController.cacheDeviceTile();
+		}
+		catch(Exception e){
+			try{
+			ServiceContext.urlParamContext.remove();
+			fcList = new ArrayList<FilterCriteria>();
+			fcList.add(new FilterCriteria("groupType", FilterOperator.EQUALTO, "INVALID_GT"));
+			ServiceContext.setURLParamContext(new URLParamContext("", "", fcList, null));
+			deviceController.cacheDeviceTile();
+			}
+			catch(Exception ex){}
 		}
 	}
 	
@@ -1497,6 +1577,44 @@ public class DeviceControllerTest {
 		given(restTemplate.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=093353", BundleDetailsForAppSrv.class)).willReturn(CommonMethods.getCoupledBundleListForDevice());
 		deviceDetails = deviceController.getDeviceDetails("093353",null,null);
 		Assert.assertNotNull(deviceDetails);
+	}
+	@Test
+	public void notNullTestForGetDeviceDetailsTile_PAYG() {
+		List<DeviceTile> deviceDetails = null;
+		try {
+			deviceDetails = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYG", null, null, null,
+					null, null);
+			Assert.assertNotNull(deviceDetails);
+			deviceDetails = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYG", null, null, null,
+					null, null);
+		} catch (Exception e) {
+
+		}
+
+	}
+	@Test
+	public void testGetListOfDeviceTileForInvalidMakeAndModel_PAYG() {
+		List<DeviceTile> listOfDeviceTile = null;
+		try {
+			listOfDeviceTile = deviceController.getListOfDeviceTile("Vodafone", "iPhone-7", "DEVICE_PAYG", null, null,
+					null, null, null);
+		} catch (Exception e) {
+			Assert.assertEquals(
+					"com.vf.uk.dal.common.exception.ApplicationException: Received Null Values for the given make and model",
+					e.toString());
+		}
+	}
+	@Test
+	public void testGetListOfDeviceTileForInvalidJourneyType_PAYG() {
+		List<DeviceTile> listOfDeviceTile = null;
+		try {
+			listOfDeviceTile = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYG", "Test", null,
+					null, null, null);
+		} catch (Exception e) {
+			Assert.assertEquals(
+					"com.vf.uk.dal.common.exception.ApplicationException: JourneyType is not compatible for given GroupType",
+					e.toString());
+		}
 	}
 	
 }
