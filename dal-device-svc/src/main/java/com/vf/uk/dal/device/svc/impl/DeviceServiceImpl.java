@@ -141,6 +141,10 @@ public class DeviceServiceImpl implements DeviceService {
 		} else if (!Validator.validateGroupType(groupType)){
 			LogHelper.error(this, "Invalid Group Type");
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_GROUP_TYPE);
+		}else if((groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG)) && (StringUtils.isNotBlank(journeyType) && 
+				!journeyType.equalsIgnoreCase(Constants.JOURNEY_TYPE_ACQUISITION))){
+			LogHelper.error(this, "JourneyType is Not Compatible with given GroupType");
+			throw new ApplicationException(ExceptionMessages.INVALID_GROUP_TYPE_JOURNEY_TYPE);
 		}
 		else {
 			deviceTileList = getListOfDeviceTile_Implementation(make, model, groupType, deviceId, journeyType, creditLimit,
@@ -2092,6 +2096,9 @@ public class DeviceServiceImpl implements DeviceService {
 		List<Group> listOfProductGroup = deviceDao.getListOfProductGroupFromProductGroupRepository(groupType);//productGroupRepository.getProductGroupsByType(groupType);
 		LogHelper.info(this, "End -->  After calling  productGroupRepository.getProductGroupsByType");
 
+		if(groupType.equals(Constants.STRING_DEVICE_PAYG)){
+			listOfDeviceTile = getDeviceTileByMakeAndModelForPAYG(listOfCommercialProducts,listOfProductGroup,make,model,groupType);
+		}else if(!groupType.equals(Constants.STRING_DEVICE_PAYG)){
 		List<CommercialProduct> commercialProductsMatchedMemList = new ArrayList<>();
 		Map<String, CommercialProduct> commerProdMemMap = new HashMap<>();
 		List<BundleAndHardwareTuple> bundleAndHardwareTupleList = new ArrayList<>();
@@ -2261,7 +2268,8 @@ public class DeviceServiceImpl implements DeviceService {
 		} else {
 			LogHelper.error(this, "No data found for given make and mmodel :" + make + " and " + model);
 			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FOR_MAKE_AND_MODEL);
-		}
+			}
+	}
 
 		return listOfDeviceTile;
 
@@ -3329,6 +3337,158 @@ public class DeviceServiceImpl implements DeviceService {
 			else
 				return -1;
 		}
+
+	}
+	/**
+	 * 
+	 * @param listOfCommercialProducts
+	 * @param listOfProductGroup
+	 * @param make
+	 * @param model
+	 * @param groupType=PAYG
+	 * @return
+	 */
+	public  List<DeviceTile> getDeviceTileByMakeAndModelForPAYG(List<CommercialProduct> listOfCommercialProducts,List<Group> listOfProductGroup,
+			String make,String model,String groupType){
+		
+		List<DeviceTile> listOfDeviceTile = new ArrayList<>();
+		DeviceTile deviceTile = new DeviceTile();
+		String groupName = null;
+		List<com.vf.uk.dal.device.entity.Member> listOfDeviceGroupMember = new ArrayList<>();
+		com.vf.uk.dal.device.entity.Member entityMember;
+		List<CommercialProduct> commercialProductsMatchedMemListForPAYG = new ArrayList<>();
+		Map<String, CommercialProduct> commerProdMemMapPAYG = new HashMap<>();
+		List<BundleAndHardwareTuple> bundleAndHardwareTupleListPAYG = new ArrayList<>();
+		BundleAndHardwareTuple bundleAndHardwareTuple;
+		if (!CollectionUtils.isEmpty(listOfCommercialProducts)) {
+			listOfCommercialProducts.forEach(commercialProduct -> {
+				if ((Constants.STRING_HANDSET.equalsIgnoreCase(commercialProduct.getProductClass())
+						|| Constants.STRING_DATA_DEVICE.equalsIgnoreCase(commercialProduct.getProductClass()))
+						&& commercialProduct.getEquipment().getMake().equalsIgnoreCase(make)
+						&& commercialProduct.getEquipment().getModel().equalsIgnoreCase(model)) {
+					 if (commercialProduct.getProductControl() != null
+							&& commercialProduct.getProductControl().isIsDisplayableAcq()
+							&& commercialProduct.getProductControl().isIsSellableAcq()) {
+						commerProdMemMapPAYG.put(commercialProduct.getId(), commercialProduct);
+					}
+				}
+			});
+			if (listOfProductGroup != null && !listOfProductGroup.isEmpty()) {
+				for (Group productGroupPAYG : listOfProductGroup) {
+					if (productGroupPAYG.getMembers() != null && !productGroupPAYG.getMembers().isEmpty()) {
+						for (Member member : productGroupPAYG.getMembers()) {
+							if (commerProdMemMapPAYG.containsKey(member.getId())) {
+								groupName = productGroupPAYG.getName();
+								entityMember = new com.vf.uk.dal.device.entity.Member();
+								entityMember.setId(member.getId());
+								entityMember.setPriority(String.valueOf(member.getPriority()));
+								listOfDeviceGroupMember.add(entityMember);
+								CommercialProduct commercialProduct = commerProdMemMapPAYG.get(member.getId());
+								commercialProductsMatchedMemListForPAYG.add(commercialProduct);
+								bundleAndHardwareTuple = new BundleAndHardwareTuple();
+								bundleAndHardwareTuple.setBundleId(null);
+								bundleAndHardwareTuple.setHardwareId(commercialProduct.getId());
+								bundleAndHardwareTupleListPAYG.add(bundleAndHardwareTuple);
+							}
+						}
+					}
+				}
+			}
+		}
+		if (commercialProductsMatchedMemListForPAYG != null && !commercialProductsMatchedMemListForPAYG.isEmpty()) {
+
+			if (listOfDeviceGroupMember != null && !listOfDeviceGroupMember.isEmpty()) {
+
+				/****
+				 * Identify the member based on rules
+				 */
+
+				String leadMemberId = getMemeberBasedOnRules_Implementation(listOfDeviceGroupMember, null);
+				if (leadMemberId != null) {
+					deviceTile.setDeviceId(leadMemberId);
+					String avarageOverallRating = getDeviceReviewRating_Implementation(new ArrayList<>(Arrays.asList(leadMemberId)))
+							.get(CommonUtility.appendPrefixString(leadMemberId));
+					LogHelper.info(this,
+							"AvarageOverallRating for deviceId: " + leadMemberId + " Rating: " + avarageOverallRating);
+					deviceTile.setRating(avarageOverallRating);
+				}
+			
+		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = null;
+			// Calling Pricing Api
+			if (bundleAndHardwareTupleListPAYG != null && !bundleAndHardwareTupleListPAYG.isEmpty()) {
+				listOfPriceForBundleAndHardware = CommonUtility.getPriceDetails(bundleAndHardwareTupleListPAYG,
+						null, registryclnt, null);
+			}
+		
+		Map<String, PriceForBundleAndHardware> priceMapForParticularDevice = new HashMap<>();
+		if (listOfPriceForBundleAndHardware != null && !listOfPriceForBundleAndHardware.isEmpty()) {
+			listOfPriceForBundleAndHardware.forEach(priceForBundleAndHardware -> {
+				priceMapForParticularDevice.put(priceForBundleAndHardware.getHardwarePrice().getHardwareId(),
+						priceForBundleAndHardware);
+			});
+		}
+		deviceTile.setGroupName(groupName);
+		deviceTile.setGroupType(groupType);
+		CompletableFuture<List<DeviceSummary>> future1 = getDeviceSummery_Implementation_PAYG(listOfDeviceGroupMember, commerProdMemMapPAYG,
+				groupType, priceMapForParticularDevice);
+		List<DeviceSummary> listOfDeviceSummary;
+		try {
+			listOfDeviceSummary = future1.get();
+		} catch (Exception e) {
+			LogHelper.error(this, "Exception occured while executing thread pool :" + e);
+			throw new ApplicationException(ExceptionMessages.ERROR_IN_FUTURE_TASK);
+		}
+			deviceTile.setDeviceSummary(listOfDeviceSummary);
+			listOfDeviceTile.add(deviceTile);
+	}
+		else {
+			LogHelper.error(this, "Requested Make and Model Not found in given group type:" + groupType);
+			throw new ApplicationException(ExceptionMessages.MAKE_AND_MODEL_NOT_FOUND_IN_GROUPTYPE);
+		}
+	} else {
+		LogHelper.error(this, "No data found for given make and mmodel :" + make + " and " + model);
+		throw new ApplicationException(ExceptionMessages.NULL_VALUE_FOR_MAKE_AND_MODEL);
+		}
+		return listOfDeviceTile;
+				
+	}
+	/**
+	 * 
+	 * @param listOfDeviceGroupMember
+	 * @param commerProdMemMap
+	 * @param groupType=PAYG
+	 * @param priceMapForParticularDevice
+	 * @return
+	 */
+	public CompletableFuture<List<DeviceSummary>> getDeviceSummery_Implementation_PAYG(
+			List<com.vf.uk.dal.device.entity.Member> listOfDeviceGroupMember,
+			Map<String, CommercialProduct> commerProdMemMap,String groupType,Map<String, PriceForBundleAndHardware> priceMapForParticularDevice) {
+		return CompletableFuture.supplyAsync(new Supplier<List<DeviceSummary>>() {
+
+			List<DeviceSummary> listOfDeviceSummaryLocal = new ArrayList<>();
+			DeviceSummary deviceSummary;
+
+			@Override
+			public List<DeviceSummary> get() {
+				for (com.vf.uk.dal.device.entity.Member member : listOfDeviceGroupMember) {
+					CommercialProduct commercialProduct = commerProdMemMap.get(member.getId());
+					Long memberPriority = Long.valueOf(member.getPriority());
+					if (commercialProduct != null) {
+					PriceForBundleAndHardware priceForBundleAndHardware = null;
+					if (priceMapForParticularDevice.containsKey(member.getId())) {
+						priceForBundleAndHardware = priceMapForParticularDevice.get(member.getId());
+					}
+					deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile_PAYG(memberPriority, commercialProduct,
+											priceForBundleAndHardware,groupType);
+								if (deviceSummary != null) {
+									listOfDeviceSummaryLocal.add(deviceSummary);
+								}
+					}
+
+				}
+				return listOfDeviceSummaryLocal;
+			}
+		});
 
 	}
 }
