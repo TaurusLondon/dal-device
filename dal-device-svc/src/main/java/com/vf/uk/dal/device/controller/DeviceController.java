@@ -69,15 +69,15 @@ public class DeviceController {
 	private static final String JOURNEY_TYPE = "journeyType";
 	private static final String OFFER_CODE = "offerCode";
 	private static final String numberExpression = "[0-9]{6}";
-	private static final String creditLimitExpression = "[0-9]";
+	private static final String creditLimitExpression = "[0-9]*";
 	
 	/**
 	 * Handles requests for getDeviceTile Service with input as
 	 * GROUP_NAME,GROUP_TYPE in URL as query.
 	 * performance improved by @author manoj.bera
-	 * 
-	 * @return Device
-	 **/
+	 * @param ex
+	 * @return
+	 */
 	@ExceptionHandler(MissingServletRequestParameterException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public com.vf.uk.dal.common.exception.ErrorResponse handleMissingParams(MissingServletRequestParameterException ex) {

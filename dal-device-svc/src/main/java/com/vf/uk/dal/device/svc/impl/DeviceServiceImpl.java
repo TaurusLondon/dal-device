@@ -281,6 +281,18 @@ public class DeviceServiceImpl implements DeviceService {
 		}else{
 			journeytype = journeyType;
 		}
+		
+		if(StringUtils.isNotBlank(groupType) && StringUtils.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG, groupType) ){
+			if(StringUtils.equalsIgnoreCase(Constants.JOURNEY_TYPE_UPGRADE, journeytype) || StringUtils.equalsIgnoreCase(Constants.JOURNEY_TYPE_SECONDLINE, journeytype)){
+				LogHelper.error(this, "JourneyType is not compatible for given GroupType");
+				throw new ApplicationException(ExceptionMessages.INVALID_GROUP_TYPE_JOURNEY_TYPE);
+			}
+			if(StringUtils.isNotBlank(offerCode)){
+				LogHelper.error(this, "offerCode is not compatible for given GroupType");
+				throw new ApplicationException(ExceptionMessages.INVALID_GROUP_TYPE_OFFER_CODE);
+			}
+		}
+		
 		LogHelper.info(this, "Start -->  calling  getDeviceList in ServiceImpl");
 		if (includeRecommendations && StringUtils.isBlank(msisdn)) {
 			LogHelper.error(this, "Invalid MSISDN provided. MSISDN is required for retrieving recommendations.");
