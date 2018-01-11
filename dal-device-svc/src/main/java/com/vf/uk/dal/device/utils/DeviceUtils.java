@@ -302,7 +302,7 @@ public class DeviceUtils {
 	public static String leastMonthlyPriceForpayG(List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware)
 	{
 		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareAfterSorted=sortedPriceForBundleAndHardwareForPayG(listOfPriceForBundleAndHardware);
-		return getmonthlyPriceFormPrice(listOfPriceForBundleAndHardwareAfterSorted.get(0));
+		return getmonthlyPriceFormPriceForPayG(listOfPriceForBundleAndHardwareAfterSorted.get(0));
 	}
 	/**
 	 * 
