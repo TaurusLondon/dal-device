@@ -3493,4 +3493,168 @@ public class DaoUtils {
 	result.put("media", listOfMedia);
 	return result;
 }
+	/**
+	 * @author krishna.reddy
+	 * @sprint-7.1
+	 * @param memberPriority
+	 * @param commercialProduct
+	 * @param priceforBundleAndHardware
+	 * @param groupType
+	 * @return
+	 */
+	public static DeviceSummary convertCoherenceDeviceToDeviceTile_PAYG(Long memberPriority,
+			CommercialProduct commercialProduct,PriceForBundleAndHardware priceforBundleAndHardware,
+			String groupType) {
+
+		DeviceSummary deviceSummary;
+		deviceSummary = new DeviceSummary();
+
+		HardwarePrice hardwarePrice;
+		Price price;
+		PriceForBundleAndHardware priceInfo;
+		deviceSummary.setDeviceId(commercialProduct.getId());
+		deviceSummary.setDisplayName(commercialProduct.getDisplayName());
+		if (commercialProduct.getProductControl() != null && commercialProduct.getProductControl().isPreOrderable()) {
+			String startDateTime;
+			startDateTime = CommonUtility.getDateToString(commercialProduct.getProductControl().getAvailableFrom(),
+					Constants.DATE_FORMAT_COHERENCE);
+			if (startDateTime != null
+					&& CommonUtility.dateValidationForProduct(startDateTime, Constants.DATE_FORMAT_COHERENCE)) {
+				deviceSummary.setPreOrderable(true);
+				deviceSummary.setAvailableFrom(startDateTime);
+			}else{
+				deviceSummary.setPreOrderable(false);
+			}
+		} else {
+			deviceSummary.setPreOrderable(false);
+		}
+		
+		if (memberPriority != null) {
+			deviceSummary.setPriority(String.valueOf(memberPriority));
+		}
+		
+			deviceSummary.setFromPricing(null);
+		
+		deviceSummary.setDisplayDescription(commercialProduct.getPreDesc());
+
+		List<com.vodafone.product.pojo.Group> listOfSpecificationGroups = commercialProduct.getSpecificationGroups();
+
+		if (listOfSpecificationGroups != null && !listOfSpecificationGroups.isEmpty()) {
+			for (com.vodafone.product.pojo.Group specificationGroup : listOfSpecificationGroups) {
+				if (specificationGroup.getGroupName().equalsIgnoreCase(Constants.STRING_COLOUR)) {
+					List<com.vodafone.product.pojo.Specification> listOfSpec = specificationGroup.getSpecifications();
+					if (listOfSpec != null && !listOfSpec.isEmpty()) {
+						for (com.vodafone.product.pojo.Specification spec : listOfSpec) {
+							if (spec.getName().equalsIgnoreCase(Constants.STRING_COLOUR)) {
+								deviceSummary.setColourName(spec.getValue());
+							}
+							if (spec.getName().equalsIgnoreCase(Constants.STRING_HEXVALUE)) {
+								deviceSummary.setColourHex(spec.getValue());
+							}
+						}
+					}
+				}
+				if (specificationGroup.getGroupName().equalsIgnoreCase(Constants.STRING_CAPACITY)) {
+					List<com.vodafone.product.pojo.Specification> listOfSpec = specificationGroup.getSpecifications();
+					if (listOfSpec != null && !listOfSpec.isEmpty()) {
+						for (com.vodafone.product.pojo.Specification spec : listOfSpec) {
+							if (spec.getName().equalsIgnoreCase(Constants.STRING_CAPACITY)) {
+								deviceSummary.setMemory(spec.getValue() + spec.getValueUOM());
+							}
+						}
+					}
+				}
+
+			}
+		}
+		List<MediaLink> merchandisingMedia = new ArrayList<>();
+		MediaLink mediaLink;
+		if (commercialProduct.getListOfimageURLs() != null) {
+			for (com.vodafone.product.pojo.ImageURL imageURL : commercialProduct.getListOfimageURLs()) {
+				if(StringUtils.isNotBlank(imageURL.getImageURL()))
+				{
+					mediaLink = new MediaLink();
+					mediaLink.setId(imageURL.getImageName());
+					mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
+					mediaLink.setValue(imageURL.getImageURL());
+					merchandisingMedia.add(mediaLink);
+				}
+			}
+		}
+		if (commercialProduct.getListOfmediaURLs() != null) {
+			for (com.vodafone.product.pojo.MediaURL mediaURL : commercialProduct.getListOfmediaURLs()) {
+				if(StringUtils.isNotBlank(mediaURL.getMediaURL()))
+				{
+					mediaLink = new MediaLink();
+					mediaLink.setId(mediaURL.getMediaName());
+					mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
+					mediaLink.setValue(mediaURL.getMediaURL());
+					merchandisingMedia.add(mediaLink);
+				}
+			}
+		}
+
+		// MediaLink for PricePromotions
+		if (priceforBundleAndHardware != null ) {
+			deviceSummary.setPriceInfo(priceforBundleAndHardware);
+					// Hardware Promotion
+			if(priceforBundleAndHardware.getHardwarePrice()!=null){
+				
+					MerchandisingPromotion merchPromoForHardware = priceforBundleAndHardware.getHardwarePrice()
+							.getMerchandisingPromotions();
+					// Label
+					MediaLink priceMediaLinkLabel = new MediaLink();
+					if (merchPromoForHardware != null && StringUtils.isNotBlank(merchPromoForHardware.getMpType())) {
+						if(StringUtils.isNotBlank(merchPromoForHardware.getLabel()))
+						{
+							priceMediaLinkLabel
+									.setId(merchPromoForHardware.getMpType() + "." + Constants.STRING_OFFERS_LABEL);
+							priceMediaLinkLabel.setType("TEXT");
+							priceMediaLinkLabel.setValue(merchPromoForHardware.getLabel());
+							priceMediaLinkLabel.setPriority(merchPromoForHardware.getPriority());
+							merchandisingMedia.add(priceMediaLinkLabel);
+						}
+						// Description
+						if(StringUtils.isNotBlank(merchPromoForHardware.getDescription()))
+						{
+							MediaLink priceMediaLinkDescription = new MediaLink();
+							priceMediaLinkDescription
+									.setId(merchPromoForHardware.getMpType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
+							priceMediaLinkDescription.setType("TEXT");
+							priceMediaLinkDescription.setValue(merchPromoForHardware.getDescription());
+							priceMediaLinkDescription.setPriority(merchPromoForHardware.getPriority());
+							merchandisingMedia.add(priceMediaLinkDescription);
+						}
+						// PriceEstablished
+						if(StringUtils.isNotBlank(merchPromoForHardware.getPriceEstablishedLabel()))
+						{
+							MediaLink priceEstablishedMediaLink = new MediaLink();
+							priceEstablishedMediaLink.setId(
+									merchPromoForHardware.getMpType() + "." + Constants.STRING_PRICE_ESTABLISHED_LABEL);
+							priceEstablishedMediaLink.setType("TEXT");
+							priceEstablishedMediaLink.setValue(merchPromoForHardware.getPriceEstablishedLabel());
+							priceEstablishedMediaLink.setPriority(merchPromoForHardware.getPriority());
+							merchandisingMedia.add(priceEstablishedMediaLink);
+						}
+					}
+			}
+		}
+
+			deviceSummary.setMerchandisingMedia(merchandisingMedia);
+
+			deviceSummary.setLeadPlanId(null);
+			// Bundle Type Mapping
+			deviceSummary.setBundleType(null);
+			deviceSummary.setLeadPlanDisplayName(null);
+		
+			deviceSummary.setUom(null);
+			deviceSummary.setUomValue(null);
+
+			deviceSummary.setProductGroupURI(
+				commercialProduct.getEquipment().getMake() + "/" + commercialProduct.getEquipment().getModel());
+			deviceSummary.setIsCompatible(null);
+
+		return deviceSummary;
+	}
+
 }
