@@ -116,8 +116,9 @@ public class ExceptionMessages
 			public static final String  INVALID_BUNDLE= "BundleId is Invalid";
 
 		 /**
-		  * Sprint 6.6 End
+		  * Spring 6.6 End
 		  */
-			
+		public static final String INVALID_GROUP_TYPE_JOURNEY_TYPE = "JourneyType is not compatible for given GroupType";
+		public static final String INVALID_GROUP_TYPE_OFFER_CODE = "offerCode is not compatible for given GroupType";
 }
 

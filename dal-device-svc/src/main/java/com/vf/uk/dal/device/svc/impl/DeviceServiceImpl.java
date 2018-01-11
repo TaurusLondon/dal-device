@@ -144,7 +144,7 @@ public class DeviceServiceImpl implements DeviceService {
 		}else if((groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG)) && (StringUtils.isNotBlank(journeyType) && 
 				!journeyType.equalsIgnoreCase(Constants.JOURNEY_TYPE_ACQUISITION))){
 			LogHelper.error(this, "JourneyType is Not Compatible with given GroupType");
-			throw new ApplicationException(ExceptionMessages.INVALID_JOURNEYTYPE_FOR_GROUPTYPE);
+			throw new ApplicationException(ExceptionMessages.INVALID_GROUP_TYPE_JOURNEY_TYPE);
 		}
 		else {
 			deviceTileList = getListOfDeviceTile_Implementation(make, model, groupType, deviceId, journeyType, creditLimit,
