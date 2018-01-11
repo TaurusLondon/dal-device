@@ -55,9 +55,12 @@ import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
 import com.vf.uk.dal.utility.entity.BundleDeviceAndProductsList;
 import com.vf.uk.dal.utility.entity.BundleHeader;
 import com.vf.uk.dal.utility.entity.ExtraPrice;
+import com.vf.uk.dal.utility.entity.InstalledProduct;
+import com.vf.uk.dal.utility.entity.Preferences;
 import com.vf.uk.dal.utility.entity.PriceForAccessory;
 import com.vf.uk.dal.utility.entity.PriceForExtra;
 import com.vf.uk.dal.utility.entity.PriceForProduct;
+import com.vf.uk.dal.utility.entity.RecommendedProductListRequest;
 import com.vf.uk.dal.utility.entity.StockInfo;
 import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
 import com.vf.uk.dal.utility.solr.entity.Media;
@@ -3692,5 +3695,60 @@ public class CommonMethods {
 		SourcePackageSummary s = new SourcePackageSummary();
 		s.setPromotionId("109381");
 		return s;	
+	}
+	
+	public static RecommendedProductListRequest getRecommendedDeviceListRequest(String msisdn, String deviceId) {
+		
+		RecommendedProductListRequest recomProdListReq = new RecommendedProductListRequest();
+		
+		recomProdListReq.setSerialNumber(msisdn);
+		recomProdListReq.setAccountCategory(Constants.ACCOUNT_CATEGORY_INDIVIDUAL);
+		
+		List<InstalledProduct> instProds = new ArrayList<>();
+		InstalledProduct instProd = new InstalledProduct();
+		instProd.setId(deviceId);
+		instProd.setTypeCode(Constants.STRING_TARIFF);
+		instProd.setAmount("220000.00");
+		instProds.add(instProd);
+		recomProdListReq.setInstalledProducts(instProds);
+		
+		List<Preferences> prefs = new ArrayList<>();
+		Preferences handsetPref = new Preferences();
+		handsetPref.setName(Constants.PREFERENCE_NAME_HANDSET);
+		handsetPref.setDataTypeCode(Constants.PREFERENCE_DATATYPE_CODE_PREFERENCE);
+		handsetPref.setValue("all");
+		prefs.add(handsetPref);
+
+		Preferences upgradePref = new Preferences();
+		upgradePref.setName(Constants.PREFERENCE_NAME_UPGRADE);
+		upgradePref.setDataTypeCode(Constants.PREFERENCE_DATATYPE_CODE_GENERAL);
+		upgradePref.setValue("SIMOFLEX");
+		prefs.add(upgradePref);
+		
+		Preferences recommitPref = new Preferences();
+		recommitPref.setName(Constants.PREFERENCE_NAME_RECOMMIT);
+		recommitPref.setDataTypeCode(Constants.PREFERENCE_DATATYPE_CODE_GENERAL);
+		recommitPref.setValue("FALSE");
+		prefs.add(recommitPref);
+		
+		Preferences segmentPref = new Preferences();
+		segmentPref.setName(Constants.PREFERENCE_NAME_SEGMENT);
+		segmentPref.setDataTypeCode(Constants.PREFERENCE_DATATYPE_ELIGIBILITY_CRITERIA);
+		segmentPref.setValue("cbu");
+		prefs.add(segmentPref);
+		
+		recomProdListReq.setPreferences(prefs);
+		
+		List<String> recomPrdTypes;
+		recomPrdTypes = new ArrayList<>();
+		recomPrdTypes.add(Constants.PREFERENCE_NAME_HANDSET);
+		
+		recomProdListReq.setBasketItems(null);
+		recomProdListReq.setNoOfRecommendations("100");
+		
+		
+		recomProdListReq.setRecommendedProductTypes(recomPrdTypes);
+
+		return recomProdListReq;
 	}
 }
