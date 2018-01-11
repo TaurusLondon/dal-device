@@ -118,11 +118,6 @@ public class ExceptionMessages
 		 /**
 		  * Sprint 6.6 End
 		  */
-			/**
-			 * @sprint-7.1
-			 * @author krishna.reddy
-			 */
-			public static final String INVALID_JOURNEYTYPE_FOR_GROUPTYPE = "JourneyType is Not Compatible with given GroupType";
-
+			
 }
 
