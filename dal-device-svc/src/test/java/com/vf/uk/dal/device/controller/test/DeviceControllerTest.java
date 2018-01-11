@@ -178,6 +178,8 @@ public class DeviceControllerTest {
 				.willReturn(CommonMethods.getCommercialProductsListOfMakeAndModel());
 		given(deviceDAOMock.getListOfProductGroupFromProductGroupRepository("DEVICE_PAYM"))
 				.willReturn(CommonMethods.getListOfProductGroupFromProductGroupRepository());
+		given(deviceDAOMock.getListOfProductGroupFromProductGroupRepository("DEVICE_PAYG"))
+		.willReturn(CommonMethods.getListOfProductGroupFromProductGroupRepository());
 		given(deviceDAOMock.getCommercialProductFromCommercialProductRepository(Matchers.anyString()))
 				.willReturn(CommonMethods.getCommercialProductByDeviceId());
 		given(deviceDAOMock.getBazaarVoice(Matchers.anyString())).willReturn(CommonMethods.getBazaarVoice());
@@ -1510,6 +1512,44 @@ public class DeviceControllerTest {
 		given(restTemplate.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=093353", BundleDetailsForAppSrv.class)).willReturn(CommonMethods.getCoupledBundleListForDevice());
 		deviceDetails = deviceController.getDeviceDetails("093353",null,null);
 		Assert.assertNotNull(deviceDetails);
+	}
+	@Test
+	public void notNullTestForGetDeviceDetailsTile_PAYG() {
+		List<DeviceTile> deviceDetails = null;
+		try {
+			deviceDetails = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYG", null, null, null,
+					null, null);
+			Assert.assertNotNull(deviceDetails);
+			deviceDetails = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYG", null, null, null,
+					null, null);
+		} catch (Exception e) {
+
+		}
+
+	}
+	@Test
+	public void testGetListOfDeviceTileForInvalidMakeAndModel_PAYG() {
+		List<DeviceTile> listOfDeviceTile = null;
+		try {
+			listOfDeviceTile = deviceController.getListOfDeviceTile("Vodafone", "iPhone-7", "DEVICE_PAYG", null, null,
+					null, null, null);
+		} catch (Exception e) {
+			Assert.assertEquals(
+					"com.vf.uk.dal.common.exception.ApplicationException: Received Null Values for the given make and model",
+					e.toString());
+		}
+	}
+	@Test
+	public void testGetListOfDeviceTileForInvalidJourneyType_PAYG() {
+		List<DeviceTile> listOfDeviceTile = null;
+		try {
+			listOfDeviceTile = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYG", "Test", null,
+					null, null, null);
+		} catch (Exception e) {
+			Assert.assertEquals(
+					"com.vf.uk.dal.common.exception.ApplicationException: JourneyType is not compatible for given GroupType",
+					e.toString());
+		}
 	}
 	
 }
