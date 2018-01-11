@@ -1386,6 +1386,50 @@ public class DeviceControllerTest {
 		}
 
 	}
+	
+	@Test
+	public void invalidRequestDeviceList() {
+		PaginationCriteria paginationCriteria;
+		try {
+			paginationCriteria = new PaginationCriteria(-9, -1);
+			ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
+			deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple", "iPhone-7", "White",
+					"iOS 9", "32 GB", null, "Great Camera", null, "invalid", null, "W_HH_OC_02");
+		} catch (Exception e) {
+			try{
+				deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple", "iPhone-7", "White",
+						"iOS 9", "32 GB", null, "Great Camera", null, "true", null, "W_HH_OC_02");
+			}
+			catch (Exception ex) {
+				try{
+					ServiceContext.urlParamContext.remove();
+					paginationCriteria = new PaginationCriteria(9, -1);
+					ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
+					deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple", "iPhone-7", "White",
+							"iOS 9", "32 GB", null, "Great Camera", null, "true", null, "W_HH_OC_02");
+				}
+				catch (Exception ex1) {
+					try{
+						ServiceContext.urlParamContext.remove();
+						paginationCriteria = new PaginationCriteria(9, 0);
+						ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
+						deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple", "iPhone-7", "White",
+								"iOS 9", "32 GB", "123456", "Great Camera", null, "true", null, "W_HH_OC_02");
+					}
+					catch (Exception ex2) {
+						try{
+							deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple", "iPhone-7", "White",
+									"iOS 9", "32 GB", "1234567890", "Great Camera", null, "true", null, "");
+						}
+						catch (Exception ex3) {
+							
+						}
+					}
+				}
+			}
+		}
+	}
+
 
 	@Test
 	public void invalidJourneyTypeDeviceList() {
@@ -1465,6 +1509,7 @@ public class DeviceControllerTest {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
 			List<BundleAndHardwareTuple> bundleList = new ArrayList<>();
 			RequestForBundleAndHardware requestForBundleAndHardware = new RequestForBundleAndHardware();
 			BundleAndHardwareTuple bundle = new BundleAndHardwareTuple();
@@ -1479,7 +1524,27 @@ public class DeviceControllerTest {
 							.willReturn(obj);
 
 			deviceController.cacheDeviceTile();
-
+	}
+	
+	@Test
+	public void nullTestForCacheDeviceTile()
+	{
+		ServiceContext.urlParamContext.remove();
+		List<FilterCriteria> fcList = new ArrayList<FilterCriteria>();
+		fcList.add(new FilterCriteria("groupType", FilterOperator.EQUALTO, ""));
+		ServiceContext.setURLParamContext(new URLParamContext("", "", fcList, null));
+		try{
+			deviceController.cacheDeviceTile();
+		}
+		catch(Exception e){
+			try{
+			ServiceContext.urlParamContext.remove();
+			fcList = new ArrayList<FilterCriteria>();
+			fcList.add(new FilterCriteria("groupType", FilterOperator.EQUALTO, "INVALID_GT"));
+			ServiceContext.setURLParamContext(new URLParamContext("", "", fcList, null));
+			deviceController.cacheDeviceTile();
+			}
+			catch(Exception ex){}
 		}
 	}
 	
