@@ -427,8 +427,9 @@ public class DeviceController {
 		String groupType = getFilterValue(GROUP_TYPE);
 
 		if (StringUtils.isNotBlank(groupType)) {
-			if (groupType.equals(Constants.STRING_DEVICE_PAYG) || groupType.equals(Constants.STRING_DEVICE_PAYM)
-					|| groupType.equals(Constants.STRING_DEVICE_NEARLY_NEW)) {
+			if (StringUtils.containsIgnoreCase(groupType, Constants.STRING_DEVICE_PAYG)
+					|| StringUtils.containsIgnoreCase(groupType, Constants.STRING_DEVICE_PAYM)
+					|| StringUtils.containsIgnoreCase(groupType, Constants.STRING_DEVICE_NEARLY_NEW)) {
 				CacheDeviceTileResponse cacheDeviceTileResponse = deviceService.insertCacheDeviceToDb();
 				ResponseEntity<CacheDeviceTileResponse> response = new ResponseEntity<>(cacheDeviceTileResponse,
 						HttpStatus.CREATED);
@@ -440,7 +441,6 @@ public class DeviceController {
 			}
 		} else
 			throw new ApplicationException(ExceptionMessages.NULL_OR_EMPTY_GROUP_TYPE);
-
 	}
 
 	/**

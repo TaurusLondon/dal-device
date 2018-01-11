@@ -1016,7 +1016,7 @@ public class DaoUtils {
 			List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware> listOfPriceForBundleAndHardware,
 			Map<String, String> leadMemberMap,
 			Map<String, List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>> listOfPriceForBundleAndHardwareWithOfferCode,
-			Map<String, String> leadMemberMapForUpgrade,String upgradeLeadPlanId) {
+			Map<String, String> leadMemberMapForUpgrade,String upgradeLeadPlanId,String groupType) {
 		DevicePreCalculatedData productGroupForDeviceListing = null;
 		productGroupForDeviceListing = new DevicePreCalculatedData();
 		productGroupForDeviceListing.setDeviceId(deviceId);
@@ -1030,10 +1030,11 @@ public class DaoUtils {
 		} else {
 			productGroupForDeviceListing.setIsLeadMember(Constants.IS_LEAD_MEMEBER_NO);
 		}
-		if (leadMemberMapForUpgrade.containsKey(deviceId)) {
+		if (leadMemberMapForUpgrade!=null && !leadMemberMapForUpgrade.isEmpty() && leadMemberMapForUpgrade.containsKey(deviceId)) {
 			productGroupForDeviceListing.setUpgradeLeadDeviceId(deviceId);
 		} 
-		if (StringUtils.isNotBlank(leadPlanId)) {
+		if ((StringUtils.isNotBlank(leadPlanId) && StringUtils.equalsIgnoreCase(groupType, Constants.STRING_DEVICE_PAYM)) || 
+				StringUtils.equalsIgnoreCase(groupType, Constants.STRING_DEVICE_PAYG)) {
 			com.vf.uk.dal.utility.entity.PriceForBundleAndHardware priceForBundleAndHardware1 = listOfPriceForBundleAndHardware
 					.get(0);
 			productGroupForDeviceListing.setNonUpgradeLeadPlanId(leadPlanId);
@@ -1061,7 +1062,12 @@ public class DaoUtils {
 		Map<String, Object> result = new HashMap<>();
 		List<com.vf.uk.dal.utility.solr.entity.Media> listOfMedia = new ArrayList<>();
 		BundlePrice bundlePrice = priceForBundleAndHardware.getBundlePrice();
-		String bundleId = bundlePrice.getBundleId();
+		com.vf.uk.dal.utility.entity.Price monthlyPrice = null;
+		com.vf.uk.dal.utility.entity.Price monthlyDiscountPrice =null;
+		String bundleId =Constants.DATA_NOT_FOUND;
+		if(bundlePrice!=null && bundlePrice.getMonthlyPrice()!=null && bundlePrice.getMonthlyPrice().getGross()!=null)
+		{
+		 bundleId = bundlePrice.getBundleId();
 		if (bundlePrice.getMerchandisingPromotions() != null) {
 			com.vf.uk.dal.utility.solr.entity.Media mediaLink = new com.vf.uk.dal.utility.solr.entity.Media();
 			mediaLink.setId(bundlePrice.getMerchandisingPromotions().getMpType() + "." + Constants.STRING_OFFERS_LABEL);
@@ -1120,8 +1126,9 @@ public class DaoUtils {
 
 		}
 
-		com.vf.uk.dal.utility.entity.Price monthlyPrice = bundlePrice.getMonthlyPrice();
-		com.vf.uk.dal.utility.entity.Price monthlyDiscountPrice = bundlePrice.getMonthlyDiscountPrice();
+		monthlyPrice = bundlePrice.getMonthlyPrice();
+		monthlyDiscountPrice = bundlePrice.getMonthlyDiscountPrice();
+	}
 		com.vf.uk.dal.utility.entity.HardwarePrice hardwarePrice = priceForBundleAndHardware.getHardwarePrice();
 		String hardwareId = hardwarePrice.getHardwareId();
 
@@ -1201,7 +1208,7 @@ public class DaoUtils {
 			mnthlyDiscPrice.setVat(monthlyDiscountPrice.getVat());
 		}
 		com.vf.uk.dal.utility.solr.entity.BundlePrice bp = new com.vf.uk.dal.utility.solr.entity.BundlePrice();
-		bp.setBundleId(bundleId);
+		bp.setBundleId(Constants.DATA_NOT_FOUND.equalsIgnoreCase(bundleId)?null:bundleId);
 		bp.setMonthlyPrice(mnthlyPrice);
 		bp.setMonthlyDiscountPrice(mnthlyDiscPrice);
 		OneOffPrice onffPrice = null;
