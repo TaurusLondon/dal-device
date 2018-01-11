@@ -559,6 +559,16 @@ public class DeviceControllerTest {
 	}
 
 	@Test
+	public void invalidInputTestForgetDeviceDetails1() throws Exception {
+		DeviceDetails deviceDetails = new DeviceDetails();
+		try {
+			deviceDetails = deviceController.getDeviceDetails("1234", null, null);
+		} catch (Exception e) {
+
+		}
+	}
+
+	@Test
 	public void notNullTestForgetDeviceDetails() {
 		DeviceDetails deviceDetails = new DeviceDetails();
 		deviceDetails = deviceController.getDeviceDetails("083929", "", "");
@@ -569,7 +579,7 @@ public class DeviceControllerTest {
 	public void notNullTestForGetAccessoriesOfDevice() {
 		try {
 			List<AccessoryTileGroup> accessoryDetails = new ArrayList<>();
-			accessoryDetails = deviceController.getAccessoriesOfDevice("093353", null, null);
+			accessoryDetails = deviceController.getAccessoriesOfDevice("093353", "Upgrade", "W_HH_PAYM_OC_02");
 			Assert.assertNotNull(accessoryDetails);
 			// accessoryDetails =
 			// deviceController.getAccessoriesOfDevice("093353",null,null);
@@ -585,7 +595,10 @@ public class DeviceControllerTest {
 
 			accessoryDetails = deviceController.getAccessoriesOfDevice(null, null, null);
 		} catch (Exception e) {
+			try {
 
+				accessoryDetails = deviceController.getAccessoriesOfDevice("1234", null, null);
+			} catch (Exception ex) {}
 		}
 		Assert.assertEquals(0, accessoryDetails.size());
 	}
