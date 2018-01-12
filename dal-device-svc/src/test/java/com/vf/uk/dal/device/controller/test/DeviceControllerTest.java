@@ -1581,12 +1581,12 @@ public class DeviceControllerTest {
 	@Test
 	public void notNullTestForGetDeviceDetailsTile_PAYG() {
 		List<DeviceTile> deviceDetails = null;
+		given(deviceDAOMock.getListOfProductGroupFromProductGroupRepository("DEVICE_PAYG"))
+		.willReturn(CommonMethods.getListOfProductGroupFromProductGroupRepository());
 		try {
 			deviceDetails = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYG", null, null, null,
 					null, null);
 			Assert.assertNotNull(deviceDetails);
-			deviceDetails = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYG", null, null, null,
-					null, null);
 		} catch (Exception e) {
 
 		}
@@ -1608,7 +1608,7 @@ public class DeviceControllerTest {
 	public void testGetListOfDeviceTileForInvalidJourneyType_PAYG() {
 		List<DeviceTile> listOfDeviceTile = null;
 		try {
-			listOfDeviceTile = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYG", "Test", null,
+			listOfDeviceTile = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYG", "Upgrade", null,
 					null, null, null);
 		} catch (Exception e) {
 			Assert.assertEquals(

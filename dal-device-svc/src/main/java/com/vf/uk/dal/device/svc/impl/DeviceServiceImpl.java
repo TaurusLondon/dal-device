@@ -125,6 +125,7 @@ public class DeviceServiceImpl implements DeviceService {
 	public List<DeviceTile> getListOfDeviceTile(String make, String model, String groupType, String deviceId,
 			Double creditLimit, String journeyType, String offerCode, String bundleId) {
 		List<DeviceTile> deviceTileList;
+		String journeyTypeLocal=null;
 
 		if (make == null || make.isEmpty()) {
 			LogHelper.error(this, "make is null");
@@ -141,15 +142,19 @@ public class DeviceServiceImpl implements DeviceService {
 		} else if (!Validator.validateGroupType(groupType)){
 			LogHelper.error(this, "Invalid Group Type");
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_GROUP_TYPE);
-		}else if((groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG)) && (StringUtils.isNotBlank(journeyType) && 
-				!journeyType.equalsIgnoreCase(Constants.JOURNEY_TYPE_ACQUISITION))){
+		}else if(groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG)
+				&& (StringUtils.isNotBlank(journeyType) && 
+				(journeyType.equalsIgnoreCase(Constants.JOURNEY_TYPE_SECONDLINE) || journeyType.equalsIgnoreCase(Constants.JOURNEY_TYPE_UPGRADE)))){
 			LogHelper.error(this, "JourneyType is Not Compatible with given GroupType");
 			throw new ApplicationException(ExceptionMessages.INVALID_GROUP_TYPE_JOURNEY_TYPE);
+		}else if(groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYM)){
+			journeyTypeLocal = journeyType;
 		}
-		else {
-			deviceTileList = getListOfDeviceTile_Implementation(make, model, groupType, deviceId, journeyType, creditLimit,
+		else if(groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG)){
+			journeyTypeLocal = Constants.JOURNEY_TYPE_ACQUISITION;
+		}
+			deviceTileList = getListOfDeviceTile_Implementation(make, model, groupType, deviceId, journeyTypeLocal, creditLimit,
 					offerCode, bundleId);
-		}
 
 		return deviceTileList;
 	}
