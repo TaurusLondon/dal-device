@@ -20,7 +20,11 @@ public class CurrentJourney   {
 
   @JsonProperty("journeyData")
   private JourneyData journeyData = null;
-
+/**
+ * 
+ * @param id
+ * @return
+ */
   public CurrentJourney id(String id) {
     this.id = id;
     return this;
@@ -33,11 +37,18 @@ public class CurrentJourney   {
   public String getId() {
     return id;
   }
-
+/**
+ * 
+ * @param id
+ */
   public void setId(String id) {
     this.id = id;
   }
-
+/**
+ * 
+ * @param username
+ * @return
+ */
   public CurrentJourney username(String username) {
     this.username = username;
     return this;
@@ -50,11 +61,18 @@ public class CurrentJourney   {
   public String getUsername() {
     return username;
   }
-
+/**
+ * 
+ * @param username
+ */
   public void setUsername(String username) {
     this.username = username;
   }
-
+/**
+ * 
+ * @param contextMSISDN
+ * @return
+ */
   public CurrentJourney contextMSISDN(String contextMSISDN) {
     this.contextMSISDN = contextMSISDN;
     return this;
@@ -67,11 +85,18 @@ public class CurrentJourney   {
   public String getContextMSISDN() {
     return contextMSISDN;
   }
-
+/**
+ * 
+ * @param contextMSISDN
+ */
   public void setContextMSISDN(String contextMSISDN) {
     this.contextMSISDN = contextMSISDN;
   }
-
+/**
+ * 
+ * @param journeyData
+ * @return
+ */
   public CurrentJourney journeyData(JourneyData journeyData) {
     this.journeyData = journeyData;
     return this;
@@ -84,7 +109,10 @@ public class CurrentJourney   {
   public JourneyData getJourneyData() {
     return journeyData;
   }
-
+/**
+ * 
+ * @param journeyData
+ */
   public void setJourneyData(JourneyData journeyData) {
     this.journeyData = journeyData;
   }

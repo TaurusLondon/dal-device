@@ -900,15 +900,10 @@ public class DaoUtils {
 			CommercialBundle comBundle) {
 		PriceForBundleAndHardware priceForBundleAndHardware1 = null;
 		if (priceForBundleAndHardware != null) {
-			// for (PriceForBundleAndHardware priceForBundleAndHardware :
-			// listOfPriceForBundleAndHardware) {
 			if (priceForBundleAndHardware.getHardwarePrice() != null
 					&& priceForBundleAndHardware.getHardwarePrice().getOneOffPrice() != null
 					&& priceForBundleAndHardware.getHardwarePrice().getOneOffDiscountPrice() != null
 					&& priceForBundleAndHardware.getHardwarePrice().getHardwareId() != null) {
-				// &&
-				// priceForBundleAndHardware.getHardwarePrice().getHardwareId().equals(deviceId))
-				// {
 				Integer deviceID = new Integer(deviceId);
 				Integer hardwareID = new Integer(priceForBundleAndHardware.getHardwarePrice().getHardwareId());
 				if (isConditionalAcceptJourney) {
@@ -2334,12 +2329,12 @@ public class DaoUtils {
 										if (Constants.PROMO_TYPE_HARDWAREPROMOTION.equalsIgnoreCase(typeArray[i + 2])) {
 											hardwareTag = typeArray[i + 3];
 											if (StringUtils.contains(
-													mediaStrList[i].substring(mediaStrList[i].lastIndexOf(".") + 1,
+													mediaStrList[i].substring(mediaStrList[i].lastIndexOf('.') + 1,
 															mediaStrList[i].length()),
 													Constants.STRING_MEDIA_LABEL)) {
 												hardwareLabel = mediaStrList[i + 1];
 												hardwareMpType = mediaStrList[i].substring(0,
-														mediaStrList[i].indexOf("."));
+														mediaStrList[i].indexOf('.'));
 												hardwareDiscountId = mediaStrList[i + 6];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
@@ -2390,12 +2385,12 @@ public class DaoUtils {
 													.equalsIgnoreCase(typeArray[i + 2])) {
 												bundleTag = typeArray[3];
 												if (StringUtils.contains(
-														mediaStrList[i].substring(mediaStrList[i].lastIndexOf(".") + 1,
+														mediaStrList[i].substring(mediaStrList[i].lastIndexOf('.') + 1,
 																mediaStrList[i].length()),
 														Constants.STRING_MEDIA_LABEL)) {
 													bundleLabel = mediaStrList[i + 1];
 													bundleMpType = mediaStrList[i].substring(0,
-															mediaStrList[i].indexOf("."));
+															mediaStrList[i].indexOf('.'));
 													bundleDiscountId = mediaStrList[i + 6];
 												}
 												if (StringUtils.containsIgnoreCase(mediaStrList[i],
@@ -2420,12 +2415,12 @@ public class DaoUtils {
 													.equalsIgnoreCase(typeArray[i + 2])) {
 												hardwareTag = typeArray[i + 3];
 												if (StringUtils.contains(
-														mediaStrList[i].substring(mediaStrList[i].lastIndexOf(".") + 1,
+														mediaStrList[i].substring(mediaStrList[i].lastIndexOf('.') + 1,
 																mediaStrList[i].length()),
 														Constants.STRING_MEDIA_LABEL)) {
 													hardwareLabel = mediaStrList[i + 1];
 													hardwareMpType = mediaStrList[i].substring(0,
-															mediaStrList[i].indexOf("."));
+															mediaStrList[i].indexOf('.'));
 													hardwareDiscountId = mediaStrList[i + 6];
 												}
 												if (StringUtils.containsIgnoreCase(mediaStrList[i],
@@ -2463,12 +2458,12 @@ public class DaoUtils {
 										if (Constants.PROMO_TYPE_BUNDLEPROMOTION.equalsIgnoreCase(typeArray[i + 2])) {
 											bundleTag = typeArray[3];
 											if (StringUtils.contains(
-													mediaStrList[i].substring(mediaStrList[i].lastIndexOf(".") + 1,
+													mediaStrList[i].substring(mediaStrList[i].lastIndexOf('.') + 1,
 															mediaStrList[i].length()),
 													Constants.STRING_MEDIA_LABEL)) {
 												bundleLabel = mediaStrList[i + 1];
 												bundleMpType = mediaStrList[i].substring(0,
-														mediaStrList[i].indexOf("."));
+														mediaStrList[i].indexOf('.'));
 												bundleDiscountId = mediaStrList[i + 6];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
@@ -2491,12 +2486,12 @@ public class DaoUtils {
 										if (Constants.PROMO_TYPE_HARDWAREPROMOTION.equalsIgnoreCase(typeArray[i + 2])) {
 											hardwareTag = typeArray[i + 3];
 											if (StringUtils.contains(
-													mediaStrList[i].substring(mediaStrList[i].lastIndexOf(".") + 1,
+													mediaStrList[i].substring(mediaStrList[i].lastIndexOf('.') + 1,
 															mediaStrList[i].length()),
 													Constants.STRING_MEDIA_LABEL)) {
 												hardwareLabel = mediaStrList[i + 1];
 												hardwareMpType = mediaStrList[i].substring(0,
-														mediaStrList[i].indexOf("."));
+														mediaStrList[i].indexOf('.'));
 												hardwareDiscountId = mediaStrList[i + 6];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
@@ -2561,12 +2556,12 @@ public class DaoUtils {
 										if (Constants.PROMO_TYPE_HARDWAREPROMOTION.equalsIgnoreCase(typeArray[i + 2])) {
 											hardwareTag = typeArray[i + 3];
 											if (StringUtils.contains(
-													mediaStrList[i].substring(mediaStrList[i].lastIndexOf(".") + 1,
+													mediaStrList[i].substring(mediaStrList[i].lastIndexOf('.') + 1,
 															mediaStrList[i].length()),
 													Constants.STRING_MEDIA_LABEL)) {
 												hardwareLabel = mediaStrList[i + 1];
 												hardwareMpType = mediaStrList[i].substring(0,
-														mediaStrList[i].indexOf("."));
+														mediaStrList[i].indexOf('.'));
 												hardwareDiscountId = mediaStrList[i + 6];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
@@ -2603,12 +2598,12 @@ public class DaoUtils {
 										if (Constants.PROMO_TYPE_BUNDLEPROMOTION.equalsIgnoreCase(typeArray[i + 2])) {
 											bundleTag = typeArray[3];
 											if (StringUtils.contains(
-													mediaStrList[i].substring(mediaStrList[i].lastIndexOf(".") + 1,
+													mediaStrList[i].substring(mediaStrList[i].lastIndexOf('.') + 1,
 															mediaStrList[i].length()),
 													Constants.STRING_MEDIA_LABEL)) {
 												bundleLabel = mediaStrList[i + 1];
 												bundleMpType = mediaStrList[i].substring(0,
-														mediaStrList[i].indexOf("."));
+														mediaStrList[i].indexOf('.'));
 												bundleDiscountId = mediaStrList[i + 6];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
@@ -2631,12 +2626,12 @@ public class DaoUtils {
 										if (Constants.PROMO_TYPE_HARDWAREPROMOTION.equalsIgnoreCase(typeArray[i + 2])) {
 											hardwareTag = typeArray[i + 3];
 											if (StringUtils.contains(
-													mediaStrList[i].substring(mediaStrList[i].lastIndexOf(".") + 1,
+													mediaStrList[i].substring(mediaStrList[i].lastIndexOf('.') + 1,
 															mediaStrList[i].length()),
 													Constants.STRING_MEDIA_LABEL)) {
 												hardwareLabel = mediaStrList[i + 1];
 												hardwareMpType = mediaStrList[i].substring(0,
-														mediaStrList[i].indexOf("."));
+														mediaStrList[i].indexOf('.'));
 												hardwareDiscountId = mediaStrList[i + 6];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
@@ -3555,9 +3550,6 @@ public class DaoUtils {
 		DeviceSummary deviceSummary;
 		deviceSummary = new DeviceSummary();
 
-		HardwarePrice hardwarePrice;
-		Price price;
-		PriceForBundleAndHardware priceInfo;
 		deviceSummary.setDeviceId(commercialProduct.getId());
 		deviceSummary.setDisplayName(commercialProduct.getDisplayName());
 		if (commercialProduct.getProductControl() != null && commercialProduct.getProductControl().isPreOrderable()) {

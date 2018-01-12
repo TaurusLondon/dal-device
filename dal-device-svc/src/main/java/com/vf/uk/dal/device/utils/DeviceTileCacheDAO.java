@@ -61,7 +61,6 @@ public class DeviceTileCacheDAO {
 	public int count(String tablename) {
 		String sql = "SELECT COUNT(*) FROM PRODUCT."+tablename;
 		int count;
-		//count = getJdbcTemplate().update(sql);
 		count=getJdbcTemplate().queryForObject(sql, Integer.class);
 		return count;
 	}

@@ -43,7 +43,7 @@ public class FacetedDevice   {
  */
   public FacetedDevice addNewFacetItem(NewFacet newFacetItem) {
     if (this.newFacet == null) {
-      this.newFacet = new ArrayList<NewFacet>();
+      this.newFacet = new ArrayList<>();
     }
     this.newFacet.add(newFacetItem);
     return this;
@@ -86,7 +86,7 @@ public class FacetedDevice   {
  */
   public FacetedDevice addDeviceItem(Device deviceItem) {
     if (this.device == null) {
-      this.device = new ArrayList<Device>();
+      this.device = new ArrayList<>();
     }
     this.device.add(deviceItem);
     return this;

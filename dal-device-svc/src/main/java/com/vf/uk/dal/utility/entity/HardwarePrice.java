@@ -1,7 +1,5 @@
 package com.vf.uk.dal.utility.entity;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,7 +7,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * HardwarePrice
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-04-14T09:23:00.845Z")
-
+/**
+ * 
+ * @author HardwarePrice
+ *
+ */
 public class HardwarePrice   {
   @JsonProperty("hardwareId")
   private String hardwareId = null;
@@ -22,7 +24,11 @@ public class HardwarePrice   {
 
   @JsonProperty("merchandisingPromotions")
   private MerchandisingPromotion merchandisingPromotions = null;
-
+  /**
+   * 
+   * @param hardwareId
+   * @return
+   */
   public HardwarePrice hardwareId(String hardwareId) {
     this.hardwareId = hardwareId;
     return this;
@@ -35,11 +41,18 @@ public class HardwarePrice   {
   public String getHardwareId() {
     return hardwareId;
   }
-
+  /**
+   * 
+   * @param hardwareId
+   */
   public void setHardwareId(String hardwareId) {
     this.hardwareId = hardwareId;
   }
-
+  /**
+   * 
+   * @param oneOffPrice
+   * @return
+   */
   public HardwarePrice oneOffPrice(Price oneOffPrice) {
     this.oneOffPrice = oneOffPrice;
     return this;
@@ -53,11 +66,18 @@ public class HardwarePrice   {
   public Price getOneOffPrice() {
     return oneOffPrice;
   }
-
+  /**
+   * 
+   * @param oneOffPrice
+   */
   public void setOneOffPrice(Price oneOffPrice) {
     this.oneOffPrice = oneOffPrice;
   }
-
+  /**
+   * 
+   * @param oneOffDiscountPrice
+   * @return
+   */
   public HardwarePrice oneOffDiscountPrice(Price oneOffDiscountPrice) {
     this.oneOffDiscountPrice = oneOffDiscountPrice;
     return this;
@@ -71,11 +91,18 @@ public class HardwarePrice   {
   public Price getOneOffDiscountPrice() {
     return oneOffDiscountPrice;
   }
-
+  /**
+   * 
+   * @param oneOffDiscountPrice
+   */
   public void setOneOffDiscountPrice(Price oneOffDiscountPrice) {
     this.oneOffDiscountPrice = oneOffDiscountPrice;
   }
-
+  /**
+   * 
+   * @param merchandisingPromotions
+   * @return
+   */
   public HardwarePrice merchandisingPromotions(MerchandisingPromotion merchandisingPromotions) {
     this.merchandisingPromotions = merchandisingPromotions;
     return this;
@@ -87,7 +114,10 @@ public class HardwarePrice   {
   public MerchandisingPromotion getMerchandisingPromotions() {
     return merchandisingPromotions;
   }
-
+  /**
+   * 
+   * @param merchandisingPromotions
+   */
   public void setMerchandisingPromotions(MerchandisingPromotion merchandisingPromotions) {
     this.merchandisingPromotions = merchandisingPromotions;
   }

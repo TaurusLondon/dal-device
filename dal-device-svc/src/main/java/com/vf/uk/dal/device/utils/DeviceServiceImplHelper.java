@@ -23,7 +23,15 @@ public class DeviceServiceImplHelper {
 	@Autowired
 	DeviceDao deviceDao;
 	
-	
+	/**
+	 * 
+	 * @param make
+	 * @param capacity
+	 * @param colour
+	 * @param operatingSystem
+	 * @param mustHaveFeatures
+	 * @return
+	 */
 	public String getFilterCriteria(String make, String capacity, String colour, String operatingSystem,
 			String mustHaveFeatures) {
 		String newCapacity;
@@ -31,7 +39,6 @@ public class DeviceServiceImplHelper {
 		String newOperatingSystem;
 		String filterCriteria = "";
 		String newMustHaveFeatures;
-		String musthaveFeatureUpdated;
 		if (StringUtils.isNotEmpty(make)) {
 			String newMake = getFilterForDeviceList(make, Constants.STRING_EQUIPMENT_MAKE_COLON);
 			filterCriteria = newMake;
@@ -72,6 +79,12 @@ public class DeviceServiceImplHelper {
 		}
 		return filterCriteria;
 	}
+	/**
+	 * 
+	 * @param filter
+	 * @param parameter
+	 * @return
+	 */
 	public String getFilterForDeviceList(String filter, String parameter) {
 		String newFilter = "";
 		String[] filterArray;
@@ -97,6 +110,13 @@ public class DeviceServiceImplHelper {
 		return String.join(" OR ", makeList);
 	}
 	
+	/**
+	 * 
+	 * @param creditLimit
+	 * @param listOfProductsNew
+	 * @param listOfProductModelNew
+	 * @return
+	 */
 	public BundleModelAndPrice calculatePlan(Float creditLimit, List<String> listOfProductsNew,
 			List<ProductModel> listOfProductModelNew) {
 		// get the compatible plans for lead device id/ device id
@@ -260,8 +280,8 @@ public class DeviceServiceImplHelper {
 		Map<String, String> deviceMap = new HashMap<String, String>();
 
 		for (String id : listOfProductVariants) {
-			if (id.indexOf("|") != -1) {
-				deviceMap.put(id.substring(id.indexOf("|") + 1), id.substring(0, id.indexOf("|")));
+			if (id.indexOf('|') != -1) {
+				deviceMap.put(id.substring(id.indexOf('|') + 1), id.substring(0, id.indexOf('|')));
 
 			}
 		}
