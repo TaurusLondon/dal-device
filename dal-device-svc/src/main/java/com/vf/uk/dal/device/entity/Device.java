@@ -329,7 +329,7 @@ public class Device   {
  */
   public Device addMediaItem(MediaLink mediaItem) {
     if (this.media == null) {
-      this.media = new ArrayList<MediaLink>();
+      this.media = new ArrayList<>();
     }
     this.media.add(mediaItem);
     return this;

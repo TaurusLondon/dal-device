@@ -17,7 +17,11 @@ public class MediaLink   {
 
   @JsonProperty("type")
   private String type = null;
-
+  /**
+   * 
+   * @param id
+   * @return
+   */
   public MediaLink id(String id) {
     this.id = id;
     return this;
@@ -30,11 +34,18 @@ public class MediaLink   {
   public String getId() {
     return id;
   }
-
+  /**
+   * 
+   * @param id
+   */
   public void setId(String id) {
     this.id = id;
   }
-
+  /**
+   * 
+   * @param value
+   * @return
+   */
   public MediaLink value(String value) {
     this.value = value;
     return this;
@@ -47,11 +58,18 @@ public class MediaLink   {
   public String getValue() {
     return value;
   }
-
+  /**
+   * 
+   * @param value
+   */
   public void setValue(String value) {
     this.value = value;
   }
-
+  /**
+   * 
+   * @param type
+   * @return
+   */
   public MediaLink type(String type) {
     this.type = type;
     return this;
@@ -64,7 +82,10 @@ public class MediaLink   {
   public String getType() {
     return type;
   }
-
+  /**
+   * 
+   * @param type
+   */
   public void setType(String type) {
     this.type = type;
   }

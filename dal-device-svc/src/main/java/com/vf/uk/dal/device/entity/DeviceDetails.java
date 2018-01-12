@@ -236,7 +236,7 @@ public class DeviceDetails   {
  */
   public DeviceDetails addProductLinesItem(String productLinesItem) {
     if (this.productLines == null) {
-      this.productLines = new ArrayList<String>();
+      this.productLines = new ArrayList<>();
     }
     this.productLines.add(productLinesItem);
     return this;
@@ -309,7 +309,7 @@ public class DeviceDetails   {
  */
   public DeviceDetails addMerchandisingPromotionItem(MerchandisingPromotions merchandisingPromotionItem) {
     if (this.merchandisingPromotion == null) {
-      this.merchandisingPromotion = new ArrayList<MerchandisingPromotions>();
+      this.merchandisingPromotion = new ArrayList<>();
     }
     this.merchandisingPromotion.add(merchandisingPromotionItem);
     return this;
@@ -534,7 +534,7 @@ public class DeviceDetails   {
  */
   public DeviceDetails addMediaItem(MediaLink mediaItem) {
     if (this.media == null) {
-      this.media = new ArrayList<MediaLink>();
+      this.media = new ArrayList<>();
     }
     this.media.add(mediaItem);
     return this;
@@ -577,7 +577,7 @@ public class DeviceDetails   {
  */
   public DeviceDetails addSpecificationsGroupsItem(SpecificationGroup specificationsGroupsItem) {
     if (this.specificationsGroups == null) {
-      this.specificationsGroups = new ArrayList<SpecificationGroup>();
+      this.specificationsGroups = new ArrayList<>();
     }
     this.specificationsGroups.add(specificationsGroupsItem);
     return this;
