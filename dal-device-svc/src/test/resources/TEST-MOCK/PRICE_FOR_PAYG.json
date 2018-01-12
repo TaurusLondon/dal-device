@@ -1,0 +1,131 @@
+[{
+		"bundlePrice": {
+			"bundleId": null,
+			"monthlyPrice": {
+				"gross": null,
+				"net": null,
+				"vat": null
+			},
+			"monthlyDiscountPrice": {
+				"gross": null,
+				"net": null,
+				"vat": null
+			},
+			"merchandisingPromotions": null
+		},
+		"hardwarePrice": {
+			"hardwareId": "123",
+			"oneOffPrice": {
+				"gross": "20",
+				"net": "16.67",
+				"vat": "3.33"
+			},
+			"oneOffDiscountPrice": {
+				"gross": "20",
+				"net": "16.67",
+				"vat": "3.33"
+			},
+			"merchandisingPromotions": null
+		},
+		"oneOffPrice": {
+			"gross": "20",
+			"net": "16.67",
+			"vat": "3.33"
+		},
+		"oneOffDiscountPrice": {
+			"gross": "20",
+			"net": "16.67",
+			"vat": "3.33"
+		},
+		"monthlyPrice": {
+			"gross": null,
+			"net": null,
+			"vat": null
+		},
+		"monthlyDiscountPrice": {
+			"gross": null,
+			"net": null,
+			"vat": null
+		},
+		"stepPrices": [{
+			"sequence": "1",
+			"oneOffPrice": null,
+			"monthlyPrice": {
+				"gross": "52.80",
+				"net": "44.00",
+				"vat": "8.80"
+			},
+			"duration": {
+				"value": "24",
+				"uom": "Months"
+			},
+			"discountsApplicable": []
+		}],
+		"accessoryDiscountList": []
+	}, {
+		"bundlePrice": {
+			"bundleId": null,
+			"monthlyPrice": {
+				"gross": null,
+				"net": null,
+				"vat": null
+			},
+			"monthlyDiscountPrice": {
+				"gross": null,
+				"net": null,
+				"vat": null
+			},
+			"merchandisingPromotions": null
+		},
+		"hardwarePrice": {
+			"hardwareId": "124",
+			"oneOffPrice": {
+				"gross": "20",
+				"net": "16.67",
+				"vat": "3.33"
+			},
+			"oneOffDiscountPrice": {
+				"gross": "20",
+				"net": "16.67",
+				"vat": "3.33"
+			},
+			"merchandisingPromotions": null
+		},
+		"oneOffPrice": {
+			"gross": "20",
+			"net": "16.67",
+			"vat": "3.33"
+		},
+		"oneOffDiscountPrice": {
+			"gross": "20",
+			"net": "16.67",
+			"vat": "3.33"
+		},
+		"monthlyPrice": {
+			"gross": null,
+			"net": null,
+			"vat": null
+		},
+		"monthlyDiscountPrice": {
+			"gross": null,
+			"net": null,
+			"vat": null
+		},
+		"stepPrices": [{
+			"sequence": "1",
+			"oneOffPrice": null,
+			"monthlyPrice": {
+				"gross": "52.80",
+				"net": "44.00",
+				"vat": "8.80"
+			},
+			"duration": {
+				"value": "24",
+				"uom": "Months"
+			},
+			"discountsApplicable": []
+		}],
+		"accessoryDiscountList": []
+	}
+
+]

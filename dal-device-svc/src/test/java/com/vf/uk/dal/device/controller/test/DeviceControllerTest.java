@@ -1616,5 +1616,48 @@ public class DeviceControllerTest {
 					e.toString());
 		}
 	}
-	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	@JsonIgnore
+	@Test
+	public void notNullTestForcacheDeviceTileWithoutOfferCodeForPAYG()
+			throws JsonParseException, JsonMappingException, IOException {
+		List<FilterCriteria> fcList = new ArrayList<FilterCriteria>();
+		fcList.add(new FilterCriteria("groupType", FilterOperator.EQUALTO, "DEVICE_PAYG"));
+		ServiceContext.setURLParamContext(new URLParamContext("", "", fcList, null));
+		given(deviceDAOMock.getProductGroupsByType("DEVICE_PAYG")).willReturn(CommonMethods.getGroup());
+		given(deviceDAOMock.insertCacheDeviceToDb()).willReturn(CommonMethods.getCacheDeviceTileResponse());
+		Collection<CommercialProduct> a = new ArrayList<>();
+		a.add(CommonMethods.getCommercialProduct5());
+		given(deviceDAOMock.getListCommercialProductRepositoryByLeadMemberId(Matchers.anyObject())).willReturn(a);
+		given(deviceDAOMock.getJourneyTypeCompatibleOfferCodes(Matchers.anyString()))
+				.willReturn(CommonMethods.getModel());
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+		String jsonString = new String(Utility.readFile("\\TEST-MOCK\\PRICE_FOR_PAYG.json"));
+		com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[] obj = mapper.readValue(jsonString,
+				com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[].class);
+		given(registry.getRestTemplate()).willReturn(restTemplate);
+		Map<String,String> ratingmap=new HashMap<>();
+		ratingmap.put("123", "3.7");
+		ratingmap.put("23", "3.7");
+		ratingmap.put("sku124", "3.9");
+		ratingmap.put("sku24", "3.9");
+		given(deviceDAOMock.getDeviceReviewRating(Matchers.anyList()))
+					.willReturn(ratingmap);
+		List<BundleAndHardwareTuple> bundleList = new ArrayList<>();
+		RequestForBundleAndHardware requestForBundleAndHardware = new RequestForBundleAndHardware();
+		BundleAndHardwareTuple bundle = new BundleAndHardwareTuple();
+		bundle.setBundleId(null);
+		bundle.setHardwareId("123");
+		bundleList.add(bundle);
+		requestForBundleAndHardware.setBundleAndHardwareList(bundleList);
+		requestForBundleAndHardware.setOfferCode(null);
+		requestForBundleAndHardware.setPackageType(null);
+		given(restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
+				requestForBundleAndHardware, com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[].class))
+						.willReturn(obj);
+
+		deviceController.cacheDeviceTile();
+	}
 }
