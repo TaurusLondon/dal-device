@@ -3639,4 +3639,5 @@ public class DeviceServiceImpl implements DeviceService {
 		return listOfProductGroupRepository;
 
 	}
+	
 }
