@@ -54,6 +54,7 @@ import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwar
 import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks;
 import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareExtra;
 import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareExtras;
+import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareFreeData;
 import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions;
 import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareSash;
 import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareSecureNet;
@@ -191,5 +192,7 @@ public class EntityTest
  		BeanTest.test(CataloguepromotionqueriesForBundleAndHardwareAccessory.class);
  		BeanTest.test(BundleAndHardwarePromotions.class);
  		BeanTest.test(BundleAndHardwareRequest.class);
+ 		BeanTest.test( CataloguepromotionqueriesForBundleAndHardwareFreeData.class);
+ 		BeanTest.test(Error.class);
  	}
 }
