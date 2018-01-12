@@ -10,7 +10,7 @@ import java.util.List;
 public class Facet   {
   private String equipmentMake = null;
 
-  private List<Make> makeList = new ArrayList<Make>();
+  private List<Make> makeList = new ArrayList<>();
 
   /**
    * 

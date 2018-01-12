@@ -11,35 +11,39 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Duration   {
   @JsonProperty("uom")
   private String uom = null;
-
+  /**
+   * 
+   * @return
+   */
   public String getUom() {
 	return uom;
 }
-
+  /**
+   * 
+   * @param uom
+   */
 public void setUom(String uom) {
 	this.uom = uom;
 }
 
 @JsonProperty("value")
   private String value = null;
-
+/**
+ * 
+ * @param uom
+ * @return
+ */
   public Duration uom(String uom) {
     this.uom = uom;
     return this;
   }
 
-   /**
-   * Unit of measurement for duration value
-   * @return uom
-  **/
- /* public String getuom() {
-    return uom;
-  }
 
-  public void setuom(String uom) {
-    this.uom = uom;
-  }*/
-
+  /**
+   * 
+   * @param value
+   * @return
+   */
   public Duration value(String value) {
     this.value = value;
     return this;
@@ -52,7 +56,10 @@ public void setUom(String uom) {
   public String getValue() {
     return value;
   }
-
+  /**
+   * 
+   * @param value
+   */
   public void setValue(String value) {
     this.value = value;
   }

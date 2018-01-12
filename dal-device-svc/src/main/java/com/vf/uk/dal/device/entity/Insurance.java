@@ -137,7 +137,7 @@ public class Insurance   {
  */
   public Insurance addSpecsGroupItem(SpecificationGroup specsGroupItem) {
     if (this.specsGroup == null) {
-      this.specsGroup = new ArrayList<SpecificationGroup>();
+      this.specsGroup = new ArrayList<>();
     }
     this.specsGroup.add(specsGroupItem);
     return this;
@@ -180,7 +180,7 @@ public class Insurance   {
  */
 	  public Insurance addMerchandisingMediaItem(MediaLink merchandisingMediaItem) {
 	    if (this.merchandisingMedia == null) {
-	      this.merchandisingMedia = new ArrayList<MediaLink>();
+	      this.merchandisingMedia = new ArrayList<>();
 	    }
 	    this.merchandisingMedia.add(merchandisingMediaItem);
 	    return this;

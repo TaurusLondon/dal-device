@@ -42,11 +42,17 @@ public class CataloguepromotionqueriesForBundleAndHardwareDataAllowances {
 	private List<String> packageType = new ArrayList<>();
 
 	private List<String> footNotes = new ArrayList<>();
-
+/**
+ * 
+ * @return
+ */
 	public List<String> getFootNotes() {
 		return footNotes;
 	}
-
+/**
+ * 
+ * @param footNotes
+ */
 	public void setFootNotes(List<String> footNotes) {
 		this.footNotes = footNotes;
 	}

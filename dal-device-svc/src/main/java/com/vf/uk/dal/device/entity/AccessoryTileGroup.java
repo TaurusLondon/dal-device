@@ -72,7 +72,7 @@ public class AccessoryTileGroup   {
    */
   public AccessoryTileGroup addAccessoriesItem(Accessory accessoriesItem) {
     if (this.accessories == null) {
-      this.accessories = new ArrayList<Accessory>();
+      this.accessories = new ArrayList<>();
     }
     this.accessories.add(accessoriesItem);
     return this;

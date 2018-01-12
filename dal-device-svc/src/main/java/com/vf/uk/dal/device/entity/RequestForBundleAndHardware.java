@@ -70,7 +70,7 @@ public RequestForBundleAndHardware bundleAndHardwareList(List<BundleAndHardwareT
  */
   public RequestForBundleAndHardware addBundleAndHardwareListItem(BundleAndHardwareTuple bundleAndHardwareListItem) {
     if (this.bundleAndHardwareList == null) {
-      this.bundleAndHardwareList = new ArrayList<BundleAndHardwareTuple>();
+      this.bundleAndHardwareList = new ArrayList<>();
     }
     this.bundleAndHardwareList.add(bundleAndHardwareListItem);
     return this;

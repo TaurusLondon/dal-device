@@ -96,7 +96,7 @@ public class Asset {
 
 	private String uomCode = null;
 
-	private List<Attributes> attributes = new ArrayList<Attributes>();
+	private List<Attributes> attributes = new ArrayList<>();
 
 	/**
 	 * 

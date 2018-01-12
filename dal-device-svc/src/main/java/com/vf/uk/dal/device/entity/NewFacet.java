@@ -65,7 +65,7 @@ public class NewFacet   {
  */
   public NewFacet addFacetListItem(FacetWithCount facetListItem) {
     if (this.facetList == null) {
-      this.facetList = new ArrayList<FacetWithCount>();
+      this.facetList = new ArrayList<>();
     }
     this.facetList.add(facetListItem);
     return this;
