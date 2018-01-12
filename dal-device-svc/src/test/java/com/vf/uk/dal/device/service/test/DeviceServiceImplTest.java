@@ -668,7 +668,7 @@ public class DeviceServiceImplTest
 		iLSPriceMap.put("093353", CommonMethods.getOfferAppliedPrice());
 		DevicePreCalculatedData	productGroupForDeviceListing=DaoUtils
 		.convertBundleHeaderForDeviceToProductGroupForDeviceListing("093353","leadPlanId","groupname"
-				,"groupId", CommonMethods.getPrice(), CommonMethods.getleadMemberMap(),iLSPriceMap,CommonMethods.getleadMemberMap(),"upgradeLeadPlanId");
+				,"groupId", CommonMethods.getPrice(), CommonMethods.getleadMemberMap(),iLSPriceMap,CommonMethods.getleadMemberMap(),"upgradeLeadPlanId",Constants.STRING_DEVICE_PAYM);
 
 		Assert.assertNotNull(productGroupForDeviceListing);
 	}
@@ -679,7 +679,7 @@ public class DeviceServiceImplTest
 		iLSPriceMap.put("093353", CommonMethods.getOfferAppliedPrice());
 		DevicePreCalculatedData	productGroupForDeviceListing=DaoUtils
 		.convertBundleHeaderForDeviceToProductGroupForDeviceListing("093353",null,"groupname"
-				,"groupId", CommonMethods.getPrice(),CommonMethods.getleadMemberMap(),iLSPriceMap,CommonMethods.getleadMemberMap(),null);
+				,"groupId", CommonMethods.getPrice(),CommonMethods.getleadMemberMap(),iLSPriceMap,CommonMethods.getleadMemberMap(),null,Constants.STRING_DEVICE_PAYG);
 
 		Assert.assertNotNull(productGroupForDeviceListing);
 	}
