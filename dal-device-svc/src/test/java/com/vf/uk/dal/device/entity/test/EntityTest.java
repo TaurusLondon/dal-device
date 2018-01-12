@@ -193,6 +193,6 @@ public class EntityTest
  		BeanTest.test(BundleAndHardwarePromotions.class);
  		BeanTest.test(BundleAndHardwareRequest.class);
  		BeanTest.test( CataloguepromotionqueriesForBundleAndHardwareFreeData.class);
- 		BeanTest.test(Error.class);
+ 		
  	}
 }
