@@ -50,7 +50,11 @@ public class BundleAndHardwarePromotions {
   
   private List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccForHardware = null;
   
-  
+  /**
+   * 
+   * @param bundleId
+   * @return
+   */
   public BundleAndHardwarePromotions bundleId(String bundleId) {
     this.bundleId = bundleId;
     return this;
@@ -63,11 +67,18 @@ public class BundleAndHardwarePromotions {
   public String getBundleId() {
     return bundleId;
   }
-
+/**
+ * 
+ * @param bundleId
+ */
   public void setBundleId(String bundleId) {
     this.bundleId = bundleId;
   }
-
+/**
+ * 
+ * @param hardwareId
+ * @return
+ */
   public BundleAndHardwarePromotions hardwareId(String hardwareId) {
     this.hardwareId = hardwareId;
     return this;
@@ -80,16 +91,27 @@ public class BundleAndHardwarePromotions {
   public String getHardwareId() {
     return hardwareId;
   }
-
+/**
+ * 
+ * @param hardwareId
+ */
   public void setHardwareId(String hardwareId) {
     this.hardwareId = hardwareId;
   }
-
+/**
+ * 
+ * @param sashBannerForHardware
+ * @return
+ */
   public BundleAndHardwarePromotions sashBannerForHardware(List<CataloguepromotionqueriesForHardwareSash> sashBannerForHardware) {
     this.sashBannerForHardware = sashBannerForHardware;
     return this;
   }
-
+/**
+ * 
+ * @param sashBannerForHardwareItem
+ * @return
+ */
   public BundleAndHardwarePromotions addSashBannerForHardwareItem(CataloguepromotionqueriesForHardwareSash sashBannerForHardwareItem) {
     if (this.sashBannerForHardware == null) {
       this.sashBannerForHardware = new ArrayList<>();
@@ -105,16 +127,27 @@ public class BundleAndHardwarePromotions {
   public List<CataloguepromotionqueriesForHardwareSash> getSashBannerForHardware() {
     return sashBannerForHardware;
   }
-
+/**
+ * 
+ * @param sashBannerForHardware
+ */
   public void setSashBannerForHardware(List<CataloguepromotionqueriesForHardwareSash> sashBannerForHardware) {
     this.sashBannerForHardware = sashBannerForHardware;
   }
-
+/**
+ * 
+ * @param freeExtras
+ * @return
+ */
   public BundleAndHardwarePromotions freeExtras(List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtras) {
     this.freeExtras = freeExtras;
     return this;
   }
-
+/**
+ * 
+ * @param freeExtrasItem
+ * @return
+ */
   public BundleAndHardwarePromotions addFreeExtrasItem(CataloguepromotionqueriesForBundleAndHardwareExtras freeExtrasItem) {
     if (this.freeExtras == null) {
       this.freeExtras = new ArrayList<>();
@@ -130,16 +163,27 @@ public class BundleAndHardwarePromotions {
   public List<CataloguepromotionqueriesForBundleAndHardwareExtras> getFreeExtras() {
     return freeExtras;
   }
-
+/**
+ * 
+ * @param freeExtras
+ */
   public void setFreeExtras(List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtras) {
     this.freeExtras = freeExtras;
   }
-
+/**
+ * 
+ * @param freeAccessory
+ * @return
+ */
   public BundleAndHardwarePromotions freeAccessory(List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccessory) {
     this.freeAccessory = freeAccessory;
     return this;
   }
-
+/**
+ * 
+ * @param freeAccessoryItem
+ * @return
+ */
   public BundleAndHardwarePromotions addFreeAccessoryItem(CataloguepromotionqueriesForBundleAndHardwareAccessory freeAccessoryItem) {
     if (this.freeAccessory == null) {
       this.freeAccessory = new ArrayList<>();
@@ -155,16 +199,27 @@ public class BundleAndHardwarePromotions {
   public List<CataloguepromotionqueriesForBundleAndHardwareAccessory> getFreeAccessory() {
     return freeAccessory;
   }
-
+/**
+ * 
+ * @param freeAccessory
+ */
   public void setFreeAccessory(List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccessory) {
     this.freeAccessory = freeAccessory;
   }
-
+/**
+ * 
+ * @param planCouplingPromotions
+ * @return
+ */
   public BundleAndHardwarePromotions planCouplingPromotions(List<CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions> planCouplingPromotions) {
     this.planCouplingPromotions = planCouplingPromotions;
     return this;
   }
-
+/**
+ * 
+ * @param planCouplingPromotionsItem
+ * @return
+ */
   public BundleAndHardwarePromotions addPlanCouplingPromotionsItem(CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions planCouplingPromotionsItem) {
     if (this.planCouplingPromotions == null) {
       this.planCouplingPromotions = new ArrayList<>();
@@ -180,16 +235,27 @@ public class BundleAndHardwarePromotions {
   public List<CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions> getPlanCouplingPromotions() {
     return planCouplingPromotions;
   }
-
+/**
+ * 
+ * @param planCouplingPromotions
+ */
   public void setPlanCouplingPromotions(List<CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions> planCouplingPromotions) {
     this.planCouplingPromotions = planCouplingPromotions;
   }
-
+/**
+ * 
+ * @param dataAllowances
+ * @return
+ */
   public BundleAndHardwarePromotions dataAllowances(List<CataloguepromotionqueriesForBundleAndHardwareDataAllowances> dataAllowances) {
     this.dataAllowances = dataAllowances;
     return this;
   }
-
+/**
+ * 
+ * @param dataAllowancesItem
+ * @return
+ */
   public BundleAndHardwarePromotions addDataAllowancesItem(CataloguepromotionqueriesForBundleAndHardwareDataAllowances dataAllowancesItem) {
     if (this.dataAllowances == null) {
       this.dataAllowances = new ArrayList<>();
@@ -205,16 +271,27 @@ public class BundleAndHardwarePromotions {
   public List<CataloguepromotionqueriesForBundleAndHardwareDataAllowances> getDataAllowances() {
     return dataAllowances;
   }
-
+/**
+ * 
+ * @param dataAllowances
+ */
   public void setDataAllowances(List<CataloguepromotionqueriesForBundleAndHardwareDataAllowances> dataAllowances) {
     this.dataAllowances = dataAllowances;
   }
-
+/**
+ * 
+ * @param entertainmentPacks
+ * @return
+ */
   public BundleAndHardwarePromotions entertainmentPacks(List<CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks> entertainmentPacks) {
     this.entertainmentPacks = entertainmentPacks;
     return this;
   }
-
+/**
+ * 
+ * @param entertainmentPacksItem
+ * @return
+ */
   public BundleAndHardwarePromotions addEntertainmentPacksItem(CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks entertainmentPacksItem) {
     if (this.entertainmentPacks == null) {
       this.entertainmentPacks = new ArrayList<>();
@@ -230,16 +307,27 @@ public class BundleAndHardwarePromotions {
   public List<CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks> getEntertainmentPacks() {
     return entertainmentPacks;
   }
-
+/**
+ * 
+ * @param entertainmentPacks
+ */
   public void setEntertainmentPacks(List<CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks> entertainmentPacks) {
     this.entertainmentPacks = entertainmentPacks;
   }
-
+/**
+ * 
+ * @param sashBannerForPlan
+ * @return
+ */
   public BundleAndHardwarePromotions sashBannerForPlan(List<CataloguepromotionqueriesForBundleAndHardwareSash> sashBannerForPlan) {
     this.sashBannerForPlan = sashBannerForPlan;
     return this;
   }
-
+/**
+ * 
+ * @param sashBannerForPlanItem
+ * @return
+ */
   public BundleAndHardwarePromotions addSashBannerForPlanItem(CataloguepromotionqueriesForBundleAndHardwareSash sashBannerForPlanItem) {
     if (this.sashBannerForPlan == null) {
       this.sashBannerForPlan = new ArrayList<>();
@@ -255,50 +343,83 @@ public class BundleAndHardwarePromotions {
   public List<CataloguepromotionqueriesForBundleAndHardwareSash> getSashBannerForPlan() {
     return sashBannerForPlan;
   }
-
+/**
+ * 
+ * @param sashBannerForPlan
+ */
   public void setSashBannerForPlan(List<CataloguepromotionqueriesForBundleAndHardwareSash> sashBannerForPlan) {
     this.sashBannerForPlan = sashBannerForPlan;
   }
 
-
+/**
+ * 
+ * @return
+ */
   public List<CataloguepromotionqueriesForBundleAndHardwareSecureNet> getSecureNet() {
 	return secureNet;
 }
-
+/**
+ * 
+ * @param secureNet
+ */
 public void setSecureNet(List<CataloguepromotionqueriesForBundleAndHardwareSecureNet> secureNet) {
 	this.secureNet = secureNet;
 }
-
+/**
+ * 
+ * @return
+ */
 public List<CataloguepromotionqueriesForBundleAndHardwareExtras> getFreeExtrasForPlan() {
 	return freeExtrasForPlan;
 }
-
+/**
+ * 
+ * @param freeExtrasForPlan
+ */
 public void setFreeExtrasForPlan(List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtrasForPlan) {
 	this.freeExtrasForPlan = freeExtrasForPlan;
 }
 
 
-
+/**
+ * 
+ * @return
+ */
 public List<CataloguepromotionqueriesForBundleAndHardwareAccessory> getFreeAccForPlan() {
 	return freeAccForPlan;
 }
-
+/**
+ * 
+ * @param freeAccForPlan
+ */
 public void setFreeAccForPlan(List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccForPlan) {
 	this.freeAccForPlan = freeAccForPlan;
 }
-
+/**
+ * 
+ * @return
+ */
 public List<CataloguepromotionqueriesForBundleAndHardwareExtras> getFreeExtrasForHardware() {
 	return freeExtrasForHardware;
 }
-
+/**
+ * 
+ * @param freeExtrasForHardware
+ */
 public void setFreeExtrasForHardware(List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtrasForHardware) {
 	this.freeExtrasForHardware = freeExtrasForHardware;
 }
-
+/**
+ * 
+ * @return
+ */
 public List<CataloguepromotionqueriesForBundleAndHardwareAccessory> getFreeAccForHardware() {
 	return freeAccForHardware;
 }
-
+/**
+ * 
+ * @param freeAccForHardware
+ */
 public void setFreeAccForHardware(List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccForHardware) {
 	this.freeAccForHardware = freeAccForHardware;
 }

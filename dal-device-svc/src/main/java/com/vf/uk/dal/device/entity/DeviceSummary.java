@@ -637,7 +637,7 @@ public class DeviceSummary {
 	 */
 	public DeviceSummary addMerchandisingMediaItem(MediaLink merchandisingMediaItem) {
 		if (this.merchandisingMedia == null) {
-			this.merchandisingMedia = new ArrayList<MediaLink>();
+			this.merchandisingMedia = new ArrayList<>();
 		}
 		this.merchandisingMedia.add(merchandisingMediaItem);
 		return this;

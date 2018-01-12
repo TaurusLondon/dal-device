@@ -17,7 +17,7 @@ public class StepPricingInfo   {
 
   private Duration duration = null;
 
-  private List<UUID> discountSkuIds = new ArrayList<UUID>();
+  private List<UUID> discountSkuIds = new ArrayList<>();
 /**
  * 
  * @param sequence

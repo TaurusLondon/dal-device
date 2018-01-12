@@ -54,15 +54,25 @@ public class Discounts {
   
   @JsonIgnore
   private DiscountPrice discountPrice=null;
-
+/**
+ * 
+ * @return
+ */
 public DiscountPrice getDiscountPrice() {
 	return discountPrice;
 }
-
+/**
+ * 
+ * @param discountPrice
+ */
 public void setDiscountPrice(DiscountPrice discountPrice) {
 	this.discountPrice = discountPrice;
 }
-
+/**
+ * 
+ * @param productLineId
+ * @return
+ */
 public Discounts productLineId(String productLineId) {
     this.productLineId = productLineId;
     return this;
@@ -76,11 +86,18 @@ public Discounts productLineId(String productLineId) {
   public String getProductLineId() {
     return productLineId;
   }
-
+/**
+ * 
+ * @param productLineId
+ */
   public void setProductLineId(String productLineId) {
     this.productLineId = productLineId;
   }
-
+  /**
+   * 
+   * @param action
+   * @return
+   */
   public Discounts action(String action) {
     this.action = action;
     return this;
@@ -94,11 +111,18 @@ public Discounts productLineId(String productLineId) {
   public String getAction() {
     return action;
   }
-
+  /**
+   * 
+   * @param action
+   */
   public void setAction(String action) {
     this.action = action;
   }
-
+  /**
+   * 
+   * @param skuId
+   * @return
+   */
   public Discounts skuId(String skuId) {
     this.skuId = skuId;
     return this;
@@ -112,11 +136,18 @@ public Discounts productLineId(String productLineId) {
   public String getSkuId() {
     return skuId;
   }
-
+  /**
+   * 
+   * @param skuId
+   */
   public void setSkuId(String skuId) {
     this.skuId = skuId;
   }
-
+  /**
+   * 
+   * @param tag
+   * @return
+   */
   public Discounts tag(String tag) {
     this.tag = tag;
     return this;
@@ -130,11 +161,18 @@ public Discounts productLineId(String productLineId) {
   public String getTag() {
     return tag;
   }
-
+  /**
+   * 
+   * @param tag
+   */
   public void setTag(String tag) {
     this.tag = tag;
   }
-
+  /**
+   * 
+   * @param label
+   * @return
+   */
   public Discounts label(String label) {
     this.label = label;
     return this;
@@ -148,11 +186,18 @@ public Discounts productLineId(String productLineId) {
   public String getLabel() {
     return label;
   }
-
+  /**
+   * 
+   * @param label
+   */
   public void setLabel(String label) {
     this.label = label;
   }
-
+  /**
+   * 
+   * @param tenure
+   * @return
+   */
   public Discounts tenure(String tenure) {
     this.tenure = tenure;
     return this;
@@ -166,11 +211,18 @@ public Discounts productLineId(String productLineId) {
   public String getTenure() {
     return tenure;
   }
-
+  /**
+   * 
+   * @param tenure
+   */
   public void setTenure(String tenure) {
     this.tenure = tenure;
   }
-
+  /**
+   * 
+   * @param duration
+   * @return
+   */
   public Discounts duration(String duration) {
     this.duration = duration;
     return this;
@@ -184,11 +236,18 @@ public Discounts productLineId(String productLineId) {
   public String getDuration() {
     return duration;
   }
-
+  /**
+   * 
+   * @param duration
+   */
   public void setDuration(String duration) {
     this.duration = duration;
   }
-
+  /**
+   * 
+   * @param confirmedRequired
+   * @return
+   */
   public Discounts confirmedRequired(String confirmedRequired) {
     this.confirmedRequired = confirmedRequired;
     return this;
@@ -202,16 +261,27 @@ public Discounts productLineId(String productLineId) {
   public String getConfirmedRequired() {
     return confirmedRequired;
   }
-
+  /**
+   * 
+   * @param confirmedRequired
+   */
   public void setConfirmedRequired(String confirmedRequired) {
     this.confirmedRequired = confirmedRequired;
   }
-
+  /**
+   * 
+   * @param merchandisingMedia
+   * @return
+   */
   public Discounts merchandisingMedia(List<MediaLink> merchandisingMedia) {
     this.merchandisingMedia = merchandisingMedia;
     return this;
   }
-
+  /**
+   * 
+   * @param merchandisingMediaItem
+   * @return
+   */
   public Discounts addMerchandisingMediaItem(MediaLink merchandisingMediaItem) {
     this.merchandisingMedia.add(merchandisingMediaItem);
     return this;
@@ -225,7 +295,10 @@ public Discounts productLineId(String productLineId) {
   public List<MediaLink> getMerchandisingMedia() {
     return merchandisingMedia;
   }
-
+  /**
+   * 
+   * @param merchandisingMedia
+   */
   public void setMerchandisingMedia(List<MediaLink> merchandisingMedia) {
     this.merchandisingMedia = merchandisingMedia;
   }

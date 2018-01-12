@@ -3,7 +3,11 @@ package com.vf.uk.dal.utility.entity;
 import java.util.Objects;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * 
+ * RecommendedProduct
+ *
+ */
 public class RecommendedProduct {
   private String typeCode = null;
 
@@ -20,112 +24,197 @@ public class RecommendedProduct {
   private String description = null;
 
   private Boolean isCompatible = null;
-
+  /**
+   * 
+   * @param typeCode
+   * @return
+   */
   public RecommendedProduct typeCode(String typeCode) {
     this.typeCode = typeCode;
     return this;
   }
-
+  /**
+   * 
+   * @return
+   */
   public String getTypeCode() {
     return typeCode;
   }
-
+  /**
+   * 
+   * @param typeCode
+   */
   public void setTypeCode(String typeCode) {
     this.typeCode = typeCode;
   }
-
+  /**
+   * 
+   * @param priorityCode
+   * @return
+   */
   public RecommendedProduct priorityCode(String priorityCode) {
     this.priorityCode = priorityCode;
     return this;
   }
-
+  /**
+   * 
+   * @return
+   */
   public String getPriorityCode() {
     return priorityCode;
   }
-
+  /**
+   * 
+   * @param priorityCode
+   */
   public void setPriorityCode(String priorityCode) {
     this.priorityCode = priorityCode;
   }
-
+  /**
+   * 
+   * @param id
+   * @return
+   */
   public RecommendedProduct id(String id) {
     this.id = id;
     return this;
   }
-
+  /**
+   * 
+   * @return
+   */
   public String getId() {
     return id;
   }
-
+  /**
+   * 
+   * @param id
+   */
   public void setId(String id) {
     this.id = id;
   }
-
+  /**
+   * 
+   * @param content
+   * @return
+   */
   public RecommendedProduct content(String content) {
     this.content = content;
     return this;
   }
-
+  /**
+   * 
+   * @return
+   */
   public String getContent() {
     return content;
   }
-
+  /**
+   * 
+   * @param content
+   */
   public void setContent(String content) {
     this.content = content;
   }
-
+  /**
+   * 
+   * @param recommendationReasons
+   * @return
+   */
   public RecommendedProduct recommendationReasons(List<Reason> recommendationReasons) {
     this.recommendationReasons = recommendationReasons;
     return this;
   }
-
+  /**
+   * 
+   * @param recommendationReasonsItem
+   * @return
+   */
   public RecommendedProduct addRecommendationReasonsItem(Reason recommendationReasonsItem) {
     this.recommendationReasons.add(recommendationReasonsItem);
     return this;
   }
-
+  /**
+   * 
+   * @return
+   */
   public List<Reason> getRecommendationReasons() {
     return recommendationReasons;
   }
-
+  /**
+   * 
+   * @param recommendationReasons
+   */
   public void setRecommendationReasons(List<Reason> recommendationReasons) {
     this.recommendationReasons = recommendationReasons;
   }
-
+  /**
+   * 
+   * @param anyTimeUpgradeAmount
+   * @return
+   */
   public RecommendedProduct anyTimeUpgradeAmount(String anyTimeUpgradeAmount) {
     this.anyTimeUpgradeAmount = anyTimeUpgradeAmount;
     return this;
   }
-
+  /**
+   * 
+   * @return
+   */
   public String getAnyTimeUpgradeAmount() {
     return anyTimeUpgradeAmount;
   }
-
+  /**
+   * 
+   * @param anyTimeUpgradeAmount
+   */
   public void setAnyTimeUpgradeAmount(String anyTimeUpgradeAmount) {
     this.anyTimeUpgradeAmount = anyTimeUpgradeAmount;
   }
-
+  /**
+   * /**
+   * @param description
+   * @return
+   */
   public RecommendedProduct description(String description) {
     this.description = description;
     return this;
   }
 
+  /**
+   * 
+   * @return
+   */
   public String getDescription() {
     return description;
   }
-
+  /**
+   * 
+   * @param description
+   */
   public void setDescription(String description) {
     this.description = description;
   }
-
+  /**
+   * 
+   * @param isCompatible
+   * @return
+   */
   public RecommendedProduct isCompatible(Boolean isCompatible) {
     this.isCompatible = isCompatible;
     return this;
   }
-
+  /**
+   * 
+   * @return
+   */
   public Boolean getIsCompatible() {
     return isCompatible;
   }
-
+  /**
+   * 
+   * @param isCompatible
+   */
   public void setIsCompatible(Boolean isCompatible) {
     this.isCompatible = isCompatible;
   }

@@ -2,7 +2,11 @@ package com.vf.uk.dal.utility.solr.entity;
 
 import java.util.List;
 import java.util.Objects;
-
+/**
+ * 
+ * DevicePreCalculatedData
+ *
+ */
 public class DevicePreCalculatedData {
 	private String deviceId;
 
@@ -33,175 +37,306 @@ public class DevicePreCalculatedData {
 	private String nonUpgradeLeadDeviceId;
 	
 	
-	
+	/**
+	 * 
+	 * @param minimumCost
+	 * @return
+	 */
 	public DevicePreCalculatedData minimumCost(String minimumCost) {
 		this.minimumCost = minimumCost;
 		return this;
 	}
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public String getMinimumCost() {
 		return minimumCost;
 	}
-
+	/**
+	 * 
+	 * @param minimumCost
+	 */
 	public void setMinimumCost(String minimumCost) {
 		this.minimumCost = minimumCost;
 	}
-
+	/**
+	 * 
+	 * @param deviceId
+	 */
 	public void setDeviceId(String deviceId) {
 		this.deviceId = deviceId;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getDeviceId() {
 		return this.deviceId;
 	}
-
+	/**
+	 * 
+	 * @param rating
+	 */
 	public void setRating(Float rating) {
 		this.rating = rating;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public Float getRating() {
 		return this.rating;
 	}
-
+	/**
+	 * 
+	 * @param media
+	 */
 	public void setMedia(List<Media> media) {
 		this.media = media;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public List<Media> getMedia() {
 		return this.media;
 	}
-
+	/**
+	 * 
+	 * @param priceInfo
+	 */
 	public void setPriceInfo(PriceInfo priceInfo) {
 		this.priceInfo = priceInfo;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public PriceInfo getPriceInfo() {
 		return this.priceInfo;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getNonUpgradeLeadPlanId() {
 		return nonUpgradeLeadPlanId;
 	}
-
+	/**
+	 * 
+	 * @param nonUpgradeLeadPlanId
+	 */
 	public void setNonUpgradeLeadPlanId(String nonUpgradeLeadPlanId) {
 		this.nonUpgradeLeadPlanId = nonUpgradeLeadPlanId;
 	}
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public String getUpgradeLeadPlanId() {
 		return upgradeLeadPlanId;
 	}
-
+	/**
+	 * 
+	 * @param upgradeLeadPlanId
+	 */
 	public void setUpgradeLeadPlanId(String upgradeLeadPlanId) {
 		this.upgradeLeadPlanId = upgradeLeadPlanId;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getProductGroupName() {
 		return productGroupName;
 	}
-
+	/**
+	 * 
+	 * @param productGroupName
+	 */
 	public void setProductGroupName(String productGroupName) {
 		this.productGroupName = productGroupName;
 	}
-
+	/**
+	 * /**
+	 * 
+	 * @return
+	 */
 	public String getProductGroupId() {
 		return productGroupId;
 	}
-
+	/**
+	 * 
+	 * @param productGroupId
+	 */
 	public void setProductGroupId(String productGroupId) {
 		this.productGroupId = productGroupId;
 	}
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public String getUpgradeLeadDeviceId()
 	  {
 	    return this.upgradeLeadDeviceId;
 	  }
-	  
+	/**
+	 *   
+	 * @param upgradeLeadDeviceId
+	 */
 	  public void setUpgradeLeadDeviceId(String upgradeLeadDeviceId)
 	  {
 	    this.upgradeLeadDeviceId = upgradeLeadDeviceId;
 	  }
-	  
+	  /**
+	   *   
+	   * @return
+	   */
 	  public String getNonUpgradeLeadDeviceId()
 	  {
 	    return this.nonUpgradeLeadDeviceId;
 	  }
-	  
+	  /**
+	   * 	  
+	   * @param nonUpgradeLeadDeviceId
+	   */
 	  public void setNonUpgradeLeadDeviceId(String nonUpgradeLeadDeviceId)
 	  {
 	    this.nonUpgradeLeadDeviceId = nonUpgradeLeadDeviceId;
 	  }
-	  
+	  /**
+	   * 	  
+	   * @return
+	   */
 	  	public String getIsLeadMember() {
 			return isLeadMember;
 		}
 
+	  	/**
+	  	 * 
+	  	 * @param isLeadMember
+	  	 */
 		public void setIsLeadMember(String isLeadMember) {
 			this.isLeadMember = isLeadMember;
 		}
-
+		/**
+		 * 
+		 * @return
+		 */
 		public String getLeadDeviceId() {
 			return leadDeviceId;
 		}
-
+		/**
+		 * 
+		 * @param leadDeviceId
+		 */
 		public void setLeadDeviceId(String leadDeviceId) {
 			this.leadDeviceId = leadDeviceId;
 		}
-		
+		/**
+		 * 		
+		 * @return
+		 */
 		public String getLeadPlanId() {
 			return leadPlanId;
 		}
-
+		/**
+		 * 
+		 * @param leadPlanId
+		 */
 		public void setLeadPlanId(String leadPlanId) {
 			this.leadPlanId = leadPlanId;
 		}
 
-	
+		/**
+		 * 
+		 * @param deviceId
+		 * @return
+		 */
 	public DevicePreCalculatedData deviceId(String deviceId) {
 		this.deviceId = deviceId;
 		return this;
 	}
-
+	/**
+	 * 
+	 * @param rating
+	 * @return
+	 */
 	public DevicePreCalculatedData rating(Float rating) {
 		this.rating = rating;
 		return this;
 	}
-
+	/**
+	 * /**
+	 * @param nonUpgradeLeadPlanId
+	 * @return
+	 */
 	public DevicePreCalculatedData nonUpgradeLeadPlanId(String nonUpgradeLeadPlanId) {
 		this.nonUpgradeLeadPlanId = nonUpgradeLeadPlanId;
 		return this;
 	}
-	
+
+	/**
+	 * 
+	 * @param upgradeLeadPlanId
+	 * @return
+	 */
 	public DevicePreCalculatedData upgradeLeadPlanId(String upgradeLeadPlanId) {
 		this.upgradeLeadPlanId = upgradeLeadPlanId;
 		return this;
 	}
-
+	/**
+	 * 
+	 * @param productGroupName
+	 * @return
+	 */
 
 	public DevicePreCalculatedData productGroupName(String productGroupName) {
 		this.productGroupName = productGroupName;
 		return this;
 	}
-
+	/**
+	 * 
+	 * @param productGroupId
+	 * @return
+	 */
 	public DevicePreCalculatedData productGroupId(String productGroupId) {
 		this.productGroupId = productGroupId;
 		return this;
 	}
-
+	/**
+	 * 
+	 * @param media
+	 * @return
+	 */
 	public DevicePreCalculatedData media(List<Media> media) {
 		this.media = media;
 		return this;
 	}
-
+	/**
+	 * 
+	 * @param priceInfo
+	 * @return
+	 */
 	public DevicePreCalculatedData priceInfo(PriceInfo priceInfo) {
 		this.priceInfo = priceInfo;
 		return this;
 	}
-	
+	/**
+	 * 	
+	 * @param upgradeLeadDeviceId
+	 * @return
+	 */
 	public DevicePreCalculatedData upgradeLeadDeviceId(String upgradeLeadDeviceId) {
 		this.upgradeLeadDeviceId = upgradeLeadDeviceId;
 		return this;
 	}
-	
+	/**
+	 * 
+	 * @param nonUpgradeLeadDeviceId
+	 * @return
+	 */
 	public DevicePreCalculatedData nonUpgradeLeadDeviceId(String nonUpgradeLeadDeviceId) {
 		this.nonUpgradeLeadDeviceId = nonUpgradeLeadDeviceId;
 		return this;

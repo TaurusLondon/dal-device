@@ -22,6 +22,15 @@ import com.vf.uk.dal.utility.entity.PriceForBundleAndHardware;
 public class DeviceUtils {
 	static Double selectedPlanAlwnce = null;
 
+	/**
+	 * 
+	 * @param bndlDtls
+	 * @param allowedRecurringPriceLimit
+	 * @param bundleId
+	 * @param plansLimit
+	 * @param bndlDtlsWithoutFullDuration
+	 * @return
+	 */
 	public static BundleDetails getSimilarPlanList(BundleDetails bndlDtls, String allowedRecurringPriceLimit,
 			String bundleId, String plansLimit, BundleDetails bndlDtlsWithoutFullDuration) {
 		BundleDetails bundleDeatils = new BundleDetails();

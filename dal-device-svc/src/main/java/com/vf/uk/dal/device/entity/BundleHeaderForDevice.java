@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * BundleHeaderForDevice
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-03-27T13:35:59.151Z")
 
 public class BundleHeaderForDevice   {
   @JsonProperty("skuId")

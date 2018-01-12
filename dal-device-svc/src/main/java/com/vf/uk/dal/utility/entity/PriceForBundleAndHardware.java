@@ -31,7 +31,11 @@ public class PriceForBundleAndHardware   {
 
   @JsonProperty("stepPrices")
   private List<StepPricingInfo> stepPrices = new ArrayList<>();
-
+  /**
+   * 
+   * @param bundlePrice
+   * @return
+   */
   public PriceForBundleAndHardware bundlePrice(BundlePrice bundlePrice) {
     this.bundlePrice = bundlePrice;
     return this;
@@ -45,11 +49,18 @@ public class PriceForBundleAndHardware   {
   public BundlePrice getBundlePrice() {
     return bundlePrice;
   }
-
+  /**
+   * 
+   * @param bundlePrice
+   */
   public void setBundlePrice(BundlePrice bundlePrice) {
     this.bundlePrice = bundlePrice;
   }
-
+  /**
+   * 
+   * @param hardwarePrice
+   * @return
+   */
   public PriceForBundleAndHardware hardwarePrice(HardwarePrice hardwarePrice) {
     this.hardwarePrice = hardwarePrice;
     return this;
@@ -63,11 +74,18 @@ public class PriceForBundleAndHardware   {
   public HardwarePrice getHardwarePrice() {
     return hardwarePrice;
   }
-
+  /**
+   * 
+   * @param hardwarePrice
+   */
   public void setHardwarePrice(HardwarePrice hardwarePrice) {
     this.hardwarePrice = hardwarePrice;
   }
-
+  /**
+   * 
+   * @param oneOffPrice
+   * @return
+   */
   public PriceForBundleAndHardware oneOffPrice(Price oneOffPrice) {
     this.oneOffPrice = oneOffPrice;
     return this;
@@ -81,11 +99,19 @@ public class PriceForBundleAndHardware   {
   public Price getOneOffPrice() {
     return oneOffPrice;
   }
-
+  /**
+   * /**
+   * 
+   * @param oneOffPrice
+   */
   public void setOneOffPrice(Price oneOffPrice) {
     this.oneOffPrice = oneOffPrice;
   }
-
+  /**
+   * 
+   * @param oneOffDiscountPrice
+   * @return
+   */
   public PriceForBundleAndHardware oneOffDiscountPrice(Price oneOffDiscountPrice) {
     this.oneOffDiscountPrice = oneOffDiscountPrice;
     return this;
@@ -99,11 +125,18 @@ public class PriceForBundleAndHardware   {
   public Price getOneOffDiscountPrice() {
     return oneOffDiscountPrice;
   }
-
+  /**
+   * 
+   * @param oneOffDiscountPrice
+   */
   public void setOneOffDiscountPrice(Price oneOffDiscountPrice) {
     this.oneOffDiscountPrice = oneOffDiscountPrice;
   }
-
+  /**
+   * 
+   * @param monthlyPrice
+   * @return
+   */
   public PriceForBundleAndHardware monthlyPrice(Price monthlyPrice) {
     this.monthlyPrice = monthlyPrice;
     return this;
@@ -117,11 +150,18 @@ public class PriceForBundleAndHardware   {
   public Price getMonthlyPrice() {
     return monthlyPrice;
   }
-
+  /**
+   * 
+   * @param monthlyPrice
+   */
   public void setMonthlyPrice(Price monthlyPrice) {
     this.monthlyPrice = monthlyPrice;
   }
-
+  /**
+   * 
+   * @param monthlyDiscountPrice
+   * @return
+   */
   public PriceForBundleAndHardware monthlyDiscountPrice(Price monthlyDiscountPrice) {
     this.monthlyDiscountPrice = monthlyDiscountPrice;
     return this;
@@ -135,16 +175,27 @@ public class PriceForBundleAndHardware   {
   public Price getMonthlyDiscountPrice() {
     return monthlyDiscountPrice;
   }
-
+  /**
+   * 
+   * @param monthlyDiscountPrice
+   */
   public void setMonthlyDiscountPrice(Price monthlyDiscountPrice) {
     this.monthlyDiscountPrice = monthlyDiscountPrice;
   }
-
+  /**
+   * 
+   * @param stepPrices
+   * @return
+   */
   public PriceForBundleAndHardware stepPrices(List<StepPricingInfo> stepPrices) {
     this.stepPrices = stepPrices;
     return this;
   }
-
+  /**
+   * 
+   * @param stepPricesItem
+   * @return
+   */
   public PriceForBundleAndHardware addStepPricesItem(StepPricingInfo stepPricesItem) {
     this.stepPrices.add(stepPricesItem);
     return this;
@@ -158,7 +209,10 @@ public class PriceForBundleAndHardware   {
   public List<StepPricingInfo> getStepPrices() {
     return stepPrices;
   }
-
+  /**
+   * 
+   * @param stepPrices
+   */
   public void setStepPrices(List<StepPricingInfo> stepPrices) {
     this.stepPrices = stepPrices;
   }
