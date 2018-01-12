@@ -2067,9 +2067,6 @@ public class DaoUtils {
 			String offerCode, Map<String, String> groupNameWithProdId, Map<String, BundlePrice> bundleModelAndPriceMap,
 			Map<String, BundleAndHardwarePromotions> promotionmap, Map<String, Boolean> isLeadMemberFromSolr,
 			Map<String, List<OfferAppliedPriceModel>> withoutOfferPriceMap, String journeyType) {
-		HardwarePrice hardwarePrice;
-		Price price;
-		PriceForBundleAndHardware priceInfo;
 		List<Device> deviceList = new ArrayList<>();
 		FacetedDevice facetedDevice = new FacetedDevice();
 		// New Factes
@@ -2499,7 +2496,7 @@ public class DaoUtils {
 										}
 									}
 
-									if (StringUtils.equalsIgnoreCase(groupType, Constants.STRING_DATA_DEVICE_PAYG)
+									if (StringUtils.equalsIgnoreCase(groupType, Constants.STRING_DEVICE_PAYG)
 											&& StringUtils.isBlank(offerCode) && StringUtils.isNotBlank(journeyType)
 											&& StringUtils.equalsIgnoreCase(journeyType,
 													Constants.JOURNEY_TYPE_ACQUISITION)
