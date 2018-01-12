@@ -141,15 +141,16 @@ public class DeviceServiceImpl implements DeviceService {
 		} else if (!Validator.validateGroupType(groupType)){
 			LogHelper.error(this, "Invalid Group Type");
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_GROUP_TYPE);
-		}else if((groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG)) && (StringUtils.isNotBlank(journeyType) && 
-				!journeyType.equalsIgnoreCase(Constants.JOURNEY_TYPE_ACQUISITION))){
+		}else if(groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG)
+				&& (StringUtils.isNotBlank(journeyType) && 
+				(journeyType.equalsIgnoreCase(Constants.JOURNEY_TYPE_SECONDLINE) || journeyType.equalsIgnoreCase(Constants.JOURNEY_TYPE_UPGRADE)))){
 			LogHelper.error(this, "JourneyType is Not Compatible with given GroupType");
 			throw new ApplicationException(ExceptionMessages.INVALID_GROUP_TYPE_JOURNEY_TYPE);
+		}else if(groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG)){
+			journeyType = Constants.JOURNEY_TYPE_ACQUISITION;
 		}
-		else {
 			deviceTileList = getListOfDeviceTile_Implementation(make, model, groupType, deviceId, journeyType, creditLimit,
 					offerCode, bundleId);
-		}
 
 		return deviceTileList;
 	}
