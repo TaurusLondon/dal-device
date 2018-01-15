@@ -2274,7 +2274,7 @@ public class DeviceServiceImpl implements DeviceService {
 			}
 		} else {
 			LogHelper.error(this, "No data found for given make and mmodel :" + make + " and " + model);
-			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FOR_MAKE_AND_MODEL);
+			throw new ApplicationException(ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST);
 			}
 	}
 
