@@ -194,7 +194,7 @@ paths:
           in: query
           description: >-
             Values on which the attributes should be filtered upon. Possible
-            values are "Handset" or "Accessory".
+            values are "DEVICE_PAYM" or "DEVICE_PAYG" or "DATA_DEVICE_PAYM".
           required: true
           type: string
         - name: journeyType
