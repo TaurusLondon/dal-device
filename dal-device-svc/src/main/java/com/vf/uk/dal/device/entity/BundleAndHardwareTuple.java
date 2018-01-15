@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * BundleAndHardwareTuple
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-03-23T04:18:28.504Z")
 
 public class BundleAndHardwareTuple   {
   @JsonProperty("hardwareId")

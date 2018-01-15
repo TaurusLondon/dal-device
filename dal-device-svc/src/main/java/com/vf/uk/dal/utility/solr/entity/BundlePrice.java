@@ -1,48 +1,82 @@
 package com.vf.uk.dal.utility.solr.entity;
 
 import java.util.Objects;
-
+/**
+ * 
+ * BundlePrice
+ *
+ */
 public class BundlePrice {
 	private String bundleId;
 
 	private MonthlyPrice monthlyPrice;
 
 	private MonthlyDiscountPrice monthlyDiscountPrice;
-
+	/**
+	 * 
+	 * @param bundleId
+	 */
 	public void setBundleId(String bundleId) {
 		this.bundleId = bundleId;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getBundleId() {
 		return this.bundleId;
 	}
-
+	/**
+	 * 
+	 * @param monthlyPrice
+	 */
 	public void setMonthlyPrice(MonthlyPrice monthlyPrice) {
 		this.monthlyPrice = monthlyPrice;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public MonthlyPrice getMonthlyPrice() {
 		return this.monthlyPrice;
 	}
-
+	/**
+	 * 
+	 * @param monthlyDiscountPrice
+	 */
 	public void setMonthlyDiscountPrice(MonthlyDiscountPrice monthlyDiscountPrice) {
 		this.monthlyDiscountPrice = monthlyDiscountPrice;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public MonthlyDiscountPrice getMonthlyDiscountPrice() {
 		return this.monthlyDiscountPrice;
 	}
-
+	/**
+	 * 
+	 * @param monthlyDiscountPrice
+	 * @return
+	 */
 	public BundlePrice monthlyDiscountPrice(MonthlyDiscountPrice monthlyDiscountPrice) {
 		this.monthlyDiscountPrice = monthlyDiscountPrice;
 		return this;
 	}
-
+	/**
+	 * 
+	 * @param monthlyPrice
+	 * @return
+	 */
 	public BundlePrice monthlyPrice(MonthlyPrice monthlyPrice) {
 		this.monthlyPrice = monthlyPrice;
 		return this;
 	}
-
+	/**
+	 * 
+	 * @param bundleId
+	 * @return
+	 */
 	public BundlePrice bundleId(String bundleId) {
 		this.bundleId = bundleId;
 		return this;

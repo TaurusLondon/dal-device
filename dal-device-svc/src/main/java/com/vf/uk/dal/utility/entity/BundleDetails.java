@@ -9,12 +9,20 @@ import java.util.List;
 
 public class BundleDetails   {
   private List<BundleHeader> planList = new ArrayList<BundleHeader>();
-
+/**
+ * 
+ * @param planList
+ * @return
+ */
   public BundleDetails planList(List<BundleHeader> planList) {
     this.planList = planList;
     return this;
   }
-
+/**
+ * 
+ * @param planListItem
+ * @return
+ */
   public BundleDetails addPlanListItem(BundleHeader planListItem) {
     this.planList.add(planListItem);
     return this;
@@ -27,7 +35,10 @@ public class BundleDetails   {
   public List<BundleHeader> getPlanList() {
     return planList;
   }
-
+/**
+ * 
+ * @param planList
+ */
   public void setPlanList(List<BundleHeader> planList) {
     this.planList = planList;
   }

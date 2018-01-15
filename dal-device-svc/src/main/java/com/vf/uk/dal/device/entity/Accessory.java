@@ -183,7 +183,7 @@ public class Accessory   {
    */
   public Accessory addMerchandisingMediaItem(MediaLink merchandisingMediaItem) {
     if (this.merchandisingMedia == null) {
-      this.merchandisingMedia = new ArrayList<MediaLink>();
+      this.merchandisingMedia = new ArrayList<>();
     }
     this.merchandisingMedia.add(merchandisingMediaItem);
     return this;
@@ -261,7 +261,7 @@ public class Accessory   {
    */
   public Accessory addAttributesItem(Attributes attributesItem) {
     if (this.attributes == null) {
-      this.attributes = new ArrayList<Attributes>();
+      this.attributes = new ArrayList<>();
     }
     this.attributes.add(attributesItem);
     return this;

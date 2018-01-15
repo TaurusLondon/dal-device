@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import org.json.simple.JSONObject;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
@@ -221,4 +220,11 @@ public interface DeviceService {
 	 * @return
 	 */
 	Double getBundlePriceBasedOnDiscountDuration_Implementation(DeviceSummary deviceSummary, String discountType);
+
+	/**
+	 * 
+	 * @param groupType
+	 * @return
+	 */
+	public List<DevicePreCalculatedData> getDeviceListFromPricingForPayG(String groupType);
 }

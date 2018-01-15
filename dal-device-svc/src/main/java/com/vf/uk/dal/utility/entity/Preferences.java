@@ -1,49 +1,83 @@
 package com.vf.uk.dal.utility.entity;
 
 import java.util.Objects;
-
+/**
+ * 
+ * Preferences
+ *
+ */
 public class Preferences {
   private String name = null;
 
   private String dataTypeCode = null;
 
   private String value = null;
-
+  /**
+   * 
+   * @param name
+   * @return
+   */
   public Preferences name(String name) {
     this.name = name;
     return this;
   }
-
+  /**
+   * 
+   * @return
+   */
   public String getName() {
     return name;
   }
-
+  /**
+   * 
+   * @param name
+   */
   public void setName(String name) {
     this.name = name;
   }
-
+  /**
+   * 
+   * @param dataTypeCode
+   * @return
+   */
   public Preferences dataTypeCode(String dataTypeCode) {
     this.dataTypeCode = dataTypeCode;
     return this;
   }
-
+  /**
+   * 
+   * @return
+   */
   public String getDataTypeCode() {
     return dataTypeCode;
   }
-
+  /**
+   * 
+   * @param dataTypeCode
+   */
   public void setDataTypeCode(String dataTypeCode) {
     this.dataTypeCode = dataTypeCode;
   }
-
+  /**
+   * 
+   * @param value
+   * @return
+   */
   public Preferences value(String value) {
     this.value = value;
     return this;
   }
-
+  /**
+   * 
+   * @return
+   */
   public String getValue() {
     return value;
   }
-
+  /**
+   * 
+   * @param value
+   */
   public void setValue(String value) {
     this.value = value;
   }

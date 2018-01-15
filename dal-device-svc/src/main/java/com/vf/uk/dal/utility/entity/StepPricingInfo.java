@@ -17,7 +17,11 @@ public class StepPricingInfo   {
   private Duration duration = null;
 
   private List<String> discountSkuIds = new ArrayList<String>();
-
+  /**
+   * 
+   * @param sequence
+   * @return
+   */
   public StepPricingInfo sequence(String sequence) {
     this.sequence = sequence;
     return this;
@@ -30,11 +34,18 @@ public class StepPricingInfo   {
   public String getSequence() {
     return sequence;
   }
-
+  /**
+   * 
+   * @param sequence
+   */
   public void setSequence(String sequence) {
     this.sequence = sequence;
   }
-
+  /**
+   * 
+   * @param oneOffPrice
+   * @return
+   */
   public StepPricingInfo oneOffPrice(Price oneOffPrice) {
     this.oneOffPrice = oneOffPrice;
     return this;
@@ -47,11 +58,18 @@ public class StepPricingInfo   {
   public Price getOneOffPrice() {
     return oneOffPrice;
   }
-
+  /**
+   * 
+   * @param oneOffPrice
+   */
   public void setOneOffPrice(Price oneOffPrice) {
     this.oneOffPrice = oneOffPrice;
   }
-
+  /**
+   * 
+   * @param monthlyPrice
+   * @return
+   */
   public StepPricingInfo monthlyPrice(Price monthlyPrice) {
     this.monthlyPrice = monthlyPrice;
     return this;
@@ -64,11 +82,18 @@ public class StepPricingInfo   {
   public Price getMonthlyPrice() {
     return monthlyPrice;
   }
-
+  /**
+   * 
+   * @param monthlyPrice
+   */
   public void setMonthlyPrice(Price monthlyPrice) {
     this.monthlyPrice = monthlyPrice;
   }
-
+  /**
+   * 
+   * @param duration
+   * @return
+   */
   public StepPricingInfo duration(Duration duration) {
     this.duration = duration;
     return this;
@@ -81,16 +106,27 @@ public class StepPricingInfo   {
   public Duration getDuration() {
     return duration;
   }
-
+  /**
+   * 
+   * @param duration
+   */
   public void setDuration(Duration duration) {
     this.duration = duration;
   }
-
+  /**
+   * 
+   * @param discountSkuIds
+   * @return
+   */
   public StepPricingInfo discountSkuIds(List<String> discountSkuIds) {
     this.discountSkuIds = discountSkuIds;
     return this;
   }
-
+  /**
+   * 
+   * @param discountSkuIdsItem
+   * @return
+   */
   public StepPricingInfo addDiscountSkuIdsItem(String discountSkuIdsItem) {
     this.discountSkuIds.add(discountSkuIdsItem);
     return this;
@@ -103,7 +139,10 @@ public class StepPricingInfo   {
   public List<String> getDiscountSkuIds() {
     return discountSkuIds;
   }
-
+  /**
+   * 
+   * @param discountSkuIds
+   */
   public void setDiscountSkuIds(List<String> discountSkuIds) {
     this.discountSkuIds = discountSkuIds;
   }

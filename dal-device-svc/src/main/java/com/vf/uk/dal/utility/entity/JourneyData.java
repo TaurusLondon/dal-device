@@ -46,7 +46,11 @@ public class JourneyData   {
 
   @JsonProperty("accountRoles")
   private List<String> accountRoles = new ArrayList<String>();
-
+  /**
+   * 
+   * @param name
+   * @return
+   */
   public JourneyData name(String name) {
     this.name = name;
     return this;
@@ -59,11 +63,18 @@ public class JourneyData   {
   public String getName() {
     return name;
   }
-
+  /**
+   * 
+   * @param name
+   */
   public void setName(String name) {
     this.name = name;
   }
-
+  /**
+   * 
+   * @param state
+   * @return
+   */
   public JourneyData state(String state) {
     this.state = state;
     return this;
@@ -76,11 +87,18 @@ public class JourneyData   {
   public String getState() {
     return state;
   }
-
+  /**
+   * 
+   * @param state
+   */
   public void setState(String state) {
     this.state = state;
   }
-
+  /**
+   * 
+   * @param customerPartyID
+   * @return
+   */
   public JourneyData customerPartyID(String customerPartyID) {
     this.customerPartyID = customerPartyID;
     return this;
@@ -93,11 +111,18 @@ public class JourneyData   {
   public String getCustomerPartyID() {
     return customerPartyID;
   }
-
+  /**
+   * 
+   * @param customerPartyID
+   */
   public void setCustomerPartyID(String customerPartyID) {
     this.customerPartyID = customerPartyID;
   }
-
+  /**
+   * 
+   * @param ssoCreatedDate
+   * @return
+   */
   public JourneyData ssoCreatedDate(String ssoCreatedDate) {
     this.ssoCreatedDate = ssoCreatedDate;
     return this;
@@ -110,11 +135,18 @@ public class JourneyData   {
   public String getSsoCreatedDate() {
     return ssoCreatedDate;
   }
-
+  /**
+   * 
+   * @param ssoCreatedDate
+   */
   public void setSsoCreatedDate(String ssoCreatedDate) {
     this.ssoCreatedDate = ssoCreatedDate;
   }
-
+  /**
+   * 
+   * @param ownedCustomerPartyIDs
+   * @return
+   */
   public JourneyData ownedCustomerPartyIDs(String ownedCustomerPartyIDs) {
     this.ownedCustomerPartyIDs = ownedCustomerPartyIDs;
     return this;
@@ -127,11 +159,18 @@ public class JourneyData   {
   public String getOwnedCustomerPartyIDs() {
     return ownedCustomerPartyIDs;
   }
-
+  /**
+   * 
+   * @param ownedCustomerPartyIDs
+   */
   public void setOwnedCustomerPartyIDs(String ownedCustomerPartyIDs) {
     this.ownedCustomerPartyIDs = ownedCustomerPartyIDs;
   }
-
+  /**
+   * 
+   * @param offerID
+   * @return
+   */
   public JourneyData offerID(String offerID) {
     this.offerID = offerID;
     return this;
@@ -144,11 +183,18 @@ public class JourneyData   {
   public String getOfferID() {
     return offerID;
   }
-
+  /**
+   * 
+   * @param offerID
+   */
   public void setOfferID(String offerID) {
     this.offerID = offerID;
   }
-
+  /**
+   * 
+   * @param offerCommunicationID
+   * @return
+   */
   public JourneyData offerCommunicationID(String offerCommunicationID) {
     this.offerCommunicationID = offerCommunicationID;
     return this;
@@ -161,11 +207,18 @@ public class JourneyData   {
   public String getOfferCommunicationID() {
     return offerCommunicationID;
   }
-
+  /**
+   * 
+   * @param offerCommunicationID
+   */
   public void setOfferCommunicationID(String offerCommunicationID) {
     this.offerCommunicationID = offerCommunicationID;
   }
-
+  /**
+   * 
+   * @param upgradeEligibilityType
+   * @return
+   */
   public JourneyData upgradeEligibilityType(String upgradeEligibilityType) {
     this.upgradeEligibilityType = upgradeEligibilityType;
     return this;
@@ -178,11 +231,18 @@ public class JourneyData   {
   public String getUpgradeEligibilityType() {
     return upgradeEligibilityType;
   }
-
+  /**
+   * 
+   * @param upgradeEligibilityType
+   */
   public void setUpgradeEligibilityType(String upgradeEligibilityType) {
     this.upgradeEligibilityType = upgradeEligibilityType;
   }
-
+  /**
+   * 
+   * @param commitmentEndDate
+   * @return
+   */
   public JourneyData commitmentEndDate(String commitmentEndDate) {
     this.commitmentEndDate = commitmentEndDate;
     return this;
@@ -195,11 +255,18 @@ public class JourneyData   {
   public String getCommitmentEndDate() {
     return commitmentEndDate;
   }
-
+  /**
+   * 
+   * @param commitmentEndDate
+   */
   public void setCommitmentEndDate(String commitmentEndDate) {
     this.commitmentEndDate = commitmentEndDate;
   }
-
+  /**
+   * 
+   * @param earlyUpgradeFeeNet
+   * @return
+   */
   public JourneyData earlyUpgradeFeeNet(String earlyUpgradeFeeNet) {
     this.earlyUpgradeFeeNet = earlyUpgradeFeeNet;
     return this;
@@ -212,11 +279,18 @@ public class JourneyData   {
   public String getEarlyUpgradeFeeNet() {
     return earlyUpgradeFeeNet;
   }
-
+  /**
+   * 
+   * @param earlyUpgradeFeeNet
+   */
   public void setEarlyUpgradeFeeNet(String earlyUpgradeFeeNet) {
     this.earlyUpgradeFeeNet = earlyUpgradeFeeNet;
   }
-
+  /**
+   * 
+   * @param earlyUpgradeFeeGross
+   * @return
+   */
   public JourneyData earlyUpgradeFeeGross(String earlyUpgradeFeeGross) {
     this.earlyUpgradeFeeGross = earlyUpgradeFeeGross;
     return this;
@@ -229,16 +303,27 @@ public class JourneyData   {
   public String getEarlyUpgradeFeeGross() {
     return earlyUpgradeFeeGross;
   }
-
+  /**
+   * 
+   * @param earlyUpgradeFeeGross
+   */
   public void setEarlyUpgradeFeeGross(String earlyUpgradeFeeGross) {
     this.earlyUpgradeFeeGross = earlyUpgradeFeeGross;
   }
-
+  /**
+   * 
+   * @param accountRoles
+   * @return
+   */
   public JourneyData accountRoles(List<String> accountRoles) {
     this.accountRoles = accountRoles;
     return this;
   }
-
+  /**
+   * 
+   * @param accountRolesItem
+   * @return
+   */
   public JourneyData addAccountRolesItem(String accountRolesItem) {
     this.accountRoles.add(accountRolesItem);
     return this;
@@ -251,7 +336,10 @@ public class JourneyData   {
   public List<String> getAccountRoles() {
     return accountRoles;
   }
-
+  /**
+   * 
+   * @param accountRoles
+   */
   public void setAccountRoles(List<String> accountRoles) {
     this.accountRoles = accountRoles;
   }

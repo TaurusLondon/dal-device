@@ -574,7 +574,23 @@ public class DeviceServiceImplTest
 				isLeadMemberFromSolr,listOfOfferAppliedPrice1,"Upgrade");
 		Assert.assertNotNull(deviceList);
 	}
-	
+	@Test
+	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceListPayG() {
+		Map<String,String> groupNameWithProdId=new HashMap<String, String>();
+		groupNameWithProdId.put("Apple", "10936");
+		groupNameWithProdId.put("Samsung","7630");
+		/*Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice1 = new HashMap<>();
+		listOfOfferAppliedPrice1.put("093353", new ArrayList<>());
+		listOfOfferAppliedPrice1.put("092660", new ArrayList<>());*/
+		Map<String,Boolean> isLeadMemberFromSolr = new HashMap<>();
+		isLeadMemberFromSolr.put("leadMember", true);
+		FacetedDevice deviceList = DaoUtils.convertProductModelListToDeviceList(CommonMethods.getProductModel(),
+				CommonMethods.getListOfProducts(),CommonMethods.getProductGroupFacetModel1().getListOfFacetsFields(),
+				"DEVICE_PAYG",null,null,null,null,
+				groupNameWithProdId ,null,null,
+				isLeadMemberFromSolr,null,Constants.JOURNEY_TYPE_ACQUISITION);
+		Assert.assertNotNull(deviceList);
+	}
 	/*@Test
 	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList_Data_PAYG() {
 		Map<String,String> groupNameWithProdId=new HashMap<String, String>();
@@ -668,7 +684,7 @@ public class DeviceServiceImplTest
 		iLSPriceMap.put("093353", CommonMethods.getOfferAppliedPrice());
 		DevicePreCalculatedData	productGroupForDeviceListing=DaoUtils
 		.convertBundleHeaderForDeviceToProductGroupForDeviceListing("093353","leadPlanId","groupname"
-				,"groupId", CommonMethods.getPrice(), CommonMethods.getleadMemberMap(),iLSPriceMap,CommonMethods.getleadMemberMap(),"upgradeLeadPlanId");
+				,"groupId", CommonMethods.getPrice(), CommonMethods.getleadMemberMap(),iLSPriceMap,CommonMethods.getleadMemberMap(),"upgradeLeadPlanId",Constants.STRING_DEVICE_PAYM);
 
 		Assert.assertNotNull(productGroupForDeviceListing);
 	}
@@ -679,7 +695,7 @@ public class DeviceServiceImplTest
 		iLSPriceMap.put("093353", CommonMethods.getOfferAppliedPrice());
 		DevicePreCalculatedData	productGroupForDeviceListing=DaoUtils
 		.convertBundleHeaderForDeviceToProductGroupForDeviceListing("093353",null,"groupname"
-				,"groupId", CommonMethods.getPrice(),CommonMethods.getleadMemberMap(),iLSPriceMap,CommonMethods.getleadMemberMap(),null);
+				,"groupId", CommonMethods.getPrice(),CommonMethods.getleadMemberMap(),iLSPriceMap,CommonMethods.getleadMemberMap(),null,Constants.STRING_DEVICE_PAYG);
 
 		Assert.assertNotNull(productGroupForDeviceListing);
 	}

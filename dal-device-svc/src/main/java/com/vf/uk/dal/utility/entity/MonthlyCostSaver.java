@@ -19,7 +19,11 @@ public class MonthlyCostSaver   {
   private Price monthlyPrice = null;
 
   private Price monthlyDiscountPrice = null;
-
+  /**
+   * 
+   * @param mcsPlanId
+   * @return
+   */
   public MonthlyCostSaver mcsPlanId(String mcsPlanId) {
     this.mcsPlanId = mcsPlanId;
     return this;
@@ -32,11 +36,18 @@ public class MonthlyCostSaver   {
   public String getMcsPlanId() {
     return mcsPlanId;
   }
-
+  /**
+   * 
+   * @param mcsPlanId
+   */
   public void setMcsPlanId(String mcsPlanId) {
     this.mcsPlanId = mcsPlanId;
   }
-
+  /**
+   * 
+   * @param mcsMessage
+   * @return
+   */
   public MonthlyCostSaver mcsMessage(String mcsMessage) {
     this.mcsMessage = mcsMessage;
     return this;
@@ -49,11 +60,18 @@ public class MonthlyCostSaver   {
   public String getMcsMessage() {
     return mcsMessage;
   }
-
+  /**
+   * 
+   * @param mcsMessage
+   */
   public void setMcsMessage(String mcsMessage) {
     this.mcsMessage = mcsMessage;
   }
-
+  /**
+   * 
+   * @param mcsParentId
+   * @return
+   */
   public MonthlyCostSaver mcsParentId(String mcsParentId) {
     this.mcsParentId = mcsParentId;
     return this;
@@ -66,11 +84,18 @@ public class MonthlyCostSaver   {
   public String getMcsParentId() {
     return mcsParentId;
   }
-
+  /**
+   * 
+   * @param mcsParentId
+   */
   public void setMcsParentId(String mcsParentId) {
     this.mcsParentId = mcsParentId;
   }
-
+  /**
+   * 
+   * @param oneOffPrice
+   * @return
+   */
   public MonthlyCostSaver oneOffPrice(Price oneOffPrice) {
     this.oneOffPrice = oneOffPrice;
     return this;
@@ -83,11 +108,18 @@ public class MonthlyCostSaver   {
   public Price getOneOffPrice() {
     return oneOffPrice;
   }
-
+  /**
+   * 
+   * @param oneOffPrice
+   */
   public void setOneOffPrice(Price oneOffPrice) {
     this.oneOffPrice = oneOffPrice;
   }
-
+  /**
+   * 
+   * @param oneOffDiscountPrice
+   * @return
+   */
   public MonthlyCostSaver oneOffDiscountPrice(Price oneOffDiscountPrice) {
     this.oneOffDiscountPrice = oneOffDiscountPrice;
     return this;
@@ -100,11 +132,18 @@ public class MonthlyCostSaver   {
   public Price getOneOffDiscountPrice() {
     return oneOffDiscountPrice;
   }
-
+  /**
+   * 
+   * @param oneOffDiscountPrice
+   */
   public void setOneOffDiscountPrice(Price oneOffDiscountPrice) {
     this.oneOffDiscountPrice = oneOffDiscountPrice;
   }
-
+  /**
+   * 
+   * @param monthlyPrice
+   * @return
+   */
   public MonthlyCostSaver monthlyPrice(Price monthlyPrice) {
     this.monthlyPrice = monthlyPrice;
     return this;
@@ -117,11 +156,18 @@ public class MonthlyCostSaver   {
   public Price getMonthlyPrice() {
     return monthlyPrice;
   }
-
+  /**
+   * 
+   * @param monthlyPrice
+   */
   public void setMonthlyPrice(Price monthlyPrice) {
     this.monthlyPrice = monthlyPrice;
   }
-
+  /**
+   * 
+   * @param monthlyDiscountPrice
+   * @return
+   */
   public MonthlyCostSaver monthlyDiscountPrice(Price monthlyDiscountPrice) {
     this.monthlyDiscountPrice = monthlyDiscountPrice;
     return this;
@@ -134,7 +180,10 @@ public class MonthlyCostSaver   {
   public Price getMonthlyDiscountPrice() {
     return monthlyDiscountPrice;
   }
-
+  /**
+   * 
+   * @param monthlyDiscountPrice
+   */
   public void setMonthlyDiscountPrice(Price monthlyDiscountPrice) {
     this.monthlyDiscountPrice = monthlyDiscountPrice;
   }

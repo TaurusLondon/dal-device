@@ -2,33 +2,60 @@ package com.vf.uk.dal.utility.entity;
 
 import java.util.Objects;
 
+/**
+ * BasketItem
+ * @author 
+ *
+ */
 public class BasketItem {
   private String typeCode = null;
 
   private String id = null;
 
+  /**
+   * 
+   * @param typeCode
+   * @return
+   */
   public BasketItem typeCode(String typeCode) {
     this.typeCode = typeCode;
     return this;
   }
 
+  /**
+   * 
+   * @return
+   */
   public String getTypeCode() {
     return typeCode;
   }
-
+/**
+ * 
+ * @param typeCode
+ */
   public void setTypeCode(String typeCode) {
     this.typeCode = typeCode;
   }
-
+/**
+ * 
+ * @param id
+ * @return
+ */
   public BasketItem id(String id) {
     this.id = id;
     return this;
   }
-
+/**
+ * 
+ * @return
+ */
   public String getId() {
     return id;
   }
-
+/**
+ * 
+ * @param id
+ */
   public void setId(String id) {
     this.id = id;
   }

@@ -12,125 +12,256 @@
 
 package com.vf.uk.dal.utility.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+ 
 /**
- * CataloguepromotionqueriesForHardwareSash
+ * CataloguepromotionqueriesForHardwareSash.
  */
 public class CataloguepromotionqueriesForHardwareSash {
+
+	/** The tag. */
 	private String tag = null;
 
+	/** The label. */
 	private String label = null;
 
+	/** The type. */
 	private String type = null;
 
+	/** The priority. */
 	private String priority = null;
 
-
+	/** The description. */
 	private String description = null;
-	
+
+	/** The promotion media. */
 	private String promotionMedia = null;
 
+	/** The package type. */
+	private List<String> packageType = new ArrayList<>();
+
+	/** The foot notes. */
+	private List<String> footNotes = new ArrayList<>();
+
+	/**
+	 * Gets the foot notes.
+	 *
+	 * @return the foot notes
+	 */
+	public List<String> getFootNotes() {
+		return footNotes;
+	}
+
+	/**
+	 * Sets the foot notes.
+	 *
+	 * @param footNotes the new foot notes
+	 */
+	public void setFootNotes(List<String> footNotes) {
+		this.footNotes = footNotes;
+	}
+
+	/**
+	 * Gets the package type.
+	 *
+	 * @return the package type
+	 */
+	public List<String> getPackageType() {
+		return packageType;
+	}
+
+	/**
+	 * Sets the package type.
+	 *
+	 * @param packageType
+	 *            the new package type
+	 */
+	public void setPackageType(List<String> packageType) {
+		this.packageType = packageType;
+	}
+
+	/**
+	 * Tag.
+	 *
+	 * @param tag
+	 *            the tag
+	 * @return the cataloguepromotionqueries for hardware sash
+	 */
 	public CataloguepromotionqueriesForHardwareSash tag(String tag) {
 		this.tag = tag;
 		return this;
 	}
 
 	/**
-	 * Unique tag name for the merchandising promotion
-	 * 
+	 * Unique tag name for the merchandising promotion.
+	 *
 	 * @return tag
-	 **/
+	 */
 	public String getTag() {
 		return tag;
 	}
 
+	/**
+	 * Sets the tag.
+	 *
+	 * @param tag
+	 *            the new tag
+	 */
 	public void setTag(String tag) {
 		this.tag = tag;
 	}
 
+	/**
+	 * Label.
+	 *
+	 * @param label
+	 *            the label
+	 * @return the cataloguepromotionqueries for hardware sash
+	 */
 	public CataloguepromotionqueriesForHardwareSash label(String label) {
 		this.label = label;
 		return this;
 	}
 
 	/**
-	 * Descriptive text for the merchandising promotion
-	 * 
+	 * Descriptive text for the merchandising promotion.
+	 *
 	 * @return label
-	 **/
+	 */
 	public String getLabel() {
 		return label;
 	}
 
+	/**
+	 * Sets the label.
+	 *
+	 * @param label
+	 *            the new label
+	 */
 	public void setLabel(String label) {
 		this.label = label;
 	}
 
+	/**
+	 * Type.
+	 *
+	 * @param type
+	 *            the type
+	 * @return the cataloguepromotionqueries for hardware sash
+	 */
 	public CataloguepromotionqueriesForHardwareSash type(String type) {
 		this.type = type;
 		return this;
 	}
 
 	/**
-	 * Merchandising promotion type
-	 * 
+	 * Merchandising promotion type.
+	 *
 	 * @return type
-	 **/
+	 */
 	public String getType() {
 		return type;
 	}
 
+	/**
+	 * Sets the type.
+	 *
+	 * @param type
+	 *            the new type
+	 */
 	public void setType(String type) {
 		this.type = type;
 	}
 
+	/**
+	 * Priority.
+	 *
+	 * @param priority
+	 *            the priority
+	 * @return the cataloguepromotionqueries for hardware sash
+	 */
 	public CataloguepromotionqueriesForHardwareSash priority(String priority) {
 		this.priority = priority;
 		return this;
 	}
 
 	/**
-	 * Priority for the merchandising promotion
-	 * 
+	 * Priority for the merchandising promotion.
+	 *
 	 * @return priority
-	 **/
+	 */
 	public String getPriority() {
 		return priority;
 	}
 
+	/**
+	 * Sets the priority.
+	 *
+	 * @param priority
+	 *            the new priority
+	 */
 	public void setPriority(String priority) {
 		this.priority = priority;
 	}
 
-	
-
+	/**
+	 * Description.
+	 *
+	 * @param description
+	 *            the description
+	 * @return the cataloguepromotionqueries for hardware sash
+	 */
 	public CataloguepromotionqueriesForHardwareSash description(String description) {
 		this.description = description;
 		return this;
 	}
 
 	/**
-	 * Description of the promotion
-	 * 
+	 * Description of the promotion.
+	 *
 	 * @return description
-	 **/
+	 */
 	public String getDescription() {
 		return description;
 	}
 
+	/**
+	 * Sets the description.
+	 *
+	 * @param description
+	 *            the new description
+	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
+	/**
+	 * Gets the promotion media.
+	 *
+	 * @return the promotion media
+	 */
 	public String getPromotionMedia() {
 		return promotionMedia;
 	}
 
+	/**
+	 * Sets the promotion media.
+	 *
+	 * @param promotionMedia
+	 *            the new promotion media
+	 */
 	public void setPromotionMedia(String promotionMedia) {
 		this.promotionMedia = promotionMedia;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(java.lang.Object o) {
 		if (this == o) {
@@ -144,14 +275,25 @@ public class CataloguepromotionqueriesForHardwareSash {
 				&& Objects.equals(this.label, cataloguepromotionqueriesForHardwareSash.label)
 				&& Objects.equals(this.type, cataloguepromotionqueriesForHardwareSash.type)
 				&& Objects.equals(this.priority, cataloguepromotionqueriesForHardwareSash.priority)
-				&& Objects.equals(this.description, cataloguepromotionqueriesForHardwareSash.description);
+				&& Objects.equals(this.description, cataloguepromotionqueriesForHardwareSash.description)
+				&& Objects.equals(this.packageType, cataloguepromotionqueriesForHardwareSash.packageType);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
-		return Objects.hash(tag, label, type, priority, description);
+		return Objects.hash(tag, label, type, priority, description, packageType);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -162,6 +304,7 @@ public class CataloguepromotionqueriesForHardwareSash {
 		sb.append("    type: ").append(toIndentedString(type)).append("\n");
 		sb.append("    priority: ").append(toIndentedString(priority)).append("\n");
 		sb.append("    description: ").append(toIndentedString(description)).append("\n");
+		sb.append("    packageType: ").append(toIndentedString(packageType)).append("\n");
 		sb.append("}");
 		return sb.toString();
 	}
@@ -169,6 +312,10 @@ public class CataloguepromotionqueriesForHardwareSash {
 	/**
 	 * Convert the given object to string with each line indented by 4 spaces
 	 * (except the first line).
+	 *
+	 * @param o
+	 *            the o
+	 * @return the string
 	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {

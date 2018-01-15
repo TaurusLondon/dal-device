@@ -61,7 +61,6 @@ public class DeviceTileCacheDAO {
 	public int count(String tablename) {
 		String sql = "SELECT COUNT(*) FROM PRODUCT."+tablename;
 		int count;
-		//count = getJdbcTemplate().update(sql);
 		count=getJdbcTemplate().queryForObject(sql, Integer.class);
 		return count;
 	}
@@ -97,14 +96,11 @@ public class DeviceTileCacheDAO {
 						ps.setString(3, productGroupForDeviceListing.getLeadPlanId());
 						ps.setString(4, productGroupForDeviceListing.getProductGroupName());
 						ps.setString(5, productGroupForDeviceListing.getProductGroupId());
-						if(priceInfo!=null && priceInfo.getBundlePrice()!=null)
+						if(priceInfo!=null && priceInfo.getBundlePrice()!=null && priceInfo.getBundlePrice().getMonthlyPrice()!=null && priceInfo.getBundlePrice().getMonthlyPrice().getGross()!=null)
 						{
-							if(priceInfo.getBundlePrice().getMonthlyPrice()!=null)
-							{
 								ps.setString(6, priceInfo.getBundlePrice().getMonthlyPrice().getGross());
 								ps.setString(7, priceInfo.getBundlePrice().getMonthlyPrice().getNet());
 								ps.setString(8, priceInfo.getBundlePrice().getMonthlyPrice().getVat());
-							}
 							if(priceInfo.getBundlePrice().getMonthlyDiscountPrice()!=null)
 							{
 								ps.setString(9, priceInfo.getBundlePrice().getMonthlyDiscountPrice().getGross());

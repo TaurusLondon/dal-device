@@ -612,7 +612,7 @@ definitions:
       recommendationDrivers:
         type: array
         items:
-          $ref: '#definitions/RecommendationDriver'
+          $ref: '#/definitions/RecommendationDriver'
   PackagePrice:
     type: object
     properties:
@@ -674,7 +674,7 @@ definitions:
       recommendationDrivers:
         type: array
         items:
-          $ref: '#definitions/RecommendationDriver'
+          $ref: '#/definitions/RecommendationDriver'
   BundleAllowance:
     type: object
     properties:

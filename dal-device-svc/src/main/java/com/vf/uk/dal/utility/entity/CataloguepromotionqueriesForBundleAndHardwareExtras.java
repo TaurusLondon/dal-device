@@ -10,178 +10,332 @@
  * Do not edit the class manually.
  */
 
-
 package com.vf.uk.dal.utility.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+
 /**
- * CataloguepromotionqueriesForBundleAndHardwareExtras
+ * CataloguepromotionqueriesForBundleAndHardwareExtras.
  */
 public class CataloguepromotionqueriesForBundleAndHardwareExtras {
-  private String tag = null;
 
-  private String label = null;
+	/** The tag. */
+	private String tag = null;
 
-  private String type = null;
+	/** The label. */
+	private String label = null;
 
-  private String priority = null;
+	/** The type. */
+	private String type = null;
 
-  private String plancoupleId = null;
+	/** The priority. */
+	private String priority = null;
 
-  private String description = null;
+	/** The plancouple id. */
+	private String plancoupleId = null;
 
-  public CataloguepromotionqueriesForBundleAndHardwareExtras tag(String tag) {
-    this.tag = tag;
-    return this;
-  }
+	/** The description. */
+	private String description = null;
 
-   /**
-   * Unique tag name for the merchandising promotion
-   * @return tag
-  **/
-  public String getTag() {
-    return tag;
-  }
+	/** The package type. */
+	private List<String> packageType = new ArrayList<>();
 
-  public void setTag(String tag) {
-    this.tag = tag;
-  }
+	/** The foot notes. */
+	private List<String> footNotes = new ArrayList<>();
 
-  public CataloguepromotionqueriesForBundleAndHardwareExtras label(String label) {
-    this.label = label;
-    return this;
-  }
+	/**
+	 * Gets the foot notes.
+	 *
+	 * @return the foot notes
+	 */
+	public List<String> getFootNotes() {
+		return footNotes;
+	}
 
-   /**
-   * Descriptive text for the merchandising promotion
-   * @return label
-  **/
-  public String getLabel() {
-    return label;
-  }
+	/**
+	 * Sets the foot notes.
+	 *
+	 * @param footNotes the new foot notes
+	 */
+	public void setFootNotes(List<String> footNotes) {
+		this.footNotes = footNotes;
+	}
 
-  public void setLabel(String label) {
-    this.label = label;
-  }
+	/**
+	 * Gets the package type.
+	 *
+	 * @return the package type
+	 */
+	public List<String> getPackageType() {
+		return packageType;
+	}
 
-  public CataloguepromotionqueriesForBundleAndHardwareExtras type(String type) {
-    this.type = type;
-    return this;
-  }
+	/**
+	 * Sets the package type.
+	 *
+	 * @param packageType
+	 *            the new package type
+	 */
+	public void setPackageType(List<String> packageType) {
+		this.packageType = packageType;
+	}
 
-   /**
-   * Merchandising promotion type
-   * @return type
-  **/
-  public String getType() {
-    return type;
-  }
+	/**
+	 * Tag.
+	 *
+	 * @param tag
+	 *            the tag
+	 * @return the cataloguepromotionqueries for bundle and hardware extras
+	 */
+	public CataloguepromotionqueriesForBundleAndHardwareExtras tag(String tag) {
+		this.tag = tag;
+		return this;
+	}
 
-  public void setType(String type) {
-    this.type = type;
-  }
+	/**
+	 * Unique tag name for the merchandising promotion.
+	 *
+	 * @return tag
+	 */
+	public String getTag() {
+		return tag;
+	}
 
-  public CataloguepromotionqueriesForBundleAndHardwareExtras priority(String priority) {
-    this.priority = priority;
-    return this;
-  }
+	/**
+	 * Sets the tag.
+	 *
+	 * @param tag
+	 *            the new tag
+	 */
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
 
-   /**
-   * Priority for the merchandising promotion
-   * @return priority
-  **/
-  public String getPriority() {
-    return priority;
-  }
+	/**
+	 * Label.
+	 *
+	 * @param label
+	 *            the label
+	 * @return the cataloguepromotionqueries for bundle and hardware extras
+	 */
+	public CataloguepromotionqueriesForBundleAndHardwareExtras label(String label) {
+		this.label = label;
+		return this;
+	}
 
-  public void setPriority(String priority) {
-    this.priority = priority;
-  }
+	/**
+	 * Descriptive text for the merchandising promotion.
+	 *
+	 * @return label
+	 */
+	public String getLabel() {
+		return label;
+	}
 
-  public CataloguepromotionqueriesForBundleAndHardwareExtras plancoupleId(String plancoupleId) {
-    this.plancoupleId = plancoupleId;
-    return this;
-  }
+	/**
+	 * Sets the label.
+	 *
+	 * @param label
+	 *            the new label
+	 */
+	public void setLabel(String label) {
+		this.label = label;
+	}
 
-   /**
-   * Plan couple id
-   * @return plancoupleId
-  **/
-  public String getPlancoupleId() {
-    return plancoupleId;
-  }
+	/**
+	 * Type.
+	 *
+	 * @param type
+	 *            the type
+	 * @return the cataloguepromotionqueries for bundle and hardware extras
+	 */
+	public CataloguepromotionqueriesForBundleAndHardwareExtras type(String type) {
+		this.type = type;
+		return this;
+	}
 
-  public void setPlancoupleId(String plancoupleId) {
-    this.plancoupleId = plancoupleId;
-  }
+	/**
+	 * Merchandising promotion type.
+	 *
+	 * @return type
+	 */
+	public String getType() {
+		return type;
+	}
 
-  public CataloguepromotionqueriesForBundleAndHardwareExtras description(String description) {
-    this.description = description;
-    return this;
-  }
+	/**
+	 * Sets the type.
+	 *
+	 * @param type
+	 *            the new type
+	 */
+	public void setType(String type) {
+		this.type = type;
+	}
 
-   /**
-   * Description of the promotion
-   * @return description
-  **/
-  public String getDescription() {
-    return description;
-  }
+	/**
+	 * Priority.
+	 *
+	 * @param priority
+	 *            the priority
+	 * @return the cataloguepromotionqueries for bundle and hardware extras
+	 */
+	public CataloguepromotionqueriesForBundleAndHardwareExtras priority(String priority) {
+		this.priority = priority;
+		return this;
+	}
 
-  public void setDescription(String description) {
-    this.description = description;
-  }
+	/**
+	 * Priority for the merchandising promotion.
+	 *
+	 * @return priority
+	 */
+	public String getPriority() {
+		return priority;
+	}
 
+	/**
+	 * Sets the priority.
+	 *
+	 * @param priority
+	 *            the new priority
+	 */
+	public void setPriority(String priority) {
+		this.priority = priority;
+	}
 
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    CataloguepromotionqueriesForBundleAndHardwareExtras cataloguepromotionqueriesForBundleAndHardwareExtras = (CataloguepromotionqueriesForBundleAndHardwareExtras) o;
-    return Objects.equals(this.tag, cataloguepromotionqueriesForBundleAndHardwareExtras.tag) &&
-        Objects.equals(this.label, cataloguepromotionqueriesForBundleAndHardwareExtras.label) &&
-        Objects.equals(this.type, cataloguepromotionqueriesForBundleAndHardwareExtras.type) &&
-        Objects.equals(this.priority, cataloguepromotionqueriesForBundleAndHardwareExtras.priority) &&
-        Objects.equals(this.plancoupleId, cataloguepromotionqueriesForBundleAndHardwareExtras.plancoupleId) &&
-        Objects.equals(this.description, cataloguepromotionqueriesForBundleAndHardwareExtras.description);
-  }
+	/**
+	 * Plancouple id.
+	 *
+	 * @param plancoupleId
+	 *            the plancouple id
+	 * @return the cataloguepromotionqueries for bundle and hardware extras
+	 */
+	public CataloguepromotionqueriesForBundleAndHardwareExtras plancoupleId(String plancoupleId) {
+		this.plancoupleId = plancoupleId;
+		return this;
+	}
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(tag, label, type, priority, plancoupleId, description);
-  }
+	/**
+	 * Plan couple id.
+	 *
+	 * @return plancoupleId
+	 */
+	public String getPlancoupleId() {
+		return plancoupleId;
+	}
 
+	/**
+	 * Sets the plancouple id.
+	 *
+	 * @param plancoupleId
+	 *            the new plancouple id
+	 */
+	public void setPlancoupleId(String plancoupleId) {
+		this.plancoupleId = plancoupleId;
+	}
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class CataloguepromotionqueriesForBundleAndHardwareExtras {\n");
-    
-    sb.append("    tag: ").append(toIndentedString(tag)).append("\n");
-    sb.append("    label: ").append(toIndentedString(label)).append("\n");
-    sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("    priority: ").append(toIndentedString(priority)).append("\n");
-    sb.append("    plancoupleId: ").append(toIndentedString(plancoupleId)).append("\n");
-    sb.append("    description: ").append(toIndentedString(description)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
+	/**
+	 * Description.
+	 *
+	 * @param description
+	 *            the description
+	 * @return the cataloguepromotionqueries for bundle and hardware extras
+	 */
+	public CataloguepromotionqueriesForBundleAndHardwareExtras description(String description) {
+		this.description = description;
+		return this;
+	}
 
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
-  
+	/**
+	 * Description of the promotion.
+	 *
+	 * @return description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * Sets the description.
+	 *
+	 * @param description
+	 *            the new description
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(java.lang.Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		CataloguepromotionqueriesForBundleAndHardwareExtras cataloguepromotionqueriesForBundleAndHardwareExtras = (CataloguepromotionqueriesForBundleAndHardwareExtras) o;
+		return Objects.equals(this.tag, cataloguepromotionqueriesForBundleAndHardwareExtras.tag)
+				&& Objects.equals(this.label, cataloguepromotionqueriesForBundleAndHardwareExtras.label)
+				&& Objects.equals(this.type, cataloguepromotionqueriesForBundleAndHardwareExtras.type)
+				&& Objects.equals(this.priority, cataloguepromotionqueriesForBundleAndHardwareExtras.priority)
+				&& Objects.equals(this.plancoupleId, cataloguepromotionqueriesForBundleAndHardwareExtras.plancoupleId)
+				&& Objects.equals(this.description, cataloguepromotionqueriesForBundleAndHardwareExtras.description)
+				&& Objects.equals(this.packageType, cataloguepromotionqueriesForBundleAndHardwareExtras.packageType);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return Objects.hash(tag, label, type, priority, plancoupleId, description, packageType);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("class CataloguepromotionqueriesForBundleAndHardwareExtras {\n");
+
+		sb.append("    tag: ").append(toIndentedString(tag)).append("\n");
+		sb.append("    label: ").append(toIndentedString(label)).append("\n");
+		sb.append("    type: ").append(toIndentedString(type)).append("\n");
+		sb.append("    priority: ").append(toIndentedString(priority)).append("\n");
+		sb.append("    plancoupleId: ").append(toIndentedString(plancoupleId)).append("\n");
+		sb.append("    description: ").append(toIndentedString(description)).append("\n");
+		sb.append("    packageType: ").append(toIndentedString(packageType)).append("\n");
+		sb.append("}");
+		return sb.toString();
+	}
+
+	/**
+	 * Convert the given object to string with each line indented by 4 spaces
+	 * (except the first line).
+	 *
+	 * @param o
+	 *            the o
+	 * @return the string
+	 */
+	private String toIndentedString(java.lang.Object o) {
+		if (o == null) {
+			return "null";
+		}
+		return o.toString().replace("\n", "\n    ");
+	}
+
 }
-
