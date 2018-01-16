@@ -9,7 +9,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * ExtraPrice
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-10-17T05:56:29.550Z")
-
+/**
+ * 
+ * ExtraPrice
+ *
+ */
 public class ExtraPrice   {
   @JsonProperty("extraId")
   private String extraId = null;
@@ -28,7 +32,11 @@ public class ExtraPrice   {
 
   @JsonProperty("merchandisingPromotions")
   private MerchandisingPromotion merchandisingPromotions = null;
-
+  /**
+   * 
+   * @param extraId
+   * @return
+   */
   public ExtraPrice extraId(String extraId) {
     this.extraId = extraId;
     return this;
@@ -43,11 +51,18 @@ public class ExtraPrice   {
   public String getExtraId() {
     return extraId;
   }
-
+  /**
+   * 
+   * @param extraId
+   */
   public void setExtraId(String extraId) {
     this.extraId = extraId;
   }
-
+  /**
+   * 
+   * @param oneOffPrice
+   * @return
+   */
   public ExtraPrice oneOffPrice(Price oneOffPrice) {
     this.oneOffPrice = oneOffPrice;
     return this;
@@ -63,11 +78,18 @@ public class ExtraPrice   {
   public Price getOneOffPrice() {
     return oneOffPrice;
   }
-
+  /**
+   * 
+   * @param oneOffPrice
+   */
   public void setOneOffPrice(Price oneOffPrice) {
     this.oneOffPrice = oneOffPrice;
   }
-
+  /**
+   * 
+   * @param oneOffDiscountPrice
+   * @return
+   */
   public ExtraPrice oneOffDiscountPrice(Price oneOffDiscountPrice) {
     this.oneOffDiscountPrice = oneOffDiscountPrice;
     return this;
@@ -83,11 +105,18 @@ public class ExtraPrice   {
   public Price getOneOffDiscountPrice() {
     return oneOffDiscountPrice;
   }
-
+  /**
+   * 
+   * @param oneOffDiscountPrice
+   */
   public void setOneOffDiscountPrice(Price oneOffDiscountPrice) {
     this.oneOffDiscountPrice = oneOffDiscountPrice;
   }
-
+  /**
+   * 
+   * @param monthlyPrice
+   * @return
+   */
   public ExtraPrice monthlyPrice(Price monthlyPrice) {
     this.monthlyPrice = monthlyPrice;
     return this;
@@ -103,11 +132,18 @@ public class ExtraPrice   {
   public Price getMonthlyPrice() {
     return monthlyPrice;
   }
-
+  /**
+   * 
+   * @param monthlyPrice
+   */
   public void setMonthlyPrice(Price monthlyPrice) {
     this.monthlyPrice = monthlyPrice;
   }
-
+  /**
+   * 
+   * @param monthlyDiscountPrice
+   * @return
+   */
   public ExtraPrice monthlyDiscountPrice(Price monthlyDiscountPrice) {
     this.monthlyDiscountPrice = monthlyDiscountPrice;
     return this;
@@ -123,11 +159,18 @@ public class ExtraPrice   {
   public Price getMonthlyDiscountPrice() {
     return monthlyDiscountPrice;
   }
-
+  /**
+   * 
+   * @param monthlyDiscountPrice
+   */
   public void setMonthlyDiscountPrice(Price monthlyDiscountPrice) {
     this.monthlyDiscountPrice = monthlyDiscountPrice;
   }
-
+  /**
+   * 
+   * @param merchandisingPromotions
+   * @return
+   */
   public ExtraPrice merchandisingPromotions(MerchandisingPromotion merchandisingPromotions) {
     this.merchandisingPromotions = merchandisingPromotions;
     return this;
@@ -143,7 +186,10 @@ public class ExtraPrice   {
   public MerchandisingPromotion getMerchandisingPromotions() {
     return merchandisingPromotions;
   }
-
+  /**
+   * 
+   * @param merchandisingPromotions
+   */
   public void setMerchandisingPromotions(MerchandisingPromotion merchandisingPromotions) {
     this.merchandisingPromotions = merchandisingPromotions;
   }

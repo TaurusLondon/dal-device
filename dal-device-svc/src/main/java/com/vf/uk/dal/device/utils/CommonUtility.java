@@ -12,7 +12,6 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -104,19 +103,6 @@ public  class CommonUtility {
 		return mapper.convertValue(client, new TypeReference<List<PriceForBundleAndHardware>>(){});
 		
 	}
-	
-	/*public static List<StockInfo> getStockAvailabilityForDevice(String deviceIds, RegistryClient registryClient) {
-		String stockId=ConfigHelper.getString(Constants.STRING_WAREHOUSE_ID, Constants.STRING_DEFAULT_STOCKID);
-		RestTemplate restTemplate =registryClient.getRestTemplate();
-		StockInfo[] client= restTemplate.getForObject("http://UTILITY-V1/utility/?filter[skuId]="+deviceIds+"&filter[sourceId]="+stockId , StockInfo[].class  );
- 		ObjectMapper mapper = new ObjectMapper();
-		return mapper.convertValue(client, new TypeReference<List<StockInfo>>(){});
-		
-	}*/
-	/*public static CurrentJourney getCurrentJourney(String journeyId,RegistryClient registryClient) {
-		RestTemplate restTemplate =registryClient.getRestTemplate();
-		return restTemplate.getForObject("http://COMMON-V1/common/journey/"+journeyId+"/queries/currentJourney" ,CurrentJourney.class);
-	}*/
 	
 	public static RecommendedProductListResponse getRecommendedProductList(RecommendedProductListRequest recomProductList,RegistryClient registryClient) {
 		RestTemplate restTemplate =registryClient.getRestTemplate();
@@ -274,7 +260,7 @@ public  class CommonUtility {
 		if (price != null) {
 			DecimalFormat deciFormat = new DecimalFormat(decimalFormat);
 			Double tmpPrice = price - Math.floor(price);
-			if (tmpPrice.toString().equals("0.0")) {
+			if ("0.0".equals(tmpPrice.toString())) {
 				formatedPrice = String.valueOf(price.intValue());
 			} else {
 				formatedPrice = deciFormat.format(price);
@@ -301,7 +287,7 @@ public  class CommonUtility {
 			currentDate = dateFormat.parse(currentDateStr);
 			
 		} catch (ParseException | DateTimeParseException e) {
-			LogHelper.error(CommonUtility.class, "ParseException: " + e);
+			LogHelper.error(CommonUtility.class, "ParseException : " + e);
 		}	
 		
 		Date startDate = null;
@@ -314,7 +300,7 @@ public  class CommonUtility {
 			}
 			
 		} catch (ParseException | DateTimeParseException e) {
-			LogHelper.error(CommonUtility.class, "ParseException: " + e);
+			LogHelper.error(CommonUtility.class, " ParseException: " + e);
 		}	
 		
 		try{
@@ -417,6 +403,7 @@ public  class CommonUtility {
 		} catch (RestClientException e) {
 			// Stanley - Added error logging
 			LogHelper.error(CommonUtility.class, e+"");
+			throw new ApplicationException(ExceptionMessages.PROMOTION_API_EXCEPTION);
 		}
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.convertValue(response,
@@ -766,7 +753,7 @@ public  class CommonUtility {
 		return mediaList;
 	}
 	public static boolean isValidBundleForProduct(com.vf.uk.dal.utility.entity.PriceForBundleAndHardware price,
-			Map<String,CommercialBundle> commercialBundleMap,List<String> productLinesList)
+			Map<String,CommercialBundle> commercialBundleMap,List<String> productLinesList,String journeyType)
 	{
 		boolean flag =false;
 		String bundleId=price.getBundlePrice().getBundleId();
@@ -785,11 +772,37 @@ public  class CommonUtility {
 			}
 			//boolean isCompatible=commercialBundle.getProductLines().containsAll(productLinesList);
 			boolean isCompatible=commercialBundle.getProductLines().stream().anyMatch(productLinesList.get(0)::equalsIgnoreCase)?true:commercialBundle.getProductLines().stream().anyMatch(productLinesList.get(1)::equalsIgnoreCase)?true:false;
-			if(isCompatible && dateValidationForOffers(startDateTime,
+			if((StringUtils.isBlank(journeyType) || StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_ACQUISITION) || StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_SECONDLINE) )&& isCompatible && dateValidationForOffers(startDateTime,
 					endDateTime, Constants.DATE_FORMAT_COHERENCE) && !commercialBundle.getAvailability().getSalesExpired() && commercialBundle.getBundleControl().isDisplayableAcq() && commercialBundle.getBundleControl().isSellableAcq())
 			{
 				flag =true;
 			}
+			if((StringUtils.isNotBlank(journeyType) && StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_UPGRADE) )&& isCompatible && dateValidationForOffers(startDateTime,
+					endDateTime, Constants.DATE_FORMAT_COHERENCE) && !commercialBundle.getAvailability().getSalesExpired() && commercialBundle.getBundleControl().isDisplayableRet() && commercialBundle.getBundleControl().isSellableRet())
+			{
+				flag =true;
+			}
+		}
+		return flag;
+	}
+	public static Boolean dateValidationForProduct(String availableFromDate,String strDateFormat) {
+		boolean flag = false;
+		SimpleDateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+		Date currentDate = new Date();
+		Date startDate = null;
+
+		String currentDateStr = dateFormat.format(currentDate);
+
+		try {
+			currentDate = dateFormat.parse(currentDateStr);
+			startDate = dateFormat.parse(availableFromDate);
+
+		} catch (ParseException | DateTimeParseException e) {
+			LogHelper.error(CommonUtility.class, "ParseException: " + e);
+		}
+
+		if (startDate != null && currentDate.before(startDate)) {
+			flag = true;
 		}
 		return flag;
 	}

@@ -1,17 +1,30 @@
 package com.vf.uk.dal.device.entity;
 
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 /**
  * Price
  */
 
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
+
 public class Price   {
+  @JsonProperty("gross")
   private String gross = null;
 
+  @JsonProperty("net")
   private String net = null;
 
+  @JsonProperty("vat")
   private String vat = null;
-
+/**
+ * 
+ * @param gross
+ * @return
+ */
   public Price gross(String gross) {
     this.gross = gross;
     return this;
@@ -21,14 +34,24 @@ public class Price   {
    * Gross value of the device price
    * @return gross
   **/
+  @ApiModelProperty(value = "Gross value of the device price")
+
+
   public String getGross() {
     return gross;
   }
-
+/**
+ * 
+ * @param gross
+ */
   public void setGross(String gross) {
     this.gross = gross;
   }
-
+/**
+ * 
+ * @param net
+ * @return
+ */
   public Price net(String net) {
     this.net = net;
     return this;
@@ -38,14 +61,24 @@ public class Price   {
    * Net value of the device price
    * @return net
   **/
+  @ApiModelProperty(value = "Net value of the device price")
+
+
   public String getNet() {
     return net;
   }
-
+/**
+ * 
+ * @param net
+ */
   public void setNet(String net) {
     this.net = net;
   }
-
+/**
+ * 
+ * @param vat
+ * @return
+ */
   public Price vat(String vat) {
     this.vat = vat;
     return this;
@@ -55,10 +88,16 @@ public class Price   {
    * VAT component of the device price
    * @return vat
   **/
+  @ApiModelProperty(value = "VAT component of the device price")
+
+
   public String getVat() {
     return vat;
   }
-
+/**
+ * 
+ * @param vat
+ */
   public void setVat(String vat) {
     this.vat = vat;
   }

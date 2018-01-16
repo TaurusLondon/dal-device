@@ -3,10 +3,11 @@ package com.vf.uk.dal.device.entity;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 /**
  * Attributes
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-06-29T07:14:47.786Z")
 
 public class Attributes   {
   @JsonProperty("key")
@@ -21,6 +22,11 @@ public class Attributes   {
   @JsonProperty("valueUOM")
   private String valueUOM = null;
 
+  /**
+   * 
+   * @param key
+   * @return
+   */
   public Attributes key(String key) {
     this.key = key;
     return this;
@@ -30,14 +36,26 @@ public class Attributes   {
    * Item Attribute Key
    * @return key
   **/
+  @ApiModelProperty(value = "Item Attribute Key")
+
+  /**
+	 * 
+	 * @return
+	 */
   public String getKey() {
     return key;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public void setKey(String key) {
     this.key = key;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public Attributes type(String type) {
     this.type = type;
     return this;
@@ -47,14 +65,26 @@ public class Attributes   {
    * Item Attribute Type
    * @return type
   **/
+  @ApiModelProperty(value = "Item Attribute Type")
+
+  /**
+	 * 
+	 * @return
+	 */
   public String getType() {
     return type;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public void setType(String type) {
     this.type = type;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public Attributes value(String value) {
     this.value = value;
     return this;
@@ -64,14 +94,28 @@ public class Attributes   {
    * Item Attribute Value
    * @return value
   **/
+  @ApiModelProperty(value = "Item Attribute Value")
+
+  /**
+	 * 
+	 * @return
+	 */
   public String getValue() {
     return value;
   }
 
+  /**
+	 * 
+	 * @return
+	 */
   public void setValue(String value) {
     this.value = value;
   }
 
+  /**
+	 * 
+	 * @return
+	 */
   public Attributes valueUOM(String valueUOM) {
     this.valueUOM = valueUOM;
     return this;
@@ -81,15 +125,28 @@ public class Attributes   {
    * Item Attribute Value UOM
    * @return valueUOM
   **/
+  @ApiModelProperty(value = "Item Attribute Value UOM")
+
+
+  /**
+	 * 
+	 * @return
+	 */
   public String getValueUOM() {
     return valueUOM;
   }
-
+  /**
+	 * 
+	 * @return
+	 */
   public void setValueUOM(String valueUOM) {
     this.valueUOM = valueUOM;
   }
 
-
+  /**
+	 * 
+	 * @return
+	 */
   @Override
   public boolean equals(java.lang.Object o) {
     if (this == o) {

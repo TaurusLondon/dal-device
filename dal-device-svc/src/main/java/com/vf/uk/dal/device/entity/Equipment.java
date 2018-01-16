@@ -1,15 +1,28 @@
 package com.vf.uk.dal.device.entity;
 
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 /**
  * Equipment
  */
 
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
+
 public class Equipment   {
+  @JsonProperty("make")
   private String make = null;
 
+  @JsonProperty("model")
   private String model = null;
 
+  /**
+   *   
+   * @param make
+   * @return
+   */
   public Equipment make(String make) {
     this.make = make;
     return this;
@@ -19,14 +32,27 @@ public class Equipment   {
    * Make of the device
    * @return make
   **/
+  @ApiModelProperty(value = "Make of the device")
+
+/**
+ * 
+ * @return
+ */
   public String getMake() {
     return make;
   }
-
+/**
+ * 
+ * @param make
+ */
   public void setMake(String make) {
     this.make = make;
   }
-
+/**
+ * 
+ * @param model
+ * @return
+ */
   public Equipment model(String model) {
     this.model = model;
     return this;
@@ -36,10 +62,19 @@ public class Equipment   {
    * Model of the device
    * @return model
   **/
+  @ApiModelProperty(value = "Model of the device")
+
+/**
+ * 
+ * @return
+ */
   public String getModel() {
     return model;
   }
-
+/**
+ * 
+ * @param model
+ */
   public void setModel(String model) {
     this.model = model;
   }

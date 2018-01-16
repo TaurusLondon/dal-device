@@ -9,13 +9,11 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Component;
 
-import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 import com.vf.uk.dal.common.configuration.DataSourceInitializer;
 import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.utility.solr.entity.BundlePrice;
@@ -63,7 +61,6 @@ public class DeviceTileCacheDAO {
 	public int count(String tablename) {
 		String sql = "SELECT COUNT(*) FROM PRODUCT."+tablename;
 		int count;
-		//count = getJdbcTemplate().update(sql);
 		count=getJdbcTemplate().queryForObject(sql, Integer.class);
 		return count;
 	}
@@ -86,8 +83,8 @@ public class DeviceTileCacheDAO {
 			+ "BUNDLE_MNTHLY_DISC_PRICE_GROSS, BUNDLE_MNTHLY_DISC_PRICE_NET, BUNDLE_MNTHLY_DISC_PRICE_VAT,"
 			+ "HW_ONE_OFF_PRICE_GROSS, HW_ONE_OFF_PRICE_NET, HW_ONE_OFF_PRICE_VAT,"
 			+ "HW_ONE_OFF_DISC_PRICE_GROSS, HW_ONE_OFF_DISC_PRICE_NET, HW_ONE_OFF_DISC_PRICE_VAT, CREATE_UPDATE_TIME,"
-			+ "IS_LEAD_MEMBER, MINIMUM_COST)"
-			+" values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			+ "IS_LEAD_MEMBER, MINIMUM_COST,NON_UPGRADE_LEAD_DEVICE_ID,UPGRADE_LEAD_DEVICE_ID,NON_UPGRADE_LEAD_PLAN_ID,UPGRADE_LEAD_PLAN_ID)"
+			+" values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			int i[] = getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
 
 				@Override
@@ -99,14 +96,11 @@ public class DeviceTileCacheDAO {
 						ps.setString(3, productGroupForDeviceListing.getLeadPlanId());
 						ps.setString(4, productGroupForDeviceListing.getProductGroupName());
 						ps.setString(5, productGroupForDeviceListing.getProductGroupId());
-						if(priceInfo!=null && priceInfo.getBundlePrice()!=null)
+						if(priceInfo!=null && priceInfo.getBundlePrice()!=null && priceInfo.getBundlePrice().getMonthlyPrice()!=null && priceInfo.getBundlePrice().getMonthlyPrice().getGross()!=null)
 						{
-							if(priceInfo.getBundlePrice().getMonthlyPrice()!=null)
-							{
 								ps.setString(6, priceInfo.getBundlePrice().getMonthlyPrice().getGross());
 								ps.setString(7, priceInfo.getBundlePrice().getMonthlyPrice().getNet());
 								ps.setString(8, priceInfo.getBundlePrice().getMonthlyPrice().getVat());
-							}
 							if(priceInfo.getBundlePrice().getMonthlyDiscountPrice()!=null)
 							{
 								ps.setString(9, priceInfo.getBundlePrice().getMonthlyDiscountPrice().getGross());
@@ -146,6 +140,10 @@ public class DeviceTileCacheDAO {
 						ps.setTimestamp(18,timestamp);
 						ps.setString(19, productGroupForDeviceListing.getIsLeadMember());
 						ps.setString(20, productGroupForDeviceListing.getMinimumCost());
+						ps.setString(21, productGroupForDeviceListing.getNonUpgradeLeadDeviceId());
+						ps.setString(22, productGroupForDeviceListing.getUpgradeLeadDeviceId());
+						ps.setString(23, productGroupForDeviceListing.getNonUpgradeLeadPlanId());
+						ps.setString(24, productGroupForDeviceListing.getUpgradeLeadPlanId());
 				}
 				
 				@Override
@@ -211,8 +209,8 @@ public class DeviceTileCacheDAO {
 				+ "BUNDLE_MNTHLY_PRICE_GROSS,BUNDLE_MNTHLY_PRICE_NET, BUNDLE_MNTHLY_PRICE_VAT, "
 				+ "BUNDLE_MNTHLY_DISC_PRICE_GROSS, BUNDLE_MNTHLY_DISC_PRICE_NET, BUNDLE_MNTHLY_DISC_PRICE_VAT, "
 				+ "HW_ONE_OFF_PRICE_GROSS, HW_ONE_OFF_PRICE_NET, HW_ONE_OFF_PRICE_VAT, "
-				+ "HW_ONE_OFF_DISC_PRICE_GROSS ,HW_ONE_OFF_DISC_PRICE_NET, HW_ONE_OFF_DISC_PRICE_VAT,CREATE_UPDATE_TIME) "
-				+ "values (?,?,?,?, ?,?,?,?, ?,?,?,?, ?,?,?,?)";
+				+ "HW_ONE_OFF_DISC_PRICE_GROSS ,HW_ONE_OFF_DISC_PRICE_NET, HW_ONE_OFF_DISC_PRICE_VAT,CREATE_UPDATE_TIME,JOURNEY_TYPE) "
+				+ "values (?,?,?,?, ?,?,?,?, ?,?,?,?, ?,?,?,?,?)";
 		int i[] = getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
@@ -291,6 +289,7 @@ public class DeviceTileCacheDAO {
 				}
 				Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
 				ps.setTimestamp(16, timeStamp);
+				ps.setString(17, offerAppliedPriceDetails.getJourneyType());
 			}
 		}
 			@Override

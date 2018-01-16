@@ -11,7 +11,11 @@ public class StatusInfo {
 	private String status = null;
 
 	private List<String> errorCodes = new ArrayList<String>();
-
+	/**
+	 * 
+	 * @param status
+	 * @return
+	 */
 	public StatusInfo status(String status) {
 		this.status = status;
 		return this;
@@ -25,16 +29,27 @@ public class StatusInfo {
 	public String getStatus() {
 		return status;
 	}
-
+	/**
+	 * 
+	 * @param status
+	 */
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
+	/**
+	 * 
+	 * @param errorCodes
+	 * @return
+	 */
 	public StatusInfo errorCodes(List<String> errorCodes) {
 		this.errorCodes = errorCodes;
 		return this;
 	}
-
+	/**
+	 * 
+	 * @param errorCodesItem
+	 * @return
+	 */
 	public StatusInfo addErrorCodesItem(String errorCodesItem) {
 		this.errorCodes.add(errorCodesItem);
 		return this;
@@ -48,7 +63,10 @@ public class StatusInfo {
 	public List<String> getErrorCodes() {
 		return errorCodes;
 	}
-
+	/**
+	 * 
+	 * @param errorCodes
+	 */
 	public void setErrorCodes(List<String> errorCodes) {
 		this.errorCodes = errorCodes;
 	}

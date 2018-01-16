@@ -10,187 +10,404 @@
  * Do not edit the class manually.
  */
 
-
 package com.vf.uk.dal.device.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * MerchandisingPromotion
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2017-09-27T07:05:02.425Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
+
 public class MerchandisingPromotion {
-  @SerializedName("tag")
-  private String tag = null;
+	@JsonProperty("tag")
+	private String tag = null;
 
-  @SerializedName("label")
-  private String label = null;
+	@JsonProperty("label")
+	private String label = null;
 
-  @SerializedName("description")
-  private String description = null;
+	@JsonProperty("description")
+	private String description = null;
 
-  @SerializedName("discountId")
-  private String discountId = null;
+	@JsonProperty("discountId")
+	private String discountId = null;
 
-  @SerializedName("mpType")
-  private String mpType = null;
+	@JsonProperty("mpType")
+	private String mpType = null;
 
-  @SerializedName("priority")
-  private Integer priority = null;
-	
-  public Integer getPriority() 
-  {
-	return priority;
-  }
-  public void setPriority(Integer priority) 
-  {
-	this.priority = priority;
-  }
-  
-  private String priceEstablishedLabel = null;
+	@JsonProperty("priceEstablishedLabel")
+	private String priceEstablishedLabel = null;
 
-  public MerchandisingPromotion tag(String tag) {
-    this.tag = tag;
-    return this;
-  }
+	@JsonProperty("priority")
+	private Integer priority = null;
 
-   /**
-   * Tag value of the merchandising promotion
-   * @return tag
-  **/
-  public String getTag() {
-    return tag;
-  }
+	/** The package type. */
+	@JsonProperty("packageType")
+	private List<String> packageType = new ArrayList<>();
 
-  public void setTag(String tag) {
-    this.tag = tag;
-  }
+	/** The package type. */
+	@JsonProperty("footNotes")
+	private List<String> footNotes = new ArrayList<>();
 
-  public MerchandisingPromotion label(String label) {
-    this.label = label;
-    return this;
-  }
+	/** The promotion media. */
+	@JsonProperty("promotionMedia")
+	private String promotionMedia = null;
 
-   /**
-   * Label value of the merchandising promotion
-   * @return label
-  **/
-  public String getLabel() {
-    return label;
-  }
+	/**
+	 * Price established label.
+	 *
+	 * @param footNotes
+	 *            the foot notes
+	 * @return the merchandising promotion
+	 */
+	public MerchandisingPromotion footNotes(List<String> footNotes) {
+		this.footNotes = footNotes;
+		return this;
+	}
 
-  public void setLabel(String label) {
-    this.label = label;
-  }
+	/**
+	 * Gets the foot notes.
+	 *
+	 * @return the footNotes
+	 */
+	public List<String> getFootNotes() {
+		return footNotes;
+	}
 
-  public MerchandisingPromotion description(String description) {
-    this.description = description;
-    return this;
-  }
+	/**
+	 * Sets the foot notes.
+	 *
+	 * @param footNotes
+	 *            the footNotes to set
+	 */
+	public void setFootNotes(List<String> footNotes) {
+		this.footNotes = footNotes;
+	}
 
-   /**
-   * Label value of the merchandising promotion
-   * @return description
-  **/
-  public String getDescription() {
-    return description;
-  }
+	/**
+	 * Tag.
+	 *
+	 * @param promotionMedia
+	 *            the promotion media
+	 * @return the merchandising promotion
+	 */
+	public MerchandisingPromotion promotionMedia(String promotionMedia) {
+		this.promotionMedia = promotionMedia;
+		return this;
+	}
 
-  public void setDescription(String description) {
-    this.description = description;
-  }
+	/**
+	 * Gets the promotion media.
+	 *
+	 * @return the promotion media
+	 */
+	public String getPromotionMedia() {
+		return promotionMedia;
+	}
 
-  public MerchandisingPromotion discountId(String discountId) {
-    this.discountId = discountId;
-    return this;
-  }
+	/**
+	 * Sets the promotion media.
+	 *
+	 * @param promotionMedia
+	 *            the new promotion media
+	 */
+	public void setPromotionMedia(String promotionMedia) {
+		this.promotionMedia = promotionMedia;
+	}
 
-   /**
-   * Discount skud Id, if applicable
-   * @return discountId
-  **/
-  public String getDiscountId() {
-    return discountId;
-  }
+	/**
+	 * Tag.
+	 *
+	 * @param promotionMedia
+	 *            the promotion media
+	 * @return the merchandising promotion
+	 */
+	public MerchandisingPromotion packageType(List<String> packageType) {
+		this.packageType = packageType;
+		return this;
+	}
 
-  public void setDiscountId(String discountId) {
-    this.discountId = discountId;
-  }
+	/**
+	 * Gets the package type.
+	 *
+	 * @return the package type
+	 */
+	public List<String> getPackageType() {
+		return packageType;
+	}
 
-  public MerchandisingPromotion mpType(String mpType) {
-    this.mpType = mpType;
-    return this;
-  }
+	/**
+	 * Sets the package type.
+	 *
+	 * @param packageType
+	 *            the new package type
+	 */
+	public void setPackageType(List<String> packageType) {
+		this.packageType = packageType;
+	}
 
-   /**
-   * Discount type, the Possible values are full_duration, limited_tinme, Hardware_dicount
-   * @return mpType
-  **/
-  public String getMpType() {
-    return mpType;
-  }
+	/**
+	 * 
+	 * @param tag
+	 * @return
+	 */
+	public MerchandisingPromotion tag(String tag) {
+		this.tag = tag;
+		return this;
+	}
 
-  public void setMpType(String mpType) {
-    this.mpType = mpType;
-  }
+	/**
+	 * Tag value of the merchandising promotion
+	 * 
+	 * @return tag
+	 **/
+	@ApiModelProperty(value = "Tag value of the merchandising promotion")
 
+	public String getTag() {
+		return tag;
+	}
 
-  public String getPriceEstablishedLabel() {
-	return priceEstablishedLabel;
+	/**
+	 * 
+	 * @param tag
+	 */
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+
+	/**
+	 * 
+	 * @param label
+	 * @return
+	 */
+	public MerchandisingPromotion label(String label) {
+		this.label = label;
+		return this;
+	}
+
+	/**
+	 * Label value of the merchandising promotion
+	 * 
+	 * @return label
+	 **/
+	@ApiModelProperty(value = "Label value of the merchandising promotion")
+
+	public String getLabel() {
+		return label;
+	}
+
+	/**
+	 * 
+	 * @param label
+	 */
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	/**
+	 * 
+	 * @param description
+	 * @return
+	 */
+	public MerchandisingPromotion description(String description) {
+		this.description = description;
+		return this;
+	}
+
+	/**
+	 * Description Text from MEF
+	 * 
+	 * @return description
+	 **/
+	@ApiModelProperty(value = "Description Text from MEF")
+
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * 
+	 * @param description
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	/**
+	 * 
+	 * @param discountId
+	 * @return
+	 */
+	public MerchandisingPromotion discountId(String discountId) {
+		this.discountId = discountId;
+		return this;
+	}
+
+	/**
+	 * Discount skud Id, if applicable
+	 * 
+	 * @return discountId
+	 **/
+	@ApiModelProperty(value = "Discount skud Id, if applicable")
+
+	public String getDiscountId() {
+		return discountId;
+	}
+
+	/**
+	 * 
+	 * @param discountId
+	 */
+	public void setDiscountId(String discountId) {
+		this.discountId = discountId;
+	}
+
+	/**
+	 * 
+	 * @param mpType
+	 * @return
+	 */
+	public MerchandisingPromotion mpType(String mpType) {
+		this.mpType = mpType;
+		return this;
+	}
+
+	/**
+	 * Promotion Type
+	 * 
+	 * @return mpType
+	 **/
+	@ApiModelProperty(value = "Promotion Type")
+
+	public String getMpType() {
+		return mpType;
+	}
+
+	/**
+	 * 
+	 * @param mpType
+	 */
+	public void setMpType(String mpType) {
+		this.mpType = mpType;
+	}
+
+	/**
+	 * 
+	 * @param priceEstablishedLabel
+	 * @return
+	 */
+	public MerchandisingPromotion priceEstablishedLabel(String priceEstablishedLabel) {
+		this.priceEstablishedLabel = priceEstablishedLabel;
+		return this;
+	}
+
+	/**
+	 * Price Established label available in MEF file
+	 * 
+	 * @return priceEstablishedLabel
+	 **/
+	@ApiModelProperty(value = "Price Established label available in MEF file")
+
+	public String getPriceEstablishedLabel() {
+		return priceEstablishedLabel;
+	}
+
+	/**
+	 * 
+	 * @param priceEstablishedLabel
+	 */
+	public void setPriceEstablishedLabel(String priceEstablishedLabel) {
+		this.priceEstablishedLabel = priceEstablishedLabel;
+	}
+
+	/**
+	 * 
+	 * @param priority
+	 * @return
+	 */
+	public MerchandisingPromotion priority(Integer priority) {
+		this.priority = priority;
+		return this;
+	}
+
+	/**
+	 * The priority of Merchandising Promotion
+	 * 
+	 * @return priority
+	 **/
+	@ApiModelProperty(value = "The priority of Merchandising Promotion")
+
+	public Integer getPriority() {
+		return priority;
+	}
+
+	/**
+	 * 
+	 * @param priority
+	 */
+	public void setPriority(Integer priority) {
+		this.priority = priority;
+	}
+
+	@Override
+	public boolean equals(java.lang.Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		MerchandisingPromotion merchandisingPromotion = (MerchandisingPromotion) o;
+		return Objects.equals(this.tag, merchandisingPromotion.tag)
+				&& Objects.equals(this.label, merchandisingPromotion.label)
+				&& Objects.equals(this.description, merchandisingPromotion.description)
+				&& Objects.equals(this.discountId, merchandisingPromotion.discountId)
+				&& Objects.equals(this.mpType, merchandisingPromotion.mpType)
+				&& Objects.equals(this.priceEstablishedLabel, merchandisingPromotion.priceEstablishedLabel)
+				&& Objects.equals(this.priority, merchandisingPromotion.priority)
+				&& Objects.equals(this.packageType, merchandisingPromotion.packageType)
+				&& Objects.equals(this.footNotes, merchandisingPromotion.footNotes)
+				&& Objects.equals(this.promotionMedia, merchandisingPromotion.promotionMedia);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(tag, label, description, discountId, mpType, priceEstablishedLabel, priority, packageType,
+				footNotes, promotionMedia);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("class MerchandisingPromotion {\n");
+		sb.append("    tag: ").append(toIndentedString(tag)).append("\n");
+		sb.append("    label: ").append(toIndentedString(label)).append("\n");
+		sb.append("    description: ").append(toIndentedString(description)).append("\n");
+		sb.append("    discountId: ").append(toIndentedString(discountId)).append("\n");
+		sb.append("    mpType: ").append(toIndentedString(mpType)).append("\n");
+		sb.append("    priceEstablishedLabel: ").append(toIndentedString(priceEstablishedLabel)).append("\n");
+		sb.append("    priority: ").append(toIndentedString(priority)).append("\n");
+		sb.append("    packageType: ").append(toIndentedString(packageType)).append("\n");
+		sb.append("    footNotes: ").append(toIndentedString(footNotes)).append("\n");
+		sb.append("    promotionMedia: ").append(toIndentedString(promotionMedia)).append("\n");
+		sb.append("}");
+		return sb.toString();
+	}
+
+	/**
+	 * Convert the given object to string with each line indented by 4 spaces
+	 * (except the first line).
+	 */
+	private String toIndentedString(java.lang.Object o) {
+		if (o == null) {
+			return "null";
+		}
+		return o.toString().replace("\n", "\n    ");
+	}
 }
-
-public void setPriceEstablishedLabel(String priceEstablishedLabel) {
-	this.priceEstablishedLabel = priceEstablishedLabel;
-}
-
-@Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    MerchandisingPromotion merchandisingPromotion = (MerchandisingPromotion) o;
-    return Objects.equals(this.tag, merchandisingPromotion.tag) &&
-        Objects.equals(this.label, merchandisingPromotion.label) &&
-        Objects.equals(this.description, merchandisingPromotion.description) &&
-        Objects.equals(this.discountId, merchandisingPromotion.discountId) &&
-        Objects.equals(this.mpType, merchandisingPromotion.mpType);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(tag, label, description, discountId, mpType);
-  }
-
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class MerchandisingPromotion {\n");
-    
-    sb.append("    tag: ").append(toIndentedString(tag)).append("\n");
-    sb.append("    label: ").append(toIndentedString(label)).append("\n");
-    sb.append("    description: ").append(toIndentedString(description)).append("\n");
-    sb.append("    discountId: ").append(toIndentedString(discountId)).append("\n");
-    sb.append("    mpType: ").append(toIndentedString(mpType)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
-  
-}
-

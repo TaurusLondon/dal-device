@@ -4,21 +4,38 @@ import java.util.Objects;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import javax.validation.Valid;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 /**
  * MetaData
  */
 
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
+
 public class MetaData   {
+  @JsonProperty("seoCanonical")
   private String seoCanonical = null;
 
+  @JsonProperty("seoDescription")
   private String seoDescription = null;
 
+  @JsonProperty("seoKeyWords")
   private String seoKeyWords = null;
 
+  @JsonProperty("seoIndex")
   private String seoIndex = null;
 
-  private List<UUID> seoRobots = new ArrayList<UUID>();
-
+  @JsonProperty("seoRobots")
+  private List<UUID> seoRobots = null;
+/**
+ * 
+ * @param seoCanonical
+ * @return
+ */
   public MetaData seoCanonical(String seoCanonical) {
     this.seoCanonical = seoCanonical;
     return this;
@@ -28,14 +45,24 @@ public class MetaData   {
    * SEO Canonical
    * @return seoCanonical
   **/
+  @ApiModelProperty(value = "SEO Canonical")
+
+
   public String getSeoCanonical() {
     return seoCanonical;
   }
-
+/**
+ * 
+ * @param seoCanonical
+ */
   public void setSeoCanonical(String seoCanonical) {
     this.seoCanonical = seoCanonical;
   }
-
+/**
+ * 
+ * @param seoDescription
+ * @return
+ */
   public MetaData seoDescription(String seoDescription) {
     this.seoDescription = seoDescription;
     return this;
@@ -45,14 +72,24 @@ public class MetaData   {
    * SEO Description
    * @return seoDescription
   **/
+  @ApiModelProperty(value = "SEO Description")
+
+
   public String getSeoDescription() {
     return seoDescription;
   }
-
+/**
+ * 
+ * @param seoDescription
+ */
   public void setSeoDescription(String seoDescription) {
     this.seoDescription = seoDescription;
   }
-
+/**
+ * 
+ * @param seoKeyWords
+ * @return
+ */
   public MetaData seoKeyWords(String seoKeyWords) {
     this.seoKeyWords = seoKeyWords;
     return this;
@@ -62,14 +99,24 @@ public class MetaData   {
    * SEO DKey words
    * @return seoKeyWords
   **/
+  @ApiModelProperty(value = "SEO DKey words")
+
+
   public String getSeoKeyWords() {
     return seoKeyWords;
   }
-
+/**
+ * 
+ * @param seoKeyWords
+ */
   public void setSeoKeyWords(String seoKeyWords) {
     this.seoKeyWords = seoKeyWords;
   }
-
+/**
+ * 
+ * @param seoIndex
+ * @return
+ */
   public MetaData seoIndex(String seoIndex) {
     this.seoIndex = seoIndex;
     return this;
@@ -79,20 +126,37 @@ public class MetaData   {
    * SEO Index
    * @return seoIndex
   **/
+  @ApiModelProperty(value = "SEO Index")
+
+
   public String getSeoIndex() {
     return seoIndex;
   }
-
+/**
+ * 
+ * @param seoIndex
+ */
   public void setSeoIndex(String seoIndex) {
     this.seoIndex = seoIndex;
   }
-
+/**
+ * 
+ * @param seoRobots
+ * @return
+ */
   public MetaData seoRobots(List<UUID> seoRobots) {
     this.seoRobots = seoRobots;
     return this;
   }
-
+/**
+ * 
+ * @param seoRobotsItem
+ * @return
+ */
   public MetaData addSeoRobotsItem(UUID seoRobotsItem) {
+    if (this.seoRobots == null) {
+      this.seoRobots = new ArrayList<>();
+    }
     this.seoRobots.add(seoRobotsItem);
     return this;
   }
@@ -101,10 +165,17 @@ public class MetaData   {
    * List of robots
    * @return seoRobots
   **/
+  @ApiModelProperty(value = "List of robots")
+
+  @Valid
+
   public List<UUID> getSeoRobots() {
     return seoRobots;
   }
-
+/**
+ * 
+ * @param seoRobots
+ */
   public void setSeoRobots(List<UUID> seoRobots) {
     this.seoRobots = seoRobots;
   }

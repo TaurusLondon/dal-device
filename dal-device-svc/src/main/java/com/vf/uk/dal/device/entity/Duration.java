@@ -1,15 +1,28 @@
 package com.vf.uk.dal.device.entity;
 
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 /**
  * Duration
  */
 
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
+
 public class Duration   {
+  @JsonProperty("uom")
   private String uom = null;
 
+  @JsonProperty("value")
   private String value = null;
 
+  /**
+   * 
+   * @param uom
+   * @return
+   */
   public Duration uom(String uom) {
     this.uom = uom;
     return this;
@@ -19,14 +32,27 @@ public class Duration   {
    * Unit of measurement for duration value
    * @return uom
   **/
+  @ApiModelProperty(value = "Unit of measurement for duration value")
+
+/**
+ * 
+ * @return
+ */
   public String getUom() {
     return uom;
   }
-
+/**
+ * 
+ * @param uom
+ */
   public void setUom(String uom) {
     this.uom = uom;
   }
-
+/**
+ * 
+ * @param value
+ * @return
+ */
   public Duration value(String value) {
     this.value = value;
     return this;
@@ -36,10 +62,19 @@ public class Duration   {
    * Duration value
    * @return value
   **/
+  @ApiModelProperty(value = "Duration value")
+
+/**
+ * 
+ * @return
+ */
   public String getValue() {
     return value;
   }
-
+/**
+ * 
+ * @param value
+ */
   public void setValue(String value) {
     this.value = value;
   }

@@ -38,8 +38,26 @@ public class MerchandisingPromotion {
   private String mpType = null;
   
   private String priceEstablishedLabel = null;
+  
+  @SerializedName("priority")
+  private Integer priority = null;
 
-  public MerchandisingPromotion tag(String tag) {
+  public Integer getPriority() {
+	return priority;
+}
+  /**
+   * 
+   * @param priority
+   */
+public void setPriority(Integer priority) {
+	this.priority = priority;
+}
+/**
+ * 
+ * @param tag
+ * @return
+ */
+public MerchandisingPromotion tag(String tag) {
     this.tag = tag;
     return this;
   }
@@ -51,11 +69,18 @@ public class MerchandisingPromotion {
   public String getTag() {
     return tag;
   }
-
+  /**
+   * 
+   * @param tag
+   */
   public void setTag(String tag) {
     this.tag = tag;
   }
-
+  /**
+   * 
+   * @param label
+   * @return
+   */
   public MerchandisingPromotion label(String label) {
     this.label = label;
     return this;
@@ -68,11 +93,18 @@ public class MerchandisingPromotion {
   public String getLabel() {
     return label;
   }
-
+  /**
+   * 
+   * @param label
+   */
   public void setLabel(String label) {
     this.label = label;
   }
-
+  /**
+   * 
+   * @param description
+   * @return
+   */
   public MerchandisingPromotion description(String description) {
     this.description = description;
     return this;
@@ -85,11 +117,18 @@ public class MerchandisingPromotion {
   public String getDescription() {
     return description;
   }
-
+  /**
+   * 
+   * @param description
+   */
   public void setDescription(String description) {
     this.description = description;
   }
-
+  /**
+   * 
+   * @param discountId
+   * @return
+   */
   public MerchandisingPromotion discountId(String discountId) {
     this.discountId = discountId;
     return this;
@@ -102,11 +141,18 @@ public class MerchandisingPromotion {
   public String getDiscountId() {
     return discountId;
   }
-
+  /**
+   * 
+   * @param discountId
+   */
   public void setDiscountId(String discountId) {
     this.discountId = discountId;
   }
-
+  /**
+   * 
+   * @param mpType
+   * @return
+   */
   public MerchandisingPromotion mpType(String mpType) {
     this.mpType = mpType;
     return this;
@@ -119,16 +165,25 @@ public class MerchandisingPromotion {
   public String getMpType() {
     return mpType;
   }
-
+  /**
+   * 
+   * @param mpType
+   */
   public void setMpType(String mpType) {
     this.mpType = mpType;
   }
 
-
+  /**
+   * 
+   * @return
+   */
   public String getPriceEstablishedLabel() {
 	return priceEstablishedLabel;
   }
-
+  /**
+   * 
+   * @param priceEstablishedLabel
+   */
 public void setPriceEstablishedLabel(String priceEstablishedLabel) {
 	this.priceEstablishedLabel = priceEstablishedLabel;
 }
@@ -146,12 +201,13 @@ public void setPriceEstablishedLabel(String priceEstablishedLabel) {
         Objects.equals(this.label, merchandisingPromotion.label) &&
         Objects.equals(this.description, merchandisingPromotion.description) &&
         Objects.equals(this.discountId, merchandisingPromotion.discountId) &&
-        Objects.equals(this.mpType, merchandisingPromotion.mpType);
+        Objects.equals(this.mpType, merchandisingPromotion.mpType)&&
+    	Objects.equals(this.priority, merchandisingPromotion.priority);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(tag, label, description, discountId, mpType);
+    return Objects.hash(tag, label, description, discountId, mpType, priority);
   }
 
 
@@ -165,6 +221,7 @@ public void setPriceEstablishedLabel(String priceEstablishedLabel) {
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    discountId: ").append(toIndentedString(discountId)).append("\n");
     sb.append("    mpType: ").append(toIndentedString(mpType)).append("\n");
+    sb.append("    priority: ").append(toIndentedString(priority)).append("\n");
     sb.append("}");
     return sb.toString();
   }

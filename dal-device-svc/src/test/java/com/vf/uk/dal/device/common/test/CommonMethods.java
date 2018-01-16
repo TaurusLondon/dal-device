@@ -2,6 +2,7 @@ package com.vf.uk.dal.device.common.test;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -43,17 +44,23 @@ import com.vf.uk.dal.device.entity.OfferPacks;
 import com.vf.uk.dal.device.entity.Price;
 import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
 import com.vf.uk.dal.device.entity.ProductGroup;
+import com.vf.uk.dal.device.entity.SourcePackageSummary;
 import com.vf.uk.dal.device.entity.Specification;
 import com.vf.uk.dal.device.entity.SpecificationGroup;
 import com.vf.uk.dal.device.entity.StepPricingInfo;
 import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 import com.vf.uk.dal.utility.entity.BundleDetails;
+import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
+import com.vf.uk.dal.utility.entity.BundleDeviceAndProductsList;
 import com.vf.uk.dal.utility.entity.BundleHeader;
 import com.vf.uk.dal.utility.entity.ExtraPrice;
+import com.vf.uk.dal.utility.entity.InstalledProduct;
+import com.vf.uk.dal.utility.entity.Preferences;
 import com.vf.uk.dal.utility.entity.PriceForAccessory;
 import com.vf.uk.dal.utility.entity.PriceForExtra;
 import com.vf.uk.dal.utility.entity.PriceForProduct;
+import com.vf.uk.dal.utility.entity.RecommendedProductListRequest;
 import com.vf.uk.dal.utility.entity.StockInfo;
 import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
 import com.vf.uk.dal.utility.solr.entity.Media;
@@ -68,7 +75,6 @@ import com.vodafone.dal.bundle.pojo.Commitment;
 import com.vodafone.dal.bundle.pojo.DevicePrice;
 import com.vodafone.dal.bundle.pojo.ImageURL;
 import com.vodafone.dal.bundle.pojo.LineRental;
-import com.vodafone.dal.bundle.pojo.Relationship;
 import com.vodafone.dal.bundle.pojo.ServiceProduct;
 import com.vodafone.dal.domain.bazaarvoice.BazaarVoice;
 import com.vodafone.product.pojo.CommercialProduct;
@@ -91,6 +97,7 @@ import com.vodafone.solrmodels.ProductModel;
 import com.vodafone.stockAvailability.pojo.StockAvailability;
 
 public class CommonMethods {
+	public static Timestamp timeStamp;
 	public static DeviceDetails getDevice(String id) {
 		DeviceDetails deviceDetails = new DeviceDetails();
 		deviceDetails.setDeviceId("93353");
@@ -226,6 +233,8 @@ public class CommonMethods {
 		model.setBundleMonthlyPriceVat(9.0f);
 		model.setLeadPlanId("110154");
 		model.setLeadPlanIdNew("110154");
+		model.setUpgradeLeadPlanId("110154");
+		model.setNonUpgradeLeadPlanId("110154");
 		List<String> merchedn=new ArrayList<>();
 		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.label|40% off the phone|TEXT&&110154&&HW&&handset.conditional.full.GBP|Pricing_Automatic_Discount|NA|For 3 Months, then|095597");
 		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.priceEstablishedLabel|WAS|TEXT&&110154&&HW&&handset.conditional.full.GBP|Pricing_Automatic_Discount|NA|For 3 Months, then|095597");
@@ -242,6 +251,16 @@ public class CommonMethods {
 		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.label|40% off the phone|TEXT&&110154&&BP&&handset.conditional.full.GBP|Pricing_Discount|W_HH_OC_02|For 3 Months, then|095597");
 		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.priceEstablishedLabel|WAS|TEXT&&110154&&BP&&handset.conditional.full.GBP|Pricing_Discount|W_HH_OC_02|For 3 Months, then|095597");
 		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.description|For 3 Months, then|TEXT&&110154&&BP&&handset.conditional.full.GBP|Pricing_Discount|W_HH_OC_02|For 3 Months, then|095597");
+		
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.label|40% off the phone|TEXT&&110154&&HW&&handset.conditional.full.GBP|Pricing_Upgrade_Discount|NA|For 3 Months, then|095597");
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.priceEstablishedLabel|WAS|TEXT&&110154&&HW&&handset.conditional.full.GBP|Pricing_Upgrade_Discount|NA|For 3 Months, then|095597");
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.description|For 3 Months, then|TEXT&&110154&&HW&&handset.conditional.full.GBP|Pricing_Upgrade_Discount|NA|For 3 Months, then|095597");
+		
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.label|40% off the phone|TEXT&&110154&&BP&&handset.conditional.full.GBP|Pricing_Upgrade_Discount|NA|For 3 Months, then|095597");
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.priceEstablishedLabel|WAS|TEXT&&110154&&BP&&handset.conditional.full.GBP|Pricing_Upgrade_Discount|NA|For 3 Months, then|095597");
+		merchedn.add("hardware_discount.merchandisingPromotions.merchandisingPromotion.description|For 3 Months, then|TEXT&&110154&&BP&&handset.conditional.full.GBP|Pricing_Upgrade_Discount|NA|For 3 Months, then|095597");
+		
+		
 		model.setMerchandisingMedia(merchedn);
 		//List<String>
 		
@@ -289,6 +308,8 @@ public class CommonMethods {
 		model1.setBundleMonthlyPriceVat(9.0f);
 		model1.setLeadPlanId("110154");
 		model1.setLeadPlanIdNew("110154");
+		model1.setUpgradeLeadPlanId("110154");
+		model1.setNonUpgradeLeadPlanId("110154");
 		model1.setMerchandisingMedia(merchedn);
 		productModelList.add(model);
 		productModelList.add(model1);
@@ -743,9 +764,10 @@ public class CommonMethods {
 		productControl.setIsDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
-		productControl.setAvailableFrom((Date.valueOf("2003-09-05")));
-		productControl.setBackOrderable(true);
-
+		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
+		productControl.setAvailableFrom(timeStamp);
+		productControl.setBackOrderable(true); 
+ 
 		commercialProduct.setProductControl(productControl);
 		Equipment equipment = new Equipment();
 		equipment.setMake("SetMake");
@@ -1004,7 +1026,8 @@ public class CommonMethods {
 		productControl.setIsDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
-		productControl.setAvailableFrom((Date.valueOf("2003-09-05")));
+		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
+		productControl.setAvailableFrom(timeStamp);
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -1546,6 +1569,7 @@ public class CommonMethods {
 		List<String> listOfProducts = new ArrayList<>();
 		listOfProducts.add("088417");
 		listOfProducts.add("093353");
+		listOfProducts.add("092660");
 		listOfProducts.add("093354");
 		return listOfProducts;
 	}
@@ -1651,7 +1675,7 @@ public class CommonMethods {
 		BundleDetails bundleDetails = new BundleDetails();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			bundleDetails = mapper.readValue(Utility.readFile("\\BUNDLESV1_compatibleList.json"), BundleDetails.class);
+			bundleDetails = mapper.readValue(Utility.readFile("\\TEST-MOCK\\BUNDLESV1_compatibleList.json"), BundleDetails.class);
 			return bundleDetails;
 
 		} catch (Exception e) {
@@ -1664,7 +1688,7 @@ public class CommonMethods {
 		BundleDetails bundleDetails = new BundleDetails();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			bundleDetails = mapper.readValue(Utility.readFile("\\BUNDLESV1_compatibleList3.json"), BundleDetails.class);
+			bundleDetails = mapper.readValue(Utility.readFile("\\TEST-MOCK\\BUNDLESV1_compatibleList3.json"), BundleDetails.class);
 			return bundleDetails;
 
 		} catch (Exception e) {
@@ -1677,7 +1701,7 @@ public class CommonMethods {
 		BundleDetails bundleDetails = new BundleDetails();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			bundleDetails = mapper.readValue(Utility.readFile("\\BUNDLESV2_compatibleList.json"), BundleDetails.class);
+			bundleDetails = mapper.readValue(Utility.readFile("\\TEST-MOCK\\\\BUNDLESV2_compatibleList.json"), BundleDetails.class);
 			return bundleDetails;
 
 		} catch (Exception e) {
@@ -1690,7 +1714,7 @@ public class CommonMethods {
 		BundleDetails bundleDetails = new BundleDetails();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			bundleDetails = mapper.readValue(Utility.readFile("\\BUNDLESV3_compatibleList.json"), BundleDetails.class);
+			bundleDetails = mapper.readValue(Utility.readFile("\\TEST-MOCK\\BUNDLESV3_compatibleList.json"), BundleDetails.class);
 			return bundleDetails;
 
 		} catch (Exception e) {
@@ -1713,6 +1737,8 @@ public class CommonMethods {
 		ProductGroupModel group = new ProductGroupModel();
 		group.setId("093353");
 		group.setLeadDeviceId("093353");
+		group.setUpgradeLeadDeviceId("093353");
+		group.setNonUpgradeLeadDeviceId("093353");
 		ProductGroupModel group1 = new ProductGroupModel();
 		group1.setId("092660");
 		group1.setLeadDeviceId(null);
@@ -1720,6 +1746,7 @@ public class CommonMethods {
 		groupList.add(group);
 		groupList.add(group1);
 		product.setListOfProductGroups(groupList);
+		product.setNumFound((long)2);
 		return product;
 	}
 
@@ -1729,7 +1756,7 @@ public class CommonMethods {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			bundleDetails = mapper.readValue(Utility.readFile("\\ProductGroupForFacets.json"),
+			bundleDetails = mapper.readValue(Utility.readFile("\\TEST-MOCK\\ProductGroupForFacets.json"),
 					ProductGroupFacetModel.class);
 			return bundleDetails;
 
@@ -1743,7 +1770,7 @@ public class CommonMethods {
 		BundleDetails bundleDetails = new BundleDetails();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			bundleDetails = mapper.readValue(Utility.readFile("\\BUNDLESV1_compatibleList1.json"), BundleDetails.class);
+			bundleDetails = mapper.readValue(Utility.readFile("\\TEST-MOCK\\BUNDLESV1_compatibleList1.json"), BundleDetails.class);
 			return bundleDetails;
 
 		} catch (Exception e) {
@@ -1963,7 +1990,7 @@ public class CommonMethods {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-		String productModel = new String(Utility.readFile("\\BazaarVoiceResponse.json"));
+		String productModel = new String(Utility.readFile("\\TEST-MOCK\\BazaarVoiceResponse.json"));
 		List<BazaarVoice> bazaarList = new ArrayList<>();
 		BazaarVoice bazaar = new BazaarVoice();
 		bazaar.setJsonsource(productModel);
@@ -2111,7 +2138,8 @@ public class CommonMethods {
 		productControl.setIsDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
-		productControl.setAvailableFrom((Date.valueOf("2003-09-05")));
+		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
+		productControl.setAvailableFrom(timeStamp);
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -2248,7 +2276,8 @@ public class CommonMethods {
 		productControl.setIsDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
-		productControl.setAvailableFrom((Date.valueOf("2003-09-05")));
+		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
+		productControl.setAvailableFrom(timeStamp);
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -2443,7 +2472,8 @@ public class CommonMethods {
 		productControl.setIsDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
-		productControl.setAvailableFrom((Date.valueOf("2003-09-05")));
+		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
+		productControl.setAvailableFrom(timeStamp);
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -2655,7 +2685,8 @@ public class CommonMethods {
 		productControl.setIsDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
-		productControl.setAvailableFrom((Date.valueOf("2003-09-05")));
+		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
+		productControl.setAvailableFrom(timeStamp);
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -2784,7 +2815,8 @@ public class CommonMethods {
 		productControl.setIsDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
-		productControl.setAvailableFrom((Date.valueOf("2003-09-05")));
+		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
+		productControl.setAvailableFrom(timeStamp);
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -2909,7 +2941,8 @@ public class CommonMethods {
 		productControl.setIsDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
-		productControl.setAvailableFrom((Date.valueOf("2003-09-05")));
+		timeStamp=new Timestamp(Date.valueOf("2003-09-05").getTime());
+		productControl.setAvailableFrom(timeStamp);
 		productControl.setBackOrderable(true);
 
 		commercialProduct.setProductControl(productControl);
@@ -3138,6 +3171,7 @@ public class CommonMethods {
 		List<com.vodafone.solrmodels.MerchandisingPromotionModel> modelList=new ArrayList<>();
 		com.vodafone.solrmodels.MerchandisingPromotionModel model=new MerchandisingPromotionModel();
 		model.setTag("W_HH_OC_02");
+		model.setPackageType(Arrays.asList("Upgrade","SecondLine"));
 		modelList.add(model);
 		return modelList;
 	}
@@ -3147,7 +3181,7 @@ public class CommonMethods {
 			
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-			String bundle=new String(Utility.readFile("\\BundleandhardwarePromotuions.json"));
+			String bundle=new String(Utility.readFile("\\TEST-MOCK\\BundleandhardwarePromotuions.json"));
 			BundleAndHardwarePromotions[] bundleList=mapper.readValue(bundle, BundleAndHardwarePromotions[].class);
 
 			return  mapper.convertValue(bundleList, new TypeReference<List<BundleAndHardwarePromotions>>(){});
@@ -3221,4 +3255,500 @@ public class CommonMethods {
 		return priceInfo;
 	}
 	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static List<CommercialProduct> getCommercialProductsListOfMakeAndModel() {
+
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			// mapper = new
+			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
+			// true);
+			String commercialProduct = new String(
+					Utility.readFile("\\TEST-MOCK\\CommercialProductListOfMakeAndModel.json"));
+			CommercialProduct[] commercialProductList = mapper.readValue(commercialProduct, CommercialProduct[].class);
+
+			return mapper.convertValue(commercialProductList, new TypeReference<List<CommercialProduct>>() {
+			});
+		} catch (JsonParseException e) {
+
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+
+			e.printStackTrace();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static List<Group> getListOfProductGroupFromProductGroupRepository() 
+	{
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			String listOfGroupsString = new String(
+					Utility.readFile("\\TEST-MOCK\\ListOfProductGroupFromProductGroupRepository.json"));
+			Group[] groupList = mapper.readValue(listOfGroupsString, Group[].class);
+
+			return mapper.convertValue(groupList, new TypeReference<List<Group>>() {
+			});
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static CommercialProduct getCommercialProductByDeviceId() {
+
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			// mapper = new
+			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
+			// true);
+			String commercialProduct = new String(
+					Utility.readFile("\\TEST-MOCK\\Coherence_CommercialProductRepo_CommercialProductByDeviceId"));
+			CommercialProduct commercialProductList = mapper.readValue(commercialProduct, CommercialProduct.class);
+
+			return mapper.convertValue(commercialProductList, new TypeReference<CommercialProduct>() {
+			});
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public static BazaarVoice getBazaarVoice(){
+		ObjectMapper mapper = new ObjectMapper();
+	 mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+	 mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+	 String productModel;
+	 BazaarVoice  product=null;
+	try {
+		productModel = new
+		 String(Utility.readFile("\\TEST-MOCK\\BazaarVoiceResponse.json"));
+		   product=mapper.readValue(productModel, BazaarVoice.class);
+		   product.setJsonsource(productModel);
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} 
+	
+	  
+	 return product;
+	}
+	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static CommercialBundle getCommercialBundleFromCommercialBundleRepository() {
+
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			// mapper = new
+			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
+			// true);
+			String bundleModel = new String(
+					Utility.readFile("\\TEST-MOCK\\Coherence_CommercialBundleRepo_CommercialBundle"));
+			CommercialBundle bundleModelList = mapper.readValue(bundleModel, CommercialBundle.class);
+
+			return mapper.convertValue(bundleModelList, new TypeReference<CommercialBundle>() {
+			});
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion getMerchandisingPromotion() {
+
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			// mapper = new
+			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
+			// true);
+			String merchPromotion = new String(
+					Utility.readFile("\\TEST-MOCK\\merchandisingPromotion_hardware_discount.json"));
+			com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion merchPromo = mapper.readValue(merchPromotion, com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion.class);
+
+			return mapper.convertValue(merchPromo, new TypeReference<com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion>() {
+			});
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static CommercialProduct getCommercialProductByDeviceId_093353() {
+
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			// mapper = new
+			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
+			// true);
+			String commercialProduct = new String(
+					Utility.readFile("\\TEST-MOCK\\CommercialProduct_093353.json"));
+			CommercialProduct commercialProductList = mapper.readValue(commercialProduct, CommercialProduct.class);
+
+			return mapper.convertValue(commercialProductList, new TypeReference<CommercialProduct>() {
+			});
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static List<Group> getListOfProductGroupForAccessory() 
+	{
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			String listOfGroupsString = new String(
+					Utility.readFile("\\TEST-MOCK\\ListOfAccessoryGroup.json"));
+			Group[] groupList = mapper.readValue(listOfGroupsString, Group[].class);
+
+			return mapper.convertValue(groupList, new TypeReference<List<Group>>() {
+			});
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static PriceForProduct getPriceForProduct_For_GetAccessoriesForDevice() {
+		PriceForProduct navigation = new PriceForProduct();
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			String bundle = new String(Utility
+					.readFile("\\TEST-MOCK\\priceForProduct_For_GetAccessoriesForDevice.json"));
+			PriceForProduct bundleList = new ObjectMapper().readValue(bundle,
+					PriceForProduct.class);
+
+			return mapper.convertValue(bundleList, new TypeReference<PriceForProduct>() {
+			});
+
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return navigation;
+	}
+	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static BundleDeviceAndProductsList bundleDeviceAndProductsList_For_GetAccessoriesOfDevice() {
+		BundleDeviceAndProductsList navigation = new BundleDeviceAndProductsList();
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			String bundle = new String(Utility
+					.readFile("\\TEST-MOCK\\bundleDeviceAndProductsList_For_GetAccessoriesOfDevice.json"));
+			BundleDeviceAndProductsList bundleList = new ObjectMapper().readValue(bundle,
+					BundleDeviceAndProductsList.class);
+
+			return mapper.convertValue(bundleList, new TypeReference<BundleDeviceAndProductsList>() {
+			});
+
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return navigation;
+	}
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static List<CommercialProduct> getCommercialProductsListOfAccessories() {
+
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			// mapper = new
+			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
+			// true);
+			String commercialProduct = new String(
+					Utility.readFile("\\TEST-MOCK\\CommercialProductListOfAccessory.json"));
+			CommercialProduct[] commercialProductList = mapper.readValue(commercialProduct, CommercialProduct[].class);
+
+			return mapper.convertValue(commercialProductList, new TypeReference<List<CommercialProduct>>() {
+			});
+		} catch (JsonParseException e) {
+
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+
+			e.printStackTrace();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static String getReviewsJson() throws IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+		String productModel = new String(Utility.readFile("\\TEST-MOCK\\BazaarVoiceResponse.json"));
+		BazaarVoice product = new BazaarVoice();
+		 product=mapper.readValue(productModel, BazaarVoice.class);
+		 product.setJsonsource(productModel);
+		 
+		return  product.getJsonsource();
+		
+	}
+	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static List<ProductGroupModel> getListOfProductGroupModels() {
+
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			// mapper = new
+			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
+			// true);
+			String productGroupModel = new String(Utility
+					.readFile("\\TEST-MOCK\\listOfProductGroupModel_For_DevicePAYM_apple.json"));
+			ProductGroupModel[] productGroupModelList = mapper
+					.readValue(productGroupModel, ProductGroupModel[].class);
+
+			return mapper.convertValue(productGroupModelList,
+					new TypeReference<List<ProductGroupModel>>() {
+					});
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static CommercialProduct getCommercialProductWithoutLeadPlan() {
+
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			// mapper = new
+			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
+			// true);
+			String commercialProduct = new String(
+					Utility.readFile("\\TEST-MOCK\\CommercialProductWithoutLeadPlan.json"));
+			CommercialProduct commercialProductList = mapper.readValue(commercialProduct, CommercialProduct.class);
+
+			return mapper.convertValue(commercialProductList, new TypeReference<CommercialProduct>() {
+			});
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static BundleDetailsForAppSrv getCoupledBundleListForDevice() {
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			// mapper = new
+			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
+			// true);
+			String bundleDetailsForAppSrv = new String(
+					Utility.readFile("\\TEST-MOCK\\ByCoupledBundleList.json"));
+			BundleDetailsForAppSrv bundleDetails = mapper.readValue(bundleDetailsForAppSrv, BundleDetailsForAppSrv.class);
+
+			return mapper.convertValue(bundleDetails, new TypeReference<BundleDetailsForAppSrv>() {
+			});
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static List<PriceForBundleAndHardware> getPriceForBundleAndHardwareListFromTupleList() {
+
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			// mapper = new
+			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
+			// true);
+			String price = new String(Utility.readFile("\\TEST-MOCK\\PriceForBundleAndHardware.json"));
+			PriceForBundleAndHardware[] priceList = mapper.readValue(price, PriceForBundleAndHardware[].class);
+
+			return mapper.convertValue(priceList, new TypeReference<List<PriceForBundleAndHardware>>() {
+			});
+		} catch (JsonParseException e) {
+
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+
+			e.printStackTrace();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static SourcePackageSummary getSourcePackageSummary() {
+		SourcePackageSummary s = new SourcePackageSummary();
+		s.setPromotionId("109381");
+		return s;	
+	}
+	
+	public static RecommendedProductListRequest getRecommendedDeviceListRequest(String msisdn, String deviceId) {
+		
+		RecommendedProductListRequest recomProdListReq = new RecommendedProductListRequest();
+		
+		recomProdListReq.setSerialNumber(msisdn);
+		recomProdListReq.setAccountCategory(Constants.ACCOUNT_CATEGORY_INDIVIDUAL);
+		
+		List<InstalledProduct> instProds = new ArrayList<>();
+		InstalledProduct instProd = new InstalledProduct();
+		instProd.setId(deviceId);
+		instProd.setTypeCode(Constants.STRING_TARIFF);
+		instProd.setAmount("220000.00");
+		instProds.add(instProd);
+		recomProdListReq.setInstalledProducts(instProds);
+		
+		List<Preferences> prefs = new ArrayList<>();
+		Preferences handsetPref = new Preferences();
+		handsetPref.setName(Constants.PREFERENCE_NAME_HANDSET);
+		handsetPref.setDataTypeCode(Constants.PREFERENCE_DATATYPE_CODE_PREFERENCE);
+		handsetPref.setValue("all");
+		prefs.add(handsetPref);
+
+		Preferences upgradePref = new Preferences();
+		upgradePref.setName(Constants.PREFERENCE_NAME_UPGRADE);
+		upgradePref.setDataTypeCode(Constants.PREFERENCE_DATATYPE_CODE_GENERAL);
+		upgradePref.setValue("SIMOFLEX");
+		prefs.add(upgradePref);
+		
+		Preferences recommitPref = new Preferences();
+		recommitPref.setName(Constants.PREFERENCE_NAME_RECOMMIT);
+		recommitPref.setDataTypeCode(Constants.PREFERENCE_DATATYPE_CODE_GENERAL);
+		recommitPref.setValue("FALSE");
+		prefs.add(recommitPref);
+		
+		Preferences segmentPref = new Preferences();
+		segmentPref.setName(Constants.PREFERENCE_NAME_SEGMENT);
+		segmentPref.setDataTypeCode(Constants.PREFERENCE_DATATYPE_ELIGIBILITY_CRITERIA);
+		segmentPref.setValue("cbu");
+		prefs.add(segmentPref);
+		
+		recomProdListReq.setPreferences(prefs);
+		
+		List<String> recomPrdTypes;
+		recomPrdTypes = new ArrayList<>();
+		recomPrdTypes.add(Constants.PREFERENCE_NAME_HANDSET);
+		
+		recomProdListReq.setBasketItems(null);
+		recomProdListReq.setNoOfRecommendations("100");
+		
+		
+		recomProdListReq.setRecommendedProductTypes(recomPrdTypes);
+
+		return recomProdListReq;
+	}
 }

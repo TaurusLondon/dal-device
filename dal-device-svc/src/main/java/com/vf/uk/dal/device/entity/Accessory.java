@@ -9,10 +9,12 @@ import javax.validation.Valid;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.vf.uk.dal.utility.entity.PriceForAccessory;
 
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * Accessory
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-09-04T15:01:47.933Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
 
 public class Accessory   {
   @JsonProperty("skuId")
@@ -36,6 +38,11 @@ public class Accessory   {
   @JsonProperty("attributes")
   private List<Attributes> attributes = null;
 
+  /**
+   * 
+   * @param skuId
+   * @return
+   */
   public Accessory skuId(String skuId) {
     this.skuId = skuId;
     return this;
@@ -45,16 +52,29 @@ public class Accessory   {
    * Unique Accessory id as available from the product catalogue
    * @return skuId
   **/
+  @ApiModelProperty(value = "Unique Accessory id as available from the product catalogue")
 
-
+ /**
+ * 
+ * @return
+ */
   public String getSkuId() {
     return skuId;
   }
 
+  /**
+   * 
+   * @param skuId
+   */
   public void setSkuId(String skuId) {
     this.skuId = skuId;
   }
 
+  /**
+   * 
+   * @param name
+   * @return
+   */
   public Accessory name(String name) {
     this.name = name;
     return this;
@@ -64,16 +84,29 @@ public class Accessory   {
    * Name of the Accessory as provided in the product catalogue
    * @return name
   **/
+  @ApiModelProperty(value = "Name of the Accessory as provided in the product catalogue")
 
-
+  /**
+   * 
+   * @return
+   */
   public String getName() {
     return name;
   }
-
+ 
+  /**
+   * 
+   * @param name
+   */
   public void setName(String name) {
     this.name = name;
   }
-
+  
+  /**
+   * 
+   * @param colour
+   * @return
+   */
   public Accessory colour(String colour) {
     this.colour = colour;
     return this;
@@ -83,16 +116,29 @@ public class Accessory   {
    * Colour of the Accessory as provided in the product catalogue
    * @return colour
   **/
+  @ApiModelProperty(value = "Colour of the Accessory as provided in the product catalogue")
 
-
+  /**
+   * 
+   * @return
+   */
   public String getColour() {
     return colour;
   }
-
+  
+  /**
+   * 
+   * @param colour
+   */
   public void setColour(String colour) {
     this.colour = colour;
   }
-
+  
+  /**
+   * 
+   * @param description
+   * @return
+   */
   public Accessory description(String description) {
     this.description = description;
     return this;
@@ -102,24 +148,42 @@ public class Accessory   {
    * Description of the Accessory as provided in the product catalogue
    * @return description
   **/
+  @ApiModelProperty(value = "Description of the Accessory as provided in the product catalogue")
 
-
+  /**
+   * 
+   * @return
+   */
   public String getDescription() {
     return description;
   }
-
+ 
+  /**
+   * 
+   * @param description
+   */
   public void setDescription(String description) {
     this.description = description;
   }
-
+ 
+  /**
+   * 
+   * @param merchandisingMedia
+   * @return
+   */
   public Accessory merchandisingMedia(List<MediaLink> merchandisingMedia) {
     this.merchandisingMedia = merchandisingMedia;
     return this;
   }
 
+  /**
+   * 
+   * @param merchandisingMediaItem
+   * @return
+   */
   public Accessory addMerchandisingMediaItem(MediaLink merchandisingMediaItem) {
     if (this.merchandisingMedia == null) {
-      this.merchandisingMedia = new ArrayList<MediaLink>();
+      this.merchandisingMedia = new ArrayList<>();
     }
     this.merchandisingMedia.add(merchandisingMediaItem);
     return this;
@@ -129,17 +193,30 @@ public class Accessory   {
    * Get merchandisingMedia
    * @return merchandisingMedia
   **/
+  @ApiModelProperty(value = "")
 
   @Valid
-
+  /**
+   * 
+   * @return
+   */
   public List<MediaLink> getMerchandisingMedia() {
     return merchandisingMedia;
   }
-
+ 
+  /**
+   * 
+   * @param merchandisingMedia
+   */
   public void setMerchandisingMedia(List<MediaLink> merchandisingMedia) {
     this.merchandisingMedia = merchandisingMedia;
   }
 
+  /**
+   * 
+   * @param deviceCost
+   * @return
+   */
   public Accessory deviceCost(PriceForAccessory deviceCost) {
     this.deviceCost = deviceCost;
     return this;
@@ -149,25 +226,42 @@ public class Accessory   {
    * Get deviceCost
    * @return deviceCost
   **/
+  @ApiModelProperty(value = "")
 
   @Valid
-
+  /**
+   * 
+   * @return
+   */
   public PriceForAccessory getDeviceCost() {
     return deviceCost;
   }
-
+  /**
+  * 
+  * @param deviceCost
+  */
   public void setDeviceCost(PriceForAccessory deviceCost) {
     this.deviceCost = deviceCost;
   }
 
+  /**
+   * 
+   * @param attributes
+   * @return
+   */
   public Accessory attributes(List<Attributes> attributes) {
     this.attributes = attributes;
     return this;
   }
 
+  /**
+   * 
+   * @param attributesItem
+   * @return
+   */
   public Accessory addAttributesItem(Attributes attributesItem) {
     if (this.attributes == null) {
-      this.attributes = new ArrayList<Attributes>();
+      this.attributes = new ArrayList<>();
     }
     this.attributes.add(attributesItem);
     return this;
@@ -177,19 +271,31 @@ public class Accessory   {
    * Get attributes
    * @return attributes
   **/
+  @ApiModelProperty(value = "")
 
   @Valid
 
+  /**
+   * 
+   * @return
+   */
   public List<Attributes> getAttributes() {
     return attributes;
   }
 
+  /**
+   * 
+   * @param attributes
+   */
   public void setAttributes(List<Attributes> attributes) {
     this.attributes = attributes;
   }
 
 
   @Override
+  /**
+   * 
+   */
   public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;

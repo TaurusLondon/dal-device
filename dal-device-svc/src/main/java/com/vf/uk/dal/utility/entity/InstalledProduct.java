@@ -1,49 +1,83 @@
 package com.vf.uk.dal.utility.entity;
 
 import java.util.Objects;
-
+/**
+ * 
+ * InstalledProduct
+ *
+ */
 public class InstalledProduct {
   private String id = null;
 
   private String typeCode = null;
 
   private String amount = null;
-
+  /**
+   * 
+   * @param id
+   * @return
+   */
   public InstalledProduct id(String id) {
     this.id = id;
     return this;
   }
-
+  /**
+   * 
+   * @return
+   */
   public String getId() {
     return id;
   }
-
+  /**
+   * 
+   * @param id
+   */
   public void setId(String id) {
     this.id = id;
   }
-
+  /**
+   * 
+   * @param typeCode
+   * @return
+   */
   public InstalledProduct typeCode(String typeCode) {
     this.typeCode = typeCode;
     return this;
   }
-
+  /**
+   * 
+   * @return
+   */
   public String getTypeCode() {
     return typeCode;
   }
-
+  /**
+   * 
+   * @param typeCode
+   */
   public void setTypeCode(String typeCode) {
     this.typeCode = typeCode;
   }
-
+  /**
+   * 
+   * @param amount
+   * @return
+   */
   public InstalledProduct amount(String amount) {
     this.amount = amount;
     return this;
   }
-
+  /**
+   * 
+   * @return
+   */
   public String getAmount() {
     return amount;
   }
-
+  /**
+   * 
+   * @param amount
+   */
   public void setAmount(String amount) {
     this.amount = amount;
   }

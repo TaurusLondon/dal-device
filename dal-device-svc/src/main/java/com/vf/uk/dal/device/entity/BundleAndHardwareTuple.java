@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * BundleAndHardwareTuple
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-03-23T04:18:28.504Z")
 
 public class BundleAndHardwareTuple   {
   @JsonProperty("hardwareId")
@@ -15,6 +14,10 @@ public class BundleAndHardwareTuple   {
   @JsonProperty("bundleId")
   private String bundleId = null;
 
+  /**
+	 * 
+	 * @return
+	 */
   public BundleAndHardwareTuple hardwareId(String hardwareId) {
     this.hardwareId = hardwareId;
     return this;
@@ -28,10 +31,18 @@ public class BundleAndHardwareTuple   {
     return hardwareId;
   }
 
+  /**
+	 * 
+	 * @return
+	 */
   public void setHardwareId(String hardwareId) {
     this.hardwareId = hardwareId;
   }
 
+  /**
+	 * 
+	 * @return
+	 */
   public BundleAndHardwareTuple bundleId(String bundleId) {
     this.bundleId = bundleId;
     return this;
@@ -45,6 +56,10 @@ public class BundleAndHardwareTuple   {
     return bundleId;
   }
 
+  /**
+	 * 
+	 * @return
+	 */
   public void setBundleId(String bundleId) {
     this.bundleId = bundleId;
   }

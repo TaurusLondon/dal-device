@@ -1,34 +1,58 @@
 package com.vf.uk.dal.utility.entity;
 
 import java.util.Objects;
-
+/**
+ * 
+ * Reason
+ *
+ */
 public class Reason {
   private String name = null;
 
   private String value = null;
-
+  /**
+   * 
+   * @param name
+   * @return
+   */
   public Reason name(String name) {
     this.name = name;
     return this;
   }
-
+  /**
+   * 
+   * @return
+   */
   public String getName() {
     return name;
   }
-
+  /**
+   * 
+   * @param name
+   */
   public void setName(String name) {
     this.name = name;
   }
-
+  /**
+   * 
+   * @param value
+   * @return
+   */
   public Reason value(String value) {
     this.value = value;
     return this;
   }
-
+  /**
+   * 
+   * @return
+   */
   public String getValue() {
     return value;
   }
-
+  /**
+   * 
+   * @param value
+   */
   public void setValue(String value) {
     this.value = value;
   }

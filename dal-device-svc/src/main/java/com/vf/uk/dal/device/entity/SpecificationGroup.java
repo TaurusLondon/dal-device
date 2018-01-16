@@ -1,21 +1,39 @@
 package com.vf.uk.dal.device.entity;
 
 import java.util.Objects;
+
+import javax.validation.Valid;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 /**
  * SpecificationGroup
  */
 
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
+
 public class SpecificationGroup   {
+  @JsonProperty("groupName")
   private String groupName = null;
 
+  @JsonProperty("priority")
   private Integer priority = null;
 
+  @JsonProperty("comparable")
   private Boolean comparable = null;
 
-  private List<Specification> specifications = new ArrayList<Specification>();
+  @JsonProperty("specifications")
+  private List<Specification> specifications = null;
 
+  /**
+   * 
+   * @param groupName
+   * @return
+   */
   public SpecificationGroup groupName(String groupName) {
     this.groupName = groupName;
     return this;
@@ -25,14 +43,24 @@ public class SpecificationGroup   {
    * Name of the specification
    * @return groupName
   **/
+  @ApiModelProperty(value = "Name of the specification")
+
+
   public String getGroupName() {
     return groupName;
   }
-
+/**
+ * 
+ * @param groupName
+ */
   public void setGroupName(String groupName) {
     this.groupName = groupName;
   }
-
+/**
+ * 
+ * @param priority
+ * @return
+ */
   public SpecificationGroup priority(Integer priority) {
     this.priority = priority;
     return this;
@@ -42,14 +70,24 @@ public class SpecificationGroup   {
    * Display Priority of the specification
    * @return priority
   **/
+  @ApiModelProperty(value = "Display Priority of the specification")
+
+
   public Integer getPriority() {
     return priority;
   }
-
+/**
+ * 
+ * @param priority
+ */
   public void setPriority(Integer priority) {
     this.priority = priority;
   }
-
+/**
+ * 
+ * @param comparable
+ * @return
+ */
   public SpecificationGroup comparable(Boolean comparable) {
     this.comparable = comparable;
     return this;
@@ -59,20 +97,37 @@ public class SpecificationGroup   {
    *  Identify if the feature is coparable
    * @return comparable
   **/
+  @ApiModelProperty(value = " Identify if the feature is coparable")
+
+
   public Boolean getComparable() {
     return comparable;
   }
-
+/**
+ * 
+ * @param comparable
+ */
   public void setComparable(Boolean comparable) {
     this.comparable = comparable;
   }
-
+/**
+ * 
+ * @param specifications
+ * @return
+ */
   public SpecificationGroup specifications(List<Specification> specifications) {
     this.specifications = specifications;
     return this;
   }
-
+/**
+ * 
+ * @param specificationsItem
+ * @return
+ */
   public SpecificationGroup addSpecificationsItem(Specification specificationsItem) {
+    if (this.specifications == null) {
+      this.specifications = new ArrayList<>();
+    }
     this.specifications.add(specificationsItem);
     return this;
   }
@@ -81,10 +136,17 @@ public class SpecificationGroup   {
    * Get specifications
    * @return specifications
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
   public List<Specification> getSpecifications() {
     return specifications;
   }
-
+/**
+ * 
+ * @param specifications
+ */
   public void setSpecifications(List<Specification> specifications) {
     this.specifications = specifications;
   }

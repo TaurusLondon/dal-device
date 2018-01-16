@@ -129,7 +129,8 @@ paths:
           description: >-
             Values of attributes based on which solr will provide the sorted
             response, like Most Popular(Priority),Rating, New Releases,
-            Brand(a-z)(z-a) but need to pass EquipmentMake to api, MonthlyPrice(lo-hi)(hi-lo)(Need to pass RecurringCharge).
+            Brand(a-z)(z-a) but need to pass EquipmentMake to api,
+            MonthlyPrice(lo-hi)(hi-lo)(Need to pass RecurringCharge).
           required: true
           type: string
         - name: journeyType
@@ -193,7 +194,7 @@ paths:
           in: query
           description: >-
             Values on which the attributes should be filtered upon. Possible
-            values are "Handset" or "Accessory".
+            values are "DEVICE_PAYM" or "DEVICE_PAYG" or "DATA_DEVICE_PAYM".
           required: true
           type: string
         - name: journeyType
@@ -475,6 +476,64 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/Error'
+  '/devices/catalogue/subscription/{ctn}/upgrade/recommendedPackages':
+    get:
+      summary: >-
+        Added as part of sprint 7.1 to get the list of package recommendations
+        based on the the response from recommendation engine (currently
+        Chrodiant)
+      description: >-
+        This service evaluates the soource package for the CTN from GIPL and get
+        recommended packages by invoking GetRecommendedPromotionList TIL call
+        and enhance the product information from Solr.
+      operationId: CAT_020_GetRECOMMENDEDPACKAGES
+      parameters:
+        - name: ctn
+          in: path
+          description: MSISDN/ CTN of customer
+          required: true
+          type: string
+        - name: brandPreference
+          in: query
+          description: >-
+            brand preference that will be passed to TIL. Default value will be
+            all. Example - all/apple.
+          required: false
+          type: string
+        - name: eligibilityType
+          in: query
+          description: >-
+            Upgrade Eligibility Type, Example = Normal/ SimoFlex. This should be
+            the value returned from CheckRetentionEligibility.
+          required: true
+          type: string
+        - name: offset
+          in: query
+          description: >-
+            number of recommendation packages , to be passed to GRPL .Default
+            value is 3 if not set .
+          required: false
+          type: string
+        - name: offerCode
+          in: query
+          description: Unique offercode for customer to apply discounts.
+          required: false
+          type: string
+      tags:
+        - 'DeviceTile, Upgrade, Recommendations'
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/RecommendedPackages'
+        '404':
+          description: Not found
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'
 definitions:
   CacheDeviceDetailRequest:
     type: object
@@ -510,6 +569,140 @@ definitions:
         description: List of facets with count
         items:
           $ref: '#/definitions/FacetWithCount'
+  RecommendedPackages:
+    type: object
+    properties:
+      device:
+        $ref: '#/definitions/PackageDevice'
+      bundle:
+        $ref: '#/definitions/PackageBundle'
+      priceInfo:
+        $ref: '#/definitions/PackagePrice'
+  PackageDevice:
+    type: object
+    properties:
+      deviceId:
+        type: string
+        description: Product id of the requested device from the product catalogue
+      name:
+        type: string
+        description: Name of the product group as provided in the product catalogue
+      make:
+        type: string
+        description: Make of the product
+      model:
+        type: string
+        description: Model of the product
+      groupType:
+        type: string
+        description: 'Group type of product group DEVICE_PAYM, DEVICE_PAYG'
+      description:
+        type: string
+        description: Description of the product as provided in the product catalogue
+      productClass:
+        type: string
+        description: 'Catalogue product class identifies products - SIMO, HANDSET etc.'
+      preOrderable:
+        type: boolean
+        description: 'Catalogue product class identifies products - SIMO, HANDSET etc.'
+      media:
+        type: array
+        items:
+          $ref: '#/definitions/MediaLink'
+      recommendationDrivers:
+        type: array
+        items:
+          $ref: '#/definitions/RecommendationDriver'
+  PackagePrice:
+    type: object
+    properties:
+      bundlePrice:
+        $ref: '#/definitions/BundlePrice'
+      hardwarePrice:
+        $ref: '#/definitions/HardwarePrice'
+  PackageBundle:
+    type: object
+    properties:
+      skuId:
+        type: string
+        description: Unique bundle id as available from the product catalogue
+      name:
+        type: string
+        description: Name of the bundle as provided in the product catalogue
+      description:
+        type: string
+        description: Description of the bundle as provided in the product catalogue
+      bundleName:
+        type: string
+        description: Name of the bundle as provided in the merchandising file
+      bundleDescription:
+        type: string
+        description: Description of the bundle as provided in the merchandising file
+      bundleClass:
+        type: string
+        description: 'Catalogue product class identifies products - SIMO, HANDSET etc.'
+      productClass:
+        type: string
+        description: Catalogue product class identifies products
+      paymentType:
+        type: string
+        description: 'Payment type of the bundle. For example, "postpaid", "prepaid" etc.'
+      bundleType:
+        type: string
+        description: 'Type of the bundle. For example, Standard, Red, RedPlus etc.'
+      globalRoamingFlag:
+        type: boolean
+        description: Indicate whether this plan having Global Roaming or not
+      secureNetFlag:
+        type: boolean
+        description: Indicate whether this plan is having Secure Net or not
+      commitmentPeriod:
+        type: string
+        description: Commitment period of the bundle
+      allowance:
+        type: array
+        items:
+          $ref: '#/definitions/BundleAllowance'
+      roamingAllowance:
+        type: array
+        items:
+          $ref: '#/definitions/BundleAllowance'
+      merchandisingMedia:
+        type: array
+        items:
+          $ref: '#/definitions/MediaLink'
+      recommendationDrivers:
+        type: array
+        items:
+          $ref: '#/definitions/RecommendationDriver'
+  BundleAllowance:
+    type: object
+    properties:
+      type:
+        type: string
+        description: 'Allowance type - "DATA","TEXT","CALL"'
+      value:
+        type: string
+        description: Value of the allowance
+      uom:
+        type: string
+        description: >-
+          Unit of measurement to be used for the allowance - "MB" for DATA.
+          "COUNT" fpr TEXT amd "MIN" for CALL
+      displayUom:
+        type: string
+        description: >-
+          Unit of measurement to be used for the allowance - "MB" for DATA.
+          "COUNT" fpr TEXT amd "MIN" for CALL
+  RecommendationDriver:
+    type: object
+    properties:
+      driverName:
+        type: string
+        description: Name / Key for the driver . Example - TJ97
+      drivervalue:
+        type: string
+        description: Driver values to be substituted in description for key.
   FacetWithCount:
     type: object
     properties:
@@ -548,9 +741,6 @@ definitions:
       productClass:
         type: string
         description: 'Catalogue product class identifies products - SIMO, HANDSET etc.'
-      preOrderable:
-        type: boolean
-        description: Pre orderable Flag
       merchandisingControl:
         $ref: '#/definitions/MerchandisingControl'
       media:
@@ -753,6 +943,9 @@ definitions:
       footNote:
         type: string
         description: A foot note to the specification
+      hideInList:
+        type: boolean
+        description: A hidden note to the specification
   MediaLink:
     type: object
     properties:
@@ -936,6 +1129,11 @@ definitions:
       preOrderable:
         type: boolean
         description: Is the device pre-orderable as per MEF
+      availableFrom:
+        type: string
+        description: >-
+          Available from date of the product as provided in the product
+          catalogue
       isAffordable:
         type: boolean
         description: >-
@@ -987,7 +1185,6 @@ definitions:
         $ref: '#/definitions/Price'
       merchandisingPromotions:
         $ref: '#/definitions/MerchandisingPromotion'
-        description: Merchandising promotions applicable for the bundle
   MerchandisingPromotion:
     type: object
     properties:

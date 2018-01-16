@@ -25,6 +25,8 @@ import com.vf.uk.dal.device.entity.Member;
 import com.vf.uk.dal.device.entity.MerchandisingControl;
 import com.vf.uk.dal.device.entity.MerchandisingPromotion;
 import com.vf.uk.dal.device.entity.MerchandisingPromotions;
+import com.vf.uk.dal.device.entity.MerchandisingPromotionsPackage;
+import com.vf.uk.dal.device.entity.MerchandisingPromotionsWrapper;
 import com.vf.uk.dal.device.entity.MetaData;
 import com.vf.uk.dal.device.entity.OfferPacks;
 import com.vf.uk.dal.device.entity.Price;
@@ -46,10 +48,13 @@ import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 import com.vf.uk.dal.utility.entity.BundleAndHardwareRequest;
 import com.vf.uk.dal.utility.entity.BundleDeviceAndAccessoryList;
 import com.vf.uk.dal.utility.entity.BundleDeviceAndProductsList;
+import com.vf.uk.dal.utility.entity.BundleModelAndPrice;
 import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareAccessory;
 import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareDataAllowances;
 import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks;
+import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareExtra;
 import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareExtras;
+import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareFreeData;
 import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions;
 import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareSash;
 import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareSecureNet;
@@ -100,6 +105,10 @@ public class EntityTest
  		BeanTest.test(StockInfo.class);
  		BeanTest.test(ProductGroupForDeviceListing.class);
  		BeanTest.test(CacheDeviceTileResponse.class);
+ 		BeanTest.test(MerchandisingPromotionsPackage.class);
+ 		BeanTest.test(MerchandisingPromotionsWrapper.class);
+ 		BeanTest.test(CataloguepromotionqueriesForBundleAndHardwareExtra.class);
+ 		BeanTest.test(BundleModelAndPrice.class);
  		BeanTest.test(com.vf.uk.dal.utility.entity.PriceForBundleAndHardware.class);
  		BeanTest.test(com.vf.uk.dal.utility.entity.BundleAllowance.class);
  		BeanTest.test(com.vf.uk.dal.utility.entity.Discount.class);
@@ -183,5 +192,7 @@ public class EntityTest
  		BeanTest.test(CataloguepromotionqueriesForBundleAndHardwareAccessory.class);
  		BeanTest.test(BundleAndHardwarePromotions.class);
  		BeanTest.test(BundleAndHardwareRequest.class);
+ 		BeanTest.test( CataloguepromotionqueriesForBundleAndHardwareFreeData.class);
+ 		
  	}
 }

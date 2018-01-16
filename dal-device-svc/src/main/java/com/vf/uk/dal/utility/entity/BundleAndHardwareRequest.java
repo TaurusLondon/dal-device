@@ -14,20 +14,34 @@ public class BundleAndHardwareRequest {
 
 	private List<BundleAndHardwareTuple> bundleAndHardwareList = null;
     private String journeyType=Constants.JOURNEY_TYPE_ACQUISITION;
-    
+    /**
+     * 
+     * @return
+     */
 	public String getJourneyType() {
 		return journeyType;
 	}
-
+/**
+ * 
+ * @param journeyType
+ */
 	public void setJourneyType(String journeyType) {
 		this.journeyType = journeyType;
 	}
-
+/**
+ * 
+ * @param bundleAndHardwareList
+ * @return
+ */
 	public BundleAndHardwareRequest bundleAndHardwareList(List<BundleAndHardwareTuple> bundleAndHardwareList) {
 		this.bundleAndHardwareList = bundleAndHardwareList;
 		return this;
 	}
-
+/**
+ * 
+ * @param bundleAndHardwareListItem
+ * @return
+ */
 	public BundleAndHardwareRequest addBundleAndHardwareListItem(BundleAndHardwareTuple bundleAndHardwareListItem) {
 		if (this.bundleAndHardwareList == null) {
 			this.bundleAndHardwareList = new ArrayList<BundleAndHardwareTuple>();
@@ -44,7 +58,10 @@ public class BundleAndHardwareRequest {
 	public List<BundleAndHardwareTuple> getBundleAndHardwareList() {
 		return bundleAndHardwareList;
 	}
-
+/**
+ * 
+ * @param bundleAndHardwareList
+ */
 	public void setBundleAndHardwareList(List<BundleAndHardwareTuple> bundleAndHardwareList) {
 		this.bundleAndHardwareList = bundleAndHardwareList;
 	}
