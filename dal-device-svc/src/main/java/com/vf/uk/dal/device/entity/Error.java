@@ -20,7 +20,11 @@ public class Error   {
 
   @JsonProperty("referenceId")
   private String referenceId = null;
-
+/**
+ * 
+ * @param code
+ * @return
+ */
   public Error code(String code) {
     this.code = code;
     return this;
@@ -32,15 +36,25 @@ public class Error   {
   **/
   @ApiModelProperty(value = "")
 
-
+/**
+ * 
+ * @return
+ */
   public String getCode() {
     return code;
   }
-
+/**
+ * 
+ * @param code
+ */
   public void setCode(String code) {
     this.code = code;
   }
-
+/**
+ * 
+ * @param message
+ * @return
+ */
   public Error message(String message) {
     this.message = message;
     return this;
@@ -52,15 +66,25 @@ public class Error   {
   **/
   @ApiModelProperty(value = "")
 
-
+/**
+ * 
+ * @return
+ */
   public String getMessage() {
     return message;
   }
-
+/**
+ * 
+ * @param message
+ */
   public void setMessage(String message) {
     this.message = message;
   }
-
+/**
+ * 
+ * @param referenceId
+ * @return
+ */
   public Error referenceId(String referenceId) {
     this.referenceId = referenceId;
     return this;
@@ -72,11 +96,17 @@ public class Error   {
   **/
   @ApiModelProperty(value = "")
 
-
+/**
+ * 
+ * @return
+ */
   public String getReferenceId() {
     return referenceId;
   }
-
+/**
+ * 
+ * @param referenceId
+ */
   public void setReferenceId(String referenceId) {
     this.referenceId = referenceId;
   }

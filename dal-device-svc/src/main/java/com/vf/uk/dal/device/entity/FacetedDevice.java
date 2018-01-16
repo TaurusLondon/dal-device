@@ -27,15 +27,23 @@ public class FacetedDevice   {
 
   @JsonProperty("message")
   private String message = null;
-
+/**
+ * 
+ * @param newFacet
+ * @return
+ */
   public FacetedDevice newFacet(List<NewFacet> newFacet) {
     this.newFacet = newFacet;
     return this;
   }
-
+/**
+ * 
+ * @param newFacetItem
+ * @return
+ */
   public FacetedDevice addNewFacetItem(NewFacet newFacetItem) {
     if (this.newFacet == null) {
-      this.newFacet = new ArrayList<NewFacet>();
+      this.newFacet = new ArrayList<>();
     }
     this.newFacet.add(newFacetItem);
     return this;
@@ -48,23 +56,37 @@ public class FacetedDevice   {
   @ApiModelProperty(value = "")
 
   @Valid
-
+/**
+ * 
+ * @return
+ */
   public List<NewFacet> getNewFacet() {
     return newFacet;
   }
-
+/**
+ * 
+ * @param newFacet
+ */
   public void setNewFacet(List<NewFacet> newFacet) {
     this.newFacet = newFacet;
   }
-
+/**
+ * 
+ * @param device
+ * @return
+ */
   public FacetedDevice device(List<Device> device) {
     this.device = device;
     return this;
   }
-
+/**
+ * 
+ * @param deviceItem
+ * @return
+ */
   public FacetedDevice addDeviceItem(Device deviceItem) {
     if (this.device == null) {
-      this.device = new ArrayList<Device>();
+      this.device = new ArrayList<>();
     }
     this.device.add(deviceItem);
     return this;
@@ -77,15 +99,25 @@ public class FacetedDevice   {
   @ApiModelProperty(value = "")
 
   @Valid
-
+/**
+ * 
+ * @return
+ */
   public List<Device> getDevice() {
     return device;
   }
-
+/**
+ * 
+ * @param device
+ */
   public void setDevice(List<Device> device) {
     this.device = device;
   }
-
+/**
+ * 
+ * @param noOfRecordsFound
+ * @return
+ */
   public FacetedDevice noOfRecordsFound(long noOfRecordsFound) {
     this.noOfRecordsFound = noOfRecordsFound;
     return this;
@@ -98,15 +130,25 @@ public class FacetedDevice   {
   @ApiModelProperty(value = "Number of Records found")
 
   @Valid
-
+/**
+ * 
+ * @return
+ */
   public long getNoOfRecordsFound() {
     return noOfRecordsFound;
   }
-
+/**
+ * 
+ * @param noOfRecordsFound
+ */
   public void setNoOfRecordsFound(long noOfRecordsFound) {
     this.noOfRecordsFound = noOfRecordsFound;
   }
-
+/**
+ * 
+ * @param message
+ * @return
+ */
   public FacetedDevice message(String message) {
     this.message = message;
     return this;
@@ -118,11 +160,17 @@ public class FacetedDevice   {
   **/
   @ApiModelProperty(value = "GRPL error message for Tealium to be checked")
 
-
+/**
+ * 
+ * @return
+ */
   public String getMessage() {
     return message;
   }
-
+/**
+ * 
+ * @param message
+ */
   public void setMessage(String message) {
     this.message = message;
   }

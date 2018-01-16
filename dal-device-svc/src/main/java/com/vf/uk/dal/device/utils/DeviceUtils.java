@@ -22,6 +22,15 @@ import com.vf.uk.dal.utility.entity.PriceForBundleAndHardware;
 public class DeviceUtils {
 	static Double selectedPlanAlwnce = null;
 
+	/**
+	 * 
+	 * @param bndlDtls
+	 * @param allowedRecurringPriceLimit
+	 * @param bundleId
+	 * @param plansLimit
+	 * @param bndlDtlsWithoutFullDuration
+	 * @return
+	 */
 	public static BundleDetails getSimilarPlanList(BundleDetails bndlDtls, String allowedRecurringPriceLimit,
 			String bundleId, String plansLimit, BundleDetails bndlDtlsWithoutFullDuration) {
 		BundleDetails bundleDeatils = new BundleDetails();
@@ -293,5 +302,45 @@ public class DeviceUtils {
 	{
 		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareAfterSorted=sortedPriceForBundleAndHardware(listOfPriceForBundleAndHardware);
 		return getmonthlyPriceFormPrice(listOfPriceForBundleAndHardwareAfterSorted.get(0));
+	}
+	/**
+	 * \
+	 * @param listOfPriceForBundleAndHardware
+	 * @return
+	 */
+	public static String leastMonthlyPriceForpayG(List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware)
+	{
+		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareAfterSorted=sortedPriceForBundleAndHardwareForPayG(listOfPriceForBundleAndHardware);
+		return getmonthlyPriceFormPriceForPayG(listOfPriceForBundleAndHardwareAfterSorted.get(0));
+	}
+	/**
+	 * 
+	 * @param listOfPriceForBundleAndHardware
+	 * @return
+	 */
+	public static List<PriceForBundleAndHardware> sortedPriceForBundleAndHardwareForPayG(List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware) {
+		Collections.sort(listOfPriceForBundleAndHardware, (PriceForBundleAndHardware bh1, PriceForBundleAndHardware bh2) -> {
+			Double index1 = getDoubleFrmString(getmonthlyPriceFormPriceForPayG(bh1));
+			Double index2 = getDoubleFrmString(getmonthlyPriceFormPriceForPayG(bh2));
+			return Double.compare(index1, index2);
+		});
+		return listOfPriceForBundleAndHardware;
+	}
+	/**
+	 * 
+	 * @param priceForBundleAndHardware
+	 * @return
+	 */
+	public static String getmonthlyPriceFormPriceForPayG(PriceForBundleAndHardware priceForBundleAndHardware) {
+		String oneOffPrice = null;
+		if (priceForBundleAndHardware != null && priceForBundleAndHardware.getHardwarePrice() != null) {
+			if (priceForBundleAndHardware.getHardwarePrice().getOneOffDiscountPrice() != null
+					&& priceForBundleAndHardware.getHardwarePrice().getOneOffDiscountPrice().getGross() != null) {
+				oneOffPrice = priceForBundleAndHardware.getHardwarePrice().getOneOffDiscountPrice().getGross();
+			} else {
+				oneOffPrice = priceForBundleAndHardware.getHardwarePrice().getOneOffPrice().getGross();
+			}
+		}
+		return oneOffPrice;
 	}
 }

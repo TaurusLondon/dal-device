@@ -29,6 +29,11 @@ public class SpecificationGroup   {
   @JsonProperty("specifications")
   private List<Specification> specifications = null;
 
+  /**
+   * 
+   * @param groupName
+   * @return
+   */
   public SpecificationGroup groupName(String groupName) {
     this.groupName = groupName;
     return this;
@@ -44,11 +49,18 @@ public class SpecificationGroup   {
   public String getGroupName() {
     return groupName;
   }
-
+/**
+ * 
+ * @param groupName
+ */
   public void setGroupName(String groupName) {
     this.groupName = groupName;
   }
-
+/**
+ * 
+ * @param priority
+ * @return
+ */
   public SpecificationGroup priority(Integer priority) {
     this.priority = priority;
     return this;
@@ -64,11 +76,18 @@ public class SpecificationGroup   {
   public Integer getPriority() {
     return priority;
   }
-
+/**
+ * 
+ * @param priority
+ */
   public void setPriority(Integer priority) {
     this.priority = priority;
   }
-
+/**
+ * 
+ * @param comparable
+ * @return
+ */
   public SpecificationGroup comparable(Boolean comparable) {
     this.comparable = comparable;
     return this;
@@ -84,19 +103,30 @@ public class SpecificationGroup   {
   public Boolean getComparable() {
     return comparable;
   }
-
+/**
+ * 
+ * @param comparable
+ */
   public void setComparable(Boolean comparable) {
     this.comparable = comparable;
   }
-
+/**
+ * 
+ * @param specifications
+ * @return
+ */
   public SpecificationGroup specifications(List<Specification> specifications) {
     this.specifications = specifications;
     return this;
   }
-
+/**
+ * 
+ * @param specificationsItem
+ * @return
+ */
   public SpecificationGroup addSpecificationsItem(Specification specificationsItem) {
     if (this.specifications == null) {
-      this.specifications = new ArrayList<Specification>();
+      this.specifications = new ArrayList<>();
     }
     this.specifications.add(specificationsItem);
     return this;
@@ -113,7 +143,10 @@ public class SpecificationGroup   {
   public List<Specification> getSpecifications() {
     return specifications;
   }
-
+/**
+ * 
+ * @param specifications
+ */
   public void setSpecifications(List<Specification> specifications) {
     this.specifications = specifications;
   }

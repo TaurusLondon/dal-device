@@ -23,14 +23,23 @@ public class Insurances   {
   @JsonProperty("minCost")
   private String minCost = null;
 
+  /**
+   * 
+   * @param insuranceList
+   * @return
+   */
   public Insurances insuranceList(List<Insurance> insuranceList) {
     this.insuranceList = insuranceList;
     return this;
   }
-
+/**
+ * 
+ * @param insuranceListItem
+ * @return
+ */
   public Insurances addInsuranceListItem(Insurance insuranceListItem) {
     if (this.insuranceList == null) {
-      this.insuranceList = new ArrayList<Insurance>();
+      this.insuranceList = new ArrayList<>();
     }
     this.insuranceList.add(insuranceListItem);
     return this;
@@ -43,15 +52,25 @@ public class Insurances   {
   @ApiModelProperty(value = "")
 
   @Valid
-
+/**
+ * 
+ * @return
+ */
   public List<Insurance> getInsuranceList() {
     return insuranceList;
   }
-
+/**
+ * 
+ * @param insuranceList
+ */
   public void setInsuranceList(List<Insurance> insuranceList) {
     this.insuranceList = insuranceList;
   }
-
+/**
+ * 
+ * @param minCost
+ * @return
+ */
   public Insurances minCost(String minCost) {
     this.minCost = minCost;
     return this;
@@ -63,11 +82,17 @@ public class Insurances   {
   **/
   @ApiModelProperty(value = "Contains minimum cost of Insurance")
 
-
+/**
+ * 
+ * @return
+ */
   public String getMinCost() {
     return minCost;
   }
-
+/**
+ * 
+ * @param minCost
+ */
   public void setMinCost(String minCost) {
     this.minCost = minCost;
   }

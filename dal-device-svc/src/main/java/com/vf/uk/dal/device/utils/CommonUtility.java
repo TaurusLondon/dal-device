@@ -12,7 +12,6 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -261,7 +260,7 @@ public  class CommonUtility {
 		if (price != null) {
 			DecimalFormat deciFormat = new DecimalFormat(decimalFormat);
 			Double tmpPrice = price - Math.floor(price);
-			if (tmpPrice.toString().equals("0.0")) {
+			if ("0.0".equals(tmpPrice.toString())) {
 				formatedPrice = String.valueOf(price.intValue());
 			} else {
 				formatedPrice = deciFormat.format(price);
@@ -288,7 +287,7 @@ public  class CommonUtility {
 			currentDate = dateFormat.parse(currentDateStr);
 			
 		} catch (ParseException | DateTimeParseException e) {
-			LogHelper.error(CommonUtility.class, "ParseException: " + e);
+			LogHelper.error(CommonUtility.class, "ParseException : " + e);
 		}	
 		
 		Date startDate = null;
@@ -301,7 +300,7 @@ public  class CommonUtility {
 			}
 			
 		} catch (ParseException | DateTimeParseException e) {
-			LogHelper.error(CommonUtility.class, "ParseException: " + e);
+			LogHelper.error(CommonUtility.class, " ParseException: " + e);
 		}	
 		
 		try{

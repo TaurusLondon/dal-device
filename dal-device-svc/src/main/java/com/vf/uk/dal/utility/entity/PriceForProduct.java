@@ -19,12 +19,20 @@ public class PriceForProduct   {
 
   @JsonProperty("priceForAccessoryes")
   private List<PriceForAccessory> priceForAccessoryes = null;
-
+  /**
+   * 
+   * @param priceForExtras
+   * @return
+   */
   public PriceForProduct priceForExtras(List<PriceForExtra> priceForExtras) {
     this.priceForExtras = priceForExtras;
     return this;
   }
-
+  /**
+   * 
+   * @param priceForExtrasItem
+   * @return
+   */
   public PriceForProduct addPriceForExtrasItem(PriceForExtra priceForExtrasItem) {
     if (this.priceForExtras == null) {
       this.priceForExtras = new ArrayList<PriceForExtra>();
@@ -43,16 +51,27 @@ public class PriceForProduct   {
   public List<PriceForExtra> getPriceForExtras() {
     return priceForExtras;
   }
-
+  /**
+   * 
+   * @param priceForExtras
+   */
   public void setPriceForExtras(List<PriceForExtra> priceForExtras) {
     this.priceForExtras = priceForExtras;
   }
-
+  /**
+   * 
+   * @param priceForAccessoryes
+   * @return
+   */
   public PriceForProduct priceForAccessoryes(List<PriceForAccessory> priceForAccessoryes) {
     this.priceForAccessoryes = priceForAccessoryes;
     return this;
   }
-
+  /**
+   * 
+   * @param priceForAccessoryesItem
+   * @return
+   */
   public PriceForProduct addPriceForAccessoryesItem(PriceForAccessory priceForAccessoryesItem) {
     if (this.priceForAccessoryes == null) {
       this.priceForAccessoryes = new ArrayList<PriceForAccessory>();
@@ -71,7 +90,10 @@ public class PriceForProduct   {
   public List<PriceForAccessory> getPriceForAccessoryes() {
     return priceForAccessoryes;
   }
-
+  /**
+   * 
+   * @param priceForAccessoryes
+   */
   public void setPriceForAccessoryes(List<PriceForAccessory> priceForAccessoryes) {
     this.priceForAccessoryes = priceForAccessoryes;
   }

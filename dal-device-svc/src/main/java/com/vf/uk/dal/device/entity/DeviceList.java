@@ -35,6 +35,11 @@ public class DeviceList   {
   @JsonProperty("priceInfo")
   private PriceForBundleAndHardware priceInfo = null;
 
+  /**
+   * 
+   * @param deviceId
+   * @return
+   */
   public DeviceList deviceId(String deviceId) {
     this.deviceId = deviceId;
     return this;
@@ -48,10 +53,19 @@ public class DeviceList   {
     return deviceId;
   }
 
+  /**
+   * 
+   * @param deviceId
+   */
   public void setDeviceId(String deviceId) {
     this.deviceId = deviceId;
   }
 
+  /**
+   * 
+   * @param name
+   * @return
+   */
   public DeviceList name(String name) {
     this.name = name;
     return this;
@@ -64,11 +78,18 @@ public class DeviceList   {
   public String getName() {
     return name;
   }
-
+/**
+ * 
+ * @param name
+ */
   public void setName(String name) {
     this.name = name;
   }
-
+/**
+ * 
+ * @param rating
+ * @return
+ */
   public DeviceList rating(Integer rating) {
     this.rating = rating;
     return this;
@@ -81,11 +102,18 @@ public class DeviceList   {
   public Integer getRating() {
     return rating;
   }
-
+/**
+ * 
+ * @param rating
+ */
   public void setRating(Integer rating) {
     this.rating = rating;
   }
-
+/**
+ * 
+ * @param description
+ * @return
+ */
   public DeviceList description(String description) {
     this.description = description;
     return this;
@@ -98,11 +126,18 @@ public class DeviceList   {
   public String getDescription() {
     return description;
   }
-
+/**
+ * 
+ * @param description
+ */
   public void setDescription(String description) {
     this.description = description;
   }
-
+/**
+ * 
+ * @param productClass
+ * @return
+ */
   public DeviceList productClass(String productClass) {
     this.productClass = productClass;
     return this;
@@ -115,11 +150,18 @@ public class DeviceList   {
   public String getProductClass() {
     return productClass;
   }
-
+/**
+ * 
+ * @param productClass
+ */
   public void setProductClass(String productClass) {
     this.productClass = productClass;
   }
-
+/**
+ * 
+ * @param merchandisingControl
+ * @return
+ */
   public DeviceList merchandisingControl(MerchandisingControl merchandisingControl) {
     this.merchandisingControl = merchandisingControl;
     return this;
@@ -132,16 +174,27 @@ public class DeviceList   {
   public MerchandisingControl getMerchandisingControl() {
     return merchandisingControl;
   }
-
+/**
+ * 
+ * @param merchandisingControl
+ */
   public void setMerchandisingControl(MerchandisingControl merchandisingControl) {
     this.merchandisingControl = merchandisingControl;
   }
-
+/**
+ * 
+ * @param media
+ * @return
+ */
   public DeviceList media(List<MediaLink> media) {
     this.media = media;
     return this;
   }
-
+/**
+ * 
+ * @param mediaItem
+ * @return
+ */
   public DeviceList addMediaItem(MediaLink mediaItem) {
     this.media.add(mediaItem);
     return this;
@@ -154,11 +207,18 @@ public class DeviceList   {
   public List<MediaLink> getMedia() {
     return media;
   }
-
+/**
+ * 
+ * @param media
+ */
   public void setMedia(List<MediaLink> media) {
     this.media = media;
   }
-
+/**
+ * 
+ * @param priceInfo
+ * @return
+ */
   public DeviceList priceInfo(PriceForBundleAndHardware priceInfo) {
     this.priceInfo = priceInfo;
     return this;
@@ -171,7 +231,10 @@ public class DeviceList   {
   public PriceForBundleAndHardware getPriceInfo() {
     return priceInfo;
   }
-
+/**
+ * 
+ * @param priceInfo
+ */
   public void setPriceInfo(PriceForBundleAndHardware priceInfo) {
     this.priceInfo = priceInfo;
   }

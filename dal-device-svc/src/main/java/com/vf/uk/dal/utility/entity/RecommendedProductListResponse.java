@@ -13,12 +13,20 @@ public class RecommendedProductListResponse {
   private List<RecommendedProduct> recommendedProductList = new ArrayList<RecommendedProduct>();
 
   private StatusInfo statusInfo = null;
-
+  /**
+   * 
+   * @param recommendedProductList
+   * @return
+   */
   public RecommendedProductListResponse recommendedProductList(List<RecommendedProduct> recommendedProductList) {
     this.recommendedProductList = recommendedProductList;
     return this;
   }
-
+  /**
+   * 
+   * @param recommendedProductListItem
+   * @return
+   */
   public RecommendedProductListResponse addRecommendedProductListItem(RecommendedProduct recommendedProductListItem) {
     this.recommendedProductList.add(recommendedProductListItem);
     return this;
@@ -32,11 +40,18 @@ public class RecommendedProductListResponse {
   public List<RecommendedProduct> getRecommendedProductList() {
     return recommendedProductList;
   }
-
+  /**
+   * 
+   * @param recommendedProductList
+   */
   public void setRecommendedProductList(List<RecommendedProduct> recommendedProductList) {
     this.recommendedProductList = recommendedProductList;
   }
-
+  /**
+   * 
+   * @param statusInfo
+   * @return
+   */
   public RecommendedProductListResponse statusInfo(StatusInfo statusInfo) {
     this.statusInfo = statusInfo;
     return this;
@@ -50,7 +65,10 @@ public class RecommendedProductListResponse {
   public StatusInfo getStatusInfo() {
     return statusInfo;
   }
-
+  /**
+   * 
+   * @param statusInfo
+   */
   public void setStatusInfo(StatusInfo statusInfo) {
     this.statusInfo = statusInfo;
   }

@@ -29,7 +29,11 @@ public class BundleDeviceAndProductsList   {
 
   @JsonProperty("extraList")
   private List<String> extraList = null;
-
+/**
+ * 
+ * @param offerCode
+ * @return
+ */
   public BundleDeviceAndProductsList offerCode(String offerCode) {
     this.offerCode = offerCode;
     return this;
@@ -44,11 +48,18 @@ public class BundleDeviceAndProductsList   {
   public String getOfferCode() {
     return offerCode;
   }
-
+/**
+ * 
+ * @param offerCode
+ */
   public void setOfferCode(String offerCode) {
     this.offerCode = offerCode;
   }
-
+/**
+ * 
+ * @param packageType
+ * @return
+ */
   public BundleDeviceAndProductsList packageType(String packageType) {
     this.packageType = packageType;
     return this;
@@ -63,11 +74,18 @@ public class BundleDeviceAndProductsList   {
   public String getPackageType() {
     return packageType;
   }
-
+/**
+ * 
+ * @param packageType
+ */
   public void setPackageType(String packageType) {
     this.packageType = packageType;
   }
-
+/**
+ * 
+ * @param deviceId
+ * @return
+ */
   public BundleDeviceAndProductsList deviceId(String deviceId) {
     this.deviceId = deviceId;
     return this;
@@ -82,11 +100,18 @@ public class BundleDeviceAndProductsList   {
   public String getDeviceId() {
     return deviceId;
   }
-
+/**
+ * 
+ * @param deviceId
+ */
   public void setDeviceId(String deviceId) {
     this.deviceId = deviceId;
   }
-
+/**
+ * 
+ * @param bundleId
+ * @return
+ */
   public BundleDeviceAndProductsList bundleId(String bundleId) {
     this.bundleId = bundleId;
     return this;
@@ -101,16 +126,27 @@ public class BundleDeviceAndProductsList   {
   public String getBundleId() {
     return bundleId;
   }
-
+/**
+ * 
+ * @param bundleId
+ */
   public void setBundleId(String bundleId) {
     this.bundleId = bundleId;
   }
-
+/**
+ * 
+ * @param accessoryList
+ * @return
+ */
   public BundleDeviceAndProductsList accessoryList(List<String> accessoryList) {
     this.accessoryList = accessoryList;
     return this;
   }
-
+/**
+ * 
+ * @param accessoryListItem
+ * @return
+ */
   public BundleDeviceAndProductsList addAccessoryListItem(String accessoryListItem) {
     if (this.accessoryList == null) {
       this.accessoryList = new ArrayList<String>();
@@ -128,16 +164,27 @@ public class BundleDeviceAndProductsList   {
   public List<String> getAccessoryList() {
     return accessoryList;
   }
-
+/**
+ * 
+ * @param accessoryList
+ */
   public void setAccessoryList(List<String> accessoryList) {
     this.accessoryList = accessoryList;
   }
-
+/**
+ * 
+ * @param extraList
+ * @return
+ */
   public BundleDeviceAndProductsList extraList(List<String> extraList) {
     this.extraList = extraList;
     return this;
   }
-
+/**
+ * 
+ * @param extraListItem
+ * @return
+ */
   public BundleDeviceAndProductsList addExtraListItem(String extraListItem) {
     if (this.extraList == null) {
       this.extraList = new ArrayList<String>();
@@ -155,7 +202,10 @@ public class BundleDeviceAndProductsList   {
   public List<String> getExtraList() {
     return extraList;
   }
-
+/**
+ * 
+ * @param extraList
+ */
   public void setExtraList(List<String> extraList) {
     this.extraList = extraList;
   }

@@ -19,7 +19,11 @@ public class FacetWithCount   {
 
   @JsonProperty("count")
   private long count;
-
+/**
+ * 
+ * @param name
+ * @return
+ */
   public FacetWithCount name(String name) {
     this.name = name;
     return this;
@@ -31,15 +35,25 @@ public class FacetWithCount   {
   **/
   @ApiModelProperty(value = "equipment name")
 
-
+/**
+ * 
+ * @return
+ */
   public String getName() {
     return name;
   }
-
+/**
+ * 
+ * @param name
+ */
   public void setName(String name) {
     this.name = name;
   }
-
+/**
+ * 
+ * @param count
+ * @return
+ */
   public FacetWithCount count(long count) {
     this.count = count;
     return this;
@@ -52,11 +66,17 @@ public class FacetWithCount   {
   @ApiModelProperty(value = "euipment count")
 
   @Valid
-
+/**
+ * 
+ * @return
+ */
   public long getCount() {
     return count;
   }
-
+/**
+ * 
+ * @param count
+ */
   public void setCount(long count) {
     this.count = count;
   }

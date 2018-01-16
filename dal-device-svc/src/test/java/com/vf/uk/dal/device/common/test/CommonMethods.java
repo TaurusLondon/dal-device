@@ -44,18 +44,23 @@ import com.vf.uk.dal.device.entity.OfferPacks;
 import com.vf.uk.dal.device.entity.Price;
 import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
 import com.vf.uk.dal.device.entity.ProductGroup;
+import com.vf.uk.dal.device.entity.SourcePackageSummary;
 import com.vf.uk.dal.device.entity.Specification;
 import com.vf.uk.dal.device.entity.SpecificationGroup;
 import com.vf.uk.dal.device.entity.StepPricingInfo;
 import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 import com.vf.uk.dal.utility.entity.BundleDetails;
+import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
 import com.vf.uk.dal.utility.entity.BundleDeviceAndProductsList;
 import com.vf.uk.dal.utility.entity.BundleHeader;
 import com.vf.uk.dal.utility.entity.ExtraPrice;
+import com.vf.uk.dal.utility.entity.InstalledProduct;
+import com.vf.uk.dal.utility.entity.Preferences;
 import com.vf.uk.dal.utility.entity.PriceForAccessory;
 import com.vf.uk.dal.utility.entity.PriceForExtra;
 import com.vf.uk.dal.utility.entity.PriceForProduct;
+import com.vf.uk.dal.utility.entity.RecommendedProductListRequest;
 import com.vf.uk.dal.utility.entity.StockInfo;
 import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
 import com.vf.uk.dal.utility.solr.entity.Media;
@@ -1741,6 +1746,7 @@ public class CommonMethods {
 		groupList.add(group);
 		groupList.add(group1);
 		product.setListOfProductGroups(groupList);
+		product.setNumFound((long)2);
 		return product;
 	}
 
@@ -3596,5 +3602,153 @@ public class CommonMethods {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static CommercialProduct getCommercialProductWithoutLeadPlan() {
+
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			// mapper = new
+			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
+			// true);
+			String commercialProduct = new String(
+					Utility.readFile("\\TEST-MOCK\\CommercialProductWithoutLeadPlan.json"));
+			CommercialProduct commercialProductList = mapper.readValue(commercialProduct, CommercialProduct.class);
+
+			return mapper.convertValue(commercialProductList, new TypeReference<CommercialProduct>() {
+			});
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static BundleDetailsForAppSrv getCoupledBundleListForDevice() {
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			// mapper = new
+			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
+			// true);
+			String bundleDetailsForAppSrv = new String(
+					Utility.readFile("\\TEST-MOCK\\ByCoupledBundleList.json"));
+			BundleDetailsForAppSrv bundleDetails = mapper.readValue(bundleDetailsForAppSrv, BundleDetailsForAppSrv.class);
+
+			return mapper.convertValue(bundleDetails, new TypeReference<BundleDetailsForAppSrv>() {
+			});
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static List<PriceForBundleAndHardware> getPriceForBundleAndHardwareListFromTupleList() {
+
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			// mapper = new
+			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
+			// true);
+			String price = new String(Utility.readFile("\\TEST-MOCK\\PriceForBundleAndHardware.json"));
+			PriceForBundleAndHardware[] priceList = mapper.readValue(price, PriceForBundleAndHardware[].class);
+
+			return mapper.convertValue(priceList, new TypeReference<List<PriceForBundleAndHardware>>() {
+			});
+		} catch (JsonParseException e) {
+
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+
+			e.printStackTrace();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static SourcePackageSummary getSourcePackageSummary() {
+		SourcePackageSummary s = new SourcePackageSummary();
+		s.setPromotionId("109381");
+		return s;	
+	}
+	
+	public static RecommendedProductListRequest getRecommendedDeviceListRequest(String msisdn, String deviceId) {
+		
+		RecommendedProductListRequest recomProdListReq = new RecommendedProductListRequest();
+		
+		recomProdListReq.setSerialNumber(msisdn);
+		recomProdListReq.setAccountCategory(Constants.ACCOUNT_CATEGORY_INDIVIDUAL);
+		
+		List<InstalledProduct> instProds = new ArrayList<>();
+		InstalledProduct instProd = new InstalledProduct();
+		instProd.setId(deviceId);
+		instProd.setTypeCode(Constants.STRING_TARIFF);
+		instProd.setAmount("220000.00");
+		instProds.add(instProd);
+		recomProdListReq.setInstalledProducts(instProds);
+		
+		List<Preferences> prefs = new ArrayList<>();
+		Preferences handsetPref = new Preferences();
+		handsetPref.setName(Constants.PREFERENCE_NAME_HANDSET);
+		handsetPref.setDataTypeCode(Constants.PREFERENCE_DATATYPE_CODE_PREFERENCE);
+		handsetPref.setValue("all");
+		prefs.add(handsetPref);
+
+		Preferences upgradePref = new Preferences();
+		upgradePref.setName(Constants.PREFERENCE_NAME_UPGRADE);
+		upgradePref.setDataTypeCode(Constants.PREFERENCE_DATATYPE_CODE_GENERAL);
+		upgradePref.setValue("SIMOFLEX");
+		prefs.add(upgradePref);
+		
+		Preferences recommitPref = new Preferences();
+		recommitPref.setName(Constants.PREFERENCE_NAME_RECOMMIT);
+		recommitPref.setDataTypeCode(Constants.PREFERENCE_DATATYPE_CODE_GENERAL);
+		recommitPref.setValue("FALSE");
+		prefs.add(recommitPref);
+		
+		Preferences segmentPref = new Preferences();
+		segmentPref.setName(Constants.PREFERENCE_NAME_SEGMENT);
+		segmentPref.setDataTypeCode(Constants.PREFERENCE_DATATYPE_ELIGIBILITY_CRITERIA);
+		segmentPref.setValue("cbu");
+		prefs.add(segmentPref);
+		
+		recomProdListReq.setPreferences(prefs);
+		
+		List<String> recomPrdTypes;
+		recomPrdTypes = new ArrayList<>();
+		recomPrdTypes.add(Constants.PREFERENCE_NAME_HANDSET);
+		
+		recomProdListReq.setBasketItems(null);
+		recomProdListReq.setNoOfRecommendations("100");
+		
+		
+		recomProdListReq.setRecommendedProductTypes(recomPrdTypes);
+
+		return recomProdListReq;
 	}
 }

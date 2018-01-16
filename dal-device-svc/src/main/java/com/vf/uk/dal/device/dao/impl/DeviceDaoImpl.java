@@ -14,18 +14,12 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -38,12 +32,8 @@ import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.common.registry.client.RegistryClient;
 import com.vf.uk.dal.device.dao.DeviceDao;
-import com.vf.uk.dal.device.entity.Accessory;
-import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
-import com.vf.uk.dal.device.entity.BundlePrice;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
-import com.vf.uk.dal.device.entity.DeviceDetails;
 import com.vf.uk.dal.device.entity.DeviceSummary;
 import com.vf.uk.dal.device.entity.DeviceTile;
 import com.vf.uk.dal.device.entity.Insurance;
@@ -60,10 +50,7 @@ import com.vf.uk.dal.device.utils.SolrConnectionProvider;
 import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 import com.vf.uk.dal.utility.entity.BundleDetails;
 import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
-import com.vf.uk.dal.utility.entity.BundleDeviceAndProductsList;
 import com.vf.uk.dal.utility.entity.CoupleRelation;
-import com.vf.uk.dal.utility.entity.PriceForAccessory;
-import com.vf.uk.dal.utility.entity.PriceForProduct;
 import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
 import com.vodafone.business.service.RequestManager;
 import com.vodafone.common.Filters;
@@ -76,7 +63,6 @@ import com.vodafone.dal.domain.repository.MerchandisingPromotionRepository;
 import com.vodafone.dal.domain.repository.ProductGroupRepository;
 import com.vodafone.dal.domain.repository.StockAvailabilityRepository;
 import com.vodafone.product.pojo.CommercialProduct;
-import com.vodafone.product.pojo.ProductGroups;
 import com.vodafone.productGroups.pojo.Group;
 import com.vodafone.productGroups.pojo.Member;
 import com.vodafone.solrmodels.BundleModel;
@@ -128,7 +114,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		String strGroupType = null;
 
 		LogHelper.info(this, "Start -->  calling  CommercialProductRepository.get");
-		if (commercialProductRepository == null) {
+		if (null==commercialProductRepository) {
 			commercialProductRepository = CoherenceConnectionProvider.getCommercialProductRepoConnection();
 		}
 		CommercialProduct commercialProduct = commercialProductRepository.get(id);
@@ -136,8 +122,7 @@ public class DeviceDaoImpl implements DeviceDao {
 
 		List<DeviceTile> listOfDeviceTile;
 		Long memberPriority = null;
-		if (commercialProduct != null && commercialProduct.getId() != null && commercialProduct.getIsDeviceProduct()
-				&& (commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)
+		if (commercialProduct != null && commercialProduct.getId() != null && commercialProduct.getIsDeviceProduct() && (commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)
 						|| commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_DATA_DEVICE))) {
 			listOfDeviceTile = new ArrayList<>();
 			DeviceTile deviceTile = new DeviceTile();
@@ -333,9 +318,9 @@ public class DeviceDaoImpl implements DeviceDao {
 
 	/**
 	 * Identifies members based on the validation rules.
-	 * 
-	 * @param listOfDeviceGroupMembers
-	 * @return leadDeviceSkuId
+	 * @param listOfDeviceGroupMember
+	 * @param journeyType
+	 * @return
 	 */
 	public String getMemeberBasedOnRules(List<com.vf.uk.dal.device.entity.Member> listOfDeviceGroupMember,
 			String journeyType) {
@@ -354,9 +339,9 @@ public class DeviceDaoImpl implements DeviceDao {
 
 	/**
 	 * validates the member based on the memberId.
-	 * 
 	 * @param memberId
-	 * @return memberFlag
+	 * @param journeyType
+	 * @return
 	 */
 	public Boolean validateMemeber(String memberId, String journeyType) {
 		Boolean memberFlag = false;
@@ -391,6 +376,11 @@ public class DeviceDaoImpl implements DeviceDao {
 
 	}
 
+	/**
+	 * 
+	 * @param memberId
+	 * @return
+	 */
 	public Boolean validateMemeber1(String memberId) {
 		Boolean memberFlag = false;
 		List<String> listOfProduct = new ArrayList<>();
@@ -431,9 +421,8 @@ public class DeviceDaoImpl implements DeviceDao {
 
 	/**
 	 * calculation of price
-	 * 
 	 * @param grossPrice
-	 * @return Price
+	 * @return
 	 */
 	public static Price getPriceFromGross(double grossPrice) {
 		float vatPercentage = Float
@@ -449,10 +438,10 @@ public class DeviceDaoImpl implements DeviceDao {
 
 	/**
 	 * Date validation
-	 * 
 	 * @param startDateTime
 	 * @param endDateTime
-	 * @return flag
+	 * @param strDateFormat
+	 * @return
 	 */
 	public Boolean dateValidationForOffers(String startDateTime, String endDateTime, String strDateFormat) {
 		boolean flag = false;
@@ -507,6 +496,11 @@ public class DeviceDaoImpl implements DeviceDao {
 		return flag;
 	}
 
+	/**
+	 * 
+	 * @param commercialProduct
+	 * @return
+	 */
 	public List<BundleAndHardwareTuple> getListOfPriceForBundleAndHardware(CommercialProduct commercialProduct) {
 
 		BundleAndHardwareTuple bundleAndHardwareTuple;
@@ -615,6 +609,11 @@ public class DeviceDaoImpl implements DeviceDao {
 
 	}
 
+	/**
+	 * 
+	 * @param bundleHeaderForDeviceSorted
+	 * @return
+	 */
 	public List<com.vf.uk.dal.utility.entity.BundleHeader> getAscendingOrderForOneoffPrice(
 			List<com.vf.uk.dal.utility.entity.BundleHeader> bundleHeaderForDeviceSorted) {
 		Collections.sort(bundleHeaderForDeviceSorted, new SortedOneOffPriceList());
@@ -659,7 +658,11 @@ public class DeviceDaoImpl implements DeviceDao {
 		}
 
 	}
-
+/**
+ * 
+ * @param bundleHeaderForDeviceSorted
+ * @return
+ */
 	public List<com.vf.uk.dal.utility.entity.BundleHeader> getAscendingOrderForBundlePrice(
 			List<com.vf.uk.dal.utility.entity.BundleHeader> bundleHeaderForDeviceSorted) {
 		Collections.sort(bundleHeaderForDeviceSorted, new SortedBundlePriceList());
@@ -703,7 +706,11 @@ public class DeviceDaoImpl implements DeviceDao {
 		}
 
 	}
-
+/**
+ * 
+ * @param prioritySorted
+ * @return
+ */
 	public List<com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion> getAscendingOrderForMerchndisingPriority(
 			List<com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion> prioritySorted) {
 		Collections.sort(prioritySorted, new SortedPriorityList());
@@ -730,7 +737,11 @@ public class DeviceDaoImpl implements DeviceDao {
 		}
 
 	}
-
+/**
+ * 
+ * @param variantsList
+ * @return
+ */
 	public List<com.vf.uk.dal.device.entity.Member> getListOfMembers(List<String> variantsList) {
 		com.vf.uk.dal.device.entity.Member member;
 		List<com.vf.uk.dal.device.entity.Member> listOfMember = new ArrayList<>();
@@ -746,7 +757,11 @@ public class DeviceDaoImpl implements DeviceDao {
 		return listOfMember;
 	}
 	
-
+/**
+ * 
+ * @param insurances
+ * @return
+ */
 	public Insurances getFormattedPriceForGetCompatibleInsurances(Insurances insurances) {
 
 		if (insurances.getInsuranceList() != null && !insurances.getInsuranceList().isEmpty()) {
@@ -770,6 +785,11 @@ public class DeviceDaoImpl implements DeviceDao {
 		return insurances;
 	}
 
+	/**
+	 * 
+	 * @param price
+	 * @return
+	 */
 	public String FormatPrice(String price) {
 		if (price.contains(".")) {
 			String[] decimalSplit = price.split("\\.");
@@ -825,9 +845,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		return jsonObject;
 	}
 
-	/**
-	 * 
-	 */
+	
 	@Override
 	public com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion getMerchandisingPromotionByPromotionName(
 			String promotionName) {
@@ -842,9 +860,6 @@ public class DeviceDaoImpl implements DeviceDao {
 		return merchandisingPromotion;
 	}
 
-	/**
-	 * 
-	 */
 	@Override
 	public List<Group> getProductGroupsByType(String groupType) {
 		try {
