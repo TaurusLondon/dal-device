@@ -1614,7 +1614,7 @@ public class DeviceControllerTest {
 					null, null, null);
 		} catch (Exception e) {
 			Assert.assertEquals(
-					"com.vf.uk.dal.common.exception.ApplicationException: Received Null Values for the given make and model",
+					"com.vf.uk.dal.common.exception.ApplicationException: No Devices Found for the given input search criteria",
 					e.toString());
 		}
 	}
