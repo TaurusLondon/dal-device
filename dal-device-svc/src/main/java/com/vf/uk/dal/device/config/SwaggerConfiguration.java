@@ -26,7 +26,7 @@ public class SwaggerConfiguration {
 	private String versionNumber;
 	
 	@Value("${info.build.projectName}")
-	private String ProjectName;
+	private String projectName;
 
 	/**
 	 * Generates documentation for all the services under com.vf.uk.dal.device.controller
@@ -40,7 +40,7 @@ public class SwaggerConfiguration {
 	}
 
 	private ApiInfo apiInfo() {
-		return new ApiInfoBuilder().title(ProjectName).description("Device API service operations")
+		return new ApiInfoBuilder().title(projectName).description("Device API service operations")
 				.version(versionNumber).build();
 	}
 }
