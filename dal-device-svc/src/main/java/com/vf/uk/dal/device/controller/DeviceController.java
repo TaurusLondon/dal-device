@@ -421,8 +421,13 @@ public class DeviceController {
 	 * Saves the details of the devices into database
 	 * @return
 	 */
-			 @ApiIgnore
-	@RequestMapping(value = "/deviceTile/cacheDeviceTile", method = RequestMethod.POST, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
+	@ApiOperation(value = "Cache the Device Tile Details in Solr.", notes = "Cache the Device Tile Details in Solr.", response = CacheDeviceTileResponse.class, tags = {
+			"DeviceTile", })
+	@ApiResponses(value = { @ApiResponse(code = 201, message = "Success", response = CacheDeviceTileResponse.class),
+			@ApiResponse(code = 404, message = "Not found", response = Void.class),
+			@ApiResponse(code = 500, message = "Internal Server Error", response = Error.class) })
+
+	@RequestMapping(value = "/catalogue/deviceTile/cacheDeviceTile", produces = javax.ws.rs.core.MediaType.APPLICATION_JSON, method = RequestMethod.POST)
 	public ResponseEntity<CacheDeviceTileResponse> cacheDeviceTile() {
 		String groupType = getFilterValue(GROUP_TYPE);
 
@@ -582,10 +587,16 @@ public class DeviceController {
  * @param jobId
  * @return
  */
-@ApiIgnore
-	@RequestMapping(value = "/deviceTile/cacheDeviceTile/{jobId}/status", method = RequestMethod.GET, produces = {
-			MediaType.APPLICATION_JSON })
-	public CacheDeviceTileResponse getCacheDeviceJobStatus(@PathVariable("jobId") String jobId) {
+	@ApiOperation(value = "Get the Cache Device Tile job status.", notes = "Get the Cache Device Tile job status.", response = CacheDeviceTileResponse.class, tags = {
+			"DeviceTile", })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = CacheDeviceTileResponse.class),
+			@ApiResponse(code = 404, message = "Not found", response = Void.class),
+			@ApiResponse(code = 500, message = "Internal Server Error", response = Error.class) })
+
+	@RequestMapping(value = "/catalogue/deviceTile/cacheDeviceTile/{jobId}/status", produces = {
+			MediaType.APPLICATION_JSON }, method = RequestMethod.GET)
+	public CacheDeviceTileResponse getCacheDeviceJobStatus(
+			@ApiParam(value = "Device group Type", required = true) @PathVariable("jobId") String jobId) {
 
 		return deviceService.getCacheDeviceJobStatus(jobId);
 
