@@ -194,8 +194,12 @@ public class DeviceController {
 	 * @param queryParams
 	 * @return
 	 */
-	@ApiIgnore
-	@RequestMapping(value = "/deviceTile/queries/byDeviceVariant/", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
+	@ApiOperation(value = "Get the device tile details for the given device tile Id.", notes = "The service gets the details of the device required to be dispalyed on deviceTile.", response = DeviceTile.class, responseContainer = "List", tags={ "DeviceTile", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "Success", response = DeviceTile.class, responseContainer = "List"),
+        @ApiResponse(code = 404, message = "Not found", response = Void.class),
+        @ApiResponse(code = 500, message = "Internal Server Error", response = Error.class) })
+     @RequestMapping(value = "/deviceTile/queries/byDeviceVariant/", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	public List<DeviceTile> getDeviceTileById(@RequestParam Map<String, String> queryParams) {
 
 		if (!queryParams.isEmpty() && Validator.validateDeviceId(queryParams)) {
@@ -427,7 +431,7 @@ public class DeviceController {
 			@ApiResponse(code = 404, message = "Not found", response = Void.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = Error.class) })
 
-	@RequestMapping(value = "/catalogue/deviceTile/cacheDeviceTile", produces = javax.ws.rs.core.MediaType.APPLICATION_JSON, method = RequestMethod.POST)
+	@RequestMapping(value = "/deviceTile/cacheDeviceTile", method = RequestMethod.POST, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	public ResponseEntity<CacheDeviceTileResponse> cacheDeviceTile() {
 		String groupType = getFilterValue(GROUP_TYPE);
 
@@ -593,8 +597,8 @@ public class DeviceController {
 			@ApiResponse(code = 404, message = "Not found", response = Void.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = Error.class) })
 
-	@RequestMapping(value = "/catalogue/deviceTile/cacheDeviceTile/{jobId}/status", produces = {
-			MediaType.APPLICATION_JSON }, method = RequestMethod.GET)
+	@RequestMapping(value = "/deviceTile/cacheDeviceTile/{jobId}/status", method = RequestMethod.GET, produces = {
+			MediaType.APPLICATION_JSON })
 	public CacheDeviceTileResponse getCacheDeviceJobStatus(
 			@ApiParam(value = "Device group Type", required = true) @PathVariable("jobId") String jobId) {
 
