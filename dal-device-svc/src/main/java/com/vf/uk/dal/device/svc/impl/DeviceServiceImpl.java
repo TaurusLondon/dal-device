@@ -287,14 +287,16 @@ public class DeviceServiceImpl implements DeviceService {
 			journeytype = journeyType;
 		}
 		
-		if(StringUtils.isNotBlank(groupType) && StringUtils.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG, groupType) ){
-			if(StringUtils.equalsIgnoreCase(Constants.JOURNEY_TYPE_UPGRADE, journeytype) || StringUtils.equalsIgnoreCase(Constants.JOURNEY_TYPE_SECONDLINE, journeytype)){
+		if (StringUtils.isNotBlank(groupType) && groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG)) {
+			if (StringUtils.equalsIgnoreCase(Constants.JOURNEY_TYPE_UPGRADE, journeytype)
+					|| StringUtils.equalsIgnoreCase(Constants.JOURNEY_TYPE_SECONDLINE, journeytype)) {
 				LogHelper.error(this, "JourneyType is not compatible for given GroupType");
 				throw new ApplicationException(ExceptionMessages.INVALID_GROUP_TYPE_JOURNEY_TYPE);
-			}
-			if(StringUtils.isNotBlank(offerCode)){
+			} else if (StringUtils.isNotBlank(offerCode)) {
 				LogHelper.error(this, "offerCode is not compatible for given GroupType");
 				throw new ApplicationException(ExceptionMessages.INVALID_GROUP_TYPE_OFFER_CODE);
+			} else {
+				journeytype = Constants.JOURNEY_TYPE_ACQUISITION;
 			}
 		}
 		
@@ -499,7 +501,6 @@ public class DeviceServiceImpl implements DeviceService {
 		String sortBy;
 		String sortOption;
 		String filterCriteria;
-		List<CommercialProduct> ls = null;
 		filterCriteria = deviceHelper.getFilterCriteria(make, capacity, colour, operatingSystem, mustHaveFeatures);
 
 		List<String> criteriaOfSort = getSortCriteria(sortCriteria);
@@ -559,94 +560,95 @@ public class DeviceServiceImpl implements DeviceService {
 			LogHelper.error(this, "Lead DeviceId List Coming From Solr------------:  " + listOfProducts);
 			List<ProductModel> listOfProductModel = deviceDao.getProductModel(listOfProducts);
 			List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
+			
+			Map<String, List<OfferAppliedPriceModel>> offerPriceMap = new HashMap<>();
+			Map<String, List<OfferAppliedPriceModel>> withoutOfferPriceMap = new HashMap<>();
+			Map<String, BundleAndHardwarePromotions> promotionmap = new HashMap<>();
+
 			if (listOfProductModel != null && !listOfProductModel.isEmpty()) {
 				listOfProductModel = sortListForProductModel(listOfProductModel, listOfProducts);
-				listOfProductModel.forEach(productModel -> {
-					if(StringUtils.isNotBlank(journeyType) && StringUtils.equalsIgnoreCase(journeyType,Constants.JOURNEY_TYPE_UPGRADE) 
-							&& StringUtils.isNotBlank(productModel.getUpgradeLeadPlanId())
-							&& productModel.getUpgradeLeadPlanId().length() == 6) {
-						BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
-						bundleAndHardwareTuple.setBundleId(productModel.getUpgradeLeadPlanId());
-						bundleAndHardwareTuple.setHardwareId(productModel.getProductId());
-						bundleHardwareTupleList.add(bundleAndHardwareTuple);
+				if (groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYM)) {
+
+					listOfProductModel.forEach(productModel -> {
+						if (StringUtils.isNotBlank(journeyType)
+								&& StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_UPGRADE)
+								&& StringUtils.isNotBlank(productModel.getUpgradeLeadPlanId())
+								&& productModel.getUpgradeLeadPlanId().length() == 6) {
+							BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
+							bundleAndHardwareTuple.setBundleId(productModel.getUpgradeLeadPlanId());
+							bundleAndHardwareTuple.setHardwareId(productModel.getProductId());
+							bundleHardwareTupleList.add(bundleAndHardwareTuple);
+						} else if ((StringUtils.isBlank(journeyType) || (StringUtils.isNotBlank(journeyType)
+								&& !StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_UPGRADE)))
+								&& StringUtils.isNotBlank(productModel.getNonUpgradeLeadPlanId())
+								&& productModel.getNonUpgradeLeadPlanId().length() == 6) {
+							BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
+							bundleAndHardwareTuple.setBundleId(productModel.getNonUpgradeLeadPlanId());
+							bundleAndHardwareTuple.setHardwareId(productModel.getProductId());
+							bundleHardwareTupleList.add(bundleAndHardwareTuple);
+						}
+					});
+					List<BundleAndHardwarePromotions> promotions = null;
+
+					if (!bundleHardwareTupleList.isEmpty()) {
+						promotions = CommonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList,
+								journeyType, registryclnt);
 					}
-					else if ((StringUtils.isBlank(journeyType) || (StringUtils.isNotBlank(journeyType) && !StringUtils.equalsIgnoreCase(journeyType,Constants.JOURNEY_TYPE_UPGRADE))) 
-							&& StringUtils.isNotBlank(productModel.getNonUpgradeLeadPlanId())
-							&& productModel.getNonUpgradeLeadPlanId().length() == 6) {
-						BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
-						bundleAndHardwareTuple.setBundleId(productModel.getNonUpgradeLeadPlanId());
-						bundleAndHardwareTuple.setHardwareId(productModel.getProductId());
-						bundleHardwareTupleList.add(bundleAndHardwareTuple);
+					if (promotions != null) {
+						promotions.forEach(promotion -> {
+							promotionmap.put(promotion.getHardwareId(), promotion);
+						});
 					}
-				});
+
+					if ((StringUtils.isNotBlank(offerCode) && StringUtils.isNotBlank(journeyType))
+							|| (StringUtils.isBlank(offerCode) && StringUtils.isNotBlank(journeyType))) {
+						if (StringUtils.isNotBlank(offerCode)) {
+							List<MerchandisingPromotionModel> listOfMerchandisingPromotions = null;
+							listOfMerchandisingPromotions = deviceDao.getJourneyTypeCompatibleOfferCodes(journeyType);
+							MerchandisingPromotionModel merchandisingPromotionModel = listOfMerchandisingPromotions
+									.stream().filter(promotionModel -> offerCode.equals(promotionModel.getTag()))
+									.findAny().orElse(null);
+							if (merchandisingPromotionModel != null) {
+								List<OfferAppliedPriceModel> listOfOfferAppliedPrice = deviceDao
+										.getBundleAndHardwarePriceFromSolr(listOfProducts, offerCode, journeyType);
+								listOfOfferAppliedPrice.forEach(offers -> {
+									List<OfferAppliedPriceModel> offeredPrice;
+									if (offerPriceMap.containsKey(offers.getHardwareId())) {
+										offerPriceMap.get(offers.getHardwareId()).add(offers);
+									} else {
+										offeredPrice = new ArrayList<>();
+										offeredPrice.add(offers);
+										offerPriceMap.put(offers.getHardwareId(), offeredPrice);
+									}
+								});
+							}
+						}
+						List<OfferAppliedPriceModel> listOfWithoutOfferAppliedPrice = deviceDao
+								.getBundleAndHardwarePriceFromSolr(listOfProducts, Constants.DATA_NOT_FOUND,
+										journeyType);
+						listOfWithoutOfferAppliedPrice.forEach(offers -> {
+							List<OfferAppliedPriceModel> offeredPrice;
+							if (withoutOfferPriceMap.containsKey(offers.getHardwareId())) {
+								withoutOfferPriceMap.get(offers.getHardwareId()).add(offers);
+							} else {
+								offeredPrice = new ArrayList<>();
+								offeredPrice.add(offers);
+								withoutOfferPriceMap.put(offers.getHardwareId(), offeredPrice);
+							}
+						});
+					}
+
+				}
 			} else {
 				LogHelper.error(this, "No Data Found for the given list of Products : " + listOfProductModel);
 				throw new ApplicationException(ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_PRODUCT_LIST);
 			}
-			List<BundleAndHardwarePromotions> promotions = null;
-			Map<String, BundleAndHardwarePromotions> promotionmap = new HashMap<>();
-			if (!bundleHardwareTupleList.isEmpty()) {
-				promotions = CommonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList,
-						journeyType, registryclnt);
-			}
-			if (promotions != null) {
-				promotions.forEach(promotion -> {
-					promotionmap.put(promotion.getHardwareId(), promotion);
-				});
-			}
-			if (groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG)) {
-				CommercialProduct commercialProduct;
-				ls = new ArrayList<>();
-				for (String products : listOfProducts) {
-					commercialProduct = deviceDao.getCommercialProductRepositoryByLeadMemberId(products);
-					ls.add(commercialProduct);
 
-				}
-			}
-			Map<String, List<OfferAppliedPriceModel>> offerPriceMap = new HashMap<>();
-			Map<String, List<OfferAppliedPriceModel>> withoutOfferPriceMap = new HashMap<>();
-			if ((StringUtils.isNotBlank(offerCode) && StringUtils.isNotBlank(journeyType)) || 
-					(StringUtils.isBlank(offerCode) && StringUtils.isNotBlank(journeyType))) {
-				if(StringUtils.isNotBlank(offerCode)){
-				List<MerchandisingPromotionModel> listOfMerchandisingPromotions = null;
-				listOfMerchandisingPromotions = deviceDao.getJourneyTypeCompatibleOfferCodes(journeyType);
-				MerchandisingPromotionModel merchandisingPromotionModel = listOfMerchandisingPromotions.stream()
-						.filter(promotionModel -> offerCode.equals(promotionModel.getTag())).findAny().orElse(null);
-				if (merchandisingPromotionModel != null) {
-					List<OfferAppliedPriceModel> listOfOfferAppliedPrice = deviceDao
-							.getBundleAndHardwarePriceFromSolr(listOfProducts, offerCode,journeyType);
-					listOfOfferAppliedPrice.forEach(offers -> {
-						List<OfferAppliedPriceModel> offeredPrice;
-						if (offerPriceMap.containsKey(offers.getHardwareId())) {
-							offerPriceMap.get(offers.getHardwareId()).add(offers);
-						} else {
-							offeredPrice = new ArrayList<>();
-							offeredPrice.add(offers);
-							offerPriceMap.put(offers.getHardwareId(), offeredPrice);
-						}
-					});
-				}
-				}
-					List<OfferAppliedPriceModel> listOfWithoutOfferAppliedPrice = deviceDao
-							.getBundleAndHardwarePriceFromSolr(listOfProducts, Constants.DATA_NOT_FOUND,journeyType);
-					listOfWithoutOfferAppliedPrice.forEach(offers -> {
-						List<OfferAppliedPriceModel> offeredPrice;
-						if (withoutOfferPriceMap.containsKey(offers.getHardwareId())) {
-							withoutOfferPriceMap.get(offers.getHardwareId()).add(offers);
-						} else {
-							offeredPrice = new ArrayList<>();
-							offeredPrice.add(offers);
-							withoutOfferPriceMap.put(offers.getHardwareId(), offeredPrice);
-						}
-				});
-			}	
-			
 			List<FacetField> facetFields = (null != productGroupFacetModelForFacets)
 					? productGroupFacetModelForFacets.getListOfFacetsFields() : null;
 			facetedDevice = DaoUtils.convertProductModelListToDeviceList(listOfProductModel, listOfProducts,
-					facetFields, groupType, ls, null, offerPriceMap, offerCode, groupNameWithProdId, null,
-					promotionmap, isLeadMemberFromSolr,withoutOfferPriceMap,journeyType);
-			// facetedDevice.setNoOfRecordsFound(productGroupFacetModel.getNumFound());
+					facetFields, groupType, null, null, offerPriceMap, offerCode, groupNameWithProdId, null,
+					promotionmap, isLeadMemberFromSolr, withoutOfferPriceMap, journeyType);
 
 		} else {
 			LogHelper.error(this, "No ProductGroups Found for the given search criteria: ");
@@ -2272,7 +2274,7 @@ public class DeviceServiceImpl implements DeviceService {
 			}
 		} else {
 			LogHelper.error(this, "No data found for given make and mmodel :" + make + " and " + model);
-			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FOR_MAKE_AND_MODEL);
+			throw new ApplicationException(ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST);
 			}
 	}
 
@@ -3452,7 +3454,7 @@ public class DeviceServiceImpl implements DeviceService {
 		}
 	} else {
 		LogHelper.error(this, "No data found for given make and mmodel :" + make + " and " + model);
-		throw new ApplicationException(ExceptionMessages.NULL_VALUE_FOR_MAKE_AND_MODEL);
+		throw new ApplicationException(ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST);
 		}
 		return listOfDeviceTile;
 				

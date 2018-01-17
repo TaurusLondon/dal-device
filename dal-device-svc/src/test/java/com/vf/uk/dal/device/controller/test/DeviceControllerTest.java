@@ -382,6 +382,20 @@ public class DeviceControllerTest {
 			Assert.assertNotNull(deviceDetailsList);
 		} catch (Exception e) {
 		}
+		try{
+			deviceDetailsList = deviceController.getDeviceList("HANDSET", "DEVICE_PAYG", "Priority", 1, 9, "Apple",
+					"iPhone-7", "White", "iOS 9", "32 GB", null, "Great Camera", "SecondLine", null, null, null);
+		}catch(Exception e)
+		{}
+		try{
+			deviceDetailsList = deviceController.getDeviceList("HANDSET", "DEVICE_PAYG", "Priority", 1, 9, "Apple",
+					"iPhone-7", "White", "iOS 9", "32 GB", null, "Great Camera", "Upgrade", null, null, null);
+		}catch(Exception e)
+		{}try{
+			deviceDetailsList = deviceController.getDeviceList("HANDSET", "DEVICE_PAYG", "Priority", 1, 9, "Apple",
+					"iPhone-7", "White", "iOS 9", "32 GB", null, "Great Camera", null, null, "W_HH_PAYM_01", null);
+		}catch(Exception e)
+		{}
 		ServiceContext.urlParamContext.remove();
 
 	}
@@ -1600,7 +1614,7 @@ public class DeviceControllerTest {
 					null, null, null);
 		} catch (Exception e) {
 			Assert.assertEquals(
-					"com.vf.uk.dal.common.exception.ApplicationException: Received Null Values for the given make and model",
+					"com.vf.uk.dal.common.exception.ApplicationException: No Devices Found for the given input search criteria",
 					e.toString());
 		}
 	}
