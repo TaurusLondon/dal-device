@@ -2190,8 +2190,10 @@ public class DeviceServiceImpl implements DeviceService {
 				String leadMemberId = getMemeberBasedOnRules_Implementation(listOfDeviceGroupMember, journeyType);
 				if (leadMemberId != null) {
 					deviceTile.setDeviceId(leadMemberId);
-					String avarageOverallRating = getDeviceReviewRating_Implementation(new ArrayList<>(Arrays.asList(leadMemberId)))
-							.get(CommonUtility.appendPrefixString(leadMemberId));
+					Map<String, String> rating=getDeviceReviewRating_Implementation(new ArrayList<>(Arrays.asList(leadMemberId)));
+					String avarageOverallRating = rating
+							.containsKey(CommonUtility.appendPrefixString(leadMemberId))?rating
+									.get(CommonUtility.appendPrefixString(leadMemberId)):"na";
 					LogHelper.info(this,
 							"AvarageOverallRating for deviceId: " + leadMemberId + " Rating: " + avarageOverallRating);
 					deviceTile.setRating(avarageOverallRating);
@@ -3413,8 +3415,10 @@ public class DeviceServiceImpl implements DeviceService {
 				String leadMemberId = getMemeberBasedOnRules_Implementation(listOfDeviceGroupMember, null);
 				if (leadMemberId != null) {
 					deviceTile.setDeviceId(leadMemberId);
-					String avarageOverallRating = getDeviceReviewRating_Implementation(new ArrayList<>(Arrays.asList(leadMemberId)))
-							.get(CommonUtility.appendPrefixString(leadMemberId));
+					Map<String, String> rating=getDeviceReviewRating_Implementation(new ArrayList<>(Arrays.asList(leadMemberId)));
+					String avarageOverallRating = rating
+							.containsKey(CommonUtility.appendPrefixString(leadMemberId))?rating
+									.get(CommonUtility.appendPrefixString(leadMemberId)):"na";
 					LogHelper.info(this,
 							"AvarageOverallRating for deviceId: " + leadMemberId + " Rating: " + avarageOverallRating);
 					deviceTile.setRating(avarageOverallRating);
@@ -3450,7 +3454,7 @@ public class DeviceServiceImpl implements DeviceService {
 	}
 		else {
 			LogHelper.error(this, "Requested Make and Model Not found in given group type:" + groupType);
-			throw new ApplicationException(ExceptionMessages.MAKE_AND_MODEL_NOT_FOUND_IN_GROUPTYPE);
+			throw new ApplicationException(ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST);
 		}
 	} else {
 		LogHelper.error(this, "No data found for given make and mmodel :" + make + " and " + model);
