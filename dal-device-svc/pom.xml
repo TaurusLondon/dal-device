@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>com.vf.uk.dal</groupId>
 	<artifactId>dal-device-svc</artifactId>
-	<version>7.1.12</version>
+	<version>7.1.13</version>
 	<packaging>jar</packaging>
 	<build>
 		<plugins>
@@ -65,7 +65,7 @@
 			<groupId>com.vf.uk.dal</groupId>
 			<artifactId>solr</artifactId>
 			<version>6.3.0</version>
-		</dependency>
+		</dependency> 
 		<dependency>
 			<groupId>com.vf.uk.dal.solr</groupId>
 			<artifactId>commons</artifactId>
@@ -174,12 +174,12 @@
 		<dependency>
 			<groupId>com.vf.uk.dal.solr</groupId>
 			<artifactId>solr-query-manager</artifactId>
-			<version>6.6.4</version>
+			<version>7.1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>Solr</groupId>
 			<artifactId>IndexManager</artifactId>
-			<version>6.6.4</version>
+			<version>7.1.2</version>
 		</dependency>
 		<!-- Coherence Jars -->
 		<dependency>
