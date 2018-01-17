@@ -496,8 +496,8 @@ public class DeviceServiceImpl implements DeviceService {
 			String sortCriteria, int pageNumber, int pageSize, String capacity, String colour, String operatingSystem,
 			String mustHaveFeatures, String journeyType, String offerCode) {
 		FacetedDevice facetedDevice;
-		ProductGroupFacetModel productGroupFacetModel;
-		ProductGroupFacetModel productGroupFacetModelForFacets;
+		ProductGroupFacetModel productGroupFacetModel = null;
+		ProductGroupFacetModel productGroupFacetModelForFacets = null;
 		String sortBy;
 		String sortOption;
 		String filterCriteria;
@@ -506,11 +506,11 @@ public class DeviceServiceImpl implements DeviceService {
 		List<String> criteriaOfSort = getSortCriteria(sortCriteria);
 		sortOption = criteriaOfSort.get(0);
 		sortBy = criteriaOfSort.get(1);
-		if (groupType.equals(Constants.STRING_DEVICE_PAYG)) {
+		if (groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG)) {
 			productGroupFacetModel = deviceDao.getProductGroupsWithFacets(Filters.HANDSET_PAYG, filterCriteria, sortBy,
 					sortOption, pageNumber, pageSize, journeyType);
 			productGroupFacetModelForFacets = deviceDao.getProductGroupsWithFacets(Filters.HANDSET_PAYG,journeyType);
-		} else {
+		} else if(groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYM)){
 			productGroupFacetModel = deviceDao.getProductGroupsWithFacets(Filters.HANDSET, filterCriteria, sortBy,
 					sortOption, pageNumber, pageSize, journeyType);
 			productGroupFacetModelForFacets = deviceDao.getProductGroupsWithFacets(Filters.HANDSET,journeyType);
