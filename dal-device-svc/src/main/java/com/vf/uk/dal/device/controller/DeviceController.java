@@ -105,7 +105,7 @@ public class DeviceController {
 	@RequestMapping(value = "/deviceTile/queries/byMakeModel/", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	public List<DeviceTile> getListOfDeviceTile(@NotNull@ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"apple\".", required = true) @RequestParam(value = "make", required = true) String make,
 	         @NotNull@ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"iphone7\".", required = true) @RequestParam(value = "model", required = true) String model,
-	         @NotNull@ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"Handset\" or \"Accessory\".", required = true) @RequestParam(value = "groupType", required = true) String groupType,
+	         @NotNull@ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"DEVICE_PAYM\" or \"DEVICE_PAYG\" or \"DATA_DEVICE_PAYM\".", required = true) @RequestParam(value = "groupType", required = true) String groupType,
 	        @ApiParam(value = "The journey that user undertakes \"acquisition\", \"upgrade\", \"ils\" etc.") @RequestParam(value = "journeyType", required = false) String journeyType,
 	        @ApiParam(value = "Promotional offer code applicable") @RequestParam(value = "offerCode", required = false) String offerCode,
 	        @ApiParam(value = "bundle Id for comaptible devices needs to displayed") @RequestParam(value = "bundleId", required = false) String bundleId,
@@ -297,7 +297,7 @@ public class DeviceController {
 	        @ApiResponse(code = 500, message = "Internal Server Error", response = Error.class) })
 			@RequestMapping(value = "/deviceTile", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 			public FacetedDevice getDeviceList(@NotNull@ApiParam(value = "Values on which the attributes should be filtered upon.", required = true) @RequestParam(value = "productClass", required = true) String productClass,
-			         @NotNull@ApiParam(value = "Values on which the attributes should be filtered upon.", required = true) @RequestParam(value = "groupType", required = true) String groupType,
+			         @NotNull@ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"DEVICE_PAYM\" or \"DEVICE_PAYG\" or \"DATA_DEVICE_PAYM\".", required = true) @RequestParam(value = "groupType", required = true) String groupType,
 			         @NotNull@ApiParam(value = "Values of attributes based on which solr will provide the sorted response, like Most Popular(Priority),Rating, New Releases, Brand(a-z)(z-a) but need to pass EquipmentMake to api, MonthlyPrice(lo-hi)(hi-lo)(Need to pass RecurringCharge).", required = true) @RequestParam(value = "sort", required = true) String sort,
 			        @ApiParam(value = "Page Number") @RequestParam(value = "pageNumber", required = false) Integer pageNumber,
 			        @ApiParam(value = "Page Size") @RequestParam(value = "pageSize", required = false) Integer pageSize,
