@@ -203,7 +203,7 @@ public class DeviceController {
 	@RequestMapping(value = "/deviceTile/queries/byDeviceVariant/", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	public List<DeviceTile> getDeviceTileById(
 			@NotNull @ApiParam(value = "Device Id of the device tile being requested", required = true) @RequestParam(value = "deviceId", required = true) String deviceId,
-			@ApiParam(value = "Promotional Offer Code that's applicable") @RequestParam(value = "journeyType", required = false) String journeyType,
+			@ApiParam(value = "Journey Type") @RequestParam(value = "journeyType", required = false) String journeyType,
 			@ApiParam(value = "Promotional Offer Code that's applicable") @RequestParam(value = "offerCode", required = false) String offerCode) {
 		List<DeviceTile> listOfDeviceTile;
 		if (!deviceId.matches(numberExpression)) {
