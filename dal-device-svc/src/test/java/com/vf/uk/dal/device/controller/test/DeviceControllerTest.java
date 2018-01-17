@@ -506,9 +506,9 @@ public class DeviceControllerTest {
 	public void notNullTestgetDeviceTileById() {
 		try {
 			List<DeviceTile> deviceTileList = new ArrayList<DeviceTile>();
-			deviceTileList = deviceController.getDeviceTileById(CommonMethods.getQueryParamsMap("83921"));
+			deviceTileList = deviceController.getDeviceTileById("83921",null,null);
 			Assert.assertNotNull(deviceTileList);
-			deviceTileList = deviceController.getDeviceTileById(CommonMethods.getInvalidQueryParamsMap("83921"));
+			deviceTileList = deviceController.getDeviceTileById("83921",null,null);
 		} catch (Exception e) {
 
 		}
@@ -519,7 +519,7 @@ public class DeviceControllerTest {
 	public void nullTestgetDeviceTileById() {
 		try {
 			List<DeviceTile> deviceTileList = new ArrayList<DeviceTile>();
-			deviceTileList = deviceController.getDeviceTileById(CommonMethods.getQueryParamsMap("83987"));
+			deviceTileList = deviceController.getDeviceTileById("83987",null,null);
 		} catch (Exception e) {
 			Assert.assertEquals(
 					"com.vf.uk.dal.common.exception.ApplicationException: Invalid Device Id Sent In Request",
@@ -528,28 +528,21 @@ public class DeviceControllerTest {
 	}
 
 	public void nullTestgetDeviceTileByIdForException() {
-		Map<String, String> queryparams = new HashMap<>();
-		queryparams.put("journeyType", null);
-		queryparams.put("offerCode", "W_HH_OC_01");
-		queryparams.put("deviceId", "093353");
-		deviceController.getDeviceTileById(queryparams);
+		
+		deviceController.getDeviceTileById("093353",null,"W_HH_OC_01");
 	}
 
 	public void nullTestgetDeviceTileByIdForException1() {
-		Map<String, String> queryparams = new HashMap<>();
-		queryparams.put("journeyType", "journeyType");
-		queryparams.put("offerCode", "W_HH_OC_01");
-		queryparams.put("deviceId", "093353");
-		deviceController.getDeviceTileById(queryparams);
+		
+		deviceController.getDeviceTileById("093353","journeyType","W_HH_OC_01");
 	}
 
 	@Test
 	public void invalidInputTestgetDeviceTileById() throws Exception {
 		List<DeviceTile> deviceTileList = new ArrayList<DeviceTile>();
 		try {
-			Map<String, String> queryparams = new HashMap<String, String>();
-			queryparams.put("offerCode", "1234");
-			deviceTileList = deviceController.getDeviceTileById(queryparams);
+			
+			deviceTileList = deviceController.getDeviceTileById(null,null,"1234");
 		} catch (Exception e) {
 
 		}
