@@ -307,7 +307,7 @@ public class DeviceController {
 			        @ApiParam(value = "When user selects device for Upgrade.") @RequestParam(value = "journeyType", required = false) String journeyType,
 			        @ApiParam(value = "When user selects device for Upgrade.") @RequestParam(value = "includeRecommendations", required = false) String includeRecommendations,
 			        @ApiParam(value = "Promotional offer code applicable.") @RequestParam(value = "offerCode", required = false) String offerCode,
-			        @ApiParam(value = "Monthly credit limit applicable in case of conditional accept.") @RequestParam(value = "creditLimit", required = false) String creditLimit){
+			        @ApiParam(value = "Monthly credit limit applicable in case of conditional accept.(Credit Limit is not completely implemented for Device List)") @RequestParam(value = "creditLimit", required = false) String creditLimit){
 				
 				boolean includeRecommendationsParam = false;
 				FacetedDevice facetedDevice;
