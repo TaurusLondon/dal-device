@@ -908,7 +908,7 @@ public class DaoUtils {
 				Integer hardwareID = new Integer(priceForBundleAndHardware.getHardwarePrice().getHardwareId());
 				if (isConditionalAcceptJourney) {
 					if (null != priceForBundleAndHardware.getBundlePrice() && null != comBundle
-							&& !comBundle.getId().equals(priceForBundleAndHardware.getBundlePrice().getBundleId())
+							&& comBundle.getId().equals(priceForBundleAndHardware.getBundlePrice().getBundleId())
 							&& deviceID.equals(hardwareID)) {
 						priceForBundleAndHardware1 = priceForBundleAndHardware;
 						priceForBundleAndHardware1 = getCalculatedPrice(priceForBundleAndHardware1);
