@@ -194,36 +194,28 @@ public class DeviceController {
 	 * @param queryParams
 	 * @return
 	 */
-	@ApiOperation(value = "Get the device tile details for the given device tile Id.", notes = "The service gets the details of the device required to be dispalyed on deviceTile.", response = DeviceTile.class, responseContainer = "List", tags={ "DeviceTile", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Success", response = DeviceTile.class, responseContainer = "List"),
-        @ApiResponse(code = 404, message = "Not found", response = Void.class),
-        @ApiResponse(code = 500, message = "Internal Server Error", response = Error.class) })
-     @RequestMapping(value = "/deviceTile/queries/byDeviceVariant/", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
-	public List<DeviceTile> getDeviceTileById(@RequestParam Map<String, String> queryParams) {
+	@ApiOperation(value = "Get the device tile details for the given device tile Id.", notes = "The service gets the details of the device required to be dispalyed on deviceTile.", response = DeviceTile.class, responseContainer = "List", tags = {
+			"DeviceTile", })
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Success", response = DeviceTile.class, responseContainer = "List"),
+			@ApiResponse(code = 404, message = "Not found", response = Void.class),
+			@ApiResponse(code = 500, message = "Internal Server Error", response = Error.class) })
+	@RequestMapping(value = "/deviceTile/queries/byDeviceVariant/", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
+	public List<DeviceTile> getDeviceTileById(
+			@NotNull @ApiParam(value = "Device Id of the device tile being requested", required = true) @RequestParam(value = "deviceId", required = true) String deviceId,
+			@ApiParam(value = "Journey Type") @RequestParam(value = "journeyType", required = false) String journeyType,
+			@ApiParam(value = "Promotional Offer Code that's applicable") @RequestParam(value = "offerCode", required = false) String offerCode) {
+		List<DeviceTile> listOfDeviceTile;
+		if (!deviceId.matches(numberExpression)) {
+			LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
+			throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
+		}
+		listOfDeviceTile = deviceService.getDeviceTileById(deviceId, offerCode, journeyType);
 
-		if (!queryParams.isEmpty() && Validator.validateDeviceId(queryParams)) {
-			List<DeviceTile> listOfDeviceTile;
-
-			String deviceId = queryParams.containsKey(DEVICE_ID) ? queryParams.get(DEVICE_ID) : null;
-			String journeyType = queryParams.containsKey(JOURNEY_TYPE) ? queryParams.get(JOURNEY_TYPE) : null;
-			String offerCode = queryParams.containsKey(OFFER_CODE) ? queryParams.get(OFFER_CODE) : null;
-			
-			if (deviceId != null) {
-				if(!deviceId.matches(numberExpression)) {
-					LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
-					throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
-				}
-				listOfDeviceTile = deviceService.getDeviceTileById(deviceId,offerCode,journeyType);
-			} else {
-				LogHelper.error(this, DEVICE_ID_IS_EMPTY);
-				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
-			}
-			return listOfDeviceTile;
-		} else
-			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
-
+		return listOfDeviceTile;
 	}
+
+
 
 	/**
 	 * Handles requests for GetProductList Service with input as SIMO in URL as
