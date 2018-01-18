@@ -4,6 +4,7 @@ spring:
 info:
   build:
     version: @project.version@
+    projectName: @project.artifactId@
 server:
   contextPath: /devices/catalogue
   port: 8080

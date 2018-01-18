@@ -382,6 +382,20 @@ public class DeviceControllerTest {
 			Assert.assertNotNull(deviceDetailsList);
 		} catch (Exception e) {
 		}
+		try{
+			deviceDetailsList = deviceController.getDeviceList("HANDSET", "DEVICE_PAYG", "Priority", 1, 9, "Apple",
+					"iPhone-7", "White", "iOS 9", "32 GB", null, "Great Camera", "SecondLine", null, null, null);
+		}catch(Exception e)
+		{}
+		try{
+			deviceDetailsList = deviceController.getDeviceList("HANDSET", "DEVICE_PAYG", "Priority", 1, 9, "Apple",
+					"iPhone-7", "White", "iOS 9", "32 GB", null, "Great Camera", "Upgrade", null, null, null);
+		}catch(Exception e)
+		{}try{
+			deviceDetailsList = deviceController.getDeviceList("HANDSET", "DEVICE_PAYG", "Priority", 1, 9, "Apple",
+					"iPhone-7", "White", "iOS 9", "32 GB", null, "Great Camera", null, null, "W_HH_PAYM_01", null);
+		}catch(Exception e)
+		{}
 		ServiceContext.urlParamContext.remove();
 
 	}
@@ -492,9 +506,9 @@ public class DeviceControllerTest {
 	public void notNullTestgetDeviceTileById() {
 		try {
 			List<DeviceTile> deviceTileList = new ArrayList<DeviceTile>();
-			deviceTileList = deviceController.getDeviceTileById(CommonMethods.getQueryParamsMap("83921"));
+			deviceTileList = deviceController.getDeviceTileById("83921",null,null);
 			Assert.assertNotNull(deviceTileList);
-			deviceTileList = deviceController.getDeviceTileById(CommonMethods.getInvalidQueryParamsMap("83921"));
+			deviceTileList = deviceController.getDeviceTileById("83921",null,null);
 		} catch (Exception e) {
 
 		}
@@ -505,7 +519,7 @@ public class DeviceControllerTest {
 	public void nullTestgetDeviceTileById() {
 		try {
 			List<DeviceTile> deviceTileList = new ArrayList<DeviceTile>();
-			deviceTileList = deviceController.getDeviceTileById(CommonMethods.getQueryParamsMap("83987"));
+			deviceTileList = deviceController.getDeviceTileById("83987",null,null);
 		} catch (Exception e) {
 			Assert.assertEquals(
 					"com.vf.uk.dal.common.exception.ApplicationException: Invalid Device Id Sent In Request",
@@ -514,28 +528,21 @@ public class DeviceControllerTest {
 	}
 
 	public void nullTestgetDeviceTileByIdForException() {
-		Map<String, String> queryparams = new HashMap<>();
-		queryparams.put("journeyType", null);
-		queryparams.put("offerCode", "W_HH_OC_01");
-		queryparams.put("deviceId", "093353");
-		deviceController.getDeviceTileById(queryparams);
+		
+		deviceController.getDeviceTileById("093353",null,"W_HH_OC_01");
 	}
 
 	public void nullTestgetDeviceTileByIdForException1() {
-		Map<String, String> queryparams = new HashMap<>();
-		queryparams.put("journeyType", "journeyType");
-		queryparams.put("offerCode", "W_HH_OC_01");
-		queryparams.put("deviceId", "093353");
-		deviceController.getDeviceTileById(queryparams);
+		
+		deviceController.getDeviceTileById("093353","journeyType","W_HH_OC_01");
 	}
 
 	@Test
 	public void invalidInputTestgetDeviceTileById() throws Exception {
 		List<DeviceTile> deviceTileList = new ArrayList<DeviceTile>();
 		try {
-			Map<String, String> queryparams = new HashMap<String, String>();
-			queryparams.put("offerCode", "1234");
-			deviceTileList = deviceController.getDeviceTileById(queryparams);
+			
+			deviceTileList = deviceController.getDeviceTileById(null,null,"1234");
 		} catch (Exception e) {
 
 		}
@@ -1600,7 +1607,7 @@ public class DeviceControllerTest {
 					null, null, null);
 		} catch (Exception e) {
 			Assert.assertEquals(
-					"com.vf.uk.dal.common.exception.ApplicationException: Received Null Values for the given make and model",
+					"com.vf.uk.dal.common.exception.ApplicationException: No Devices Found for the given input search criteria",
 					e.toString());
 		}
 	}
@@ -1616,5 +1623,48 @@ public class DeviceControllerTest {
 					e.toString());
 		}
 	}
-	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	@JsonIgnore
+	@Test
+	public void notNullTestForcacheDeviceTileWithoutOfferCodeForPAYG()
+			throws JsonParseException, JsonMappingException, IOException {
+		List<FilterCriteria> fcList = new ArrayList<FilterCriteria>();
+		fcList.add(new FilterCriteria("groupType", FilterOperator.EQUALTO, "DEVICE_PAYG"));
+		ServiceContext.setURLParamContext(new URLParamContext("", "", fcList, null));
+		given(deviceDAOMock.getProductGroupsByType("DEVICE_PAYG")).willReturn(CommonMethods.getGroup());
+		given(deviceDAOMock.insertCacheDeviceToDb()).willReturn(CommonMethods.getCacheDeviceTileResponse());
+		Collection<CommercialProduct> a = new ArrayList<>();
+		a.add(CommonMethods.getCommercialProduct5());
+		given(deviceDAOMock.getListCommercialProductRepositoryByLeadMemberId(Matchers.anyObject())).willReturn(a);
+		given(deviceDAOMock.getJourneyTypeCompatibleOfferCodes(Matchers.anyString()))
+				.willReturn(CommonMethods.getModel());
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+		String jsonString = new String(Utility.readFile("\\TEST-MOCK\\PRICE_FOR_PAYG.json"));
+		com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[] obj = mapper.readValue(jsonString,
+				com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[].class);
+		given(registry.getRestTemplate()).willReturn(restTemplate);
+		Map<String,String> ratingmap=new HashMap<>();
+		ratingmap.put("123", "3.7");
+		ratingmap.put("23", "3.7");
+		ratingmap.put("sku124", "3.9");
+		ratingmap.put("sku24", "3.9");
+		given(deviceDAOMock.getDeviceReviewRating(Matchers.anyList()))
+					.willReturn(ratingmap);
+		List<BundleAndHardwareTuple> bundleList = new ArrayList<>();
+		RequestForBundleAndHardware requestForBundleAndHardware = new RequestForBundleAndHardware();
+		BundleAndHardwareTuple bundle = new BundleAndHardwareTuple();
+		bundle.setBundleId(null);
+		bundle.setHardwareId("123");
+		bundleList.add(bundle);
+		requestForBundleAndHardware.setBundleAndHardwareList(bundleList);
+		requestForBundleAndHardware.setOfferCode(null);
+		requestForBundleAndHardware.setPackageType(null);
+		given(restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
+				requestForBundleAndHardware, com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[].class))
+						.willReturn(obj);
+
+		deviceController.cacheDeviceTile();
+	}
 }

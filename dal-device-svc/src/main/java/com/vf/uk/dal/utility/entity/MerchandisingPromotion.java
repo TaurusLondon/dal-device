@@ -45,11 +45,18 @@ public class MerchandisingPromotion {
   public Integer getPriority() {
 	return priority;
 }
-
+  /**
+   * 
+   * @param priority
+   */
 public void setPriority(Integer priority) {
 	this.priority = priority;
 }
-
+/**
+ * 
+ * @param tag
+ * @return
+ */
 public MerchandisingPromotion tag(String tag) {
     this.tag = tag;
     return this;
@@ -62,11 +69,18 @@ public MerchandisingPromotion tag(String tag) {
   public String getTag() {
     return tag;
   }
-
+  /**
+   * 
+   * @param tag
+   */
   public void setTag(String tag) {
     this.tag = tag;
   }
-
+  /**
+   * 
+   * @param label
+   * @return
+   */
   public MerchandisingPromotion label(String label) {
     this.label = label;
     return this;
@@ -79,11 +93,18 @@ public MerchandisingPromotion tag(String tag) {
   public String getLabel() {
     return label;
   }
-
+  /**
+   * 
+   * @param label
+   */
   public void setLabel(String label) {
     this.label = label;
   }
-
+  /**
+   * 
+   * @param description
+   * @return
+   */
   public MerchandisingPromotion description(String description) {
     this.description = description;
     return this;
@@ -96,11 +117,18 @@ public MerchandisingPromotion tag(String tag) {
   public String getDescription() {
     return description;
   }
-
+  /**
+   * 
+   * @param description
+   */
   public void setDescription(String description) {
     this.description = description;
   }
-
+  /**
+   * 
+   * @param discountId
+   * @return
+   */
   public MerchandisingPromotion discountId(String discountId) {
     this.discountId = discountId;
     return this;
@@ -113,11 +141,18 @@ public MerchandisingPromotion tag(String tag) {
   public String getDiscountId() {
     return discountId;
   }
-
+  /**
+   * 
+   * @param discountId
+   */
   public void setDiscountId(String discountId) {
     this.discountId = discountId;
   }
-
+  /**
+   * 
+   * @param mpType
+   * @return
+   */
   public MerchandisingPromotion mpType(String mpType) {
     this.mpType = mpType;
     return this;
@@ -130,16 +165,25 @@ public MerchandisingPromotion tag(String tag) {
   public String getMpType() {
     return mpType;
   }
-
+  /**
+   * 
+   * @param mpType
+   */
   public void setMpType(String mpType) {
     this.mpType = mpType;
   }
 
-
+  /**
+   * 
+   * @return
+   */
   public String getPriceEstablishedLabel() {
 	return priceEstablishedLabel;
   }
-
+  /**
+   * 
+   * @param priceEstablishedLabel
+   */
 public void setPriceEstablishedLabel(String priceEstablishedLabel) {
 	this.priceEstablishedLabel = priceEstablishedLabel;
 }

@@ -11,12 +11,20 @@ public class BundleDetailsForAppSrv   {
   private List<CoupleRelation> couplePlansList = new ArrayList<CoupleRelation>();
 
   private List<BundleHeader> standalonePlansList = new ArrayList<BundleHeader>();
-
+/**
+ * 
+ * @param couplePlansList
+ * @return
+ */
   public BundleDetailsForAppSrv couplePlansList(List<CoupleRelation> couplePlansList) {
     this.couplePlansList = couplePlansList;
     return this;
   }
-
+/**
+ * 
+ * @param couplePlansListItem
+ * @return
+ */
   public BundleDetailsForAppSrv addCouplePlansListItem(CoupleRelation couplePlansListItem) {
     this.couplePlansList.add(couplePlansListItem);
     return this;
@@ -29,16 +37,27 @@ public class BundleDetailsForAppSrv   {
   public List<CoupleRelation> getCouplePlansList() {
     return couplePlansList;
   }
-
+/**
+ * 
+ * @param couplePlansList
+ */
   public void setCouplePlansList(List<CoupleRelation> couplePlansList) {
     this.couplePlansList = couplePlansList;
   }
-
+/**
+ * 
+ * @param standalonePlansList
+ * @return
+ */
   public BundleDetailsForAppSrv standalonePlansList(List<BundleHeader> standalonePlansList) {
     this.standalonePlansList = standalonePlansList;
     return this;
   }
-
+/**
+ * 
+ * @param standalonePlansListItem
+ * @return
+ */
   public BundleDetailsForAppSrv addStandalonePlansListItem(BundleHeader standalonePlansListItem) {
     this.standalonePlansList.add(standalonePlansListItem);
     return this;
@@ -51,7 +70,10 @@ public class BundleDetailsForAppSrv   {
   public List<BundleHeader> getStandalonePlansList() {
     return standalonePlansList;
   }
-
+/**
+ * 
+ * @param standalonePlansList
+ */
   public void setStandalonePlansList(List<BundleHeader> standalonePlansList) {
     this.standalonePlansList = standalonePlansList;
   }

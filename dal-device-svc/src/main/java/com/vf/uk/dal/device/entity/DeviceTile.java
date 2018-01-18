@@ -198,7 +198,7 @@ public class DeviceTile   {
    */
   public DeviceTile addDeviceSummaryItem(DeviceSummary deviceSummaryItem) {
     if (this.deviceSummary == null) {
-      this.deviceSummary = new ArrayList<DeviceSummary>();
+      this.deviceSummary = new ArrayList<>();
     }
     this.deviceSummary.add(deviceSummaryItem);
     return this;

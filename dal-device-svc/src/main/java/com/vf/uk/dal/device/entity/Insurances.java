@@ -39,7 +39,7 @@ public class Insurances   {
  */
   public Insurances addInsuranceListItem(Insurance insuranceListItem) {
     if (this.insuranceList == null) {
-      this.insuranceList = new ArrayList<Insurance>();
+      this.insuranceList = new ArrayList<>();
     }
     this.insuranceList.add(insuranceListItem);
     return this;
