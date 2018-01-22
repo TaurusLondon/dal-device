@@ -74,18 +74,23 @@ import com.vodafone.solrmodels.ProductModel;
 
 /**
  * Mapping of coherence and solr entities to Device entities.
- * 
+ * @author
  **/
 
 public class DaoUtils {
 
+	private static String leadMember="leadMember";
 	/**
-	 * conversion of coherence Device to DeviceSummary.
 	 * 
-	 * @param member
+	 * @param memberPriority
 	 * @param commercialProduct
 	 * @param comBundle
-	 * @return DeviceSummary
+	 * @param priceforBundleAndHardware
+	 * @param listOfOfferPacks
+	 * @param groupType
+	 * @param isConditionalAcceptJourney
+	 * @param fromPricingMap
+	 * @return
 	 */
 	public static DeviceSummary convertCoherenceDeviceToDeviceTile(Long memberPriority,
 			CommercialProduct commercialProduct, CommercialBundle comBundle,
@@ -343,10 +348,11 @@ public class DaoUtils {
 	}
 
 	/**
-	 * conversion of coherence Device to DeviceDetails
 	 * 
 	 * @param cohProduct
-	 * @return DeviceDetails
+	 * @param listOfPriceForBundleAndHardware
+	 * @param listOfOfferPacks
+	 * @return
 	 */
 	public static DeviceDetails convertCoherenceDeviceToDeviceDetails(CommercialProduct cohProduct,
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware,
@@ -797,6 +803,11 @@ public class DaoUtils {
 		return accessory;
 	}
 
+	/**
+	 * 
+	 * @param insuranceProductList
+	 * @return
+	 */
 	public static Insurances convertCommercialProductToInsurance(List<CommercialProduct> insuranceProductList) {
 		List<Double> minPrice = new ArrayList<>();
 		List<Insurance> insuranceList = new ArrayList<>();
@@ -908,7 +919,7 @@ public class DaoUtils {
 				Integer hardwareID = new Integer(priceForBundleAndHardware.getHardwarePrice().getHardwareId());
 				if (isConditionalAcceptJourney) {
 					if (null != priceForBundleAndHardware.getBundlePrice() && null != comBundle
-							&& !comBundle.getId().equals(priceForBundleAndHardware.getBundlePrice().getBundleId())
+							&& comBundle.getId().equals(priceForBundleAndHardware.getBundlePrice().getBundleId())
 							&& deviceID.equals(hardwareID)) {
 						priceForBundleAndHardware1 = priceForBundleAndHardware;
 						priceForBundleAndHardware1 = getCalculatedPrice(priceForBundleAndHardware1);
@@ -919,7 +930,6 @@ public class DaoUtils {
 				}
 
 			}
-			// }
 		}
 		return priceForBundleAndHardware1;
 	}
@@ -1070,6 +1080,7 @@ public class DaoUtils {
 	/**
 	 * 
 	 * @param priceForBundleAndHardware
+	 * @param listOfPriceForBundleAndHardwareWithOfferCode
 	 * @return
 	 */
 	public static Map<String, Object> getPriceInfoForSolr(
@@ -2216,7 +2227,7 @@ public class DaoUtils {
 												|| (deviceDetails.getPriceInfo() != null
 														&& deviceDetails.getPriceInfo().getBundlePrice() == null
 														&& deviceDetails.getPriceInfo().getHardwarePrice() == null))
-										&& withoutOfferPriceMap.containsKey(productModel.getProductId())) {
+										&& withoutOfferPriceMap != null && withoutOfferPriceMap.containsKey(productModel.getProductId())) {
 									PriceForBundleAndHardware priceForOfferCode = getBundleAndHardwarePriceFromSolrUtils(
 											withoutOfferPriceMap.get(productModel.getProductId()), leadPlanId);
 									if (priceForOfferCode.getBundlePrice() != null
@@ -2288,7 +2299,7 @@ public class DaoUtils {
 													Constants.STRING_MEDIA_LABEL)) {
 												bundleLabel = mediaStrList[i + 1];
 												bundleMpType = mediaStrList[i].substring(0,
-														mediaStrList[i].indexOf("."));
+														mediaStrList[i].indexOf('.'));
 												bundleDiscountId = mediaStrList[i + 6];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
@@ -2511,12 +2522,12 @@ public class DaoUtils {
 										if (Constants.PROMO_TYPE_BUNDLEPROMOTION.equalsIgnoreCase(typeArray[i + 2])) {
 											bundleTag = typeArray[3];
 											if (StringUtils.contains(
-													mediaStrList[i].substring(mediaStrList[i].lastIndexOf(".") + 1,
+													mediaStrList[i].substring(mediaStrList[i].lastIndexOf('.') + 1,
 															mediaStrList[i].length()),
 													Constants.STRING_MEDIA_LABEL)) {
 												bundleLabel = mediaStrList[i + 1];
 												bundleMpType = mediaStrList[i].substring(0,
-														mediaStrList[i].indexOf("."));
+														mediaStrList[i].indexOf('.'));
 												bundleDiscountId = mediaStrList[i + 6];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
@@ -2539,12 +2550,12 @@ public class DaoUtils {
 										if (Constants.PROMO_TYPE_HARDWAREPROMOTION.equalsIgnoreCase(typeArray[i + 2])) {
 											hardwareTag = typeArray[i + 3];
 											if (StringUtils.contains(
-													mediaStrList[i].substring(mediaStrList[i].lastIndexOf(".") + 1,
+													mediaStrList[i].substring(mediaStrList[i].lastIndexOf('.') + 1,
 															mediaStrList[i].length()),
 													Constants.STRING_MEDIA_LABEL)) {
 												hardwareLabel = mediaStrList[i + 1];
 												hardwareMpType = mediaStrList[i].substring(0,
-														mediaStrList[i].indexOf("."));
+														mediaStrList[i].indexOf('.'));
 												hardwareDiscountId = mediaStrList[i + 6];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
@@ -2582,12 +2593,12 @@ public class DaoUtils {
 										if (Constants.PROMO_TYPE_BUNDLEPROMOTION.equalsIgnoreCase(typeArray[i + 2])) {
 											bundleTag = typeArray[3];
 											if (StringUtils.contains(
-													mediaStrList[i].substring(mediaStrList[i].lastIndexOf(".") + 1,
+													mediaStrList[i].substring(mediaStrList[i].lastIndexOf('.') + 1,
 															mediaStrList[i].length()),
 													Constants.STRING_MEDIA_LABEL)) {
 												bundleLabel = mediaStrList[i + 1];
 												bundleMpType = mediaStrList[i].substring(0,
-														mediaStrList[i].indexOf("."));
+														mediaStrList[i].indexOf('.'));
 												bundleDiscountId = mediaStrList[i + 6];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
@@ -2872,14 +2883,14 @@ public class DaoUtils {
 										.setMerchandisingPromotions(hardwareMerchandising);
 							}
 						}
-						if (isLeadMemberFromSolr.get("leadMember") && StringUtils.isNotBlank(leadPlanId)
+						if (isLeadMemberFromSolr.get(leadMember) && StringUtils.isNotBlank(leadPlanId)
 								&& groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYM)) {
 							deviceList.add(deviceDetails);
 							count++;
-						}else if (isLeadMemberFromSolr.get("leadMember") && groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG)) {
+						}else if (isLeadMemberFromSolr.get(leadMember) && groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG)) {
 							deviceList.add(deviceDetails);
 							count++;
-						} else if (!isLeadMemberFromSolr.get("leadMember")) {
+						} else if (!isLeadMemberFromSolr.get(leadMember)) {
 							deviceList.add(deviceDetails);
 							count++;
 						}
