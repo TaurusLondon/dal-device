@@ -3426,7 +3426,17 @@ public class DeviceServiceImpl implements DeviceService {
 				listOfPriceForBundleAndHardware = CommonUtility.getPriceDetails(bundleAndHardwareTupleListPAYG,
 						null, registryclnt, null);
 			}
-		
+			Map<String, BundleAndHardwarePromotions> bundleAndHardwarePromotionsMap = new HashMap<>();
+			if ( !bundleAndHardwareTupleListPAYG.isEmpty()) {
+				List<BundleAndHardwarePromotions> allPromotions = CommonUtility
+						.getPromotionsForBundleAndHardWarePromotions(bundleAndHardwareTupleListPAYG, null,
+								registryclnt);
+				if (allPromotions != null && !allPromotions.isEmpty()) {
+					allPromotions.forEach(promotion -> {
+						bundleAndHardwarePromotionsMap.put(promotion.getHardwareId(), promotion);
+					});
+				}
+			}
 		Map<String, PriceForBundleAndHardware> priceMapForParticularDevice = new HashMap<>();
 		if (listOfPriceForBundleAndHardware != null && !listOfPriceForBundleAndHardware.isEmpty()) {
 			listOfPriceForBundleAndHardware.forEach(priceForBundleAndHardware -> {
@@ -3434,10 +3444,11 @@ public class DeviceServiceImpl implements DeviceService {
 						priceForBundleAndHardware);
 			});
 		}
+		
 		deviceTile.setGroupName(groupName);
 		deviceTile.setGroupType(groupType);
 		CompletableFuture<List<DeviceSummary>> future1 = getDeviceSummery_Implementation_PAYG(listOfDeviceGroupMember, commerProdMemMapPAYG,
-				groupType, priceMapForParticularDevice);
+				groupType, priceMapForParticularDevice,bundleAndHardwarePromotionsMap);
 		List<DeviceSummary> listOfDeviceSummary;
 		try {
 			listOfDeviceSummary = future1.get();
@@ -3469,7 +3480,8 @@ public class DeviceServiceImpl implements DeviceService {
 	 */
 	public CompletableFuture<List<DeviceSummary>> getDeviceSummery_Implementation_PAYG(
 			List<com.vf.uk.dal.device.entity.Member> listOfDeviceGroupMember,
-			Map<String, CommercialProduct> commerProdMemMap,String groupType,Map<String, PriceForBundleAndHardware> priceMapForParticularDevice) {
+			Map<String, CommercialProduct> commerProdMemMap,String groupType,Map<String, PriceForBundleAndHardware> priceMapForParticularDevice
+			,Map<String, BundleAndHardwarePromotions> promotions ) {
 		return CompletableFuture.supplyAsync(new Supplier<List<DeviceSummary>>() {
 
 			List<DeviceSummary> listOfDeviceSummaryLocal = new ArrayList<>();
@@ -3479,6 +3491,7 @@ public class DeviceServiceImpl implements DeviceService {
 			public List<DeviceSummary> get() {
 				for (com.vf.uk.dal.device.entity.Member member : listOfDeviceGroupMember) {
 					CommercialProduct commercialProduct = commerProdMemMap.get(member.getId());
+					BundleAndHardwarePromotions promotion=promotions.get(member.getId());
 					Long memberPriority = Long.valueOf(member.getPriority());
 					if (commercialProduct != null) {
 					PriceForBundleAndHardware priceForBundleAndHardware = null;
@@ -3486,7 +3499,7 @@ public class DeviceServiceImpl implements DeviceService {
 						priceForBundleAndHardware = priceMapForParticularDevice.get(member.getId());
 					}
 					deviceSummary = DaoUtils.convertCoherenceDeviceToDeviceTile_PAYG(memberPriority, commercialProduct,
-											priceForBundleAndHardware,groupType);
+											priceForBundleAndHardware,groupType,promotion);
 								if (deviceSummary != null) {
 									listOfDeviceSummaryLocal.add(deviceSummary);
 								}

@@ -3602,7 +3602,7 @@ public class DaoUtils {
 	 */
 	public static DeviceSummary convertCoherenceDeviceToDeviceTile_PAYG(Long memberPriority,
 			CommercialProduct commercialProduct, PriceForBundleAndHardware priceforBundleAndHardware,
-			String groupType) {
+			String groupType, BundleAndHardwarePromotions promotions ) {
 
 		DeviceSummary deviceSummary;
 		deviceSummary = new DeviceSummary();
@@ -3627,7 +3627,36 @@ public class DaoUtils {
 		if (memberPriority != null) {
 			deviceSummary.setPriority(String.valueOf(memberPriority));
 		}
+		List<MediaLink> merchandisingMedia = new ArrayList<>();
+		if (promotions != null) {
 
+			List<CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks> entertainmentPacks = promotions.getEntertainmentPacks();
+			List<CataloguepromotionqueriesForBundleAndHardwareDataAllowances> dataAllowances = promotions
+					.getDataAllowances();
+			List<CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions> planCouplingPromotions = promotions.getPlanCouplingPromotions();
+			List<CataloguepromotionqueriesForBundleAndHardwareSash> sash = promotions
+					.getSashBannerForPlan();
+			List<CataloguepromotionqueriesForBundleAndHardwareSecureNet> secureNet = promotions
+					.getSecureNet();
+			List<CataloguepromotionqueriesForHardwareSash> sashBannerForHardware = promotions
+					.getSashBannerForHardware();
+			List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtras = promotions
+					.getFreeExtras();
+			List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccessories = promotions
+					.getFreeAccessory();
+			List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtrasForPlans = promotions
+					.getFreeExtrasForPlan();
+			List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccForPlans = promotions
+					.getFreeAccForPlan();
+			List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtrasForHardwares = promotions
+					.getFreeExtrasForHardware();
+			List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccForHardwares = promotions
+					.getFreeAccForHardware();
+			merchandisingMedia.addAll(CommonUtility.getMediaListForBundleAndHardware(entertainmentPacks, dataAllowances,
+					planCouplingPromotions, sash, secureNet, sashBannerForHardware, freeExtras, freeAccessories,
+					freeExtrasForPlans, freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares));
+		}
+		
 		deviceSummary.setFromPricing(null);
 
 		deviceSummary.setDisplayDescription(commercialProduct.getPreDesc());
@@ -3662,7 +3691,7 @@ public class DaoUtils {
 
 			}
 		}
-		List<MediaLink> merchandisingMedia = new ArrayList<>();
+		
 		MediaLink mediaLink;
 		if (commercialProduct.getListOfimageURLs() != null) {
 			for (com.vodafone.product.pojo.ImageURL imageURL : commercialProduct.getListOfimageURLs()) {
