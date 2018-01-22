@@ -68,8 +68,8 @@ public class DeviceController {
 	private static final String DEVICE_ID = "deviceId";
 	private static final String JOURNEY_TYPE = "journeyType";
 	private static final String OFFER_CODE = "offerCode";
-	private static final String numberExpression = "[0-9]{6}";
-	private static final String creditLimitExpression = "[0-9]*";
+	private static final String numberExp = "[0-9]{6}";
+	private static final String creditLimitExp = "[0-9]*";
 	
 	/**
 	 * Handles requests for getDeviceTile Service with input as
@@ -105,7 +105,7 @@ public class DeviceController {
 	@RequestMapping(value = "/deviceTile/queries/byMakeModel/", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	public List<DeviceTile> getListOfDeviceTile(@NotNull@ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"apple\".", required = true) @RequestParam(value = "make", required = true) String make,
 	         @NotNull@ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"iphone7\".", required = true) @RequestParam(value = "model", required = true) String model,
-	         @NotNull@ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"Handset\" or \"Accessory\".", required = true) @RequestParam(value = "groupType", required = true) String groupType,
+	         @NotNull@ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"DEVICE_PAYM\" or \"DEVICE_PAYG\" or \"DATA_DEVICE_PAYM\".", required = true) @RequestParam(value = "groupType", required = true) String groupType,
 	        @ApiParam(value = "The journey that user undertakes \"acquisition\", \"upgrade\", \"ils\" etc.") @RequestParam(value = "journeyType", required = false) String journeyType,
 	        @ApiParam(value = "Promotional offer code applicable") @RequestParam(value = "offerCode", required = false) String offerCode,
 	        @ApiParam(value = "bundle Id for comaptible devices needs to displayed") @RequestParam(value = "bundleId", required = false) String bundleId,
@@ -114,13 +114,13 @@ public class DeviceController {
 		
 			List<DeviceTile> listOfDeviceTile;
 			Double creditLimitParam = null;
-			if (deviceId != null && !deviceId.matches(numberExpression)) {
+			if (deviceId != null && !deviceId.matches(numberExp)) {
 				LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
 				throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 			}
 			if (creditLimit != null) {
 				if(StringUtils.isNotBlank(creditLimit)){
-					if(!creditLimit.matches(creditLimitExpression)) {
+					if(!creditLimit.matches(creditLimitExp)) {
 						throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
 					}
 					if (!Validator.validateCreditLimit(creditLimit)) {
@@ -147,7 +147,7 @@ public class DeviceController {
 				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_MODEL);
 			}
 			
-			if(bundleId != null && (!bundleId.matches(numberExpression) || bundleId.matches("[0]*"))) {
+			if(bundleId != null && (!bundleId.matches(numberExp) || bundleId.matches("[0]*"))) {
 				LogHelper.error(this,ExceptionMessages.INVALID_BUNDLE);
 				throw new ApplicationException(ExceptionMessages.INVALID_BUNDLE_ID);
 			}
@@ -176,7 +176,7 @@ public class DeviceController {
 		DeviceDetails deviceDetails;
 		LogHelper.info(this, ":::::::Test Logger for VSTS migration And Validate Pipeline Validation::::::::");
 		if (StringUtils.isNotBlank(deviceId)) {
-			if (!deviceId.matches(numberExpression)) {
+			if (!deviceId.matches(numberExp)) {
 				LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
 				throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 			}
@@ -194,32 +194,28 @@ public class DeviceController {
 	 * @param queryParams
 	 * @return
 	 */
-	@ApiIgnore
+	@ApiOperation(value = "Get the device tile details for the given device tile Id.", notes = "The service gets the details of the device required to be dispalyed on deviceTile.", response = DeviceTile.class, responseContainer = "List", tags = {
+			"DeviceTile", })
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Success", response = DeviceTile.class, responseContainer = "List"),
+			@ApiResponse(code = 404, message = "Not found", response = Void.class),
+			@ApiResponse(code = 500, message = "Internal Server Error", response = Error.class) })
 	@RequestMapping(value = "/deviceTile/queries/byDeviceVariant/", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
-	public List<DeviceTile> getDeviceTileById(@RequestParam Map<String, String> queryParams) {
+	public List<DeviceTile> getDeviceTileById(
+			@NotNull @ApiParam(value = "Device Id of the device tile being requested", required = true) @RequestParam(value = "deviceId", required = true) String deviceId,
+			@ApiParam(value = "Journey Type") @RequestParam(value = "journeyType", required = false) String journeyType,
+			@ApiParam(value = "Promotional Offer Code that's applicable") @RequestParam(value = "offerCode", required = false) String offerCode) {
+		List<DeviceTile> listOfDeviceTile;
+		if (!deviceId.matches(numberExp)) {
+			LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
+			throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
+		}
+		listOfDeviceTile = deviceService.getDeviceTileById(deviceId, offerCode, journeyType);
 
-		if (!queryParams.isEmpty() && Validator.validateDeviceId(queryParams)) {
-			List<DeviceTile> listOfDeviceTile;
-
-			String deviceId = queryParams.containsKey(DEVICE_ID) ? queryParams.get(DEVICE_ID) : null;
-			String journeyType = queryParams.containsKey(JOURNEY_TYPE) ? queryParams.get(JOURNEY_TYPE) : null;
-			String offerCode = queryParams.containsKey(OFFER_CODE) ? queryParams.get(OFFER_CODE) : null;
-			
-			if (deviceId != null) {
-				if(!deviceId.matches(numberExpression)) {
-					LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
-					throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
-				}
-				listOfDeviceTile = deviceService.getDeviceTileById(deviceId,offerCode,journeyType);
-			} else {
-				LogHelper.error(this, DEVICE_ID_IS_EMPTY);
-				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
-			}
-			return listOfDeviceTile;
-		} else
-			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
-
+		return listOfDeviceTile;
 	}
+
+
 
 	/**
 	 * Handles requests for GetProductList Service with input as SIMO in URL as
@@ -255,7 +251,7 @@ public class DeviceController {
 	        @ApiParam(value = "Promotional offer applicable") @RequestParam(value = "offerCode", required = false) String offerCode) {
 		List<AccessoryTileGroup> listOfAccessoryTileGroup;
 		if (StringUtils.isNotBlank(deviceId)) {
-				if (!deviceId.matches(numberExpression)) {
+				if (!deviceId.matches(numberExp)) {
 					LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
 					throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 				}
@@ -297,7 +293,7 @@ public class DeviceController {
 	        @ApiResponse(code = 500, message = "Internal Server Error", response = Error.class) })
 			@RequestMapping(value = "/deviceTile", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 			public FacetedDevice getDeviceList(@NotNull@ApiParam(value = "Values on which the attributes should be filtered upon.", required = true) @RequestParam(value = "productClass", required = true) String productClass,
-			         @NotNull@ApiParam(value = "Values on which the attributes should be filtered upon.", required = true) @RequestParam(value = "groupType", required = true) String groupType,
+			         @NotNull@ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"DEVICE_PAYM\" or \"DEVICE_PAYG\" or \"DATA_DEVICE_PAYM\".", required = true) @RequestParam(value = "groupType", required = true) String groupType,
 			         @NotNull@ApiParam(value = "Values of attributes based on which solr will provide the sorted response, like Most Popular(Priority),Rating, New Releases, Brand(a-z)(z-a) but need to pass EquipmentMake to api, MonthlyPrice(lo-hi)(hi-lo)(Need to pass RecurringCharge).", required = true) @RequestParam(value = "sort", required = true) String sort,
 			        @ApiParam(value = "Page Number") @RequestParam(value = "pageNumber", required = false) Integer pageNumber,
 			        @ApiParam(value = "Page Size") @RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -311,7 +307,7 @@ public class DeviceController {
 			        @ApiParam(value = "When user selects device for Upgrade.") @RequestParam(value = "journeyType", required = false) String journeyType,
 			        @ApiParam(value = "When user selects device for Upgrade.") @RequestParam(value = "includeRecommendations", required = false) String includeRecommendations,
 			        @ApiParam(value = "Promotional offer code applicable.") @RequestParam(value = "offerCode", required = false) String offerCode,
-			        @ApiParam(value = "Monthly credit limit applicable in case of conditional accept.") @RequestParam(value = "creditLimit", required = false) String creditLimit){
+			        @ApiParam(value = "Monthly credit limit applicable in case of conditional accept.(Credit Limit is not completely implemented for Device List)") @RequestParam(value = "creditLimit", required = false) String creditLimit){
 				
 				boolean includeRecommendationsParam = false;
 				FacetedDevice facetedDevice;
@@ -355,7 +351,7 @@ public class DeviceController {
 					
 					if (creditLimit != null) {
 						if(StringUtils.isNotBlank(creditLimit)){
-							if(!creditLimit.matches(creditLimitExpression)) {
+							if(!creditLimit.matches(creditLimitExp)) {
 								throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
 							}
 							if (!Validator.validateCreditLimit(creditLimit)) {
@@ -402,7 +398,7 @@ public class DeviceController {
 
 		Insurances insurance;
 			if (StringUtils.isNotBlank(deviceId)) {
-				if (!deviceId.matches(numberExpression)) {
+				if (!deviceId.matches(numberExp)) {
 					LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
 					throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 				}
@@ -421,7 +417,12 @@ public class DeviceController {
 	 * Saves the details of the devices into database
 	 * @return
 	 */
-			 @ApiIgnore
+	@ApiOperation(value = "Cache the Device Tile Details in Solr.", notes = "Cache the Device Tile Details in Solr.", response = CacheDeviceTileResponse.class, tags = {
+			"DeviceTile", })
+	@ApiResponses(value = { @ApiResponse(code = 201, message = "Success", response = CacheDeviceTileResponse.class),
+			@ApiResponse(code = 404, message = "Not found", response = Void.class),
+			@ApiResponse(code = 500, message = "Internal Server Error", response = Error.class) })
+
 	@RequestMapping(value = "/deviceTile/cacheDeviceTile", method = RequestMethod.POST, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	public ResponseEntity<CacheDeviceTileResponse> cacheDeviceTile() {
 		String groupType = getFilterValue(GROUP_TYPE);
@@ -582,10 +583,16 @@ public class DeviceController {
  * @param jobId
  * @return
  */
-@ApiIgnore
+	@ApiOperation(value = "Get the Cache Device Tile job status.", notes = "Get the Cache Device Tile job status.", response = CacheDeviceTileResponse.class, tags = {
+			"DeviceTile", })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = CacheDeviceTileResponse.class),
+			@ApiResponse(code = 404, message = "Not found", response = Void.class),
+			@ApiResponse(code = 500, message = "Internal Server Error", response = Error.class) })
+
 	@RequestMapping(value = "/deviceTile/cacheDeviceTile/{jobId}/status", method = RequestMethod.GET, produces = {
 			MediaType.APPLICATION_JSON })
-	public CacheDeviceTileResponse getCacheDeviceJobStatus(@PathVariable("jobId") String jobId) {
+	public CacheDeviceTileResponse getCacheDeviceJobStatus(
+			@ApiParam(value = "Device group Type", required = true) @PathVariable("jobId") String jobId) {
 
 		return deviceService.getCacheDeviceJobStatus(jobId);
 

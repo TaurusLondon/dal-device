@@ -92,7 +92,7 @@ import com.vodafone.solrmodels.ProductModel;
 /**
  * This class should implement all the methods of DeviceService and should
  * contains the actual business logic and DTO methods.
- * 
+ * @author
  */
 
 @Component("deviceService")
@@ -113,13 +113,6 @@ public class DeviceServiceImpl implements DeviceService {
 	@Autowired
 	DeviceRecommendationService deviceRecommendationService;
 
-	/**
-	 * Handles requests from controller and connects to DAO.
-	 * 
-	 * @param String
-	 *            performance improved by @author manoj.bera
-	 * @return Device
-	 **/
 
 	@Override
 	public List<DeviceTile> getListOfDeviceTile(String make, String model, String groupType, String deviceId,
@@ -137,7 +130,7 @@ public class DeviceServiceImpl implements DeviceService {
 		}
 
 		if (groupType == null || groupType.isEmpty()) {
-			LogHelper.error(this, "Group Type is null");
+			LogHelper.error(this, " Group Type is null ");
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_GROUPTYPE);
 		} else if (!Validator.validateGroupType(groupType)){
 			LogHelper.error(this, "Invalid Group Type");
@@ -319,7 +312,7 @@ public class DeviceServiceImpl implements DeviceService {
 			if (facetedDevice != null && includeRecommendations) {
 				String deviceId = CommonUtility.getSubscriptionBundleId(msisdn, Constants.SUBSCRIPTION_TYPE_MSISDN,
 						registryclnt);
-				LogHelper.info(this, "Getting subscription asset for msisdn " + msisdn + " deviceID " + deviceId);
+				LogHelper.info(this, "Getting subscription asset for msisdn " + msisdn + "  deviceID " + deviceId);
 
 				if (StringUtils.isNotBlank(deviceId)) {
 					LogHelper.info(this,
@@ -496,8 +489,8 @@ public class DeviceServiceImpl implements DeviceService {
 			String sortCriteria, int pageNumber, int pageSize, String capacity, String colour, String operatingSystem,
 			String mustHaveFeatures, String journeyType, String offerCode) {
 		FacetedDevice facetedDevice;
-		ProductGroupFacetModel productGroupFacetModel;
-		ProductGroupFacetModel productGroupFacetModelForFacets;
+		ProductGroupFacetModel productGroupFacetModel = null;
+		ProductGroupFacetModel productGroupFacetModelForFacets = null;
 		String sortBy;
 		String sortOption;
 		String filterCriteria;
@@ -506,11 +499,11 @@ public class DeviceServiceImpl implements DeviceService {
 		List<String> criteriaOfSort = getSortCriteria(sortCriteria);
 		sortOption = criteriaOfSort.get(0);
 		sortBy = criteriaOfSort.get(1);
-		if (groupType.equals(Constants.STRING_DEVICE_PAYG)) {
+		if (groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG)) {
 			productGroupFacetModel = deviceDao.getProductGroupsWithFacets(Filters.HANDSET_PAYG, filterCriteria, sortBy,
 					sortOption, pageNumber, pageSize, journeyType);
 			productGroupFacetModelForFacets = deviceDao.getProductGroupsWithFacets(Filters.HANDSET_PAYG,journeyType);
-		} else {
+		} else if(groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYM)){
 			productGroupFacetModel = deviceDao.getProductGroupsWithFacets(Filters.HANDSET, filterCriteria, sortBy,
 					sortOption, pageNumber, pageSize, journeyType);
 			productGroupFacetModelForFacets = deviceDao.getProductGroupsWithFacets(Filters.HANDSET,journeyType);
@@ -923,7 +916,7 @@ public class DeviceServiceImpl implements DeviceService {
 							insuranceGroupType = productGroup.getProductGroupRole();
 						}
 					}
-					LogHelper.info(this, "::::: Insurance GroupName " + insuranceGroupName + " :::::");
+					LogHelper.info(this, "::::: Insurance GroupName " + insuranceGroupName + " ::::::");
 					if (StringUtils.isNotBlank(insuranceGroupName)) {
 						Group productGroup = deviceDao.getGroupByProdGroupName(insuranceGroupName, insuranceGroupType);
 						if (productGroup != null && productGroup.getGroupType() != null && productGroup.getGroupType()
@@ -998,7 +991,7 @@ public class DeviceServiceImpl implements DeviceService {
 			String beforeDecimal = decimalSplit[0];
 			String afterDecimal = decimalSplit[1];
 
-			if (afterDecimal.length() == 1 && afterDecimal.equals("0")) {
+			if (afterDecimal.length() == 1 && "0".equals(afterDecimal)) {
 				return beforeDecimal;
 			} else if (afterDecimal.length() == 1) {
 				afterDecimal += "0";
@@ -1459,7 +1452,7 @@ public class DeviceServiceImpl implements DeviceService {
 						listOfPriceForBundleAndHardware.clear();
 					} catch (Exception e) {
 						listOfPriceForBundleAndHardware.clear();
-						LogHelper.error(this, "Exception occured when call happen to compatible bundles api: " + e);
+						LogHelper.error(this, " Exception occured when call happen to compatible bundles api: " + e);
 					}
 				}
 				Map<String,Map<String, List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>>> ilsPriceForJourneyAwareOfferCodeMap = new HashMap<>();
@@ -1892,7 +1885,7 @@ public class DeviceServiceImpl implements DeviceService {
 			}
 
 		} catch (Exception e) {
-			LogHelper.error(this, "Exception occured when call happen to compatible bundles api: " + e);
+			LogHelper.error(this, " Exception occured when call happen to compatible bundles api : " + e);
 		}
 		return leadPlanId;
 
@@ -2190,8 +2183,10 @@ public class DeviceServiceImpl implements DeviceService {
 				String leadMemberId = getMemeberBasedOnRules_Implementation(listOfDeviceGroupMember, journeyType);
 				if (leadMemberId != null) {
 					deviceTile.setDeviceId(leadMemberId);
-					String avarageOverallRating = getDeviceReviewRating_Implementation(new ArrayList<>(Arrays.asList(leadMemberId)))
-							.get(CommonUtility.appendPrefixString(leadMemberId));
+					Map<String, String> rating=getDeviceReviewRating_Implementation(new ArrayList<>(Arrays.asList(leadMemberId)));
+					String avarageOverallRating = rating
+							.containsKey(CommonUtility.appendPrefixString(leadMemberId))?rating
+									.get(CommonUtility.appendPrefixString(leadMemberId)):"na";
 					LogHelper.info(this,
 							"AvarageOverallRating for deviceId: " + leadMemberId + " Rating: " + avarageOverallRating);
 					deviceTile.setRating(avarageOverallRating);
@@ -2508,10 +2503,10 @@ public class DeviceServiceImpl implements DeviceService {
 	public Boolean validateMemeber_Implementation(String memberId, String journeyType) {
 		Boolean memberFlag = false;
 
-		LogHelper.info(this, "Start -->  calling  CommercialProductRepository.get");
+		LogHelper.info(this, " Start -->  calling  CommercialProductRepository.get");
 		
 		CommercialProduct comProduct = deviceDao.getCommercialProductFromCommercialProductRepository(memberId);//commercialProductRepository.get(memberId);
-		LogHelper.info(this, "End -->  After calling  CommercialProductRepository.get");
+		LogHelper.info(this, " End -->  After calling  CommercialProductRepository.get");
 
 		Date startDateTime = comProduct.getProductAvailability().getStart();
 		Date endDateTime = comProduct.getProductAvailability().getEnd();
@@ -3088,7 +3083,7 @@ public class DeviceServiceImpl implements DeviceService {
 			currentDate = dateFormat.parse(currentDateStr);
 
 		} catch (ParseException | DateTimeParseException e) {
-			LogHelper.error(this, "ParseException: " + e);
+			LogHelper.error(this, " ParseException: " + e);
 		}
 
 		Date startDate = null;
@@ -3167,7 +3162,7 @@ public class DeviceServiceImpl implements DeviceService {
 					}
 
 					if (listOfDeviceGroupName.isEmpty()) {
-						LogHelper.error(this, "No Compatible Accessories found for given device Id:" + deviceId);
+						LogHelper.error(this, " No Compatible Accessories found for given device Id:" + deviceId);
 						throw new ApplicationException(ExceptionMessages.NULL_COMPATIBLE_VALUE_FOR_DEVICE_ID);
 					}
 
@@ -3413,8 +3408,10 @@ public class DeviceServiceImpl implements DeviceService {
 				String leadMemberId = getMemeberBasedOnRules_Implementation(listOfDeviceGroupMember, null);
 				if (leadMemberId != null) {
 					deviceTile.setDeviceId(leadMemberId);
-					String avarageOverallRating = getDeviceReviewRating_Implementation(new ArrayList<>(Arrays.asList(leadMemberId)))
-							.get(CommonUtility.appendPrefixString(leadMemberId));
+					Map<String, String> rating=getDeviceReviewRating_Implementation(new ArrayList<>(Arrays.asList(leadMemberId)));
+					String avarageOverallRating = rating
+							.containsKey(CommonUtility.appendPrefixString(leadMemberId))?rating
+									.get(CommonUtility.appendPrefixString(leadMemberId)):"na";
 					LogHelper.info(this,
 							"AvarageOverallRating for deviceId: " + leadMemberId + " Rating: " + avarageOverallRating);
 					deviceTile.setRating(avarageOverallRating);
@@ -3450,7 +3447,7 @@ public class DeviceServiceImpl implements DeviceService {
 	}
 		else {
 			LogHelper.error(this, "Requested Make and Model Not found in given group type:" + groupType);
-			throw new ApplicationException(ExceptionMessages.MAKE_AND_MODEL_NOT_FOUND_IN_GROUPTYPE);
+			throw new ApplicationException(ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST);
 		}
 	} else {
 		LogHelper.error(this, "No data found for given make and mmodel :" + make + " and " + model);
