@@ -1209,19 +1209,6 @@ definitions:
       priority:
         type: integer
         description: The priority of Merchandising Promotion
-      packageType:
-        type: array
-        description: List of packageTypes available for the promotion
-        items:
-          type: string
-      footNotes:
-        type: array
-        description: >-
-          List of firendly Names which will uniquely identify terms and
-          conditions configured for the promotion in WCS CMS. The friendlynames
-          are mentioned in MEF file.
-        items:
-          type: string
       promotionMedia:
         type: string
         description: Media URLs configured in MEF for promotions like entertainment packs
