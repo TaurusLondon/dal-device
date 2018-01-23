@@ -2227,7 +2227,7 @@ public class DaoUtils {
 												|| (deviceDetails.getPriceInfo() != null
 														&& deviceDetails.getPriceInfo().getBundlePrice() == null
 														&& deviceDetails.getPriceInfo().getHardwarePrice() == null))
-										&& withoutOfferPriceMap.containsKey(productModel.getProductId())) {
+										&& withoutOfferPriceMap != null && withoutOfferPriceMap.containsKey(productModel.getProductId())) {
 									PriceForBundleAndHardware priceForOfferCode = getBundleAndHardwarePriceFromSolrUtils(
 											withoutOfferPriceMap.get(productModel.getProductId()), leadPlanId);
 									if (priceForOfferCode.getBundlePrice() != null
