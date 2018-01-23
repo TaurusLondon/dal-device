@@ -1209,6 +1209,9 @@ definitions:
       priority:
         type: integer
         description: The priority of Merchandising Promotion
+      promotionMedia:
+        type: string
+        description: Media URLs configured in MEF for promotions like entertainment packs
   StepPricingInfo:
     type: object
     properties:
