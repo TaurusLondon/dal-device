@@ -2950,6 +2950,7 @@ public class DaoUtils {
 					merchandisingPromotions.setLabel(bundlePrice.getMerchandisingPromotions().getLabel());
 					merchandisingPromotions.setMpType(bundlePrice.getMerchandisingPromotions().getMpType());
 					merchandisingPromotions.setTag(bundlePrice.getMerchandisingPromotions().getTag());
+					merchandisingPromotions.setPromotionMedia(bundlePrice.getMerchandisingPromotions().getPromotionMedia());
 					
 					merchandisingPromotions.setPriceEstablishedLabel(
 							bundlePrice.getMerchandisingPromotions().getPriceEstablishedLabel());
