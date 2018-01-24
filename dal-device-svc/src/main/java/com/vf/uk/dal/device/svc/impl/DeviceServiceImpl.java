@@ -560,7 +560,7 @@ public class DeviceServiceImpl implements DeviceService {
 
 			if (listOfProductModel != null && !listOfProductModel.isEmpty()) {
 				listOfProductModel = sortListForProductModel(listOfProductModel, listOfProducts);
-				if (groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYM)) {
+				
 
 					listOfProductModel.forEach(productModel -> {
 						if (StringUtils.isNotBlank(journeyType)
@@ -592,7 +592,7 @@ public class DeviceServiceImpl implements DeviceService {
 							promotionmap.put(promotion.getHardwareId(), promotion);
 						});
 					}
-
+					if (groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYM)) {
 					if ((StringUtils.isNotBlank(offerCode) && StringUtils.isNotBlank(journeyType))
 							|| (StringUtils.isBlank(offerCode) && StringUtils.isNotBlank(journeyType))) {
 						if (StringUtils.isNotBlank(offerCode)) {
