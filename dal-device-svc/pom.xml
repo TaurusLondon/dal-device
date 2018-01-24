@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>com.vf.uk.dal</groupId>
 	<artifactId>dal-device-svc</artifactId>
-	<version>7.2.0</version>
+	<version>7.2.1</version>
 	<packaging>jar</packaging>
 	<build>
 		<plugins>
@@ -190,7 +190,7 @@
 		<dependency>
 			<groupId>com.vf.uk.dal.coh</groupId>
 			<artifactId>coherence-domain</artifactId>
-			<version>7.1.0</version>
+			<version>7.2.0</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>slf4j-log4j12</artifactId>
@@ -201,7 +201,7 @@
 		<dependency> 
 			<groupId>com.vf.uk.dal.coh</groupId>
 			<artifactId>coherence-logging-utility</artifactId>
-			<version>7.1.0</version>
+			<version>7.2.0</version>
 		</dependency>
 		<!-- LoggingUtility uses slf4j-ext and json-simple jar -->
 		<dependency>
