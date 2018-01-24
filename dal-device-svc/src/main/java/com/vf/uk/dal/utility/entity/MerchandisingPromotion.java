@@ -41,8 +41,45 @@ public class MerchandisingPromotion {
   
   @SerializedName("priority")
   private Integer priority = null;
+  
+  /** The promotion media. */
+  @SerializedName("promotionMedia")
+  private String promotionMedia = null;
+  
+  /**
+   * 
+   * @param tag
+   * @return
+   */
+  public MerchandisingPromotion promotionMedia(String promotionMedia) {
+      this.tag = promotionMedia;
+      return this;
+    }
 
-  public Integer getPriority() {
+     
+    
+
+  /**
+ * @return the promotionMedia
+ */
+public String getPromotionMedia() {
+	return promotionMedia;
+}
+
+
+
+
+/**
+ * @param promotionMedia the promotionMedia to set
+ */
+public void setPromotionMedia(String promotionMedia) {
+	this.promotionMedia = promotionMedia;
+}
+
+
+
+
+public Integer getPriority() {
 	return priority;
 }
   /**

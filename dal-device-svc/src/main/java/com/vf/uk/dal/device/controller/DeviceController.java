@@ -68,8 +68,8 @@ public class DeviceController {
 	private static final String DEVICE_ID = "deviceId";
 	private static final String JOURNEY_TYPE = "journeyType";
 	private static final String OFFER_CODE = "offerCode";
-	private static final String numberExpression = "[0-9]{6}";
-	private static final String creditLimitExpression = "[0-9]*";
+	private static final String numberExp = "[0-9]{6}";
+	private static final String creditLimitExp = "[0-9]*";
 	
 	/**
 	 * Handles requests for getDeviceTile Service with input as
@@ -114,13 +114,13 @@ public class DeviceController {
 		
 			List<DeviceTile> listOfDeviceTile;
 			Double creditLimitParam = null;
-			if (deviceId != null && !deviceId.matches(numberExpression)) {
+			if (deviceId != null && !deviceId.matches(numberExp)) {
 				LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
 				throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 			}
 			if (creditLimit != null) {
 				if(StringUtils.isNotBlank(creditLimit)){
-					if(!creditLimit.matches(creditLimitExpression)) {
+					if(!creditLimit.matches(creditLimitExp)) {
 						throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
 					}
 					if (!Validator.validateCreditLimit(creditLimit)) {
@@ -147,7 +147,7 @@ public class DeviceController {
 				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_MODEL);
 			}
 			
-			if(bundleId != null && (!bundleId.matches(numberExpression) || bundleId.matches("[0]*"))) {
+			if(bundleId != null && (!bundleId.matches(numberExp) || bundleId.matches("[0]*"))) {
 				LogHelper.error(this,ExceptionMessages.INVALID_BUNDLE);
 				throw new ApplicationException(ExceptionMessages.INVALID_BUNDLE_ID);
 			}
@@ -176,7 +176,7 @@ public class DeviceController {
 		DeviceDetails deviceDetails;
 		LogHelper.info(this, ":::::::Test Logger for VSTS migration And Validate Pipeline Validation::::::::");
 		if (StringUtils.isNotBlank(deviceId)) {
-			if (!deviceId.matches(numberExpression)) {
+			if (!deviceId.matches(numberExp)) {
 				LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
 				throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 			}
@@ -206,7 +206,7 @@ public class DeviceController {
 			@ApiParam(value = "Journey Type") @RequestParam(value = "journeyType", required = false) String journeyType,
 			@ApiParam(value = "Promotional Offer Code that's applicable") @RequestParam(value = "offerCode", required = false) String offerCode) {
 		List<DeviceTile> listOfDeviceTile;
-		if (!deviceId.matches(numberExpression)) {
+		if (!deviceId.matches(numberExp)) {
 			LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
 			throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 		}
@@ -251,7 +251,7 @@ public class DeviceController {
 	        @ApiParam(value = "Promotional offer applicable") @RequestParam(value = "offerCode", required = false) String offerCode) {
 		List<AccessoryTileGroup> listOfAccessoryTileGroup;
 		if (StringUtils.isNotBlank(deviceId)) {
-				if (!deviceId.matches(numberExpression)) {
+				if (!deviceId.matches(numberExp)) {
 					LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
 					throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 				}
@@ -307,7 +307,7 @@ public class DeviceController {
 			        @ApiParam(value = "When user selects device for Upgrade.") @RequestParam(value = "journeyType", required = false) String journeyType,
 			        @ApiParam(value = "When user selects device for Upgrade.") @RequestParam(value = "includeRecommendations", required = false) String includeRecommendations,
 			        @ApiParam(value = "Promotional offer code applicable.") @RequestParam(value = "offerCode", required = false) String offerCode,
-			        @ApiParam(value = "Monthly credit limit applicable in case of conditional accept.") @RequestParam(value = "creditLimit", required = false) String creditLimit){
+			        @ApiParam(value = "Monthly credit limit applicable in case of conditional accept.(Credit Limit is not completely implemented for Device List)") @RequestParam(value = "creditLimit", required = false) String creditLimit){
 				
 				boolean includeRecommendationsParam = false;
 				FacetedDevice facetedDevice;
@@ -351,7 +351,7 @@ public class DeviceController {
 					
 					if (creditLimit != null) {
 						if(StringUtils.isNotBlank(creditLimit)){
-							if(!creditLimit.matches(creditLimitExpression)) {
+							if(!creditLimit.matches(creditLimitExp)) {
 								throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
 							}
 							if (!Validator.validateCreditLimit(creditLimit)) {
@@ -398,7 +398,7 @@ public class DeviceController {
 
 		Insurances insurance;
 			if (StringUtils.isNotBlank(deviceId)) {
-				if (!deviceId.matches(numberExpression)) {
+				if (!deviceId.matches(numberExp)) {
 					LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
 					throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 				}
