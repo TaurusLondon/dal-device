@@ -1691,5 +1691,8 @@ public class DeviceControllerTest {
 		deviceDetails = deviceController.getDeviceDetails("088417", "abcd", null);
 		Assert.assertNotNull(deviceDetails);
 	}
-	
+	@Test
+	public void notNullTestConvertCoherenceDeviceToDeviceTile_PAYG(){
+		DaoUtils.convertCoherenceDeviceToDeviceTile_PAYG(Long.parseLong("1"), CommonMethods.getCommercialProduct(), CommonMethods.getPriceForBundleAndHardware().get(0), "DEVICE_PAYG", CommonMethods.getListOfBundleAndHardwarePromotions().get(0));
+	}
 }
