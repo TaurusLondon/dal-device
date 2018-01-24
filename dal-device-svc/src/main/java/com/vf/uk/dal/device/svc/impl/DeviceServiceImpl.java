@@ -1690,8 +1690,7 @@ public class DeviceServiceImpl implements DeviceService {
 		if (deviceId.contains(",")) {
 			String[] deviceIds = deviceId.split(",");
 			listOfDeviceIds = Arrays.asList(deviceIds);
-
-			listOfDevices = getDeviceDetailsList(listOfDeviceIds, offerCode, journeyType);
+            listOfDevices = getDeviceDetailsList(listOfDeviceIds, offerCode, journeyType);
 		} else {
 			listOfDeviceIds = new ArrayList<>();
 			listOfDeviceIds.add(deviceId);
@@ -2075,7 +2074,7 @@ public class DeviceServiceImpl implements DeviceService {
 		DeviceTile deviceTile = new DeviceTile();
 		String groupName = null;
 		List<com.vf.uk.dal.device.entity.Member> listOfDeviceGroupMember = new ArrayList<>();
-
+        
 		List<CommercialProduct> listOfCommercialProducts = null;
 		com.vf.uk.dal.device.entity.Member entityMember;
 		if (groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYM)
@@ -2101,12 +2100,25 @@ public class DeviceServiceImpl implements DeviceService {
 		}else if(!groupType.equals(Constants.STRING_DEVICE_PAYG)){
 		List<CommercialProduct> commercialProductsMatchedMemList = new ArrayList<>();
 		Map<String, CommercialProduct> commerProdMemMap = new HashMap<>();
+		Map<String, CommercialBundle> commerBundleIdMap = new HashMap<>();
 		List<BundleAndHardwareTuple> bundleAndHardwareTupleList = new ArrayList<>();
 		Map<String, Boolean> bundleIdMap = new HashMap<>();
 		Map<String, Boolean> fromPricingMap = new HashMap<>();
 		Map<String, String> leadPlanIdMap = new HashMap<>();
 		List<String> listofLeadPlan = new ArrayList<>();
+		List<String> listofLeadBundleId = new ArrayList<>();
 		if (null != listOfCommercialProducts) {
+			
+			for(CommercialProduct commercialProduct:listOfCommercialProducts)
+			{
+				listofLeadBundleId.add(commercialProduct.getLeadPlanId());
+			}
+			List<CommercialBundle> commercialBundles;
+			commercialBundles = deviceDao.fetchCommericalBundlesbyList(listofLeadBundleId);
+			for(CommercialBundle commercialBundle:commercialBundles)
+			{
+				commerBundleIdMap.put(commercialBundle.getId(), commercialBundle);
+			}
 			listOfCommercialProducts.forEach(commercialProduct -> {
 				if ((Constants.STRING_HANDSET.equalsIgnoreCase(commercialProduct.getProductClass())
 						|| Constants.STRING_DATA_DEVICE.equalsIgnoreCase(commercialProduct.getProductClass()))
@@ -2158,7 +2170,7 @@ public class DeviceServiceImpl implements DeviceService {
 											commercialProduct.getLeadPlanId() != null ? false : true);
 									bundleIdMap.put(commercialProduct.getId(), false);
 									List<BundleAndHardwareTuple> list = getListOfPriceForBundleAndHardware_Implementation(
-											commercialProduct);
+											commercialProduct,commerBundleIdMap,journeyType);
 									if (list != null && !list.isEmpty()) {
 										leadPlanIdMap.put(member.getId(), list.get(0).getBundleId());
 										listofLeadPlan.add(list.get(0).getBundleId());
@@ -2277,7 +2289,7 @@ public class DeviceServiceImpl implements DeviceService {
 
 	}
 	
-	public List<BundleAndHardwareTuple> getListOfPriceForBundleAndHardware_Implementation(CommercialProduct commercialProduct) {
+	public List<BundleAndHardwareTuple> getListOfPriceForBundleAndHardware_Implementation(CommercialProduct commercialProduct, Map<String, CommercialBundle> commerBundleIdMap, String journeyType) {
 
 		BundleAndHardwareTuple bundleAndHardwareTuple;
 		List<BundleAndHardwareTuple> bundleAndHardwareTupleList;
@@ -2286,8 +2298,34 @@ public class DeviceServiceImpl implements DeviceService {
 		List<com.vf.uk.dal.utility.entity.BundleHeader> listOfBundles;
 		List<com.vf.uk.dal.utility.entity.BundleHeader> listOfBundleHeaderForDevice = new ArrayList<>();
 		List<CoupleRelation> listOfCoupleRelationForMcs;
-		if (commercialProduct.getLeadPlanId() != null) {
-			bundleAndHardwareTuple = new BundleAndHardwareTuple();
+		CommercialBundle commercialBundle = null;
+		if(commerBundleIdMap != null)
+		{
+		 commercialBundle = commerBundleIdMap.get(commercialProduct.getLeadPlanId());
+		}
+		boolean sellableCheck = false;
+		if(commercialBundle != null)
+		{
+		if (StringUtils.isNotBlank(journeyType)
+				&& Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
+				&& commercialBundle.getBundleControl() != null
+				&& commercialBundle.getBundleControl().isSellableRet()
+				&& commercialBundle.getBundleControl().isDisplayableRet()) {
+			sellableCheck = true;
+		}
+			
+		 if (!Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
+				 && commercialBundle.getBundleControl() != null
+					&& commercialBundle.getBundleControl().isSellableAcq()
+					&& commercialBundle.getBundleControl().isDisplayableAcq()) {
+				sellableCheck = true;
+		 }
+		}	
+		if (commercialProduct.getLeadPlanId() != null && commercialProduct.getListOfCompatiblePlanIds().contains(commercialProduct.getLeadPlanId())
+				&& sellableCheck) {
+			
+			
+			bundleAndHardwareTuple = new BundleAndHardwareTuple();	
 			bundleAndHardwareTuple.setBundleId(commercialProduct.getLeadPlanId());
 			bundleAndHardwareTuple.setHardwareId(commercialProduct.getId());
 			bundleAndHardwareTupleList.add(bundleAndHardwareTuple);
@@ -2962,7 +3000,7 @@ public class DeviceServiceImpl implements DeviceService {
 						|| commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_DATA_DEVICE))) {
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList;
 
-			bundleAndHardwareTupleList = getListOfPriceForBundleAndHardware_Implementation(commercialProduct);
+			bundleAndHardwareTupleList = getListOfPriceForBundleAndHardware_Implementation(commercialProduct,null,null);
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = null;
 			if (bundleAndHardwareTupleList != null && !bundleAndHardwareTupleList.isEmpty()) {
 				listOfPriceForBundleAndHardware = CommonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode,

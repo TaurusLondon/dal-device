@@ -367,4 +367,5 @@ public interface DeviceDao {
 	 * @throws ApplicationException
 	 */
 	public CacheDeviceTileResponse getCacheDeviceJobStatus(String jobId) throws ApplicationException;
+	List<CommercialBundle> fetchCommericalBundlesbyList(List<String> listOfBundleIds);
 }
