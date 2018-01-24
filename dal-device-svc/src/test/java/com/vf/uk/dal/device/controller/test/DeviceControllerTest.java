@@ -1659,4 +1659,37 @@ public class DeviceControllerTest {
 
 		deviceController.cacheDeviceTile();
 	}
+	@Test
+	public void InvalidTestForgetDeviceDetailsWithJourneyTypePAYG() {
+		given(deviceDAOMock.getCommercialProductFromCommercialProductRepository("088417"))
+		.willReturn(CommonMethods.getCommercialProductByDeviceId_093353_PAYG());
+		try{
+		DeviceDetails deviceDetails = new DeviceDetails();
+		deviceDetails = deviceController.getDeviceDetails("088417", "Upgrade", null);
+		}catch (Exception e) {
+			Assert.assertEquals(
+					"com.vf.uk.dal.common.exception.ApplicationException: JourneyType is not compatible for given DeviceId",e.toString());
+		}
+	}
+	@Test
+	public void InvalidTestForgetDeviceDetailsWithOfferCodePAYG() {
+		given(deviceDAOMock.getCommercialProductFromCommercialProductRepository("088417"))
+		.willReturn(CommonMethods.getCommercialProductByDeviceId_093353_PAYG());
+		try{
+		DeviceDetails deviceDetails = new DeviceDetails();
+		deviceDetails = deviceController.getDeviceDetails("088417", "abcd", "W_HH_OC_01");
+		}catch (Exception e) {
+			Assert.assertEquals(
+					"com.vf.uk.dal.common.exception.ApplicationException: offerCode is not compatible for given DeviceId",e.toString());
+		}
+	}
+	@Test
+	public void notNullTestForgetDeviceDetailsPAYG() {
+		given(deviceDAOMock.getCommercialProductFromCommercialProductRepository("088417"))
+		.willReturn(CommonMethods.getCommercialProductByDeviceId_093353_PAYG());
+		DeviceDetails deviceDetails = new DeviceDetails();
+		deviceDetails = deviceController.getDeviceDetails("088417", "abcd", null);
+		Assert.assertNotNull(deviceDetails);
+	}
+	
 }

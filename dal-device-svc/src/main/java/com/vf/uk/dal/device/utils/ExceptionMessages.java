@@ -120,5 +120,12 @@ public class ExceptionMessages
 		  */
 		public static final String INVALID_GROUP_TYPE_JOURNEY_TYPE = "JourneyType is not compatible for given GroupType";
 		public static final String INVALID_GROUP_TYPE_OFFER_CODE = "offerCode is not compatible for given GroupType";
+		
+		/**
+		 * Sprint-7.2 Start
+		 * @author krishna.reddy
+		 */
+		public static final String INVALID_DEVICEID_JOURNEY_TYPE = "JourneyType is not compatible for given DeviceId";
+		public static final String INVALID_DEVICEID_OFFER_CODE = "offerCode is not compatible for given DeviceId";
 }
 
