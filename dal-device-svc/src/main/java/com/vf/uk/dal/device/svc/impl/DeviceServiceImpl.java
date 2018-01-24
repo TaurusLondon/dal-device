@@ -580,6 +580,14 @@ public class DeviceServiceImpl implements DeviceService {
 							bundleAndHardwareTuple.setHardwareId(productModel.getProductId());
 							bundleHardwareTupleList.add(bundleAndHardwareTuple);
 						}
+						else if (groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG) 
+								&&(StringUtils.isBlank(journeyType) || (StringUtils.isNotBlank(journeyType)
+								&& !StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_UPGRADE)))) {
+							BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
+							bundleAndHardwareTuple.setBundleId(null);
+							bundleAndHardwareTuple.setHardwareId(productModel.getProductId());
+							bundleHardwareTupleList.add(bundleAndHardwareTuple);
+						}
 					});
 					List<BundleAndHardwarePromotions> promotions = null;
 
