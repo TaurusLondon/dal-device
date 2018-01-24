@@ -2988,78 +2988,104 @@ public class DeviceServiceImpl implements DeviceService {
 	 * @param id
 	 * @return DeviceDetails
 	 */
-	public DeviceDetails getDeviceDetails_Implementation(String deviceId, String journeyType, String offerCode) {
-
-		LogHelper.info(this, "Start -->  calling  CommercialProductRepository.get");
-		CommercialProduct commercialProduct = deviceDao.getCommercialProductFromCommercialProductRepository(deviceId);//commercialProductRepository.get(deviceId);
-		LogHelper.info(this, "End -->  After calling  CommercialProductRepository.get");
-
-		DeviceDetails deviceDetails = new DeviceDetails();
-		if (commercialProduct != null && commercialProduct.getId() != null && commercialProduct.getIsDeviceProduct()
-				&& (commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)
-						|| commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_DATA_DEVICE))) {
-			List<BundleAndHardwareTuple> bundleAndHardwareTupleList;
-
+	public DeviceDetails getDeviceDetails_Implementation(String deviceId, String journeyType, String offerCode) {LogHelper.info(this, "Start -->  calling  CommercialProductRepository.get");
+	String journeyTypeLocal=null;
+	CommercialProduct commercialProduct = deviceDao.getCommercialProductFromCommercialProductRepository(deviceId);
+	LogHelper.info(this, "End -->  After calling  CommercialProductRepository.get");
+	DeviceDetails deviceDetails = new DeviceDetails();
+	if (commercialProduct != null && commercialProduct.getId() != null && commercialProduct.getIsDeviceProduct()
+			&& (commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)
+					|| commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_DATA_DEVICE))) {
+		List<BundleAndHardwareTuple> bundleAndHardwareTupleList;
+		if(commercialProduct.getProductLines()!=null && !commercialProduct.getProductLines().isEmpty() && commercialProduct.getProductLines().contains(Constants.PAYG_DEVICE)){
+			if (StringUtils.isNotBlank(journeyType) && (journeyType.equalsIgnoreCase(Constants.JOURNEY_TYPE_SECONDLINE)
+					|| journeyType.equalsIgnoreCase(Constants.JOURNEY_TYPE_UPGRADE))) {
+				LogHelper.error(this,"JourneyType is not compatible for given DeviceId");
+				throw new ApplicationException(ExceptionMessages.INVALID_DEVICEID_JOURNEY_TYPE);
+			} else if (StringUtils.isNotBlank(offerCode)) {
+				LogHelper.error(this,"offerCode is not compatible for given DeviceId");
+				throw new ApplicationException(ExceptionMessages.INVALID_DEVICEID_OFFER_CODE);
+			}else{
+			journeyTypeLocal = Constants.JOURNEY_TYPE_ACQUISITION;
+			bundleAndHardwareTupleList = new ArrayList<>();
+			BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
+			bundleAndHardwareTuple.setHardwareId(commercialProduct.getId());
+			bundleAndHardwareTuple.setBundleId(null);
+			bundleAndHardwareTupleList.add(bundleAndHardwareTuple);
+			}
+		}else{
+			journeyTypeLocal = journeyType;
 			bundleAndHardwareTupleList = getListOfPriceForBundleAndHardware_Implementation(commercialProduct,null,null);
-			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = null;
-			if (bundleAndHardwareTupleList != null && !bundleAndHardwareTupleList.isEmpty()) {
-				listOfPriceForBundleAndHardware = CommonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode,
-						registryclnt, journeyType);
-			}
+		}
+		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = null;
+		if (bundleAndHardwareTupleList != null && !bundleAndHardwareTupleList.isEmpty()) {
+			listOfPriceForBundleAndHardware = CommonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode,
+					registryclnt, journeyTypeLocal);
+		}
 
-			String leadPlanId = null;
-			if (commercialProduct.getLeadPlanId() != null) {
-				leadPlanId = commercialProduct.getLeadPlanId();
-				LogHelper.info(this, "::::: LeadPlanId " + leadPlanId + " :::::");
-			} else if (bundleAndHardwareTupleList != null && !bundleAndHardwareTupleList.isEmpty()) {
-				leadPlanId = bundleAndHardwareTupleList.get(0).getBundleId();
-				LogHelper.info(this, "::::: LeadPlanId " + leadPlanId + " :::::");
-			}
+		String leadPlanId = null;
+		/*if (commercialProduct.getLeadPlanId() != null && ) {
+			leadPlanId = commercialProduct.getLeadPlanId();
+			LogHelper.info(this, "::::: LeadPlanId " + leadPlanId + " :::::");
+		} else*/ 
+		if (bundleAndHardwareTupleList != null && !bundleAndHardwareTupleList.isEmpty()) {
+			leadPlanId = bundleAndHardwareTupleList.get(0).getBundleId();
+			LogHelper.info(this, "::::: LeadPlanId " + leadPlanId + " :::::");
+		}
 
-			LogHelper.info(this, "Start -->  calling  bundleRepository.get");
-			
-			CommercialBundle commercialBundle = deviceDao.getCommercialBundleFromCommercialBundleRepository(leadPlanId);//commercialBundleRepository.get(leadPlanId);
+		LogHelper.info(this, "Start -->  calling  bundleRepository.get");
+		
+		CommercialBundle commercialBundle =null;
+		if(StringUtils.isNotBlank(leadPlanId)){
+			 commercialBundle=deviceDao.getCommercialBundleFromCommercialBundleRepository(leadPlanId);
 			LogHelper.info(this, "End -->  After calling  bundleRepository.get");
 			
-			
-			List<BundleAndHardwarePromotions> promotions = null;
-			List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
-			if (commercialBundle != null) {
-				BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
-				bundleAndHardwareTuple.setBundleId(commercialBundle.getId());
-				bundleAndHardwareTuple.setHardwareId(deviceId);
-				bundleHardwareTupleList.add(bundleAndHardwareTuple);
-			}
-			if (!bundleHardwareTupleList.isEmpty()) {
-				promotions = CommonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList,
-						journeyType, registryclnt);
-			}
-			if (StringUtils.isNotBlank(journeyType) && Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
-					&& commercialProduct.getProductControl() != null
-					&& commercialProduct.getProductControl().isIsSellableRet()
-					&& commercialProduct.getProductControl().isIsDisplayableRet()) {
-				deviceDetails = DaoUtils.convertCoherenceDeviceToDeviceDetails(commercialProduct,
-						listOfPriceForBundleAndHardware, promotions);
-			} else if (!Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
-					&& commercialProduct.getProductControl() != null
-					&& commercialProduct.getProductControl().isIsDisplayableAcq()
-					&& commercialProduct.getProductControl().isIsSellableAcq()) {
-				deviceDetails = DaoUtils.convertCoherenceDeviceToDeviceDetails(commercialProduct,
-						listOfPriceForBundleAndHardware, promotions);
-			} else {
-				LogHelper.error(this, "No data found for given journeyType :" + deviceId);
-				throw new ApplicationException(ExceptionMessages.NO_DATA_FOR_GIVEN_SEARCH_CRITERIA);
-			}
-			if (StringUtils.isNotEmpty(offerCode) && StringUtils.isNotEmpty(journeyType)) {
-				deviceDetails.setValidOffer(validateOfferValidForDevice_Implementation(commercialProduct, journeyType, offerCode));
-			}
-
-		} else {
-			LogHelper.error(this, "No data found for given Device Id :" + deviceId);
-			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID);
 		}
-		return deviceDetails;
+				
+		
+		List<BundleAndHardwarePromotions> promotions = null;
+		List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
+		if (commercialBundle != null) {
+			BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
+			bundleAndHardwareTuple.setBundleId(commercialBundle.getId());
+			bundleAndHardwareTuple.setHardwareId(deviceId);
+			bundleHardwareTupleList.add(bundleAndHardwareTuple);
+		}else if(commercialProduct.getProductLines()!=null && !commercialProduct.getProductLines().isEmpty() && commercialProduct.getProductLines().contains(Constants.PAYG_DEVICE)){
+			BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
+			bundleAndHardwareTuple.setBundleId(null);
+			bundleAndHardwareTuple.setHardwareId(deviceId);
+			bundleHardwareTupleList.add(bundleAndHardwareTuple);
+		}
+		if (!bundleHardwareTupleList.isEmpty()) {
+			promotions = CommonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList,
+					journeyTypeLocal, registryclnt);
+		}
+		if (StringUtils.isNotBlank(journeyTypeLocal) && Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyTypeLocal)
+				&& commercialProduct.getProductControl() != null
+				&& commercialProduct.getProductControl().isIsSellableRet()
+				&& commercialProduct.getProductControl().isIsDisplayableRet()) {
+			deviceDetails = DaoUtils.convertCoherenceDeviceToDeviceDetails(commercialProduct,
+					listOfPriceForBundleAndHardware, promotions);
+		} else if (!Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyTypeLocal)
+				&& commercialProduct.getProductControl() != null
+				&& commercialProduct.getProductControl().isIsDisplayableAcq()
+				&& commercialProduct.getProductControl().isIsSellableAcq()) {
+			deviceDetails = DaoUtils.convertCoherenceDeviceToDeviceDetails(commercialProduct,
+					listOfPriceForBundleAndHardware, promotions);
+		} else {
+			LogHelper.error(this, "No data found for given journeyType :" + deviceId);
+			throw new ApplicationException(ExceptionMessages.NO_DATA_FOR_GIVEN_SEARCH_CRITERIA);
+		}
+		if (StringUtils.isNotEmpty(offerCode) && StringUtils.isNotEmpty(journeyTypeLocal)) {
+			deviceDetails.setValidOffer(validateOfferValidForDevice_Implementation(commercialProduct, journeyTypeLocal, offerCode));
+		}
+
+	} else {
+		LogHelper.error(this, "No data found for given Device Id :" + deviceId);
+		throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID);
 	}
+	return deviceDetails;
+}
 /**
  * 
  * @param commercialProduct

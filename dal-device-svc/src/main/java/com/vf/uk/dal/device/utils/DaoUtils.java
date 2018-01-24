@@ -422,7 +422,12 @@ public class DaoUtils {
 		equipment.setModel(cohProduct.getEquipment().getModel());
 		deviceDetails.setEquipmentDetail(equipment);
 
-		deviceDetails.setLeadPlanId(cohProduct.getLeadPlanId());
+		if(cohProduct.getProductLines()!=null && !cohProduct.getProductLines().isEmpty() && 
+				!cohProduct.getProductLines().contains(Constants.PAYG_DEVICE)){
+			deviceDetails.setLeadPlanId(cohProduct.getLeadPlanId());
+		}else{
+			deviceDetails.setLeadPlanId(null);
+		}
 
 		if (cohProduct.getProductAvailability().getEnd() != null) {
 			productAvailability.setEndDate(
