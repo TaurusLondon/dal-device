@@ -212,4 +212,13 @@ public class Constants {
 	 * @author suranjit_kashyap
 	 * @Sprint 6.6 Constants Start
 	 */
+	
+	
+	/**
+	 * @author krishna.reddy
+	 * Sprint 7.2
+	 */
+	public static final String PAYG_DEVICE="Mobile Phones";
+
+
 }
