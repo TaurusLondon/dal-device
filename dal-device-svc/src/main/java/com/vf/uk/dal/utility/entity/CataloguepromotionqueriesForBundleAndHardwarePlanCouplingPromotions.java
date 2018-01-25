@@ -44,6 +44,41 @@ public class CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions
 
 	/** The foot notes. */
 	private List<String> footNotes = new ArrayList<>();
+	
+	/** The promotion media. */
+	  @JsonProperty("promotionMedia")
+	  private String promotionMedia = null;
+	  
+	  
+	  
+	  /**
+	   * Promotion media.
+	   *
+	   * @param promotionMedia the promotion media
+	   * @return the cataloguepromotionqueries for bundle and hardware entertainment packs
+	   */
+	  public CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions promotionMedia(String promotionMedia) {
+	    this.promotionMedia = promotionMedia;
+	    return this;
+	  }
+	  
+	   /**
+	    * Promotion media url for the merchandising promotion.
+	    *
+	    * @return promotionMedia
+	    */
+	  public String getPromotionMedia() {
+	    return promotionMedia;
+	  }
+	  
+	   /**
+	   * Sets the promotion media.
+	   *
+	   * @param promotionMedia the new promotion media
+	   */
+	  public void setPromotionMedia(String promotionMedia) {
+	    this.promotionMedia = promotionMedia;
+	  }
 
 	/**
 	 * Gets the foot notes.
@@ -292,14 +327,11 @@ public class CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions
 		return Objects.equals(this.tag, cataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions.tag)
 				&& Objects.equals(this.label, cataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions.label)
 				&& Objects.equals(this.type, cataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions.type)
-				&& Objects.equals(this.priority,
-						cataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions.priority)
-				&& Objects.equals(this.description,
-						cataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions.description)
-				&& Objects.equals(this.plancoupleId,
-						cataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions.plancoupleId)
-				&& Objects.equals(this.packageType,
-						cataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions.packageType);
+				&& Objects.equals(this.priority,cataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions.priority)
+				&& Objects.equals(this.description,cataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions.description)
+				&& Objects.equals(this.plancoupleId,cataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions.plancoupleId)
+				&& Objects.equals(this.packageType,	cataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions.packageType)
+				&& Objects.equals(this.promotionMedia, cataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions.promotionMedia);
 	}
 
 	/*
@@ -309,7 +341,7 @@ public class CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions
 	 */
 	@Override
 	public int hashCode() {
-		return Objects.hash(tag, label, type, priority, description, plancoupleId, packageType);
+		return Objects.hash(tag, label, type, priority, description, plancoupleId, packageType,promotionMedia);
 	}
 
 	/*
@@ -329,6 +361,7 @@ public class CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions
 		sb.append("    description: ").append(toIndentedString(description)).append("\n");
 		sb.append("    plancoupleId: ").append(toIndentedString(plancoupleId)).append("\n");
 		sb.append("    packageType: ").append(toIndentedString(packageType)).append("\n");
+		sb.append("    promotionMedia: ").append(toIndentedString(promotionMedia)).append("\n");
 		sb.append("}");
 		return sb.toString();
 	}

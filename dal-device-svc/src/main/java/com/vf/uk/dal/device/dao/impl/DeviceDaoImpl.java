@@ -1700,4 +1700,15 @@ public class DeviceDaoImpl implements DeviceDao {
 		return requestManager.getMerchandisingPromotionsByProductLineAndPackageType(groupType,
 					journeyType);
 	}
+	
+	@Override
+    public List<CommercialBundle> fetchCommericalBundlesbyList(List<String> listOfBundleIds) {
+		LogHelper.info(this, "Start -->  calling  bundleRepository.getAll");
+		if (commercialBundleRepository == null) {
+			commercialBundleRepository = CoherenceConnectionProvider.getCommercialBundleRepoConnection();
+		}
+		Collection<CommercialBundle> commercialBundles = commercialBundleRepository.getAll(listOfBundleIds);
+		LogHelper.info(this, "End -->  After calling  bundleRepository.get");
+		return new ArrayList<CommercialBundle>(commercialBundles);
+    }
 }
