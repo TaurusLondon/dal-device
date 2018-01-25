@@ -506,6 +506,9 @@
 			<type-id>7039</type-id>
 			<class-name>com.vodafone.checkout.pojo.BusinessData</class-name>
 		</user-type>
-
+		<user-type>
+			<type-id>6127</type-id>
+			<class-name>com.vodafone.datagram.LineDetails</class-name>
+		</user-type>
 	</user-type-list>
 </pof-config>

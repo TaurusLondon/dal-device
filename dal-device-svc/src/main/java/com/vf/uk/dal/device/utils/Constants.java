@@ -174,6 +174,7 @@ public class Constants {
 	public static final String STRING_MEDIA_LABEL = "label";
 	public static final String STRING_URL_ALLOWANCE = "URL";
 	public static final String DATE_FORMAT = "yyyy-MM-dd";
+	public static final String STRING_MEDIA_PROMOTION = "promotionMedia";
 	/**
 	 * @author manoj.bera 
 	 * @Sprint 6.4 Constants End
@@ -212,4 +213,13 @@ public class Constants {
 	 * @author suranjit_kashyap
 	 * @Sprint 6.6 Constants Start
 	 */
+	
+	
+	/**
+	 * @author krishna.reddy
+	 * Sprint 7.2
+	 */
+	public static final String PAYG_DEVICE="Mobile Phones";
+
+
 }
