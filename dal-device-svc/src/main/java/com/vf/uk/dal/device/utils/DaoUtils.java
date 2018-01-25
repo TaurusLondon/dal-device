@@ -2979,10 +2979,13 @@ public class DaoUtils {
 							if (priceForWithOutOfferCode.getBundlePrice() != null) {
 								priceForWithOutOfferCode.getBundlePrice()
 										.setMerchandisingPromotions(bundleMerchandising);
+								merchandisingPromotionsPackage.getBundlePromotions().setPricePromotion(bundleMerchandising);
+								 
 							}
 							if (priceForWithOutOfferCode.getHardwarePrice() != null) {
 								priceForWithOutOfferCode.getHardwarePrice()
 										.setMerchandisingPromotions(hardwareMerchandising);
+								merchandisingPromotionsPackage.getHardwarePromotions().setPricePromotion(hardwareMerchandising);
 							}
 						}
 						if (isLeadMemberFromSolr.get(leadMember) && StringUtils.isNotBlank(leadPlanId)
