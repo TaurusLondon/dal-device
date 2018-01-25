@@ -1269,8 +1269,8 @@ public class DeviceServiceImpl implements DeviceService {
 								bundleAndHardwareTupleListJourneyAware.add(bundleAndHardwareTupleLocal);
 							});
 						}
-						if (StringUtils.isNotBlank(commercialProduct.getLeadPlanId())) {
-							if(listOfCimpatiblePlanMap.containsKey(commercialProduct.getId()))
+						if (StringUtils.isNotBlank(commercialProduct.getLeadPlanId()) && commercialProduct.getListOfCompatiblePlanIds().contains(commercialProduct.getLeadPlanId())) {
+							/*if(listOfCimpatiblePlanMap.containsKey(commercialProduct.getId()))
 							{
 								Set<String> deviceSpecificeCompatiblePlan=new HashSet<String>(listOfCimpatiblePlanMap.get(commercialProduct.getId()));
 								deviceSpecificeCompatiblePlan.add(commercialProduct.getLeadPlanId());
@@ -1279,7 +1279,7 @@ public class DeviceServiceImpl implements DeviceService {
 								List<String> compatiblePlan=new ArrayList<>();
 								compatiblePlan.add(commercialProduct.getLeadPlanId());
 								listOfCimpatiblePlanMap.put(commercialProduct.getId(),compatiblePlan);
-							}
+							}*/
 							listOfLeadPlanId.put(commercialProduct.getId(), commercialProduct.getLeadPlanId());
 							BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
 							bundleAndHardwareTuple.setBundleId(commercialProduct.getLeadPlanId());
