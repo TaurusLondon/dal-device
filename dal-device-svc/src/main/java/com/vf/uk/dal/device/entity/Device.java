@@ -48,6 +48,43 @@ public class Device   {
 
   @JsonProperty("priceInfo")
   private PriceForBundleAndHardware priceInfo = null;
+  
+  /** The promotions package. */
+	@JsonProperty("promotionsPackage")
+	private MerchandisingPromotionsPackage promotionsPackage = null;
+	
+	/**
+	 * Promotions package.
+	 *
+	 * @param promotionsPackage
+	 *            the promotions package
+	 * @return the device summary
+	 */
+	public Device promotionsPackage(MerchandisingPromotionsPackage promotionsPackage) {
+		this.promotionsPackage = promotionsPackage;
+		return this;
+	}
+	
+	/**
+	 * Get promotionsPackage.
+	 *
+	 * @return promotionsPackage
+	 */
+	public MerchandisingPromotionsPackage getPromotionsPackage() {
+		return promotionsPackage;
+	}
+
+	/**
+	 * Sets the promotions package.
+	 *
+	 * @param promotionsPackage
+	 *            the new promotions package
+	 */
+	public void setPromotionsPackage(MerchandisingPromotionsPackage promotionsPackage) {
+		this.promotionsPackage = promotionsPackage;
+	}
+  
+  
   /**
 	 * 
 	 * @return
@@ -408,12 +445,13 @@ public class Device   {
         Objects.equals(this.productClass, device.productClass) &&
         Objects.equals(this.merchandisingControl, device.merchandisingControl) &&
         Objects.equals(this.media, device.media) &&
-        Objects.equals(this.priceInfo, device.priceInfo);
+        Objects.equals(this.priceInfo, device.priceInfo)
+        && Objects.equals(this.promotionsPackage, device.promotionsPackage);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(deviceId, name, make, model, groupType, rating, description, productClass, merchandisingControl, media, priceInfo);
+    return Objects.hash(deviceId, name, make, model, groupType, rating, description, productClass, merchandisingControl, media, priceInfo,promotionsPackage);
   }
 
   @Override
@@ -432,6 +470,7 @@ public class Device   {
     sb.append("    merchandisingControl: ").append(toIndentedString(merchandisingControl)).append("\n");
     sb.append("    media: ").append(toIndentedString(media)).append("\n");
     sb.append("    priceInfo: ").append(toIndentedString(priceInfo)).append("\n");
+    sb.append("    promotionsPackage: ").append(toIndentedString(promotionsPackage)).append("\n");
     sb.append("}");
     return sb.toString();
   }
