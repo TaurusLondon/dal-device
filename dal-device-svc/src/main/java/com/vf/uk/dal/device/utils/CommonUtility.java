@@ -109,11 +109,11 @@ public  class CommonUtility {
 		return restTemplate.postForObject("http://CUSTOMER-V1/customer/getRecommendedProductList/",recomProductList,RecommendedProductListResponse.class);
 	}
 	
-	public static BundleDetailsForAppSrv getPriceDetailsForCompatibaleBundle(String deviceId,RegistryClient registryClient) {
+	public static BundleDetailsForAppSrv getPriceDetailsForCompatibaleBundle(String deviceId,String journeyType,RegistryClient registryClient) {
 		try {
 			LogHelper.info(CommonUtility.class, "Start --> Calling  Bundle.getCoupledBundleList");
 			RestTemplate restTemplate =registryClient.getRestTemplate();
-			return restTemplate.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=" +deviceId, BundleDetailsForAppSrv.class );
+			return restTemplate.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=" +deviceId+"&journeyType="+journeyType, BundleDetailsForAppSrv.class );
 		} catch (Exception e) {
 			LogHelper.error(CommonUtility.class, ""+e);
 			throw new ApplicationException(ExceptionMessages.COUPLEBUNDLELIST_API_EXCEPTION);
