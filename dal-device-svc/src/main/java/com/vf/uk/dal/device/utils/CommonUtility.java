@@ -806,4 +806,34 @@ public  class CommonUtility {
 		}
 		return flag;
 	}
+	/**
+	 * 
+	 * @author manoj.bera
+	 * @sprint 7.2
+	 * @param commercialBundle
+	 * @param journeyType
+	 * @return
+	 */
+	public static boolean isValidBundleForJourney(CommercialBundle commercialBundle, String journeyType)
+	{
+		boolean sellableCheck = false;
+		if(commercialBundle != null)
+		{
+		if (StringUtils.isNotBlank(journeyType)
+				&& Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
+				&& commercialBundle.getBundleControl() != null
+				&& commercialBundle.getBundleControl().isSellableRet()
+				&& commercialBundle.getBundleControl().isDisplayableRet()
+				&&!commercialBundle.getAvailability().getSalesExpired()) {
+			sellableCheck = true;
+		}else if (!Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
+				 && commercialBundle.getBundleControl() != null
+					&& commercialBundle.getBundleControl().isSellableAcq()
+					&& commercialBundle.getBundleControl().isDisplayableAcq()
+					&& !commercialBundle.getAvailability().getSalesExpired()) {
+				sellableCheck = true;
+		 }
+		}	
+		return sellableCheck;
+	}
 }
