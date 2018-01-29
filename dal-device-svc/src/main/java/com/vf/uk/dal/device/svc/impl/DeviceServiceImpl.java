@@ -1269,24 +1269,15 @@ public class DeviceServiceImpl implements DeviceService {
 								bundleAndHardwareTupleListJourneyAware.add(bundleAndHardwareTupleLocal);
 							});
 						}
-						if (StringUtils.isNotBlank(commercialProduct.getLeadPlanId()) && commercialProduct.getListOfCompatiblePlanIds().contains(commercialProduct.getLeadPlanId())) {
-							/*if(listOfCimpatiblePlanMap.containsKey(commercialProduct.getId()))
-							{
-								Set<String> deviceSpecificeCompatiblePlan=new HashSet<String>(listOfCimpatiblePlanMap.get(commercialProduct.getId()));
-								deviceSpecificeCompatiblePlan.add(commercialProduct.getLeadPlanId());
-								listOfCimpatiblePlanMap.put(commercialProduct.getId(), new ArrayList<String>(deviceSpecificeCompatiblePlan));
-							}else{
-								List<String> compatiblePlan=new ArrayList<>();
-								compatiblePlan.add(commercialProduct.getLeadPlanId());
-								listOfCimpatiblePlanMap.put(commercialProduct.getId(),compatiblePlan);
-							}*/
+						if (StringUtils.isNotBlank(commercialProduct.getLeadPlanId()) && 
+								commercialProduct.getListOfCompatiblePlanIds().contains(commercialProduct.getLeadPlanId())) {
 							listOfLeadPlanId.put(commercialProduct.getId(), commercialProduct.getLeadPlanId());
 							BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
 							bundleAndHardwareTuple.setBundleId(commercialProduct.getLeadPlanId());
 							bundleAndHardwareTuple.setHardwareId(commercialProduct.getId());
 							bundleAndHardwareTupleList.add(bundleAndHardwareTuple);
 							bundleAndHardwareTupleListJourneyAware.add(bundleAndHardwareTuple);
-						} else {
+						} /*else {
 							if (commercialProduct.getListOfCompatiblePlanIds() != null
 									&& !commercialProduct.getListOfCompatiblePlanIds().isEmpty()) {
 								commercialProduct.getListOfCompatiblePlanIds().forEach(planId -> {
@@ -1296,7 +1287,7 @@ public class DeviceServiceImpl implements DeviceService {
 									bundleAndHardwareTupleListForNonLeanPlanId.add(bundleAndHardwareTuple);
 								});
 							}
-						}
+						}*/
 					});
 				}
 				Collection<CommercialBundle> listOfCommercialBundle = null;
@@ -1365,12 +1356,53 @@ public class DeviceServiceImpl implements DeviceService {
 					}
 					try {
 						if (!listOfLeadPlanId.isEmpty() && listOfLeadPlanId.containsKey(deviceId)) {
-							nonUpgradeLeadPlanId = listOfLeadPlanId.get(deviceId);
+							 String bundleId=listOfLeadPlanId.get(deviceId);
+							 CommercialBundle coommercialbundle=commercialBundleMap.containsKey(bundleId)?commercialBundleMap.get(bundleId):null;
+							 if(CommonUtility.isValidBundleForJourney(coommercialbundle, Constants.JOURNEY_TYPE_ACQUISITION))
+							 {
+								 nonUpgradeLeadPlanId = bundleId;
+							 }
+							 if(CommonUtility.isValidBundleForJourney(coommercialbundle, Constants.JOURNEY_TYPE_UPGRADE))
+							 {
+								 upgradeLeadPlanId = bundleId;
+							 }
 						}
-						if (StringUtils.isNotBlank(nonUpgradeLeadPlanId)) {
-							upgradeLeadPlanId = nonUpgradeLeadPlanId;
+						if (StringUtils.isNotBlank(nonUpgradeLeadPlanId) || StringUtils.isNotBlank(upgradeLeadPlanId)) {
+							if (StringUtils.isBlank(nonUpgradeLeadPlanId) && nonLeadPlanIdPriceMap.containsKey(deviceId)) {
+								List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware> listOfPrice = nonLeadPlanIdPriceMap
+										.get(deviceId);
+								DaoUtils daoutils = new DaoUtils();
+								bundleHeaderForDevice = daoutils
+										.getListOfPriceForBundleAndHardwareForCacheDevice(listOfPrice,commercialBundleMap,Constants.JOURNEY_TYPE_ACQUISITION);
+								if (bundleHeaderForDevice != null) {
+									listOfPriceForBundleAndHardware.add(bundleHeaderForDevice);
+									nonUpgradeLeadPlanId = bundleHeaderForDevice.getBundlePrice().getBundleId();
+									LogHelper.info(this, "Lead Plan Id Not Present "
+											+ bundleHeaderForDevice.getBundlePrice().getBundleId());
+									if (groupNamePriceMap.containsKey(groupname)) {
+										listOfPriceForGroupName = groupNamePriceMap.get(groupname);
+										listOfPriceForGroupName.add(bundleHeaderForDevice);
+
+									} else {
+										listOfPriceForGroupName = new ArrayList<>();
+										listOfPriceForGroupName.add(bundleHeaderForDevice);
+										groupNamePriceMap.put(groupname, listOfPriceForGroupName);
+									}
+								}
+							}
+							if (StringUtils.isBlank(upgradeLeadPlanId) && nonLeadPlanIdPriceMap.containsKey(deviceId)) {
+								List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware> listOfPrice = nonLeadPlanIdPriceMap
+										.get(deviceId);
+								DaoUtils daoutils = new DaoUtils();
+								com.vf.uk.dal.utility.entity.PriceForBundleAndHardware upgradeCompatiblePlan = daoutils
+										.getListOfPriceForBundleAndHardwareForCacheDevice(listOfPrice,commercialBundleMap,Constants.JOURNEY_TYPE_UPGRADE);
+								if(upgradeCompatiblePlan!=null){
+									upgradeLeadPlanId = upgradeCompatiblePlan.getBundlePrice().getBundleId();
+								}
+								
+							}
 							LogHelper.info(this, "Lead Plan Id Present " + nonUpgradeLeadPlanId);
-							if (!leadPlanIdPriceMap.isEmpty() && leadPlanIdPriceMap.containsKey(deviceId)) {
+							if (StringUtils.isNotBlank(nonUpgradeLeadPlanId) && !leadPlanIdPriceMap.isEmpty() && leadPlanIdPriceMap.containsKey(deviceId)) {
 								listOfPriceForBundleAndHardware.add(leadPlanIdPriceMap.get(deviceId));
 								if (groupNamePriceMap.containsKey(groupname)) {
 									listOfPriceForGroupName = groupNamePriceMap.get(groupname);
