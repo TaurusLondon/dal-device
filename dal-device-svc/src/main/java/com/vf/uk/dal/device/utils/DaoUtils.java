@@ -2232,7 +2232,7 @@ public class DaoUtils {
 
 							if (groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYM)
 									&& ((StringUtils.isNotBlank(offerCode) && StringUtils.isNotBlank(journeyType))
-											|| (StringUtils.isBlank(offerCode) && StringUtils.isNotBlank(journeyType)))
+											|| (StringUtils.isBlank(offerCode) && (StringUtils.isNotBlank(journeyType) && !StringUtils.equals(Constants.JOURNEY_TYPE_ACQUISITION, journeyType))))
 							
 							) {
 
@@ -2734,7 +2734,7 @@ public class DaoUtils {
 										}
 									}
 
-									if (StringUtils.isBlank(offerCode) && StringUtils.isBlank(journeyType)
+									if (StringUtils.isBlank(offerCode) && StringUtils.equalsIgnoreCase(Constants.JOURNEY_TYPE_ACQUISITION, journeyType)
 											&& Constants.DATA_NOT_FOUND.equalsIgnoreCase(mediaStrList[i + 4])
 											&& Constants.PROMO_CATEGORY_PRICING_AUTOMETIC_DISCOUNT
 													.equalsIgnoreCase(mediaStrList[i + 3])

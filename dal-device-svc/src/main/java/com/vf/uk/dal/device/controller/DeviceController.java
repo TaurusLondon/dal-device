@@ -180,7 +180,8 @@ public class DeviceController {
 				LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
 				throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 			}
-			deviceDetails = deviceService.getDeviceDetails(deviceId, journeyType, offerCode);
+			String journeyTypeLocal=StringUtils.isNotBlank(journeyType)?journeyType:Constants.JOURNEY_TYPE_ACQUISITION;
+			deviceDetails = deviceService.getDeviceDetails(deviceId, journeyTypeLocal, offerCode);
 		} else {
 			LogHelper.error(this, DEVICE_ID_IS_EMPTY);
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
