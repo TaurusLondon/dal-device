@@ -154,10 +154,9 @@ public class DeviceDaoImpl implements DeviceDao {
 
 				}
 			}
-
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList;
 
-			bundleAndHardwareTupleList = getListOfPriceForBundleAndHardware(commercialProduct);
+			bundleAndHardwareTupleList = getListOfPriceForBundleAndHardware(commercialProduct,journeyType);
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = null;
 
 			// Calling Pricing Api
@@ -496,7 +495,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	 * @param commercialProduct
 	 * @return
 	 */
-	public List<BundleAndHardwareTuple> getListOfPriceForBundleAndHardware(CommercialProduct commercialProduct) {
+	public List<BundleAndHardwareTuple> getListOfPriceForBundleAndHardware(CommercialProduct commercialProduct, String journeyType) {
 
 		BundleAndHardwareTuple bundleAndHardwareTuple;
 		List<BundleAndHardwareTuple> bundleAndHardwareTupleList;
@@ -505,8 +504,34 @@ public class DeviceDaoImpl implements DeviceDao {
 		List<com.vf.uk.dal.utility.entity.BundleHeader> listOfBundles;
 		List<com.vf.uk.dal.utility.entity.BundleHeader> listOfBundleHeaderForDevice = new ArrayList<>();
 		List<CoupleRelation> listOfCoupleRelationForMcs;
-
-		if (commercialProduct.getLeadPlanId() != null) {
+		CommercialBundle commercialBundle=null;
+	  if(StringUtils.isNotBlank(commercialProduct.getLeadPlanId()))
+		{
+			commercialBundle=getCommercialBundleFromCommercialBundleRepository(commercialProduct.getLeadPlanId());
+		}
+		boolean sellableCheck = false;
+		if(commercialBundle != null)
+		{
+		if (StringUtils.isNotBlank(journeyType)
+				&& Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
+				&& commercialBundle.getBundleControl() != null
+				&& commercialBundle.getBundleControl().isSellableRet()
+				&& commercialBundle.getBundleControl().isDisplayableRet()
+				&& !commercialBundle.getAvailability().getSalesExpired()) {
+			sellableCheck = true;
+		}
+			
+		 if (!Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
+				 && commercialBundle.getBundleControl() != null
+					&& commercialBundle.getBundleControl().isSellableAcq()
+					&& commercialBundle.getBundleControl().isDisplayableAcq()
+					&& !commercialBundle.getAvailability().getSalesExpired()) {
+				sellableCheck = true;
+		 }
+		}	
+		
+		if (StringUtils.isNotBlank(commercialProduct.getLeadPlanId()) && commercialProduct.getListOfCompatiblePlanIds().contains(commercialProduct.getLeadPlanId())
+				&& sellableCheck) {
 			bundleAndHardwareTuple = new BundleAndHardwareTuple();
 			bundleAndHardwareTuple.setBundleId(commercialProduct.getLeadPlanId());
 			bundleAndHardwareTuple.setHardwareId(commercialProduct.getId());
@@ -516,7 +541,7 @@ public class DeviceDaoImpl implements DeviceDao {
 
 			try {
 
-				bundleDetailsForDevice = CommonUtility.getPriceDetailsForCompatibaleBundle(commercialProduct.getId(),
+				bundleDetailsForDevice = CommonUtility.getPriceDetailsForCompatibaleBundle(commercialProduct.getId(),journeyType,
 						registryclnt);
 				listOfBundles = bundleDetailsForDevice.getStandalonePlansList();
 				listOfCoupleRelationForMcs = bundleDetailsForDevice.getCouplePlansList();
