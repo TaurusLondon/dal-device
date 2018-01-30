@@ -2339,6 +2339,7 @@ public class DeviceServiceImpl implements DeviceService {
 		List<com.vf.uk.dal.utility.entity.BundleHeader> listOfBundleHeaderForDevice = new ArrayList<>();
 		List<CoupleRelation> listOfCoupleRelationForMcs;
 		CommercialBundle commercialBundle = null;
+		String jType = null;
 		if(commerBundleIdMap != null)
 		{
 		 commercialBundle = commerBundleIdMap.get(commercialProduct.getLeadPlanId());
@@ -2378,8 +2379,15 @@ public class DeviceServiceImpl implements DeviceService {
 			String gross = null;
 
 			try {
-
-				bundleDetailsForDevice = CommonUtility.getPriceDetailsForCompatibaleBundle(commercialProduct.getId(),journeyType,
+				if(journeyType == null)
+				{
+					jType = "";
+				}
+				else
+				{
+					jType = journeyType;
+				}
+				bundleDetailsForDevice = CommonUtility.getPriceDetailsForCompatibaleBundle(commercialProduct.getId(),jType,
 						registryclnt);
 				listOfBundles = bundleDetailsForDevice.getStandalonePlansList();
 				listOfCoupleRelationForMcs = bundleDetailsForDevice.getCouplePlansList();
