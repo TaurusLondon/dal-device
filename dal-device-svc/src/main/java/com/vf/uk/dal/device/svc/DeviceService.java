@@ -198,7 +198,7 @@ public interface DeviceService {
 	 * @param deviceId
 	 * @return
 	 */
-	public String getLeadPlanIdForDeviceId(String deviceId);
+	public String getLeadPlanIdForDeviceId(String deviceId ,String journeyType);
 	/**
 	 * 
 	 * @param memberId
