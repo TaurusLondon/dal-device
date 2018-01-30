@@ -602,7 +602,7 @@ public class DeviceServiceImpl implements DeviceService {
 					}
 					if (groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYM)) {
 					if ((StringUtils.isNotBlank(offerCode) && StringUtils.isNotBlank(journeyType))
-							|| (StringUtils.isBlank(offerCode) && StringUtils.isNotBlank(journeyType))) {
+							|| (StringUtils.isBlank(offerCode) && (StringUtils.isNotBlank(journeyType))) && !StringUtils.equals(Constants.JOURNEY_TYPE_ACQUISITION, journeyType)) {
 						if (StringUtils.isNotBlank(offerCode)) {
 							List<MerchandisingPromotionModel> listOfMerchandisingPromotions = null;
 							listOfMerchandisingPromotions = deviceDao.getJourneyTypeCompatibleOfferCodes(journeyType);
