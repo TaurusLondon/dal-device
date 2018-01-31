@@ -312,7 +312,7 @@ public class DeviceServiceImpl implements DeviceService {
 						offerCode);
 			}
 			if (facetedDevice != null) {
-				if (facetedDevice.getDevice() != null & !facetedDevice.getDevice().isEmpty()) {
+				if (facetedDevice.getDevice() != null && !facetedDevice.getDevice().isEmpty()) {
 					List<Device> deviceList = facetedDevice.getDevice();
 					List<String> promoteAsTags = new ArrayList<>();
 					deviceList.forEach(device -> {
@@ -331,7 +331,7 @@ public class DeviceServiceImpl implements DeviceService {
 					});
 					if (CollectionUtils.isNotEmpty(promoteAsTags)) {
 						Map<String, com.vf.uk.dal.device.entity.MerchandisingPromotion> promotionMap = deviceDao
-								.getMerchandisingPromotionsEntityFromSolrModel(promoteAsTags);
+								.getMerchandisingPromotionsEntityFromRepo(promoteAsTags);
 						deviceList.forEach(device -> {
 							if (device.getPromotionsPackage() != null) {
 								if (device.getPromotionsPackage().getBundlePromotions() != null && device

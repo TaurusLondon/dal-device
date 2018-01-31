@@ -564,6 +564,6 @@ public interface DeviceDao {
 	 *            the promotion as tags
 	 * @return the merchandising promotions entity from solr model
 	 */
-	public Map<String, com.vf.uk.dal.device.entity.MerchandisingPromotion> getMerchandisingPromotionsEntityFromSolrModel(
+	public Map<String, com.vf.uk.dal.device.entity.MerchandisingPromotion> getMerchandisingPromotionsEntityFromRepo(
 			List<String> promotionAsTags);
 }
