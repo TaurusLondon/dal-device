@@ -29,6 +29,7 @@ public class Constants {
 	public static final String STRING_PREFIX_FOR_ENTERTAINMENT_OFFER_TAG_ID = "entertainment.merchandisingPromotions.merchandisingPromotion.tag";
 	public static final String STRING_PREFIX_FOR_ENTERTAINMENT_OFFER_LABEL_ID = "entertainment.merchandisingPromotions.merchandisingPromotion.label";
 	public static final String STRING_PRICE_ESTABLISHED_LABEL = "merchandisingPromotions.merchandisingPromotion.priceEstablishedLabel";
+	public static final String STRING_PRICE_PROMOTION_MEDIA = "merchandisingPromotions.merchandisingPromotion.promotionMedia";
 	public static final String DATE_FORMAT_SOLR = "dd/MM/yyyy HH:mm:ss";
 	public static final String DATE_FORMAT_COHERENCE = "yyyy-MM-dd HH:mm:ss.SSS";
 
