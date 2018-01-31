@@ -155,7 +155,7 @@ public class MetaData   {
  */
   public MetaData addSeoRobotsItem(UUID seoRobotsItem) {
     if (this.seoRobots == null) {
-      this.seoRobots = new ArrayList<UUID>();
+      this.seoRobots = new ArrayList<>();
     }
     this.seoRobots.add(seoRobotsItem);
     return this;

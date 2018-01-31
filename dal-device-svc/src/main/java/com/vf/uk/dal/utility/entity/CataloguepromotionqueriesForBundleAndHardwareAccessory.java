@@ -41,11 +41,52 @@ public class CataloguepromotionqueriesForBundleAndHardwareAccessory {
 	
 	private List<String> footNotes = new ArrayList<>();
 	
+	/** The promotion media. */
+	  private String promotionMedia = null;
+	  
+	  
+	  
+	  /**
+	   * Promotion media.
+	   *
+	   * @param promotionMedia the promotion media
+	   * @return the cataloguepromotionqueries for bundle and hardware entertainment packs
+	   */
+	  public CataloguepromotionqueriesForBundleAndHardwareAccessory promotionMedia(String promotionMedia) {
+	    this.promotionMedia = promotionMedia;
+	    return this;
+	  }
+	  
+	   /**
+	    * Promotion media url for the merchandising promotion.
+	    *
+	    * @return promotionMedia
+	    */
+	  public String getPromotionMedia() {
+	    return promotionMedia;
+	  }
+	  
+	   /**
+	   * Sets the promotion media.
+	   *
+	   * @param promotionMedia the new promotion media
+	   */
+	  public void setPromotionMedia(String promotionMedia) {
+	    this.promotionMedia = promotionMedia;
+	  }
+	  
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public List<String> getFootNotes() {
 		return footNotes;
 	}
-
+/**
+ * 
+ * @param footNotes
+ */
 	public void setFootNotes(List<String> footNotes) {
 		this.footNotes = footNotes;
 	}
@@ -232,7 +273,8 @@ public class CataloguepromotionqueriesForBundleAndHardwareAccessory {
 				&& Objects.equals(this.type, cataloguepromotionqueriesForBundleAndHardwareAccessory.type)
 				&& Objects.equals(this.priority, cataloguepromotionqueriesForBundleAndHardwareAccessory.priority)
 				&& Objects.equals(this.description, cataloguepromotionqueriesForBundleAndHardwareAccessory.description)
-				&& Objects.equals(this.packageType, cataloguepromotionqueriesForBundleAndHardwareAccessory.packageType);
+				&& Objects.equals(this.packageType, cataloguepromotionqueriesForBundleAndHardwareAccessory.packageType)
+				&& Objects.equals(this.promotionMedia, cataloguepromotionqueriesForBundleAndHardwareAccessory.promotionMedia);
 	}
 
 	/* (non-Javadoc)
@@ -240,7 +282,7 @@ public class CataloguepromotionqueriesForBundleAndHardwareAccessory {
 	 */
 	@Override
 	public int hashCode() {
-		return Objects.hash(tag, label, type, priority, description, packageType);
+		return Objects.hash(tag, label, type, priority, description, packageType,promotionMedia);
 	}
 
 	/* (non-Javadoc)
@@ -257,6 +299,7 @@ public class CataloguepromotionqueriesForBundleAndHardwareAccessory {
 		sb.append("    priority: ").append(toIndentedString(priority)).append("\n");
 		sb.append("    description: ").append(toIndentedString(description)).append("\n");
 		sb.append("    packageType: ").append(toIndentedString(packageType)).append("\n");
+		sb.append("    promotionMedia: ").append(toIndentedString(promotionMedia)).append("\n");
 		sb.append("}");
 		return sb.toString();
 	}

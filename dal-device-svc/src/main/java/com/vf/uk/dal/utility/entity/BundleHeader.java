@@ -51,15 +51,26 @@ public class BundleHeader {
 
 	/** The Secure Net */ 
 	private Boolean secureNetFlag=null;
-	
+	/**
+	 * 
+	 * @param secureNetFlag
+	 * @return
+	 */
 	public BundleHeader secureNetFlag(Boolean secureNetFlag) {
 		this.secureNetFlag = secureNetFlag;
 		return this;
 	}
+	/**
+	 * 
+	 * @return
+	 */
 	public Boolean getSecureNetFlag() {
 		return secureNetFlag;
 	}
-
+/**
+ * 
+ * @param secureNetFlag
+ */
 	public void setSecureNetFlag(Boolean secureNetFlag) {
 		this.secureNetFlag = secureNetFlag;
 	}

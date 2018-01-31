@@ -14,7 +14,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class PriceForExtra   {
   @JsonProperty("extraPrice")
   private ExtraPrice extraPrice = null;
-
+  /**
+   * 
+   * @param extraPrice
+   * @return
+   */
   public PriceForExtra extraPrice(ExtraPrice extraPrice) {
     this.extraPrice = extraPrice;
     return this;
@@ -30,7 +34,10 @@ public class PriceForExtra   {
   public ExtraPrice getExtraPrice() {
     return extraPrice;
   }
-
+  /**
+   * 
+   * @param extraPrice
+   */
   public void setExtraPrice(ExtraPrice extraPrice) {
     this.extraPrice = extraPrice;
   }

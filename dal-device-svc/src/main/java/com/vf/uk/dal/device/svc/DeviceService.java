@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import org.json.simple.JSONObject;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
@@ -199,7 +198,7 @@ public interface DeviceService {
 	 * @param deviceId
 	 * @return
 	 */
-	public String getLeadPlanIdForDeviceId(String deviceId);
+	public String getLeadPlanIdForDeviceId(String deviceId ,String journeyType);
 	/**
 	 * 
 	 * @param memberId

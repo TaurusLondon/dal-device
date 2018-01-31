@@ -14,7 +14,11 @@ public class Discount   {
 
   @JsonProperty("tag")
   private String tag = null;
-
+/**
+ * 
+ * @param skuId
+ * @return
+ */
   public Discount skuId(String skuId) {
     this.skuId = skuId;
     return this;
@@ -27,11 +31,18 @@ public class Discount   {
   public String getSkuId() {
     return skuId;
   }
-
+/**
+ * 
+ * @param skuId
+ */
   public void setSkuId(String skuId) {
     this.skuId = skuId;
   }
-
+/**
+ * 
+ * @param tag
+ * @return
+ */
   public Discount tag(String tag) {
     this.tag = tag;
     return this;
@@ -44,7 +55,10 @@ public class Discount   {
   public String getTag() {
     return tag;
   }
-
+/**
+ * 
+ * @param tag
+ */
   public void setTag(String tag) {
     this.tag = tag;
   }

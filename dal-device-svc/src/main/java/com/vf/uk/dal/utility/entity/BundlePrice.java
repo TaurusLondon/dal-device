@@ -20,7 +20,11 @@ public class BundlePrice   {
 
   @JsonProperty("merchandisingPromotions")
   private MerchandisingPromotion merchandisingPromotions = null;
-
+/**
+ * 
+ * @param bundleId
+ * @return
+ */
   public BundlePrice bundleId(String bundleId) {
     this.bundleId = bundleId;
     return this;
@@ -33,11 +37,18 @@ public class BundlePrice   {
   public String getBundleId() {
     return bundleId;
   }
-
+/**
+ * 
+ * @param bundleId
+ */
   public void setBundleId(String bundleId) {
     this.bundleId = bundleId;
   }
-
+/**
+ * 
+ * @param monthlyPrice
+ * @return
+ */
   public BundlePrice monthlyPrice(Price monthlyPrice) {
     this.monthlyPrice = monthlyPrice;
     return this;
@@ -51,11 +62,18 @@ public class BundlePrice   {
   public Price getMonthlyPrice() {
     return monthlyPrice;
   }
-
+/**
+ * 
+ * @param monthlyPrice
+ */
   public void setMonthlyPrice(Price monthlyPrice) {
     this.monthlyPrice = monthlyPrice;
   }
-
+/**
+ * 
+ * @param monthlyDiscountPrice
+ * @return
+ */
   public BundlePrice monthlyDiscountPrice(Price monthlyDiscountPrice) {
     this.monthlyDiscountPrice = monthlyDiscountPrice;
     return this;
@@ -68,11 +86,18 @@ public class BundlePrice   {
   public Price getMonthlyDiscountPrice() {
     return monthlyDiscountPrice;
   }
-
+/**
+ * 
+ * @param monthlyDiscountPrice
+ */
   public void setMonthlyDiscountPrice(Price monthlyDiscountPrice) {
     this.monthlyDiscountPrice = monthlyDiscountPrice;
   }
-
+/**
+ * 
+ * @param merchandisingPromotions
+ * @return
+ */
   public BundlePrice merchandisingPromotions(MerchandisingPromotion merchandisingPromotions) {
     this.merchandisingPromotions = merchandisingPromotions;
     return this;
@@ -86,7 +111,10 @@ public class BundlePrice   {
   public MerchandisingPromotion getMerchandisingPromotions() {
     return merchandisingPromotions;
   }
-
+/**
+ * 
+ * @param merchandisingPromotions
+ */
   public void setMerchandisingPromotions(MerchandisingPromotion merchandisingPromotions) {
     this.merchandisingPromotions = merchandisingPromotions;
   }

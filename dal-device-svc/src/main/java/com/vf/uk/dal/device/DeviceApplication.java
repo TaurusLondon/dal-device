@@ -13,6 +13,7 @@ import com.vf.uk.dal.common.annotation.Service;
 /**
  * DeviceApplication, will start the service as SpringBoot Application Added
  * Comments
+ * @author
  **/
 
 @Service
@@ -29,7 +30,7 @@ public class DeviceApplication {
 
 	@Bean
 	/**
-	 * 
+	 * @author 
 	 * @return
 	 */
 	public Executor asyncExecutor() {
