@@ -32,340 +32,538 @@ import com.vodafone.solrmodels.ProductGroupModel;
 import com.vodafone.solrmodels.ProductModel;
 import com.vodafone.stockAvailability.pojo.StockAvailability;
 
-/** 
- * 1.DAO layer for coherence and solr. 
+// TODO: Auto-generated Javadoc
+/**
+ * 1.DAO layer for coherence and solr.
  **/
 
 public interface DeviceDao {
+
 	/**
-	 * 
+	 * Gets the device tile by id.
+	 *
 	 * @param id
+	 *            the id
 	 * @param offerCode
+	 *            the offer code
 	 * @param journeyType
-	 * @return
+	 *            the journey type
+	 * @return the device tile by id
 	 */
 	public List<DeviceTile> getDeviceTileById(String id, String offerCode, String journeyType);
+
 	/**
-	 * 
+	 * Gets the product group by group type group name.
+	 *
 	 * @param groupType
+	 *            the group type
 	 * @param groupName
-	 * @return
+	 *            the group name
+	 * @return the product group by group type group name
 	 */
 	public List<ProductGroup> getProductGroupByGroupTypeGroupName(String groupType, String groupName);
+
 	/**
-	 * 
+	 * Gets the bundle details from complans listing API.
+	 *
 	 * @param deviceId
+	 *            the device id
 	 * @param sortCriteria
-	 * @return
+	 *            the sort criteria
+	 * @return the bundle details from complans listing API
 	 */
 	public BundleDetails getBundleDetailsFromComplansListingAPI(String deviceId, String sortCriteria);
+
 	/**
-	 * 
+	 * Gets the device review details.
+	 *
 	 * @param deviceId
-	 * @return
+	 *            the device id
+	 * @return the device review details
 	 */
 	public String getDeviceReviewDetails(String deviceId);
+
 	/**
-	 * 
+	 * Gets the merchandising promotion by promotion name.
+	 *
 	 * @param promotionName
-	 * @return
+	 *            the promotion name
+	 * @return the merchandising promotion by promotion name
 	 */
-	public com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion getMerchandisingPromotionByPromotionName(String promotionName);
+	public com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion getMerchandisingPromotionByPromotionName(
+			String promotionName);
+
 	/**
-	 * 
+	 * Gets the product groups by type.
+	 *
 	 * @param groupType
-	 * @return
+	 *            the group type
+	 * @return the product groups by type
 	 */
 	public List<Group> getProductGroupsByType(String groupType);
+
 	/**
-	 * 
+	 * Gets the commercial product repository by lead member id.
+	 *
 	 * @param leadMemberId
-	 * @return
+	 *            the lead member id
+	 * @return the commercial product repository by lead member id
 	 */
 	public CommercialProduct getCommercialProductRepositoryByLeadMemberId(String leadMemberId);
+
 	/**
-	 * 
+	 * Gets the stock availability by member id.
+	 *
 	 * @param memberId
-	 * @return
+	 *            the member id
+	 * @return the stock availability by member id
 	 */
 	public StockAvailability getStockAvailabilityByMemberId(String memberId);
+
 	/**
-	 * 
+	 * Move pre calc data to solr.
+	 *
 	 * @param preCalcPlanList
+	 *            the pre calc plan list
 	 */
 	public void movePreCalcDataToSolr(List<DevicePreCalculatedData> preCalcPlanList);
+
 	/**
-	 * 
+	 * Gets the product groups with facets.
+	 *
 	 * @param filterKey
+	 *            the filter key
 	 * @param filterCriteria
+	 *            the filter criteria
 	 * @param sortBy
+	 *            the sort by
 	 * @param sortOption
+	 *            the sort option
 	 * @param pageNumber
+	 *            the page number
 	 * @param pageSize
+	 *            the page size
 	 * @param journeyType
-	 * @return
+	 *            the journey type
+	 * @return the product groups with facets
 	 */
-	public ProductGroupFacetModel getProductGroupsWithFacets(Filters filterKey,String filterCriteria,
-			String sortBy,String sortOption,Integer pageNumber,Integer pageSize,String journeyType);
+	public ProductGroupFacetModel getProductGroupsWithFacets(Filters filterKey, String filterCriteria, String sortBy,
+			String sortOption, Integer pageNumber, Integer pageSize, String journeyType);
+
 	/**
-	 * 
+	 * Gets the product groups with facets.
+	 *
 	 * @param filterKey
+	 *            the filter key
 	 * @param journeyType
-	 * @return
+	 *            the journey type
+	 * @return the product groups with facets
 	 */
-	public ProductGroupFacetModel getProductGroupsWithFacets(Filters filterKey,String journeyType);
+	public ProductGroupFacetModel getProductGroupsWithFacets(Filters filterKey, String journeyType);
+
 	/**
-	 * 
+	 * Gets the product model.
+	 *
 	 * @param listOfProducts
-	 * @return
+	 *            the list of products
+	 * @return the product model
 	 */
 	public List<ProductModel> getProductModel(List<String> listOfProducts);
+
 	/**
-	 * 
+	 * Gets the bundle details.
+	 *
 	 * @param listOfLeadPlanId
-	 * @return
+	 *            the list of lead plan id
+	 * @return the bundle details
 	 */
 	public List<BundleModel> getBundleDetails(List<String> listOfLeadPlanId);
+
 	/**
-	 * 
+	 * Gets the review rating list.
+	 *
 	 * @param listMemberIds
-	 * @return
+	 *            the list member ids
+	 * @return the review rating list
 	 */
 	public List<BazaarVoice> getReviewRatingList(List<String> listMemberIds);
+
 	/**
-	 * 
+	 * Gets the device review rating.
+	 *
 	 * @param listMemberIds
-	 * @return
+	 *            the list member ids
+	 * @return the device review rating
 	 */
 	public Map<String, String> getDeviceReviewRating(List<String> listMemberIds);
+
 	/**
-	 * 
+	 * Gets the commercial product by product id.
+	 *
 	 * @param productId
-	 * @return
+	 *            the product id
+	 * @return the commercial product by product id
 	 */
 	public CommercialProduct getCommercialProductByProductId(String productId);
+
 	/**
-	 * 
+	 * Gets the commercial bundle by bundle id.
+	 *
 	 * @param bundleId
-	 * @return
+	 *            the bundle id
+	 * @return the commercial bundle by bundle id
 	 */
 	public CommercialBundle getCommercialBundleByBundleId(String bundleId);
+
 	/**
-	 * 
+	 * Gets the price for bundle and hardware.
+	 *
 	 * @param bundleAndHardwareTupleList
+	 *            the bundle and hardware tuple list
 	 * @param offerCode
+	 *            the offer code
 	 * @param journeyType
-	 * @return
+	 *            the journey type
+	 * @return the price for bundle and hardware
 	 */
-	public List<PriceForBundleAndHardware> getPriceForBundleAndHardware(List<BundleAndHardwareTuple> bundleAndHardwareTupleList,String offerCode,String journeyType);
+	public List<PriceForBundleAndHardware> getPriceForBundleAndHardware(
+			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType);
+
 	/**
-	 * 
+	 * Gets the list commercial product repository by lead member id.
+	 *
 	 * @param leadMemberId
-	 * @return
+	 *            the lead member id
+	 * @return the list commercial product repository by lead member id
 	 */
 	public Collection<CommercialProduct> getListCommercialProductRepositoryByLeadMemberId(List<String> leadMemberId);
+
 	/**
-	 * 
+	 * Gets the list commercial bundle repository by compatible plan list.
+	 *
 	 * @param planIdList
-	 * @return
+	 *            the plan id list
+	 * @return the list commercial bundle repository by compatible plan list
 	 */
 	public Collection<CommercialBundle> getListCommercialBundleRepositoryByCompatiblePlanList(List<String> planIdList);
+
 	/**
-	 * 
+	 * Gets the bundle and hardware price from solr.
+	 *
 	 * @param deviceIds
+	 *            the device ids
 	 * @param offerCode
+	 *            the offer code
 	 * @param journeyType
-	 * @return
+	 *            the journey type
+	 * @return the bundle and hardware price from solr
 	 */
-	public  List<OfferAppliedPriceModel> getBundleAndHardwarePriceFromSolr(List<String> deviceIds, String offerCode,String journeyType);
+	public List<OfferAppliedPriceModel> getBundleAndHardwarePriceFromSolr(List<String> deviceIds, String offerCode,
+			String journeyType);
+
 	/**
-	 * 
+	 * Gets the group by prod group name.
+	 *
 	 * @param groupName
+	 *            the group name
 	 * @param groupType
-	 * @return
+	 *            the group type
+	 * @return the group by prod group name
 	 */
-	public Group getGroupByProdGroupName(String groupName,String groupType);
+	public Group getGroupByProdGroupName(String groupName, String groupType);
+
 	/**
-	 * 
+	 * Gets the commercial products list.
+	 *
 	 * @param productIdsList
-	 * @return
+	 *            the product ids list
+	 * @return the commercial products list
 	 */
 	public List<CommercialProduct> getCommercialProductsList(List<String> productIdsList);
+
 	/**
-	 * 
+	 * Gets the journey type compatible offer codes.
+	 *
 	 * @param journeyType
-	 * @return
+	 *            the journey type
+	 * @return the journey type compatible offer codes
 	 */
-	
+
 	public List<MerchandisingPromotionModel> getJourneyTypeCompatibleOfferCodes(String journeyType);
+
 	/**
-	 * 
+	 * Gets the journey type compatible offer codes.
+	 *
 	 * @param bundleClass
+	 *            the bundle class
 	 * @param journeyType
-	 * @return
+	 *            the journey type
+	 * @return the journey type compatible offer codes
 	 */
-	public List<MerchandisingPromotionModel> getJourneyTypeCompatibleOfferCodes(String bundleClass,String journeyType);
+	public List<MerchandisingPromotionModel> getJourneyTypeCompatibleOfferCodes(String bundleClass, String journeyType);
+
 	/**
-	 * 
-	 * @return
+	 * Gets the request manager.
+	 *
+	 * @return the request manager
 	 */
 	public RequestManager getRequestManager();
+
 	/**
-	 * 
-	 * @return
+	 * Gets the commercial product repository.
+	 *
+	 * @return the commercial product repository
 	 */
 	public CommercialProductRepository getCommercialProductRepository();
+
 	/**
-	 * 
-	 * @return
+	 * Gets the commercial bundle repository.
+	 *
+	 * @return the commercial bundle repository
 	 */
 	public CommercialBundleRepository getCommercialBundleRepository();
+
 	/**
-	 * 
-	 * @return
+	 * Gets the product group repository.
+	 *
+	 * @return the product group repository
 	 */
 	public ProductGroupRepository getProductGroupRepository();
+
 	/**
-	 * 
-	 * @return
+	 * Gets the merchandising promotion repository.
+	 *
+	 * @return the merchandising promotion repository
 	 */
 	public MerchandisingPromotionRepository getMerchandisingPromotionRepository();
+
 	/**
-	 * 
+	 * Gets the list of product group from product group repository.
+	 *
 	 * @param groupType
-	 * @return
+	 *            the group type
+	 * @return the list of product group from product group repository
 	 */
 	public List<Group> getListOfProductGroupFromProductGroupRepository(String groupType);
+
 	/**
-	 * 
+	 * Gets the all commercial bundles from commercial bundle repository.
+	 *
 	 * @param listofLeadPlan
-	 * @return
+	 *            the listof lead plan
+	 * @return the all commercial bundles from commercial bundle repository
 	 */
-	public Collection<CommercialBundle> getAllCommercialBundlesFromCommercialBundleRepository(List<String> listofLeadPlan);
+	public Collection<CommercialBundle> getAllCommercialBundlesFromCommercialBundleRepository(
+			List<String> listofLeadPlan);
+
 	/**
-	 * 
+	 * Gets the commercial bundle from commercial bundle repository.
+	 *
 	 * @param bundleId
-	 * @return
+	 *            the bundle id
+	 * @return the commercial bundle from commercial bundle repository
 	 */
 	public CommercialBundle getCommercialBundleFromCommercialBundleRepository(String bundleId);
+
 	/**
-	 * 
+	 * Gets the commercial product from commercial product repository.
+	 *
 	 * @param deviceId
-	 * @return
+	 *            the device id
+	 * @return the commercial product from commercial product repository
 	 */
 	public CommercialProduct getCommercialProductFromCommercialProductRepository(String deviceId);
+
 	/**
-	 * 
-	 * @return
+	 * Gets the list of product groups from solr.
+	 *
+	 * @return the list of product groups from solr
 	 */
 	public List<ProductGroupModel> getListOfProductGroupsFromSolr();
+
 	/**
-	 * 
+	 * Gets the list of groups from product group repository.
+	 *
 	 * @param listOfDeviceGroupName
-	 * @return
+	 *            the list of device group name
+	 * @return the list of groups from product group repository
 	 */
 	public List<Group> getListOfGroupsFromProductGroupRepository(List<String> listOfDeviceGroupName);
+
 	/**
-	 * 
+	 * Gets the commercial product list from commercial product repository.
+	 *
 	 * @param finalAccessoryList
-	 * @return
+	 *            the final accessory list
+	 * @return the commercial product list from commercial product repository
 	 */
 	public Collection<CommercialProduct> getCommercialProductListFromCommercialProductRepository(
 			List<String> finalAccessoryList);
+
 	/**
-	 * 
+	 * Gets the list of product model from solr.
+	 *
 	 * @param listOfProduct
-	 * @return
+	 *            the list of product
+	 * @return the list of product model from solr
 	 */
 	public List<ProductModel> getListOfProductModelFromSolr(List<String> listOfProduct);
+
 	/**
-	 * 
+	 * Gets the list of offer applied price model from solr.
+	 *
 	 * @param deviceIds
+	 *            the device ids
 	 * @param offerCode
-	 * @return
+	 *            the offer code
+	 * @return the list of offer applied price model from solr
 	 */
-	public List<OfferAppliedPriceModel> getListOfOfferAppliedPriceModelFromSolr(List<String> deviceIds, String offerCode);
+	public List<OfferAppliedPriceModel> getListOfOfferAppliedPriceModelFromSolr(List<String> deviceIds,
+			String offerCode);
+
 	/**
-	 * 
+	 * Gets the product group facet modelfrom solr.
+	 *
 	 * @param filterKey
+	 *            the filter key
 	 * @param filterCriteria
+	 *            the filter criteria
 	 * @param sortBy
+	 *            the sort by
 	 * @param sortOption
+	 *            the sort option
 	 * @param pageNumber
+	 *            the page number
 	 * @param pageSize
-	 * @return
+	 *            the page size
+	 * @return the product group facet modelfrom solr
 	 */
-	public ProductGroupFacetModel getProductGroupFacetModelfromSolr(Filters filterKey, String filterCriteria, String sortBy,
-			String sortOption, Integer pageNumber, Integer pageSize);
+	public ProductGroupFacetModel getProductGroupFacetModelfromSolr(Filters filterKey, String filterCriteria,
+			String sortBy, String sortOption, Integer pageNumber, Integer pageSize);
+
 	/**
-	 * 
+	 * Gets the product group facet model for filter keyfrom solr.
+	 *
 	 * @param filterKey
-	 * @return
+	 *            the filter key
+	 * @return the product group facet model for filter keyfrom solr
 	 */
 	public ProductGroupFacetModel getProductGroupFacetModelForFilterKeyfromSolr(Filters filterKey);
+
 	/**
-	 * 
+	 * Gets the bundle model list from solr.
+	 *
 	 * @param listOfLeadPlanId
-	 * @return
+	 *            the list of lead plan id
+	 * @return the bundle model list from solr
 	 */
 	public List<BundleModel> getBundleModelListFromSolr(List<String> listOfLeadPlanId);
+
 	/**
-	 * 
+	 * Gets the group from product group repository.
+	 *
 	 * @param groupName
+	 *            the group name
 	 * @param groupType
-	 * @return
+	 *            the group type
+	 * @return the group from product group repository
 	 */
 	public Group getGroupFromProductGroupRepository(String groupName, String groupType);
+
 	/**
-	 * 
+	 * Gets the merchandising promotion based on promotion name.
+	 *
 	 * @param promotionName
-	 * @return
+	 *            the promotion name
+	 * @return the merchandising promotion based on promotion name
 	 */
-	public MerchandisingPromotion getMerchandisingPromotionBasedOnPromotionName(
-			String promotionName);
+	public MerchandisingPromotion getMerchandisingPromotionBasedOnPromotionName(String promotionName);
+
 	/**
-	 * 
+	 * Gets the list of merchandising promotion model from solr.
+	 *
 	 * @param groupType
+	 *            the group type
 	 * @param journeyType
-	 * @return
+	 *            the journey type
+	 * @return the list of merchandising promotion model from solr
 	 */
 	public List<MerchandisingPromotionModel> getListOfMerchandisingPromotionModelFromSolr(String groupType,
 			String journeyType);
+
 	/**
-	 * 
+	 * Gets the list of commercial products from commercial product repository.
+	 *
 	 * @param make
+	 *            the make
 	 * @param model
-	 * @return
+	 *            the model
+	 * @return the list of commercial products from commercial product
+	 *         repository
 	 */
-	public List<CommercialProduct> getListOfCommercialProductsFromCommercialProductRepository(String make, String model);
+	public List<CommercialProduct> getListOfCommercialProductsFromCommercialProductRepository(String make,
+			String model);
+
 	/**
-	 * 
-	 * @return
+	 * Gets the bazaar review repository.
+	 *
+	 * @return the bazaar review repository
 	 */
 	public BazaarReviewRepository getBazaarReviewRepository();
+
 	/**
-	 * 
+	 * Gets the bazaar voice.
+	 *
 	 * @param skuId
-	 * @return
+	 *            the sku id
+	 * @return the bazaar voice
 	 */
 	public BazaarVoice getBazaarVoice(String skuId);
+
 	/**
-	 * 
-	 * @return
+	 * Insert cache device to db.
+	 *
+	 * @return the cache device tile response
 	 */
 	public CacheDeviceTileResponse insertCacheDeviceToDb();
+
 	/**
-	 * 
+	 * Update cache device to db.
+	 *
 	 * @param jobId
+	 *            the job id
 	 * @param jobStatus
+	 *            the job status
 	 */
 	public void updateCacheDeviceToDb(String jobId, String jobStatus);
+
 	/**
-	 * 
+	 * Gets the cache device job status.
+	 *
 	 * @param jobId
-	 * @return
+	 *            the job id
+	 * @return the cache device job status
 	 * @throws ApplicationException
+	 *             the application exception
 	 */
 	public CacheDeviceTileResponse getCacheDeviceJobStatus(String jobId) throws ApplicationException;
+
+	/**
+	 * Fetch commerical bundlesby list.
+	 *
+	 * @param listOfBundleIds
+	 *            the list of bundle ids
+	 * @return the list
+	 */
 	List<CommercialBundle> fetchCommericalBundlesbyList(List<String> listOfBundleIds);
+
+	/**
+	 * Gets the merchandising promotions entity from solr model.
+	 *
+	 * @param promotionAsTags
+	 *            the promotion as tags
+	 * @return the merchandising promotions entity from solr model
+	 */
+	public Map<String, com.vf.uk.dal.device.entity.MerchandisingPromotion> getMerchandisingPromotionsEntityFromSolrModel(
+			List<String> promotionAsTags);
 }
