@@ -1745,8 +1745,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	}
 
 	@Override
-	public Map<String, MerchandisingPromotion> getMerchandisingPromotionsEntityFromSolrModel(
-			List<String> promotionAsTags) {
+	public Map<String, MerchandisingPromotion> getMerchandisingPromotionsEntityFromRepo(List<String> promotionAsTags) {
 		List<com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion> listOfMerchandisingPromotions = null;
 		Map<String, MerchandisingPromotion> promotions = new HashMap<>();
 
@@ -1759,8 +1758,10 @@ public class DeviceDaoImpl implements DeviceDao {
 		Collection<com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion> colls = merchandisingPromotionRepository
 				.getAll(promotionAsTags);
 		LogHelper.info(this, "End -->  After calling  getMerchandisingPromotionsByTag_Solr");
-		listOfMerchandisingPromotions = new ArrayList<com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion>(
-				colls);
+		if (colls != null && !colls.isEmpty()) {
+			listOfMerchandisingPromotions = new ArrayList<com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion>(
+					colls);
+		}
 		if (listOfMerchandisingPromotions != null && !listOfMerchandisingPromotions.isEmpty()) {
 			listOfMerchandisingPromotions.forEach(solrModel -> {
 				MerchandisingPromotion promotion = new MerchandisingPromotion();
