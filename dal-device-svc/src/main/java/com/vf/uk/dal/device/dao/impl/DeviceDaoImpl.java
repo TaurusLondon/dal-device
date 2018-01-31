@@ -38,6 +38,7 @@ import com.vf.uk.dal.device.entity.DeviceSummary;
 import com.vf.uk.dal.device.entity.DeviceTile;
 import com.vf.uk.dal.device.entity.Insurance;
 import com.vf.uk.dal.device.entity.Insurances;
+import com.vf.uk.dal.device.entity.MerchandisingPromotion;
 import com.vf.uk.dal.device.entity.Price;
 import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
 import com.vf.uk.dal.device.entity.ProductGroup;
@@ -102,14 +103,12 @@ public class DeviceDaoImpl implements DeviceDao {
 	private MerchandisingPromotionRepository merchandisingPromotionRepository = null;
 	private BazaarReviewRepository bazaarReviewRepository = null;
 
-		
-	
 	@Override
 	public List<DeviceTile> getDeviceTileById(String id, String offerCode, String journeyType) {
 		String strGroupType = null;
 
 		LogHelper.info(this, "Start  -->  calling  CommercialProductRepository.get");
-		if (null==commercialProductRepository) {
+		if (null == commercialProductRepository) {
 			commercialProductRepository = CoherenceConnectionProvider.getCommercialProductRepoConnection();
 		}
 		CommercialProduct commercialProduct = commercialProductRepository.get(id);
@@ -117,7 +116,8 @@ public class DeviceDaoImpl implements DeviceDao {
 
 		List<DeviceTile> listOfDeviceTile;
 		Long memberPriority = null;
-		if (commercialProduct != null && commercialProduct.getId() != null && commercialProduct.getIsDeviceProduct() && (commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)
+		if (commercialProduct != null && commercialProduct.getId() != null && commercialProduct.getIsDeviceProduct()
+				&& (commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)
 						|| commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_DATA_DEVICE))) {
 			listOfDeviceTile = new ArrayList<>();
 			DeviceTile deviceTile = new DeviceTile();
@@ -156,7 +156,7 @@ public class DeviceDaoImpl implements DeviceDao {
 			}
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList;
 
-			bundleAndHardwareTupleList = getListOfPriceForBundleAndHardware(commercialProduct,journeyType);
+			bundleAndHardwareTupleList = getListOfPriceForBundleAndHardware(commercialProduct, journeyType);
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = null;
 
 			// Calling Pricing Api
@@ -282,7 +282,6 @@ public class DeviceDaoImpl implements DeviceDao {
 		}
 		return productGroupList;
 	}
-	
 
 	/**
 	 * Returns leadSkuId based on the priority
@@ -312,6 +311,7 @@ public class DeviceDaoImpl implements DeviceDao {
 
 	/**
 	 * Identifies members based on the validation rules.
+	 * 
 	 * @param listOfDeviceGroupMember
 	 * @param journeyType
 	 * @return
@@ -333,6 +333,7 @@ public class DeviceDaoImpl implements DeviceDao {
 
 	/**
 	 * validates the member based on the memberId.
+	 * 
 	 * @param memberId
 	 * @param journeyType
 	 * @return
@@ -415,6 +416,7 @@ public class DeviceDaoImpl implements DeviceDao {
 
 	/**
 	 * calculation of price
+	 * 
 	 * @param grossPrice
 	 * @return
 	 */
@@ -432,6 +434,7 @@ public class DeviceDaoImpl implements DeviceDao {
 
 	/**
 	 * Date validation
+	 * 
 	 * @param startDateTime
 	 * @param endDateTime
 	 * @param strDateFormat
@@ -495,7 +498,8 @@ public class DeviceDaoImpl implements DeviceDao {
 	 * @param commercialProduct
 	 * @return
 	 */
-	public List<BundleAndHardwareTuple> getListOfPriceForBundleAndHardware(CommercialProduct commercialProduct, String journeyType) {
+	public List<BundleAndHardwareTuple> getListOfPriceForBundleAndHardware(CommercialProduct commercialProduct,
+			String journeyType) {
 
 		BundleAndHardwareTuple bundleAndHardwareTuple;
 		List<BundleAndHardwareTuple> bundleAndHardwareTupleList;
@@ -504,33 +508,31 @@ public class DeviceDaoImpl implements DeviceDao {
 		List<com.vf.uk.dal.utility.entity.BundleHeader> listOfBundles;
 		List<com.vf.uk.dal.utility.entity.BundleHeader> listOfBundleHeaderForDevice = new ArrayList<>();
 		List<CoupleRelation> listOfCoupleRelationForMcs;
-		CommercialBundle commercialBundle=null;
-	  if(StringUtils.isNotBlank(commercialProduct.getLeadPlanId()))
-		{
-			commercialBundle=getCommercialBundleFromCommercialBundleRepository(commercialProduct.getLeadPlanId());
+		CommercialBundle commercialBundle = null;
+		if (StringUtils.isNotBlank(commercialProduct.getLeadPlanId())) {
+			commercialBundle = getCommercialBundleFromCommercialBundleRepository(commercialProduct.getLeadPlanId());
 		}
 		boolean sellableCheck = false;
-		if(commercialBundle != null)
-		{
-		if (StringUtils.isNotBlank(journeyType)
-				&& Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
-				&& commercialBundle.getBundleControl() != null
-				&& commercialBundle.getBundleControl().isSellableRet()
-				&& commercialBundle.getBundleControl().isDisplayableRet()
-				&& !commercialBundle.getAvailability().getSalesExpired()) {
-			sellableCheck = true;
-		}
-			
-		 if (!Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
-				 && commercialBundle.getBundleControl() != null
+		if (commercialBundle != null) {
+			if (StringUtils.isNotBlank(journeyType) && Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
+					&& commercialBundle.getBundleControl() != null
+					&& commercialBundle.getBundleControl().isSellableRet()
+					&& commercialBundle.getBundleControl().isDisplayableRet()
+					&& !commercialBundle.getAvailability().getSalesExpired()) {
+				sellableCheck = true;
+			}
+
+			if (!Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
+					&& commercialBundle.getBundleControl() != null
 					&& commercialBundle.getBundleControl().isSellableAcq()
 					&& commercialBundle.getBundleControl().isDisplayableAcq()
 					&& !commercialBundle.getAvailability().getSalesExpired()) {
 				sellableCheck = true;
-		 }
-		}	
-		
-		if (StringUtils.isNotBlank(commercialProduct.getLeadPlanId()) && commercialProduct.getListOfCompatiblePlanIds().contains(commercialProduct.getLeadPlanId())
+			}
+		}
+
+		if (StringUtils.isNotBlank(commercialProduct.getLeadPlanId())
+				&& commercialProduct.getListOfCompatiblePlanIds().contains(commercialProduct.getLeadPlanId())
 				&& sellableCheck) {
 			bundleAndHardwareTuple = new BundleAndHardwareTuple();
 			bundleAndHardwareTuple.setBundleId(commercialProduct.getLeadPlanId());
@@ -541,8 +543,8 @@ public class DeviceDaoImpl implements DeviceDao {
 
 			try {
 
-				bundleDetailsForDevice = CommonUtility.getPriceDetailsForCompatibaleBundle(commercialProduct.getId(),journeyType,
-						registryclnt);
+				bundleDetailsForDevice = CommonUtility.getPriceDetailsForCompatibaleBundle(commercialProduct.getId(),
+						journeyType, registryclnt);
 				listOfBundles = bundleDetailsForDevice.getStandalonePlansList();
 				listOfCoupleRelationForMcs = bundleDetailsForDevice.getCouplePlansList();
 				listOfBundleHeaderForDevice.addAll(listOfBundles);
@@ -678,11 +680,12 @@ public class DeviceDaoImpl implements DeviceDao {
 		}
 
 	}
-/**
- * 
- * @param bundleHeaderForDeviceSorted
- * @return
- */
+
+	/**
+	 * 
+	 * @param bundleHeaderForDeviceSorted
+	 * @return
+	 */
 	public List<com.vf.uk.dal.utility.entity.BundleHeader> getAscendingOrderForBundlePrice(
 			List<com.vf.uk.dal.utility.entity.BundleHeader> bundleHeaderForDeviceSorted) {
 		Collections.sort(bundleHeaderForDeviceSorted, new SortedBundlePriceList());
@@ -726,11 +729,12 @@ public class DeviceDaoImpl implements DeviceDao {
 		}
 
 	}
-/**
- * 
- * @param prioritySorted
- * @return
- */
+
+	/**
+	 * 
+	 * @param prioritySorted
+	 * @return
+	 */
 	public List<com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion> getAscendingOrderForMerchndisingPriority(
 			List<com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion> prioritySorted) {
 		Collections.sort(prioritySorted, new SortedPriorityList());
@@ -757,11 +761,12 @@ public class DeviceDaoImpl implements DeviceDao {
 		}
 
 	}
-/**
- * 
- * @param variantsList
- * @return
- */
+
+	/**
+	 * 
+	 * @param variantsList
+	 * @return
+	 */
 	public List<com.vf.uk.dal.device.entity.Member> getListOfMembers(List<String> variantsList) {
 		com.vf.uk.dal.device.entity.Member member;
 		List<com.vf.uk.dal.device.entity.Member> listOfMember = new ArrayList<>();
@@ -776,12 +781,12 @@ public class DeviceDaoImpl implements DeviceDao {
 		}
 		return listOfMember;
 	}
-	
-/**
- * 
- * @param insurances
- * @return
- */
+
+	/**
+	 * 
+	 * @param insurances
+	 * @return
+	 */
 	public Insurances getFormattedPriceForGetCompatibleInsurances(Insurances insurances) {
 
 		if (insurances.getInsuranceList() != null && !insurances.getInsuranceList().isEmpty()) {
@@ -865,7 +870,6 @@ public class DeviceDaoImpl implements DeviceDao {
 		return jsonObject;
 	}
 
-	
 	@Override
 	public com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion getMerchandisingPromotionByPromotionName(
 			String promotionName) {
@@ -920,10 +924,11 @@ public class DeviceDaoImpl implements DeviceDao {
 	}
 
 	@Override
-	public List<OfferAppliedPriceModel> getBundleAndHardwarePriceFromSolr(List<String> deviceIds, String offerCode,String journeyType) {
+	public List<OfferAppliedPriceModel> getBundleAndHardwarePriceFromSolr(List<String> deviceIds, String offerCode,
+			String journeyType) {
 
 		LogHelper.info(this, "Start --> Calling  getOfferAppliedPrices_Solr");
-		List<OfferAppliedPriceModel> list = requestManager.getOfferAppliedPrices(deviceIds, offerCode,journeyType);
+		List<OfferAppliedPriceModel> list = requestManager.getOfferAppliedPrices(deviceIds, offerCode, journeyType);
 		LogHelper.info(this, "End --> End -->  After calling  getOfferAppliedPrices_Solr");
 
 		return list;
@@ -994,17 +999,17 @@ public class DeviceDaoImpl implements DeviceDao {
 			if (requestManager == null) {
 				requestManager = SolrConnectionProvider.getSolrConnection();
 			}
-			
+
 			LogHelper.info(this, "Start --> Calling  getProductGroupsWithFacets_Solr");
-			productGroupFacetModel = requestManager.getProductGroupsWithFacetsByJourneyType
-					(filterKey, filterCriteria, sortBy,sortOption, pageNumber, pageSize,Arrays.asList(journeyType));
+			productGroupFacetModel = requestManager.getProductGroupsWithFacetsByJourneyType(filterKey, filterCriteria,
+					sortBy, sortOption, pageNumber, pageSize, Arrays.asList(journeyType));
 			LogHelper.info(this, "End --> After calling  getProductGroupsWithFacets_Solr");
 			// }
 		} catch (org.apache.solr.common.SolrException solrExcp) {
 			SolrConnectionProvider.closeSolrConnection();
 			LogHelper.error(this, "  SolrException: " + solrExcp);
 			throw new ApplicationException(ExceptionMessages.SOLR_CONNECTION_EXCEPTION);
-		}catch (Exception exp) {
+		} catch (Exception exp) {
 			SolrConnectionProvider.closeSolrConnection();
 			LogHelper.error(this, "Exception: " + exp);
 			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_SOLR);
@@ -1016,20 +1021,21 @@ public class DeviceDaoImpl implements DeviceDao {
 	 * 
 	 */
 	@Override
-	public ProductGroupFacetModel getProductGroupsWithFacets(Filters filterKey,String journeyType) {
+	public ProductGroupFacetModel getProductGroupsWithFacets(Filters filterKey, String journeyType) {
 		ProductGroupFacetModel productGroupFacetModel = null;
 		try {
 			if (requestManager == null) {
 				requestManager = SolrConnectionProvider.getSolrConnection();
 			}
 			LogHelper.info(this, "Start --> Calling  getProductGroupsWithFacets_Solr");
-			productGroupFacetModel = requestManager.getProductGroupFacetModelByJourneyType(filterKey, Arrays.asList(journeyType));
+			productGroupFacetModel = requestManager.getProductGroupFacetModelByJourneyType(filterKey,
+					Arrays.asList(journeyType));
 			LogHelper.info(this, "End --> After Calling  getProductGroupsWithFacets_Solr");
 		} catch (org.apache.solr.common.SolrException solrExcp) {
 			SolrConnectionProvider.closeSolrConnection();
 			LogHelper.error(this, "SolrException : " + solrExcp);
 			throw new ApplicationException(ExceptionMessages.SOLR_CONNECTION_EXCEPTION);
-		}catch (Exception exp) {
+		} catch (Exception exp) {
 			SolrConnectionProvider.closeSolrConnection();
 			LogHelper.error(this, "Exception: " + exp);
 			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_SOLR);
@@ -1250,7 +1256,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		String jobStatus = null;
 		try {
 			jdbcTemplate.setDataSource(datasource);
-			String query="SELECT JOB_STATUS FROM DALMS_CACHE_SERVICES WHERE JOB_ID = '" + jobId + "'";
+			String query = "SELECT JOB_STATUS FROM DALMS_CACHE_SERVICES WHERE JOB_ID = '" + jobId + "'";
 			jobStatus = jdbcTemplate.queryForObject(query, String.class);
 			if (StringUtils.isEmpty(jobStatus) || StringUtils.isBlank(jobStatus)) {
 				throw new ApplicationException(ExceptionMessages.INVALID_JOB_ID);
@@ -1370,364 +1376,365 @@ public class DeviceDaoImpl implements DeviceDao {
 
 		return listOfMerchandisingPromotions;
 	}
-	
+
 	/**
-	 * @author aditya.oli
-	 * Method to initialize requestManager if it is null. Else, send it as it was initialized. This 
-	 * depicts an implementation of the Singleton design pattern where we use a single object/connection 
-	 * for the entire session.
+	 * @author aditya.oli Method to initialize requestManager if it is null.
+	 *         Else, send it as it was initialized. This depicts an
+	 *         implementation of the Singleton design pattern where we use a
+	 *         single object/connection for the entire session.
 	 * @return RequestManager
 	 */
 	@Override
-	public RequestManager getRequestManager()
-	{
-		if (requestManager == null) 
-		{
+	public RequestManager getRequestManager() {
+		if (requestManager == null) {
 			requestManager = SolrConnectionProvider.getSolrConnection();
 		}
 		return requestManager;
 	}
 
 	/**
-	 * @author aditya.oli
-	 * Method to initialize CommercialProductRepository if it is null. Else, send it as it was initialized. This 
-	 * depicts an implementation of the Singleton design pattern where we use a single object/connection 
-	 * for the entire session.
+	 * @author aditya.oli Method to initialize CommercialProductRepository if it
+	 *         is null. Else, send it as it was initialized. This depicts an
+	 *         implementation of the Singleton design pattern where we use a
+	 *         single object/connection for the entire session.
 	 * @return CommercialProductRepository
 	 */
 	@Override
-	public CommercialProductRepository getCommercialProductRepository()
-	{
-		if (commercialProductRepository == null) 
-		{
+	public CommercialProductRepository getCommercialProductRepository() {
+		if (commercialProductRepository == null) {
 			commercialProductRepository = CoherenceConnectionProvider.getCommercialProductRepoConnection();
 		}
 		return commercialProductRepository;
 	}
-	
+
 	/**
-	 * @author aditya.oli
-	 * Method to initialize CommercialBundleRepository if it is null. Else, send it as it was initialized. This 
-	 * depicts an implementation of the Singleton design pattern where we use a single object/connection 
-	 * for the entire session.
+	 * @author aditya.oli Method to initialize CommercialBundleRepository if it
+	 *         is null. Else, send it as it was initialized. This depicts an
+	 *         implementation of the Singleton design pattern where we use a
+	 *         single object/connection for the entire session.
 	 * @return CommercialBundleRepository
 	 */
 	@Override
-	public CommercialBundleRepository getCommercialBundleRepository()
-	{
-		if (commercialBundleRepository == null) 
-		{
+	public CommercialBundleRepository getCommercialBundleRepository() {
+		if (commercialBundleRepository == null) {
 			commercialBundleRepository = CoherenceConnectionProvider.getCommercialBundleRepoConnection();
 		}
 		return commercialBundleRepository;
 	}
-	
+
 	/**
-	 * @author aditya.oli
-	 * Method to initialize ProductGroupRepository if it is null. Else, send it as it was initialized. This 
-	 * depicts an implementation of the Singleton design pattern where we use a single object/connection 
-	 * for the entire session.
+	 * @author aditya.oli Method to initialize ProductGroupRepository if it is
+	 *         null. Else, send it as it was initialized. This depicts an
+	 *         implementation of the Singleton design pattern where we use a
+	 *         single object/connection for the entire session.
 	 * @return ProductGroupRepository
 	 */
 	@Override
-	public ProductGroupRepository getProductGroupRepository()
-	{
-		if (productGroupRepository == null) 
-		{
+	public ProductGroupRepository getProductGroupRepository() {
+		if (productGroupRepository == null) {
 			productGroupRepository = CoherenceConnectionProvider.getProductGroupRepoRepository();
 		}
 		return productGroupRepository;
 	}
-	
+
 	/**
-	 * @author aditya.oli
-	 * Method to initialize MerchandisingPromotionRepository if it is null. Else, send it as it was initialized. This 
-	 * depicts an implementation of the Singleton design pattern where we use a single object/connection 
-	 * for the entire session.
+	 * @author aditya.oli Method to initialize MerchandisingPromotionRepository
+	 *         if it is null. Else, send it as it was initialized. This depicts
+	 *         an implementation of the Singleton design pattern where we use a
+	 *         single object/connection for the entire session.
 	 * @return MerchandisingPromotionRepository
 	 */
 	@Override
-	public MerchandisingPromotionRepository getMerchandisingPromotionRepository()
-	{
-		if (merchandisingPromotionRepository == null) 
-		{
+	public MerchandisingPromotionRepository getMerchandisingPromotionRepository() {
+		if (merchandisingPromotionRepository == null) {
 			merchandisingPromotionRepository = CoherenceConnectionProvider.getMerchandisingRepoConnection();
 		}
 		return merchandisingPromotionRepository;
 	}
-	
+
 	/**
-	 * @author aditya.oli
-	 * This method is used to initialize the Bazaar Review Repository which happens to be a third party repository used for reviews.
+	 * @author aditya.oli This method is used to initialize the Bazaar Review
+	 *         Repository which happens to be a third party repository used for
+	 *         reviews.
 	 * @return BazaarReviewRepository
 	 */
 	@Override
-	public BazaarReviewRepository getBazaarReviewRepository()
-	{
-		if (bazaarReviewRepository == null) 
-		{
+	public BazaarReviewRepository getBazaarReviewRepository() {
+		if (bazaarReviewRepository == null) {
 			bazaarReviewRepository = new BazaarReviewRepository();
 		}
 		return bazaarReviewRepository;
 	}
-	
+
 	/**
-	 * @author aditya.oli
-	 * This method checks whether Bazaar Review Repository has been initialized or not. If yes, it gets the Bazaar Voice from the 
-	 * repository. Else it will initialize the Repository and then fetch the Bazaar Voice for the service.
-	 * @param String skuId
-	 * @return BazaarVoice  
+	 * @author aditya.oli This method checks whether Bazaar Review Repository
+	 *         has been initialized or not. If yes, it gets the Bazaar Voice
+	 *         from the repository. Else it will initialize the Repository and
+	 *         then fetch the Bazaar Voice for the service.
+	 * @param String
+	 *            skuId
+	 * @return BazaarVoice
 	 */
 	@Override
-	public BazaarVoice getBazaarVoice(String skuId)
-	{
+	public BazaarVoice getBazaarVoice(String skuId) {
 		getBazaarReviewRepository();
 		return bazaarReviewRepository.get(CommonUtility.appendPrefixString(skuId));
 	}
-	
+
 	/**
-	 * @author aditya.oli
-	 * This method returns the List of CommercialProducts from coherence's CommercialProductRepository for 
-	 * the respective parameters.
-	 * @param String make
-	 * @param String model
+	 * @author aditya.oli This method returns the List of CommercialProducts
+	 *         from coherence's CommercialProductRepository for the respective
+	 *         parameters.
+	 * @param String
+	 *            make
+	 * @param String
+	 *            model
 	 * @return List<CommercialProduct>
 	 */
 	@Override
-	public List<CommercialProduct> getListOfCommercialProductsFromCommercialProductRepository(String make, String model)
-	{
+	public List<CommercialProduct> getListOfCommercialProductsFromCommercialProductRepository(String make,
+			String model) {
 		getCommercialProductRepository();
 		return commercialProductRepository.getByMakeANDModel(make, model);
 	}
-	
+
 	/**
-	 * @author aditya.oli
-	 * This method returns the List of groups from coherence's ProductGroupRepository for a particular 
-	 * groupType passed in the parameter.
-	 * @param String groupType
+	 * @author aditya.oli This method returns the List of groups from
+	 *         coherence's ProductGroupRepository for a particular groupType
+	 *         passed in the parameter.
+	 * @param String
+	 *            groupType
 	 * @return List<Group>
 	 */
 	@Override
-	public List<Group> getListOfProductGroupFromProductGroupRepository(String groupType)
-	{
+	public List<Group> getListOfProductGroupFromProductGroupRepository(String groupType) {
 		getProductGroupRepository();
 		return productGroupRepository.getProductGroupsByType(groupType);
 	}
 
 	/**
-	 * @author aditya.oli
-	 * This method gets all the Commercial Bundles from coherence's CommercialBundleRepository,
-	 * for the list of planIds passed in the parameter as returns all the Commercial Bundles in the 
-	 * form of a list.
-	 * @param List<String> listOfLeadPlan
+	 * @author aditya.oli This method gets all the Commercial Bundles from
+	 *         coherence's CommercialBundleRepository, for the list of planIds
+	 *         passed in the parameter as returns all the Commercial Bundles in
+	 *         the form of a list.
+	 * @param List<String>
+	 *            listOfLeadPlan
 	 * @return Collection<CommercialBundle>
 	 * 
 	 */
-	@Override 
-	public Collection<CommercialBundle> getAllCommercialBundlesFromCommercialBundleRepository(List<String> listofLeadPlan)
-	{
+	@Override
+	public Collection<CommercialBundle> getAllCommercialBundlesFromCommercialBundleRepository(
+			List<String> listofLeadPlan) {
 		getCommercialBundleRepository();
 		return commercialBundleRepository.getAll(listofLeadPlan);
 	}
-	
+
 	/**
-	 * @author aditya.oli
-	 * This method fetches and returns the Commercial Bundle from coherence's CommercialBundleRepository
-	 * by taking the bundle's Id as a parameter.
-	 * @param String bundleId
+	 * @author aditya.oli This method fetches and returns the Commercial Bundle
+	 *         from coherence's CommercialBundleRepository by taking the
+	 *         bundle's Id as a parameter.
+	 * @param String
+	 *            bundleId
 	 * @return CommercialBundle
 	 */
 	@Override
-	public CommercialBundle getCommercialBundleFromCommercialBundleRepository(String bundleId)
-	{
+	public CommercialBundle getCommercialBundleFromCommercialBundleRepository(String bundleId) {
 		getCommercialBundleRepository();
 		return commercialBundleRepository.get(bundleId);
 	}
-	
+
 	/**
-	 * @author aditya.oli
-	 * This method fetches and returns the Commercial Product from coherence's CommercialProductRepository
-	 * by taking the product's Id as a parameter.
-	 * @param String deviceId
+	 * @author aditya.oli This method fetches and returns the Commercial Product
+	 *         from coherence's CommercialProductRepository by taking the
+	 *         product's Id as a parameter.
+	 * @param String
+	 *            deviceId
 	 * @return CommercialProduct
 	 */
 	@Override
-	public CommercialProduct getCommercialProductFromCommercialProductRepository(String deviceId)
-	{
+	public CommercialProduct getCommercialProductFromCommercialProductRepository(String deviceId) {
 		getCommercialProductRepository();
 		return commercialProductRepository.get(deviceId);
 	}
-	
+
 	/**
-	 * @author aditya.oli
-	 * This method fetches and returns the Merchandising Promotion from coherence's MerchandisingPromotionRepository
-	 * by taking the promotion's name as a parameter.
-	 * @param String promotionName
+	 * @author aditya.oli This method fetches and returns the Merchandising
+	 *         Promotion from coherence's MerchandisingPromotionRepository by
+	 *         taking the promotion's name as a parameter.
+	 * @param String
+	 *            promotionName
 	 * @return MerchandisingPromotion
 	 */
 	@Override
-	public com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion getMerchandisingPromotionBasedOnPromotionName(String promotionName)
-	{
+	public com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion getMerchandisingPromotionBasedOnPromotionName(
+			String promotionName) {
 		getMerchandisingPromotionRepository();
 		return merchandisingPromotionRepository.get(promotionName);
 	}
-	
+
 	/**
-	 * @author aditya.oli
-	 * This method returns the List of Product Group Models by sending the Filters to Solr and
-	 * retrieving the respective Product Group Models.
+	 * @author aditya.oli This method returns the List of Product Group Models
+	 *         by sending the Filters to Solr and retrieving the respective
+	 *         Product Group Models.
 	 * @return List<ProductGroupModel>
 	 */
 	@Override
-	public List<ProductGroupModel> getListOfProductGroupsFromSolr()
-	{
+	public List<ProductGroupModel> getListOfProductGroupsFromSolr() {
 		getRequestManager();
 		return requestManager.getProductGroups(Filters.HANDSET);
 	}
-	
+
 	/**
-	 * @author aditya.oli
-	 * This method returns the List of Group from Solr by sending the list of
-	 * Device Group names and retrieving the respective List of Groups.
-	 * @param List<String> listOfDeviceGroupName
+	 * @author aditya.oli This method returns the List of Group from Solr by
+	 *         sending the list of Device Group names and retrieving the
+	 *         respective List of Groups.
+	 * @param List<String>
+	 *            listOfDeviceGroupName
 	 * @return List<Group>
 	 */
 	@Override
-	public List<Group> getListOfGroupsFromProductGroupRepository(List<String> listOfDeviceGroupName) 
-	{
+	public List<Group> getListOfGroupsFromProductGroupRepository(List<String> listOfDeviceGroupName) {
 		getProductGroupRepository();
 		return new ArrayList<Group>(productGroupRepository.getAll(listOfDeviceGroupName));
 	}
-	
+
 	/**
-	 * @author aditya.oli
-	 * This method takes the List of String as a parameter and returns the List of
-	 * Commercial Products from coherence, each corresponding to the data sent in as a parameter.
-	 * @param List<String> productList
+	 * @author aditya.oli This method takes the List of String as a parameter
+	 *         and returns the List of Commercial Products from coherence, each
+	 *         corresponding to the data sent in as a parameter.
+	 * @param List<String>
+	 *            productList
 	 * @return Collection<CommercialProduct>
 	 */
 	@Override
-	public Collection<CommercialProduct> getCommercialProductListFromCommercialProductRepository(List<String> productList)
-	{
+	public Collection<CommercialProduct> getCommercialProductListFromCommercialProductRepository(
+			List<String> productList) {
 		getCommercialProductRepository();
 		return commercialProductRepository.getAll(productList);
 	}
-	
+
 	/**
-	 * @author aditya.oli
-	 * This method takes the List of String as a parameter and sends it to Solr to fetch
-	 * the List of Product Models corresponding to the each of the data values sent in the
-	 * request.
-	 * @param List<String> listOfProduct
+	 * @author aditya.oli This method takes the List of String as a parameter
+	 *         and sends it to Solr to fetch the List of Product Models
+	 *         corresponding to the each of the data values sent in the request.
+	 * @param List<String>
+	 *            listOfProduct
 	 * @return List<ProductModel>
 	 */
 	@Override
-	public List<ProductModel> getListOfProductModelFromSolr(List<String> listOfProduct)
-	{
+	public List<ProductModel> getListOfProductModelFromSolr(List<String> listOfProduct) {
 		getRequestManager();
 		return requestManager.getProductModel(listOfProduct);
 	}
-	
+
 	/**
-	 * @author aditya.oli
-	 * This method is used to fetch the list of Offer Applied Price Models from Solr, which
-	 * are retrieved by passing the List of device Ids, and the offerCode applicable.
-	 * @param List<String> deviceIds
-	 * @param String offerCode
+	 * @author aditya.oli This method is used to fetch the list of Offer Applied
+	 *         Price Models from Solr, which are retrieved by passing the List
+	 *         of device Ids, and the offerCode applicable.
+	 * @param List<String>
+	 *            deviceIds
+	 * @param String
+	 *            offerCode
 	 * @return List<OfferAppliedPriceModel>
 	 */
 	@Override
-	public List<OfferAppliedPriceModel> getListOfOfferAppliedPriceModelFromSolr(List<String> deviceIds, String offerCode)
-	{
+	public List<OfferAppliedPriceModel> getListOfOfferAppliedPriceModelFromSolr(List<String> deviceIds,
+			String offerCode) {
 		getRequestManager();
 		return requestManager.getOfferAppliedPrices(deviceIds, offerCode);
 	}
-	
+
 	/**
-	 * @author aditya.oli
-	 * This method takes the filter key, filter criteria, sort by, sort option, page number and the page size 
-	 * as parameters and send them the Solr to fetch the Product Group Facet Model depending on the values
-	 * sent in the request, that match with Solr data.
-	 * @param Filters filterKey
-	 * @param String filterCriteria
-	 * @param String sortBy
-	 * @param String sortOption
-	 * @param Integer pageNumber
-	 * @param Integer pageSize
+	 * @author aditya.oli This method takes the filter key, filter criteria,
+	 *         sort by, sort option, page number and the page size as parameters
+	 *         and send them the Solr to fetch the Product Group Facet Model
+	 *         depending on the values sent in the request, that match with Solr
+	 *         data.
+	 * @param Filters
+	 *            filterKey
+	 * @param String
+	 *            filterCriteria
+	 * @param String
+	 *            sortBy
+	 * @param String
+	 *            sortOption
+	 * @param Integer
+	 *            pageNumber
+	 * @param Integer
+	 *            pageSize
 	 * @return ProductGroupFacetModel
 	 */
 	@Override
-	public ProductGroupFacetModel getProductGroupFacetModelfromSolr(Filters filterKey, String filterCriteria, String sortBy,
-			String sortOption, Integer pageNumber, Integer pageSize)
-	{
+	public ProductGroupFacetModel getProductGroupFacetModelfromSolr(Filters filterKey, String filterCriteria,
+			String sortBy, String sortOption, Integer pageNumber, Integer pageSize) {
 		getRequestManager();
-		return requestManager.getProductGroupsWithFacets(filterKey, filterCriteria, sortBy,
-				sortOption, pageNumber, pageSize);
+		return requestManager.getProductGroupsWithFacets(filterKey, filterCriteria, sortBy, sortOption, pageNumber,
+				pageSize);
 	}
-	
+
 	/**
-	 * @author aditya.oli
-	 * This method takes the Filter key as parameter, sends it to Solr, and fetches the 
-	 * Product Group Facet Model which is retrieved by sending the filter key as the only
-	 * parameter.
-	 * @param Filters filterKey
+	 * @author aditya.oli This method takes the Filter key as parameter, sends
+	 *         it to Solr, and fetches the Product Group Facet Model which is
+	 *         retrieved by sending the filter key as the only parameter.
+	 * @param Filters
+	 *            filterKey
 	 * @return ProductGroupFacetModel
 	 */
 	@Override
-	public ProductGroupFacetModel getProductGroupFacetModelForFilterKeyfromSolr(Filters filterKey) 
-	{
+	public ProductGroupFacetModel getProductGroupFacetModelForFilterKeyfromSolr(Filters filterKey) {
 		getRequestManager();
 		return requestManager.getProductGroupsWithFacets(filterKey);
 	}
-	
+
 	/**
-	 * @author aditya.oli
-	 * This method takes a list of Strings as a request parameter, and fetches the 
-	 * respective list of Bundle Models from Solr for the data respective to each 
-	 * entry in the list that was sent as input.
-	 * @param List<String> listOfLeadPlanId
+	 * @author aditya.oli This method takes a list of Strings as a request
+	 *         parameter, and fetches the respective list of Bundle Models from
+	 *         Solr for the data respective to each entry in the list that was
+	 *         sent as input.
+	 * @param List<String>
+	 *            listOfLeadPlanId
 	 * @return List<BundleModel>
 	 */
 	@Override
-	public List<BundleModel> getBundleModelListFromSolr(List<String> listOfLeadPlanId)
-	{
+	public List<BundleModel> getBundleModelListFromSolr(List<String> listOfLeadPlanId) {
 		getRequestManager();
 		return requestManager.getBundleDetails(listOfLeadPlanId);
 	}
-	
+
 	/**
-	 * @author aditya.oli
-	 * This method retrieves the Group object from Coherence's Product Group Repository
-	 * by taking the groupName and groupType as parameter.
-	 * @param String groupName
-	 * @param String groupType
+	 * @author aditya.oli This method retrieves the Group object from
+	 *         Coherence's Product Group Repository by taking the groupName and
+	 *         groupType as parameter.
+	 * @param String
+	 *            groupName
+	 * @param String
+	 *            groupType
 	 * @return Group
 	 */
 	@Override
-	public Group getGroupFromProductGroupRepository(String groupName, String groupType)
-	{
+	public Group getGroupFromProductGroupRepository(String groupName, String groupType) {
 		getProductGroupRepository();
 		return productGroupRepository.getProductGroup(groupName, groupType);
 	}
-	
+
 	/**
-	 * @author aditya.oli
-	 * This method takes a string journeyType as a parameter, and then sends it to Solr along with
-	 * String PAYM as another parameter, and returns the list of Merchandising Promotion Models from Solr
-	 * back to the service layer.
-	 * @param String journeyType
+	 * @author aditya.oli This method takes a string journeyType as a parameter,
+	 *         and then sends it to Solr along with String PAYM as another
+	 *         parameter, and returns the list of Merchandising Promotion Models
+	 *         from Solr back to the service layer.
+	 * @param String
+	 *            journeyType
 	 * @return List<MerchandisingPromotionModel>
 	 */
 	@Override
-	public List<MerchandisingPromotionModel> getListOfMerchandisingPromotionModelFromSolr(String groupType,String journeyType)
-	{
+	public List<MerchandisingPromotionModel> getListOfMerchandisingPromotionModelFromSolr(String groupType,
+			String journeyType) {
 		getRequestManager();
-		return requestManager.getMerchandisingPromotionsByProductLineAndPackageType(groupType,
-					journeyType);
+		return requestManager.getMerchandisingPromotionsByProductLineAndPackageType(groupType, journeyType);
 	}
-	
+
 	@Override
-    public List<CommercialBundle> fetchCommericalBundlesbyList(List<String> listOfBundleIds) {
+	public List<CommercialBundle> fetchCommericalBundlesbyList(List<String> listOfBundleIds) {
 		LogHelper.info(this, "Start -->  calling  bundleRepository.getAll");
 		if (commercialBundleRepository == null) {
 			commercialBundleRepository = CoherenceConnectionProvider.getCommercialBundleRepoConnection();
@@ -1735,5 +1742,49 @@ public class DeviceDaoImpl implements DeviceDao {
 		Collection<CommercialBundle> commercialBundles = commercialBundleRepository.getAll(listOfBundleIds);
 		LogHelper.info(this, "End -->  After calling  bundleRepository.get");
 		return new ArrayList<CommercialBundle>(commercialBundles);
-    }
+	}
+
+	@Override
+	public Map<String, MerchandisingPromotion> getMerchandisingPromotionsEntityFromSolrModel(
+			List<String> promotionAsTags) {
+		List<com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion> listOfMerchandisingPromotions = null;
+		Map<String, MerchandisingPromotion> promotions = new HashMap<>();
+
+		if (merchandisingPromotionRepository == null) {
+			merchandisingPromotionRepository = CoherenceConnectionProvider.getMerchandisingRepoConnection();
+		}
+
+		LogHelper.info(this, "Start -->  calling  getMerchandisingPromotionsByTag_Solr");
+		// String queryString = String.join(",", promotionAsTags);
+		Collection<com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion> colls = merchandisingPromotionRepository
+				.getAll(promotionAsTags);
+		LogHelper.info(this, "End -->  After calling  getMerchandisingPromotionsByTag_Solr");
+		listOfMerchandisingPromotions = new ArrayList<com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion>(
+				colls);
+		if (listOfMerchandisingPromotions != null && !listOfMerchandisingPromotions.isEmpty()) {
+			listOfMerchandisingPromotions.forEach(solrModel -> {
+				MerchandisingPromotion promotion = new MerchandisingPromotion();
+				promotion.setTag(solrModel.getTag());
+				promotion.setDescription(solrModel.getDescription());
+				String footNoteKey = solrModel.getFootNoteKey();
+				if (StringUtils.isNotBlank(footNoteKey)) {
+					promotion.setFootNotes(Arrays.asList(footNoteKey.split(",")));
+				}
+
+				promotion.setLabel(solrModel.getLabel());
+				promotion.setPriceEstablishedLabel(solrModel.getPriceEstablishedLabel());
+				String packagesList = solrModel.getCondition().getPackageType();
+				if (StringUtils.isNotBlank(packagesList)) {
+					promotion.setPackageType(Arrays.asList(packagesList.split(",")));
+				}
+				if (solrModel.getPriority() != null) {
+					promotion.setPriority(solrModel.getPriority().intValue());
+				}
+				promotion.setMpType(solrModel.getType());
+				promotion.setPromotionMedia(solrModel.getPromotionMedia());
+				promotions.put(solrModel.getTag(), promotion);
+			});
+		}
+		return promotions;
+	}
 }
