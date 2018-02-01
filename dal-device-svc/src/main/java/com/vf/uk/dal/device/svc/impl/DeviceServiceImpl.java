@@ -2458,7 +2458,8 @@ public class DeviceServiceImpl implements DeviceService {
 			String gross = null;
 
 			try {
-				if (journeyType == null) {
+				if (journeyType == null || (!Constants.JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyType) 
+						&& !Constants.JOURNEY_TYPE_UPGRADE.equalsIgnoreCase(journeyType) && !Constants.JOURNEY_TYPE_SECONDLINE.equalsIgnoreCase(journeyType))) {
 					jType = "";
 				} else {
 					jType = journeyType;

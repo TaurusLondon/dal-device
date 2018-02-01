@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>com.vf.uk.dal</groupId>
 	<artifactId>dal-device-svc</artifactId>
-	<version>7.2.7</version>
+	<version>7.2.8</version>
 	<packaging>jar</packaging>
 	<build>
 		<plugins>
