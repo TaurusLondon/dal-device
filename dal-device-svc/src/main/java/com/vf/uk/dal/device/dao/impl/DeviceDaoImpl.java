@@ -104,9 +104,15 @@ public class DeviceDaoImpl implements DeviceDao {
 	private BazaarReviewRepository bazaarReviewRepository = null;
 
 	@Override
-	public List<DeviceTile> getDeviceTileById(String id, String offerCode, String journeyType) {
+	public List<DeviceTile> getDeviceTileById(String id, String offerCode, String journeyTypeInput) {
+		String journeyType;
+		if (StringUtils.isBlank(journeyTypeInput) || (!Constants.JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyTypeInput) 
+				&& !Constants.JOURNEY_TYPE_UPGRADE.equalsIgnoreCase(journeyTypeInput) && !Constants.JOURNEY_TYPE_SECONDLINE.equalsIgnoreCase(journeyTypeInput))) {
+			journeyType = Constants.JOURNEY_TYPE_ACQUISITION;
+		}else{
+			journeyType =journeyTypeInput;
+		}
 		String strGroupType = null;
-
 		LogHelper.info(this, "Start  -->  calling  CommercialProductRepository.get");
 		if (null == commercialProductRepository) {
 			commercialProductRepository = CoherenceConnectionProvider.getCommercialProductRepoConnection();
@@ -514,7 +520,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		}
 		boolean sellableCheck = false;
 		if (commercialBundle != null) {
-			if (StringUtils.isNotBlank(journeyType) && Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
+			if ( Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
 					&& commercialBundle.getBundleControl() != null
 					&& commercialBundle.getBundleControl().isSellableRet()
 					&& commercialBundle.getBundleControl().isDisplayableRet()

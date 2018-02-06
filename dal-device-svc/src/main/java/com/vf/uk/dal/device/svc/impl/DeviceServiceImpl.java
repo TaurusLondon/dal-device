@@ -270,7 +270,10 @@ public class DeviceServiceImpl implements DeviceService {
 		}
 		String journeytype = null;
 		if (StringUtils.isBlank(journeyType)
-				|| StringUtils.equalsIgnoreCase(Constants.JOURNEY_TYPE_ACQUISITION, journeyType)) {
+				|| StringUtils.equalsIgnoreCase(Constants.JOURNEY_TYPE_ACQUISITION, journeyType)
+				|| (!Constants.JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyType) 
+						&& !Constants.JOURNEY_TYPE_UPGRADE.equalsIgnoreCase(journeyType) 
+						&& !Constants.JOURNEY_TYPE_SECONDLINE.equalsIgnoreCase(journeyType))) {
 			journeytype = Constants.JOURNEY_TYPE_ACQUISITION;
 		} else if (StringUtils.isNotBlank(journeyType)
 				&& StringUtils.equalsIgnoreCase(Constants.JOURNEY_TYPE_UPGRADE, journeyType)) {
@@ -278,8 +281,6 @@ public class DeviceServiceImpl implements DeviceService {
 		} else if (StringUtils.isNotBlank(journeyType)
 				&& StringUtils.equalsIgnoreCase(Constants.JOURNEY_TYPE_SECONDLINE, journeyType)) {
 			journeytype = Constants.JOURNEY_TYPE_SECONDLINE;
-		} else {
-			journeytype = journeyType;
 		}
 
 		if (StringUtils.isNotBlank(groupType) && groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG)) {
@@ -2182,9 +2183,16 @@ public class DeviceServiceImpl implements DeviceService {
 	 * @return List<DeviceTile> performance improved by @author manoj.bera
 	 */
 	public List<DeviceTile> getListOfDeviceTile_Implementation(String make, String model, String groupType,
-			String deviceId, String journeyType, Double creditLimit, String offerCode, String bundleId) {
+			String deviceId, String journeyTypeInput, Double creditLimit, String offerCode, String bundleId) {
 		boolean isConditionalAcceptJourney = (null != creditLimit) ? true : false;
 		// Performance Improvement changes in this Method.
+		String journeyType;
+		if (StringUtils.isBlank(journeyTypeInput) || (!Constants.JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyTypeInput) 
+				&& !Constants.JOURNEY_TYPE_UPGRADE.equalsIgnoreCase(journeyTypeInput) && !Constants.JOURNEY_TYPE_SECONDLINE.equalsIgnoreCase(journeyTypeInput))) {
+			journeyType = Constants.JOURNEY_TYPE_ACQUISITION;
+		}else{
+			journeyType =journeyTypeInput;
+		}
 		List<DeviceTile> listOfDeviceTile = new ArrayList<>();
 
 		DeviceTile deviceTile = new DeviceTile();
@@ -2421,7 +2429,6 @@ public class DeviceServiceImpl implements DeviceService {
 		List<com.vf.uk.dal.utility.entity.BundleHeader> listOfBundleHeaderForDevice = new ArrayList<>();
 		List<CoupleRelation> listOfCoupleRelationForMcs;
 		CommercialBundle commercialBundle = null;
-		String jType = null;
 		if (commerBundleIdMap != null) {
 			commercialBundle = commerBundleIdMap.get(commercialProduct.getLeadPlanId());
 		} else if (StringUtils.isNotBlank(commercialProduct.getLeadPlanId())) {
@@ -2430,7 +2437,7 @@ public class DeviceServiceImpl implements DeviceService {
 		}
 		boolean sellableCheck = false;
 		if (commercialBundle != null) {
-			if (StringUtils.isNotBlank(journeyType) && Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
+			if (Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
 					&& commercialBundle.getBundleControl() != null
 					&& commercialBundle.getBundleControl().isSellableRet()
 					&& commercialBundle.getBundleControl().isDisplayableRet()
@@ -2458,14 +2465,8 @@ public class DeviceServiceImpl implements DeviceService {
 			String gross = null;
 
 			try {
-				if (journeyType == null || (!Constants.JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyType) 
-						&& !Constants.JOURNEY_TYPE_UPGRADE.equalsIgnoreCase(journeyType) && !Constants.JOURNEY_TYPE_SECONDLINE.equalsIgnoreCase(journeyType))) {
-					jType = "";
-				} else {
-					jType = journeyType;
-				}
 				bundleDetailsForDevice = CommonUtility.getPriceDetailsForCompatibaleBundle(commercialProduct.getId(),
-						jType, registryclnt);
+						journeyType, registryclnt);
 				listOfBundles = bundleDetailsForDevice.getStandalonePlansList();
 				listOfCoupleRelationForMcs = bundleDetailsForDevice.getCouplePlansList();
 				listOfBundleHeaderForDevice.addAll(listOfBundles);
@@ -3129,9 +3130,16 @@ public class DeviceServiceImpl implements DeviceService {
 	 * @param id
 	 * @return DeviceDetails
 	 */
-	public DeviceDetails getDeviceDetails_Implementation(String deviceId, String journeyType, String offerCode) {
+	public DeviceDetails getDeviceDetails_Implementation(String deviceId, String journeyTypeInput, String offerCode) {
 		LogHelper.info(this, "Start -->  calling  CommercialProductRepository.get");
 		String journeyTypeLocal = null;
+		String journeyType;
+		if (StringUtils.isBlank(journeyTypeInput) || (!Constants.JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyTypeInput) 
+				&& !Constants.JOURNEY_TYPE_UPGRADE.equalsIgnoreCase(journeyTypeInput) && !Constants.JOURNEY_TYPE_SECONDLINE.equalsIgnoreCase(journeyTypeInput))) {
+			journeyType = Constants.JOURNEY_TYPE_ACQUISITION;
+		}else{
+			journeyType =journeyTypeInput;
+		}
 		CommercialProduct commercialProduct = deviceDao.getCommercialProductFromCommercialProductRepository(deviceId);
 		LogHelper.info(this, "End -->  After calling  CommercialProductRepository.get");
 		DeviceDetails deviceDetails = new DeviceDetails();
