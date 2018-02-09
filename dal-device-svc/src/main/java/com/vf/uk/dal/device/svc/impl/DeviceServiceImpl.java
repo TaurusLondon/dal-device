@@ -2190,9 +2190,7 @@ public class DeviceServiceImpl implements DeviceService {
 			bundleAndHardwareTuple.setBundleId(leadPlanFromCommercialProduct);
 			bundleAndHardwareTuple.setHardwareId(deviceId);
 			setOfBundleAndHardwareTuple.add(bundleAndHardwareTuple);
-		}
-
-		if (CollectionUtils.isNotEmpty(compatiblePlans)) {
+		}else if (CollectionUtils.isNotEmpty(compatiblePlans)) {
 			compatiblePlans.forEach(plan -> {
 				BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
 				bundleAndHardwareTuple.setBundleId(plan);
@@ -2297,7 +2295,6 @@ public class DeviceServiceImpl implements DeviceService {
 			Map<String, String> leadPlanIdMap = new HashMap<>();
 			List<String> listofLeadPlan = new ArrayList<>();
 			Set<String> listofLeadBundleId = new HashSet<>();
-			Map<String, Set<BundleAndHardwareTuple>> bundleHardwareTrupleMap=new HashMap<>();
 			if (CollectionUtils.isNotEmpty(listOfCommercialProducts)) {
 				listOfCommercialProducts.forEach(commercialProduct -> {
 					if ((Constants.STRING_HANDSET.equalsIgnoreCase(commercialProduct.getProductClass())
@@ -2313,19 +2310,12 @@ public class DeviceServiceImpl implements DeviceService {
 								&& commercialProduct.getProductControl().isIsSellableRet()
 								&& commercialProduct.getProductControl().isIsDisplayableRet()) {
 							commerProdMemMap.put(commercialProduct.getId(), commercialProduct);
-							Set<BundleAndHardwareTuple> setOfBundleAndHardwareTuple = getBundleHardwarePriceMap(
-									leadPlanFromCommercialProduct, compatiblePlans, commercialProduct.getId());
-							bundleHardwareTrupleMap.put(commercialProduct.getId(), setOfBundleAndHardwareTuple);
-							listofLeadBundleId.add(leadPlanFromCommercialProduct);
 							listofLeadBundleId.addAll(compatiblePlans);
 						} else if (!Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
 								&& commercialProduct.getProductControl() != null
 								&& commercialProduct.getProductControl().isIsDisplayableAcq()
 								&& commercialProduct.getProductControl().isIsSellableAcq()) {
 							commerProdMemMap.put(commercialProduct.getId(), commercialProduct);
-							Set<BundleAndHardwareTuple> setOfBundleAndHardwareTuple = getBundleHardwarePriceMap(
-									leadPlanFromCommercialProduct, compatiblePlans, commercialProduct.getId());
-							bundleHardwareTrupleMap.put(commercialProduct.getId(), setOfBundleAndHardwareTuple);
 							listofLeadBundleId.add(leadPlanFromCommercialProduct);
 							listofLeadBundleId.addAll(compatiblePlans);
 						}
@@ -2363,25 +2353,25 @@ public class DeviceServiceImpl implements DeviceService {
 										listofLeadPlan.add(bundleId);
 									} else {
 										bundleIdMap.put(commercialProduct.getId(), false);
-										BundleAndHardwareTuple bundleAndHardwareTuple;
 										if (StringUtils.isNotBlank(commercialProduct.getLeadPlanId()) 
 												&& isJourneySpecificLeadPlan(commerBundleIdMap, commercialProduct.getLeadPlanId(), journeyType)
 												&& commercialProduct.getListOfCompatiblePlanIds().contains(commercialProduct.getLeadPlanId())) {
-											bundleAndHardwareTuple = new BundleAndHardwareTuple();
-											bundleAndHardwareTuple.setBundleId(commercialProduct.getLeadPlanId());
-											bundleAndHardwareTuple.setHardwareId(commercialProduct.getId());
-											bundleAndHardwareTupleList.add(bundleAndHardwareTuple);
+											Set<BundleAndHardwareTuple> setOfBundleAndHardwareTuple = getBundleHardwarePriceMap(
+													commercialProduct.getLeadPlanId(), null, commercialProduct.getId());
+											bundleAndHardwareTupleList.addAll(setOfBundleAndHardwareTuple);
 											leadPlanIdMap.put(commercialProduct.getId(),
 													commercialProduct.getLeadPlanId());
 											listofLeadPlan.add(commercialProduct.getLeadPlanId());
 											fromPricingMap.put(commercialProduct.getId(), false);
 										} else {
 											if (CollectionUtils
-													.isNotEmpty(commercialProduct.getListOfCompatiblePlanIds())
-													&& bundleHardwareTrupleMap.containsKey(commercialProduct.getId())) 
+													.isNotEmpty(commercialProduct.getListOfCompatiblePlanIds()))
+													 
 											{
+												Set<BundleAndHardwareTuple> setOfBundleAndHardwareTuple = getBundleHardwarePriceMap(
+														null, commercialProduct.getListOfCompatiblePlanIds(), commercialProduct.getId());
 												fromPricingMap.put(commercialProduct.getId(), true);
-													bundleAndHardwareTupleList.addAll(bundleHardwareTrupleMap.get(commercialProduct.getId()));
+													bundleAndHardwareTupleList.addAll(setOfBundleAndHardwareTuple);
 											}
 										}
 									}
