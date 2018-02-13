@@ -17,6 +17,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 import javax.sql.DataSource;
 
@@ -104,9 +106,15 @@ public class DeviceDaoImpl implements DeviceDao {
 	private BazaarReviewRepository bazaarReviewRepository = null;
 
 	@Override
-	public List<DeviceTile> getDeviceTileById(String id, String offerCode, String journeyType) {
+	public List<DeviceTile> getDeviceTileById(String id, String offerCode, String journeyTypeInput) {
+		String journeyType;
+		if (StringUtils.isBlank(journeyTypeInput) || (!Constants.JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyTypeInput) 
+				&& !Constants.JOURNEY_TYPE_UPGRADE.equalsIgnoreCase(journeyTypeInput) && !Constants.JOURNEY_TYPE_SECONDLINE.equalsIgnoreCase(journeyTypeInput))) {
+			journeyType = Constants.JOURNEY_TYPE_ACQUISITION;
+		}else{
+			journeyType =journeyTypeInput;
+		}
 		String strGroupType = null;
-
 		LogHelper.info(this, "Start  -->  calling  CommercialProductRepository.get");
 		if (null == commercialProductRepository) {
 			commercialProductRepository = CoherenceConnectionProvider.getCommercialProductRepoConnection();
@@ -514,7 +522,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		}
 		boolean sellableCheck = false;
 		if (commercialBundle != null) {
-			if (StringUtils.isNotBlank(journeyType) && Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
+			if ( Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
 					&& commercialBundle.getBundleControl() != null
 					&& commercialBundle.getBundleControl().isSellableRet()
 					&& commercialBundle.getBundleControl().isDisplayableRet()
@@ -1787,5 +1795,33 @@ public class DeviceDaoImpl implements DeviceDao {
 			});
 		}
 		return promotions;
+	}
+	@Override
+	public CompletableFuture<List<PriceForBundleAndHardware>> getPriceForBundleAndHardwareListFromTupleListAsync(
+			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType) {
+		LogHelper.info(this, "Start -->  calling  getPriceForBundleAndHardwareListFromTupleList_PriceAPI");
+
+		return CompletableFuture.supplyAsync(new Supplier<List<PriceForBundleAndHardware>>() {
+			@Override
+			public List<PriceForBundleAndHardware> get() {
+				return CommonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode, registryclnt, journeyType);
+			}
+		});
+
+	}
+	
+	@Override
+	public CompletableFuture<List<com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions>> getBundleAndHardwarePromotionsListFromBundleListAsync(
+			List<BundleAndHardwareTuple> bundleHardwareTupleList, String journeyType) {
+		LogHelper.info(this, "Start -->  calling  getBundleAndHardwarePromotionsListFromBundleListAsync");
+
+		return CompletableFuture
+				.supplyAsync(new Supplier<List<com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions>>() {
+					@Override
+					public List<com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions> get() {
+						return CommonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList, journeyType,registryclnt);
+					}
+				});
+
 	}
 }

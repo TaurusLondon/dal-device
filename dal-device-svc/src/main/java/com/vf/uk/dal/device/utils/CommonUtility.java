@@ -836,4 +836,37 @@ public  class CommonUtility {
 		}	
 		return sellableCheck;
 	}
+	public static boolean isValidJourneySpecificBundle(PriceForBundleAndHardware price,
+			Map<String,CommercialBundle> commercialBundleMap,List<String> productLinesList,String journeyType)
+	{
+		boolean flag =false;
+		String bundleId=price.getBundlePrice().getBundleId();
+		if(commercialBundleMap.containsKey(bundleId))
+		{
+			CommercialBundle commercialBundle= commercialBundleMap.get(bundleId);
+			String startDateTime = null;
+			String endDateTime = null;
+			if (commercialBundle.getAvailability().getStart() != null) {
+				startDateTime = getDateToString(commercialBundle.getAvailability().getStart(),
+						Constants.DATE_FORMAT_COHERENCE);
+			}
+			if (commercialBundle.getAvailability().getEnd() != null) {
+				endDateTime = getDateToString(commercialBundle.getAvailability().getEnd(),
+						Constants.DATE_FORMAT_COHERENCE);
+			}
+			//boolean isCompatible=commercialBundle.getProductLines().containsAll(productLinesList);
+			boolean isCompatible=commercialBundle.getProductLines().stream().anyMatch(productLinesList.get(0)::equalsIgnoreCase)?true:commercialBundle.getProductLines().stream().anyMatch(productLinesList.get(1)::equalsIgnoreCase)?true:false;
+			if((StringUtils.isBlank(journeyType) || !StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_UPGRADE) )&& isCompatible && dateValidationForOffers(startDateTime,
+					endDateTime, Constants.DATE_FORMAT_COHERENCE) && !commercialBundle.getAvailability().getSalesExpired() && commercialBundle.getBundleControl().isDisplayableAcq() && commercialBundle.getBundleControl().isSellableAcq())
+			{
+				flag =true;
+			}
+			else if(StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_UPGRADE)&& isCompatible && dateValidationForOffers(startDateTime,
+					endDateTime, Constants.DATE_FORMAT_COHERENCE) && !commercialBundle.getAvailability().getSalesExpired() && commercialBundle.getBundleControl().isDisplayableRet() && commercialBundle.getBundleControl().isSellableRet())
+			{
+				flag =true;
+			}
+		}
+		return flag;
+	}
 }

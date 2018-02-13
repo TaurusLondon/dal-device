@@ -3,6 +3,7 @@ package com.vf.uk.dal.device.dao;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
@@ -10,6 +11,7 @@ import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.entity.DeviceTile;
 import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
 import com.vf.uk.dal.device.entity.ProductGroup;
+import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 import com.vf.uk.dal.utility.entity.BundleDetails;
 import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
 import com.vodafone.business.service.RequestManager;
@@ -566,4 +568,22 @@ public interface DeviceDao {
 	 */
 	public Map<String, com.vf.uk.dal.device.entity.MerchandisingPromotion> getMerchandisingPromotionsEntityFromRepo(
 			List<String> promotionAsTags);
+	/**
+	 * 
+	 * @param bundleAndHardwareTupleList
+	 * @param offerCode
+	 * @param packageType
+	 * @return
+	 */
+	public CompletableFuture<List<PriceForBundleAndHardware>> getPriceForBundleAndHardwareListFromTupleListAsync(
+			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String packageType);
+	
+	/**
+	 * 
+	 * @param bundleHardwareTupleList
+	 * @param journeyType
+	 * @return
+	 */
+	public CompletableFuture<List<BundleAndHardwarePromotions>> getBundleAndHardwarePromotionsListFromBundleListAsync(
+			List<BundleAndHardwareTuple> bundleHardwareTupleList, String journeyType);
 }
