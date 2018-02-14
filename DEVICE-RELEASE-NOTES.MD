@@ -406,3 +406,8 @@ User story # 14321
 CacheDevice/DeviceList  to implement solr changes for journeytype 
 ]
 https://internal-digitalx-sit2-alb-mas-1938696969.eu-west-1.elb.amazonaws.com/devices/catalogue/deviceTile/cacheDeviceTile/?filter[groupType]=DEVICE_PAYM
+
+User story # 19619
+[ 
+[Catalogue APIs] Split the Digital DB into Ref DB and Txn ID
+]
