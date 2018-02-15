@@ -2553,7 +2553,11 @@ public class DeviceServiceImpl implements DeviceService {
 						ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST);
 			}
 		}
-
+		if(CollectionUtils.isEmpty(listOfDeviceTile)){
+			LogHelper.error(this, "No data found for given make and mmodel :" + make + " and " + model);
+			throw new ApplicationException(
+					ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST);
+		}
 		return listOfDeviceTile;
 
 	}
@@ -3293,16 +3297,17 @@ public class DeviceServiceImpl implements DeviceService {
 
 			for (String planId : compatiblePlanIds) {
 				BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
-				if (!commercialProduct.getLeadPlanId().equalsIgnoreCase(planId)) {
+				if (StringUtils.isNotBlank(commercialProduct.getLeadPlanId())&&!commercialProduct.getLeadPlanId().equalsIgnoreCase(planId)) {
 					bundleAndHardwareTuple.setBundleId(planId);
 					bundleAndHardwareTuple.setHardwareId(commercialProduct.getId());
 					bundleAndHardwareTupleList.add(bundleAndHardwareTuple);
 				}
 			}
-
-			List<PriceForBundleAndHardware> priceForBundleAndHardwares = CommonUtility
+			List<PriceForBundleAndHardware> priceForBundleAndHardwares =null;
+			if (CollectionUtils.isNotEmpty(bundleAndHardwareTupleList)){
+			 priceForBundleAndHardwares = CommonUtility
 					.getPriceDetails(bundleAndHardwareTupleList, null, registryclnt, journeyType);
-
+			}
 			if (CollectionUtils.isNotEmpty(priceForBundleAndHardwares)) {
 				Iterator<PriceForBundleAndHardware> iterator = priceForBundleAndHardwares.iterator();
 				while (iterator.hasNext()) {
