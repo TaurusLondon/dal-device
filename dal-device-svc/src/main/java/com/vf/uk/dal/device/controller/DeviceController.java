@@ -100,7 +100,7 @@ public class DeviceController {
 	@ApiOperation(value = "Get the list of device tiles based on the filter criteria. Pagination also defined", notes = "The service gets the details of the device tiles from coherence based on the filter criteria in the response.", response = DeviceTile.class, responseContainer = "List", tags={ "DeviceTile", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Success", response = DeviceTile.class, responseContainer = "List"),
-        @ApiResponse(code = 404, message = "Not found", response = Void.class),
+        @ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
         @ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
 	@RequestMapping(value = "/deviceTile/queries/byMakeModel/", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	public List<DeviceTile> getListOfDeviceTile(@NotNull@ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"apple\".", required = true) @RequestParam(value = "make", required = true) String make,
@@ -168,7 +168,7 @@ public class DeviceController {
     @RequestMapping(value = "/device/{deviceId}", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	@ApiResponses(value = { 
 	        @ApiResponse(code = 200, message = "Success", response = DeviceDetails.class),
-	        @ApiResponse(code = 404, message = "Not found", response = Void.class),
+	        @ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
 	        @ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
 	public DeviceDetails getDeviceDetails(@NotNull@ApiParam(value = "Unique Id of the device being requested",required=true ) @PathVariable("deviceId") String deviceId,
 	        @ApiParam(value = "Type of journey that the user undertakes e.g. \"Acquisition\", \"upgrade\", \"ils\" etc.") @RequestParam(value = "journeyType", required = false) String journeyType,
@@ -199,7 +199,7 @@ public class DeviceController {
 			"DeviceTile", })
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Success", response = DeviceTile.class, responseContainer = "List"),
-			@ApiResponse(code = 404, message = "Not found", response = Void.class),
+			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
 	@RequestMapping(value = "/deviceTile/queries/byDeviceVariant/", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	public List<DeviceTile> getDeviceTileById(
@@ -244,7 +244,7 @@ public class DeviceController {
 	@ApiOperation(value = "Get compatible accessory details for the given device Id", notes = "The service gets the details of compatible accessory along with the necessary information in the response.", response = AccessoryTileGroup.class, responseContainer = "List", tags={ "AccessoryTileGroup", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Success", response = AccessoryTileGroup.class, responseContainer = "List"),
-        @ApiResponse(code = 404, message = "Not found", response = Void.class),
+        @ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
         @ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
 	@RequestMapping(value = "/accessory/queries/byDeviceId/", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	public List<AccessoryTileGroup> getAccessoriesOfDevice(@NotNull@ApiParam(value = "Unique Id of the device being requested", required = true) @RequestParam(value = "deviceId", required = true) String deviceId,
@@ -290,7 +290,7 @@ public class DeviceController {
 	 @ApiOperation(value = "Get the list of devices based on the filter criteria, like productGroup brand Name. Pagination, sorting, filteration also defined", notes = "The service gets the details of the device list from Solr based on the filter criteria in the response.", response = FacetedDevice.class, tags={ "DeviceTile", })
 	    @ApiResponses(value = { 
 	        @ApiResponse(code = 200, message = "Success", response = FacetedDevice.class),
-	        @ApiResponse(code = 404, message = "Not found", response = Void.class),
+	        @ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
 	        @ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
 			@RequestMapping(value = "/deviceTile", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 			public FacetedDevice getDeviceList(@NotNull@ApiParam(value = "Values on which the attributes should be filtered upon.", required = true) @RequestParam(value = "productClass", required = true) String productClass,
@@ -391,7 +391,7 @@ public class DeviceController {
 			 @ApiOperation(value = "Get the list of insurance", notes = "The service gets the details of insurance available with device.", response = Insurances.class, tags={ "Insurances", })
 			    @ApiResponses(value = { 
 			        @ApiResponse(code = 200, message = "Success", response = Insurances.class),
-			        @ApiResponse(code = 404, message = "Not found", response = Void.class),
+			        @ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
 			        @ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
 	@RequestMapping(value = "/insurance/queries/byDeviceId/", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	public Insurances getInsuranceById(@NotNull@ApiParam(value = "Values based on which inssurnace will be fetched.", required = true) @RequestParam(value = "deviceId", required = true) String deviceId,
@@ -421,7 +421,7 @@ public class DeviceController {
 	@ApiOperation(value = "Cache the Device Tile Details in Solr.", notes = "Cache the Device Tile Details in Solr.", response = CacheDeviceTileResponse.class, tags = {
 			"DeviceTile", })
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Success", response = CacheDeviceTileResponse.class),
-			@ApiResponse(code = 404, message = "Not found", response = Void.class),
+			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
 
 	@RequestMapping(value = "/deviceTile/cacheDeviceTile", method = RequestMethod.POST, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
@@ -480,7 +480,7 @@ public class DeviceController {
 			response = BundleDetails.class, responseContainer = "Object", tags={ "KeepDeviceChangePlan" })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Success", response = BundleDetails.class, responseContainer = "Object"),
-        @ApiResponse(code = 404, message = "Not found", response = Void.class),
+        @ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
         @ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
 	@RequestMapping(value = "/plan/action/keepDeviceChangePlan", method = RequestMethod.POST, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	public BundleDetails getKeepDeviceChangePlan(@RequestBody KeepDeviceChangePlanRequest keepDeviceChangePlanRequest) {
@@ -538,7 +538,7 @@ public class DeviceController {
 	 @ApiOperation(value = "Get the reviews for a specific device Id. Response is coming from Bazar Voice(third party) API.", notes = "The service gets the reviews of a particular device variant",tags={ "Review", })
 	    @ApiResponses(value = { 
 	        @ApiResponse(code = 200, message = "Success"),
-	        @ApiResponse(code = 404, message = "Not found", response = Void.class),
+	        @ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
 	        @ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
 	@RequestMapping(value = "/device/{deviceId}/review", method = RequestMethod.GET, produces = {
 			MediaType.APPLICATION_JSON })
@@ -593,7 +593,7 @@ public class DeviceController {
 	@ApiOperation(value = "Get the Cache Device Tile job status.", notes = "Get the Cache Device Tile job status.", response = CacheDeviceTileResponse.class, tags = {
 			"DeviceTile", })
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = CacheDeviceTileResponse.class),
-			@ApiResponse(code = 404, message = "Not found", response = Void.class),
+			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
 
 	@RequestMapping(value = "/deviceTile/cacheDeviceTile/{jobId}/status", method = RequestMethod.GET, produces = {
