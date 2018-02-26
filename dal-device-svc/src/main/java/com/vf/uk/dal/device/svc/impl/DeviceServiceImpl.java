@@ -3297,7 +3297,7 @@ public class DeviceServiceImpl implements DeviceService {
 
 			for (String planId : compatiblePlanIds) {
 				BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
-				if (StringUtils.isNotBlank(commercialProduct.getLeadPlanId())&&!commercialProduct.getLeadPlanId().equalsIgnoreCase(planId)) {
+				if (StringUtils.isBlank(commercialProduct.getLeadPlanId()) || (StringUtils.isNotBlank(commercialProduct.getLeadPlanId())&&!commercialProduct.getLeadPlanId().equalsIgnoreCase(planId))) {
 					bundleAndHardwareTuple.setBundleId(planId);
 					bundleAndHardwareTuple.setHardwareId(commercialProduct.getId());
 					bundleAndHardwareTupleList.add(bundleAndHardwareTuple);
