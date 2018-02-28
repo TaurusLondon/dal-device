@@ -492,9 +492,9 @@ public class DeviceController {
 	 */
 	@ApiOperation(value = "The service gets the details of the device specially price, equipment, specification, features, merchandising, etc in the response.", 
 			notes = "The service gets the details of the bundleDetails from API based on the bundleId, deviceId in the response.",
-			response = BundleDetails.class, responseContainer = "Object", tags={ "KeepDeviceChangePlan" })
+			response = BundleDetails.class, tags={ "KeepDeviceChangePlan" })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Success", response = BundleDetails.class, responseContainer = "Object"),
+        @ApiResponse(code = 200, message = "Success", response = BundleDetails.class),
         @ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
 		@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
         @ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
