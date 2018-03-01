@@ -9,21 +9,21 @@
 	</parent>
 	<groupId>com.vf.uk.dal</groupId>
 	<artifactId>dal-device-svc</artifactId>
-	<version>7.2.6</version>
+	<version>8.2.2</version>
 	<packaging>jar</packaging>
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin> 
+			</plugin>
 		</plugins>
 	</build>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			 <exclusions>
+			<exclusions>
 				<exclusion>
 					<groupId>ch.qos.logback</groupId>
 					<artifactId>logback-classic</artifactId>
@@ -32,7 +32,7 @@
 					<groupId>org.slf4j</groupId>
 					<artifactId>log4j-over-slf4j</artifactId>
 				</exclusion>
-			</exclusions> 
+			</exclusions>
 		</dependency>
 		<!-- <dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-starter-eureka</artifactId> 
 			<version>1.2.0.RELEASE</version> <exclusions> <exclusion> <artifactId>log4j-over-slf4j</artifactId> 
@@ -41,8 +41,8 @@
 		<dependency>
 			<groupId>com.vf.uk.dal</groupId>
 			<artifactId>dal-core</artifactId>
-			<version>6.6.1</version>
-			 <exclusions>
+			<version>8.1.0</version>
+			<exclusions>
 				<exclusion>
 					<artifactId>slf4j-log4j12</artifactId>
 					<groupId>org.slf4j</groupId>
@@ -59,13 +59,13 @@
 					<artifactId>log4j-over-slf4j</artifactId>
 					<groupId>org.slf4j</groupId>
 				</exclusion>
-			</exclusions> 
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.vf.uk.dal</groupId>
 			<artifactId>solr</artifactId>
 			<version>6.3.0</version>
-		</dependency> 
+		</dependency>
 		<dependency>
 			<groupId>com.vf.uk.dal.solr</groupId>
 			<artifactId>commons</artifactId>
@@ -174,12 +174,12 @@
 		<dependency>
 			<groupId>com.vf.uk.dal.solr</groupId>
 			<artifactId>solr-query-manager</artifactId>
-			<version>7.2.1</version>
+			<version>8.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>Solr</groupId>
 			<artifactId>IndexManager</artifactId>
-			<version>7.2.1</version>
+			<version>8.1.0</version> 
 		</dependency>
 		<!-- Coherence Jars -->
 		<dependency>
@@ -190,7 +190,7 @@
 		<dependency>
 			<groupId>com.vf.uk.dal.coh</groupId>
 			<artifactId>coherence-domain</artifactId>
-			<version>7.2.0</version>
+			<version>8.1.0</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>slf4j-log4j12</artifactId>
@@ -198,10 +198,10 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<dependency> 
+		<dependency>
 			<groupId>com.vf.uk.dal.coh</groupId>
 			<artifactId>coherence-logging-utility</artifactId>
-			<version>7.2.0</version>
+			<version>8.1.0</version>
 		</dependency>
 		<!-- LoggingUtility uses slf4j-ext and json-simple jar -->
 		<dependency>

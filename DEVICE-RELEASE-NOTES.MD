@@ -406,3 +406,24 @@ User story # 14321
 CacheDevice/DeviceList  to implement solr changes for journeytype 
 ]
 https://internal-digitalx-sit2-alb-mas-1938696969.eu-west-1.elb.amazonaws.com/devices/catalogue/deviceTile/cacheDeviceTile/?filter[groupType]=DEVICE_PAYM
+
+8.0.1 (08-Feb-2018)
+-----------------
+
+User story # 19619
+[ 
+[Catalogue APIs] Split the Digital DB into Ref DB and Txn ID
+]
+
+8.0.2 (15-Feb-2018)
+-----------------
+
+User story # 21258
+[ 
+[Tech - Generate swagger from code for Device MS
+]
+Bug # 21940
+[ 
+[
+keepDeviceChangePlan Response is different from Swagger structure.
+]

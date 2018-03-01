@@ -13,8 +13,11 @@
 
 package com.vf.uk.dal.utility.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -46,7 +49,43 @@ public class MerchandisingPromotion {
   @SerializedName("promotionMedia")
   private String promotionMedia = null;
   
-  /**
+  /** The package type. */
+	@JsonProperty("packageType")
+	private List<String> packageType = new ArrayList<>();
+
+	/** The package type. */
+	@JsonProperty("footNotes")
+	private List<String> footNotes = new ArrayList<>();
+	
+  public List<String> getPackageType() {
+		return packageType;
+	}
+
+
+
+
+	public void setPackageType(List<String> packageType) {
+		this.packageType = packageType;
+	}
+
+
+
+
+	public List<String> getFootNotes() {
+		return footNotes;
+	}
+
+
+
+
+	public void setFootNotes(List<String> footNotes) {
+		this.footNotes = footNotes;
+	}
+
+
+
+
+/**
    * 
    * @param tag
    * @return
