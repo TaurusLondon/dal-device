@@ -32,7 +32,7 @@ icp:
       logTopic: logs
  
   config:
-    jdbcUrl: jdbc:oracle:thin:@e18dbref.cqrpvr4944ct.eu-west-1.rds.amazonaws.com:1521:E18DBREF
+    jdbcUrl: jdbc:oracle:thin:@100.66.65.222:1521:oradb
     jdbcUserName: daluser
     jdbcUserPwd: simple4u
     
