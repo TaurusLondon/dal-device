@@ -42,7 +42,7 @@
 			<groupId>com.vf.uk.dal</groupId>
 			<artifactId>dal-core</artifactId>
 			<version>8.1.0</version>
-			<exclusions>
+			<!-- <exclusions>
 				<exclusion>
 					<artifactId>slf4j-log4j12</artifactId>
 					<groupId>org.slf4j</groupId>
@@ -59,7 +59,7 @@
 					<artifactId>log4j-over-slf4j</artifactId>
 					<groupId>org.slf4j</groupId>
 				</exclusion>
-			</exclusions>
+			</exclusions> -->
 		</dependency>
 		<dependency>
 			<groupId>com.vf.uk.dal</groupId>
@@ -179,7 +179,7 @@
 		<dependency>
 			<groupId>Solr</groupId>
 			<artifactId>IndexManager</artifactId>
-			<version>8.1.0</version> 
+			<version>8.1.0</version>
 		</dependency>
 		<!-- Coherence Jars -->
 		<dependency>
@@ -249,6 +249,21 @@
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>2.6.1</version>
 			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.elasticsearch.client</groupId>
+			<artifactId>elasticsearch-rest-client-sniffer</artifactId>
+			<version>6.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.elasticsearch</groupId>
+			<artifactId>elasticsearch</artifactId>
+			<version>6.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.elasticsearch.client</groupId>
+			<artifactId>transport</artifactId>
+			<version>6.2.0</version>
 		</dependency>
 	</dependencies>
 	<!-- To Support Sonar Code Fixes we have added the JDK Version 1.8 -->

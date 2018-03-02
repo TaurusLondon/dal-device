@@ -32,14 +32,16 @@ icp:
       logTopic: logs
  
   config:
-    jdbcUrl: jdbc:oracle:thin:@100.66.65.222:1521:oradb
+    jdbcUrl: jdbc:oracle:thin:@e18dbref.cqrpvr4944ct.eu-west-1.rds.amazonaws.com:1521:E18DBREF
     jdbcUserName: daluser
     jdbcUserPwd: simple4u
     
   service:  
     defaultPageSize: 1000
     defaultPageNumber: 0  
-  
+
+elasticsearch:
+  host: https://vpc-digitalx-dev-solr-es-hne32eyterqfesg3zzkpeg25q4.eu-west-1.es.amazonaws.com/  
 ---
 
 spring:

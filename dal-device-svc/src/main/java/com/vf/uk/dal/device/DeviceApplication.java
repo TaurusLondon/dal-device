@@ -2,6 +2,7 @@ package com.vf.uk.dal.device;
 
 import java.util.concurrent.Executor;
 
+import org.elasticsearch.client.RestClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -9,6 +10,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.vf.uk.dal.common.annotation.Service;
+import com.vf.uk.dal.device.config.ElasticsearchRestCient;
 
 /**
  * DeviceApplication, will start the service as SpringBoot Application Added
@@ -43,5 +45,8 @@ public class DeviceApplication {
 		return executor;
 	}
 	
-	
+	@Bean
+	public RestClient getRestClientObject() {
+		return ElasticsearchRestCient.getClient();
+	}
 }
