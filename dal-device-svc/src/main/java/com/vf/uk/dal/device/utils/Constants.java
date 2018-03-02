@@ -221,6 +221,12 @@ public class Constants {
 	 * Sprint 7.2
 	 */
 	public static final String PAYG_DEVICE="Mobile Phones";
+	
+	public static final String ELASTIC_SEARCH_HOST= "elasticsearch.host";
+	
+	public static final int DEFAULT_PORT = -1;
+	
+	public static final String HTTPS_SCHEME = "https";
 
 
 }
