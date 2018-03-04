@@ -23,6 +23,10 @@ import java.util.function.Supplier;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.elasticsearch.client.Response;
+import org.elasticsearch.client.RestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -44,6 +48,7 @@ import com.vf.uk.dal.device.entity.MerchandisingPromotion;
 import com.vf.uk.dal.device.entity.Price;
 import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
 import com.vf.uk.dal.device.entity.ProductGroup;
+import com.vf.uk.dal.device.utils.BazaarVoiceCache;
 import com.vf.uk.dal.device.utils.CoherenceConnectionProvider;
 import com.vf.uk.dal.device.utils.CommonUtility;
 import com.vf.uk.dal.device.utils.Constants;
@@ -97,6 +102,12 @@ public class DeviceDaoImpl implements DeviceDao {
 
 	@Autowired
 	DataSource datasource;
+	
+	@Autowired
+	RestClient restClient;
+	
+	 @Autowired
+	 BazaarVoiceCache bzrVoiceCache;
 
 	private RequestManager requestManager = null;
 	private CommercialProductRepository commercialProductRepository = null;
@@ -104,6 +115,8 @@ public class DeviceDaoImpl implements DeviceDao {
 	private ProductGroupRepository productGroupRepository = null;
 	private MerchandisingPromotionRepository merchandisingPromotionRepository = null;
 	private BazaarReviewRepository bazaarReviewRepository = null;
+	
+	private String endPoint=ConfigHelper.getString(Constants.ELASTIC_SEARCH_ENDPOINT, Constants.DEFAULT_ENDPOINT_FOR_VODAFONE5_INDEX)+Constants.SEARCH_FOR_VODAFONE5_INDEX;
 
 	@Override
 	public List<DeviceTile> getDeviceTileById(String id, String offerCode, String journeyTypeInput) {
@@ -869,12 +882,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	public String getDeviceReviewDetails(String deviceId) {
 		String jsonObject = null;
 		LogHelper.info(this, "Start -->  calling  BazaarReviewRepository.get");
-		BazaarReviewRepository repo = new BazaarReviewRepository();
-		BazaarVoice response = repo.get(deviceId);
-		LogHelper.info(this, "End -->  calling  BazaarReviewRepository.get");
-		if (response != null) {
-			jsonObject = response.getJsonsource();
-		}
+		jsonObject = bzrVoiceCache.getBazaarVoiceReviews(deviceId);
 		return jsonObject;
 	}
 
@@ -1823,5 +1831,21 @@ public class DeviceDaoImpl implements DeviceDao {
 					}
 				});
 
+	}
+	@Override
+	public Response getResponseFromDataSource(Map<String, String> params, String query) {
+		Response response = null;
+		try {
+			LogHelper.info(this, "Start --> Calling  getBundlesByJourneyType_Solr");
+			if(params!=null) {
+			    response = restClient.performRequest("GET", endPoint, params,	new StringEntity(query, ContentType.APPLICATION_JSON));
+			}else {
+				response = restClient.performRequest("GET", endPoint, java.util.Collections.emptyMap(),	new StringEntity(query, ContentType.APPLICATION_JSON));	
+			}
+			LogHelper.info(this, "End --> End -->  After calling  getBundlesByJourneyType_Solr");
+		} catch (Exception e) {
+			LogHelper.error(this, "::::::Exception occured while querieng bundle models from ES " + e);
+		}
+		return response;
 	}
 }

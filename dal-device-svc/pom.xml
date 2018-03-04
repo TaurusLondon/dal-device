@@ -42,7 +42,7 @@
 			<groupId>com.vf.uk.dal</groupId>
 			<artifactId>dal-core</artifactId>
 			<version>8.1.0</version>
-			<exclusions>
+			 <exclusions>
 				<exclusion>
 					<artifactId>slf4j-log4j12</artifactId>
 					<groupId>org.slf4j</groupId>
@@ -265,6 +265,10 @@
 			<artifactId>transport</artifactId>
 			<version>6.2.0</version>
 		</dependency>
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+			</dependency>
 	</dependencies>
 	<!-- To Support Sonar Code Fixes we have added the JDK Version 1.8 -->
 	<properties>

@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+import org.elasticsearch.client.Response;
+
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
@@ -586,4 +588,14 @@ public interface DeviceDao {
 	 */
 	public CompletableFuture<List<BundleAndHardwarePromotions>> getBundleAndHardwarePromotionsListFromBundleListAsync(
 			List<BundleAndHardwareTuple> bundleHardwareTupleList, String journeyType);
+	
+	/**
+	 * 
+	 * @author manoj.bera
+	 * @param params
+	 * @param query
+	 * @param endPoint
+	 * @return
+	 */
+	public Response getResponseFromDataSource(Map<String, String> params, String query);
 }

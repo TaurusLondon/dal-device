@@ -220,6 +220,11 @@ public class Constants {
 	 * @author krishna.reddy
 	 * Sprint 7.2
 	 */
+	
+	/**
+	 * @author manoj.bera
+	 * Sprint 8.3
+	 */
 	public static final String PAYG_DEVICE="Mobile Phones";
 	
 	public static final String ELASTIC_SEARCH_HOST= "elasticsearch.host";
@@ -228,5 +233,25 @@ public class Constants {
 	
 	public static final String HTTPS_SCHEME = "https";
 
+	public static final String STRING_PARAMS = "params";
+	
+	public static final String STRING_QUERY = "query";
+	
+	public static final String STRING_HITS = "hits";
+	
+	public static final String DEFAULT_ENDPOINT_FOR_VODAFONE5_INDEX= "/vodafone5/models/";
+	
+	public static final String ELASTIC_SEARCH_ENDPOINT="ELASTIC_SEARCH_INDEX";
+	
+	public static final String STRING_SOURCE = "_source";
+	
+	public static final String STRING_MAKE = "equipment.make";
+	
+	public static final String STRING_MODEL = "equipment.model";
+	
+	public static final String STRING_GROUP_TYPE="groupType";
+	
+	public static final String SEARCH_FOR_VODAFONE5_INDEX="_search";
+	
 
 }

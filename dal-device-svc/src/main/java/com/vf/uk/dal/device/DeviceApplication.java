@@ -4,6 +4,7 @@ import java.util.concurrent.Executor;
 
 import org.elasticsearch.client.RestClient;
 import org.springframework.boot.SpringApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -21,6 +22,7 @@ import com.vf.uk.dal.device.config.ElasticsearchRestCient;
 @Service
 @EnableTransactionManagement
 @EnableAsync 
+@EnableCaching
 public class DeviceApplication {
 	/**
 	 * 
@@ -29,7 +31,7 @@ public class DeviceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DeviceApplication.class, args);
 	}
-
+	
 	@Bean
 	/**
 	 * @author 

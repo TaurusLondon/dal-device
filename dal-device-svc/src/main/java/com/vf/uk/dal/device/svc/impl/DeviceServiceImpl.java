@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.solr.client.solrj.response.FacetField;
+import org.elasticsearch.client.Response;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -33,6 +34,8 @@ import org.springframework.stereotype.Component;
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.common.registry.client.RegistryClient;
+import com.vf.uk.dal.device.config.QueryBuilderHelper;
+import com.vf.uk.dal.device.config.ResponseMappingHelper;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.entity.Accessory;
 import com.vf.uk.dal.device.entity.AccessoryTileGroup;
@@ -2268,10 +2271,16 @@ public class DeviceServiceImpl implements DeviceService {
 				|| groupType.equalsIgnoreCase(Constants.STRING_DATADEVICE_PAYM)
 				|| groupType.equalsIgnoreCase(Constants.STRING_DATADEVICE_PAYG)) {
 			LogHelper.info(this, "Start -->  calling  CommericalProduct.getByMakeAndModel");
-			listOfCommercialProducts = deviceDao.getListOfCommercialProductsFromCommercialProductRepository(make,
-					model);// commercialProductRepository.getByMakeANDModel(make,
+			/*listOfCommercialProducts = deviceDao.getListOfCommercialProductsFromCommercialProductRepository(make,
+					model);*/// commercialProductRepository.getByMakeANDModel(make,
 							// model);
-
+			LogHelper.info(this, "creating search query using Query  Builder Helper");
+			Map<String,Object> queryContextMap= QueryBuilderHelper.searchQueryForMakeAndModel(make, model);
+			@SuppressWarnings("unchecked")
+			Response bundleResponse=deviceDao.getResponseFromDataSource((Map<String,String>)queryContextMap.get(Constants.STRING_PARAMS),(String) queryContextMap.get(Constants.STRING_QUERY));
+			LogHelper.info(this, "converting elasticsearch response into standard json object response");
+			listOfCommercialProducts = ResponseMappingHelper.getCommercialBundleFromJson(bundleResponse);
+			
 			LogHelper.info(this, "End -->  After calling  CommericalProduct.getByMakeAndModel");
 
 		} else {
@@ -2279,9 +2288,15 @@ public class DeviceServiceImpl implements DeviceService {
 			throw new ApplicationException(ExceptionMessages.NULL_VALUE_GROUP_TYPE);
 		}
 		LogHelper.info(this, "Start -->  calling  productGroupRepository.getProductGroupsByType");
-		List<Group> listOfProductGroup = deviceDao.getListOfProductGroupFromProductGroupRepository(groupType);// productGroupRepository.getProductGroupsByType(groupType);
+		//List<Group> listOfProductGroup = deviceDao.getListOfProductGroupFromProductGroupRepository(groupType);// productGroupRepository.getProductGroupsByType(groupType);
 		LogHelper.info(this, "End -->  After calling  productGroupRepository.getProductGroupsByType");
 
+		LogHelper.info(this, "creating search query using Query  Builder Helper");
+		Map<String,Object> queryContextMap= QueryBuilderHelper.searchQueryForProductGroup(groupType);
+		@SuppressWarnings("unchecked")
+		Response bundleResponse=deviceDao.getResponseFromDataSource((Map<String,String>)queryContextMap.get(Constants.STRING_PARAMS),(String) queryContextMap.get(Constants.STRING_QUERY));
+		LogHelper.info(this, "converting elasticsearch response into standard json object response");
+		List<Group> listOfProductGroup = ResponseMappingHelper.getListOfGroupFromJson(bundleResponse);
 		if (groupType.equals(Constants.STRING_DEVICE_PAYG)) {
 			listOfDeviceTile = getDeviceTileByMakeAndModelForPAYG(listOfCommercialProducts, listOfProductGroup, make,
 					model, groupType);
