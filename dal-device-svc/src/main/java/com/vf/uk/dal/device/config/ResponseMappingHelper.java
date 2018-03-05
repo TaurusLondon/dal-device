@@ -130,4 +130,27 @@ public class ResponseMappingHelper {
 		return obj;
 	
 	}
+	public static List<CommercialBundle> getListOfCommercialBundleFromJson(Response response) {
+
+		List<CommercialBundle> bundleModelList = new ArrayList<>();
+		JSONParser parser = new JSONParser();
+		try {
+			LogHelper.info(ResponseMappingHelper.class, "<---- parsing json object response ---->");
+			JSONObject jsonObj = (JSONObject) parser.parse(EntityUtils.toString(response.getEntity()));
+			JSONObject jsonObj1 = (JSONObject) jsonObj.get(Constants.STRING_HITS);
+			JSONArray jsonObj2 = (JSONArray) jsonObj1.get(Constants.STRING_HITS);
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			for (int i = 0; i < jsonObj2.size(); i++) {
+				JSONObject jsonObj3 = (JSONObject) jsonObj2.get(i);
+				CommercialBundle obj = mapper.readValue(jsonObj3.get(Constants.STRING_SOURCE).toString(), CommercialBundle.class);
+				bundleModelList.add(obj);
+			}
+			LogHelper.info(ResponseMappingHelper.class, "<---- bundle model list: "+ bundleModelList.size() + "---->");
+		} catch (Exception e) {
+			LogHelper.error(ResponseMappingHelper.class, "::::::Exception occurred preparing bundlemodel from ES response:::::: " + e);
+		}
+		return bundleModelList;
+	
+	}
 }

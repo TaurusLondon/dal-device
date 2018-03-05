@@ -1493,8 +1493,12 @@ public class DeviceDaoImpl implements DeviceDao {
 	 */
 	@Override
 	public BazaarVoice getBazaarVoice(String skuId) {
-		getBazaarReviewRepository();
-		return bazaarReviewRepository.get(CommonUtility.appendPrefixString(skuId));
+		BazaarVoice bazaarVoice=new BazaarVoice();
+		bazaarVoice.setSkuId(skuId);
+		bazaarVoice.setJsonsource(getDeviceReviewDetails(CommonUtility.appendPrefixString(skuId)));
+		return bazaarVoice;
+		/*getBazaarReviewRepository();
+		return bazaarReviewRepository.get(CommonUtility.appendPrefixString(skuId));*/
 	}
 
 	/**
