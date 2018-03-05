@@ -251,6 +251,8 @@ public class Constants {
 	
 	public static final String STRING_GROUP_TYPE="groupType";
 	
+	public static final String STRING_GROUP_NAME="name";
+	
 	public static final String STRING_ID="id";
 	
 	public static final String SEARCH_FOR_VODAFONE5_INDEX="_search";

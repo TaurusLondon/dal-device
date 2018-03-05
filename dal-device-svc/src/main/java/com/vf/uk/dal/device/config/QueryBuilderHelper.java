@@ -55,6 +55,28 @@ public class QueryBuilderHelper {
 		}
 		return searchQueryMap;
 	}
+	public static Map<String, Object> searchQueryForProductGroupWithGroupName(String groupName,String groupType) {
+		Map<String, Object> searchQueryMap = null;
+		Map<String, String> params = null;
+		String query = null;
+		try {
+			LogHelper.info(QueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
+			searchQueryMap = new HashMap<>();
+			BoolQueryBuilder qb = QueryBuilders.boolQuery();
+			 qb.must(QueryBuilders.matchQuery(Constants.STRING_GROUP_NAME, groupName));
+		    qb.must(QueryBuilders.matchQuery(Constants.STRING_GROUP_TYPE, groupType));
+			query = "{ \"query\" :" + qb.toString() + "}";
+			LogHelper.info(QueryBuilderHelper.class, " <-----  Setting up Elasticsearch parameters and query  ----->");
+			searchQueryMap.put(Constants.STRING_PARAMS, params);
+			searchQueryMap.put(Constants.STRING_QUERY, query);
+
+		} catch (Exception e) {
+			LogHelper.error(QueryBuilderHelper.class,
+					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
+
+		}
+		return searchQueryMap;
+	}
 	public static Map<String, Object> searchQueryForCommercialProductAndCommercialBundle(String Id) {
 		Map<String, Object> searchQueryMap = null;
 		Map<String, String> params = null;

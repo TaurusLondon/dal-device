@@ -958,7 +958,12 @@ public class DeviceServiceImpl implements DeviceService {
 	@Override
 	public Insurances getInsuranceByDeviceId(String deviceId, String journeyType) {
 		Insurances insurance = null;
-		CommercialProduct cohProduct = deviceDao.getCommercialProductByProductId(deviceId);
+		Map<String,Object> queryContextMap= QueryBuilderHelper.searchQueryForCommercialProductAndCommercialBundle(deviceId);
+		@SuppressWarnings("unchecked")
+		Response commercialResponse=deviceDao.getResponseFromDataSource((Map<String,String>)queryContextMap.get(Constants.STRING_PARAMS),(String) queryContextMap.get(Constants.STRING_QUERY));
+		LogHelper.info(this, "converting elasticsearch response into standard json object response");
+		CommercialProduct cohProduct = ResponseMappingHelper.getCommercialProduct(commercialResponse);
+		//CommercialProduct cohProduct = deviceDao.getCommercialProductByProductId(deviceId);
 		if (cohProduct != null) {
 
 			if (cohProduct.getIsDeviceProduct()
@@ -979,7 +984,19 @@ public class DeviceServiceImpl implements DeviceService {
 					}
 					LogHelper.info(this, "::::: Insurance GroupName " + insuranceGroupName + " ::::::");
 					if (StringUtils.isNotBlank(insuranceGroupName)) {
-						Group productGroup = deviceDao.getGroupByProdGroupName(insuranceGroupName, insuranceGroupType);
+						
+						/*Map<String,Object> queryContextMap= QueryBuilderHelper.searchQueryForCommercialProductAndCommercialBundle(deviceId);
+						@SuppressWarnings("unchecked")
+						Response commercialResponse=deviceDao.getResponseFromDataSource((Map<String,String>)queryContextMap.get(Constants.STRING_PARAMS),(String) queryContextMap.get(Constants.STRING_QUERY));
+						LogHelper.info(this, "converting elasticsearch response into standard json object response");
+						CommercialProduct cohProduct = ResponseMappingHelper.getCommercialProduct(commercialResponse);*/
+						
+						Map<String,Object> queryContextMapForProductGroup= QueryBuilderHelper.searchQueryForProductGroupWithGroupName(insuranceGroupName,insuranceGroupType);
+						@SuppressWarnings("unchecked")
+						Response groupResponse=deviceDao.getResponseFromDataSource((Map<String,String>)queryContextMapForProductGroup.get(Constants.STRING_PARAMS),(String) queryContextMapForProductGroup.get(Constants.STRING_QUERY));
+						LogHelper.info(this, "converting elasticsearch response into standard json object response");
+						Group productGroup= ResponseMappingHelper.getSingleGroupFromJson(groupResponse);
+						//Group productGroup = deviceDao.getGroupByProdGroupName(insuranceGroupName, insuranceGroupType);
 						if (productGroup != null && productGroup.getGroupType() != null && productGroup.getGroupType()
 								.trim().equalsIgnoreCase(Constants.STRING_COMPATIBLE_INSURANCE)) {
 							listOfInsuranceMembers.addAll(productGroup.getMembers());
@@ -994,8 +1011,14 @@ public class DeviceServiceImpl implements DeviceService {
 							}
 						}
 
-						List<CommercialProduct> listOfInsuranceProducts = deviceDao
-								.getCommercialProductsList(insuranceProductList);
+						Map<String,Object> queryContextMapForList= QueryBuilderHelper.searchQueryForCommercialProductAndCommercialBundle(insuranceProductList.toString());
+						@SuppressWarnings("unchecked")
+						Response commercialListForInsuranceResponse=deviceDao.getResponseFromDataSource((Map<String,String>)queryContextMapForList.get(Constants.STRING_PARAMS),(String) queryContextMapForList.get(Constants.STRING_QUERY));
+						LogHelper.info(this, "converting elasticsearch response into standard json object response");
+						List<CommercialProduct> listOfInsuranceProducts  = ResponseMappingHelper.getCommercialProductFromJson(commercialListForInsuranceResponse);
+						
+						/*List<CommercialProduct> listOfInsuranceProducts = deviceDao
+								.getCommercialProductsList(insuranceProductList);*/
 						List<CommercialProduct> listOfFilteredInsurances = listOfInsuranceProducts.stream()
 								.filter(commercialProduct -> CommonUtility.isProductNotExpired(commercialProduct)
 										&& CommonUtility.isProductJourneySpecific(commercialProduct, journeyType))
@@ -3485,7 +3508,7 @@ public class DeviceServiceImpl implements DeviceService {
 		@SuppressWarnings("unchecked")
 		Response commercialResponse=deviceDao.getResponseFromDataSource((Map<String,String>)queryContextMap.get(Constants.STRING_PARAMS),(String) queryContextMap.get(Constants.STRING_QUERY));
 		LogHelper.info(this, "converting elasticsearch response into standard json object response");
-		com.vodafone.product.pojo.CommercialProduct commercialProduct = ResponseMappingHelper.getCommercialProduct(commercialResponse);
+		CommercialProduct commercialProduct = ResponseMappingHelper.getCommercialProduct(commercialResponse);
 		//CommercialProduct commercialProduct = deviceDao.getCommercialProductFromCommercialProductRepository(deviceId);
 		LogHelper.info(this, "End -->  After calling  CommercialProductRepository.get");
 		DeviceDetails deviceDetails = new DeviceDetails();

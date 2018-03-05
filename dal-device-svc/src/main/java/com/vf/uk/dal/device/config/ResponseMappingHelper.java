@@ -87,6 +87,26 @@ public class ResponseMappingHelper {
 		return bundleModelList;
 	
 	}
+	public static Group getSingleGroupFromJson(Response response) {
+
+		JSONParser parser = new JSONParser();
+		Group obj =new Group();
+		try {
+			LogHelper.info(ResponseMappingHelper.class, "<---- parsing json object response ---->");
+			JSONObject jsonObj = (JSONObject) parser.parse(EntityUtils.toString(response.getEntity()));
+			JSONObject jsonObj1 = (JSONObject) jsonObj.get(Constants.STRING_HITS);
+			JSONArray jsonObj2 = (JSONArray) jsonObj1.get(Constants.STRING_HITS);
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+				JSONObject jsonObj3 = (JSONObject) jsonObj2.get(0);
+				 obj = mapper.readValue(jsonObj3.get(Constants.STRING_SOURCE).toString(), Group.class);
+		} catch (Exception e) {
+			LogHelper.error(ResponseMappingHelper.class, "::::::Exception occurred preparing bundlemodel from ES response:::::: " + e);
+		}
+		return obj;
+	
+	}
+	
 	public static CommercialBundle getCommercialBundle(Response response) {
 
 		JSONParser parser = new JSONParser();
