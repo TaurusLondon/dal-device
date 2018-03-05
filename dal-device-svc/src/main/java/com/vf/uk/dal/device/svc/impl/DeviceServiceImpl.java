@@ -2279,7 +2279,7 @@ public class DeviceServiceImpl implements DeviceService {
 			@SuppressWarnings("unchecked")
 			Response bundleResponse=deviceDao.getResponseFromDataSource((Map<String,String>)queryContextMap.get(Constants.STRING_PARAMS),(String) queryContextMap.get(Constants.STRING_QUERY));
 			LogHelper.info(this, "converting elasticsearch response into standard json object response");
-			listOfCommercialProducts = ResponseMappingHelper.getCommercialBundleFromJson(bundleResponse);
+			listOfCommercialProducts = ResponseMappingHelper.getCommercialProductFromJson(bundleResponse);
 			
 			LogHelper.info(this, "End -->  After calling  CommericalProduct.getByMakeAndModel");
 
@@ -2750,8 +2750,21 @@ public class DeviceServiceImpl implements DeviceService {
 		if (commerBundleIdMap != null) {
 			commercialBundle = commerBundleIdMap.get(commercialProduct.getLeadPlanId());
 		} else if (StringUtils.isNotBlank(commercialProduct.getLeadPlanId())) {
-			commercialBundle = deviceDao
-					.getCommercialBundleFromCommercialBundleRepository(commercialProduct.getLeadPlanId());
+			/*
+			 * Change Here
+			 */
+			/*Map<String,Object> queryContextMap= QueryBuilderHelper.searchQueryForCommercialProduct(deviceId);
+			@SuppressWarnings("unchecked")
+			Response commercialResponse=deviceDao.getResponseFromDataSource((Map<String,String>)queryContextMap.get(Constants.STRING_PARAMS),(String) queryContextMap.get(Constants.STRING_QUERY));
+			LogHelper.info(this, "converting elasticsearch response into standard json object response");
+			com.vodafone.product.pojo.CommercialProduct commercialProduct = ResponseMappingHelper.getCommercialProduct(commercialResponse);*/
+			Map<String,Object> queryContextMap= QueryBuilderHelper.searchQueryForCommercialProductAndCommercialBundle(commercialProduct.getLeadPlanId());
+			@SuppressWarnings("unchecked")
+			Response commercialResponse=deviceDao.getResponseFromDataSource((Map<String,String>)queryContextMap.get(Constants.STRING_PARAMS),(String) queryContextMap.get(Constants.STRING_QUERY));
+			LogHelper.info(this, "converting elasticsearch response into standard json object response");
+			 commercialBundle = ResponseMappingHelper.getCommercialBundle(commercialResponse);
+			/*commercialBundle = deviceDao
+					.getCommercialBundleFromCommercialBundleRepository(commercialProduct.getLeadPlanId());*/
 		}
 		boolean sellableCheck = false;
 		if (commercialBundle != null) {
@@ -3459,7 +3472,21 @@ public class DeviceServiceImpl implements DeviceService {
 		}else{
 			journeyType =journeyTypeInput;
 		}
-		CommercialProduct commercialProduct = deviceDao.getCommercialProductFromCommercialProductRepository(deviceId);
+		/*
+		 * Change Here
+		 */
+		
+		/*Map<String,Object> queryContextMap= QueryBuilderHelper.searchQueryForMakeAndModel(make, model);
+		@SuppressWarnings("unchecked")
+		Response bundleResponse=deviceDao.getResponseFromDataSource((Map<String,String>)queryContextMap.get(Constants.STRING_PARAMS),(String) queryContextMap.get(Constants.STRING_QUERY));
+		LogHelper.info(this, "converting elasticsearch response into standard json object response");
+		listOfCommercialProducts = ResponseMappingHelper.getCommercialBundleFromJson(bundleResponse);*/
+		Map<String,Object> queryContextMap= QueryBuilderHelper.searchQueryForCommercialProductAndCommercialBundle(deviceId);
+		@SuppressWarnings("unchecked")
+		Response commercialResponse=deviceDao.getResponseFromDataSource((Map<String,String>)queryContextMap.get(Constants.STRING_PARAMS),(String) queryContextMap.get(Constants.STRING_QUERY));
+		LogHelper.info(this, "converting elasticsearch response into standard json object response");
+		com.vodafone.product.pojo.CommercialProduct commercialProduct = ResponseMappingHelper.getCommercialProduct(commercialResponse);
+		//CommercialProduct commercialProduct = deviceDao.getCommercialProductFromCommercialProductRepository(deviceId);
 		LogHelper.info(this, "End -->  After calling  CommercialProductRepository.get");
 		DeviceDetails deviceDetails = new DeviceDetails();
 		if (commercialProduct != null && commercialProduct.getId() != null && commercialProduct.getIsDeviceProduct()
@@ -3510,7 +3537,16 @@ public class DeviceServiceImpl implements DeviceService {
 
 			CommercialBundle commercialBundle = null;
 			if (StringUtils.isNotBlank(leadPlanId)) {
-				commercialBundle = deviceDao.getCommercialBundleFromCommercialBundleRepository(leadPlanId);
+				/*
+				 * Change Here
+				 */
+				Map<String,Object> queryContextMapForLeadPlanId= QueryBuilderHelper.searchQueryForCommercialProductAndCommercialBundle(leadPlanId);
+				@SuppressWarnings("unchecked")
+				Response commercialBundleResponse=deviceDao.getResponseFromDataSource((Map<String,String>)queryContextMapForLeadPlanId.get(Constants.STRING_PARAMS),(String) queryContextMapForLeadPlanId.get(Constants.STRING_QUERY));
+				LogHelper.info(this, "converting elasticsearch response into standard json object response");
+				 commercialBundle = ResponseMappingHelper.getCommercialBundle(commercialBundleResponse);
+				
+				//commercialBundle = deviceDao.getCommercialBundleFromCommercialBundleRepository(leadPlanId);
 				LogHelper.info(this, "End -->  After calling  bundleRepository.get");
 
 			}
