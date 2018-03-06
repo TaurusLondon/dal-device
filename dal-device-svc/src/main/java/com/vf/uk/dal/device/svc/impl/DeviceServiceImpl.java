@@ -3786,8 +3786,9 @@ public class DeviceServiceImpl implements DeviceService {
 					for (com.vodafone.product.pojo.ProductGroup productGroup : productGroups.getProductGroup()) {
 						if (productGroup.getProductGroupRole()
 								.equalsIgnoreCase(Constants.STRING_COMPATIBLE_ACCESSORIES)) {
-							listOfDeviceGroupName.add(productGroup.getProductGroupName()
-									+ Constants.STRING_PRODUCTGROUP_OPERATOR + productGroup.getProductGroupRole());
+							/*listOfDeviceGroupName.add(productGroup.getProductGroupName()
+									+ Constants.STRING_PRODUCTGROUP_OPERATOR + productGroup.getProductGroupRole());*/
+							listOfDeviceGroupName.add(productGroup.getProductGroupName());
 						}
 					}
 
@@ -3807,9 +3808,10 @@ public class DeviceServiceImpl implements DeviceService {
 					queryContextMap= QueryBuilderHelper.searchQueryForProductGroupByIds(listOfDeviceGroupName);
 					Response bundleResponse=deviceDao.getResponseFromDataSource((Map<String,String>)queryContextMap.get(Constants.STRING_PARAMS),(String) queryContextMap.get(Constants.STRING_QUERY));
 					LogHelper.info(this, "converting elasticsearch response into standard json object response");
-					List<Group> listOfProductGroup = ResponseMappingHelper.getListOfGroupFromJson(bundleResponse);
+					List<Group> listOfProductGroups = ResponseMappingHelper.getListOfGroupFromJson(bundleResponse);
+					//For Es not working properly
+					List<Group> listOfProductGroup=listOfProductGroups.stream().filter(predicate->listOfDeviceGroupName.contains(predicate.getName())).collect(Collectors.toList());
 					listOfProductGroup = getGroupBasedOnPriority(listOfProductGroup);
-
 					for (Group productGroup : listOfProductGroup) {
 						List<Member> listOfAccesoriesMembers = new ArrayList<>();
 						if (productGroup != null && StringUtils.containsIgnoreCase(Constants.STRING_ACCESSORY,

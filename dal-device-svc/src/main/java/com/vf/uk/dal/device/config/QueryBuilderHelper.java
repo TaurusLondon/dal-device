@@ -143,13 +143,15 @@ public class QueryBuilderHelper {
 		Map<String, Object> searchQueryMap = null;
 		Map<String, String> params = null;
 		String query = null;
+		
 		try {
 			LogHelper.info(QueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
 			searchRequestBuilder.from(0);
 			searchRequestBuilder.size(250);
 			searchQueryMap = new HashMap<>();
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
-		    qb.must(QueryBuilders.matchQuery(Constants.STRING_ID, listOfDeviceIds.toString()));
+			qb.must(QueryBuilders.matchPhraseQuery(Constants.STRING_GROUP_TYPE, Constants.STRING_COMPATIBLE_ACCESSORIES));
+		    qb.filter(QueryBuilders.multiMatchQuery(listOfDeviceIds.toString(),Constants.STRING_GROUP_NAME));
 		    searchRequestBuilder.query(qb);
 		    query = searchRequestBuilder.toString();
 			LogHelper.info(QueryBuilderHelper.class, " <-----  Setting up Elasticsearch parameters and query  ----->");
