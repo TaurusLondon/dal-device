@@ -93,6 +93,8 @@ import com.vodafone.solrmodels.ProductGroupFacetModel;
 import com.vodafone.solrmodels.ProductGroupModel;
 import com.vodafone.solrmodels.ProductModel;
 
+import net.sf.ehcache.util.FindBugsSuppressWarnings;
+
 /**
  * This class should implement all the methods of DeviceService and should
  * contains the actual business logic and DTO methods.
@@ -992,7 +994,6 @@ public class DeviceServiceImpl implements DeviceService {
 						CommercialProduct cohProduct = ResponseMappingHelper.getCommercialProduct(commercialResponse);*/
 						
 						Map<String,Object> queryContextMapForProductGroup= QueryBuilderHelper.searchQueryForProductGroupWithGroupName(insuranceGroupName,insuranceGroupType);
-						@SuppressWarnings("unchecked")
 						Response groupResponse=deviceDao.getResponseFromDataSource((Map<String,String>)queryContextMapForProductGroup.get(Constants.STRING_PARAMS),(String) queryContextMapForProductGroup.get(Constants.STRING_QUERY));
 						LogHelper.info(this, "converting elasticsearch response into standard json object response");
 						Group productGroup= ResponseMappingHelper.getSingleGroupFromJson(groupResponse);
@@ -3756,13 +3757,17 @@ public class DeviceServiceImpl implements DeviceService {
 	 * @param offerCode
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public List<AccessoryTileGroup> getAccessoriesOfDevice_Implementation(String deviceId, String journeyType,
 			String offerCode) {
 		List<AccessoryTileGroup> listOfAccessoryTile = new ArrayList<>();
 
 		LogHelper.info(this, "Start -->  calling  CommercialProductRepository.get");
-
-		CommercialProduct commercialProduct = deviceDao.getCommercialProductFromCommercialProductRepository(deviceId);// commercialProductRepository.get(deviceId);
+		Map<String,Object> queryContextMap= QueryBuilderHelper.searchQueryForCommercialProductAndCommercialBundle(deviceId);
+		Response commercialResponse=deviceDao.getResponseFromDataSource((Map<String,String>)queryContextMap.get(Constants.STRING_PARAMS),(String) queryContextMap.get(Constants.STRING_QUERY));
+		LogHelper.info(this, "converting elasticsearch response into standard json object response");
+		CommercialProduct commercialProduct = ResponseMappingHelper.getCommercialProduct(commercialResponse);
+		//CommercialProduct commercialProduct = deviceDao.getCommercialProductFromCommercialProductRepository(deviceId);// commercialProductRepository.get(deviceId);
 		LogHelper.info(this, "End -->  After calling  CommercialProductRepository.get");
 
 		if (commercialProduct != null && commercialProduct.getId() != null) {
@@ -3794,12 +3799,15 @@ public class DeviceServiceImpl implements DeviceService {
 					// HashMap for groupName and list of accessories ID
 					Map<String, List<String>> mapForGroupName = new LinkedHashMap<>();
 
-					LogHelper.info(this, "Start -->  calling  productGroupRepository.getAll");
-
+					/*LogHelper.info(this, "Start -->  calling  productGroupRepository.getAll");
 					List<Group> listOfProductGroup = new ArrayList<Group>(
 							deviceDao.getListOfGroupsFromProductGroupRepository(listOfDeviceGroupName));// productGroupRepository.getAll(listOfDeviceGroupName)
-					LogHelper.info(this, "End -->  After calling  productGroupRepository.getAll");
-
+					LogHelper.info(this, "End -->  After calling  productGroupRepository.getAll");*/
+					queryContextMap.clear();
+					queryContextMap= QueryBuilderHelper.searchQueryForProductGroupByIds(listOfDeviceGroupName);
+					Response bundleResponse=deviceDao.getResponseFromDataSource((Map<String,String>)queryContextMap.get(Constants.STRING_PARAMS),(String) queryContextMap.get(Constants.STRING_QUERY));
+					LogHelper.info(this, "converting elasticsearch response into standard json object response");
+					List<Group> listOfProductGroup = ResponseMappingHelper.getListOfGroupFromJson(bundleResponse);
 					listOfProductGroup = getGroupBasedOnPriority(listOfProductGroup);
 
 					for (Group productGroup : listOfProductGroup) {
@@ -3824,11 +3832,15 @@ public class DeviceServiceImpl implements DeviceService {
 							finalAccessoryList.addAll(accessoryList);
 						}
 					}
-					LogHelper.info(this, "Start -->  calling  CommercialProduct.getAll");
+					/*LogHelper.info(this, "Start -->  calling  CommercialProduct.getAll");
 					Collection<CommercialProduct> comercialProductList = deviceDao
-							.getCommercialProductListFromCommercialProductRepository(finalAccessoryList);// commercialProductRepository.getAll(finalAccessoryList);
-					LogHelper.info(this, "End -->  After calling  CommercialProduct.getAll");
-
+							.getCommercialProductListFromCommercialProductRepository(finalAccessoryList);*/// commercialProductRepository.getAll(finalAccessoryList);
+					LogHelper.info(this, "Start -->   calling  CommercialProduct.getAll From ES");
+					queryContextMap.clear();
+					queryContextMap= QueryBuilderHelper.searchQueryForListOfCommercialProductAndCommercialBundle(finalAccessoryList);
+					Response commercialProductListResponse=deviceDao.getResponseFromDataSource((Map<String,String>)queryContextMap.get(Constants.STRING_PARAMS),(String) queryContextMap.get(Constants.STRING_QUERY));
+					LogHelper.info(this, "converting elasticsearch response into standard json object response");
+					List<CommercialProduct> comercialProductList = ResponseMappingHelper.getCommercialProductFromJson(commercialProductListResponse);
 					List<CommercialProduct> listOfFilteredAccessories = comercialProductList.stream()
 							.filter(commercialProductAccessories -> CommonUtility
 									.isProductNotExpired(commercialProductAccessories)

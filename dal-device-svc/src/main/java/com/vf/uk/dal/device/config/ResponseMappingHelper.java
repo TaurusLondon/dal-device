@@ -19,6 +19,11 @@ import com.vodafone.productGroups.pojo.Group;
 
 public class ResponseMappingHelper {
 	
+	/**
+	 * 
+	 * @param response
+	 * @return
+	 */
 	public static List<CommercialProduct> getCommercialProductFromJson(Response response) {
 
 		List<CommercialProduct> bundleModelList = new ArrayList<>();
@@ -35,13 +40,18 @@ public class ResponseMappingHelper {
 				CommercialProduct obj = mapper.readValue(jsonObj3.get(Constants.STRING_SOURCE).toString(), CommercialProduct.class);
 				bundleModelList.add(obj);
 			}
-			LogHelper.info(ResponseMappingHelper.class, "<---- bundle model list: "+ bundleModelList.size() + "---->");
+			LogHelper.info(ResponseMappingHelper.class, "<---- Commercial Product list: "+ bundleModelList.size() + "---->");
 		} catch (Exception e) {
-			LogHelper.error(ResponseMappingHelper.class, "::::::Exception occurred preparing bundlemodel from ES response:::::: " + e);
+			LogHelper.error(ResponseMappingHelper.class, "::::::Exception occurred preparing Commercial Product list from ES response:::::: " + e);
 		}
 		return bundleModelList;
 	
 	}
+	/**
+	 * 
+	 * @param response
+	 * @return
+	 */
 	public static CommercialProduct getCommercialProduct(Response response) {
 
 		List<CommercialProduct> bundleModelList = new ArrayList<>();
@@ -57,13 +67,18 @@ public class ResponseMappingHelper {
 				JSONObject jsonObj3 = (JSONObject) jsonObj2.get(0);
 				CommercialProduct obj = mapper.readValue(jsonObj3.get(Constants.STRING_SOURCE).toString(), CommercialProduct.class);
 				bundleModelList.add(obj);
-			LogHelper.info(ResponseMappingHelper.class, "<---- bundle model list: "+ bundleModelList.size() + "---->");
+			LogHelper.info(ResponseMappingHelper.class, "<---- Commercial Product list: "+ bundleModelList.size() + "---->");
 		} catch (Exception e) {
-			LogHelper.error(ResponseMappingHelper.class, "::::::Exception occurred preparing bundlemodel from ES response:::::: " + e);
+			LogHelper.error(ResponseMappingHelper.class, "::::::Exception occurred preparing Commercial product from ES response:::::: " + e);
 		}
 		return bundleModelList.get(0);
 	
 	}
+	/**
+	 * 
+	 * @param response
+	 * @return
+	 */
 	public static List<Group> getListOfGroupFromJson(Response response) {
 
 		List<Group> bundleModelList = new ArrayList<>();
@@ -80,13 +95,18 @@ public class ResponseMappingHelper {
 				Group obj = mapper.readValue(jsonObj3.get(Constants.STRING_SOURCE).toString(), Group.class);
 				bundleModelList.add(obj);
 			}
-			LogHelper.info(ResponseMappingHelper.class, "<---- bundle model list: "+ bundleModelList.size() + "---->");
+			LogHelper.info(ResponseMappingHelper.class, "<---- Product group list: "+ bundleModelList.size() + "---->");
 		} catch (Exception e) {
-			LogHelper.error(ResponseMappingHelper.class, "::::::Exception occurred preparing bundlemodel from ES response:::::: " + e);
+			LogHelper.error(ResponseMappingHelper.class, "::::::Exception occurred preparing List of product Group from ES response:::::: " + e);
 		}
 		return bundleModelList;
 	
 	}
+	/**
+	 * 
+	 * @param response
+	 * @return
+	 */
 	public static Group getSingleGroupFromJson(Response response) {
 
 		JSONParser parser = new JSONParser();
@@ -101,12 +121,16 @@ public class ResponseMappingHelper {
 				JSONObject jsonObj3 = (JSONObject) jsonObj2.get(0);
 				 obj = mapper.readValue(jsonObj3.get(Constants.STRING_SOURCE).toString(), Group.class);
 		} catch (Exception e) {
-			LogHelper.error(ResponseMappingHelper.class, "::::::Exception occurred preparing bundlemodel from ES response:::::: " + e);
+			LogHelper.error(ResponseMappingHelper.class, "::::::Exception occurred preparing Product Group from ES response:::::: " + e);
 		}
 		return obj;
 	
 	}
-	
+	/**
+	 * 
+	 * @param response
+	 * @return
+	 */
 	public static CommercialBundle getCommercialBundle(Response response) {
 
 		JSONParser parser = new JSONParser();
@@ -123,13 +147,18 @@ public class ResponseMappingHelper {
 				JSONObject jsonObj3 = (JSONObject) jsonObj2.get(0);
 				 obj = mapper.readValue(jsonObj3.get(Constants.STRING_SOURCE).toString(), CommercialBundle.class);
 				
-			//LogHelper.info(ResponseMappingHelper.class, "<---- bundle model list: "+ bundleModelList.size() + "---->");
+			LogHelper.info(ResponseMappingHelper.class, "<---- Commercial Bundle list ---->");
 		} catch (Exception e) {
-			LogHelper.error(ResponseMappingHelper.class, "::::::Exception occurred preparing bundlemodel from ES response:::::: " + e);
+			LogHelper.error(ResponseMappingHelper.class, "::::::Exception occurred preparing Commercial Bundle from ES response:::::: " + e);
 		}
 		return obj;
 	
 	}
+	/**
+	 * 
+	 * @param response
+	 * @return
+	 */
 	public static List<CommercialBundle> getListOfCommercialBundleFromJson(Response response) {
 
 		List<CommercialBundle> bundleModelList = new ArrayList<>();
@@ -146,9 +175,9 @@ public class ResponseMappingHelper {
 				CommercialBundle obj = mapper.readValue(jsonObj3.get(Constants.STRING_SOURCE).toString(), CommercialBundle.class);
 				bundleModelList.add(obj);
 			}
-			LogHelper.info(ResponseMappingHelper.class, "<---- bundle model list: "+ bundleModelList.size() + "---->");
+			LogHelper.info(ResponseMappingHelper.class, "<---- Commercial Bundle list: "+ bundleModelList.size() + "---->");
 		} catch (Exception e) {
-			LogHelper.error(ResponseMappingHelper.class, "::::::Exception occurred preparing bundlemodel from ES response:::::: " + e);
+			LogHelper.error(ResponseMappingHelper.class, "::::::Exception occurred preparing commercial Bundle list from ES response:::::: " + e);
 		}
 		return bundleModelList;
 	
