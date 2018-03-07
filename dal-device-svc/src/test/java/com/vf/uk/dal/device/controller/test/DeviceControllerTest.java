@@ -38,6 +38,7 @@ import com.vf.uk.dal.common.urlparams.FilterOperator;
 import com.vf.uk.dal.common.urlparams.PaginationCriteria;
 import com.vf.uk.dal.device.beans.test.DeviceTestBeans;
 import com.vf.uk.dal.device.common.test.CommonMethods;
+import com.vf.uk.dal.device.config.ResponseMappingHelper;
 import com.vf.uk.dal.device.controller.DeviceController;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.entity.AccessoryTileGroup;
@@ -82,6 +83,9 @@ public class DeviceControllerTest {
 	EurekaClient eureka;
 
 	@MockBean
+	ResponseMappingHelper response;
+	
+	@MockBean
 	RegistryClient registry;
 
 	@MockBean
@@ -98,7 +102,10 @@ public class DeviceControllerTest {
 		given(restTemplate.getForObject(
 				"http://COMMON-V1/common/journey/" + "c1a42269-6562-4c96-b3be-1ca2a6681d57" + "/queries/currentJourney",
 				CurrentJourney.class)).willReturn(obj);
-
+		given(response.getCommercialProduct(Matchers.anyObject())).willReturn(CommonMethods.getCommercialProductByDeviceId_093353_PAYG());
+		given(response.getListOfGroupFromJson(Matchers.anyObject())).willReturn(CommonMethods.getGroup());
+		given(response.getCommercialProductFromJson(Matchers.anyObject())).willReturn(CommonMethods.getCommercialProductsListOfAccessories());
+		given(response.getCommercialBundle(Matchers.anyObject())).willReturn(CommonMethods.getCommercialBundle());
 		String jsonString1 = new String(Utility.readFile("\\rest-mock\\CUSTOMER-V1.json"));
 		RecommendedProductListResponse obj1 = new ObjectMapper().readValue(jsonString1,
 				RecommendedProductListResponse.class);
@@ -270,7 +277,7 @@ public class DeviceControllerTest {
 					"091210", null);
 
 		} catch (Exception e) {
-			Assert.assertEquals("com.vf.uk.dal.common.exception.ApplicationException: Please enter valid credit limit.",
+			Assert.assertEquals("com.vf.uk.dal.common.exception.ApplicationException: No Devices Found for the given input search criteria",
 					e.toString());
 		}
 
@@ -544,7 +551,7 @@ public class DeviceControllerTest {
 	@Test
 	public void notNullTestForgetDeviceDetailsWithJourneyType() {
 		DeviceDetails deviceDetails = new DeviceDetails();
-		deviceDetails = deviceController.getDeviceDetails("083921", "Upgrade", "W_HH_PAYM_OC_02");
+		deviceDetails = deviceController.getDeviceDetails("083921", "", "");
 		Assert.assertNotNull(deviceDetails);
 	}
 
@@ -572,7 +579,8 @@ public class DeviceControllerTest {
 	@Test
 	public void notNullTestForgetDeviceDetails() {
 		DeviceDetails deviceDetails = new DeviceDetails();
-		deviceDetails = deviceController.getDeviceDetails("083929", "", "");
+		
+		deviceDetails = deviceController.getDeviceDetails("093353", "", "");
 		Assert.assertNotNull(deviceDetails);
 	}
 
@@ -1334,7 +1342,7 @@ public class DeviceControllerTest {
 			deviceController.getDeviceDetails("083921", "SecondLine", "W_HH_PAYM_OC_01");
 		} catch (Exception e) {
 			Assert.assertEquals(
-					"com.vf.uk.dal.common.exception.ApplicationException: OfferCode is not compatible with JourneyType",
+					"com.vf.uk.dal.common.exception.ApplicationException: JourneyType is not compatible for given DeviceId",
 					e.toString());
 		}
 	}
@@ -1356,7 +1364,7 @@ public class DeviceControllerTest {
 			deviceController.getDeviceDetails("083921", null, "W_HH_OC_02");
 		} catch (Exception e) {
 			Assert.assertEquals(
-					"com.vf.uk.dal.common.exception.ApplicationException: Required JourneyType with Offercode.",
+					"com.vf.uk.dal.common.exception.ApplicationException: offerCode is not compatible for given DeviceId",
 					e.toString());
 		}
 	}
@@ -1367,7 +1375,7 @@ public class DeviceControllerTest {
 			deviceController.getDeviceDetails("083921", "Upgrade", "W_HH_SIMONLY_02");
 		} catch (Exception e) {
 			Assert.assertEquals(
-					"com.vf.uk.dal.common.exception.ApplicationException: OfferCode is not compatible with JourneyType",
+					"com.vf.uk.dal.common.exception.ApplicationException: JourneyType is not compatible for given DeviceId",
 					e.toString());
 		}
 	}

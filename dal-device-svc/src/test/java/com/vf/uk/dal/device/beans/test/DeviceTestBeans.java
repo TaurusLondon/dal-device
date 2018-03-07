@@ -7,6 +7,7 @@ import com.vf.uk.dal.common.beans.Environment;
 import com.vf.uk.dal.common.configuration.ConfigHelper;
 import com.vf.uk.dal.common.configuration.DataSourceInitializer;
 import com.vf.uk.dal.common.registry.client.RegistryClient;
+import com.vf.uk.dal.device.config.ResponseMappingHelper;
 import com.vf.uk.dal.device.controller.DeviceController;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.dao.impl.DeviceDaoImpl;
@@ -68,5 +69,9 @@ public class DeviceTestBeans {
 	@Bean
 	public ConfigHelper getConfigHelper() {
 		return new ConfigHelper();
+	}
+	@Bean
+	public ResponseMappingHelper getResponseMappingHelper(){
+		return new ResponseMappingHelper();
 	}
 }

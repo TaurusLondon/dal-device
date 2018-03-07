@@ -24,7 +24,7 @@ public class ResponseMappingHelper {
 	 * @param response
 	 * @return
 	 */
-	public static List<CommercialProduct> getCommercialProductFromJson(Response response) {
+	public  List<CommercialProduct> getCommercialProductFromJson(Response response) {
 
 		List<CommercialProduct> bundleModelList = new ArrayList<>();
 		JSONParser parser = new JSONParser();
@@ -52,7 +52,7 @@ public class ResponseMappingHelper {
 	 * @param response
 	 * @return
 	 */
-	public static CommercialProduct getCommercialProduct(Response response) {
+	public CommercialProduct getCommercialProduct(Response response) {
 
 		List<CommercialProduct> bundleModelList = new ArrayList<>();
 		JSONParser parser = new JSONParser();
@@ -79,7 +79,7 @@ public class ResponseMappingHelper {
 	 * @param response
 	 * @return
 	 */
-	public static List<Group> getListOfGroupFromJson(Response response) {
+	public List<Group> getListOfGroupFromJson(Response response) {
 
 		List<Group> bundleModelList = new ArrayList<>();
 		JSONParser parser = new JSONParser();
@@ -107,7 +107,7 @@ public class ResponseMappingHelper {
 	 * @param response
 	 * @return
 	 */
-	public static Group getSingleGroupFromJson(Response response) {
+	public Group getSingleGroupFromJson(Response response) {
 
 		JSONParser parser = new JSONParser();
 		Group obj =new Group();
@@ -131,7 +131,7 @@ public class ResponseMappingHelper {
 	 * @param response
 	 * @return
 	 */
-	public static CommercialBundle getCommercialBundle(Response response) {
+	public CommercialBundle getCommercialBundle(Response response) {
 
 		JSONParser parser = new JSONParser();
 		CommercialBundle obj=new CommercialBundle();
@@ -159,7 +159,7 @@ public class ResponseMappingHelper {
 	 * @param response
 	 * @return
 	 */
-	public static List<CommercialBundle> getListOfCommercialBundleFromJson(Response response) {
+	public List<CommercialBundle> getListOfCommercialBundleFromJson(Response response) {
 
 		List<CommercialBundle> bundleModelList = new ArrayList<>();
 		JSONParser parser = new JSONParser();
