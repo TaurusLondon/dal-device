@@ -31,6 +31,7 @@ import com.vf.uk.dal.common.registry.client.RegistryClient;
 import com.vf.uk.dal.common.registry.client.Utility;
 import com.vf.uk.dal.device.beans.test.DeviceTestBeans;
 import com.vf.uk.dal.device.common.test.CommonMethods;
+import com.vf.uk.dal.device.config.ResponseMappingHelper;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.entity.Accessory;
 import com.vf.uk.dal.device.entity.AccessoryTileGroup;
@@ -81,6 +82,9 @@ public class DeviceServiceImplTest
 	@MockBean
     EurekaClient eureka;
 
+	@MockBean
+	ResponseMappingHelper response;
+	
     @MockBean
     RegistryClient registry;
     
@@ -102,7 +106,10 @@ public class DeviceServiceImplTest
          CurrentJourney obj=new ObjectMapper().readValue(jsonString, CurrentJourney.class);  
          given(registry.getRestTemplate()).willReturn(restTemplate);
          given(restTemplate.getForObject("http://COMMON-V1/common/journey/"+"c1a42269-6562-4c96-b3be-1ca2a6681d57"+"/queries/currentJourney" ,CurrentJourney.class)).willReturn(obj);
-         
+         given(response.getCommercialProduct(Matchers.anyObject())).willReturn(CommonMethods.getCommercialProductByDeviceId_093353_PAYG());
+ 		given(response.getListOfGroupFromJson(Matchers.anyObject())).willReturn(CommonMethods.getGroup());
+ 		given(response.getCommercialProductFromJson(Matchers.anyObject())).willReturn(CommonMethods.getCommercialProductsListOfAccessories());
+ 		given(response.getCommercialBundle(Matchers.anyObject())).willReturn(CommonMethods.getCommercialBundle());
          List<String> listOfRecommendedProductTypes;
          RecommendedProductListRequest recomProductListReq = new RecommendedProductListRequest();
 			listOfRecommendedProductTypes = new ArrayList<>();
@@ -278,7 +285,7 @@ public class DeviceServiceImplTest
 	public void notNullTestForGetDeviceDetails() {
 		
 		DeviceDetails deviceDetails=new DeviceDetails();
-		deviceDetails=deviceService.getDeviceDetails("83921","Upgrade","W_HH_PAYM_OC_02");
+		deviceDetails=deviceService.getDeviceDetails("83921","","");
 		Assert.assertNotNull(deviceDetails);
 	}
 		
