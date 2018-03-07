@@ -38,9 +38,10 @@ import com.vf.uk.dal.common.urlparams.FilterOperator;
 import com.vf.uk.dal.common.urlparams.PaginationCriteria;
 import com.vf.uk.dal.device.beans.test.DeviceTestBeans;
 import com.vf.uk.dal.device.common.test.CommonMethods;
-import com.vf.uk.dal.device.config.ResponseMappingHelper;
 import com.vf.uk.dal.device.controller.DeviceController;
 import com.vf.uk.dal.device.dao.DeviceDao;
+import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
+import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
 import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
@@ -54,6 +55,7 @@ import com.vf.uk.dal.device.entity.RequestForBundleAndHardware;
 import com.vf.uk.dal.device.entity.SourcePackageSummary;
 import com.vf.uk.dal.device.utils.DaoUtils;
 import com.vf.uk.dal.device.utils.DeviceTileCacheDAO;
+import com.vf.uk.dal.device.utils.ResponseMappingHelper;
 import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 import com.vf.uk.dal.utility.entity.BundleAndHardwareRequest;
 import com.vf.uk.dal.utility.entity.BundleDetails;
@@ -61,8 +63,6 @@ import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
 import com.vf.uk.dal.utility.entity.CurrentJourney;
 import com.vf.uk.dal.utility.entity.PriceForProduct;
 import com.vf.uk.dal.utility.entity.RecommendedProductListResponse;
-import com.vodafone.dal.bundle.pojo.CommercialBundle;
-import com.vodafone.product.pojo.CommercialProduct;
 
 /**
  * In order to run the controller class a bean of the ProductController is

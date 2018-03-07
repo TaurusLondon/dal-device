@@ -1,4 +1,4 @@
-package com.vf.uk.dal.device.utils;
+/*package com.vf.uk.dal.device.utils;
 
 import com.vodafone.dal.domain.repository.CommercialBundleRepository;
 import com.vodafone.dal.domain.repository.CommercialProductRepository;
@@ -24,3 +24,4 @@ public class CoherenceConnectionProvider {
 	
 
 }
+*/

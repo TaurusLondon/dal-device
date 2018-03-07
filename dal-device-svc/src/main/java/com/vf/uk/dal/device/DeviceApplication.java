@@ -11,7 +11,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.vf.uk.dal.common.annotation.Service;
-import com.vf.uk.dal.device.config.ElasticsearchRestCient;
+import com.vf.uk.dal.device.datasource.conf.ElasticsearchRestCient;
 
 /**
  * DeviceApplication, will start the service as SpringBoot Application Added

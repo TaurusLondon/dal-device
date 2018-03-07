@@ -257,5 +257,15 @@ public class Constants {
 	
 	public static final String SEARCH_FOR_VODAFONE5_INDEX="_search";
 	
-
+	public static final String STRING_KEY_WORD=".keyword";
+	
+	public static final String STRING_Tag="tag";
+	
+	public static final String ELASTIC_SEARCH_INDEX_START_FROM="ELASTIC_SEARCH_INDEX_START_FROM";
+	
+	public static final int DEFAULT_ELASTIC_SEARCH_START_INDEX=0;
+	
+	public static final int DEFAULT_ELASTIC_SEARCH_INDEX_SIZE=1000;
+	
+	public static final String ELASTIC_SEARCH_INDEX_SIZE="ELASTIC_SEARCH_INDEX_SIZE";
 }

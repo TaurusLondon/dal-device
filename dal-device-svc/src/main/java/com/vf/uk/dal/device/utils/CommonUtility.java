@@ -20,6 +20,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.common.registry.client.RegistryClient;
+import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
+import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
 import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
 import com.vf.uk.dal.device.entity.MediaLink;
 import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
@@ -41,8 +43,6 @@ import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForHardwareSash;
 import com.vf.uk.dal.utility.entity.PriceForProduct;
 import com.vf.uk.dal.utility.entity.RecommendedProductListRequest;
 import com.vf.uk.dal.utility.entity.RecommendedProductListResponse;
-import com.vodafone.dal.bundle.pojo.CommercialBundle;
-import com.vodafone.product.pojo.CommercialProduct;
 /**
  * 
  * common methods used across the services.

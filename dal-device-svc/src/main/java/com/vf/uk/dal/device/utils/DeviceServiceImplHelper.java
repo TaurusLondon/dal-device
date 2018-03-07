@@ -210,9 +210,9 @@ public class DeviceServiceImplHelper {
 				.getMerchandisingPromotions();
 		Float monthlyPrice = null;
 		if (null != merchandisingPromotion) {
-			com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion merchanPromo = deviceDao
-					.getMerchandisingPromotionByPromotionName(merchandisingPromotion.getTag());
-			if (merchanPromo != null && StringUtils.containsIgnoreCase(Constants.FULL_DURATION, merchanPromo.getType())) {
+			/*com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion merchanPromo = deviceDao
+					.getMerchandisingPromotionByPromotionName(merchandisingPromotion.getTag());*/
+			if (StringUtils.containsIgnoreCase(Constants.FULL_DURATION, merchandisingPromotion.getMpType())) {
 				if(StringUtils.isNotBlank(bundlePrice.getMonthlyDiscountPrice().getGross())){
 					monthlyPrice = Float.parseFloat(bundlePrice.getMonthlyDiscountPrice().getGross());
 				}

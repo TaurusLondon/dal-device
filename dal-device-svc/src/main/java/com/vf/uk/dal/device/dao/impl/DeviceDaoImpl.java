@@ -8,7 +8,6 @@ import java.text.SimpleDateFormat;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -38,6 +37,11 @@ import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.common.registry.client.RegistryClient;
 import com.vf.uk.dal.device.dao.DeviceDao;
+import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
+import com.vf.uk.dal.device.datamodel.product.BazaarVoice;
+import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
+import com.vf.uk.dal.device.datamodel.productgroups.Group;
+import com.vf.uk.dal.device.datamodel.productgroups.Member;
 import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.entity.DeviceSummary;
@@ -48,12 +52,13 @@ import com.vf.uk.dal.device.entity.MerchandisingPromotion;
 import com.vf.uk.dal.device.entity.Price;
 import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
 import com.vf.uk.dal.device.entity.ProductGroup;
+import com.vf.uk.dal.device.querybuilder.DeviceQueryBuilderHelper;
 import com.vf.uk.dal.device.utils.BazaarVoiceCache;
-import com.vf.uk.dal.device.utils.CoherenceConnectionProvider;
 import com.vf.uk.dal.device.utils.CommonUtility;
 import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.DaoUtils;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
+import com.vf.uk.dal.device.utils.ResponseMappingHelper;
 import com.vf.uk.dal.device.utils.SolrConnectionProvider;
 import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 import com.vf.uk.dal.utility.entity.BundleDetails;
@@ -62,24 +67,12 @@ import com.vf.uk.dal.utility.entity.CoupleRelation;
 import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
 import com.vodafone.business.service.RequestManager;
 import com.vodafone.common.Filters;
-import com.vodafone.dal.bundle.pojo.CommercialBundle;
-import com.vodafone.dal.domain.bazaarvoice.BazaarVoice;
-import com.vodafone.dal.domain.repository.BazaarReviewRepository;
-import com.vodafone.dal.domain.repository.CommercialBundleRepository;
-import com.vodafone.dal.domain.repository.CommercialProductRepository;
-import com.vodafone.dal.domain.repository.MerchandisingPromotionRepository;
-import com.vodafone.dal.domain.repository.ProductGroupRepository;
-import com.vodafone.dal.domain.repository.StockAvailabilityRepository;
-import com.vodafone.product.pojo.CommercialProduct;
-import com.vodafone.productGroups.pojo.Group;
-import com.vodafone.productGroups.pojo.Member;
 import com.vodafone.solrmodels.BundleModel;
 import com.vodafone.solrmodels.MerchandisingPromotionModel;
 import com.vodafone.solrmodels.OfferAppliedPriceModel;
 import com.vodafone.solrmodels.ProductGroupFacetModel;
 import com.vodafone.solrmodels.ProductGroupModel;
 import com.vodafone.solrmodels.ProductModel;
-import com.vodafone.stockAvailability.pojo.StockAvailability;
 
 import uk.co.vodafone.business.IncrementalIndexManager;
 import uk.co.vodafone.customexceptions.SolrDeviceHotFixException;
@@ -109,16 +102,20 @@ public class DeviceDaoImpl implements DeviceDao {
 	 @Autowired
 	 BazaarVoiceCache bzrVoiceCache;
 
+	 @Autowired
+	 ResponseMappingHelper response;
+	 
 	private RequestManager requestManager = null;
-	private CommercialProductRepository commercialProductRepository = null;
+	/*private CommercialProductRepository commercialProductRepository = null;
 	private CommercialBundleRepository commercialBundleRepository = null;
 	private ProductGroupRepository productGroupRepository = null;
 	private MerchandisingPromotionRepository merchandisingPromotionRepository = null;
-	private BazaarReviewRepository bazaarReviewRepository = null;
+	private BazaarReviewRepository bazaarReviewRepository = null;*/
 	
 	private String endPoint=ConfigHelper.getString(Constants.ELASTIC_SEARCH_ENDPOINT, Constants.DEFAULT_ENDPOINT_FOR_VODAFONE5_INDEX)+Constants.SEARCH_FOR_VODAFONE5_INDEX;
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<DeviceTile> getDeviceTileById(String id, String offerCode, String journeyTypeInput) {
 		String journeyType;
 		if (StringUtils.isBlank(journeyTypeInput) || (!Constants.JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyTypeInput) 
@@ -129,10 +126,14 @@ public class DeviceDaoImpl implements DeviceDao {
 		}
 		String strGroupType = null;
 		LogHelper.info(this, "Start  -->  calling  CommercialProductRepository.get");
-		if (null == commercialProductRepository) {
+		/*if (null == commercialProductRepository) {
 			commercialProductRepository = CoherenceConnectionProvider.getCommercialProductRepoConnection();
 		}
-		CommercialProduct commercialProduct = commercialProductRepository.get(id);
+		CommercialProduct commercialProduct = commercialProductRepository.get(id);*/
+		Map<String,Object> queryContextMap= DeviceQueryBuilderHelper.searchQueryForCommercialProductAndCommercialBundle(id);
+		Response commercialResponse=getResponseFromDataSource((Map<String,String>)queryContextMap.get(Constants.STRING_PARAMS),(String) queryContextMap.get(Constants.STRING_QUERY));
+		LogHelper.info(this, "converting elasticsearch response into standard json object response");
+		CommercialProduct commercialProduct = response.getCommercialProduct(commercialResponse);
 		LogHelper.info(this, "End  -->  After calling  CommercialProductRepository.get");
 
 		List<DeviceTile> listOfDeviceTile;
@@ -155,10 +156,14 @@ public class DeviceDaoImpl implements DeviceDao {
 			}
 
 			LogHelper.info(this, "Start -->  calling  productGroupRepository.getProductGroupsByType");
-			if (productGroupRepository == null) {
+			/*if (productGroupRepository == null) {
 				productGroupRepository = CoherenceConnectionProvider.getProductGroupRepoRepository();
 			}
-			List<Group> listOfProductGroup = productGroupRepository.getProductGroupsByType(strGroupType);
+			List<Group> listOfProductGroup = productGroupRepository.getProductGroupsByType(strGroupType);*/
+			Map<String,Object> queryContextMapForProductGroup= DeviceQueryBuilderHelper.searchQueryForProductGroupByGroupType(strGroupType);
+			Response groupResponse=getResponseFromDataSource((Map<String,String>)queryContextMapForProductGroup.get(Constants.STRING_PARAMS),(String) queryContextMapForProductGroup.get(Constants.STRING_QUERY));
+			LogHelper.info(this, "converting elasticsearch response into standard json object response");
+			List<Group> listOfProductGroup= response.getListOfGroupFromJson(groupResponse);
 			LogHelper.info(this, "End -->  After calling  productGroupRepository.getProductGroupsByType");
 
 			if (listOfProductGroup != null && !listOfProductGroup.isEmpty()) {
@@ -196,10 +201,15 @@ public class DeviceDaoImpl implements DeviceDao {
 			}
 
 			LogHelper.info(this, "Start -->  calling  bundleRepository.get");
-			if (commercialBundleRepository == null) {
+			/*if (commercialBundleRepository == null) {
 				commercialBundleRepository = CoherenceConnectionProvider.getCommercialBundleRepoConnection();
 			}
-			CommercialBundle comBundle = commercialBundleRepository.get(leadPlanId);
+			CommercialBundle comBundle = commercialBundleRepository.get(leadPlanId);*/
+			queryContextMap.clear();
+			 queryContextMap= DeviceQueryBuilderHelper.searchQueryForCommercialProductAndCommercialBundle(leadPlanId);
+			Response commercialBundleResponse=getResponseFromDataSource((Map<String,String>)queryContextMap.get(Constants.STRING_PARAMS),(String) queryContextMap.get(Constants.STRING_QUERY));
+			LogHelper.info(this, "converting elasticsearch response into standard json object response");
+			CommercialBundle comBundle  = response.getCommercialBundle(commercialBundleResponse);
 			LogHelper.info(this, "End -->  After calling  bundleRepository.get");
 
 			List<BundleAndHardwarePromotions> promotions = null;
@@ -310,17 +320,17 @@ public class DeviceDaoImpl implements DeviceDao {
 	 * @param deviceGroupMember
 	 * @return leadSkuId
 	 */
-	public String findLeadSkuBasedOnPriority(List<com.vodafone.productGroups.pojo.Member> deviceGroupMember) {
+	public String findLeadSkuBasedOnPriority(List<com.vf.uk.dal.device.datamodel.productgroups.Member> deviceGroupMember) {
 		String leadSkuId = null;
 		Long maxPriority;
 		List<Long> listOfPriority = new ArrayList<>();
 		if (deviceGroupMember != null && !deviceGroupMember.isEmpty()) {
-			for (com.vodafone.productGroups.pojo.Member member : deviceGroupMember) {
+			for (com.vf.uk.dal.device.datamodel.productgroups.Member member : deviceGroupMember) {
 				listOfPriority.add(member.getPriority());
 			}
 			maxPriority = java.util.Collections.max(listOfPriority);
 
-			for (com.vodafone.productGroups.pojo.Member member : deviceGroupMember) {
+			for (com.vf.uk.dal.device.datamodel.productgroups.Member member : deviceGroupMember) {
 				if (maxPriority == member.getPriority()) {
 					leadSkuId = member.getId();
 				}
@@ -359,14 +369,19 @@ public class DeviceDaoImpl implements DeviceDao {
 	 * @param journeyType
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public Boolean validateMemeber(String memberId, String journeyType) {
 		Boolean memberFlag = false;
 
 		LogHelper.info(this, "Start --->  calling  CommercialProductRepository.get");
-		if (commercialProductRepository == null) {
+		/*if (commercialProductRepository == null) {
 			commercialProductRepository = CoherenceConnectionProvider.getCommercialProductRepoConnection();
 		}
-		CommercialProduct comProduct = commercialProductRepository.get(memberId);
+		CommercialProduct comProduct = commercialProductRepository.get(memberId);*/
+		Map<String,Object> queryContextMap= DeviceQueryBuilderHelper.searchQueryForCommercialProductAndCommercialBundle(memberId);
+		Response commercialResponse=getResponseFromDataSource((Map<String,String>)queryContextMap.get(Constants.STRING_PARAMS),(String) queryContextMap.get(Constants.STRING_QUERY));
+		LogHelper.info(this, "converting elasticsearch response into standard json object response");
+		CommercialProduct comProduct = response.getCommercialProduct(commercialResponse);
 		LogHelper.info(this, "End --->  After calling  CommercialProductRepository.get");
 
 		Date startDateTime = comProduct.getProductAvailability().getStart();
@@ -752,22 +767,22 @@ public class DeviceDaoImpl implements DeviceDao {
 	}
 
 	/**
-	 * 
+	 * need to be checked
 	 * @param prioritySorted
 	 * @return
 	 */
-	public List<com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion> getAscendingOrderForMerchndisingPriority(
-			List<com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion> prioritySorted) {
+	public List<com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion> getAscendingOrderForMerchndisingPriority(
+			List<com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion> prioritySorted) {
 		Collections.sort(prioritySorted, new SortedPriorityList());
 
 		return prioritySorted;
 	}
 
-	class SortedPriorityList implements Comparator<com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion> {
+	class SortedPriorityList implements Comparator<com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion> {
 
 		@Override
-		public int compare(com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion listOfMerchandising,
-				com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion listOfMerchandising2) {
+		public int compare(com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion listOfMerchandising,
+				com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion listOfMerchandising2) {
 
 			if (listOfMerchandising.getPriority() != null && listOfMerchandising2.getPriority() != null) {
 				if (listOfMerchandising.getPriority() < listOfMerchandising2.getPriority()) {
@@ -886,7 +901,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		return jsonObject;
 	}
 
-	@Override
+	/*@Override
 	public com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion getMerchandisingPromotionByPromotionName(
 			String promotionName) {
 
@@ -898,9 +913,9 @@ public class DeviceDaoImpl implements DeviceDao {
 				.get(promotionName);
 		LogHelper.info(this, "End -->  After calling  merchandisingPromotionRepository.get");
 		return merchandisingPromotion;
-	}
+	}*/
 
-	@Override
+	/*@Override
 	public List<Group> getProductGroupsByType(String groupType) {
 		try {
 			if (productGroupRepository == null) {
@@ -915,12 +930,12 @@ public class DeviceDaoImpl implements DeviceDao {
 			LogHelper.error(this, "Coherence Issue " + e);
 			throw new ApplicationException(ExceptionMessages.INVALID_COHERENCE_DATA);
 		}
-	}
+	}*/
 
 	/**
 	 * 
 	 */
-	@Override
+	/*@Override
 	public CommercialProduct getCommercialProductRepositoryByLeadMemberId(String leadMemberId) {
 		try {
 			LogHelper.info(this, "Start -->  calling  CommercialProductRepository.get");
@@ -937,7 +952,7 @@ public class DeviceDaoImpl implements DeviceDao {
 			LogHelper.info(this, "Invalid MemberId " + leadMemberId);
 			throw new ApplicationException(ExceptionMessages.INVALID_COHERENCE_DATA);
 		}
-	}
+	}*/
 
 	@Override
 	public List<OfferAppliedPriceModel> getBundleAndHardwarePriceFromSolr(List<String> deviceIds, String offerCode,
@@ -950,7 +965,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		return list;
 	}
 
-	@Override
+	/*@Override
 	public Collection<CommercialProduct> getListCommercialProductRepositoryByLeadMemberId(List<String> leadMemberId) {
 		Collection<CommercialProduct> commercialProductList = null;
 		try {
@@ -968,16 +983,16 @@ public class DeviceDaoImpl implements DeviceDao {
 			return commercialProductList;
 		}
 		return commercialProductList;
-	}
+	}*/
 
 	/**
 	 * 
 	 */
-	@Override
+	/*@Override
 	public StockAvailability getStockAvailabilityByMemberId(String memberId) {
 		StockAvailabilityRepository stockrepository = new StockAvailabilityRepository();
 		return stockrepository.get(memberId);
-	}
+	}*/
 
 	/**
 	 * @author manoj.bera
@@ -1106,10 +1121,9 @@ public class DeviceDaoImpl implements DeviceDao {
 
 		try {
 			LogHelper.info(this, "Start -->  calling  BazaarReviewRepository.get");
-			BazaarReviewRepository repo = new BazaarReviewRepository();
 			List<BazaarVoice> response = new ArrayList<>();
 			for (String skuId : listMemberIds) {
-				response.add(repo.get(CommonUtility.appendPrefixString(skuId)));
+				response.add(getBazaarVoice(skuId));
 			}
 			LogHelper.info(this, "End --> After calling  BazaarReviewRepository.get");
 			return response;
@@ -1166,7 +1180,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		return bvReviewAndRateMap;
 	}
 
-	@Override
+	/*@Override
 	public CommercialProduct getCommercialProductByProductId(String productId) {
 
 		LogHelper.info(this, "Start -->  calling  CommercialProductRepository.get");
@@ -1189,7 +1203,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		LogHelper.info(this, "End -->  After calling  bundleRepository.get");
 		return commercialBundle;
 	}
-
+*/
 	@Override
 	public List<PriceForBundleAndHardware> getPriceForBundleAndHardware(
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType) {
@@ -1288,7 +1302,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		return response;
 	}
 
-	@Override
+	/*@Override
 	public Collection<CommercialBundle> getListCommercialBundleRepositoryByCompatiblePlanList(List<String> planIdList) {
 		Collection<CommercialBundle> commercialBundleList = null;
 		try {
@@ -1335,7 +1349,7 @@ public class DeviceDaoImpl implements DeviceDao {
 				commercialProductRepository.getAll(productIdsList));
 		LogHelper.info(this, "End -->  After calling  productRepository.getAll");
 		return commercialProducts;
-	}
+	}*/
 
 	@Override
 	public List<MerchandisingPromotionModel> getJourneyTypeCompatibleOfferCodes(String journeyType) {
@@ -1415,13 +1429,13 @@ public class DeviceDaoImpl implements DeviceDao {
 	 *         single object/connection for the entire session.
 	 * @return CommercialProductRepository
 	 */
-	@Override
+	/*@Override
 	public CommercialProductRepository getCommercialProductRepository() {
 		if (commercialProductRepository == null) {
 			commercialProductRepository = CoherenceConnectionProvider.getCommercialProductRepoConnection();
 		}
 		return commercialProductRepository;
-	}
+	}*/
 
 	/**
 	 * @author aditya.oli Method to initialize CommercialBundleRepository if it
@@ -1430,13 +1444,13 @@ public class DeviceDaoImpl implements DeviceDao {
 	 *         single object/connection for the entire session.
 	 * @return CommercialBundleRepository
 	 */
-	@Override
+	/*@Override
 	public CommercialBundleRepository getCommercialBundleRepository() {
 		if (commercialBundleRepository == null) {
 			commercialBundleRepository = CoherenceConnectionProvider.getCommercialBundleRepoConnection();
 		}
 		return commercialBundleRepository;
-	}
+	}*/
 
 	/**
 	 * @author aditya.oli Method to initialize ProductGroupRepository if it is
@@ -1445,13 +1459,13 @@ public class DeviceDaoImpl implements DeviceDao {
 	 *         single object/connection for the entire session.
 	 * @return ProductGroupRepository
 	 */
-	@Override
+	/*@Override
 	public ProductGroupRepository getProductGroupRepository() {
 		if (productGroupRepository == null) {
 			productGroupRepository = CoherenceConnectionProvider.getProductGroupRepoRepository();
 		}
 		return productGroupRepository;
-	}
+	}*/
 
 	/**
 	 * @author aditya.oli Method to initialize MerchandisingPromotionRepository
@@ -1460,13 +1474,13 @@ public class DeviceDaoImpl implements DeviceDao {
 	 *         single object/connection for the entire session.
 	 * @return MerchandisingPromotionRepository
 	 */
-	@Override
+	/*@Override
 	public MerchandisingPromotionRepository getMerchandisingPromotionRepository() {
 		if (merchandisingPromotionRepository == null) {
 			merchandisingPromotionRepository = CoherenceConnectionProvider.getMerchandisingRepoConnection();
 		}
 		return merchandisingPromotionRepository;
-	}
+	}*/
 
 	/**
 	 * @author aditya.oli This method is used to initialize the Bazaar Review
@@ -1474,13 +1488,13 @@ public class DeviceDaoImpl implements DeviceDao {
 	 *         reviews.
 	 * @return BazaarReviewRepository
 	 */
-	@Override
+	/*@Override
 	public BazaarReviewRepository getBazaarReviewRepository() {
 		if (bazaarReviewRepository == null) {
 			bazaarReviewRepository = new BazaarReviewRepository();
 		}
 		return bazaarReviewRepository;
-	}
+	}*/
 
 	/**
 	 * @author aditya.oli This method checks whether Bazaar Review Repository
@@ -1511,12 +1525,12 @@ public class DeviceDaoImpl implements DeviceDao {
 	 *            model
 	 * @return List<CommercialProduct>
 	 */
-	@Override
+	/*@Override
 	public List<CommercialProduct> getListOfCommercialProductsFromCommercialProductRepository(String make,
 			String model) {
 		getCommercialProductRepository();
 		return commercialProductRepository.getByMakeANDModel(make, model);
-	}
+	}*/
 
 	/**
 	 * @author aditya.oli This method returns the List of groups from
@@ -1526,11 +1540,11 @@ public class DeviceDaoImpl implements DeviceDao {
 	 *            groupType
 	 * @return List<Group>
 	 */
-	@Override
+	/*@Override
 	public List<Group> getListOfProductGroupFromProductGroupRepository(String groupType) {
 		getProductGroupRepository();
 		return productGroupRepository.getProductGroupsByType(groupType);
-	}
+	}*/
 
 	/**
 	 * @author aditya.oli This method gets all the Commercial Bundles from
@@ -1542,12 +1556,12 @@ public class DeviceDaoImpl implements DeviceDao {
 	 * @return Collection<CommercialBundle>
 	 * 
 	 */
-	@Override
+	/*@Override
 	public Collection<CommercialBundle> getAllCommercialBundlesFromCommercialBundleRepository(
 			List<String> listofLeadPlan) {
 		getCommercialBundleRepository();
 		return commercialBundleRepository.getAll(listofLeadPlan);
-	}
+	}*/
 
 	/**
 	 * @author aditya.oli This method fetches and returns the Commercial Bundle
@@ -1557,10 +1571,12 @@ public class DeviceDaoImpl implements DeviceDao {
 	 *            bundleId
 	 * @return CommercialBundle
 	 */
-	@Override
+	@SuppressWarnings("unchecked")
 	public CommercialBundle getCommercialBundleFromCommercialBundleRepository(String bundleId) {
-		getCommercialBundleRepository();
-		return commercialBundleRepository.get(bundleId);
+		Map<String,Object> queryContextMapForLeadPlanId= DeviceQueryBuilderHelper.searchQueryForCommercialProductAndCommercialBundle(bundleId);
+		Response commercialBundleResponse=getResponseFromDataSource((Map<String,String>)queryContextMapForLeadPlanId.get(Constants.STRING_PARAMS),(String) queryContextMapForLeadPlanId.get(Constants.STRING_QUERY));
+		LogHelper.info(this, "converting elasticsearch response into standard json object response");
+		 return response.getCommercialBundle(commercialBundleResponse);
 	}
 
 	/**
@@ -1571,12 +1587,12 @@ public class DeviceDaoImpl implements DeviceDao {
 	 *            deviceId
 	 * @return CommercialProduct
 	 */
-	@Override
+	/*@Override
 	public CommercialProduct getCommercialProductFromCommercialProductRepository(String deviceId) {
 		getCommercialProductRepository();
 		return commercialProductRepository.get(deviceId);
 	}
-
+*/
 	/**
 	 * @author aditya.oli This method fetches and returns the Merchandising
 	 *         Promotion from coherence's MerchandisingPromotionRepository by
@@ -1585,12 +1601,12 @@ public class DeviceDaoImpl implements DeviceDao {
 	 *            promotionName
 	 * @return MerchandisingPromotion
 	 */
-	@Override
+	/*@Override
 	public com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion getMerchandisingPromotionBasedOnPromotionName(
 			String promotionName) {
 		getMerchandisingPromotionRepository();
 		return merchandisingPromotionRepository.get(promotionName);
-	}
+	}*/
 
 	/**
 	 * @author aditya.oli This method returns the List of Product Group Models
@@ -1612,11 +1628,11 @@ public class DeviceDaoImpl implements DeviceDao {
 	 *            listOfDeviceGroupName
 	 * @return List<Group>
 	 */
-	@Override
+	/*@Override
 	public List<Group> getListOfGroupsFromProductGroupRepository(List<String> listOfDeviceGroupName) {
 		getProductGroupRepository();
 		return new ArrayList<Group>(productGroupRepository.getAll(listOfDeviceGroupName));
-	}
+	}*/
 
 	/**
 	 * @author aditya.oli This method takes the List of String as a parameter
@@ -1626,12 +1642,12 @@ public class DeviceDaoImpl implements DeviceDao {
 	 *            productList
 	 * @return Collection<CommercialProduct>
 	 */
-	@Override
+	/*@Override
 	public Collection<CommercialProduct> getCommercialProductListFromCommercialProductRepository(
 			List<String> productList) {
 		getCommercialProductRepository();
 		return commercialProductRepository.getAll(productList);
-	}
+	}*/
 
 	/**
 	 * @author aditya.oli This method takes the List of String as a parameter
@@ -1731,11 +1747,11 @@ public class DeviceDaoImpl implements DeviceDao {
 	 *            groupType
 	 * @return Group
 	 */
-	@Override
+	/*@Override
 	public Group getGroupFromProductGroupRepository(String groupName, String groupType) {
 		getProductGroupRepository();
 		return productGroupRepository.getProductGroup(groupName, groupType);
-	}
+	}*/
 
 	/**
 	 * @author aditya.oli This method takes a string journeyType as a parameter,
@@ -1753,7 +1769,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		return requestManager.getMerchandisingPromotionsByProductLineAndPackageType(groupType, journeyType);
 	}
 
-	@Override
+	/*@Override
 	public List<CommercialBundle> fetchCommericalBundlesbyList(List<String> listOfBundleIds) {
 		LogHelper.info(this, "Start -->  calling  bundleRepository.getAll");
 		if (commercialBundleRepository == null) {
@@ -1762,14 +1778,15 @@ public class DeviceDaoImpl implements DeviceDao {
 		Collection<CommercialBundle> commercialBundles = commercialBundleRepository.getAll(listOfBundleIds);
 		LogHelper.info(this, "End -->  After calling  bundleRepository.get");
 		return new ArrayList<CommercialBundle>(commercialBundles);
-	}
+	}*/
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public Map<String, MerchandisingPromotion> getMerchandisingPromotionsEntityFromRepo(List<String> promotionAsTags) {
-		List<com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion> listOfMerchandisingPromotions = null;
+		List<com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion> listOfMerchandisingPromotions = null;
 		Map<String, MerchandisingPromotion> promotions = new HashMap<>();
 
-		if (merchandisingPromotionRepository == null) {
+		/*if (merchandisingPromotionRepository == null) {
 			merchandisingPromotionRepository = CoherenceConnectionProvider.getMerchandisingRepoConnection();
 		}
 
@@ -1781,7 +1798,11 @@ public class DeviceDaoImpl implements DeviceDao {
 		if (colls != null && !colls.isEmpty()) {
 			listOfMerchandisingPromotions = new ArrayList<com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion>(
 					colls);
-		}
+		}*/
+		Map<String,Object> queryContextMap = DeviceQueryBuilderHelper.searchQueryForMerchandisingByTagName(promotionAsTags);
+		Response bundleResponse=getResponseFromDataSource((Map<String,String>)queryContextMap.get(Constants.STRING_PARAMS),(String) queryContextMap.get(Constants.STRING_QUERY));
+		LogHelper.info(this, "converting elasticsearch response into standard json object response");
+		listOfMerchandisingPromotions = response.getListOfMerchandisingPromotionFromJson(bundleResponse);
 		if (listOfMerchandisingPromotions != null && !listOfMerchandisingPromotions.isEmpty()) {
 			listOfMerchandisingPromotions.forEach(solrModel -> {
 				MerchandisingPromotion promotion = new MerchandisingPromotion();

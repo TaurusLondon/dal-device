@@ -17,6 +17,10 @@ import org.apache.solr.client.solrj.response.FacetField.Count;
 
 import com.vf.uk.dal.common.configuration.ConfigHelper;
 import com.vf.uk.dal.common.logger.LogHelper;
+import com.vf.uk.dal.device.datamodel.bundle.Allowance;
+import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
+import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
+import com.vf.uk.dal.device.datamodel.product.ItemAttribute;
 import com.vf.uk.dal.device.entity.Accessory;
 import com.vf.uk.dal.device.entity.Attributes;
 import com.vf.uk.dal.device.entity.Device;
@@ -63,10 +67,6 @@ import com.vf.uk.dal.utility.solr.entity.MonthlyPrice;
 import com.vf.uk.dal.utility.solr.entity.OfferAppliedPriceDetails;
 import com.vf.uk.dal.utility.solr.entity.OneOffDiscountPrice;
 import com.vf.uk.dal.utility.solr.entity.OneOffPrice;
-import com.vodafone.dal.bundle.pojo.Allowance;
-import com.vodafone.dal.bundle.pojo.CommercialBundle;
-import com.vodafone.product.pojo.CommercialProduct;
-import com.vodafone.product.pojo.ItemAttribute;
 import com.vodafone.solrmodels.BundleModel;
 import com.vodafone.solrmodels.OfferAppliedPriceModel;
 import com.vodafone.solrmodels.ProductGroupModel;
@@ -130,14 +130,14 @@ public class DaoUtils {
 		}
 		deviceSummary.setDisplayDescription(commercialProduct.getPreDesc());
 
-		List<com.vodafone.product.pojo.Group> listOfSpecificationGroups = commercialProduct.getSpecificationGroups();
+		List<com.vf.uk.dal.device.datamodel.product.Group> listOfSpecificationGroups = commercialProduct.getSpecificationGroups();
 
 		if (listOfSpecificationGroups != null && !listOfSpecificationGroups.isEmpty()) {
-			for (com.vodafone.product.pojo.Group specificationGroup : listOfSpecificationGroups) {
+			for (com.vf.uk.dal.device.datamodel.product.Group specificationGroup : listOfSpecificationGroups) {
 				if (specificationGroup.getGroupName().equalsIgnoreCase(Constants.STRING_COLOUR)) {
-					List<com.vodafone.product.pojo.Specification> listOfSpec = specificationGroup.getSpecifications();
+					List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup.getSpecifications();
 					if (listOfSpec != null && !listOfSpec.isEmpty()) {
-						for (com.vodafone.product.pojo.Specification spec : listOfSpec) {
+						for (com.vf.uk.dal.device.datamodel.product.Specification spec : listOfSpec) {
 							if (spec.getName().equalsIgnoreCase(Constants.STRING_COLOUR)) {
 								deviceSummary.setColourName(spec.getValue());
 							}
@@ -148,9 +148,9 @@ public class DaoUtils {
 					}
 				}
 				if (specificationGroup.getGroupName().equalsIgnoreCase(Constants.STRING_CAPACITY)) {
-					List<com.vodafone.product.pojo.Specification> listOfSpec = specificationGroup.getSpecifications();
+					List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup.getSpecifications();
 					if (listOfSpec != null && !listOfSpec.isEmpty()) {
-						for (com.vodafone.product.pojo.Specification spec : listOfSpec) {
+						for (com.vf.uk.dal.device.datamodel.product.Specification spec : listOfSpec) {
 							if (spec.getName().equalsIgnoreCase(Constants.STRING_CAPACITY)) {
 								deviceSummary.setMemory(spec.getValue() + spec.getValueUOM());
 							}
@@ -163,7 +163,7 @@ public class DaoUtils {
 		List<MediaLink> merchandisingMedia = new ArrayList<>();
 		MediaLink mediaLink;
 		if (commercialProduct.getListOfimageURLs() != null) {
-			for (com.vodafone.product.pojo.ImageURL imageURL : commercialProduct.getListOfimageURLs()) {
+			for (com.vf.uk.dal.device.datamodel.product.ImageURL imageURL : commercialProduct.getListOfimageURLs()) {
 				if (StringUtils.isNotBlank(imageURL.getImageURL())) {
 					mediaLink = new MediaLink();
 					mediaLink.setId(imageURL.getImageName());
@@ -174,7 +174,7 @@ public class DaoUtils {
 			}
 		}
 		if (commercialProduct.getListOfmediaURLs() != null) {
-			for (com.vodafone.product.pojo.MediaURL mediaURL : commercialProduct.getListOfmediaURLs()) {
+			for (com.vf.uk.dal.device.datamodel.product.MediaURL mediaURL : commercialProduct.getListOfmediaURLs()) {
 				if (StringUtils.isNotBlank(mediaURL.getMediaURL())) {
 					mediaLink = new MediaLink();
 					mediaLink.setId(mediaURL.getMediaName());
@@ -445,7 +445,7 @@ public class DaoUtils {
 
 		MediaLink mediaLink;
 		if (cohProduct.getListOfimageURLs() != null) {
-			for (com.vodafone.product.pojo.ImageURL imageURL : cohProduct.getListOfimageURLs()) {
+			for (com.vf.uk.dal.device.datamodel.product.ImageURL imageURL : cohProduct.getListOfimageURLs()) {
 				if (StringUtils.isNotBlank(imageURL.getImageURL())) {
 					mediaLink = new MediaLink();
 					mediaLink.setId(imageURL.getImageName());
@@ -456,7 +456,7 @@ public class DaoUtils {
 			}
 		}
 		if (cohProduct.getListOfmediaURLs() != null) {
-			for (com.vodafone.product.pojo.MediaURL mediaURL : cohProduct.getListOfmediaURLs()) {
+			for (com.vf.uk.dal.device.datamodel.product.MediaURL mediaURL : cohProduct.getListOfmediaURLs()) {
 				if (StringUtils.isNotBlank(mediaURL.getMediaURL())) {
 					mediaLink = new MediaLink();
 					mediaLink.setId(mediaURL.getMediaName());
@@ -499,21 +499,21 @@ public class DaoUtils {
 					freeExtrasForPlans, freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares));
 		}
 
-		List<com.vodafone.product.pojo.Group> listOfSpecificationGroups = cohProduct.getSpecificationGroups();
+		List<com.vf.uk.dal.device.datamodel.product.Group> listOfSpecificationGroups = cohProduct.getSpecificationGroups();
 		List<Specification> listOfSpecification;
 		List<SpecificationGroup> listOfSpecificationGroup = new ArrayList<>();
 		SpecificationGroup specificationGroups;
 		if (listOfSpecificationGroups != null && !listOfSpecificationGroups.isEmpty()) {
-			for (com.vodafone.product.pojo.Group specificationGroup : listOfSpecificationGroups) {
+			for (com.vf.uk.dal.device.datamodel.product.Group specificationGroup : listOfSpecificationGroups) {
 				specificationGroups = new SpecificationGroup();
 				specificationGroups.setGroupName(specificationGroup.getGroupName());
 				specificationGroups.setPriority(specificationGroup.getPriority().intValue());
 				specificationGroups.setComparable(specificationGroup.isComparable());
 				listOfSpecification = new ArrayList<>();
-				List<com.vodafone.product.pojo.Specification> listOfSpec = specificationGroup.getSpecifications();
+				List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup.getSpecifications();
 				Specification specification;
 				if (listOfSpec != null && !listOfSpec.isEmpty()) {
-					for (com.vodafone.product.pojo.Specification spec : listOfSpec) {
+					for (com.vf.uk.dal.device.datamodel.product.Specification spec : listOfSpec) {
 						specification = new Specification();
 						specification.setName(spec.getName());
 						specification.setValue(spec.getValue());
@@ -755,15 +755,15 @@ public class DaoUtils {
 			}
 
 			if (accessory != null) {
-				List<com.vodafone.product.pojo.Group> listOfSpecificationGroups = commercialProduct
+				List<com.vf.uk.dal.device.datamodel.product.Group> listOfSpecificationGroups = commercialProduct
 						.getSpecificationGroups();
 				if (listOfSpecificationGroups != null && !listOfSpecificationGroups.isEmpty()) {
-					for (com.vodafone.product.pojo.Group specificationGroup : listOfSpecificationGroups) {
+					for (com.vf.uk.dal.device.datamodel.product.Group specificationGroup : listOfSpecificationGroups) {
 						if (specificationGroup.getGroupName().equalsIgnoreCase(Constants.STRING_COLOUR)) {
-							List<com.vodafone.product.pojo.Specification> listOfSpec = specificationGroup
+							List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup
 									.getSpecifications();
 							if (listOfSpec != null && !listOfSpec.isEmpty()) {
-								for (com.vodafone.product.pojo.Specification spec : listOfSpec) {
+								for (com.vf.uk.dal.device.datamodel.product.Specification spec : listOfSpec) {
 									if (spec.getName().equalsIgnoreCase(Constants.STRING_COLOUR)) {
 										accessory.setColour(spec.getValue());
 									}
@@ -776,7 +776,7 @@ public class DaoUtils {
 
 				MediaLink mediaLink;
 				if (commercialProduct.getListOfimageURLs() != null) {
-					for (com.vodafone.product.pojo.ImageURL imageURL : commercialProduct.getListOfimageURLs()) {
+					for (com.vf.uk.dal.device.datamodel.product.ImageURL imageURL : commercialProduct.getListOfimageURLs()) {
 						if (StringUtils.isNotBlank(imageURL.getImageURL())) {
 							mediaLink = new MediaLink();
 							mediaLink.setId(imageURL.getImageName());
@@ -787,7 +787,7 @@ public class DaoUtils {
 					}
 				}
 				if (commercialProduct.getListOfmediaURLs() != null) {
-					for (com.vodafone.product.pojo.MediaURL mediaURL : commercialProduct.getListOfmediaURLs()) {
+					for (com.vf.uk.dal.device.datamodel.product.MediaURL mediaURL : commercialProduct.getListOfmediaURLs()) {
 						if (StringUtils.isNotBlank(mediaURL.getMediaURL())) {
 							mediaLink = new MediaLink();
 							mediaLink.setId(mediaURL.getMediaName());
@@ -855,7 +855,7 @@ public class DaoUtils {
 			List<MediaLink> merchandisingMedia = new ArrayList<>();
 			MediaLink mediaLink;
 			if (insuranceProduct.getListOfimageURLs() != null) {
-				for (com.vodafone.product.pojo.ImageURL imageURL : insuranceProduct.getListOfimageURLs()) {
+				for (com.vf.uk.dal.device.datamodel.product.ImageURL imageURL : insuranceProduct.getListOfimageURLs()) {
 
 					if (StringUtils.isNotBlank(imageURL.getImageURL())) {
 						mediaLink = new MediaLink();
@@ -868,7 +868,7 @@ public class DaoUtils {
 				}
 			}
 			if (insuranceProduct.getListOfmediaURLs() != null) {
-				for (com.vodafone.product.pojo.MediaURL mediaURL : insuranceProduct.getListOfmediaURLs()) {
+				for (com.vf.uk.dal.device.datamodel.product.MediaURL mediaURL : insuranceProduct.getListOfmediaURLs()) {
 					if (StringUtils.isNotBlank(mediaURL.getMediaURL())) {
 						mediaLink = new MediaLink();
 						mediaLink.setId(mediaURL.getMediaName());
@@ -881,21 +881,21 @@ public class DaoUtils {
 
 			insurance.setMerchandisingMedia(merchandisingMedia);
 
-			List<com.vodafone.product.pojo.Group> listOfSpecificationGroups = insuranceProduct.getSpecificationGroups();
+			List<com.vf.uk.dal.device.datamodel.product.Group> listOfSpecificationGroups = insuranceProduct.getSpecificationGroups();
 			List<Specification> listOfSpecification;
 			List<SpecificationGroup> listOfSpecificationGroup = new ArrayList<>();
 			SpecificationGroup specificationGroups;
 			if (listOfSpecificationGroups != null && !listOfSpecificationGroups.isEmpty()) {
-				for (com.vodafone.product.pojo.Group specificationGroup : listOfSpecificationGroups) {
+				for (com.vf.uk.dal.device.datamodel.product.Group specificationGroup : listOfSpecificationGroups) {
 					specificationGroups = new SpecificationGroup();
 					specificationGroups.setGroupName(specificationGroup.getGroupName());
 					specificationGroups.setPriority(specificationGroup.getPriority().intValue());
 					specificationGroups.setComparable(specificationGroup.isComparable());
 					listOfSpecification = new ArrayList<>();
-					List<com.vodafone.product.pojo.Specification> listOfSpec = specificationGroup.getSpecifications();
+					List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup.getSpecifications();
 					Specification specification;
 					if (listOfSpec != null && !listOfSpec.isEmpty()) {
-						for (com.vodafone.product.pojo.Specification spec : listOfSpec) {
+						for (com.vf.uk.dal.device.datamodel.product.Specification spec : listOfSpec) {
 							specification = new Specification();
 							specification.setName(spec.getName());
 							specification.setValue(spec.getValue());
@@ -3340,7 +3340,7 @@ public class DaoUtils {
 				Price monthlyPrice = new Price();
 				monthlyPrice.setGross(CommonUtility.getpriceFormat(productModel.getBundleMonthlyPriceGross()));
 				monthlyPrice.setNet(CommonUtility.getpriceFormat(productModel.getBundleMonthlyPriceNet()));
-				monthlyPrice.setVat(CommonUtility.getpriceFormat(productModel.getBundleMonthlyDiscPriceVat()));
+				monthlyPrice.setVat(CommonUtility.getpriceFormat(productModel.getBundleMonthlyPriceVat()));
 				bundlePrice.setMonthlyPrice(monthlyPrice);
 				bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
 				bundlePrice.setBundleId(leadPlanId);
@@ -3924,14 +3924,14 @@ public class DaoUtils {
 
 		deviceSummary.setDisplayDescription(commercialProduct.getPreDesc());
 
-		List<com.vodafone.product.pojo.Group> listOfSpecificationGroups = commercialProduct.getSpecificationGroups();
+		List<com.vf.uk.dal.device.datamodel.product.Group> listOfSpecificationGroups = commercialProduct.getSpecificationGroups();
 
 		if (listOfSpecificationGroups != null && !listOfSpecificationGroups.isEmpty()) {
-			for (com.vodafone.product.pojo.Group specificationGroup : listOfSpecificationGroups) {
+			for (com.vf.uk.dal.device.datamodel.product.Group specificationGroup : listOfSpecificationGroups) {
 				if (specificationGroup.getGroupName().equalsIgnoreCase(Constants.STRING_COLOUR)) {
-					List<com.vodafone.product.pojo.Specification> listOfSpec = specificationGroup.getSpecifications();
+					List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup.getSpecifications();
 					if (listOfSpec != null && !listOfSpec.isEmpty()) {
-						for (com.vodafone.product.pojo.Specification spec : listOfSpec) {
+						for (com.vf.uk.dal.device.datamodel.product.Specification spec : listOfSpec) {
 							if (spec.getName().equalsIgnoreCase(Constants.STRING_COLOUR)) {
 								deviceSummary.setColourName(spec.getValue());
 							}
@@ -3942,9 +3942,9 @@ public class DaoUtils {
 					}
 				}
 				if (specificationGroup.getGroupName().equalsIgnoreCase(Constants.STRING_CAPACITY)) {
-					List<com.vodafone.product.pojo.Specification> listOfSpec = specificationGroup.getSpecifications();
+					List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup.getSpecifications();
 					if (listOfSpec != null && !listOfSpec.isEmpty()) {
-						for (com.vodafone.product.pojo.Specification spec : listOfSpec) {
+						for (com.vf.uk.dal.device.datamodel.product.Specification spec : listOfSpec) {
 							if (spec.getName().equalsIgnoreCase(Constants.STRING_CAPACITY)) {
 								deviceSummary.setMemory(spec.getValue() + spec.getValueUOM());
 							}
@@ -3957,7 +3957,7 @@ public class DaoUtils {
 
 		MediaLink mediaLink;
 		if (commercialProduct.getListOfimageURLs() != null) {
-			for (com.vodafone.product.pojo.ImageURL imageURL : commercialProduct.getListOfimageURLs()) {
+			for (com.vf.uk.dal.device.datamodel.product.ImageURL imageURL : commercialProduct.getListOfimageURLs()) {
 				if (StringUtils.isNotBlank(imageURL.getImageURL())) {
 					mediaLink = new MediaLink();
 					mediaLink.setId(imageURL.getImageName());
@@ -3968,7 +3968,7 @@ public class DaoUtils {
 			}
 		}
 		if (commercialProduct.getListOfmediaURLs() != null) {
-			for (com.vodafone.product.pojo.MediaURL mediaURL : commercialProduct.getListOfmediaURLs()) {
+			for (com.vf.uk.dal.device.datamodel.product.MediaURL mediaURL : commercialProduct.getListOfmediaURLs()) {
 				if (StringUtils.isNotBlank(mediaURL.getMediaURL())) {
 					mediaLink = new MediaLink();
 					mediaLink.setId(mediaURL.getMediaName());

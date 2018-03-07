@@ -20,6 +20,28 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.vf.uk.dal.common.registry.client.Utility;
+import com.vf.uk.dal.device.datamodel.bundle.Allowance;
+import com.vf.uk.dal.device.datamodel.bundle.Availability;
+import com.vf.uk.dal.device.datamodel.bundle.BundleControl;
+import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
+import com.vf.uk.dal.device.datamodel.bundle.Commitment;
+import com.vf.uk.dal.device.datamodel.bundle.DevicePrice;
+import com.vf.uk.dal.device.datamodel.bundle.ImageURL;
+import com.vf.uk.dal.device.datamodel.bundle.LineRental;
+import com.vf.uk.dal.device.datamodel.bundle.ServiceProduct;
+import com.vf.uk.dal.device.datamodel.product.BazaarVoice;
+import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
+import com.vf.uk.dal.device.datamodel.product.Duration;
+import com.vf.uk.dal.device.datamodel.product.Equipment;
+import com.vf.uk.dal.device.datamodel.product.MediaURL;
+import com.vf.uk.dal.device.datamodel.product.PriceDetail;
+import com.vf.uk.dal.device.datamodel.product.ProductAvailability;
+import com.vf.uk.dal.device.datamodel.product.ProductControl;
+import com.vf.uk.dal.device.datamodel.product.ProductGroups;
+import com.vf.uk.dal.device.datamodel.product.PromoteAs;
+import com.vf.uk.dal.device.datamodel.product.StockAvailability;
+import com.vf.uk.dal.device.datamodel.productgroups.Group;
+import com.vf.uk.dal.device.datamodel.productgroups.Member;
 import com.vf.uk.dal.device.entity.Accessory;
 import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.BundlePrice;
@@ -67,35 +89,12 @@ import com.vf.uk.dal.utility.solr.entity.Media;
 import com.vf.uk.dal.utility.solr.entity.OneOffDiscountPrice;
 import com.vf.uk.dal.utility.solr.entity.OneOffPrice;
 import com.vf.uk.dal.utility.solr.entity.PriceInfo;
-import com.vodafone.dal.bundle.pojo.Allowance;
-import com.vodafone.dal.bundle.pojo.Availability;
-import com.vodafone.dal.bundle.pojo.BundleControl;
-import com.vodafone.dal.bundle.pojo.CommercialBundle;
-import com.vodafone.dal.bundle.pojo.Commitment;
-import com.vodafone.dal.bundle.pojo.DevicePrice;
-import com.vodafone.dal.bundle.pojo.ImageURL;
-import com.vodafone.dal.bundle.pojo.LineRental;
-import com.vodafone.dal.bundle.pojo.ServiceProduct;
-import com.vodafone.dal.domain.bazaarvoice.BazaarVoice;
-import com.vodafone.product.pojo.CommercialProduct;
-import com.vodafone.product.pojo.Duration;
-import com.vodafone.product.pojo.Equipment;
-import com.vodafone.product.pojo.MediaURL;
-import com.vodafone.product.pojo.PriceDetail;
-import com.vodafone.product.pojo.ProductAvailability;
-import com.vodafone.product.pojo.ProductControl;
-import com.vodafone.product.pojo.ProductGroups;
-import com.vodafone.product.pojo.PromoteAs;
-import com.vodafone.productGroups.pojo.Group;
-import com.vodafone.productGroups.pojo.Member;
 import com.vodafone.solrmodels.BundleModel;
 import com.vodafone.solrmodels.MerchandisingPromotionModel;
 import com.vodafone.solrmodels.OfferAppliedPriceModel;
 import com.vodafone.solrmodels.ProductGroupFacetModel;
 import com.vodafone.solrmodels.ProductGroupModel;
 import com.vodafone.solrmodels.ProductModel;
-import com.vodafone.stockAvailability.pojo.StockAvailability;
-
 public class CommonMethods {
 	public static Timestamp timeStamp;
 	public static DeviceDetails getDevice(String id) {
@@ -778,9 +777,9 @@ public class CommonMethods {
 		productAvailability.setSalesExpired(false);
 		productAvailability.setStart(null);
 		commercialProduct.setProductAvailability(productAvailability);
-		List<com.vodafone.product.pojo.Group> specificationGroupsList = new ArrayList<com.vodafone.product.pojo.Group>();
-		com.vodafone.product.pojo.Group gr = new com.vodafone.product.pojo.Group();
-		com.vodafone.product.pojo.Group group = new com.vodafone.product.pojo.Group();
+		List<com.vf.uk.dal.device.datamodel.product.Group> specificationGroupsList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Group>();
+		com.vf.uk.dal.device.datamodel.product.Group gr = new com.vf.uk.dal.device.datamodel.product.Group();
+		com.vf.uk.dal.device.datamodel.product.Group group = new com.vf.uk.dal.device.datamodel.product.Group();
 		group.setComparable(true);
 		group.setGroupName("Capacity");
 		group.setPriority((long) 1);
@@ -788,10 +787,10 @@ public class CommonMethods {
 		gr.setComparable(true);
 		gr.setGroupName("Colour");
 		gr.setPriority((long) 1);
-		List<com.vodafone.product.pojo.Specification> specificationList = new ArrayList<com.vodafone.product.pojo.Specification>();
-		com.vodafone.product.pojo.Specification specification = new com.vodafone.product.pojo.Specification();
-		com.vodafone.product.pojo.Specification specification1 = new com.vodafone.product.pojo.Specification();
-		com.vodafone.product.pojo.Specification specification2 = new com.vodafone.product.pojo.Specification();
+		List<com.vf.uk.dal.device.datamodel.product.Specification> specificationList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Specification>();
+		com.vf.uk.dal.device.datamodel.product.Specification specification = new com.vf.uk.dal.device.datamodel.product.Specification();
+		com.vf.uk.dal.device.datamodel.product.Specification specification1 = new com.vf.uk.dal.device.datamodel.product.Specification();
+		com.vf.uk.dal.device.datamodel.product.Specification specification2 = new com.vf.uk.dal.device.datamodel.product.Specification();
 		specification.setComparable(true);
 		specification.setKey(true);
 		specification.setName("Colour");
@@ -835,8 +834,8 @@ public class CommonMethods {
 		mediaUrlList.add(mediaUrl1);
 		commercialProduct.setListOfmediaURLs(mediaUrlList);
 
-		List<com.vodafone.product.pojo.ImageURL> listOfimageURLs = new ArrayList<com.vodafone.product.pojo.ImageURL>();
-		com.vodafone.product.pojo.ImageURL imageURL = new com.vodafone.product.pojo.ImageURL();
+		List<com.vf.uk.dal.device.datamodel.product.ImageURL> listOfimageURLs = new ArrayList<com.vf.uk.dal.device.datamodel.product.ImageURL>();
+		com.vf.uk.dal.device.datamodel.product.ImageURL imageURL = new com.vf.uk.dal.device.datamodel.product.ImageURL();
 		imageURL.setImageName("images.left");
 		imageURL.setImageURL("URL");
 		listOfimageURLs.add(imageURL);
@@ -847,7 +846,7 @@ public class CommonMethods {
 		duration.setUOM("MB");
 		duration.setValue("30");
 		commercialProduct.setDuration(duration);
-		com.vodafone.product.pojo.Discount discount = new com.vodafone.product.pojo.Discount();
+		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
 		discount.setType("Percentage");
 		discount.setAmount(10.20);
 		commercialProduct.setDiscount(discount);
@@ -880,8 +879,8 @@ public class CommonMethods {
 	}
 
 	public static List<Member> getMemberList() {
-		List<com.vodafone.productGroups.pojo.Member> productGroupMember = new ArrayList<com.vodafone.productGroups.pojo.Member>();
-		com.vodafone.productGroups.pojo.Member productMember = new Member();
+		List<com.vf.uk.dal.device.datamodel.productgroups.Member> productGroupMember = new ArrayList<com.vf.uk.dal.device.datamodel.productgroups.Member>();
+		com.vf.uk.dal.device.datamodel.productgroups.Member productMember = new Member();
 		productMember.setId("1");
 		productMember.setPriority((long) 7346);
 		productGroupMember.add(productMember);
@@ -947,7 +946,7 @@ public class CommonMethods {
 		listOfAllowances.add(roamingAllowances);
 		bundle.setAllowances(listOfAllowances);
 		List<String> listOfPromoteAs=new ArrayList<>();
-		com.vodafone.dal.bundle.pojo.PromoteAs promoteAs = new com.vodafone.dal.bundle.pojo.PromoteAs();
+		com.vf.uk.dal.device.datamodel.bundle.PromoteAs promoteAs = new com.vf.uk.dal.device.datamodel.bundle.PromoteAs();
 		listOfPromoteAs.add("EXTRA.1GB.DATA");
 		listOfPromoteAs.add("W_HH_PAYM_OC_01");
 		promoteAs.setPromotionName(listOfPromoteAs);
@@ -1040,9 +1039,9 @@ public class CommonMethods {
 		productAvailability.setSalesExpired(false);
 		productAvailability.setStart(null);
 		commercialProduct.setProductAvailability(productAvailability);
-		List<com.vodafone.product.pojo.Group> specificationGroupsList = new ArrayList<com.vodafone.product.pojo.Group>();
-		com.vodafone.product.pojo.Group gr = new com.vodafone.product.pojo.Group();
-		com.vodafone.product.pojo.Group group = new com.vodafone.product.pojo.Group();
+		List<com.vf.uk.dal.device.datamodel.product.Group> specificationGroupsList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Group>();
+		com.vf.uk.dal.device.datamodel.product.Group gr = new com.vf.uk.dal.device.datamodel.product.Group();
+		com.vf.uk.dal.device.datamodel.product.Group group = new com.vf.uk.dal.device.datamodel.product.Group();
 		group.setComparable(true);
 		group.setGroupName("Capacity");
 		group.setPriority((long) 1);
@@ -1050,10 +1049,10 @@ public class CommonMethods {
 		gr.setComparable(true);
 		gr.setGroupName("Colour");
 		gr.setPriority((long) 1);
-		List<com.vodafone.product.pojo.Specification> specificationList = new ArrayList<com.vodafone.product.pojo.Specification>();
-		com.vodafone.product.pojo.Specification specification = new com.vodafone.product.pojo.Specification();
-		com.vodafone.product.pojo.Specification specification1 = new com.vodafone.product.pojo.Specification();
-		com.vodafone.product.pojo.Specification specification2 = new com.vodafone.product.pojo.Specification();
+		List<com.vf.uk.dal.device.datamodel.product.Specification> specificationList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Specification>();
+		com.vf.uk.dal.device.datamodel.product.Specification specification = new com.vf.uk.dal.device.datamodel.product.Specification();
+		com.vf.uk.dal.device.datamodel.product.Specification specification1 = new com.vf.uk.dal.device.datamodel.product.Specification();
+		com.vf.uk.dal.device.datamodel.product.Specification specification2 = new com.vf.uk.dal.device.datamodel.product.Specification();
 		specification.setComparable(true);
 		specification.setKey(true);
 		specification.setName("Colour");
@@ -1098,8 +1097,8 @@ public class CommonMethods {
 		mediaUrlList.add(mediaUrl1);
 		commercialProduct.setListOfmediaURLs(mediaUrlList);
 
-		List<com.vodafone.product.pojo.ImageURL> listOfimageURLs = new ArrayList<com.vodafone.product.pojo.ImageURL>();
-		com.vodafone.product.pojo.ImageURL imageURL = new com.vodafone.product.pojo.ImageURL();
+		List<com.vf.uk.dal.device.datamodel.product.ImageURL> listOfimageURLs = new ArrayList<com.vf.uk.dal.device.datamodel.product.ImageURL>();
+		com.vf.uk.dal.device.datamodel.product.ImageURL imageURL = new com.vf.uk.dal.device.datamodel.product.ImageURL();
 		imageURL.setImageName("images.left");
 		imageURL.setImageURL("URL");
 		listOfimageURLs.add(imageURL);
@@ -1110,7 +1109,7 @@ public class CommonMethods {
 		duration.setUOM("MB");
 		duration.setValue("30");
 		commercialProduct.setDuration(duration);
-		com.vodafone.product.pojo.Discount discount = new com.vodafone.product.pojo.Discount();
+		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
 		discount.setType("Percentage");
 		discount.setAmount(10.20);
 		commercialProduct.setDiscount(discount);
@@ -1967,8 +1966,8 @@ public class CommonMethods {
 		return queryparams;
 	}
 
-	public static com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion getMemPro() {
-		com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion mem = new com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion();
+	public static com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion getMemPro() {
+		com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion mem = new com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion();
 		mem.setTag("handset.limited.GBP");
 		mem.setType("full_duration");
 		return mem;
@@ -2152,9 +2151,9 @@ public class CommonMethods {
 		productAvailability.setSalesExpired(false);
 		productAvailability.setStart(null);
 		commercialProduct.setProductAvailability(productAvailability);
-		List<com.vodafone.product.pojo.Group> specificationGroupsList = new ArrayList<com.vodafone.product.pojo.Group>();
-		com.vodafone.product.pojo.Group gr = new com.vodafone.product.pojo.Group();
-		com.vodafone.product.pojo.Group group = new com.vodafone.product.pojo.Group();
+		List<com.vf.uk.dal.device.datamodel.product.Group> specificationGroupsList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Group>();
+		com.vf.uk.dal.device.datamodel.product.Group gr = new com.vf.uk.dal.device.datamodel.product.Group();
+		com.vf.uk.dal.device.datamodel.product.Group group = new com.vf.uk.dal.device.datamodel.product.Group();
 		group.setComparable(true);
 		group.setGroupName("Capacity");
 		group.setPriority((long) 1);
@@ -2162,10 +2161,10 @@ public class CommonMethods {
 		gr.setComparable(true);
 		gr.setGroupName("Colour");
 		gr.setPriority((long) 1);
-		List<com.vodafone.product.pojo.Specification> specificationList = new ArrayList<com.vodafone.product.pojo.Specification>();
-		com.vodafone.product.pojo.Specification specification = new com.vodafone.product.pojo.Specification();
-		com.vodafone.product.pojo.Specification specification1 = new com.vodafone.product.pojo.Specification();
-		com.vodafone.product.pojo.Specification specification2 = new com.vodafone.product.pojo.Specification();
+		List<com.vf.uk.dal.device.datamodel.product.Specification> specificationList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Specification>();
+		com.vf.uk.dal.device.datamodel.product.Specification specification = new com.vf.uk.dal.device.datamodel.product.Specification();
+		com.vf.uk.dal.device.datamodel.product.Specification specification1 = new com.vf.uk.dal.device.datamodel.product.Specification();
+		com.vf.uk.dal.device.datamodel.product.Specification specification2 = new com.vf.uk.dal.device.datamodel.product.Specification();
 		specification.setComparable(true);
 		specification.setKey(true);
 		specification.setName("Colour");
@@ -2209,8 +2208,8 @@ public class CommonMethods {
 		mediaUrlList.add(mediaUrl1);
 		commercialProduct.setListOfmediaURLs(mediaUrlList);
 
-		List<com.vodafone.product.pojo.ImageURL> listOfimageURLs = new ArrayList<com.vodafone.product.pojo.ImageURL>();
-		com.vodafone.product.pojo.ImageURL imageURL = new com.vodafone.product.pojo.ImageURL();
+		List<com.vf.uk.dal.device.datamodel.product.ImageURL> listOfimageURLs = new ArrayList<com.vf.uk.dal.device.datamodel.product.ImageURL>();
+		com.vf.uk.dal.device.datamodel.product.ImageURL imageURL = new com.vf.uk.dal.device.datamodel.product.ImageURL();
 		imageURL.setImageName("images.left");
 		imageURL.setImageURL("URL");
 		listOfimageURLs.add(imageURL);
@@ -2221,7 +2220,7 @@ public class CommonMethods {
 		duration.setUOM("MB");
 		duration.setValue("30");
 		commercialProduct.setDuration(duration);
-		com.vodafone.product.pojo.Discount discount = new com.vodafone.product.pojo.Discount();
+		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
 		discount.setType("Percentage");
 		discount.setAmount(10.20);
 		commercialProduct.setDiscount(discount);
@@ -2229,14 +2228,14 @@ public class CommonMethods {
 		commercialProduct.setProductClass("Handset");
 		return commercialProduct;
 	}
-	public static com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion getMerchPromotion() {
-		com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion mem = new com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion();
+	public static com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion getMerchPromotion() {
+		com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion mem = new com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion();
 		mem.setTag("EXTRA.1GB.DATA");
 		mem.setType("entertainment");
 		return mem;
 	}
-	public static com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion getMerchPromotion1() {
-		com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion mem = new com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion();
+	public static com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion getMerchPromotion1() {
+		com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion mem = new com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion();
 		mem.setTag("qwerty");
 		mem.setType("entertainment");
 		return mem;
@@ -2290,9 +2289,9 @@ public class CommonMethods {
 		productAvailability.setSalesExpired(false);
 		productAvailability.setStart(null);
 		commercialProduct.setProductAvailability(productAvailability);
-		List<com.vodafone.product.pojo.Group> specificationGroupsList = new ArrayList<com.vodafone.product.pojo.Group>();
-		com.vodafone.product.pojo.Group gr = new com.vodafone.product.pojo.Group();
-		com.vodafone.product.pojo.Group group = new com.vodafone.product.pojo.Group();
+		List<com.vf.uk.dal.device.datamodel.product.Group> specificationGroupsList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Group>();
+		com.vf.uk.dal.device.datamodel.product.Group gr = new com.vf.uk.dal.device.datamodel.product.Group();
+		com.vf.uk.dal.device.datamodel.product.Group group = new com.vf.uk.dal.device.datamodel.product.Group();
 		group.setComparable(true);
 		group.setGroupName("Capacity");
 		group.setPriority((long) 1);
@@ -2300,10 +2299,10 @@ public class CommonMethods {
 		gr.setComparable(true);
 		gr.setGroupName("Colour");
 		gr.setPriority((long) 1);
-		List<com.vodafone.product.pojo.Specification> specificationList = new ArrayList<com.vodafone.product.pojo.Specification>();
-		com.vodafone.product.pojo.Specification specification = new com.vodafone.product.pojo.Specification();
-		com.vodafone.product.pojo.Specification specification1 = new com.vodafone.product.pojo.Specification();
-		com.vodafone.product.pojo.Specification specification2 = new com.vodafone.product.pojo.Specification();
+		List<com.vf.uk.dal.device.datamodel.product.Specification> specificationList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Specification>();
+		com.vf.uk.dal.device.datamodel.product.Specification specification = new com.vf.uk.dal.device.datamodel.product.Specification();
+		com.vf.uk.dal.device.datamodel.product.Specification specification1 = new com.vf.uk.dal.device.datamodel.product.Specification();
+		com.vf.uk.dal.device.datamodel.product.Specification specification2 = new com.vf.uk.dal.device.datamodel.product.Specification();
 		specification.setComparable(true);
 		specification.setKey(true);
 		specification.setName("Colour");
@@ -2347,8 +2346,8 @@ public class CommonMethods {
 		mediaUrlList.add(mediaUrl1);
 		commercialProduct.setListOfmediaURLs(mediaUrlList);
 
-		List<com.vodafone.product.pojo.ImageURL> listOfimageURLs = new ArrayList<com.vodafone.product.pojo.ImageURL>();
-		com.vodafone.product.pojo.ImageURL imageURL = new com.vodafone.product.pojo.ImageURL();
+		List<com.vf.uk.dal.device.datamodel.product.ImageURL> listOfimageURLs = new ArrayList<com.vf.uk.dal.device.datamodel.product.ImageURL>();
+		com.vf.uk.dal.device.datamodel.product.ImageURL imageURL = new com.vf.uk.dal.device.datamodel.product.ImageURL();
 		imageURL.setImageName("images.left");
 		imageURL.setImageURL("URL");
 		listOfimageURLs.add(imageURL);
@@ -2359,7 +2358,7 @@ public class CommonMethods {
 		duration.setUOM("MB");
 		duration.setValue("30");
 		commercialProduct.setDuration(duration);
-		com.vodafone.product.pojo.Discount discount = new com.vodafone.product.pojo.Discount();
+		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
 		discount.setType("Percentage");
 		discount.setAmount(10.20);
 		commercialProduct.setDiscount(discount);
@@ -2486,9 +2485,9 @@ public class CommonMethods {
 		productAvailability.setSalesExpired(false);
 		productAvailability.setStart(null);
 		commercialProduct.setProductAvailability(productAvailability);
-		List<com.vodafone.product.pojo.Group> specificationGroupsList = new ArrayList<com.vodafone.product.pojo.Group>();
-		com.vodafone.product.pojo.Group gr = new com.vodafone.product.pojo.Group();
-		com.vodafone.product.pojo.Group group = new com.vodafone.product.pojo.Group();
+		List<com.vf.uk.dal.device.datamodel.product.Group> specificationGroupsList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Group>();
+		com.vf.uk.dal.device.datamodel.product.Group gr = new com.vf.uk.dal.device.datamodel.product.Group();
+		com.vf.uk.dal.device.datamodel.product.Group group = new com.vf.uk.dal.device.datamodel.product.Group();
 		group.setComparable(true);
 		group.setGroupName("Capacity");
 		group.setPriority((long) 1);
@@ -2496,10 +2495,10 @@ public class CommonMethods {
 		gr.setComparable(true);
 		gr.setGroupName("Colour");
 		gr.setPriority((long) 1);
-		List<com.vodafone.product.pojo.Specification> specificationList = new ArrayList<com.vodafone.product.pojo.Specification>();
-		com.vodafone.product.pojo.Specification specification = new com.vodafone.product.pojo.Specification();
-		com.vodafone.product.pojo.Specification specification1 = new com.vodafone.product.pojo.Specification();
-		com.vodafone.product.pojo.Specification specification2 = new com.vodafone.product.pojo.Specification();
+		List<com.vf.uk.dal.device.datamodel.product.Specification> specificationList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Specification>();
+		com.vf.uk.dal.device.datamodel.product.Specification specification = new com.vf.uk.dal.device.datamodel.product.Specification();
+		com.vf.uk.dal.device.datamodel.product.Specification specification1 = new com.vf.uk.dal.device.datamodel.product.Specification();
+		com.vf.uk.dal.device.datamodel.product.Specification specification2 = new com.vf.uk.dal.device.datamodel.product.Specification();
 		specification.setComparable(true);
 		specification.setKey(true);
 		specification.setName("Colour");
@@ -2543,8 +2542,8 @@ public class CommonMethods {
 		mediaUrlList.add(mediaUrl1);
 		commercialProduct.setListOfmediaURLs(mediaUrlList);
 
-		List<com.vodafone.product.pojo.ImageURL> listOfimageURLs = new ArrayList<com.vodafone.product.pojo.ImageURL>();
-		com.vodafone.product.pojo.ImageURL imageURL = new com.vodafone.product.pojo.ImageURL();
+		List<com.vf.uk.dal.device.datamodel.product.ImageURL> listOfimageURLs = new ArrayList<com.vf.uk.dal.device.datamodel.product.ImageURL>();
+		com.vf.uk.dal.device.datamodel.product.ImageURL imageURL = new com.vf.uk.dal.device.datamodel.product.ImageURL();
 		imageURL.setImageName("images.left");
 		imageURL.setImageURL("URL");
 		listOfimageURLs.add(imageURL);
@@ -2555,7 +2554,7 @@ public class CommonMethods {
 		duration.setUOM("MB");
 		duration.setValue("30");
 		commercialProduct.setDuration(duration);
-		com.vodafone.product.pojo.Discount discount = new com.vodafone.product.pojo.Discount();
+		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
 		discount.setType("Percentage");
 		discount.setAmount(10.20);
 		commercialProduct.setDiscount(discount);
@@ -2699,9 +2698,9 @@ public class CommonMethods {
 		productAvailability.setSalesExpired(false);
 		productAvailability.setStart(null);
 		commercialProduct.setProductAvailability(productAvailability);
-		List<com.vodafone.product.pojo.Group> specificationGroupsList = new ArrayList<com.vodafone.product.pojo.Group>();
-		com.vodafone.product.pojo.Group gr = new com.vodafone.product.pojo.Group();
-		com.vodafone.product.pojo.Group group = new com.vodafone.product.pojo.Group();
+		List<com.vf.uk.dal.device.datamodel.product.Group> specificationGroupsList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Group>();
+		com.vf.uk.dal.device.datamodel.product.Group gr = new com.vf.uk.dal.device.datamodel.product.Group();
+		com.vf.uk.dal.device.datamodel.product.Group group = new com.vf.uk.dal.device.datamodel.product.Group();
 		group.setComparable(true);
 		group.setGroupName("Capacity");
 		group.setPriority((long) 1);
@@ -2709,10 +2708,10 @@ public class CommonMethods {
 		gr.setComparable(true);
 		gr.setGroupName("Colour");
 		gr.setPriority((long) 1);
-		List<com.vodafone.product.pojo.Specification> specificationList = new ArrayList<com.vodafone.product.pojo.Specification>();
-		com.vodafone.product.pojo.Specification specification = new com.vodafone.product.pojo.Specification();
-		com.vodafone.product.pojo.Specification specification1 = new com.vodafone.product.pojo.Specification();
-		com.vodafone.product.pojo.Specification specification2 = new com.vodafone.product.pojo.Specification();
+		List<com.vf.uk.dal.device.datamodel.product.Specification> specificationList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Specification>();
+		com.vf.uk.dal.device.datamodel.product.Specification specification = new com.vf.uk.dal.device.datamodel.product.Specification();
+		com.vf.uk.dal.device.datamodel.product.Specification specification1 = new com.vf.uk.dal.device.datamodel.product.Specification();
+		com.vf.uk.dal.device.datamodel.product.Specification specification2 = new com.vf.uk.dal.device.datamodel.product.Specification();
 		specification.setComparable(true);
 		specification.setKey(true);
 		specification.setName("Colour");
@@ -2756,8 +2755,8 @@ public class CommonMethods {
 		mediaUrlList.add(mediaUrl1);
 		commercialProduct.setListOfmediaURLs(mediaUrlList);
 
-		List<com.vodafone.product.pojo.ImageURL> listOfimageURLs = new ArrayList<com.vodafone.product.pojo.ImageURL>();
-		com.vodafone.product.pojo.ImageURL imageURL = new com.vodafone.product.pojo.ImageURL();
+		List<com.vf.uk.dal.device.datamodel.product.ImageURL> listOfimageURLs = new ArrayList<com.vf.uk.dal.device.datamodel.product.ImageURL>();
+		com.vf.uk.dal.device.datamodel.product.ImageURL imageURL = new com.vf.uk.dal.device.datamodel.product.ImageURL();
 		imageURL.setImageName("images.left");
 		imageURL.setImageURL("URL");
 		listOfimageURLs.add(imageURL);
@@ -2768,7 +2767,7 @@ public class CommonMethods {
 		duration.setUOM("MB");
 		duration.setValue("30");
 		commercialProduct.setDuration(duration);
-		com.vodafone.product.pojo.Discount discount = new com.vodafone.product.pojo.Discount();
+		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
 		discount.setType("Percentage");
 		discount.setAmount(10.20);
 		commercialProduct.setDiscount(discount);
@@ -2829,9 +2828,9 @@ public class CommonMethods {
 		productAvailability.setSalesExpired(false);
 		productAvailability.setStart(null);
 		commercialProduct.setProductAvailability(productAvailability);
-		List<com.vodafone.product.pojo.Group> specificationGroupsList = new ArrayList<com.vodafone.product.pojo.Group>();
-		com.vodafone.product.pojo.Group gr = new com.vodafone.product.pojo.Group();
-		com.vodafone.product.pojo.Group group = new com.vodafone.product.pojo.Group();
+		List<com.vf.uk.dal.device.datamodel.product.Group> specificationGroupsList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Group>();
+		com.vf.uk.dal.device.datamodel.product.Group gr = new com.vf.uk.dal.device.datamodel.product.Group();
+		com.vf.uk.dal.device.datamodel.product.Group group = new com.vf.uk.dal.device.datamodel.product.Group();
 		group.setComparable(true);
 		group.setGroupName("Capacity");
 		group.setPriority((long) 1);
@@ -2839,10 +2838,10 @@ public class CommonMethods {
 		gr.setComparable(true);
 		gr.setGroupName("Colour");
 		gr.setPriority((long) 1);
-		List<com.vodafone.product.pojo.Specification> specificationList = new ArrayList<com.vodafone.product.pojo.Specification>();
-		com.vodafone.product.pojo.Specification specification = new com.vodafone.product.pojo.Specification();
-		com.vodafone.product.pojo.Specification specification1 = new com.vodafone.product.pojo.Specification();
-		com.vodafone.product.pojo.Specification specification2 = new com.vodafone.product.pojo.Specification();
+		List<com.vf.uk.dal.device.datamodel.product.Specification> specificationList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Specification>();
+		com.vf.uk.dal.device.datamodel.product.Specification specification = new com.vf.uk.dal.device.datamodel.product.Specification();
+		com.vf.uk.dal.device.datamodel.product.Specification specification1 = new com.vf.uk.dal.device.datamodel.product.Specification();
+		com.vf.uk.dal.device.datamodel.product.Specification specification2 = new com.vf.uk.dal.device.datamodel.product.Specification();
 		specification.setComparable(true);
 		specification.setKey(true);
 		specification.setName("Colour");
@@ -2886,8 +2885,8 @@ public class CommonMethods {
 		mediaUrlList.add(mediaUrl1);
 		commercialProduct.setListOfmediaURLs(mediaUrlList);
 
-		List<com.vodafone.product.pojo.ImageURL> listOfimageURLs = new ArrayList<com.vodafone.product.pojo.ImageURL>();
-		com.vodafone.product.pojo.ImageURL imageURL = new com.vodafone.product.pojo.ImageURL();
+		List<com.vf.uk.dal.device.datamodel.product.ImageURL> listOfimageURLs = new ArrayList<com.vf.uk.dal.device.datamodel.product.ImageURL>();
+		com.vf.uk.dal.device.datamodel.product.ImageURL imageURL = new com.vf.uk.dal.device.datamodel.product.ImageURL();
 		imageURL.setImageName("images.left");
 		imageURL.setImageURL("URL");
 		listOfimageURLs.add(imageURL);
@@ -2898,7 +2897,7 @@ public class CommonMethods {
 		duration.setUOM("MB");
 		duration.setValue("30");
 		commercialProduct.setDuration(duration);
-		com.vodafone.product.pojo.Discount discount = new com.vodafone.product.pojo.Discount();
+		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
 		discount.setType("Percentage");
 		discount.setAmount(10.20);
 		commercialProduct.setDiscount(discount);
@@ -2956,26 +2955,26 @@ public class CommonMethods {
 		productAvailability.setStart(null);
 		commercialProduct.setProductAvailability(productAvailability);
 		ProductGroups pgs=new ProductGroups();
-		List<com.vodafone.product.pojo.ProductGroup> listOfProductGroup= new ArrayList<>();
-		com.vodafone.product.pojo.ProductGroup  pg=new com.vodafone.product.pojo.ProductGroup();
+		List<com.vf.uk.dal.device.datamodel.product.ProductGroup> listOfProductGroup= new ArrayList<>();
+		com.vf.uk.dal.device.datamodel.product.ProductGroup  pg=new com.vf.uk.dal.device.datamodel.product.ProductGroup();
 		pg.setProductGroupRole("Compatible Insurance");
 		pg.setProductGroupName("DEVICE_PAYM");
 		listOfProductGroup.add(pg);
 		pgs.setProductGroup(listOfProductGroup);
 		commercialProduct.setProductGroups(pgs);
-		List<com.vodafone.product.pojo.Group> specificationGroupsList = new ArrayList<com.vodafone.product.pojo.Group>();
-		com.vodafone.product.pojo.Group gr = new com.vodafone.product.pojo.Group();
-		com.vodafone.product.pojo.Group group = new com.vodafone.product.pojo.Group();
+		List<com.vf.uk.dal.device.datamodel.product.Group> specificationGroupsList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Group>();
+		com.vf.uk.dal.device.datamodel.product.Group gr = new com.vf.uk.dal.device.datamodel.product.Group();
+		com.vf.uk.dal.device.datamodel.product.Group group = new com.vf.uk.dal.device.datamodel.product.Group();
 		group.setComparable(true);
 		group.setGroupName("Capacity");
 		group.setPriority((long) 1);
 		gr.setComparable(true);
 		gr.setGroupName("Colour");
 		gr.setPriority((long) 1);
-		List<com.vodafone.product.pojo.Specification> specificationList = new ArrayList<com.vodafone.product.pojo.Specification>();
-		com.vodafone.product.pojo.Specification specification = new com.vodafone.product.pojo.Specification();
-		com.vodafone.product.pojo.Specification specification1 = new com.vodafone.product.pojo.Specification();
-		com.vodafone.product.pojo.Specification specification2 = new com.vodafone.product.pojo.Specification();
+		List<com.vf.uk.dal.device.datamodel.product.Specification> specificationList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Specification>();
+		com.vf.uk.dal.device.datamodel.product.Specification specification = new com.vf.uk.dal.device.datamodel.product.Specification();
+		com.vf.uk.dal.device.datamodel.product.Specification specification1 = new com.vf.uk.dal.device.datamodel.product.Specification();
+		com.vf.uk.dal.device.datamodel.product.Specification specification2 = new com.vf.uk.dal.device.datamodel.product.Specification();
 		specification.setComparable(true);
 		specification.setKey(true);
 		specification.setName("Colour");
@@ -3019,8 +3018,8 @@ public class CommonMethods {
 		mediaUrlList.add(mediaUrl1);
 		commercialProduct.setListOfmediaURLs(mediaUrlList);
 
-		List<com.vodafone.product.pojo.ImageURL> listOfimageURLs = new ArrayList<com.vodafone.product.pojo.ImageURL>();
-		com.vodafone.product.pojo.ImageURL imageURL = new com.vodafone.product.pojo.ImageURL();
+		List<com.vf.uk.dal.device.datamodel.product.ImageURL> listOfimageURLs = new ArrayList<com.vf.uk.dal.device.datamodel.product.ImageURL>();
+		com.vf.uk.dal.device.datamodel.product.ImageURL imageURL = new com.vf.uk.dal.device.datamodel.product.ImageURL();
 		imageURL.setImageName("images.left");
 		imageURL.setImageURL("URL");
 		listOfimageURLs.add(imageURL);
@@ -3031,7 +3030,7 @@ public class CommonMethods {
 		duration.setUOM("MB");
 		duration.setValue("30");
 		commercialProduct.setDuration(duration);
-		com.vodafone.product.pojo.Discount discount = new com.vodafone.product.pojo.Discount();
+		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
 		discount.setType("Percentage");
 		discount.setAmount(10.20);
 		commercialProduct.setDiscount(discount);
@@ -3047,14 +3046,14 @@ public class CommonMethods {
 		
 		return commercialProduct;
 	}
-	public static com.vodafone.productGroups.pojo.Group getGropuFromProductGroups()
+	public static com.vf.uk.dal.device.datamodel.productgroups.Group getGropuFromProductGroups()
 	{
-		com.vodafone.productGroups.pojo.Group gr=new com.vodafone.productGroups.pojo.Group();
-		List<com.vodafone.productGroups.pojo.Member> listOfM1=new ArrayList<>();
-		com.vodafone.productGroups.pojo.Member m1=new com.vodafone.productGroups.pojo.Member();
+		com.vf.uk.dal.device.datamodel.productgroups.Group gr=new com.vf.uk.dal.device.datamodel.productgroups.Group();
+		List<com.vf.uk.dal.device.datamodel.productgroups.Member> listOfM1=new ArrayList<>();
+		com.vf.uk.dal.device.datamodel.productgroups.Member m1=new com.vf.uk.dal.device.datamodel.productgroups.Member();
 		m1.setId("093353");
 		m1.setPriority((long)2);
-		com.vodafone.productGroups.pojo.Member m2=new com.vodafone.productGroups.pojo.Member();
+		com.vf.uk.dal.device.datamodel.productgroups.Member m2=new com.vf.uk.dal.device.datamodel.productgroups.Member();
 		m2.setId("093354");
 		m2.setPriority((long)2);
 		listOfM1.add(m1);
@@ -3390,7 +3389,7 @@ public class CommonMethods {
 	}
 	
 	@JsonIgnoreProperties(ignoreUnknown = true)
-	public static com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion getMerchandisingPromotion() {
+	public static com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion getMerchandisingPromotion() {
 
 		try {
 
@@ -3402,9 +3401,9 @@ public class CommonMethods {
 			// true);
 			String merchPromotion = new String(
 					Utility.readFile("\\TEST-MOCK\\merchandisingPromotion_hardware_discount.json"));
-			com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion merchPromo = mapper.readValue(merchPromotion, com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion.class);
+			com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion merchPromo = mapper.readValue(merchPromotion, com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion.class);
 
-			return mapper.convertValue(merchPromo, new TypeReference<com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion>() {
+			return mapper.convertValue(merchPromo, new TypeReference<com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion>() {
 			});
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block

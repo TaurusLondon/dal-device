@@ -7,7 +7,7 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.4.4.RELEASE</version>
 	</parent>
-	<groupId>com.vf.uk.dal</groupId>
+	<groupId>com.vf.uk.dal</groupId> 
 	<artifactId>dal-device-svc</artifactId>
 	<version>8.2.2</version>
 	<packaging>jar</packaging>
@@ -187,7 +187,7 @@
 			<artifactId>coherence</artifactId>
 			<version>12.2.1</version>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.vf.uk.dal.coh</groupId>
 			<artifactId>coherence-domain</artifactId>
 			<version>8.1.0</version>
@@ -202,7 +202,7 @@
 			<groupId>com.vf.uk.dal.coh</groupId>
 			<artifactId>coherence-logging-utility</artifactId>
 			<version>8.1.0</version>
-		</dependency>
+		</dependency> -->
 		<!-- LoggingUtility uses slf4j-ext and json-simple jar -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -280,7 +280,8 @@
 			**/utils/CohAddressProvider.java,
 			**/utils/CoherenceConnectionProvider.java,
 			**/utils/SolrConnectionProvider.java,
-			**/DeviceApplication.java
+			**/DeviceApplication.java,
+			**/datamodel/**
 		</sonar.coverage.exclusions>
 	</properties>
 	<!-- Ends here -->

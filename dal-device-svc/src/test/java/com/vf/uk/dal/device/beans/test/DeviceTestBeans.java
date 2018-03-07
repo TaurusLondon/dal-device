@@ -7,7 +7,6 @@ import com.vf.uk.dal.common.beans.Environment;
 import com.vf.uk.dal.common.configuration.ConfigHelper;
 import com.vf.uk.dal.common.configuration.DataSourceInitializer;
 import com.vf.uk.dal.common.registry.client.RegistryClient;
-import com.vf.uk.dal.device.config.ResponseMappingHelper;
 import com.vf.uk.dal.device.controller.DeviceController;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.dao.impl.DeviceDaoImpl;
@@ -17,6 +16,7 @@ import com.vf.uk.dal.device.svc.impl.DeviceRecommendationServiceImpl;
 import com.vf.uk.dal.device.svc.impl.DeviceServiceImpl;
 import com.vf.uk.dal.device.utils.DeviceServiceImplHelper;
 import com.vf.uk.dal.device.utils.DeviceTileCacheDAO;
+import com.vf.uk.dal.device.utils.ResponseMappingHelper;
 
 @Configuration
 public class DeviceTestBeans {

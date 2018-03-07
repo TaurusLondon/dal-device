@@ -8,6 +8,9 @@ import java.util.concurrent.CompletableFuture;
 import org.elasticsearch.client.Response;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
+import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
+import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
+import com.vf.uk.dal.device.datamodel.productgroups.Group;
 import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.entity.DeviceTile;
@@ -18,23 +21,13 @@ import com.vf.uk.dal.utility.entity.BundleDetails;
 import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
 import com.vodafone.business.service.RequestManager;
 import com.vodafone.common.Filters;
-import com.vodafone.dal.bundle.pojo.CommercialBundle;
-import com.vodafone.dal.domain.bazaarvoice.BazaarVoice;
-import com.vodafone.dal.domain.repository.BazaarReviewRepository;
-import com.vodafone.dal.domain.repository.CommercialBundleRepository;
-import com.vodafone.dal.domain.repository.CommercialProductRepository;
-import com.vodafone.dal.domain.repository.MerchandisingPromotionRepository;
-import com.vodafone.dal.domain.repository.ProductGroupRepository;
-import com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion;
-import com.vodafone.product.pojo.CommercialProduct;
-import com.vodafone.productGroups.pojo.Group;
+import com.vf.uk.dal.device.datamodel.product.BazaarVoice;
 import com.vodafone.solrmodels.BundleModel;
 import com.vodafone.solrmodels.MerchandisingPromotionModel;
 import com.vodafone.solrmodels.OfferAppliedPriceModel;
 import com.vodafone.solrmodels.ProductGroupFacetModel;
 import com.vodafone.solrmodels.ProductGroupModel;
 import com.vodafone.solrmodels.ProductModel;
-import com.vodafone.stockAvailability.pojo.StockAvailability;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -94,8 +87,8 @@ public interface DeviceDao {
 	 *            the promotion name
 	 * @return the merchandising promotion by promotion name
 	 */
-	public com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion getMerchandisingPromotionByPromotionName(
-			String promotionName);
+	/*public com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion getMerchandisingPromotionByPromotionName(
+			String promotionName);*/
 
 	/**
 	 * Gets the product groups by type.
@@ -104,7 +97,7 @@ public interface DeviceDao {
 	 *            the group type
 	 * @return the product groups by type
 	 */
-	public List<Group> getProductGroupsByType(String groupType);
+	//public List<Group> getProductGroupsByType(String groupType);
 
 	/**
 	 * Gets the commercial product repository by lead member id.
@@ -113,7 +106,7 @@ public interface DeviceDao {
 	 *            the lead member id
 	 * @return the commercial product repository by lead member id
 	 */
-	public CommercialProduct getCommercialProductRepositoryByLeadMemberId(String leadMemberId);
+	//public CommercialProduct getCommercialProductRepositoryByLeadMemberId(String leadMemberId);
 
 	/**
 	 * Gets the stock availability by member id.
@@ -122,7 +115,7 @@ public interface DeviceDao {
 	 *            the member id
 	 * @return the stock availability by member id
 	 */
-	public StockAvailability getStockAvailabilityByMemberId(String memberId);
+	//public StockAvailability getStockAvailabilityByMemberId(String memberId);
 
 	/**
 	 * Move pre calc data to solr.
@@ -208,7 +201,7 @@ public interface DeviceDao {
 	 *            the product id
 	 * @return the commercial product by product id
 	 */
-	public CommercialProduct getCommercialProductByProductId(String productId);
+	//public CommercialProduct getCommercialProductByProductId(String productId);
 
 	/**
 	 * Gets the commercial bundle by bundle id.
@@ -217,7 +210,7 @@ public interface DeviceDao {
 	 *            the bundle id
 	 * @return the commercial bundle by bundle id
 	 */
-	public CommercialBundle getCommercialBundleByBundleId(String bundleId);
+	//public CommercialBundle getCommercialBundleByBundleId(String bundleId);
 
 	/**
 	 * Gets the price for bundle and hardware.
@@ -240,7 +233,7 @@ public interface DeviceDao {
 	 *            the lead member id
 	 * @return the list commercial product repository by lead member id
 	 */
-	public Collection<CommercialProduct> getListCommercialProductRepositoryByLeadMemberId(List<String> leadMemberId);
+	//public Collection<CommercialProduct> getListCommercialProductRepositoryByLeadMemberId(List<String> leadMemberId);
 
 	/**
 	 * Gets the list commercial bundle repository by compatible plan list.
@@ -249,7 +242,7 @@ public interface DeviceDao {
 	 *            the plan id list
 	 * @return the list commercial bundle repository by compatible plan list
 	 */
-	public Collection<CommercialBundle> getListCommercialBundleRepositoryByCompatiblePlanList(List<String> planIdList);
+	//public Collection<CommercialBundle> getListCommercialBundleRepositoryByCompatiblePlanList(List<String> planIdList);
 
 	/**
 	 * Gets the bundle and hardware price from solr.
@@ -274,7 +267,7 @@ public interface DeviceDao {
 	 *            the group type
 	 * @return the group by prod group name
 	 */
-	public Group getGroupByProdGroupName(String groupName, String groupType);
+	//public Group getGroupByProdGroupName(String groupName, String groupType);
 
 	/**
 	 * Gets the commercial products list.
@@ -283,7 +276,7 @@ public interface DeviceDao {
 	 *            the product ids list
 	 * @return the commercial products list
 	 */
-	public List<CommercialProduct> getCommercialProductsList(List<String> productIdsList);
+	//public List<CommercialProduct> getCommercialProductsList(List<String> productIdsList);
 
 	/**
 	 * Gets the journey type compatible offer codes.
@@ -318,28 +311,28 @@ public interface DeviceDao {
 	 *
 	 * @return the commercial product repository
 	 */
-	public CommercialProductRepository getCommercialProductRepository();
+	//public CommercialProductRepository getCommercialProductRepository();
 
 	/**
 	 * Gets the commercial bundle repository.
 	 *
 	 * @return the commercial bundle repository
 	 */
-	public CommercialBundleRepository getCommercialBundleRepository();
+	//public CommercialBundleRepository getCommercialBundleRepository();
 
 	/**
 	 * Gets the product group repository.
 	 *
 	 * @return the product group repository
 	 */
-	public ProductGroupRepository getProductGroupRepository();
+	//public ProductGroupRepository getProductGroupRepository();
 
 	/**
 	 * Gets the merchandising promotion repository.
 	 *
 	 * @return the merchandising promotion repository
 	 */
-	public MerchandisingPromotionRepository getMerchandisingPromotionRepository();
+	//public MerchandisingPromotionRepository getMerchandisingPromotionRepository();
 
 	/**
 	 * Gets the list of product group from product group repository.
@@ -348,7 +341,7 @@ public interface DeviceDao {
 	 *            the group type
 	 * @return the list of product group from product group repository
 	 */
-	public List<Group> getListOfProductGroupFromProductGroupRepository(String groupType);
+	//public List<Group> getListOfProductGroupFromProductGroupRepository(String groupType);
 
 	/**
 	 * Gets the all commercial bundles from commercial bundle repository.
@@ -357,8 +350,7 @@ public interface DeviceDao {
 	 *            the listof lead plan
 	 * @return the all commercial bundles from commercial bundle repository
 	 */
-	public Collection<CommercialBundle> getAllCommercialBundlesFromCommercialBundleRepository(
-			List<String> listofLeadPlan);
+	//public Collection<CommercialBundle> getAllCommercialBundlesFromCommercialBundleRepository(List<String> listofLeadPlan);
 
 	/**
 	 * Gets the commercial bundle from commercial bundle repository.
@@ -367,7 +359,7 @@ public interface DeviceDao {
 	 *            the bundle id
 	 * @return the commercial bundle from commercial bundle repository
 	 */
-	public CommercialBundle getCommercialBundleFromCommercialBundleRepository(String bundleId);
+	//public CommercialBundle getCommercialBundleFromCommercialBundleRepository(String bundleId);
 
 	/**
 	 * Gets the commercial product from commercial product repository.
@@ -376,7 +368,7 @@ public interface DeviceDao {
 	 *            the device id
 	 * @return the commercial product from commercial product repository
 	 */
-	public CommercialProduct getCommercialProductFromCommercialProductRepository(String deviceId);
+	//public CommercialProduct getCommercialProductFromCommercialProductRepository(String deviceId);
 
 	/**
 	 * Gets the list of product groups from solr.
@@ -392,7 +384,7 @@ public interface DeviceDao {
 	 *            the list of device group name
 	 * @return the list of groups from product group repository
 	 */
-	public List<Group> getListOfGroupsFromProductGroupRepository(List<String> listOfDeviceGroupName);
+	//public List<Group> getListOfGroupsFromProductGroupRepository(List<String> listOfDeviceGroupName);
 
 	/**
 	 * Gets the commercial product list from commercial product repository.
@@ -401,8 +393,8 @@ public interface DeviceDao {
 	 *            the final accessory list
 	 * @return the commercial product list from commercial product repository
 	 */
-	public Collection<CommercialProduct> getCommercialProductListFromCommercialProductRepository(
-			List<String> finalAccessoryList);
+	//public Collection<CommercialProduct> getCommercialProductListFromCommercialProductRepository(
+	//		List<String> finalAccessoryList);
 
 	/**
 	 * Gets the list of product model from solr.
@@ -472,7 +464,7 @@ public interface DeviceDao {
 	 *            the group type
 	 * @return the group from product group repository
 	 */
-	public Group getGroupFromProductGroupRepository(String groupName, String groupType);
+	//public Group getGroupFromProductGroupRepository(String groupName, String groupType);
 
 	/**
 	 * Gets the merchandising promotion based on promotion name.
@@ -481,7 +473,7 @@ public interface DeviceDao {
 	 *            the promotion name
 	 * @return the merchandising promotion based on promotion name
 	 */
-	public MerchandisingPromotion getMerchandisingPromotionBasedOnPromotionName(String promotionName);
+	//public MerchandisingPromotion getMerchandisingPromotionBasedOnPromotionName(String promotionName);
 
 	/**
 	 * Gets the list of merchandising promotion model from solr.
@@ -505,15 +497,15 @@ public interface DeviceDao {
 	 * @return the list of commercial products from commercial product
 	 *         repository
 	 */
-	public List<CommercialProduct> getListOfCommercialProductsFromCommercialProductRepository(String make,
-			String model);
+	//public List<CommercialProduct> getListOfCommercialProductsFromCommercialProductRepository(String make,
+			//String model);
 
 	/**
 	 * Gets the bazaar review repository.
 	 *
 	 * @return the bazaar review repository
 	 */
-	public BazaarReviewRepository getBazaarReviewRepository();
+	//public BazaarReviewRepository getBazaarReviewRepository();
 
 	/**
 	 * Gets the bazaar voice.
@@ -559,7 +551,7 @@ public interface DeviceDao {
 	 *            the list of bundle ids
 	 * @return the list
 	 */
-	List<CommercialBundle> fetchCommericalBundlesbyList(List<String> listOfBundleIds);
+	//List<CommercialBundle> fetchCommericalBundlesbyList(List<String> listOfBundleIds);
 
 	/**
 	 * Gets the merchandising promotions entity from solr model.
