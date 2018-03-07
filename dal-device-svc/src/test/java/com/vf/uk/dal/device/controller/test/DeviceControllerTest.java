@@ -102,10 +102,10 @@ public class DeviceControllerTest {
 		given(restTemplate.getForObject(
 				"http://COMMON-V1/common/journey/" + "c1a42269-6562-4c96-b3be-1ca2a6681d57" + "/queries/currentJourney",
 				CurrentJourney.class)).willReturn(obj);
-		given(response.getCommercialProduct(Matchers.anyObject())).willReturn(CommonMethods.getCommercialProductByDeviceId_093353_PAYG());
+		given(response.getCommercialProduct(Matchers.anyObject())).willReturn(CommonMethods.getCommercialProductsListOfMakeAndModel().get(0));
 		given(response.getListOfGroupFromJson(Matchers.anyObject())).willReturn(CommonMethods.getGroup());
 		given(response.getCommercialProductFromJson(Matchers.anyObject())).willReturn(CommonMethods.getCommercialProductsListOfAccessories());
-		given(response.getCommercialBundle(Matchers.anyObject())).willReturn(CommonMethods.getCommercialBundle());
+		given(response.getCommercialBundle(Matchers.anyObject())).willReturn(CommonMethods.getCommercialBundleFromCommercialBundleRepository());
 		String jsonString1 = new String(Utility.readFile("\\rest-mock\\CUSTOMER-V1.json"));
 		RecommendedProductListResponse obj1 = new ObjectMapper().readValue(jsonString1,
 				RecommendedProductListResponse.class);
