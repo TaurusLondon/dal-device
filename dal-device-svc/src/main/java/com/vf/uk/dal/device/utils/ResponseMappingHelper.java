@@ -21,6 +21,8 @@ import com.vf.uk.dal.device.utils.Constants;
 @Component
 public class ResponseMappingHelper {
 	
+	JSONParser parser = SingletonMapperUtility.getJSONParser();
+	ObjectMapper mapper = SingletonMapperUtility.getObjectMapper();
 	/**
 	 * 
 	 * @param response
@@ -29,13 +31,13 @@ public class ResponseMappingHelper {
 	public  List<CommercialProduct> getCommercialProductFromJson(Response response) {
 
 		List<CommercialProduct> bundleModelList = new ArrayList<>();
-		JSONParser parser = new JSONParser();
+		
 		try {
 			LogHelper.info(ResponseMappingHelper.class, "<---- parsing json object response ---->");
 			JSONObject jsonObj = (JSONObject) parser.parse(EntityUtils.toString(response.getEntity()));
 			JSONObject jsonObj1 = (JSONObject) jsonObj.get(Constants.STRING_HITS);
 			JSONArray jsonObj2 = (JSONArray) jsonObj1.get(Constants.STRING_HITS);
-			ObjectMapper mapper = new ObjectMapper();
+			
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			for (int i = 0; i < jsonObj2.size(); i++) {
 				JSONObject jsonObj3 = (JSONObject) jsonObj2.get(i);
@@ -56,14 +58,12 @@ public class ResponseMappingHelper {
 	 */
 	public CommercialProduct getCommercialProduct(Response response) {
 
-		JSONParser parser = new JSONParser();
 		CommercialProduct obj=null;
 		try {
 			LogHelper.info(ResponseMappingHelper.class, "<---- parsing json object response ---->");
 			JSONObject jsonObj = (JSONObject) parser.parse(EntityUtils.toString(response.getEntity()));
 			JSONObject jsonObj1 = (JSONObject) jsonObj.get(Constants.STRING_HITS);
 			JSONArray jsonObj2 = (JSONArray) jsonObj1.get(Constants.STRING_HITS);
-			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			
 				JSONObject jsonObj3 = (JSONObject) jsonObj2.get(0);
@@ -83,13 +83,11 @@ public class ResponseMappingHelper {
 	public List<Group> getListOfGroupFromJson(Response response) {
 
 		List<Group> bundleModelList = new ArrayList<>();
-		JSONParser parser = new JSONParser();
 		try {
 			LogHelper.info(ResponseMappingHelper.class, "<---- parsing json object response ---->");
 			JSONObject jsonObj = (JSONObject) parser.parse(EntityUtils.toString(response.getEntity()));
 			JSONObject jsonObj1 = (JSONObject) jsonObj.get(Constants.STRING_HITS);
 			JSONArray jsonObj2 = (JSONArray) jsonObj1.get(Constants.STRING_HITS);
-			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			for (int i = 0; i < jsonObj2.size(); i++) {
 				JSONObject jsonObj3 = (JSONObject) jsonObj2.get(i);
@@ -110,14 +108,12 @@ public class ResponseMappingHelper {
 	 */
 	public Group getSingleGroupFromJson(Response response) {
 
-		JSONParser parser = new JSONParser();
 		Group obj =new Group();
 		try {
 			LogHelper.info(ResponseMappingHelper.class, "<---- parsing json object response ---->");
 			JSONObject jsonObj = (JSONObject) parser.parse(EntityUtils.toString(response.getEntity()));
 			JSONObject jsonObj1 = (JSONObject) jsonObj.get(Constants.STRING_HITS);
 			JSONArray jsonObj2 = (JSONArray) jsonObj1.get(Constants.STRING_HITS);
-			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 				JSONObject jsonObj3 = (JSONObject) jsonObj2.get(0);
 				 obj = mapper.readValue(jsonObj3.get(Constants.STRING_SOURCE).toString(), Group.class);
@@ -134,14 +130,12 @@ public class ResponseMappingHelper {
 	 */
 	public CommercialBundle getCommercialBundle(Response response) {
 
-		JSONParser parser = new JSONParser();
 		CommercialBundle obj=new CommercialBundle();
 		try {
 			LogHelper.info(ResponseMappingHelper.class, "<---- parsing json object response ---->");
 			JSONObject jsonObj = (JSONObject) parser.parse(EntityUtils.toString(response.getEntity()));
 			JSONObject jsonObj1 = (JSONObject) jsonObj.get(Constants.STRING_HITS);
 			JSONArray jsonObj2 = (JSONArray) jsonObj1.get(Constants.STRING_HITS);
-			ObjectMapper mapper = new ObjectMapper();
 			
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			
@@ -163,13 +157,11 @@ public class ResponseMappingHelper {
 	public List<CommercialBundle> getListOfCommercialBundleFromJson(Response response) {
 
 		List<CommercialBundle> bundleModelList = new ArrayList<>();
-		JSONParser parser = new JSONParser();
 		try {
 			LogHelper.info(ResponseMappingHelper.class, "<---- parsing json object response ---->");
 			JSONObject jsonObj = (JSONObject) parser.parse(EntityUtils.toString(response.getEntity()));
 			JSONObject jsonObj1 = (JSONObject) jsonObj.get(Constants.STRING_HITS);
 			JSONArray jsonObj2 = (JSONArray) jsonObj1.get(Constants.STRING_HITS);
-			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			for (int i = 0; i < jsonObj2.size(); i++) {
 				JSONObject jsonObj3 = (JSONObject) jsonObj2.get(i);
@@ -191,13 +183,11 @@ public class ResponseMappingHelper {
 	public List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion> getListOfMerchandisingPromotionFromJson(Response response) {
 
 		List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion> bundleModelList = new ArrayList<>();
-		JSONParser parser = new JSONParser();
 		try {
 			LogHelper.info(ResponseMappingHelper.class, "<---- parsing json object response ---->");
 			JSONObject jsonObj = (JSONObject) parser.parse(EntityUtils.toString(response.getEntity()));
 			JSONObject jsonObj1 = (JSONObject) jsonObj.get(Constants.STRING_HITS);
 			JSONArray jsonObj2 = (JSONArray) jsonObj1.get(Constants.STRING_HITS);
-			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			for (int i = 0; i < jsonObj2.size(); i++) {
 				JSONObject jsonObj3 = (JSONObject) jsonObj2.get(i);
@@ -218,7 +208,6 @@ public class ResponseMappingHelper {
 	 */
 	public com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion getMerchandisingPromotion(Response response) {
 
-		JSONParser parser = new JSONParser();
 		com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion obj=new 
 				com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion();
 		try {
@@ -226,7 +215,6 @@ public class ResponseMappingHelper {
 			JSONObject jsonObj = (JSONObject) parser.parse(EntityUtils.toString(response.getEntity()));
 			JSONObject jsonObj1 = (JSONObject) jsonObj.get(Constants.STRING_HITS);
 			JSONArray jsonObj2 = (JSONArray) jsonObj1.get(Constants.STRING_HITS);
-			ObjectMapper mapper = new ObjectMapper();
 			
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			
