@@ -133,7 +133,6 @@ public class DeviceServiceImplTest
 		/*given(this.deviceDAOMock.getDeviceDetails("83921","upgrade","34543")).willReturn(CommonMethods.getDevice("83921"));
 		given(this.deviceDAOMock.getDeviceDetails("83921","Upgrade","W_HH_PAYM_OC_02")).willReturn(CommonMethods.getDevice("83921"));
 		given(this.deviceDAOMock.getDeviceDetails("83929","upgrade","34543")).willReturn(null);*/
-		given(deviceDAOMock.getCommercialProductFromCommercialProductRepository(Matchers.anyString())).willReturn(CommonMethods.getCommercialProductByDeviceId());
 		/*given(this.deviceDAOMock.getAccessoriesOfDevice("93353","Upgrade","W_HH_PAYM_OC_02")).willReturn(CommonMethods.getAccessoriesTileGroup("93353"));
 		given(this.deviceDAOMock.getAccessoriesOfDevice("93354","Upgrade","W_HH_PAYM_OC_02")).willReturn(null);
 		given(this.deviceDAOMock.getAccessoriesOfDevice(null,null,null)).willReturn(null);*/
@@ -141,26 +140,18 @@ public class DeviceServiceImplTest
 		//given(this.deviceDAOMock.getDeviceList(null,null,null,null,null,1,0,"32 GB","White","iOS","Great Camera")).willReturn(null);
 		//given(this.deviceDAOMock.getDeviceList("productclass","make","model",null,"",1,0,"32 GB","White","iOS","Great Camera")).willReturn(null);
 		//given(this.deviceDAOMock.getInsuranceById("93353")).willReturn(CommonMethods.getInsurances("93353"));
-		given(this.deviceDAOMock.getCommercialProductByProductId("093353")).willReturn(CommonMethods.getCommercialProduct2());
-		given(this.deviceDAOMock.getCommercialBundleByBundleId("110154")).willReturn(CommonMethods.getCommercialBundle());
-		given(deviceDAOMock.getMerchandisingPromotionByPromotionName("EXTRA.1GB.DATA")).willReturn(CommonMethods.getMerchPromotion());
-		given(deviceDAOMock.getMerchandisingPromotionByPromotionName("qwerty")).willReturn(CommonMethods.getMerchPromotion1());
-		given(this.deviceDAOMock.getCommercialProductByProductId("093311")).willReturn(CommonMethods.getCommercialProduct3());
+		
 		List<BundleAndHardwareTuple> bundleAndHardwareTupleList = new ArrayList<>();
 		BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
 		bundleAndHardwareTuple.setHardwareId("093353");
 		bundleAndHardwareTuple.setBundleId("110154");
 		bundleAndHardwareTupleList.add(bundleAndHardwareTuple);
 		given(this.deviceDAOMock.getPriceForBundleAndHardware(bundleAndHardwareTupleList,null,null)).willReturn(CommonMethods.getPriceForBundleAndHardware1());
-		given(deviceDAOMock.getCommercialProductFromCommercialProductRepository("093353"))
-		.willReturn(CommonMethods.getCommercialProductByDeviceId_093353());
-		given(deviceDAOMock.getListOfGroupsFromProductGroupRepository(Matchers.anyList()))
-		.willReturn(CommonMethods.getListOfProductGroupForAccessory());
+		
 		given(restTemplate.postForObject("http://PRICE-V1/price/product",
 		CommonMethods.bundleDeviceAndProductsList_For_GetAccessoriesOfDevice(), PriceForProduct.class))
 				.willReturn(CommonMethods.getPriceForProduct_For_GetAccessoriesForDevice());
-		given(deviceDAOMock.getCommercialProductListFromCommercialProductRepository(Matchers.anyList()))
-		.willReturn(CommonMethods.getCommercialProductsListOfAccessories());
+		
 		
 		given(this.deviceDAOMock.getJourneyTypeCompatibleOfferCodes("journeyType")).willReturn(CommonMethods.getMerChandisingPromotion());
 		ProductGroupFacetModel productGroupFacetModel = CommonMethods.getProductGroupFacetModel();
@@ -416,9 +407,7 @@ public class DeviceServiceImplTest
 	insuranceList.add("093353");
 	insuranceList.add("093354");
 	
-		given(this.deviceDAOMock.getCommercialProductByProductId("093353")).willReturn(CommonMethods.getCommercialProductForInsurance());
-		given(this.deviceDAOMock.getGroupByProdGroupName("DEVICE_PAYM","Compatible Insurance")).willReturn(CommonMethods.getGropuFromProductGroups());
-		given(this.deviceDAOMock.getCommercialProductsList(insuranceList)).willReturn(CommonMethods.getListOfCommercialProduct());
+		
 		Insurances insurance=null;
 			insurance=deviceService.getInsuranceByDeviceId("093353","upgrade");
 		Assert.assertNotNull(insurance);
@@ -773,8 +762,7 @@ public class DeviceServiceImplTest
 	@Test
 	public void testGetDeviceListFromPricing()
 	{
-		given(this.deviceDAOMock.getProductGroupsByType("DEVICE_PAYM")).willReturn(CommonMethods.getGroup());
-		given(this.deviceDAOMock.getListCommercialProductRepositoryByLeadMemberId(Arrays.asList("123"))).willReturn(CommonMethods.getListOfCommercialProduct());
+		
 		try
 		{
 			deviceService.getDeviceListFromPricing("DEVICE_PAYM");
@@ -839,8 +827,6 @@ public class DeviceServiceImplTest
 			requestForBundleAndHardwarelocal.setOfferCode(null);
 			
 			given(restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware" ,requestForBundleAndHardwarelocal,com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[].class)).willReturn(obj);
-			given(this.deviceDAOMock.getProductGroupsByType("DEVICE_PAYM")).willReturn(CommonMethods.getGroup());
-			given(this.deviceDAOMock.getListCommercialProductRepositoryByLeadMemberId(Arrays.asList("123"))).willReturn(CommonMethods.getCommercialProductWithNullLeadPlanID());
 		
 			deviceService.getDeviceListFromPricing("DEVICE_PAYM");
 		}
@@ -1059,7 +1045,6 @@ public class DeviceServiceImplTest
 	public void notNullGetLeadPlanIdForDeviceId()throws IOException {
 		CommercialProduct commercialProduct=CommonMethods.getCommercialProduct5();
 		commercialProduct.setLeadPlanId(null);
-		given(this.deviceDAOMock.getCommercialProductRepositoryByLeadMemberId(Matchers.any())).willReturn(commercialProduct);
 		String jsonString=new String(Utility.readFile("\\rest-mock\\BUNDLES-V1.json"));
 		ObjectMapper mapper1=new ObjectMapper();
 		mapper1.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
@@ -1072,7 +1057,6 @@ public class DeviceServiceImplTest
 	@Test
 	public void notNullGetLeadPlanIdForDeviceId1()throws IOException {
 		CommercialProduct commercialProduct=CommonMethods.getCommercialProduct5();
-		given(this.deviceDAOMock.getCommercialProductRepositoryByLeadMemberId(Matchers.any())).willReturn(commercialProduct);
 		String jsonString=new String(Utility.readFile("\\rest-mock\\BUNDLES-V1.json"));
 		ObjectMapper mapper1=new ObjectMapper();
 		mapper1.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
@@ -1085,18 +1069,15 @@ public class DeviceServiceImplTest
 	@Test
 	public void notNullValidateMemeberForUpgrade()throws IOException {
 		CommercialProduct commercialProduct=CommonMethods.getCommercialProduct5();
-		given(this.deviceDAOMock.getCommercialProductRepositoryByLeadMemberId(Matchers.any())).willReturn(commercialProduct);
 		Assert.assertNotNull(deviceService.validateMemeber("123","Upgrade"));
 	}
 	@Test
 	public void notNullValidateMemeber()throws IOException {
 		CommercialProduct commercialProduct=CommonMethods.getCommercialProduct5();
-		given(this.deviceDAOMock.getCommercialProductRepositoryByLeadMemberId(Matchers.any())).willReturn(commercialProduct);
 		Assert.assertNotNull(deviceService.validateMemeber("123","Acquisition"));
 	}
 	@Test
 	public void notNullValidateMemeberForException() {
-		given(this.deviceDAOMock.getCommercialProductRepositoryByLeadMemberId("123")).willThrow(new NullPointerException());
 		Assert.assertNotNull(deviceService.validateMemeber("123",null));
 	}
 	

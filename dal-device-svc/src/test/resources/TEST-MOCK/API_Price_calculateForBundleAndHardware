@@ -1,0 +1,106 @@
+[
+      {
+      "bundlePrice":       {
+         "bundleId": "110154",
+         "monthlyPrice":          {
+            "gross": "9.50",
+            "net": "7.92",
+            "vat": "1.58"
+         },
+         "monthlyDiscountPrice":          {
+            "gross": "9.50",
+            "net": "7.92",
+            "vat": "1.58"
+         },
+         "merchandisingPromotions": null
+      },
+      "hardwarePrice":       {
+         "hardwareId": "093353",
+         "oneOffPrice":          {
+            "gross": "0",
+            "net": "0",
+            "vat": "0"
+         },
+         "oneOffDiscountPrice":          {
+            "gross": "0",
+            "net": "0",
+            "vat": "0"
+         },
+         "merchandisingPromotions": null
+      },
+      "oneOffPrice":       {
+         "gross": "0",
+         "net": "0",
+         "vat": "0"
+      },
+      "oneOffDiscountPrice":       {
+         "gross": "0",
+         "net": "0",
+         "vat": "0"
+      },
+      "monthlyPrice":       {
+         "gross": "9.50",
+         "net": "7.92",
+         "vat": "1.58"
+      },
+      "monthlyDiscountPrice":       {
+         "gross": "9.50",
+         "net": "7.92",
+         "vat": "1.58"
+      },
+      "stepPrices": [],
+      "accessoryDiscountList": []
+   },
+      {
+      "bundlePrice":       {
+         "bundleId": "110167",
+         "monthlyPrice":          {
+            "gross": "17",
+            "net": "14.17",
+            "vat": "2.83"
+         },
+         "monthlyDiscountPrice":          {
+            "gross": "17",
+            "net": "14.17",
+            "vat": "2.83"
+         },
+         "merchandisingPromotions": null
+      },
+      "hardwarePrice":       {
+         "hardwareId": "093353",
+         "oneOffPrice":          {
+            "gross": "0",
+            "net": "0",
+            "vat": "0"
+         },
+         "oneOffDiscountPrice":          {
+            "gross": "0",
+            "net": "0",
+            "vat": "0"
+         },
+         "merchandisingPromotions": null
+      },
+      "oneOffPrice":       {
+         "gross": "0",
+         "net": "0",
+         "vat": "0"
+      },
+      "oneOffDiscountPrice":       {
+         "gross": "0",
+         "net": "0",
+         "vat": "0"
+      },
+      "monthlyPrice":       {
+         "gross": "17",
+         "net": "14.17",
+         "vat": "2.83"
+      },
+      "monthlyDiscountPrice":       {
+         "gross": "17",
+         "net": "14.17",
+         "vat": "2.83"
+      },
+      "stepPrices": [],
+      "accessoryDiscountList": []
+   }
+]

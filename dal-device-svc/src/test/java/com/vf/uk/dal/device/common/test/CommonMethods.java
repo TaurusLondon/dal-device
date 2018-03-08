@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import org.apache.solr.client.solrj.response.FacetField;
 
@@ -3778,5 +3779,42 @@ public class CommonMethods {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	public static List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion> getMerchandisingPromotion1(){
+		List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion> merchandisingPromotionsList = new ArrayList<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion>();
+		com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion merchandisingPromotions = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion();
+				//MerchandisingPromotion merchandisingPromotions1 = new MerchandisingPromotion();
+				merchandisingPromotions.setLabel("20% off with any handset");
+				merchandisingPromotions.setTag("AllPhone.full.2017");
+				merchandisingPromotions.setDescription("description");
+				merchandisingPromotions.setBelowTheLine(true);
+				//merchandisingPromotions.setEndDateTime(TimeStamp.valueOf("12/09/2019"));
+				merchandisingPromotions.setPriority(Long.valueOf(1));
+				merchandisingPromotions.setLabel("Label");
+				merchandisingPromotions.setVersion("Version");
+				merchandisingPromotionsList.add(merchandisingPromotions);
+				return merchandisingPromotionsList;
+	}
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static CompletableFuture<List<PriceForBundleAndHardware>> getPriceForBundleAndHardwareListFromTupleListAsync() {
+		CompletableFuture<List<PriceForBundleAndHardware>> future = null;
+		try {
+			future = new CompletableFuture<List<PriceForBundleAndHardware>>();
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			// mapper = new
+			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
+			// true);
+			String price = new String(Utility.readFile("\\TEST-MOCK\\API_Price_calculateForBundleAndHardware"));
+			PriceForBundleAndHardware[] priceList = mapper.readValue(price, PriceForBundleAndHardware[].class);
+
+			future.complete(mapper.convertValue(priceList, new TypeReference<List<PriceForBundleAndHardware>>() {
+			}));
+		} catch (IOException e) {
+			future.completeExceptionally(e);
+			e.printStackTrace();
+		}
+		return future;
 	}
 }

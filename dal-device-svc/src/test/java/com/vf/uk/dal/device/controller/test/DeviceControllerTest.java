@@ -106,6 +106,7 @@ public class DeviceControllerTest {
 		given(response.getListOfGroupFromJson(Matchers.anyObject())).willReturn(CommonMethods.getGroup());
 		given(response.getCommercialProductFromJson(Matchers.anyObject())).willReturn(CommonMethods.getCommercialProductsListOfAccessories());
 		given(response.getCommercialBundle(Matchers.anyObject())).willReturn(CommonMethods.getCommercialBundleFromCommercialBundleRepository());
+		given(response.getListOfMerchandisingPromotionFromJson(Matchers.anyObject())).willReturn(CommonMethods.getMerchandisingPromotion1());
 		String jsonString1 = new String(Utility.readFile("\\rest-mock\\CUSTOMER-V1.json"));
 		RecommendedProductListResponse obj1 = new ObjectMapper().readValue(jsonString1,
 				RecommendedProductListResponse.class);
@@ -154,52 +155,15 @@ public class DeviceControllerTest {
 		// given(this.deviceDAOMock.getStockAvailability("ValidData")).willReturn(CommonMethods.getListOfStockInfo());
 		given(this.deviceDAOMock.getBundleDetailsFromComplansListingAPI("093353", null))
 				.willReturn(CommonMethods.getCompatibleBundleListJson());
-		given(deviceDAOMock.getMerchandisingPromotionByPromotionName("handset.limited.GBP"))
-				.willReturn(CommonMethods.getMemPro());
-		given(deviceDAOMock.getMerchandisingPromotionByPromotionName("handset.full.percentage"))
-				.willReturn(CommonMethods.getMemPro());
-		// given(this.deviceDAOMock.getDeviceListFromPricing("DEVICE_PAYM")).willReturn(CommonMethods.getDevicePreCalculatedData());
-		given(this.deviceTileCache.saveDeviceListPreCalcData(CommonMethods.getDevicePreCalculatedData())).willReturn(1);
-		given(this.deviceTileCache.saveDeviceMediaData(CommonMethods.getDevicePreCalculatedData().get(0).getMedia(),
-				"093353")).willReturn(1);
-		// given(deviceDAOMock.getCommercialProductRepositoryByLeadMemberId(Matchers.anyString())).willReturn(value)
-		given(this.deviceDAOMock.getCommercialProductByProductId("093353"))
-				.willReturn(CommonMethods.getCommercialProduct2());
-		given(this.deviceDAOMock.getCommercialProductByProductId("093427"))
-				.willReturn(CommonMethods.getCommercialProduct2());
-		given(this.deviceDAOMock.getCommercialBundleByBundleId("110154"))
-				.willReturn(CommonMethods.getCommercialBundle());
-		given(deviceDAOMock.getMerchandisingPromotionByPromotionName("EXTRA.1GB.DATA"))
-				.willReturn(CommonMethods.getMerchPromotion());
-
-		// Test Cases After Refactor the code
-		given(deviceDAOMock.getListOfCommercialProductsFromCommercialProductRepository("Apple", "iPhone-7"))
-				.willReturn(CommonMethods.getCommercialProductsListOfMakeAndModel());
-		given(deviceDAOMock.getListOfProductGroupFromProductGroupRepository("DEVICE_PAYM"))
-				.willReturn(CommonMethods.getListOfProductGroupFromProductGroupRepository());
-		given(deviceDAOMock.getListOfProductGroupFromProductGroupRepository("DEVICE_PAYG"))
-		.willReturn(CommonMethods.getListOfProductGroupFromProductGroupRepository());
-		given(deviceDAOMock.getCommercialProductFromCommercialProductRepository(Matchers.anyString()))
-				.willReturn(CommonMethods.getCommercialProductByDeviceId());
-		given(deviceDAOMock.getBazaarVoice(Matchers.anyString())).willReturn(CommonMethods.getBazaarVoice());
-		given(deviceDAOMock.getCommercialBundleFromCommercialBundleRepository(Matchers.anyString()))
-				.willReturn(CommonMethods.getCommercialBundleFromCommercialBundleRepository());
-		given(deviceDAOMock.getMerchandisingPromotionBasedOnPromotionName(Matchers.anyString()))
-				.willReturn(CommonMethods.getMerchandisingPromotion());
-		given(deviceDAOMock.getCommercialProductFromCommercialProductRepository("093353"))
-				.willReturn(CommonMethods.getCommercialProductByDeviceId_093353());
-		given(deviceDAOMock.getListOfGroupsFromProductGroupRepository(Matchers.anyList()))
-				.willReturn(CommonMethods.getListOfProductGroupForAccessory());
-		given(restTemplate.postForObject("http://PRICE-V1/price/product",
-				CommonMethods.bundleDeviceAndProductsList_For_GetAccessoriesOfDevice(), PriceForProduct.class))
-						.willReturn(CommonMethods.getPriceForProduct_For_GetAccessoriesForDevice());
-		given(deviceDAOMock.getCommercialProductListFromCommercialProductRepository(Matchers.anyList()))
-			.willReturn(CommonMethods.getCommercialProductsListOfAccessories());
+		
 	}
 
 	@Test
 	public void notNullTestForGetDeviceDetailsTile() {
 		List<DeviceTile> deviceDetails = null;
+		given(response.getCommercialProductFromJson(Matchers.anyObject())).willReturn(CommonMethods.getCommercialProductsListOfMakeAndModel());
+		given(response.getListOfGroupFromJson(Matchers.anyObject())).willReturn(CommonMethods.getListOfProductGroupFromProductGroupRepository());
+		given(deviceDAOMock.getPriceForBundleAndHardwareListFromTupleListAsync(Matchers.anyList(), Matchers.anyString(), Matchers.anyString())).willReturn(CommonMethods.getPriceForBundleAndHardwareListFromTupleListAsync());
 		try {
 			deviceDetails = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM", null, null, null,
 					null, null);
@@ -325,9 +289,8 @@ public class DeviceControllerTest {
 					Matchers.anyString())).willReturn(CommonMethods.getProductGroupFacetModel1());
 			given(deviceDAOMock.getProductGroupsWithFacets(Matchers.anyObject(), Matchers.anyString()))
 					.willReturn(CommonMethods.getProductGroupFacetModel1());
-			given(deviceDAOMock.getProductModel(Matchers.anyList())).willReturn(CommonMethods.getProductModel());
-			given(deviceDAOMock.getCommercialProductRepositoryByLeadMemberId(Matchers.anyString()))
-					.willReturn(CommonMethods.getCommercialProduct());
+			/*given(deviceDAOMock.getProductModel(Matchers.anyList())).willReturn(CommonMethods.getProductModel());
+					.willReturn(CommonMethods.getCommercialProduct());*/
 			given(deviceDAOMock.getJourneyTypeCompatibleOfferCodes(Matchers.anyString()))
 					.willReturn(CommonMethods.getModel());
 			given(deviceDAOMock.getBundleAndHardwarePriceFromSolr(Matchers.anyList(), Matchers.anyString(),
@@ -630,11 +593,9 @@ public class DeviceControllerTest {
 		List<FilterCriteria> fcList = new ArrayList<FilterCriteria>();
 		fcList.add(new FilterCriteria("groupType", FilterOperator.EQUALTO, "DEVICE_PAYM"));
 		ServiceContext.setURLParamContext(new URLParamContext("", "", fcList, null));
-		given(deviceDAOMock.getProductGroupsByType("DEVICE_PAYM")).willReturn(CommonMethods.getGroup());
 		given(deviceDAOMock.insertCacheDeviceToDb()).willReturn(CommonMethods.getCacheDeviceTileResponse());
 		Collection<CommercialProduct> a = new ArrayList<>();
 		a.add(CommonMethods.getCommercialProduct5());
-		given(deviceDAOMock.getListCommercialProductRepositoryByLeadMemberId(Matchers.anyList())).willReturn(a);
 		// given(deviceDAOMock.getStockAvailabilityByMemberId(Matchers.anyString())).willReturn(CommonMethods.getStockAvailability());
 		// given(deviceDAOMock.getStockAvailabilityByMemberId(Matchers.anyString())).willReturn(CommonMethods.getStockAvailability());
 		ObjectMapper mapper = new ObjectMapper();
@@ -672,10 +633,7 @@ public class DeviceControllerTest {
 		List<FilterCriteria> fcList = new ArrayList<FilterCriteria>();
 		fcList.add(new FilterCriteria("groupType", FilterOperator.EQUALTO, "DEVICE_PAYM"));
 		ServiceContext.setURLParamContext(new URLParamContext("", "", fcList, null));
-		given(deviceDAOMock.getProductGroupsByType("DEVICE_PAYM")).willReturn(CommonMethods.getGroup());
-		CommercialProduct commercialProduct = CommonMethods.getCommercialProduct5();
-		given(this.deviceDAOMock.getCommercialProductRepositoryByLeadMemberId(Matchers.any()))
-				.willReturn(commercialProduct);
+	
 		given(deviceDAOMock.insertCacheDeviceToDb()).willReturn(CommonMethods.getCacheDeviceTileResponse());
 		CommercialProduct com = CommonMethods.getCommercialProductForCacheDeviceTile();
 		com.setLeadPlanId(null);
@@ -683,11 +641,8 @@ public class DeviceControllerTest {
 		Collection<CommercialProduct> a = new ArrayList<>();
 		a.add(com);
 		a.add(com1);
-		given(deviceDAOMock.getListCommercialProductRepositoryByLeadMemberId(Matchers.anyList())).willReturn(a);
 		Collection<CommercialBundle> listOfCommerCualBundle = new ArrayList<>();
 		listOfCommerCualBundle.add(CommonMethods.getCommercialBundle());
-		given(deviceDAOMock.getListCommercialBundleRepositoryByCompatiblePlanList(Matchers.anyList()))
-				.willReturn(listOfCommerCualBundle);
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
@@ -1235,12 +1190,7 @@ public class DeviceControllerTest {
 
 	@Test
 	public void notNullTestForGetInsuranceById() {
-		given(deviceDAOMock.getCommercialProductByProductId(Matchers.anyString()))
-				.willReturn(CommonMethods.getCommercialProductForInsurance());
-		given(deviceDAOMock.getGroupByProdGroupName(Matchers.anyString(), Matchers.anyString()))
-				.willReturn(CommonMethods.getGropuFromProductGroups());
-		given(deviceDAOMock.getCommercialProductsList(Matchers.anyList()))
-				.willReturn(Arrays.asList(CommonMethods.getCommercialProductForInsurance()));
+		
 
 		try {
 			Insurances insurance = null;
@@ -1253,12 +1203,12 @@ public class DeviceControllerTest {
 
 	@Test
 	public void notNullTestForGetInsuranceByIdWithJourneyType() {
-		given(deviceDAOMock.getCommercialProductByProductId(Matchers.anyString()))
+		/*given(deviceDAOMock.getCommercialProductByProductId(Matchers.anyString()))
 				.willReturn(CommonMethods.getCommercialProductForInsurance());
 		given(deviceDAOMock.getGroupByProdGroupName(Matchers.anyString(), Matchers.anyString()))
 				.willReturn(CommonMethods.getGropuFromProductGroups());
 		given(deviceDAOMock.getCommercialProductsList(Matchers.anyList()))
-				.willReturn(Arrays.asList(CommonMethods.getCommercialProductForInsurance()));
+				.willReturn(Arrays.asList(CommonMethods.getCommercialProductForInsurance()));*/
 
 		try {
 			Insurances insurance = null;
@@ -1494,11 +1444,9 @@ public class DeviceControllerTest {
 		List<FilterCriteria> fcList = new ArrayList<FilterCriteria>();
 		fcList.add(new FilterCriteria("groupType", FilterOperator.EQUALTO, "DEVICE_PAYM"));
 		ServiceContext.setURLParamContext(new URLParamContext("", "", fcList, null));
-		given(deviceDAOMock.getProductGroupsByType("DEVICE_PAYM")).willReturn(CommonMethods.getGroup());
 		given(deviceDAOMock.insertCacheDeviceToDb()).willReturn(CommonMethods.getCacheDeviceTileResponse());
 		Collection<CommercialProduct> a = new ArrayList<>();
 		a.add(CommonMethods.getCommercialProduct5());
-		given(deviceDAOMock.getListCommercialProductRepositoryByLeadMemberId(Matchers.anyList())).willReturn(a);
 		given(deviceDAOMock.getJourneyTypeCompatibleOfferCodes(Matchers.anyString()))
 				.willReturn(CommonMethods.getModel());
 		// given(deviceDAOMock.getStockAvailabilityByMemberId(Matchers.anyString())).willReturn(CommonMethods.getStockAvailability());
@@ -1579,8 +1527,6 @@ public class DeviceControllerTest {
 	@Test
 	public void notNullTestForgetDeviceDetails1() {
 		DeviceDetails deviceDetails = new DeviceDetails();
-		given(deviceDAOMock.getCommercialProductFromCommercialProductRepository("093353"))
-		.willReturn(CommonMethods.getCommercialProductWithoutLeadPlan());
 		given(restTemplate.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=093353", BundleDetailsForAppSrv.class)).willReturn(CommonMethods.getCoupledBundleListForDevice());
 		deviceDetails = deviceController.getDeviceDetails("093353",null,null);
 		Assert.assertNotNull(deviceDetails);
@@ -1588,8 +1534,6 @@ public class DeviceControllerTest {
 	@Test
 	public void notNullTestForGetDeviceDetailsTile_PAYG() {
 		List<DeviceTile> deviceDetails = null;
-		given(deviceDAOMock.getListOfProductGroupFromProductGroupRepository("DEVICE_PAYG"))
-		.willReturn(CommonMethods.getListOfProductGroupFromProductGroupRepository());
 		try {
 			deviceDetails = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYG", null, null, null,
 					null, null);
@@ -1631,11 +1575,9 @@ public class DeviceControllerTest {
 		List<FilterCriteria> fcList = new ArrayList<FilterCriteria>();
 		fcList.add(new FilterCriteria("groupType", FilterOperator.EQUALTO, "DEVICE_PAYG"));
 		ServiceContext.setURLParamContext(new URLParamContext("", "", fcList, null));
-		given(deviceDAOMock.getProductGroupsByType("DEVICE_PAYG")).willReturn(CommonMethods.getGroup());
 		given(deviceDAOMock.insertCacheDeviceToDb()).willReturn(CommonMethods.getCacheDeviceTileResponse());
 		Collection<CommercialProduct> a = new ArrayList<>();
 		a.add(CommonMethods.getCommercialProduct5());
-		given(deviceDAOMock.getListCommercialProductRepositoryByLeadMemberId(Matchers.anyObject())).willReturn(a);
 		given(deviceDAOMock.getJourneyTypeCompatibleOfferCodes(Matchers.anyString()))
 				.willReturn(CommonMethods.getModel());
 		ObjectMapper mapper = new ObjectMapper();
@@ -1669,8 +1611,7 @@ public class DeviceControllerTest {
 	}
 	@Test
 	public void InvalidTestForgetDeviceDetailsWithJourneyTypePAYG() {
-		given(deviceDAOMock.getCommercialProductFromCommercialProductRepository("088417"))
-		.willReturn(CommonMethods.getCommercialProductByDeviceId_093353_PAYG());
+		
 		try{
 		DeviceDetails deviceDetails = new DeviceDetails();
 		deviceDetails = deviceController.getDeviceDetails("088417", "Upgrade", null);
@@ -1681,8 +1622,6 @@ public class DeviceControllerTest {
 	}
 	@Test
 	public void InvalidTestForgetDeviceDetailsWithOfferCodePAYG() {
-		given(deviceDAOMock.getCommercialProductFromCommercialProductRepository("088417"))
-		.willReturn(CommonMethods.getCommercialProductByDeviceId_093353_PAYG());
 		try{
 		DeviceDetails deviceDetails = new DeviceDetails();
 		deviceDetails = deviceController.getDeviceDetails("088417", "abcd", "W_HH_OC_01");
@@ -1693,8 +1632,7 @@ public class DeviceControllerTest {
 	}
 	@Test
 	public void notNullTestForgetDeviceDetailsPAYG() {
-		given(deviceDAOMock.getCommercialProductFromCommercialProductRepository("088417"))
-		.willReturn(CommonMethods.getCommercialProductByDeviceId_093353_PAYG());
+	
 		DeviceDetails deviceDetails = new DeviceDetails();
 		deviceDetails = deviceController.getDeviceDetails("088417", "abcd", null);
 		Assert.assertNotNull(deviceDetails);
