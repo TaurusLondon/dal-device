@@ -1,4 +1,4 @@
-package com.vf.uk.dal.device.datamodel.merchandisingPromotion;
+package com.vf.uk.dal.device.datamodel.merchandisingpromotion;
 
 import com.tangosol.io.pof.annotation.Portable;
 import com.tangosol.io.pof.annotation.PortableProperty;

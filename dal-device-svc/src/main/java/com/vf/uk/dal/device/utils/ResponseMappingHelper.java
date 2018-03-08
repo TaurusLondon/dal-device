@@ -188,9 +188,9 @@ public class ResponseMappingHelper {
 	 * @param response
 	 * @return
 	 */
-	public List<com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion> getListOfMerchandisingPromotionFromJson(Response response) {
+	public List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion> getListOfMerchandisingPromotionFromJson(Response response) {
 
-		List<com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion> bundleModelList = new ArrayList<>();
+		List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion> bundleModelList = new ArrayList<>();
 		JSONParser parser = new JSONParser();
 		try {
 			LogHelper.info(ResponseMappingHelper.class, "<---- parsing json object response ---->");
@@ -201,7 +201,7 @@ public class ResponseMappingHelper {
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			for (int i = 0; i < jsonObj2.size(); i++) {
 				JSONObject jsonObj3 = (JSONObject) jsonObj2.get(i);
-				com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion obj = mapper.readValue(jsonObj3.get(Constants.STRING_SOURCE).toString(), com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion.class);
+				com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion obj = mapper.readValue(jsonObj3.get(Constants.STRING_SOURCE).toString(), com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion.class);
 				bundleModelList.add(obj);
 			}
 			LogHelper.info(ResponseMappingHelper.class, "<---- Product group list: "+ bundleModelList.size() + "---->");
@@ -216,11 +216,11 @@ public class ResponseMappingHelper {
 	 * @param response
 	 * @return
 	 */
-	public com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion getMerchandisingPromotion(Response response) {
+	public com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion getMerchandisingPromotion(Response response) {
 
 		JSONParser parser = new JSONParser();
-		com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion obj=new 
-				com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion();
+		com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion obj=new 
+				com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion();
 		try {
 			LogHelper.info(ResponseMappingHelper.class, "<---- parsing json object response ---->");
 			JSONObject jsonObj = (JSONObject) parser.parse(EntityUtils.toString(response.getEntity()));
@@ -231,7 +231,7 @@ public class ResponseMappingHelper {
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			
 				JSONObject jsonObj3 = (JSONObject) jsonObj2.get(0);
-				 obj = mapper.readValue(jsonObj3.get(Constants.STRING_SOURCE).toString(), com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion.class);
+				 obj = mapper.readValue(jsonObj3.get(Constants.STRING_SOURCE).toString(), com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion.class);
 				
 			LogHelper.info(ResponseMappingHelper.class, "<---- Commercial Bundle list ---->");
 		} catch (Exception e) {

@@ -35,7 +35,7 @@ import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.common.registry.client.RegistryClient;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
-import com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion;
+import com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion;
 import com.vf.uk.dal.device.datamodel.product.BazaarVoice;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
 import com.vf.uk.dal.device.datamodel.product.ProductGroups;
@@ -4249,7 +4249,7 @@ public class DeviceServiceImpl implements DeviceService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion getMerchandisingPromotion(
+	public com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion getMerchandisingPromotion(
 			String tag) {
 		Map<String, Object> queryContextMapForLeadPlanId = DeviceQueryBuilderHelper
 				.searchQueryForMerchandisingBySingleTagName(tag);

@@ -1966,8 +1966,8 @@ public class CommonMethods {
 		return queryparams;
 	}
 
-	public static com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion getMemPro() {
-		com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion mem = new com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion();
+	public static com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion getMemPro() {
+		com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mem = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion();
 		mem.setTag("handset.limited.GBP");
 		mem.setType("full_duration");
 		return mem;
@@ -2228,14 +2228,14 @@ public class CommonMethods {
 		commercialProduct.setProductClass("Handset");
 		return commercialProduct;
 	}
-	public static com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion getMerchPromotion() {
-		com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion mem = new com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion();
+	public static com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion getMerchPromotion() {
+		com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mem = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion();
 		mem.setTag("EXTRA.1GB.DATA");
 		mem.setType("entertainment");
 		return mem;
 	}
-	public static com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion getMerchPromotion1() {
-		com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion mem = new com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion();
+	public static com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion getMerchPromotion1() {
+		com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mem = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion();
 		mem.setTag("qwerty");
 		mem.setType("entertainment");
 		return mem;
@@ -3389,7 +3389,7 @@ public class CommonMethods {
 	}
 	
 	@JsonIgnoreProperties(ignoreUnknown = true)
-	public static com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion getMerchandisingPromotion() {
+	public static com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion getMerchandisingPromotion() {
 
 		try {
 
@@ -3401,9 +3401,9 @@ public class CommonMethods {
 			// true);
 			String merchPromotion = new String(
 					Utility.readFile("\\TEST-MOCK\\merchandisingPromotion_hardware_discount.json"));
-			com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion merchPromo = mapper.readValue(merchPromotion, com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion.class);
+			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion merchPromo = mapper.readValue(merchPromotion, com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion.class);
 
-			return mapper.convertValue(merchPromo, new TypeReference<com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion>() {
+			return mapper.convertValue(merchPromo, new TypeReference<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion>() {
 			});
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block

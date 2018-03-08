@@ -771,18 +771,18 @@ public class DeviceDaoImpl implements DeviceDao {
 	 * @param prioritySorted
 	 * @return
 	 */
-	public List<com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion> getAscendingOrderForMerchndisingPriority(
-			List<com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion> prioritySorted) {
+	public List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion> getAscendingOrderForMerchndisingPriority(
+			List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion> prioritySorted) {
 		Collections.sort(prioritySorted, new SortedPriorityList());
 
 		return prioritySorted;
 	}
 
-	class SortedPriorityList implements Comparator<com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion> {
+	class SortedPriorityList implements Comparator<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion> {
 
 		@Override
-		public int compare(com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion listOfMerchandising,
-				com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion listOfMerchandising2) {
+		public int compare(com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion listOfMerchandising,
+				com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion listOfMerchandising2) {
 
 			if (listOfMerchandising.getPriority() != null && listOfMerchandising2.getPriority() != null) {
 				if (listOfMerchandising.getPriority() < listOfMerchandising2.getPriority()) {
@@ -1783,7 +1783,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	@Override
 	@SuppressWarnings("unchecked")
 	public Map<String, MerchandisingPromotion> getMerchandisingPromotionsEntityFromRepo(List<String> promotionAsTags) {
-		List<com.vf.uk.dal.device.datamodel.merchandisingPromotion.MerchandisingPromotion> listOfMerchandisingPromotions = null;
+		List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion> listOfMerchandisingPromotions = null;
 		Map<String, MerchandisingPromotion> promotions = new HashMap<>();
 
 		/*if (merchandisingPromotionRepository == null) {
