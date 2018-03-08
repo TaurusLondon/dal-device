@@ -3817,4 +3817,30 @@ public class CommonMethods {
 		}
 		return future;
 	}
+	public static BundlePrice getBundlePrice(){
+		BundlePrice bundlePrice = new BundlePrice();
+		MerchandisingPromotion merchandisingPromotions = new MerchandisingPromotion();
+		/*
+		 * merchandisingPromotions.setPromotionName("Promotion Name");
+		 * merchandisingPromotions1.setPromotionName("Promotion Name1");
+		 */
+		merchandisingPromotions.setPromotionMedia("promotion media");
+		bundlePrice.setMerchandisingPromotions(merchandisingPromotions);
+		Price monthlyDiscountPrice = new Price();
+		monthlyDiscountPrice.setGross("10.11");
+		monthlyDiscountPrice.setNet("11.23");
+		monthlyDiscountPrice.setVat("14.56");
+
+
+		Price monthlyPrice = new Price();
+		monthlyDiscountPrice.setGross("13.64");
+		monthlyDiscountPrice.setNet("12.5");
+		monthlyDiscountPrice.setVat("8.56");
+
+		bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
+		bundlePrice.setBundleId("183099");
+		bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
+		bundlePrice.setMonthlyPrice(monthlyPrice);
+		return bundlePrice;
+	}
 }

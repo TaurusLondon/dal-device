@@ -175,6 +175,23 @@ public class DeviceControllerTest {
 		}
 
 	}
+	@Test
+	public void notNullTestForGetDeviceDetailsTileWithBundleId() {
+		List<DeviceTile> deviceDetails = null;
+		given(response.getCommercialProductFromJson(Matchers.anyObject())).willReturn(CommonMethods.getCommercialProductsListOfMakeAndModel());
+		given(response.getListOfGroupFromJson(Matchers.anyObject())).willReturn(CommonMethods.getListOfProductGroupFromProductGroupRepository());
+		given(deviceDAOMock.getPriceForBundleAndHardwareListFromTupleListAsync(Matchers.anyList(), Matchers.anyString(), Matchers.anyString())).willReturn(CommonMethods.getPriceForBundleAndHardwareListFromTupleListAsync());
+		try {
+			deviceDetails = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM", null, null, "110345",
+					null, null);
+			Assert.assertNotNull(deviceDetails);
+			deviceDetails = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM", null, null, null,
+					null, null);
+		} catch (Exception e) {
+
+		}
+
+	}
 
 	@Test
 	public void notNullTestForGetDeviceDetailsTileConditionalAccept() {
@@ -1641,4 +1658,12 @@ public class DeviceControllerTest {
 	public void notNullTestConvertCoherenceDeviceToDeviceTile_PAYG(){
 		DaoUtils.convertCoherenceDeviceToDeviceTile_PAYG(Long.parseLong("1"), CommonMethods.getCommercialProduct(), CommonMethods.getPriceForBundleAndHardware().get(0), "DEVICE_PAYG", CommonMethods.getListOfBundleAndHardwarePromotions().get(0));
 	}
+	@Test
+	public void notNullTestgetListOfOfferAppliedPrice(){
+		DaoUtils.getBundlePriceBasedOnDiscountDuration(CommonMethods.getBundlePrice(), "conditional_full_discount");
+	}
+	/*@Test
+	public void notNullgetListOfOfferAppliedPriceDetails(){
+		DaoUtils.getListOfOfferAppliedPriceDetails(CommonMethods.getOfferAppliedPrice())
+	}*/
 }
