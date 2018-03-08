@@ -280,6 +280,7 @@
 			**/utils/CohAddressProvider.java,
 			**/utils/CoherenceConnectionProvider.java,
 			**/utils/SolrConnectionProvider.java,
+			**/utils/ResponseMappingHelper.java,
 			**/DeviceApplication.java,
 			**/datamodel/**
 		</sonar.coverage.exclusions>
