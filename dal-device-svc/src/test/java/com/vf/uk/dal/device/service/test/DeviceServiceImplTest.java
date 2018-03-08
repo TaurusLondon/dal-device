@@ -716,14 +716,14 @@ public class DeviceServiceImplTest
 		Assert.assertNotNull(deviceDetails);
 	}
 	@Test
-	public void nullTestForGetListOfDeviceDetais() {
+	public void notNullTestForGetListOfDeviceDetais() {
 		List<DeviceDetails> deviceDetails = null;
 		try{
 		deviceDetails=deviceService.getListOfDeviceDetails("83929",null,null);
 		}catch(Exception e){
 			
 		}
-		Assert.assertNull(deviceDetails);
+		Assert.assertNotNull(deviceDetails);
 	}
 	@Test
 	public void notNullMultipleDevicesTestForGetListOfDeviceDetais() {
