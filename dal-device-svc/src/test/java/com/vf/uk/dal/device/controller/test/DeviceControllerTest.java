@@ -1662,8 +1662,9 @@ public class DeviceControllerTest {
 	public void notNullTestgetListOfOfferAppliedPrice(){
 		DaoUtils.getBundlePriceBasedOnDiscountDuration(CommonMethods.getBundlePrice(), "conditional_full_discount");
 	}
-	/*@Test
-	public void notNullgetListOfOfferAppliedPriceDetails(){
-		DaoUtils.getListOfOfferAppliedPriceDetails(CommonMethods.getOfferAppliedPrice())
-	}*/
+	@Test
+	public void notNullgetListOfPriceForBundleAndHardwareForDevice(){
+		DaoUtils dao=new DaoUtils();
+		dao.getListOfPriceForBundleAndHardwareForDevice(CommonMethods.getBundleHeaderList("SIMO"));
+	}
 }
