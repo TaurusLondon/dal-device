@@ -1164,6 +1164,18 @@ public class DeviceControllerTest {
 				.getListOfDeviceDetails(CommonMethods.getQueryParamsMapForDeviceDetails("093353"));
 		Assert.assertNotNull(deviceDetails);
 	}
+	@Test
+	public void notNullTestForgetListOfDeviceDetailsWithoutLeadPlanId() {
+		List<DeviceDetails> deviceDetails;
+		CommercialProduct commercial=CommonMethods.getCommercialProductByDeviceId_093353();
+		commercial.setLeadPlanId(null);
+		given(response.getCommercialProduct(Matchers.anyObject())).willReturn(commercial);
+		given(deviceDAOMock.getPriceForBundleAndHardware(Matchers.anyList(), Matchers.anyString(),
+				Matchers.anyString())).willReturn(CommonMethods.getPriceForBundleAndHardwareListFromTupleList());
+		deviceDetails = deviceController
+				.getListOfDeviceDetails(CommonMethods.getQueryParamsMapForDeviceDetails("093353"));
+		Assert.assertNotNull(deviceDetails);
+	}
 
 	@Test
 	public void emptyParamTestForgetListOfDeviceDetails() throws Exception {
