@@ -139,12 +139,14 @@ public class DeviceQueryBuilderHelper {
 		}
 		return searchQueryMap;
 	}
+	
 	/**
+	 * Method to build query for either list of ProductIds or list of Product Names.
 	 * 
 	 * @param ids
-	 * @return
+	 * @return searchQueryMap
 	 */
-	public static Map<String, Object> searchQueryForListOfCommercialProductAndCommercialBundle(List<String> ids) {
+	public static Map<String, Object> searchQueryForListOfCommercialProductAndCommercialBundle(List<String> idsOrNames) {
 		searchRequestBuilder.clearRescorers();
 		searchQueryMap.clear();
 		params.clear();
@@ -152,9 +154,15 @@ public class DeviceQueryBuilderHelper {
 		try {
 			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
 			searchRequestBuilder.from(from);
-			searchRequestBuilder.size(ids.size());
+			searchRequestBuilder.size(idsOrNames.size());
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
-		    qb.must(QueryBuilders.termsQuery(Constants.STRING_ID+Constants.STRING_KEY_WORD, ids));
+			
+			if (idsOrNames.get(0).matches((Constants.NUMER_REG_EXP))) {
+				qb.must(QueryBuilders.termsQuery(Constants.STRING_ID+Constants.STRING_KEY_WORD, idsOrNames));
+			} else {
+				qb.must(QueryBuilders.termsQuery(Constants.STRING_GROUP_NAME + Constants.STRING_KEY_WORD, idsOrNames));
+			}
+			
 		    searchRequestBuilder.query(qb);
 		    query = searchRequestBuilder.toString();
 			LogHelper.info(DeviceQueryBuilderHelper.class, " <-----  Setting up Elasticsearch parameters and query  ----->");
@@ -164,7 +172,6 @@ public class DeviceQueryBuilderHelper {
 		} catch (Exception e) {
 			LogHelper.error(DeviceQueryBuilderHelper.class,
 					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
-
 		}
 		return searchQueryMap;
 	}

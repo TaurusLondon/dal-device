@@ -27,6 +27,7 @@ import com.vf.uk.dal.common.exception.SystemException;
 import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.common.urlparams.FilterCriteria;
 import com.vf.uk.dal.common.urlparams.PaginationCriteria;
+import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
 import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.entity.DeviceDetails;
@@ -70,6 +71,8 @@ public class DeviceController {
 	private static final String OFFER_CODE = "offerCode";
 	private static final String numberExp = "[0-9]{6}";
 	private static final String creditLimitExp = "[0-9]*";
+	private static final String PRODUCT_ID = "productId";
+	private static final String PRODUCT_NAME = "productName";
 	
 	/**
 	 * Handles requests for getDeviceTile Service with input as
@@ -626,4 +629,40 @@ public class DeviceController {
 		return deviceService.getCacheDeviceJobStatus(jobId);
 
 	}
+	
+	
+	/**
+	 * Handles requests to return the Commercial Products from Product Catalog. It takes either Product Id(s) or product Name(s) as input.
+	 * This is an Entity API which will return Commercial Products without applying any business logic.
+	 * 
+	 * @param productIds
+	 * @param productNames
+	 * 
+	 * @return List of CommercialProducts
+	 */
+	@RequestMapping(value = "/product/", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON })
+	public List<CommercialProduct> getCommercialProduct(@RequestParam Map<String, String> queryParams) {
+		List<CommercialProduct> commProductDetails = null;
+
+		if (!queryParams.isEmpty() && Validator.validateDeviceId(queryParams)) {
+			LogHelper.info(this, "Query parameter(s) passed in the request: " + queryParams);
+
+			String productId = queryParams.containsKey(PRODUCT_ID) ? queryParams.get(PRODUCT_ID) : null;
+			String productName = queryParams.containsKey(PRODUCT_NAME) ? queryParams.get(PRODUCT_NAME) : null;
+			
+			if (productId != null) {
+				LogHelper.info(this, "Get the list of Product Details for the Product Id passed as request params: " + productId);
+				commProductDetails = deviceService.getCommercialProductDetails(productId);
+			} else if (productName != null) {
+				LogHelper.info(this, "Get the list of Product Details for the Product Name passed as request params: " + productName);
+				commProductDetails = deviceService.getCommercialProductDetails(productName);
+			}
+		} else {
+			LogHelper.error(this, "Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
+			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
+		}
+		
+		return commProductDetails;
+	}
+	
 }

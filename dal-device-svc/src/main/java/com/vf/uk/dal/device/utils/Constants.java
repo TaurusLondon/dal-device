@@ -272,4 +272,7 @@ public class Constants {
 	public static final String BAZAAR_VOICE_PART1= "bazaarvoice.urlPart1";
 	
 	public static final String BAZAAR_VOICE_PART2= "bazaarvoice.urlPart2";
+	
+	// Regular Expression to identify list of ProductIds with comma separated.
+	public static final String NUMER_REG_EXP = "[0-9]";
 }

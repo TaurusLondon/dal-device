@@ -4299,4 +4299,29 @@ public class DeviceServiceImpl implements DeviceService {
 		LogHelper.info(this, "converting elasticsearch response into Commercial Product object response");
 		return response.getCommercialProduct(commercialProduct);
 	}
+
+	/**
+	 * Method to prepare the list from the request construct and build the query and finally return the 
+	 * List of Commercial Products.
+	 * 
+	 * @param productIdOrName
+	 * @return List of CommercialProducts
+	 */
+	@Override
+	public List<CommercialProduct> getCommercialProductDetails(String productIdOrName) {
+		//Prepare the list of strings which can be product ids or names.
+		List<String> listOfProdIdsOrNames = new ArrayList<String>();
+		if (productIdOrName.contains(",")) {
+			String[] prodIdsOrNames = productIdOrName.split(",");
+			listOfProdIdsOrNames = Arrays.asList(prodIdsOrNames);
+		} else {
+			listOfProdIdsOrNames.add(productIdOrName);
+		}
+		
+		// Build the Query 
+		//Map<String, Object> queryContextMap = DeviceQueryBuilderHelper
+				//.searchQueryForListOfCommercialProductAndCommercialBundle(listOfProdIdsOrNames);
+		
+		return getListOfCommercialProduct(listOfProdIdsOrNames);
+	}
 }

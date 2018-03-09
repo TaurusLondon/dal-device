@@ -6,6 +6,7 @@ import java.util.concurrent.CompletableFuture;
 
 import org.json.simple.JSONObject;
 
+import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
 import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.entity.DeviceDetails;
@@ -227,4 +228,13 @@ public interface DeviceService {
 	 * @return
 	 */
 	public List<DevicePreCalculatedData> getDeviceListFromPricingForPayG(String groupType);
+	
+	/**
+	 * 
+	 * @param productId
+	 * @param productName
+	 * @return List of CommercialProducts
+	 */
+	public List<CommercialProduct> getCommercialProductDetails(String productIdOrName);
+	
 }
