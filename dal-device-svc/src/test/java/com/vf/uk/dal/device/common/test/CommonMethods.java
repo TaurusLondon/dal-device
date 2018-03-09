@@ -77,6 +77,15 @@ import com.vf.uk.dal.utility.entity.BundleDetails;
 import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
 import com.vf.uk.dal.utility.entity.BundleDeviceAndProductsList;
 import com.vf.uk.dal.utility.entity.BundleHeader;
+import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareAccessory;
+import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareDataAllowances;
+import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks;
+import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareExtras;
+import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareFreeData;
+import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions;
+import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareSash;
+import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareSecureNet;
+import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForHardwareSash;
 import com.vf.uk.dal.utility.entity.ExtraPrice;
 import com.vf.uk.dal.utility.entity.InstalledProduct;
 import com.vf.uk.dal.utility.entity.Preferences;
@@ -3842,5 +3851,151 @@ public class CommonMethods {
 		bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
 		bundlePrice.setMonthlyPrice(monthlyPrice);
 		return bundlePrice;
+	}
+	public static List<CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks> getBundleAndHardwareEntertainmentPacks() {
+		List<CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks> bundleAndHardwareEntertainmentPAcksList = new ArrayList<>();
+		CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks bundleAndHardwareEnter = new CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks();
+		bundleAndHardwareEnter.setDescription("merchandisingPromotions.merchandisingPromotion.label");
+		bundleAndHardwareEnter.setLabel("merchandisingPromotions.merchandisingPromotion.label");
+		bundleAndHardwareEnter.setPriority("50");
+		bundleAndHardwareEnter.setPromotionMedia("Non_Pricing_Discount");
+		bundleAndHardwareEnter.setTag("Text");
+		bundleAndHardwareEnter.setType("TEXT");
+		bundleAndHardwareEntertainmentPAcksList.add(bundleAndHardwareEnter);
+		return bundleAndHardwareEntertainmentPAcksList;
+	}
+
+	/**
+	 * Gets the bundle and hardware allowance.
+	 *
+	 * @return the bundle and hardware allowance
+	 */
+	public static List<CataloguepromotionqueriesForBundleAndHardwareDataAllowances> getBundleAndHardwareAllowance() {
+		List<CataloguepromotionqueriesForBundleAndHardwareDataAllowances> bundleAndHardwareAllowanceList = new ArrayList<>();
+		CataloguepromotionqueriesForBundleAndHardwareDataAllowances bundleAndHardwareAllowance = new CataloguepromotionqueriesForBundleAndHardwareDataAllowances();
+		bundleAndHardwareAllowance.setDescription("merchandisingPromotions.merchandisingPromotion.label");
+		CataloguepromotionqueriesForBundleAndHardwareFreeData freeData = new CataloguepromotionqueriesForBundleAndHardwareFreeData();
+		freeData.setUom("123");
+		freeData.setValue("345");
+		bundleAndHardwareAllowance.setFreeData(freeData);
+		bundleAndHardwareAllowance.setLabel("");
+		bundleAndHardwareAllowance.setPriority("30");
+		bundleAndHardwareAllowance.setTag("Non_Pricing_Discount");
+		bundleAndHardwareAllowance.setType("TEXT");
+		bundleAndHardwareAllowanceList.add(bundleAndHardwareAllowance);
+		return bundleAndHardwareAllowanceList;
+	}
+
+	/**
+	 * Gets the bundle and hardware coupling promotions.
+	 *
+	 * @return the bundle and hardware coupling promotions
+	 */
+	public static List<CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions> getBundleAndHardwareCouplingPromotions() {
+		List<CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions> bundleAndHardwarePromotionsList = new ArrayList<>();
+		CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions bundleHArdwarePromotion = new CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions();
+		bundleHArdwarePromotion.setDescription("merchandisingPromotions.merchandisingPromotion.label");
+		bundleHArdwarePromotion.setLabel("merchandisingPromotions.merchandisingPromotion.label");
+		bundleHArdwarePromotion.setPlancoupleId("merchandisingPromotions.merchandisingPromotion.label");
+		bundleHArdwarePromotion.setPriority("30");
+		bundleHArdwarePromotion.setTag("Non_Pricing_Discount");
+		bundleHArdwarePromotion.setType("TEXT");
+		bundleAndHardwarePromotionsList.add(bundleHArdwarePromotion);
+		return bundleAndHardwarePromotionsList;
+	}
+
+	/**
+	 * Gets the cataloguepromotionqueries for bundle and hardware sash.
+	 *
+	 * @return the cataloguepromotionqueries for bundle and hardware sash
+	 */
+	public static List<CataloguepromotionqueriesForBundleAndHardwareSash> getCataloguepromotionqueriesForBundleAndHardwareSash() {
+		List<CataloguepromotionqueriesForBundleAndHardwareSash> cataloguepromotionqueriesForBundleAndHardwareSash = new ArrayList<>();
+		CataloguepromotionqueriesForBundleAndHardwareSash cataloguepromotionqueriesForBundleAndHardware = new CataloguepromotionqueriesForBundleAndHardwareSash();
+		cataloguepromotionqueriesForBundleAndHardware
+				.setDescription("merchandisingPromotions.merchandisingPromotion.label");
+		cataloguepromotionqueriesForBundleAndHardware.setLabel("merchandisingPromotions.merchandisingPromotion.label");
+		cataloguepromotionqueriesForBundleAndHardware.setPriority("60");
+		cataloguepromotionqueriesForBundleAndHardware
+				.setPromotionMedia("merchandisingPromotions.merchandisingPromotion.label");
+		cataloguepromotionqueriesForBundleAndHardware.setTag("merchandisingPromotions.merchandisingPromotion.label");
+		cataloguepromotionqueriesForBundleAndHardware.setType("Text");
+		cataloguepromotionqueriesForBundleAndHardwareSash.add(cataloguepromotionqueriesForBundleAndHardware);
+		return cataloguepromotionqueriesForBundleAndHardwareSash;
+	}
+
+	/**
+	 * Gets the cataloguepromotionqueries for bundle and hardware secure net.
+	 *
+	 * @return the cataloguepromotionqueries for bundle and hardware secure net
+	 */
+	public static List<CataloguepromotionqueriesForBundleAndHardwareSecureNet> getCataloguepromotionqueriesForBundleAndHardwareSecureNet() {
+		List<CataloguepromotionqueriesForBundleAndHardwareSecureNet> cataloguepromotionqueriesForBundleAndHardwareSecureNet = new ArrayList<>();
+		CataloguepromotionqueriesForBundleAndHardwareSecureNet cataloguepromotionqueriesForBundleAndHardware = new CataloguepromotionqueriesForBundleAndHardwareSecureNet();
+		cataloguepromotionqueriesForBundleAndHardware
+				.setDescription("merchandisingPromotions.merchandisingPromotion.label");
+		cataloguepromotionqueriesForBundleAndHardware.setLabel("merchandisingPromotions.merchandisingPromotion.label");
+		cataloguepromotionqueriesForBundleAndHardware.setPriority("80");
+		cataloguepromotionqueriesForBundleAndHardware.setTag("merchandisingPromotions.merchandisingPromotion.label");
+		cataloguepromotionqueriesForBundleAndHardware.setType("Text");
+		cataloguepromotionqueriesForBundleAndHardwareSecureNet.add(cataloguepromotionqueriesForBundleAndHardware);
+		return cataloguepromotionqueriesForBundleAndHardwareSecureNet;
+	}
+
+	/**
+	 * Gets the cataloguepromotionqueries for bundle and hardware accessory.
+	 *
+	 * @return the cataloguepromotionqueries for bundle and hardware accessory
+	 */
+	public static List<CataloguepromotionqueriesForBundleAndHardwareAccessory> getCataloguepromotionqueriesForBundleAndHardwareAccessory() {
+		List<CataloguepromotionqueriesForBundleAndHardwareAccessory> cataloguepromotionqueriesForBundleAndHardwareAccessory = new ArrayList<>();
+		CataloguepromotionqueriesForBundleAndHardwareAccessory cataloguepromotionqueriesForBundleAndHardware = new CataloguepromotionqueriesForBundleAndHardwareAccessory();
+		cataloguepromotionqueriesForBundleAndHardware
+				.setDescription("merchandisingPromotions.merchandisingPromotion.label");
+		cataloguepromotionqueriesForBundleAndHardware.setLabel("merchandisingPromotions.merchandisingPromotion.label");
+		cataloguepromotionqueriesForBundleAndHardware.setPriority("60");
+		// cataloguepromotionqueriesForBundleAndHardware.setPromotionMedia("merchandisingPromotions.merchandisingPromotion.label");
+		cataloguepromotionqueriesForBundleAndHardware.setTag("merchandisingPromotions.merchandisingPromotion.label");
+		cataloguepromotionqueriesForBundleAndHardware.setType("Text");
+		cataloguepromotionqueriesForBundleAndHardwareAccessory.add(cataloguepromotionqueriesForBundleAndHardware);
+		return cataloguepromotionqueriesForBundleAndHardwareAccessory;
+	}
+
+	/**
+	 * Gets the cataloguepromotionqueries for bundle and hardware extras.
+	 *
+	 * @return the cataloguepromotionqueries for bundle and hardware extras
+	 */
+	public static List<CataloguepromotionqueriesForBundleAndHardwareExtras> getCataloguepromotionqueriesForBundleAndHardwareExtras() {
+		List<CataloguepromotionqueriesForBundleAndHardwareExtras> cataloguepromotionqueriesForBundleAndHardwareExtras = new ArrayList<>();
+		CataloguepromotionqueriesForBundleAndHardwareExtras cataloguepromotionqueriesForBundleAndHardware = new CataloguepromotionqueriesForBundleAndHardwareExtras();
+		cataloguepromotionqueriesForBundleAndHardware
+				.setDescription("merchandisingPromotions.merchandisingPromotion.label");
+		cataloguepromotionqueriesForBundleAndHardware.setLabel("merchandisingPromotions.merchandisingPromotion.label");
+		cataloguepromotionqueriesForBundleAndHardware.setPriority("60");
+		// cataloguepromotionqueriesForBundleAndHardware.setPromotionMedia("merchandisingPromotions.merchandisingPromotion.label");
+		cataloguepromotionqueriesForBundleAndHardware.setTag("merchandisingPromotions.merchandisingPromotion.label");
+		cataloguepromotionqueriesForBundleAndHardware.setType("Text");
+		cataloguepromotionqueriesForBundleAndHardwareExtras.add(cataloguepromotionqueriesForBundleAndHardware);
+		return cataloguepromotionqueriesForBundleAndHardwareExtras;
+	}
+
+	/**
+	 * Gets the cataloguepromotionqueries for hardware sash.
+	 *
+	 * @return the cataloguepromotionqueries for hardware sash
+	 */
+	public static List<CataloguepromotionqueriesForHardwareSash> getCataloguepromotionqueriesForHardwareSash() {
+		List<CataloguepromotionqueriesForHardwareSash> cataloguepromotionqueriesForHardwareSash = new ArrayList<>();
+		CataloguepromotionqueriesForHardwareSash cataloguepromotionqueriesForHardwareSash1 = new CataloguepromotionqueriesForHardwareSash();
+		cataloguepromotionqueriesForHardwareSash1
+				.setDescription("merchandisingPromotions.merchandisingPromotion.label");
+		cataloguepromotionqueriesForHardwareSash1.setLabel("merchandisingPromotions.merchandisingPromotion.label");
+		cataloguepromotionqueriesForHardwareSash1.setPriority("60");
+		// cataloguepromotionqueriesForBundleAndHardware.setPromotionMedia("merchandisingPromotions.merchandisingPromotion.label");
+		cataloguepromotionqueriesForHardwareSash1.setTag("merchandisingPromotions.merchandisingPromotion.label");
+		cataloguepromotionqueriesForHardwareSash1.setType("Text");
+		cataloguepromotionqueriesForHardwareSash.add(cataloguepromotionqueriesForHardwareSash1);
+		return cataloguepromotionqueriesForHardwareSash;
 	}
 }

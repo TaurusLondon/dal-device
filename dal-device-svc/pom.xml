@@ -281,6 +281,9 @@
 			**/utils/CoherenceConnectionProvider.java,
 			**/utils/SolrConnectionProvider.java,
 			**/utils/ResponseMappingHelper.java,
+			**/utils/BazaarVoiceCache.java,
+			**/utils/SwaggerConfiguration.java,
+			**/conf/ElasticsearchRestCient.java,
 			**/DeviceApplication.java,
 			**/datamodel/**
 		</sonar.coverage.exclusions>

@@ -4262,7 +4262,7 @@ public class DaoUtils {
 	 * @param freeAccForHardwares
 	 * @return
 	 */
-	private static MerchandisingPromotionsPackage assembleMerchandisingPromotion(BundleAndHardwarePromotions promotions,
+	public static MerchandisingPromotionsPackage assembleMerchandisingPromotion(BundleAndHardwarePromotions promotions,
 			List<CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks> entertainmentPacks,
 			List<CataloguepromotionqueriesForBundleAndHardwareDataAllowances> dataAllowances,
 			List<CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions> planCouplingPromotions,

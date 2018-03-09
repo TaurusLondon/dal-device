@@ -1667,4 +1667,14 @@ public class DeviceControllerTest {
 		DaoUtils dao=new DaoUtils();
 		dao.getListOfPriceForBundleAndHardwareForDevice(CommonMethods.getBundleHeaderList("SIMO"));
 	}
+	@Test
+	public void notNullassembleMerchandisingPromotion(){
+		DaoUtils.assembleMerchandisingPromotion(CommonMethods.getListOfBundleAndHardwarePromotions().get(0), 
+				CommonMethods.getBundleAndHardwareEntertainmentPacks(), CommonMethods.getBundleAndHardwareAllowance(),
+				CommonMethods.getBundleAndHardwareCouplingPromotions(), CommonMethods.getCataloguepromotionqueriesForBundleAndHardwareSash(),
+				CommonMethods.getCataloguepromotionqueriesForBundleAndHardwareSecureNet(), CommonMethods.getCataloguepromotionqueriesForHardwareSash(), 
+				CommonMethods.getCataloguepromotionqueriesForBundleAndHardwareExtras(), CommonMethods.getCataloguepromotionqueriesForBundleAndHardwareAccessory(),
+				CommonMethods.getCataloguepromotionqueriesForBundleAndHardwareExtras(), CommonMethods.getCataloguepromotionqueriesForBundleAndHardwareAccessory(),
+				CommonMethods.getCataloguepromotionqueriesForBundleAndHardwareExtras(), CommonMethods.getCataloguepromotionqueriesForBundleAndHardwareAccessory());
+	}
 }
