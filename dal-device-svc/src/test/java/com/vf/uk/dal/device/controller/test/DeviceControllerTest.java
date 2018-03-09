@@ -182,11 +182,12 @@ public class DeviceControllerTest {
 		given(response.getCommercialProductFromJson(Matchers.anyObject())).willReturn(CommonMethods.getCommercialProductsListOfMakeAndModel());
 		given(response.getListOfGroupFromJson(Matchers.anyObject())).willReturn(CommonMethods.getListOfProductGroupFromProductGroupRepository());
 		given(deviceDAOMock.getPriceForBundleAndHardwareListFromTupleListAsync(Matchers.anyList(), Matchers.anyString(), Matchers.anyString())).willReturn(CommonMethods.getPriceForBundleAndHardwareListFromTupleListAsync());
+		given(deviceDAOMock.getBundleAndHardwarePromotionsListFromBundleListAsync(Matchers.anyList(), Matchers.anyString())).willReturn(CommonMethods.getBundleAndHardwarePromotionsListFromBundleListAsync());
 		try {
 			deviceDetails = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM", null, null, "110345",
 					null, null);
 			Assert.assertNotNull(deviceDetails);
-			deviceDetails = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM", null, null, null,
+			deviceDetails = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM", "Upgrade", null, null,
 					null, null);
 		} catch (Exception e) {
 
@@ -1699,4 +1700,5 @@ public class DeviceControllerTest {
 	public void notNullpopulateMerchandisingPromotions(){
 		DaoUtils.populateMerchandisingPromotions(CommonMethods.getPriceForBundleAndHardware1().get(0), CommonMethods.getBundlePriceForUtility());
 	}
+	
 }

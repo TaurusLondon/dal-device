@@ -4024,4 +4024,28 @@ public class CommonMethods {
 		cataloguepromotionqueriesForHardwareSash.add(cataloguepromotionqueriesForHardwareSash1);
 		return cataloguepromotionqueriesForHardwareSash;
 	}
+	public static CompletableFuture<List<com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions>> getBundleAndHardwarePromotionsListFromBundleListAsync() {
+		CompletableFuture<List<com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions>> future = new CompletableFuture<>();
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			// mapper = new
+			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
+			// true);
+			String promotion = new String(Utility.readFile("\\TEST-MOCK\\API_BundlePromotions_ListOfBundlePromotions"));
+			BundleAndHardwarePromotions[] promotionList = mapper.readValue(promotion,
+					BundleAndHardwarePromotions[].class);
+
+			future.complete(mapper.convertValue(promotionList,
+					new TypeReference<List<com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions>>() {
+					}));
+		} catch (IOException e) {
+
+			e.printStackTrace();
+			future.completeExceptionally(e);
+		}
+		return future;
+	}
 }
