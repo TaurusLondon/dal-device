@@ -263,7 +263,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	 * @param groupName
 	 * @return List<ProductGroup>
 	 */
-	@Override
+/*	@Override
 	public List<ProductGroup> getProductGroupByGroupTypeGroupName(String groupType, String groupName) {
 		List<ProductGroup> productGroupList = null;
 		List<ProductGroupModel> listOfProductGroupModel = null;
@@ -313,7 +313,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		}
 		return productGroupList;
 	}
-
+*/
 	/**
 	 * Returns leadSkuId based on the priority
 	 * 

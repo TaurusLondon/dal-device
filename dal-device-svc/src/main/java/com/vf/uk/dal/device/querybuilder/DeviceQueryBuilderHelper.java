@@ -157,7 +157,7 @@ public class DeviceQueryBuilderHelper {
 			searchRequestBuilder.size(idsOrNames.size());
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
 			
-			if (idsOrNames.get(0).matches((Constants.NUMER_REG_EXP))) {
+			if (idsOrNames.get(0).matches(Constants.NUMER_REG_EXP)) {
 				qb.must(QueryBuilders.termsQuery(Constants.STRING_ID+Constants.STRING_KEY_WORD, idsOrNames));
 			} else {
 				qb.must(QueryBuilders.termsQuery(Constants.STRING_GROUP_NAME + Constants.STRING_KEY_WORD, idsOrNames));

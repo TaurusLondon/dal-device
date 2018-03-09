@@ -177,7 +177,7 @@ public class DeviceServiceImpl implements DeviceService {
 	 * @param groupName
 	 * @return List<ProductGroup>
 	 */
-	@Override
+	/*@Override
 	public List<ProductGroup> getProductGroupByGroupTypeGroupName(String groupType, String groupName) {
 		List<ProductGroup> productGroup;
 		if (groupType == null || groupType.isEmpty()) {
@@ -188,7 +188,7 @@ public class DeviceServiceImpl implements DeviceService {
 		}
 		return productGroup;
 
-	}
+	}*/
 
 	/**
 	 * Handles requests from controller and connects to DAO.
@@ -2298,10 +2298,8 @@ public class DeviceServiceImpl implements DeviceService {
 					model);*/// commercialProductRepository.getByMakeANDModel(make,
 							// model);
 			LogHelper.info(this, "creating search query using Query  Builder Helper");
-			Map<String,Object> queryContextMap= DeviceQueryBuilderHelper.searchQueryForMakeAndModel(make, model);
-			Response bundleResponse=deviceDao.getResponseFromDataSource((Map<String,String>)queryContextMap.get(Constants.STRING_PARAMS),(String) queryContextMap.get(Constants.STRING_QUERY));
 			LogHelper.info(this, "converting elasticsearch response into standard json object response");
-			listOfCommercialProducts = response.getCommercialProductFromJson(bundleResponse);
+			listOfCommercialProducts = getListOfCommercialProductByMakeAndModel(make,model);
 			
 			LogHelper.info(this, "End -->  After calling  CommericalProduct.getByMakeAndModel");
 
@@ -2313,11 +2311,7 @@ public class DeviceServiceImpl implements DeviceService {
 		List<Group> listOfProductGroup = deviceDao.getListOfProductGroupFromProductGroupRepository(groupType);// productGroupRepository.getProductGroupsByType(groupType);
 		LogHelper.info(this, "End -->  After calling  productGroupRepository.getProductGroupsByType");*/
 
-		LogHelper.info(this, "creating search query using Query  Builder Helper");
-		Map<String,Object> queryContextMap= DeviceQueryBuilderHelper.searchQueryForProductGroup(groupType);
-		Response bundleResponse=deviceDao.getResponseFromDataSource((Map<String,String>)queryContextMap.get(Constants.STRING_PARAMS),(String) queryContextMap.get(Constants.STRING_QUERY));
-		LogHelper.info(this, "converting elasticsearch response into standard json object response");
-		List<Group> listOfProductGroup = response.getListOfGroupFromJson(bundleResponse);
+		List<Group> listOfProductGroup = getProductGroupByType(groupType);
 		if (groupType.equals(Constants.STRING_DEVICE_PAYG)) {
 			listOfDeviceTile = getDeviceTileByMakeAndModelForPAYG(listOfCommercialProducts, listOfProductGroup, make,
 					model, groupType);
@@ -4247,7 +4241,12 @@ public class DeviceServiceImpl implements DeviceService {
 		return listOfProductGroupRepository;
 
 	}
-
+	
+	/**
+	 * @author manoj.bera
+	 * @param tag
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion getMerchandisingPromotion(
 			String tag) {
@@ -4259,6 +4258,12 @@ public class DeviceServiceImpl implements DeviceService {
 		LogHelper.info(this, "converting elasticsearch response into Merchandising Promotion object response");
 		return response.getMerchandisingPromotion(merchandisingResponse);
 	}
+	
+	/**
+	 * @author manoj.bera
+	 * @param bundleId
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public CommercialBundle getCommercialBundle(String bundleId) {
 		Map<String, Object> queryContextMapForLeadPlanId = DeviceQueryBuilderHelper
@@ -4269,6 +4274,12 @@ public class DeviceServiceImpl implements DeviceService {
 		LogHelper.info(this, "converting elasticsearch response into Commercial Bundle object response");
 		return response.getCommercialBundle(commercialBundleResponse);
 	}
+	
+	/**
+	 * @author manoj.bera
+	 * @param bundleIds
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public List<CommercialBundle> getListOfCommercialBundle(List<String> bundleIds) {
 		Map<String, Object> queryContextMap = DeviceQueryBuilderHelper
@@ -4279,6 +4290,12 @@ public class DeviceServiceImpl implements DeviceService {
 		LogHelper.info(this, "converting elasticsearch response into Commercial Bundle List object response");
 		return response.getListOfCommercialBundleFromJson(commercialBundleResponse);
 	}
+	
+	/**
+	 * @author manoj.bera
+	 * @param deviceIds
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public List<CommercialProduct> getListOfCommercialProduct(List<String> deviceIds) {
 		Map<String, Object> queryContextMap = DeviceQueryBuilderHelper
@@ -4289,6 +4306,12 @@ public class DeviceServiceImpl implements DeviceService {
 		LogHelper.info(this, "converting elasticsearch response into List Of CommercialProduct object response");
 		return response.getCommercialProductFromJson(commercialListForInsuranceResponse);
 	}
+	
+	/**
+	 * @author manoj.bera
+	 * @param deviceId
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public CommercialProduct getCommercialProduct(String deviceId) {
 		Map<String, Object> queryContextMap = DeviceQueryBuilderHelper
@@ -4299,7 +4322,38 @@ public class DeviceServiceImpl implements DeviceService {
 		LogHelper.info(this, "converting elasticsearch response into Commercial Product object response");
 		return response.getCommercialProduct(commercialProduct);
 	}
-
+	
+	/**
+	 * @author manoj.bera@
+	 * @param make
+	 * @param model
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<CommercialProduct> getListOfCommercialProductByMakeAndModel(String make, String model) {
+		Map<String, Object> queryContextMap = DeviceQueryBuilderHelper.searchQueryForMakeAndModel(make, model);
+		Response bundleResponse = deviceDao.getResponseFromDataSource(
+				(Map<String, String>) queryContextMap.get(Constants.STRING_PARAMS),
+				(String) queryContextMap.get(Constants.STRING_QUERY));
+		LogHelper.info(this, "converting elasticsearch response into standard json object response");
+		return response.getCommercialProductFromJson(bundleResponse);
+	}
+	
+	/**
+	 * @author manoj.bera
+	 * @param groupType
+	 * @return
+	 */
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Group> getProductGroupByType(String groupType) {
+		Map<String, Object> queryContextMap = DeviceQueryBuilderHelper.searchQueryForProductGroup(groupType);
+		Response bundleResponse = deviceDao.getResponseFromDataSource(
+				(Map<String, String>) queryContextMap.get(Constants.STRING_PARAMS),
+				(String) queryContextMap.get(Constants.STRING_QUERY));
+		LogHelper.info(this, "converting elasticsearch response into standard json object response");
+		return response.getListOfGroupFromJson(bundleResponse);
+	}
 	/**
 	 * Method to prepare the list from the request construct and build the query and finally return the 
 	 * List of Commercial Products.
@@ -4310,7 +4364,7 @@ public class DeviceServiceImpl implements DeviceService {
 	@Override
 	public List<CommercialProduct> getCommercialProductDetails(String productIdOrName) {
 		//Prepare the list of strings which can be product ids or names.
-		List<String> listOfProdIdsOrNames = new ArrayList<String>();
+		List<String> listOfProdIdsOrNames = new ArrayList<>();
 		if (productIdOrName.contains(",")) {
 			String[] prodIdsOrNames = productIdOrName.split(",");
 			listOfProdIdsOrNames = Arrays.asList(prodIdsOrNames);

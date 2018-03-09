@@ -58,7 +58,7 @@ public interface DeviceDao {
 	 *            the group name
 	 * @return the product group by group type group name
 	 */
-	public List<ProductGroup> getProductGroupByGroupTypeGroupName(String groupType, String groupName);
+	//public List<ProductGroup> getProductGroupByGroupTypeGroupName(String groupType, String groupName);
 
 	/**
 	 * Gets the bundle details from complans listing API.

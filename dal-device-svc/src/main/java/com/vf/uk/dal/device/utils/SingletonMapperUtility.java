@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public enum SingletonMapperUtility {
 
-	JSONParser, ObjectMapper, SearchSourceBuilder;
+	JSONParser,	ObjectMapper , SearchSourceBuilder;
 
 	public static JSONParser getJSONParser() {
 		return new JSONParser();

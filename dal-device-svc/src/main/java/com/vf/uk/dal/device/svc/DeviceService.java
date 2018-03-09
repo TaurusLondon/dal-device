@@ -7,6 +7,7 @@ import java.util.concurrent.CompletableFuture;
 import org.json.simple.JSONObject;
 
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
+import com.vf.uk.dal.device.datamodel.productgroups.Group;
 import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.entity.DeviceDetails;
@@ -15,7 +16,6 @@ import com.vf.uk.dal.device.entity.DeviceTile;
 import com.vf.uk.dal.device.entity.FacetedDevice;
 import com.vf.uk.dal.device.entity.Insurances;
 import com.vf.uk.dal.device.entity.Member;
-import com.vf.uk.dal.device.entity.ProductGroup;
 import com.vf.uk.dal.utility.entity.BundleDetails;
 import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
 
@@ -61,7 +61,7 @@ public interface DeviceService {
 	 * @param groupName
 	 * @return
 	 */
-	public List<ProductGroup> getProductGroupByGroupTypeGroupName(String groupType,String groupName);
+	//public List<ProductGroup> getProductGroupByGroupTypeGroupName(String groupType,String groupName);
 	/**
 	 * 
 	 * @param deviceId
@@ -236,5 +236,13 @@ public interface DeviceService {
 	 * @return List of CommercialProducts
 	 */
 	public List<CommercialProduct> getCommercialProductDetails(String productIdOrName);
+	
+	/**
+	 * @author manoj.bera
+	 * @param productId
+	 * @param productName
+	 * @return List of CommercialProducts
+	 */
+	public List<Group> getProductGroupByType(String groupType);
 	
 }

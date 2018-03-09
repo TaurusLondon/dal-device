@@ -124,10 +124,10 @@ public class DeviceControllerTest {
 		 * given(this.deviceDAOMock.getListOfDeviceTile(null, "iPhone-7",
 		 * "DEVICE_PAYM", null, null, null, null, null)) .willReturn(null);
 		 */
-		given(this.deviceDAOMock.getProductGroupByGroupTypeGroupName("DEVICE", "Apple iPhone 7"))
+		/*given(this.deviceDAOMock.getProductGroupByGroupTypeGroupName("DEVICE", "Apple iPhone 7"))
 				.willReturn(CommonMethods.getProductGroupByGroupTypeGroupName("", ""));
 		given(this.deviceDAOMock.getProductGroupByGroupTypeGroupName("ValidData", null)).willReturn(null);
-		given(this.deviceDAOMock.getProductGroupByGroupTypeGroupName("DEVgikyj", "Apple iPhone 7")).willReturn(null);
+		given(this.deviceDAOMock.getProductGroupByGroupTypeGroupName("DEVgikyj", "Apple iPhone 7")).willReturn(null);*/
 		given(this.deviceDAOMock.getDeviceTileById("83921", null, null))
 				.willReturn(CommonMethods.getDeviceTileById("83921"));
 		given(this.deviceDAOMock.getDeviceTileById("83987", null, null)).willReturn(null);
@@ -424,7 +424,7 @@ public class DeviceControllerTest {
 		DaoUtils.convertDevicePreCalDataToSolrData(CommonMethods.getDevicePreCal());
 	}
 
-	@Test
+	/*@Test
 	public void notNullTestForGetProductGroupListWithValidInput() {
 		List<ProductGroup> productGroupList = new ArrayList<ProductGroup>();
 		try {
@@ -438,7 +438,7 @@ public class DeviceControllerTest {
 
 		}
 		Assert.assertNotNull(productGroupList);
-	}
+	}*/
 
 	@Test
 	public void sizeTestForGetDeviceDetailsTile() {
@@ -458,7 +458,7 @@ public class DeviceControllerTest {
 		Assert.assertNull(deviceDetails);
 	}
 
-	@Test
+	/*@Test
 	public void notNullTestForGetProductGroupList() throws Exception {
 		List<ProductGroup> productGroupList = new ArrayList<ProductGroup>();
 		try {
@@ -481,7 +481,7 @@ public class DeviceControllerTest {
 		List<ProductGroup> productGroupList = deviceController.getProductGroup();
 		ServiceContext.urlParamContext.remove();
 		Assert.assertNull(productGroupList);
-	}
+	}*/
 
 	@Test
 	public void notNullTestgetDeviceTileById() {

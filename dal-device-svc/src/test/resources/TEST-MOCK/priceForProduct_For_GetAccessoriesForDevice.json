@@ -1,1 +1,34 @@
-{"priceForExtras":[],"priceForAccessoryes":[{"hardwarePrice":{"hardwareId":"091243","oneOffPrice":{"gross":"35","net":"29.17","vat":"5.83"},"oneOffDiscountPrice":{"gross":"35","net":"29.17","vat":"5.83"},"merchandisingPromotions":null}},{"hardwarePrice":{"hardwareId":"085145","oneOffPrice":{"gross":"20","net":"16.67","vat":"3.33"},"oneOffDiscountPrice":{"gross":"20","net":"16.67","vat":"3.33"},"merchandisingPromotions":null}}]}
+{
+	"priceForExtras": [],
+	"priceForAccessoryes": [{
+		"hardwarePrice": {
+			"hardwareId": "091243",
+			"oneOffPrice": {
+				"gross": "35",
+				"net": "29.17",
+				"vat": "5.83"
+			},
+			"oneOffDiscountPrice": {
+				"gross": "35",
+				"net": "29.17",
+				"vat": "5.83"
+			},
+			"merchandisingPromotions": null
+		}
+	}, {
+		"hardwarePrice": {
+			"hardwareId": "085145",
+			"oneOffPrice": {
+				"gross": "20",
+				"net": "16.67",
+				"vat": "3.33"
+			},
+			"oneOffDiscountPrice": {
+				"gross": "20",
+				"net": "16.67",
+				"vat": "3.33"
+			},
+			"merchandisingPromotions": null
+		}
+	}]
+}

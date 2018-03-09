@@ -151,5 +151,29 @@ public class Validator {
 	 * @author suranjit_kashyap
 	 * @Sprint 6.6 Validator Start
 	 */
+	
+	/**
+	 * @author manoj.bera
+	 * @param queryParams
+	 * @return
+	 */
+	public static boolean validateProduct(Map<String, String> queryParams)
+	{
+		List<String> validParams = Arrays.asList("productId","productName");
+		
+		return validateParams(queryParams, validParams);
+	}
+	
+	/**
+	 * @author manoj.bera
+	 * @param queryParams
+	 * @return
+	 */
+	public static boolean validateProductGroup(Map<String, String> queryParams)
+	{
+		List<String> validParams = Arrays.asList("groupType");
+		
+		return validateParams(queryParams, validParams);
+	}
 
 }

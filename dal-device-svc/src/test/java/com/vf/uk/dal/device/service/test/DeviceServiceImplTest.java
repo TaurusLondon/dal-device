@@ -123,11 +123,11 @@ public class DeviceServiceImplTest
 		given(this.deviceDAOMock.getListOfDeviceTile("Apple",null,"DEVICE", null, null, null,null,null)).willReturn(null);
 		given(this.deviceDAOMock.getListOfDeviceTile("Apple","iPhone-7",null, null, null, null,null,null)).willReturn(null);*/
 	
-		given(this.deviceDAOMock.getProductGroupByGroupTypeGroupName("DEVICE","Apple iPhone 6s")).willReturn(CommonMethods.getProductGroupByGroupTypeGroupName("DEVICE","Apple IPhone 6s"));
+		/*given(this.deviceDAOMock.getProductGroupByGroupTypeGroupName("DEVICE","Apple iPhone 6s")).willReturn(CommonMethods.getProductGroupByGroupTypeGroupName("DEVICE","Apple IPhone 6s"));
 		given(this.deviceDAOMock.getProductGroupByGroupTypeGroupName(null,"Apple iPhone 7")).willReturn(null);
 		given(this.deviceDAOMock.getProductGroupByGroupTypeGroupName("DEVICE",null)).willReturn(null);
 		given(this.deviceDAOMock.getProductGroupByGroupTypeGroupName("DEVfk","Apple iPhone 6s")).willReturn(null);
-		given(this.deviceDAOMock.getProductGroupByGroupTypeGroupName(null,null)).willReturn(null);
+		given(this.deviceDAOMock.getProductGroupByGroupTypeGroupName(null,null)).willReturn(null);*/
 		given(this.deviceDAOMock.getDeviceTileById("83921",null,null)).willReturn(CommonMethods.getDeviceTileById("83921"));
 		given(this.deviceDAOMock.getDeviceTileById("83964",null,null)).willReturn(null);
 		/*given(this.deviceDAOMock.getDeviceDetails("83921","upgrade","34543")).willReturn(CommonMethods.getDevice("83921"));
@@ -219,7 +219,7 @@ public class DeviceServiceImplTest
 		Assert.assertNull(deviceTileList);
 	}
 
-	@Test
+	/*@Test
 	public void notNullTestForgetProductGroupListByGroupTypeGroupName() {
 		List<ProductGroup> productGroupDetails = deviceService.getProductGroupByGroupTypeGroupName("DEVICE","Apple iPhone 6s");
 		Assert.assertNotNull(productGroupDetails);
@@ -258,7 +258,7 @@ public class DeviceServiceImplTest
 		
 		Assert.assertNull(productGroupDetails);
 	}
-	@Test
+*/	@Test
 	public void notNullTestForGetDeviceTilesById() {
 		
 		List<DeviceTile> deviceTileList = deviceService.getDeviceTileById("83921",null,null);

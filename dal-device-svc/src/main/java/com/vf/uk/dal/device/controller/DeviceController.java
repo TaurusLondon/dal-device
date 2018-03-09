@@ -28,6 +28,7 @@ import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.common.urlparams.FilterCriteria;
 import com.vf.uk.dal.common.urlparams.PaginationCriteria;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
+import com.vf.uk.dal.device.datamodel.productgroups.Group;
 import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.entity.DeviceDetails;
@@ -35,7 +36,6 @@ import com.vf.uk.dal.device.entity.DeviceTile;
 import com.vf.uk.dal.device.entity.FacetedDevice;
 import com.vf.uk.dal.device.entity.Insurances;
 import com.vf.uk.dal.device.entity.KeepDeviceChangePlanRequest;
-import com.vf.uk.dal.device.entity.ProductGroup;
 import com.vf.uk.dal.device.svc.DeviceService;
 import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
@@ -44,9 +44,9 @@ import com.vf.uk.dal.utility.entity.BundleDetails;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import springfox.documentation.annotations.ApiIgnore;
-import io.swagger.annotations.ApiResponse;
 
 /**
  * 1.Controller should able handle all the request and response for the device
@@ -231,7 +231,7 @@ public class DeviceController {
 	 * Handles requests for GetProductList Service with input as SIMO in URL as
 	 * @return
 	 */
-	@ApiIgnore
+	/*@ApiIgnore
 	@RequestMapping(value = "/productGroup", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	public List<ProductGroup> getProductGroup() {
 		List<ProductGroup> productGroup;
@@ -241,7 +241,7 @@ public class DeviceController {
 		groupName = getFilterValue(GROUP_NAME);
 		productGroup = deviceService.getProductGroupByGroupTypeGroupName(groupType, groupName);
 		return productGroup;
-	}
+	}*/
 
 	/**
 	 * Handles requests for getComaptibleAccessories Service with input as deviceId.
@@ -644,16 +644,16 @@ public class DeviceController {
 	public List<CommercialProduct> getCommercialProduct(@RequestParam Map<String, String> queryParams) {
 		List<CommercialProduct> commProductDetails = null;
 
-		if (!queryParams.isEmpty() && Validator.validateDeviceId(queryParams)) {
+		if (!queryParams.isEmpty() && Validator.validateProduct(queryParams)) {
 			LogHelper.info(this, "Query parameter(s) passed in the request: " + queryParams);
 
 			String productId = queryParams.containsKey(PRODUCT_ID) ? queryParams.get(PRODUCT_ID) : null;
 			String productName = queryParams.containsKey(PRODUCT_NAME) ? queryParams.get(PRODUCT_NAME) : null;
 			
-			if (productId != null) {
+			if (StringUtils.isNotBlank(productId)) {
 				LogHelper.info(this, "Get the list of Product Details for the Product Id passed as request params: " + productId);
 				commProductDetails = deviceService.getCommercialProductDetails(productId);
-			} else if (productName != null) {
+			} else if (StringUtils.isNotBlank(productName)) {
 				LogHelper.info(this, "Get the list of Product Details for the Product Name passed as request params: " + productName);
 				commProductDetails = deviceService.getCommercialProductDetails(productName);
 			}
@@ -663,6 +663,26 @@ public class DeviceController {
 		}
 		
 		return commProductDetails;
+	}
+	
+	@RequestMapping(value = "/productGroup/", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON })
+	public List<Group> getProductGroupByGroupType(@RequestParam Map<String, String> queryParams) {
+		List<Group> groupDetails = null;
+
+		if (!queryParams.isEmpty() && Validator.validateProductGroup(queryParams)) {
+			LogHelper.info(this, "Query parameter(s) passed in the request: " + queryParams);
+
+			String groupType=queryParams.containsKey(Constants.STRING_GROUP_TYPE) ? queryParams.get(Constants.STRING_GROUP_TYPE) : null;
+			
+			if (StringUtils.isNotBlank(groupType)) {
+				LogHelper.info(this, "Get the list of Product Details for the Product Id passed as request params: " + groupType);
+				groupDetails = deviceService.getProductGroupByType(groupType);
+			}
+		} else {
+			LogHelper.error(this, "Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
+			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
+		}
+		return groupDetails;
 	}
 	
 }
