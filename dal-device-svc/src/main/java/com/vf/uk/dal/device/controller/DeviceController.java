@@ -664,7 +664,11 @@ public class DeviceController {
 		
 		return commProductDetails;
 	}
-	
+	/**
+	 * @author manoj.bera
+	 * @param queryParams
+	 * @return
+	 */
 	@RequestMapping(value = "/productGroup/", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON })
 	public List<Group> getProductGroupByGroupType(@RequestParam Map<String, String> queryParams) {
 		List<Group> groupDetails = null;
