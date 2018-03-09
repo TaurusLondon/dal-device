@@ -268,4 +268,8 @@ public class Constants {
 	public static final int DEFAULT_ELASTIC_SEARCH_INDEX_SIZE=1000;
 	
 	public static final String ELASTIC_SEARCH_INDEX_SIZE="ELASTIC_SEARCH_INDEX_SIZE";
+	
+	public static final String BAZAAR_VOICE_PART1= "bazaarvoice.urlPart1";
+	
+	public static final String BAZAAR_VOICE_PART2= "bazaarvoice.urlPart2";
 }
