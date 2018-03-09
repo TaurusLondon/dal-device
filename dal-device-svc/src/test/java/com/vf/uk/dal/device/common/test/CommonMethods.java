@@ -3852,6 +3852,32 @@ public class CommonMethods {
 		bundlePrice.setMonthlyPrice(monthlyPrice);
 		return bundlePrice;
 	}
+	public static com.vf.uk.dal.utility.entity.BundlePrice getBundlePriceForUtility(){
+		com.vf.uk.dal.utility.entity.BundlePrice bundlePrice = new com.vf.uk.dal.utility.entity.BundlePrice();
+		com.vf.uk.dal.utility.entity.MerchandisingPromotion merchandisingPromotions = new com.vf.uk.dal.utility.entity.MerchandisingPromotion();
+		/*
+		 * merchandisingPromotions.setPromotionName("Promotion Name");
+		 * merchandisingPromotions1.setPromotionName("Promotion Name1");
+		 */
+		merchandisingPromotions.setPromotionMedia("promotion media");
+		bundlePrice.setMerchandisingPromotions(merchandisingPromotions);
+		com.vf.uk.dal.utility.entity.Price monthlyDiscountPrice = new com.vf.uk.dal.utility.entity.Price();
+		monthlyDiscountPrice.setGross("10.11");
+		monthlyDiscountPrice.setNet("11.23");
+		monthlyDiscountPrice.setVat("14.56");
+
+
+		com.vf.uk.dal.utility.entity.Price monthlyPrice = new com.vf.uk.dal.utility.entity.Price();
+		monthlyDiscountPrice.setGross("13.64");
+		monthlyDiscountPrice.setNet("12.5");
+		monthlyDiscountPrice.setVat("8.56");
+
+		bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
+		bundlePrice.setBundleId("183099");
+		bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
+		bundlePrice.setMonthlyPrice(monthlyPrice);
+		return bundlePrice;
+	}
 	public static List<CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks> getBundleAndHardwareEntertainmentPacks() {
 		List<CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks> bundleAndHardwareEntertainmentPAcksList = new ArrayList<>();
 		CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks bundleAndHardwareEnter = new CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks();

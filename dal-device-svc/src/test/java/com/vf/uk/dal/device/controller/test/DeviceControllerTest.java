@@ -1688,4 +1688,15 @@ public class DeviceControllerTest {
 		
 		DaoUtils.getListOfIlsPriceWithoutOfferCode("093353", mapOfIlsPriceWithoutOfferCode);
 	}
+	@Test
+	public void notNullgetListOfPriceForBundleAndHardwareForCacheDevice(){
+		DaoUtils dao=new DaoUtils();
+		Map<String, CommercialBundle> commercialbundleMap=new HashMap<>();
+		commercialbundleMap.put("093353", CommonMethods.getCommercialBundleFromCommercialBundleRepository());
+		dao.getListOfPriceForBundleAndHardwareForCacheDevice(CommonMethods.getOfferAppliedPrice(), commercialbundleMap, "Upgrade");
+	}
+	@Test
+	public void notNullpopulateMerchandisingPromotions(){
+		DaoUtils.populateMerchandisingPromotions(CommonMethods.getPriceForBundleAndHardware1().get(0), CommonMethods.getBundlePriceForUtility());
+	}
 }

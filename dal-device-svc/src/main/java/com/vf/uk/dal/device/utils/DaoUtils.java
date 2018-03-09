@@ -3119,7 +3119,7 @@ public class DaoUtils {
 	 * @param priceForBundleAndHardware
 	 * @param bundlePrice
 	 */
-	private static void populateMerchandisingPromotions(PriceForBundleAndHardware priceForBundleAndHardware,
+	public static void populateMerchandisingPromotions(PriceForBundleAndHardware priceForBundleAndHardware,
 			BundlePrice bundlePrice) {
 		if (null != priceForBundleAndHardware && null != bundlePrice
 				&& null != priceForBundleAndHardware.getBundlePrice()
