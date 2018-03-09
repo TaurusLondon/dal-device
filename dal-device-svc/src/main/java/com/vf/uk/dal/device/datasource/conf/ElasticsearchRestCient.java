@@ -69,6 +69,10 @@ public class ElasticsearchRestCient {
 			YAMLConfigurationSource source = new YAMLConfigurationSource("application.yml");
 			configMap.put(Constants.ELASTIC_SEARCH_HOST,
 					(String) source.getProperties().get(Constants.ELASTIC_SEARCH_HOST));
+			configMap.put(Constants.BAZAAR_VOICE_PART1,
+					(String) source.getProperties().get(Constants.BAZAAR_VOICE_PART1));
+			configMap.put(Constants.BAZAAR_VOICE_PART2,
+					(String) source.getProperties().get(Constants.BAZAAR_VOICE_PART2));
 		} catch (Exception exception) {
 			LogHelper.error(RestClient.class, "Error ocuured while reading Application YML file" + exception);
 		}

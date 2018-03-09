@@ -46,6 +46,12 @@ elasticsearch:
   cache:
     jcache:
       config: classpath:ehcache.xml  
+      
+bazaarvoice:
+  urlPart1: "http://api.bazaarvoice.com/data/reviews.json?apiversion=5.4&passkey=a1nyq80ufv2yvznpitrjbco7e&Filter=ProductID:"
+  urlPart2: "&Include=Products&Stats=Reviews&locale=en_GB"
+  
+       
 ---
 
 spring:
