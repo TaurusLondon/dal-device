@@ -2626,7 +2626,7 @@ public class CommonMethods {
 		bundlePrice.setMonthlyPrice(monthlyPrice);
 		priceInfo.setBundlePrice(bundlePrice);
 		com.vf.uk.dal.utility.entity.HardwarePrice hardwarePrice=new com.vf.uk.dal.utility.entity.HardwarePrice();
-		hardwarePrice.setHardwareId("93353");
+		hardwarePrice.setHardwareId("093353");
 		hardwarePrice.setMerchandisingPromotions(merchandisingPromotions);
 		hardwarePrice.setOneOffDiscountPrice(oneOffDiscountPrice);
 		hardwarePrice.setOneOffPrice(oneOffPrice);

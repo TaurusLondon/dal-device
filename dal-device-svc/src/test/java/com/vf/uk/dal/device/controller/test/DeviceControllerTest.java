@@ -53,6 +53,7 @@ import com.vf.uk.dal.device.entity.KeepDeviceChangePlanRequest;
 import com.vf.uk.dal.device.entity.ProductGroup;
 import com.vf.uk.dal.device.entity.RequestForBundleAndHardware;
 import com.vf.uk.dal.device.entity.SourcePackageSummary;
+import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.DaoUtils;
 import com.vf.uk.dal.device.utils.DeviceTileCacheDAO;
 import com.vf.uk.dal.device.utils.ResponseMappingHelper;
@@ -1676,5 +1677,15 @@ public class DeviceControllerTest {
 				CommonMethods.getCataloguepromotionqueriesForBundleAndHardwareExtras(), CommonMethods.getCataloguepromotionqueriesForBundleAndHardwareAccessory(),
 				CommonMethods.getCataloguepromotionqueriesForBundleAndHardwareExtras(), CommonMethods.getCataloguepromotionqueriesForBundleAndHardwareAccessory(),
 				CommonMethods.getCataloguepromotionqueriesForBundleAndHardwareExtras(), CommonMethods.getCataloguepromotionqueriesForBundleAndHardwareAccessory());
+	}
+	@Test
+	public void notNullgetListOfIlsPriceWithoutOfferCode(){
+		List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware> 
+		listOfPriceForBundleAndHardwareWithoutOfferCodeForUpgrade= CommonMethods.getOfferAppliedPrice();
+		Map<String, Map<String, List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>>> mapOfIlsPriceWithoutOfferCode = new HashMap<>();
+		mapOfIlsPriceWithoutOfferCode.put(Constants.JOURNEY_TYPE_UPGRADE,
+				DaoUtils.getILSPriceWithoutOfferCode(listOfPriceForBundleAndHardwareWithoutOfferCodeForUpgrade));
+		
+		DaoUtils.getListOfIlsPriceWithoutOfferCode("093353", mapOfIlsPriceWithoutOfferCode);
 	}
 }
