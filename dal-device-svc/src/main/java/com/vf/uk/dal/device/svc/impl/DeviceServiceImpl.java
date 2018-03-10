@@ -4348,11 +4348,11 @@ public class DeviceServiceImpl implements DeviceService {
 	@SuppressWarnings("unchecked")
 	public List<Group> getProductGroupByType(String groupType) {
 		Map<String, Object> queryContextMap = DeviceQueryBuilderHelper.searchQueryForProductGroup(groupType);
-		Response bundleResponse = deviceDao.getResponseFromDataSource(
+		Response groupResponse = deviceDao.getResponseFromDataSource(
 				(Map<String, String>) queryContextMap.get(Constants.STRING_PARAMS),
 				(String) queryContextMap.get(Constants.STRING_QUERY));
 		LogHelper.info(this, "converting elasticsearch response into standard json object response");
-		return response.getListOfGroupFromJson(bundleResponse);
+		return response.getListOfGroupFromJson(groupResponse);
 	}
 	/**
 	 * Method to prepare the list from the request construct and build the query and finally return the 
@@ -4371,11 +4371,6 @@ public class DeviceServiceImpl implements DeviceService {
 		} else {
 			listOfProdIdsOrNames.add(productIdOrName);
 		}
-		
-		// Build the Query 
-		//Map<String, Object> queryContextMap = DeviceQueryBuilderHelper
-				//.searchQueryForListOfCommercialProductAndCommercialBundle(listOfProdIdsOrNames);
-		
 		return getListOfCommercialProduct(listOfProdIdsOrNames);
 	}
 }

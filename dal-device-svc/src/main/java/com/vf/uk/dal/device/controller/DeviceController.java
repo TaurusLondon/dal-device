@@ -656,6 +656,9 @@ public class DeviceController {
 			} else if (StringUtils.isNotBlank(productName)) {
 				LogHelper.info(this, "Get the list of Product Details for the Product Name passed as request params: " + productName);
 				commProductDetails = deviceService.getCommercialProductDetails(productName);
+			}else {
+				LogHelper.error(this, "Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
+				throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
 			}
 		} else {
 			LogHelper.error(this, "Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
@@ -681,6 +684,9 @@ public class DeviceController {
 			if (StringUtils.isNotBlank(groupType)) {
 				LogHelper.info(this, "Get the list of Product Details for the Product Id passed as request params: " + groupType);
 				groupDetails = deviceService.getProductGroupByType(groupType);
+			}else {
+				LogHelper.error(this, "Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
+				throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
 			}
 		} else {
 			LogHelper.error(this, "Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);

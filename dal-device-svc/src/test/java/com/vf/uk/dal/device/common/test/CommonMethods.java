@@ -4048,4 +4048,84 @@ public class CommonMethods {
 		}
 		return future;
 	}
+	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static CommercialProduct getCommercialProductByDeviceIdForAccessory() {
+
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			String commercialProduct = new String(
+					Utility.readFile("\\TEST-MOCK\\CommercialProductForAccessory.json"));
+			CommercialProduct commercialProductList = mapper.readValue(commercialProduct, CommercialProduct.class);
+
+			return mapper.convertValue(commercialProductList, new TypeReference<CommercialProduct>() {
+			});
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static List<CommercialProduct> getListOfCommercialProductsForAccessory() {
+
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			String commercialProduct = new String(
+					Utility.readFile("\\TEST-MOCK\\ListOfCommercialProductsForAccessory.json"));
+			CommercialProduct[] commercialProductList = mapper.readValue(commercialProduct, CommercialProduct[].class);
+
+			return mapper.convertValue(commercialProductList, new TypeReference<List<CommercialProduct>>() {
+			});
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static List<Group> getListOfProductGroupForAccessories() 
+	{
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			String listOfGroupsString = new String(
+					Utility.readFile("\\TEST-MOCK\\ListOfProductGroupsForAccessory.json"));
+			Group[] groupList = mapper.readValue(listOfGroupsString, Group[].class);
+
+			return mapper.convertValue(groupList, new TypeReference<List<Group>>() {
+			});
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static PriceForProduct getPriceForProduct_For_GetAccessories() {
+		PriceForProduct navigation = new PriceForProduct();
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			String bundle = new String(Utility
+					.readFile("\\TEST-MOCK\\PriceForProductForAccessory.json"));
+			PriceForProduct bundleList = new ObjectMapper().readValue(bundle,
+					PriceForProduct.class);
+
+			return mapper.convertValue(bundleList, new TypeReference<PriceForProduct>() {
+			});
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return navigation;
+	}
+
 }

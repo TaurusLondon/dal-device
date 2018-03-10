@@ -4,7 +4,6 @@ import static org.mockito.BDDMockito.given;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -50,7 +49,6 @@ import com.vf.uk.dal.device.entity.DeviceTile;
 import com.vf.uk.dal.device.entity.FacetedDevice;
 import com.vf.uk.dal.device.entity.Insurances;
 import com.vf.uk.dal.device.entity.KeepDeviceChangePlanRequest;
-import com.vf.uk.dal.device.entity.ProductGroup;
 import com.vf.uk.dal.device.entity.RequestForBundleAndHardware;
 import com.vf.uk.dal.device.entity.SourcePackageSummary;
 import com.vf.uk.dal.device.utils.Constants;
@@ -61,9 +59,12 @@ import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 import com.vf.uk.dal.utility.entity.BundleAndHardwareRequest;
 import com.vf.uk.dal.utility.entity.BundleDetails;
 import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
+import com.vf.uk.dal.utility.entity.BundleDeviceAndProductsList;
 import com.vf.uk.dal.utility.entity.CurrentJourney;
 import com.vf.uk.dal.utility.entity.PriceForProduct;
 import com.vf.uk.dal.utility.entity.RecommendedProductListResponse;
+
+import edu.emory.mathcs.backport.java.util.Arrays;
 
 /**
  * In order to run the controller class a bean of the ProductController is
@@ -609,6 +610,7 @@ public class DeviceControllerTest {
 	@JsonIgnore
 	@Test
 	public void notNullTestForcacheDeviceTile() throws JsonParseException, JsonMappingException, IOException {
+		ServiceContext.urlParamContext.remove();
 		List<FilterCriteria> fcList = new ArrayList<FilterCriteria>();
 		fcList.add(new FilterCriteria("groupType", FilterOperator.EQUALTO, "DEVICE_PAYM"));
 		ServiceContext.setURLParamContext(new URLParamContext("", "", fcList, null));
@@ -639,7 +641,7 @@ public class DeviceControllerTest {
 		bundleList.add(bundle);
 		requestForBundleAndHardware.setBundleAndHardwareList(bundleList);
 		requestForBundleAndHardware.setOfferCode("W_HH_PAYM_OC_01");
-		given(restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
+		given(restTemplate.postForObject("http://PRICE-V1/es/price/calculateForBundleAndHardware",
 				requestForBundleAndHardware, com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[].class))
 						.willReturn(obj);
 
@@ -677,7 +679,7 @@ public class DeviceControllerTest {
 		bundleList.add(bundle);
 		requestForBundleAndHardware.setBundleAndHardwareList(bundleList);
 		requestForBundleAndHardware.setOfferCode("W_HH_PAYM_OC_01");
-		given(restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
+		given(restTemplate.postForObject("http://PRICE-V1/es/price/calculateForBundleAndHardware",
 				requestForBundleAndHardware, com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[].class))
 						.willReturn(obj1);
 
@@ -690,7 +692,7 @@ public class DeviceControllerTest {
 		BundleDetailsForAppSrv obj = mapper1.readValue(jsonString, BundleDetailsForAppSrv.class);
 		given(registry.getRestTemplate()).willReturn(restTemplate);
 		given(restTemplate.getForObject(
-				"http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=123",
+				"http://BUNDLES-V1/es/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=123",
 				BundleDetailsForAppSrv.class)).willReturn(obj);
 		try {
 			deviceController.cacheDeviceTile();
@@ -1505,7 +1507,7 @@ public class DeviceControllerTest {
 			requestForBundleAndHardware.setBundleAndHardwareList(bundleList);
 			requestForBundleAndHardware.setOfferCode("NA");
 			requestForBundleAndHardware.setPackageType("Upgrade");
-			given(restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
+			given(restTemplate.postForObject("http://PRICE-V1/es/price/calculateForBundleAndHardware",
 					requestForBundleAndHardware, com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[].class))
 							.willReturn(obj);
 
@@ -1558,7 +1560,7 @@ public class DeviceControllerTest {
 	@Test
 	public void notNullTestForgetDeviceDetails1() {
 		DeviceDetails deviceDetails = new DeviceDetails();
-		given(restTemplate.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=093353", BundleDetailsForAppSrv.class)).willReturn(CommonMethods.getCoupledBundleListForDevice());
+		given(restTemplate.getForObject("http://BUNDLES-V1/es/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=093353", BundleDetailsForAppSrv.class)).willReturn(CommonMethods.getCoupledBundleListForDevice());
 		deviceDetails = deviceController.getDeviceDetails("093353",null,null);
 		Assert.assertNotNull(deviceDetails);
 	}
@@ -1634,7 +1636,7 @@ public class DeviceControllerTest {
 		requestForBundleAndHardware.setBundleAndHardwareList(bundleList);
 		requestForBundleAndHardware.setOfferCode(null);
 		requestForBundleAndHardware.setPackageType(null);
-		given(restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
+		given(restTemplate.postForObject("http://PRICE-V1/es/price/calculateForBundleAndHardware",
 				requestForBundleAndHardware, com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[].class))
 						.willReturn(obj);
 
@@ -1713,4 +1715,73 @@ public class DeviceControllerTest {
 		DaoUtils.populateMerchandisingPromotions(CommonMethods.getPriceForBundleAndHardware1().get(0), CommonMethods.getBundlePriceForUtility());
 	}
 	
+	@Test
+	public void notNullgetCommercialProduct(){
+		Map<String, String> commercialbundleMap=new HashMap<>();
+		commercialbundleMap.put("productId", "093353");
+		Assert.assertNotNull(deviceController.getCommercialProduct(commercialbundleMap));
+		commercialbundleMap.clear();
+		commercialbundleMap.put("productId", "093353,093329");
+		Assert.assertNotNull(deviceController.getCommercialProduct(commercialbundleMap));
+		commercialbundleMap.clear();
+		commercialbundleMap.put("productName", "iPhone 7 Silicone Case mid blue");
+		Assert.assertNotNull(deviceController.getCommercialProduct(commercialbundleMap));
+		try{
+			commercialbundleMap.clear();
+			deviceController.getCommercialProduct(commercialbundleMap);
+		}catch(Exception e){}
+		try{
+			commercialbundleMap.clear();
+			commercialbundleMap.put("deviceId", "093353");
+			deviceController.getCommercialProduct(commercialbundleMap);
+		}catch(Exception e){}
+		try{
+			commercialbundleMap.clear();
+			commercialbundleMap.put("productName", null);
+			deviceController.getCommercialProduct(commercialbundleMap);
+		}catch(Exception e){}
+	}
+	@Test
+	public void notProductGroupByGroupType(){
+		Map<String, String> productGroupMap=new HashMap<>();
+		productGroupMap.put("groupType", "DEVICE_PAYM");
+		Assert.assertNotNull(deviceController.getProductGroupByGroupType(productGroupMap));
+		
+		try{
+			productGroupMap.clear();
+			deviceController.getProductGroupByGroupType(productGroupMap);
+		}catch(Exception e){}
+		try{
+			productGroupMap.clear();
+			productGroupMap.put("groupName", "DEVICE_PAYM");
+			deviceController.getProductGroupByGroupType(productGroupMap);
+		}catch(Exception e){}
+		try{
+			productGroupMap.clear();
+			productGroupMap.put("groupType", null);
+			deviceController.getProductGroupByGroupType(productGroupMap);
+		}catch(Exception e){}
+	}
+	
+	@Test
+	public void notNullTestForgetAccessoriesOfDevice(){
+		BundleDeviceAndProductsList deviceAndProductsList = new BundleDeviceAndProductsList();
+		List<String> accessory=new ArrayList<>();
+		accessory.add("093329");accessory.add("085145");
+		deviceAndProductsList.setAccessoryList(accessory);
+		deviceAndProductsList.setDeviceId("093353");
+		deviceAndProductsList.setExtraList(new ArrayList<>());
+		deviceAndProductsList.setOfferCode(null);
+		deviceAndProductsList.setPackageType(null);
+		given(registry.getRestTemplate()).willReturn(restTemplate);
+		given(restTemplate.postForObject("http://PRICE-V1/es/price/product",
+				deviceAndProductsList, PriceForProduct.class))
+				.willReturn(CommonMethods.getPriceForProduct_For_GetAccessories());
+		
+		given(response.getListOfGroupFromJson(Matchers.anyObject())).willReturn(CommonMethods.getListOfProductGroupForAccessories());
+		given(response.getCommercialProductFromJson(Matchers.anyObject())).willReturn(CommonMethods.getListOfCommercialProductsForAccessory());
+		given(response.getCommercialProduct(Matchers.anyObject())).willReturn(CommonMethods.getCommercialProductByDeviceIdForAccessory());
+		Assert.assertNotNull(deviceController.getAccessoriesOfDevice("093353",null,null));
+	
+	}
 }
