@@ -9,6 +9,8 @@ package com.vf.uk.dal.device.datamodel.bundle;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class CommercialBundle  {
 	
 	protected String id;
@@ -17,10 +19,11 @@ public class CommercialBundle  {
 
 	protected String desc;
 
+	@JsonIgnore
 	protected String paymentType;
 
 	protected Availability availability;
-
+	@JsonIgnore
 	protected Commitment commitment;
 
 	protected List<String> categories;
@@ -28,53 +31,54 @@ public class CommercialBundle  {
 	protected List<String> productLines;// Changed from bundleLines to
 										// ProductLines
     protected List<DevicePrice> deviceSpecificPricing;
-
+	@JsonIgnore
     protected BundleComposition bundleComposition;
-
+	@JsonIgnore
     protected List<ServiceProduct> serviceProducts;
 
     protected List<Allowance> allowances;
-
+	@JsonIgnore
     protected Float recurringCharge;
-
+	@JsonIgnore
     protected TerminationFee terminationFee;
-
+	@JsonIgnore
     protected List<Path> migrationPaths;
-
+	@JsonIgnore
     protected List<Path> upgradePaths;
-
+	@JsonIgnore
     protected List<Path> preToPostPaths;
-
+	@JsonIgnore
     protected boolean isDiscountable;
-
+	@JsonIgnore
     protected String version;
 
 	// Attributes of MEF Metadata file
+	@JsonIgnore
 	protected String metadataVersion;
-
+	@JsonIgnore
 	protected String seoCanonical;
-
+	@JsonIgnore
 	protected String seoDescription;
-
+	@JsonIgnore
 	protected String seoKeywords;
-
+	@JsonIgnore
 	protected String seoIndex;
-
+	@JsonIgnore
 	protected String seoRobots;
-	
+	@JsonIgnore
 	protected String eligibilitySubflow;
 
 	// Attributes of MEF Content file
 	protected String displayName;
 
 	protected String contentDesc;
-
+	@JsonIgnore
 	protected String fullDetails;
 
 	protected String descMobile;
 
 	protected String fullDetailsMobile;
-
+	@JsonIgnore
 	protected String contentVersion;
 
 	protected List<ImageURL> listOfimageURLs;
@@ -94,17 +98,17 @@ public class CommercialBundle  {
 	protected PromoteAs promoteAs;
 
 	protected List<BundleDeviceSpecificPricingOverrides> bundleDeviceSpecificPricingOverrides;
-
+	@JsonIgnore
 	protected String postSaleJourney;
 
 	protected String displayGroup;
-
+	@JsonIgnore
 	protected String merchandisingVersion;
-	
+	@JsonIgnore
 	protected List<BundlePriceOverride> bundlePriceOverride;
 
 	protected List<Recommendations> recommendataions;
-	
+	@JsonIgnore
 	protected List<EligibleChannel> listOfEligibleChannels;
 	
 	

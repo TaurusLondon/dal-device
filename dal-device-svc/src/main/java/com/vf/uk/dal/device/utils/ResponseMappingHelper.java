@@ -3,52 +3,32 @@ package com.vf.uk.dal.device.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.util.EntityUtils;
-import org.elasticsearch.client.Response;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+import org.elasticsearch.action.search.SearchResponse;
 import org.springframework.stereotype.Component;
-
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
 import com.vf.uk.dal.device.datamodel.productgroups.Group;
-import com.vf.uk.dal.device.utils.Constants;
 
 @Component
 public class ResponseMappingHelper {
 	
-	JSONParser parser = SingletonMapperUtility.getJSONParser();
-	ObjectMapper mapper = SingletonMapperUtility.getObjectMapper();
 	/**
 	 * 
 	 * @param response
 	 * @return
 	 */
-	public  List<CommercialProduct> getCommercialProductFromJson(Response response) {
+	public  List<CommercialProduct> getCommercialProductFromJson(SearchResponse response) {
 
-		List<CommercialProduct> bundleModelList = new ArrayList<>();
+		List<CommercialProduct> commercialProductlList = new ArrayList<>();
 		
 		try {
-			LogHelper.info(ResponseMappingHelper.class, "<---- parsing json object response ---->");
-			JSONObject jsonObj = (JSONObject) parser.parse(EntityUtils.toString(response.getEntity()));
-			JSONObject jsonObj1 = (JSONObject) jsonObj.get(Constants.STRING_HITS);
-			JSONArray jsonObj2 = (JSONArray) jsonObj1.get(Constants.STRING_HITS);
-			
-			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			for (int i = 0; i < jsonObj2.size(); i++) {
-				JSONObject jsonObj3 = (JSONObject) jsonObj2.get(i);
-				CommercialProduct obj = mapper.readValue(jsonObj3.get(Constants.STRING_SOURCE).toString(), CommercialProduct.class);
-				bundleModelList.add(obj);
-			}
-			LogHelper.info(ResponseMappingHelper.class, "<---- Commercial Product list: "+ bundleModelList.size() + "---->");
+			commercialProductlList=ElasticSearchUtils.getListOfObject(response, CommercialProduct.class);
+			LogHelper.info(ResponseMappingHelper.class, "<---- Commercial Product list: "+ commercialProductlList.size() + "---->");
 		} catch (Exception e) {
 			LogHelper.error(ResponseMappingHelper.class, "::::::Exception occurred preparing Commercial Product list from ES response:::::: " + e);
 		}
-		return bundleModelList;
+		return commercialProductlList;
 	
 	}
 	/**
@@ -56,18 +36,11 @@ public class ResponseMappingHelper {
 	 * @param response
 	 * @return
 	 */
-	public CommercialProduct getCommercialProduct(Response response) {
+	public CommercialProduct getCommercialProduct(SearchResponse response) {
 
 		CommercialProduct obj=null;
 		try {
-			LogHelper.info(ResponseMappingHelper.class, "<---- parsing json object response ---->");
-			JSONObject jsonObj = (JSONObject) parser.parse(EntityUtils.toString(response.getEntity()));
-			JSONObject jsonObj1 = (JSONObject) jsonObj.get(Constants.STRING_HITS);
-			JSONArray jsonObj2 = (JSONArray) jsonObj1.get(Constants.STRING_HITS);
-			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			
-				JSONObject jsonObj3 = (JSONObject) jsonObj2.get(0);
-				 obj = mapper.readValue(jsonObj3.get(Constants.STRING_SOURCE).toString(), CommercialProduct.class);
+			obj=ElasticSearchUtils.getObject(response, CommercialProduct.class);
 			LogHelper.info(ResponseMappingHelper.class, "<---- Commercial Product list: ---->");
 		} catch (Exception e) {
 			LogHelper.error(ResponseMappingHelper.class, "::::::Exception occurred preparing Commercial product from ES response:::::: " + e);
@@ -80,20 +53,11 @@ public class ResponseMappingHelper {
 	 * @param response
 	 * @return
 	 */
-	public List<Group> getListOfGroupFromJson(Response response) {
+	public List<Group> getListOfGroupFromJson(SearchResponse response) {
 
 		List<Group> bundleModelList = new ArrayList<>();
 		try {
-			LogHelper.info(ResponseMappingHelper.class, "<---- parsing json object response ---->");
-			JSONObject jsonObj = (JSONObject) parser.parse(EntityUtils.toString(response.getEntity()));
-			JSONObject jsonObj1 = (JSONObject) jsonObj.get(Constants.STRING_HITS);
-			JSONArray jsonObj2 = (JSONArray) jsonObj1.get(Constants.STRING_HITS);
-			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			for (int i = 0; i < jsonObj2.size(); i++) {
-				JSONObject jsonObj3 = (JSONObject) jsonObj2.get(i);
-				Group obj = mapper.readValue(jsonObj3.get(Constants.STRING_SOURCE).toString(), Group.class);
-				bundleModelList.add(obj);
-			}
+			bundleModelList=ElasticSearchUtils.getListOfObject(response, Group.class);
 			LogHelper.info(ResponseMappingHelper.class, "<---- Product group list: "+ bundleModelList.size() + "---->");
 		} catch (Exception e) {
 			LogHelper.error(ResponseMappingHelper.class, "::::::Exception occurred preparing List of product Group from ES response:::::: " + e);
@@ -106,17 +70,11 @@ public class ResponseMappingHelper {
 	 * @param response
 	 * @return
 	 */
-	public Group getSingleGroupFromJson(Response response) {
+	public Group getSingleGroupFromJson(SearchResponse response) {
 
 		Group obj =new Group();
 		try {
-			LogHelper.info(ResponseMappingHelper.class, "<---- parsing json object response ---->");
-			JSONObject jsonObj = (JSONObject) parser.parse(EntityUtils.toString(response.getEntity()));
-			JSONObject jsonObj1 = (JSONObject) jsonObj.get(Constants.STRING_HITS);
-			JSONArray jsonObj2 = (JSONArray) jsonObj1.get(Constants.STRING_HITS);
-			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-				JSONObject jsonObj3 = (JSONObject) jsonObj2.get(0);
-				 obj = mapper.readValue(jsonObj3.get(Constants.STRING_SOURCE).toString(), Group.class);
+			obj=ElasticSearchUtils.getObject(response, Group.class);
 		} catch (Exception e) {
 			LogHelper.error(ResponseMappingHelper.class, "::::::Exception occurred preparing Product Group from ES response:::::: " + e);
 		}
@@ -128,20 +86,11 @@ public class ResponseMappingHelper {
 	 * @param response
 	 * @return
 	 */
-	public CommercialBundle getCommercialBundle(Response response) {
+	public CommercialBundle getCommercialBundle(SearchResponse response) {
 
 		CommercialBundle obj=new CommercialBundle();
 		try {
-			LogHelper.info(ResponseMappingHelper.class, "<---- parsing json object response ---->");
-			JSONObject jsonObj = (JSONObject) parser.parse(EntityUtils.toString(response.getEntity()));
-			JSONObject jsonObj1 = (JSONObject) jsonObj.get(Constants.STRING_HITS);
-			JSONArray jsonObj2 = (JSONArray) jsonObj1.get(Constants.STRING_HITS);
-			
-			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			
-				JSONObject jsonObj3 = (JSONObject) jsonObj2.get(0);
-				 obj = mapper.readValue(jsonObj3.get(Constants.STRING_SOURCE).toString(), CommercialBundle.class);
-				
+			obj=ElasticSearchUtils.getObject(response, CommercialBundle.class);
 			LogHelper.info(ResponseMappingHelper.class, "<---- Commercial Bundle list ---->");
 		} catch (Exception e) {
 			LogHelper.error(ResponseMappingHelper.class, "::::::Exception occurred preparing Commercial Bundle from ES response:::::: " + e);
@@ -154,25 +103,16 @@ public class ResponseMappingHelper {
 	 * @param response
 	 * @return
 	 */
-	public List<CommercialBundle> getListOfCommercialBundleFromJson(Response response) {
+	public List<CommercialBundle> getListOfCommercialBundleFromJson(SearchResponse response) {
 
-		List<CommercialBundle> bundleModelList = new ArrayList<>();
+		List<CommercialBundle> commercialBundlelList = new ArrayList<>();
 		try {
-			LogHelper.info(ResponseMappingHelper.class, "<---- parsing json object response ---->");
-			JSONObject jsonObj = (JSONObject) parser.parse(EntityUtils.toString(response.getEntity()));
-			JSONObject jsonObj1 = (JSONObject) jsonObj.get(Constants.STRING_HITS);
-			JSONArray jsonObj2 = (JSONArray) jsonObj1.get(Constants.STRING_HITS);
-			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			for (int i = 0; i < jsonObj2.size(); i++) {
-				JSONObject jsonObj3 = (JSONObject) jsonObj2.get(i);
-				CommercialBundle obj = mapper.readValue(jsonObj3.get(Constants.STRING_SOURCE).toString(), CommercialBundle.class);
-				bundleModelList.add(obj);
-			}
-			LogHelper.info(ResponseMappingHelper.class, "<---- Commercial Bundle list: "+ bundleModelList.size() + "---->");
+			commercialBundlelList=ElasticSearchUtils.getListOfObject(response, CommercialBundle.class);
+			LogHelper.info(ResponseMappingHelper.class, "<---- Commercial Bundle list: "+ commercialBundlelList.size() + "---->");
 		} catch (Exception e) {
 			LogHelper.error(ResponseMappingHelper.class, "::::::Exception occurred preparing commercial Bundle list from ES response:::::: " + e);
 		}
-		return bundleModelList;
+		return commercialBundlelList;
 	
 	}
 	/**
@@ -180,20 +120,11 @@ public class ResponseMappingHelper {
 	 * @param response
 	 * @return
 	 */
-	public List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion> getListOfMerchandisingPromotionFromJson(Response response) {
+	public List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion> getListOfMerchandisingPromotionFromJson(SearchResponse response) {
 
 		List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion> bundleModelList = new ArrayList<>();
 		try {
-			LogHelper.info(ResponseMappingHelper.class, "<---- parsing json object response ---->");
-			JSONObject jsonObj = (JSONObject) parser.parse(EntityUtils.toString(response.getEntity()));
-			JSONObject jsonObj1 = (JSONObject) jsonObj.get(Constants.STRING_HITS);
-			JSONArray jsonObj2 = (JSONArray) jsonObj1.get(Constants.STRING_HITS);
-			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			for (int i = 0; i < jsonObj2.size(); i++) {
-				JSONObject jsonObj3 = (JSONObject) jsonObj2.get(i);
-				com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion obj = mapper.readValue(jsonObj3.get(Constants.STRING_SOURCE).toString(), com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion.class);
-				bundleModelList.add(obj);
-			}
+			bundleModelList=ElasticSearchUtils.getListOfObject(response, com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion.class);
 			LogHelper.info(ResponseMappingHelper.class, "<---- Product group list: "+ bundleModelList.size() + "---->");
 		} catch (Exception e) {
 			LogHelper.error(ResponseMappingHelper.class, "::::::Exception occurred preparing List of product Group from ES response:::::: " + e);
@@ -206,21 +137,12 @@ public class ResponseMappingHelper {
 	 * @param response
 	 * @return
 	 */
-	public com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion getMerchandisingPromotion(Response response) {
+	public com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion getMerchandisingPromotion(SearchResponse response) {
 
 		com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion obj=new 
 				com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion();
 		try {
-			LogHelper.info(ResponseMappingHelper.class, "<---- parsing json object response ---->");
-			JSONObject jsonObj = (JSONObject) parser.parse(EntityUtils.toString(response.getEntity()));
-			JSONObject jsonObj1 = (JSONObject) jsonObj.get(Constants.STRING_HITS);
-			JSONArray jsonObj2 = (JSONArray) jsonObj1.get(Constants.STRING_HITS);
-			
-			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			
-				JSONObject jsonObj3 = (JSONObject) jsonObj2.get(0);
-				 obj = mapper.readValue(jsonObj3.get(Constants.STRING_SOURCE).toString(), com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion.class);
-				
+			obj=ElasticSearchUtils.getObject(response, com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion.class);
 			LogHelper.info(ResponseMappingHelper.class, "<---- Commercial Bundle list ---->");
 		} catch (Exception e) {
 			LogHelper.error(ResponseMappingHelper.class, "::::::Exception occurred preparing Commercial Bundle from ES response:::::: " + e);

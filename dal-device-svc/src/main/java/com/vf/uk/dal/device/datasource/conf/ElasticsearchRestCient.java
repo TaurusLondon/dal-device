@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestHighLevelClient;
 
 import com.vf.uk.dal.common.configuration.YAMLConfigurationSource;
 import com.vf.uk.dal.common.logger.LogHelper;
@@ -25,7 +26,7 @@ public class ElasticsearchRestCient {
 
 	private static String vpcEndPoint = getYamlConfig().get(Constants.ELASTIC_SEARCH_HOST);
 
-	private static RestClient restClient;
+	private static RestHighLevelClient restClient;
 	
 	/* Default constructor */
 	private ElasticsearchRestCient() {
@@ -36,7 +37,7 @@ public class ElasticsearchRestCient {
 	 *  creates rest client object
 	 * @return
 	 */
-	public static RestClient getClient() {
+	public static RestHighLevelClient getClient() {
 		if (restClient == null) {
 			restClient = createRestClient();
 			LogHelper.info(RestClient.class, "Rest client object created" );
@@ -84,13 +85,28 @@ public class ElasticsearchRestCient {
 	 * Method to create Rest Client object
 	 * @return
 	 */
-	private static RestClient createRestClient() {
+	/*private static RestClient createRestClient() {
 		try {
 			LogHelper.info(RestClient.class, "Rest client creation with VPC end point::" + vpcEndPoint);
 			InetAddress address = InetAddress.getByName(new URL(vpcEndPoint).getHost());
 			restClient = RestClient.builder(
 					new HttpHost(address, address.getHostName(), Constants.DEFAULT_PORT, Constants.HTTPS_SCHEME))
 					.build();
+			LogHelper.info(RestClient.class, "Rest Client created Successfully  with  VPC End point ::" + vpcEndPoint);
+		} catch (UnknownHostException | MalformedURLException e) {
+			LogHelper.error(RestClient.class, "Error ocuured while creating ES Rest client" + e);
+		}
+		return restClient;
+	}*/
+	/**
+	 * Method to create Rest Client object
+	 * @return
+	 */
+	private static RestHighLevelClient createRestClient() {
+		try {
+			LogHelper.info(RestClient.class, "Rest client creation with VPC end point::" + vpcEndPoint);
+			InetAddress address = InetAddress.getByName(new URL(vpcEndPoint).getHost());
+			restClient= new RestHighLevelClient(  RestClient.builder(new HttpHost(address, address.getHostName(), Constants.DEFAULT_PORT, Constants.HTTPS_SCHEME)));
 			LogHelper.info(RestClient.class, "Rest Client created Successfully  with  VPC End point ::" + vpcEndPoint);
 		} catch (UnknownHostException | MalformedURLException e) {
 			LogHelper.error(RestClient.class, "Error ocuured while creating ES Rest client" + e);

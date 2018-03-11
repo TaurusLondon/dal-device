@@ -2,7 +2,7 @@ package com.vf.uk.dal.device.datamodel.product;
 
 import java.util.List;
 
-import com.tangosol.io.pof.annotation.Portable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tangosol.io.pof.annotation.PortableProperty;
 
 public class CommercialProduct {
@@ -15,14 +15,18 @@ public class CommercialProduct {
 
 	protected String productClass;
 
+	@JsonIgnore
 	protected Boolean isServicesProduct;
 
 	protected Duration duration;
 
+	@JsonIgnore
 	protected Discount discount;
 
+	@JsonIgnore
 	protected String warranty;
 
+	@JsonIgnore
 	protected String condition;
 
 	protected List<String> categories;
@@ -32,31 +36,31 @@ public class CommercialProduct {
 	protected PriceDetail priceDetail;
 
 	protected List<ProductAllowance> productAllowance;
-
+	@JsonIgnore
 	protected BoxPrice boxPrice;
 
 	protected ProductAvailability productAvailability;
-
+	@JsonIgnore
 	protected List<Relationship> productRelationshipList;
 
 	protected Boolean isDeviceProduct;
-
+	@JsonIgnore
 	protected String inclusiveEligibility;
-
+	@JsonIgnore
 	protected boolean omniChannelDiscountEligible;
-
+	@JsonIgnore
 	protected String version;
-
+	@JsonIgnore
 	protected String seoCanonical;
-
+	@JsonIgnore
 	protected String seoDescription;
-
+	@JsonIgnore
 	protected String seoKeywords;
-
+	@JsonIgnore
 	protected String seoIndex;
-
+	@JsonIgnore
 	protected String seoRobots;
-
+	@JsonIgnore
 	protected String productSubClass;
 
 	protected Equipment equipment;
@@ -64,13 +68,13 @@ public class CommercialProduct {
 	protected String eligibilitySubflow;
 
 	protected List<Allowance> allowanceDisplay;
-
+	@JsonIgnore
 	protected boolean ageRestricted;
-
+	@JsonIgnore
 	protected Delivery delivery;
 
 	protected boolean isBattery;
-
+	@JsonIgnore
 	protected String metadataVersion;
 
 	protected String displayName;
@@ -90,7 +94,7 @@ public class CommercialProduct {
 	protected List<HelpURL> listOfhelpURLs;
 
 	protected List<Group> specificationGroups;
-
+	@JsonIgnore
 	protected String inTheBox;
 
 	protected String contentVersion;
@@ -104,7 +108,7 @@ public class CommercialProduct {
 	protected ProductPriceOverride productPriceOverride;
 
 	protected PromoteAs promoteAs;
-
+	@JsonIgnore
 	protected String MerchandisingVersion;
 
 	protected String leadPlanId;
@@ -112,11 +116,11 @@ public class CommercialProduct {
 	protected List<Recommendations> recommendataions;
 
 	protected List<String> listOfCompatiblePlanIds;
-
+	@JsonIgnore
 	protected Boolean fastMoving;
-
+	@JsonIgnore
 	protected String stockThresholdLimit;
-
+	@JsonIgnore
 	protected List<EligibleChannel> listOfEligibleChannels;
 	
 	public String getId() {

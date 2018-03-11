@@ -2,7 +2,7 @@ package com.vf.uk.dal.device;
 
 import java.util.concurrent.Executor;
 
-import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -48,7 +48,7 @@ public class DeviceApplication {
 	}
 	
 	@Bean
-	public RestClient getRestClientObject() {
+	public RestHighLevelClient getRestClientObject() {
 		return ElasticsearchRestCient.getClient();
 	}
 }

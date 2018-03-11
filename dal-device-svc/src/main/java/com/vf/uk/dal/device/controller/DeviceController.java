@@ -64,7 +64,6 @@ public class DeviceController {
 	DeviceService deviceService;
 
 	private static final String GROUP_TYPE = "groupType";
-	private static final String GROUP_NAME = "groupName";
 	private static final String DEVICE_ID_IS_EMPTY = "Device Id is Empty";
 	private static final String DEVICE_ID = "deviceId";
 	private static final String JOURNEY_TYPE = "journeyType";
@@ -694,5 +693,4 @@ public class DeviceController {
 		}
 		return groupDetails;
 	}
-	
 }

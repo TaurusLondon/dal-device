@@ -1,27 +1,23 @@
 package com.vf.uk.dal.device.dao;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-import org.elasticsearch.client.Response;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
-import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
-import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
-import com.vf.uk.dal.device.datamodel.productgroups.Group;
+import com.vf.uk.dal.device.datamodel.product.BazaarVoice;
 import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.entity.DeviceTile;
 import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
-import com.vf.uk.dal.device.entity.ProductGroup;
 import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 import com.vf.uk.dal.utility.entity.BundleDetails;
 import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
 import com.vodafone.business.service.RequestManager;
 import com.vodafone.common.Filters;
-import com.vf.uk.dal.device.datamodel.product.BazaarVoice;
 import com.vodafone.solrmodels.BundleModel;
 import com.vodafone.solrmodels.MerchandisingPromotionModel;
 import com.vodafone.solrmodels.OfferAppliedPriceModel;
@@ -589,5 +585,7 @@ public interface DeviceDao {
 	 * @param endPoint
 	 * @return
 	 */
-	public Response getResponseFromDataSource(Map<String, String> params, String query);
+	//public Response getResponseFromDataSource(Map<String, String> params, String query);
+	
+	public SearchResponse getResponseFromDataSource(SearchRequest searchRequest);
 }

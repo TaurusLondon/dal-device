@@ -275,4 +275,12 @@ public class Constants {
 	
 	// Regular Expression to identify list of ProductIds with comma separated.
 	public static final String NUMER_REG_EXP = "[0-9]{6}";
+	
+	public static final String DEFAULT_ENDPOINT_FOR_NORMALIZED_INDEX= "vodafone5";
+	
+	public static final String DEFAULT_ENDPOINT_FOR_DENORMALIZED_INDEX= "vodafone";
+	
+	public static final String ELASTIC_SEARCH_ENDPOINT_NORMALISED_DATA="ELASTIC_SEARCH_NORMALIZED_DATA_INDEX";
+	
+	public static final String ELASTIC_SEARCH_ENDPOINT_DENORMALISED_DATA="ELASTIC_SEARCH_DENORMALIZED_DATA_INDEX";
 }

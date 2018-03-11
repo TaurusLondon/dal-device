@@ -2,6 +2,8 @@ package com.vf.uk.dal.device.datamodel.productgroups;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 public class Group {
 
@@ -10,7 +12,7 @@ public class Group {
 	protected Long groupPriority;
 
 	protected String groupType;
-
+	@JsonIgnore
 	protected String version;
 
 	protected List<Member> members;
