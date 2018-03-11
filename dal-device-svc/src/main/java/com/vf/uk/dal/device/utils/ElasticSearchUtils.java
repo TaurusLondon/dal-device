@@ -26,7 +26,7 @@ public class ElasticSearchUtils {
 	{
 		List<T> res=new ArrayList<>();
 		List<SearchHit> searchHitList = new ArrayList<>(Arrays.asList(response.getHits().getHits()));
-		CompletableFuture<List<T>> future0 = getCommerialBundles(searchHitList,
+		CompletableFuture<List<T>> future0 = getCompatibleFutureObject(searchHitList,
 				new ArrayList<T>(), classType);
 		try {
 			res = future0.get();
@@ -42,7 +42,7 @@ public class ElasticSearchUtils {
 	 * @param classType
 	 * @return
 	 */
-	private static<U> CompletableFuture<List<U>> getCommerialBundles(List<SearchHit> searchHitList,
+	private static<U> CompletableFuture<List<U>> getCompatibleFutureObject(List<SearchHit> searchHitList,
 			List<U> result, Class<U> classType) 
 	{
 		return CompletableFuture.supplyAsync(() -> {
