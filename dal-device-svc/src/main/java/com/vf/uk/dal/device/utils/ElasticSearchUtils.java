@@ -8,21 +8,23 @@ import java.util.concurrent.CompletableFuture;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.search.SearchHit;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vf.uk.dal.common.logger.LogHelper;
 
+@Component
 public class ElasticSearchUtils {
 	
-	static ObjectMapper mapper = SingletonMapperUtility.getObjectMapper();
+	ObjectMapper mapper = SingletonMapperUtility.getObjectMapper();
 	/**
 	 * @author manoj.bera
 	 * @param response
 	 * @param classType
 	 * @return
 	 */
-	public static <T> List<T> getListOfObject(SearchResponse response, Class<T> classType)
+	public <T>List<T> getListOfObject(SearchResponse response, Class<T> classType)
 	{
 		List<T> res=new ArrayList<>();
 		List<SearchHit> searchHitList = new ArrayList<>(Arrays.asList(response.getHits().getHits()));
@@ -42,7 +44,7 @@ public class ElasticSearchUtils {
 	 * @param classType
 	 * @return
 	 */
-	private static<U> CompletableFuture<List<U>> getCompatibleFutureObject(List<SearchHit> searchHitList,
+	private <U>CompletableFuture<List<U>> getCompatibleFutureObject(List<SearchHit> searchHitList,
 			List<U> result, Class<U> classType) 
 	{
 		return CompletableFuture.supplyAsync(() -> {
@@ -56,7 +58,7 @@ public class ElasticSearchUtils {
 	 * @param classType
 	 * @return
 	 */
-	public static <T> T getObject(SearchResponse response, Class<T> classType)
+	public <T> T getObject(SearchResponse response, Class<T> classType)
 	{
 		for(SearchHit hit:response.getHits().getHits()){
 			return getObject(hit, classType);
@@ -69,7 +71,7 @@ public class ElasticSearchUtils {
 	 * @param valueType
 	 * @return
 	 */
-	private static <T> T getObject(SearchHit hit, Class<T> classType)
+	private <T> T getObject(SearchHit hit, Class<T> classType)
 	{
 		try {
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
