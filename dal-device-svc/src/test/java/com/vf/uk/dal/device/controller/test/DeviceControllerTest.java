@@ -64,8 +64,6 @@ import com.vf.uk.dal.utility.entity.CurrentJourney;
 import com.vf.uk.dal.utility.entity.PriceForProduct;
 import com.vf.uk.dal.utility.entity.RecommendedProductListResponse;
 
-import edu.emory.mathcs.backport.java.util.Arrays;
-
 /**
  * In order to run the controller class a bean of the ProductController is
  * initialized in @SpringBootTest
@@ -101,6 +99,7 @@ public class DeviceControllerTest {
 		String jsonString = new String(Utility.readFile("\\rest-mock\\COMMON-V1.json"));
 		CurrentJourney obj = new ObjectMapper().readValue(jsonString, CurrentJourney.class);
 		given(registry.getRestTemplate()).willReturn(restTemplate);
+		given(restTemplate.getForObject("http://BUNDLES-V1/es/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=" +"093353"+"&journeyType="+null, BundleDetailsForAppSrv.class )).willReturn(CommonMethods.getCoupledBundleListForDevice());
 		given(restTemplate.getForObject(
 				"http://COMMON-V1/common/journey/" + "c1a42269-6562-4c96-b3be-1ca2a6681d57" + "/queries/currentJourney",
 				CurrentJourney.class)).willReturn(obj);
@@ -301,6 +300,7 @@ public class DeviceControllerTest {
 	public void notNullTestForGetDeviceList() {
 		FacetedDevice deviceDetailsList = null;
 		try {
+			//given()
 			PaginationCriteria paginationCriteria = new PaginationCriteria(9, 0);
 
 			ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
