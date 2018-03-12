@@ -16,6 +16,7 @@ import com.vf.uk.dal.device.svc.impl.DeviceRecommendationServiceImpl;
 import com.vf.uk.dal.device.svc.impl.DeviceServiceImpl;
 import com.vf.uk.dal.device.utils.DeviceServiceImplHelper;
 import com.vf.uk.dal.device.utils.DeviceTileCacheDAO;
+import com.vf.uk.dal.device.utils.ElasticSearchUtils;
 import com.vf.uk.dal.device.utils.ResponseMappingHelper;
 
 @Configuration
@@ -73,5 +74,9 @@ public class DeviceTestBeans {
 	@Bean
 	public ResponseMappingHelper getResponseMappingHelper(){
 		return new ResponseMappingHelper();
+	}
+	@Bean
+	public ElasticSearchUtils getElasticSearchUtils(){
+		return new ElasticSearchUtils();
 	}
 }
