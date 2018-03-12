@@ -639,7 +639,8 @@ public class DeviceController {
 	 * 
 	 * @return List of CommercialProducts
 	 */
-	@RequestMapping(value = "/product/", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON })
+	@ApiIgnore
+	@RequestMapping(value = "/product", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON })
 	public List<CommercialProduct> getCommercialProduct(@RequestParam Map<String, String> queryParams) {
 		List<CommercialProduct> commProductDetails = null;
 
@@ -667,11 +668,14 @@ public class DeviceController {
 		return commProductDetails;
 	}
 	/**
-	 * @author manoj.bera
-	 * @param queryParams
-	 * @return
+	 * Handles requests to return the Product Groups from Product Catalog by taking groupType as input.
+	 * This is an Entity API which will return Commercial ProductGroups without applying any business logic.
+	 * 
+	 * @param groupType
+	 * @return List of ProductGroups
 	 */
-	@RequestMapping(value = "/productGroup/", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON })
+	@ApiIgnore
+	@RequestMapping(value = "/productGroup", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON })
 	public List<Group> getProductGroupByGroupType(@RequestParam Map<String, String> queryParams) {
 		List<Group> groupDetails = null;
 

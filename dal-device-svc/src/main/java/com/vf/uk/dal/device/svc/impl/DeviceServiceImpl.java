@@ -4299,7 +4299,6 @@ public class DeviceServiceImpl implements DeviceService {
 	}
 	
 	/**
-	 * @author manoj.bera
 	 * @param groupType
 	 * @return
 	 */

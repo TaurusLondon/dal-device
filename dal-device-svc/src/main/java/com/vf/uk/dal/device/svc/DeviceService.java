@@ -238,7 +238,6 @@ public interface DeviceService {
 	public List<CommercialProduct> getCommercialProductDetails(String productIdOrName);
 	
 	/**
-	 * @author manoj.bera
 	 * @param productId
 	 * @param productName
 	 * @return List of CommercialProducts
