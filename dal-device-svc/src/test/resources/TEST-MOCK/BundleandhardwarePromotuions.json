@@ -19,7 +19,8 @@
                 "type": "Redtoredvalue",
                 "priority": "7",
                 "description": "description",
-                "plancoupleId": "110093"
+                "plancoupleId": "110093",
+                "promotionMedia": "http://www.vodafone.co.uk/cs/groups/public/documents/webcontent/img_mef_ent_packs_svg.svg"
             }
         ],
         "freeAccessory": [
@@ -28,7 +29,8 @@
                 "label": "Free accessory with this plan",
                 "type": "accessory_free_gift",
                 "priority": "128",
-                "description": "description"
+                "description": "description",
+                "promotionMedia": "http://www.vodafone.co.uk/cs/groups/public/documents/webcontent/img_mef_ent_packs_svg.svg"
             }
         ],
         "planCouplingPromotions": [
@@ -38,7 +40,8 @@
                 "type": "Redtoredvalue",
                 "priority": "7",
                 "description": "description",
-                "plancoupleId": "110093"
+                "plancoupleId": "110093",
+                "promotionMedia": "http://www.vodafone.co.uk/cs/groups/public/documents/webcontent/img_mef_ent_packs_svg.svg"
             }
         ],
         "dataAllowances": [
@@ -48,6 +51,7 @@
                 "type": "data_allowance",
                 "priority": "43",
                 "description": "1GB Extra 4G Data",
+                "promotionMedia": "http://www.vodafone.co.uk/cs/groups/public/documents/webcontent/img_mef_ent_packs_svg.svg",
                 "freeData": {
                     "uom": "GB",
                     "value": "1"
@@ -80,7 +84,8 @@
                 "label": "3 month free trial of Secure Net - secondline",
                 "type": "securenet",
                 "priority": "185",
-                "description": "description"
+                "description": "description",
+                "promotionMedia": "http://www.vodafone.co.uk/cs/groups/public/documents/webcontent/img_mef_ent_packs_svg.svg"
             }
         ],
         "freeExtrasForPlan": [
@@ -90,7 +95,8 @@
                 "type": "Redtoredvalue",
                 "priority": "7",
                 "description": "description",
-                "plancoupleId": "110093"
+                "plancoupleId": "110093",
+                "promotionMedia": "http://www.vodafone.co.uk/cs/groups/public/documents/webcontent/img_mef_ent_packs_svg.svg"
             }
         ],
         "freeAccForPlan": [
@@ -99,7 +105,8 @@
                 "label": "Free accessory with this plan",
                 "type": "accessory_free_gift",
                 "priority": "128",
-                "description": "description"
+                "description": "description",
+                "promotionMedia": "http://www.vodafone.co.uk/cs/groups/public/documents/webcontent/img_mef_ent_packs_svg.svg"
             }
         ],
         "freeExtrasForHardware": [
@@ -109,7 +116,8 @@
                 "type": "Redtoredvalue",
                 "priority": "7",
                 "description": "description",
-                "plancoupleId": "110093"
+                "plancoupleId": "110093",
+                "promotionMedia": "http://www.vodafone.co.uk/cs/groups/public/documents/webcontent/img_mef_ent_packs_svg.svg"
             }
         ],
         "freeAccForHardware": [
@@ -118,7 +126,8 @@
                 "label": "Free accessory with this plan",
                 "type": "accessory_free_gift",
                 "priority": "128",
-                "description": "description"
+                "description": "description",
+                "promotionMedia": "http://www.vodafone.co.uk/cs/groups/public/documents/webcontent/img_mef_ent_packs_svg.svg"
             }
         ]
     },
@@ -142,7 +151,8 @@
                 "type": "Redtoredvalue",
                 "priority": "7",
                 "description": "description",
-                "plancoupleId": "110093"
+                "plancoupleId": "110093",
+                "promotionMedia": "http://www.vodafone.co.uk/cs/groups/public/documents/webcontent/img_mef_ent_packs_svg.svg"
             }
         ],
         "freeAccessory": [
@@ -151,7 +161,8 @@
                 "label": "Free accessory with this plan",
                 "type": "accessory_free_gift",
                 "priority": "128",
-                "description": "description"
+                "description": "description",
+                "promotionMedia": "http://www.vodafone.co.uk/cs/groups/public/documents/webcontent/img_mef_ent_packs_svg.svg"
             }
         ],
         "planCouplingPromotions": [
@@ -161,7 +172,8 @@
                 "type": "Redtoredvalue",
                 "priority": "7",
                 "description": "description",
-                "plancoupleId": "110093"
+                "plancoupleId": "110093",
+                "promotionMedia": "http://www.vodafone.co.uk/cs/groups/public/documents/webcontent/img_mef_ent_packs_svg.svg"
             }
         ],
         "dataAllowances": [
@@ -171,6 +183,7 @@
                 "type": "data_allowance",
                 "priority": "43",
                 "description": "1GB Extra 4G Data",
+                "promotionMedia": "http://www.vodafone.co.uk/cs/groups/public/documents/webcontent/img_mef_ent_packs_svg.svg",
                 "freeData": {
                     "uom": "GB",
                     "value": "1"
@@ -203,7 +216,8 @@
                 "label": "3 month free trial of Secure Net - secondline",
                 "type": "securenet",
                 "priority": "185",
-                "description": "description"
+                "description": "description",
+                "promotionMedia": "http://www.vodafone.co.uk/cs/groups/public/documents/webcontent/img_mef_ent_packs_svg.svg"
             }
         ],
         "freeExtrasForPlan": [
@@ -213,7 +227,8 @@
                 "type": "Redtoredvalue",
                 "priority": "7",
                 "description": "description",
-                "plancoupleId": "110093"
+                "plancoupleId": "110093",
+                "promotionMedia": "http://www.vodafone.co.uk/cs/groups/public/documents/webcontent/img_mef_ent_packs_svg.svg"
             }
         ],
         "freeAccForPlan": [
@@ -222,7 +237,8 @@
                 "label": "Free accessory with this plan",
                 "type": "accessory_free_gift",
                 "priority": "128",
-                "description": "description"
+                "description": "description",
+                "promotionMedia": "http://www.vodafone.co.uk/cs/groups/public/documents/webcontent/img_mef_ent_packs_svg.svg"
             }
         ],
         "freeExtrasForHardware": [
@@ -232,7 +248,8 @@
                 "type": "Redtoredvalue",
                 "priority": "7",
                 "description": "description",
-                "plancoupleId": "110093"
+                "plancoupleId": "110093",
+                "promotionMedia": "http://www.vodafone.co.uk/cs/groups/public/documents/webcontent/img_mef_ent_packs_svg.svg"
             }
         ],
         "freeAccForHardware": [
@@ -241,7 +258,8 @@
                 "label": "Free accessory with this plan",
                 "type": "accessory_free_gift",
                 "priority": "128",
-                "description": "description"
+                "description": "description",
+                "promotionMedia": "http://www.vodafone.co.uk/cs/groups/public/documents/webcontent/img_mef_ent_packs_svg.svg"
             }
         ]
     }
