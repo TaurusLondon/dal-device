@@ -460,6 +460,16 @@ public  class CommonUtility {
 					}
 					mediaList.add(mediaOfferLink);
 				}
+				if (StringUtils.isNotBlank(freeAccForHardware.getPromotionMedia())) {
+					MediaLink mediaOfferLink = new MediaLink();
+					mediaOfferLink.setId(freeAccForHardware.getType() + "." + Constants.STRING_PROMOTION_MEDIA);
+					mediaOfferLink.setType(Constants.STRING_URL_ALLOWANCE);
+					mediaOfferLink.setValue(freeAccForHardware.getPromotionMedia());
+					if (StringUtils.isNotBlank(freeAccForHardware.getPriority())) {
+						mediaOfferLink.setPriority(Integer.valueOf(freeAccForHardware.getPriority()));
+					}
+					mediaList.add(mediaOfferLink);
+				}
 			}
 		}
 		if (freeExtrasForHardwares != null && !freeExtrasForHardwares.isEmpty()) {
@@ -481,6 +491,16 @@ public  class CommonUtility {
 					mediaOfferLink.setId(freeExtrasForHardware.getType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
 					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
 					mediaOfferLink.setValue(freeExtrasForHardware.getDescription());
+					if (StringUtils.isNotBlank(freeExtrasForHardware.getPriority())) {
+						mediaOfferLink.setPriority(Integer.valueOf(freeExtrasForHardware.getPriority()));
+					}
+					mediaList.add(mediaOfferLink);
+				}
+				if (StringUtils.isNotBlank(freeExtrasForHardware.getPromotionMedia())) {
+					MediaLink mediaOfferLink = new MediaLink();
+					mediaOfferLink.setId(freeExtrasForHardware.getType() + "." + Constants.STRING_PROMOTION_MEDIA);
+					mediaOfferLink.setType(Constants.STRING_URL_ALLOWANCE);
+					mediaOfferLink.setValue(freeExtrasForHardware.getPromotionMedia());
 					if (StringUtils.isNotBlank(freeExtrasForHardware.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(freeExtrasForHardware.getPriority()));
 					}
@@ -510,6 +530,16 @@ public  class CommonUtility {
 					}
 					mediaList.add(mediaOfferLink);
 				}
+				if (StringUtils.isNotBlank(freeAccForPlan.getPromotionMedia())) {
+					MediaLink mediaOfferLink = new MediaLink();
+					mediaOfferLink.setId(freeAccForPlan.getType() + "." + Constants.STRING_PROMOTION_MEDIA);
+					mediaOfferLink.setType(Constants.STRING_URL_ALLOWANCE);
+					mediaOfferLink.setValue(freeAccForPlan.getPromotionMedia());
+					if (StringUtils.isNotBlank(freeAccForPlan.getPriority())) {
+						mediaOfferLink.setPriority(Integer.valueOf(freeAccForPlan.getPriority()));
+					}
+					mediaList.add(mediaOfferLink);
+				}
 			}
 		}
 		if (freeExtrasForPlans != null && !freeExtrasForPlans.isEmpty()) {
@@ -529,6 +559,16 @@ public  class CommonUtility {
 					mediaOfferLink.setId(freeExtrasForPlan.getType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
 					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
 					mediaOfferLink.setValue(freeExtrasForPlan.getDescription());
+					if (StringUtils.isNotBlank(freeExtrasForPlan.getPriority())) {
+						mediaOfferLink.setPriority(Integer.valueOf(freeExtrasForPlan.getPriority()));
+					}
+					mediaList.add(mediaOfferLink);
+				}
+				if (StringUtils.isNotBlank(freeExtrasForPlan.getPromotionMedia())) {
+					MediaLink mediaOfferLink = new MediaLink();
+					mediaOfferLink.setId(freeExtrasForPlan.getType() + "." + Constants.STRING_PROMOTION_MEDIA);
+					mediaOfferLink.setType(Constants.STRING_URL_ALLOWANCE);
+					mediaOfferLink.setValue(freeExtrasForPlan.getPromotionMedia());
 					if (StringUtils.isNotBlank(freeExtrasForPlan.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(freeExtrasForPlan.getPriority()));
 					}
@@ -558,6 +598,16 @@ public  class CommonUtility {
 					}
 					mediaList.add(mediaOfferLink);
 				}
+				if (StringUtils.isNotBlank(freeAccessory.getPromotionMedia())) {
+					MediaLink mediaOfferLink = new MediaLink();
+					mediaOfferLink.setId(freeAccessory.getType() + "." + Constants.STRING_PROMOTION_MEDIA);
+					mediaOfferLink.setType(Constants.STRING_URL_ALLOWANCE);
+					mediaOfferLink.setValue(freeAccessory.getPromotionMedia());
+					if (StringUtils.isNotBlank(freeAccessory.getPriority())) {
+						mediaOfferLink.setPriority(Integer.valueOf(freeAccessory.getPriority()));
+					}
+					mediaList.add(mediaOfferLink);
+				}
 			}
 		}
 		if (freeExtras != null && !freeExtras.isEmpty()) {
@@ -577,6 +627,16 @@ public  class CommonUtility {
 					mediaOfferLink.setId(freeExtra.getType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
 					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
 					mediaOfferLink.setValue(freeExtra.getDescription());
+					if (StringUtils.isNotBlank(freeExtra.getPriority())) {
+						mediaOfferLink.setPriority(Integer.valueOf(freeExtra.getPriority()));
+					}
+					mediaList.add(mediaOfferLink);
+				}
+				if (StringUtils.isNotBlank(freeExtra.getPromotionMedia())) {
+					MediaLink mediaOfferLink = new MediaLink();
+					mediaOfferLink.setId(freeExtra.getType() + "." + Constants.STRING_PROMOTION_MEDIA);
+					mediaOfferLink.setType(Constants.STRING_URL_ALLOWANCE);
+					mediaOfferLink.setValue(freeExtra.getPromotionMedia());
 					if (StringUtils.isNotBlank(freeExtra.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(freeExtra.getPriority()));
 					}
@@ -674,6 +734,16 @@ public  class CommonUtility {
 					}
 					mediaList.add(mediaOfferLink);
 				}
+				if (StringUtils.isNotBlank(dataAllowance.getPromotionMedia())) {
+					MediaLink mediaOfferLink = new MediaLink();
+					mediaOfferLink.setId(dataAllowance.getType() + "." + Constants.STRING_PROMOTION_MEDIA);
+					mediaOfferLink.setType(Constants.STRING_URL_ALLOWANCE);
+					mediaOfferLink.setValue(dataAllowance.getPromotionMedia());
+					if (StringUtils.isNotBlank(dataAllowance.getPriority())) {
+						mediaOfferLink.setPriority(Integer.valueOf(dataAllowance.getPriority()));
+					}
+					mediaList.add(mediaOfferLink);
+				}
 			}
 		}
 		if (planCouplingPromotions != null && !planCouplingPromotions.isEmpty()) {
@@ -693,6 +763,16 @@ public  class CommonUtility {
 					mediaOfferLink.setId(planCouplingPromotion.getType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
 					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
 					mediaOfferLink.setValue(planCouplingPromotion.getDescription());
+					if (StringUtils.isNotBlank(planCouplingPromotion.getPriority())) {
+						mediaOfferLink.setPriority(Integer.valueOf(planCouplingPromotion.getPriority()));
+					}
+					mediaList.add(mediaOfferLink);
+				}
+				if (StringUtils.isNotBlank(planCouplingPromotion.getPromotionMedia())) {
+					MediaLink mediaOfferLink = new MediaLink();
+					mediaOfferLink.setId(planCouplingPromotion.getType() + "." + Constants.STRING_PROMOTION_MEDIA);
+					mediaOfferLink.setType(Constants.STRING_URL_ALLOWANCE);
+					mediaOfferLink.setValue(planCouplingPromotion.getPromotionMedia());
 					if (StringUtils.isNotBlank(planCouplingPromotion.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(planCouplingPromotion.getPriority()));
 					}
@@ -722,6 +802,16 @@ public  class CommonUtility {
 					}
 					mediaList.add(mediaOfferLink);
 				}
+				if (StringUtils.isNotBlank(sashPromotion.getPromotionMedia())) {
+					MediaLink mediaOfferLink = new MediaLink();
+					mediaOfferLink.setId(sashPromotion.getType() + "." + Constants.STRING_PROMOTION_MEDIA);
+					mediaOfferLink.setType(Constants.STRING_URL_ALLOWANCE);
+					mediaOfferLink.setValue(sashPromotion.getPromotionMedia());
+					if (StringUtils.isNotBlank(sashPromotion.getPriority())) {
+						mediaOfferLink.setPriority(Integer.valueOf(sashPromotion.getPriority()));
+					}
+					mediaList.add(mediaOfferLink);
+				}
 			}
 		}
 		
@@ -742,6 +832,16 @@ public  class CommonUtility {
 					mediaOfferLink.setId(secureNetPromotion.getType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
 					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
 					mediaOfferLink.setValue(secureNetPromotion.getDescription());
+					if (StringUtils.isNotBlank(secureNetPromotion.getPriority())) {
+						mediaOfferLink.setPriority(Integer.valueOf(secureNetPromotion.getPriority()));
+					}
+					mediaList.add(mediaOfferLink);
+				}
+				if (StringUtils.isNotBlank(secureNetPromotion.getPromotionMedia())) {
+					MediaLink mediaOfferLink = new MediaLink();
+					mediaOfferLink.setId(secureNetPromotion.getType() + "." + Constants.STRING_PROMOTION_MEDIA);
+					mediaOfferLink.setType(Constants.STRING_URL_ALLOWANCE);
+					mediaOfferLink.setValue(secureNetPromotion.getPromotionMedia());
 					if (StringUtils.isNotBlank(secureNetPromotion.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(secureNetPromotion.getPriority()));
 					}
