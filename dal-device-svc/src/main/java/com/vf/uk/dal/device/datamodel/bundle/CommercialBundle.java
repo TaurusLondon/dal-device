@@ -55,15 +55,15 @@ public class CommercialBundle  {
 	// Attributes of MEF Metadata file
 	@JsonIgnore
 	protected String metadataVersion;
-	@JsonIgnore
+	
 	protected String seoCanonical;
-	@JsonIgnore
+	
 	protected String seoDescription;
-	@JsonIgnore
+	
 	protected String seoKeywords;
-	@JsonIgnore
+	
 	protected String seoIndex;
-	@JsonIgnore
+	
 	protected String seoRobots;
 	@JsonIgnore
 	protected String eligibilitySubflow;
@@ -72,7 +72,7 @@ public class CommercialBundle  {
 	protected String displayName;
 
 	protected String contentDesc;
-	@JsonIgnore
+	
 	protected String fullDetails;
 
 	protected String descMobile;

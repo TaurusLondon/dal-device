@@ -15,7 +15,7 @@ public class CommercialProduct {
 
 	protected String productClass;
 
-	@JsonIgnore
+	
 	protected Boolean isServicesProduct;
 
 	protected Duration duration;
@@ -40,7 +40,7 @@ public class CommercialProduct {
 	protected BoxPrice boxPrice;
 
 	protected ProductAvailability productAvailability;
-	@JsonIgnore
+	
 	protected List<Relationship> productRelationshipList;
 
 	protected Boolean isDeviceProduct;
@@ -50,17 +50,17 @@ public class CommercialProduct {
 	protected boolean omniChannelDiscountEligible;
 	@JsonIgnore
 	protected String version;
-	@JsonIgnore
+	
 	protected String seoCanonical;
-	@JsonIgnore
+	
 	protected String seoDescription;
-	@JsonIgnore
+	
 	protected String seoKeywords;
-	@JsonIgnore
+	
 	protected String seoIndex;
-	@JsonIgnore
+	
 	protected String seoRobots;
-	@JsonIgnore
+	
 	protected String productSubClass;
 
 	protected Equipment equipment;
