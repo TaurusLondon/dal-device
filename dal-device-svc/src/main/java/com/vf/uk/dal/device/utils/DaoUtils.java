@@ -260,7 +260,7 @@ public class DaoUtils {
 					MediaLink priceEstablishedMediaLink = new MediaLink();
 					priceEstablishedMediaLink
 							.setId(merchPromoForHardware.getMpType() + "." + Constants.STRING_PROMOTION_MEDIA);
-					priceEstablishedMediaLink.setType("TEXT");
+					priceEstablishedMediaLink.setType("URL");
 					priceEstablishedMediaLink.setValue(merchPromoForHardware.getPromotionMedia());
 					priceEstablishedMediaLink.setPriority(merchPromoForHardware.getPriority());
 					merchandisingMedia.add(priceEstablishedMediaLink);
@@ -305,7 +305,7 @@ public class DaoUtils {
 					MediaLink priceEstablishedMediaLink = new MediaLink();
 					priceEstablishedMediaLink
 							.setId(merchPromoForBundle.getMpType() + "." + Constants.STRING_PROMOTION_MEDIA);
-					priceEstablishedMediaLink.setType("TEXT");
+					priceEstablishedMediaLink.setType("URL");
 					priceEstablishedMediaLink.setValue(merchPromoForBundle.getPromotionMedia());
 					priceEstablishedMediaLink.setPriority(merchPromoForBundle.getPriority());
 					merchandisingMedia.add(priceEstablishedMediaLink);
@@ -1110,7 +1110,9 @@ public class DaoUtils {
 	 */
 	public static Map<String, Object> getPriceInfoForSolr(
 			com.vf.uk.dal.utility.entity.PriceForBundleAndHardware priceForBundleAndHardware,
-			Map<String, List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>> listOfPriceForBundleAndHardwareWithOfferCode) {
+			Map<String, List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>> listOfPriceForBundleAndHardwareWithOfferCode) 
+	{
+
 		Map<String, Object> result = new HashMap<>();
 		List<com.vf.uk.dal.utility.solr.entity.Media> listOfMedia = new ArrayList<>();
 		BundlePrice bundlePrice = priceForBundleAndHardware.getBundlePrice();
@@ -1185,7 +1187,7 @@ public class DaoUtils {
 				com.vf.uk.dal.utility.solr.entity.Media mediaLinkForPromotionMedia = new com.vf.uk.dal.utility.solr.entity.Media();
 				mediaLinkForPromotionMedia.setId(bundlePrice.getMerchandisingPromotions().getMpType() + "."
 						+ Constants.STRING_PRICE_PROMOTION_MEDIA);
-				String type4 = Constants.STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&"
+				String type4 = Constants.STRING_URL_ALLOWANCE + "&&" + bundleId + "&&"
 						+ Constants.PROMO_TYPE_BUNDLEPROMOTION + "&&"
 						+ bundlePrice.getMerchandisingPromotions().getTag();
 				mediaLinkForPromotionMedia.setType(type4);
@@ -1270,7 +1272,7 @@ public class DaoUtils {
 			com.vf.uk.dal.utility.solr.entity.Media mediaLinkForPromotionMedia = new com.vf.uk.dal.utility.solr.entity.Media();
 			mediaLinkForPromotionMedia.setId(hardwarePrice.getMerchandisingPromotions().getMpType() + "."
 					+ Constants.STRING_PRICE_PROMOTION_MEDIA);
-			String type4 = Constants.STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&"
+			String type4 = Constants.STRING_URL_ALLOWANCE + "&&" + bundleId + "&&"
 					+ Constants.PROMO_TYPE_HARDWAREPROMOTION + "&&"
 					+ hardwarePrice.getMerchandisingPromotions().getTag();
 			mediaLinkForPromotionMedia.setType(type4);
@@ -1331,6 +1333,7 @@ public class DaoUtils {
 		result.put("price", priceinfo);
 		result.put("media", listOfMedia);
 		return result;
+	
 	}
 
 	/**
@@ -1365,7 +1368,9 @@ public class DaoUtils {
 	 * @return
 	 */
 	public static Map<String, Object> getListOfOfferAppliedPrice(String deviceId,
-			Map<String, Map<String, Map<String, List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>>>> ilsPriceForBundleAndHardwareMap) {
+			Map<String, Map<String, Map<String, List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>>>> ilsPriceForBundleAndHardwareMap) 
+	{
+
 		Map<String, Object> result = new HashMap<>();
 		List<OfferAppliedPriceDetails> listOfOfferAppliedPriceDetails = new ArrayList<>();
 		List<com.vf.uk.dal.utility.solr.entity.Media> listOfMedia = new ArrayList<>();
@@ -1468,7 +1473,7 @@ public class DaoUtils {
 								com.vf.uk.dal.utility.solr.entity.Media mediaLinkForPromotionMedia = new com.vf.uk.dal.utility.solr.entity.Media();
 								mediaLinkForPromotionMedia.setId(bundlePrice.getMerchandisingPromotions().getMpType()
 										+ "." + Constants.STRING_PRICE_PROMOTION_MEDIA);
-								String type7 = Constants.STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&"
+								String type7 = Constants.STRING_URL_ALLOWANCE + "&&" + bundleId + "&&"
 										+ Constants.PROMO_TYPE_BUNDLEPROMOTION + "&&"
 										+ bundlePrice.getMerchandisingPromotions().getTag();
 								mediaLinkForPromotionMedia.setType(type7);
@@ -1566,7 +1571,7 @@ public class DaoUtils {
 								com.vf.uk.dal.utility.solr.entity.Media mediaLinkForPromotionMedia = new com.vf.uk.dal.utility.solr.entity.Media();
 								mediaLinkForPromotionMedia.setId(hardwarePrice.getMerchandisingPromotions().getMpType()
 										+ "." + Constants.STRING_PRICE_PROMOTION_MEDIA);
-								String type9 = Constants.STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&"
+								String type9 = Constants.STRING_URL_ALLOWANCE + "&&" + bundleId + "&&"
 										+ Constants.PROMO_TYPE_HARDWAREPROMOTION + "&&"
 										+ hardwarePrice.getMerchandisingPromotions().getTag();
 								mediaLinkForPromotionMedia.setType(type9);
@@ -1634,6 +1639,7 @@ public class DaoUtils {
 		result.put("offeredPrice", listOfOfferAppliedPriceDetails);
 		result.put("media", listOfMedia);
 		return result;
+	
 	}
 
 	/**
@@ -3696,7 +3702,7 @@ public class DaoUtils {
 							com.vf.uk.dal.utility.solr.entity.Media mediaLinkForPromotionMedia = new com.vf.uk.dal.utility.solr.entity.Media();
 							mediaLinkForPromotionMedia.setId(bundlePrice.getMerchandisingPromotions().getMpType() + "."
 									+ Constants.STRING_PRICE_PROMOTION_MEDIA);
-							String type7 = Constants.STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&"
+							String type7 = Constants.STRING_URL_ALLOWANCE + "&&" + bundleId + "&&"
 									+ Constants.PROMO_TYPE_BUNDLEPROMOTION + "&&"
 									+ bundlePrice.getMerchandisingPromotions().getTag();
 							mediaLinkForPromotionMedia.setType(type7);
@@ -3787,7 +3793,7 @@ public class DaoUtils {
 							com.vf.uk.dal.utility.solr.entity.Media mediaLinkForPromotionMedia = new com.vf.uk.dal.utility.solr.entity.Media();
 							mediaLinkForPromotionMedia.setId(hardwarePrice.getMerchandisingPromotions().getMpType()
 									+ "." + Constants.STRING_PRICE_PROMOTION_MEDIA);
-							String type9 = Constants.STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&"
+							String type9 = Constants.STRING_URL_ALLOWANCE + "&&" + bundleId + "&&"
 									+ Constants.PROMO_TYPE_HARDWAREPROMOTION + "&&"
 									+ hardwarePrice.getMerchandisingPromotions().getTag();
 							mediaLinkForPromotionMedia.setType(type9);
