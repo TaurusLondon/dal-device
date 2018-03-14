@@ -427,3 +427,80 @@ Bug # 21940
 [
 keepDeviceChangePlan Response is different from Swagger structure.
 ]
+
+8.0.3 (1-Mar-2018)
+-----------------
+
+User story # 22144
+[
+Integration of DeviceTileByMakeandmodel with elastic Search 
+]
+
+https://internal-digitalx-sit2-alb-mas-1938696969.eu-west-1.elb.amazonaws.com/es/devices/catalogue/deviceTile/queries/byMakeModel/?make=apple&model=iPhone-7&groupType=DEVICE_PAYM
+
+
+User story # 22147
+[
+Integration of Compatible accessories with elastic Search 
+]
+
+https://internal-digitalx-sit2-alb-mas-1938696969.eu-west-1.elb.amazonaws.com/es/devices/catalogue/accessory/queries/byDeviceId/?deviceId=093353
+
+
+User story # 22140
+[
+Integration of Device Details with elastic Search 
+]
+
+https://internal-digitalx-sit2-alb-mas-1938696969.eu-west-1.elb.amazonaws.com/es/devices/catalogue/device/093353
+
+
+User story # 22151
+[
+SPIKE - GetStockAvailability for Device - Needed or not?
+]
+
+User story # 22148
+[
+Integration of Compatible Insurance with elastic Search 
+]
+
+https://internal-digitalx-sit2-alb-mas-1938696969.eu-west-1.elb.amazonaws.com/es/devices/catalogue/insurance/queries/byDeviceId/?deviceId=093353
+
+
+User story # 22149
+[
+Migration of BV cache to SpringCache and update references to GetDeviceReviews api
+]
+
+https://internal-digitalx-sit2-alb-mas-1938696969.eu-west-1.elb.amazonaws.com/devices/catalogue/device/093353/review
+
+
+User story # 23398
+[
+Retrieve Product resource by Product IDs and/or Product name
+]
+https://internal-digitalx-sit2-alb-mas-1938696969.eu-west-1.elb.amazonaws.com/es/devices/catalogue/product?productId=093353 
+
+
+User story # 23399
+[
+Retrieve ProductGroup resource by Group Type
+]
+https://internal-digitalx-sit2-alb-mas-1938696969.eu-west-1.elb.amazonaws.com/es/devices/catalogue/productGroup?groupType=DEVICE_PAYM
+
+
+Bug # 23433
+[ 
+DeviceList is giving invalid monthlyPrice.
+]
+
+Bug # 24047
+[ 
+Media Type in Device API's is giving invalid Value for PromotionMedia
+]
+
+Bug # 24030
+[ 
+In Device API's PromotionMedia in media is not populated for all the associated promotions.
+]
