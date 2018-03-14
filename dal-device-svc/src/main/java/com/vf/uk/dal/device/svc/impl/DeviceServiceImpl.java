@@ -4351,6 +4351,12 @@ public class DeviceServiceImpl implements DeviceService {
 		} else {
 			listOfProdIdsOrNames.add(productIdOrName);
 		}
+		List<CommercialProduct> listOfCommercialProduct=getListOfCommercialProduct(listOfProdIdsOrNames);
+		if(CollectionUtils.isEmpty(listOfCommercialProduct))
+		{
+			LogHelper.error(this, ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID +" : " +productIdOrName);
+			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID);
+		}
 		return getListOfCommercialProduct(listOfProdIdsOrNames);
 	}
 }
