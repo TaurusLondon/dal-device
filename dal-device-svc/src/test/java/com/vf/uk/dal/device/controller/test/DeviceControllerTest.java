@@ -1718,49 +1718,18 @@ public class DeviceControllerTest {
 	
 	@Test
 	public void notNullgetCommercialProduct(){
-		Map<String, String> commercialbundleMap=new HashMap<>();
-		commercialbundleMap.put("productId", "093353");
-		Assert.assertNotNull(deviceController.getCommercialProduct(commercialbundleMap));
-		commercialbundleMap.clear();
-		commercialbundleMap.put("productId", "093353,093329");
-		Assert.assertNotNull(deviceController.getCommercialProduct(commercialbundleMap));
-		commercialbundleMap.clear();
-		commercialbundleMap.put("productName", "iPhone 7 Silicone Case mid blue");
-		Assert.assertNotNull(deviceController.getCommercialProduct(commercialbundleMap));
+		Assert.assertNotNull(deviceController.getCommercialProduct("093353",null));
+		Assert.assertNotNull(deviceController.getCommercialProduct("093353,093329",null));
+		Assert.assertNotNull(deviceController.getCommercialProduct(null,"iPhone 7 Silicone Case mid blue"));
 		try{
-			commercialbundleMap.clear();
-			deviceController.getCommercialProduct(commercialbundleMap);
-		}catch(Exception e){}
-		try{
-			commercialbundleMap.clear();
-			commercialbundleMap.put("deviceId", "093353");
-			deviceController.getCommercialProduct(commercialbundleMap);
-		}catch(Exception e){}
-		try{
-			commercialbundleMap.clear();
-			commercialbundleMap.put("productName", null);
-			deviceController.getCommercialProduct(commercialbundleMap);
+			deviceController.getCommercialProduct(null,null);
 		}catch(Exception e){}
 	}
 	@Test
 	public void notProductGroupByGroupType(){
-		Map<String, String> productGroupMap=new HashMap<>();
-		productGroupMap.put("groupType", "DEVICE_PAYM");
-		Assert.assertNotNull(deviceController.getProductGroupByGroupType(productGroupMap));
-		
+		Assert.assertNotNull(deviceController.getProductGroupByGroupType("DEVICE_PAYM"));
 		try{
-			productGroupMap.clear();
-			deviceController.getProductGroupByGroupType(productGroupMap);
-		}catch(Exception e){}
-		try{
-			productGroupMap.clear();
-			productGroupMap.put("groupName", "DEVICE_PAYM");
-			deviceController.getProductGroupByGroupType(productGroupMap);
-		}catch(Exception e){}
-		try{
-			productGroupMap.clear();
-			productGroupMap.put("groupType", null);
-			deviceController.getProductGroupByGroupType(productGroupMap);
+			deviceController.getProductGroupByGroupType(null);
 		}catch(Exception e){}
 	}
 	

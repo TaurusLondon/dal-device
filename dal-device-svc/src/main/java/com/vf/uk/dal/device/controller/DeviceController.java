@@ -70,8 +70,6 @@ public class DeviceController {
 	private static final String OFFER_CODE = "offerCode";
 	private static final String numberExp = "[0-9]{6}";
 	private static final String creditLimitExp = "[0-9]*";
-	private static final String PRODUCT_ID = "productId";
-	private static final String PRODUCT_NAME = "productName";
 	
 	/**
 	 * Handles requests for getDeviceTile Service with input as
@@ -639,31 +637,29 @@ public class DeviceController {
 	 * 
 	 * @return List of CommercialProducts
 	 */
-	@ApiIgnore
+	@ApiOperation(value = "The service gets the details of the commercial Product in the response.", 
+			notes = "The service gets the details of the commercial Product in the response.",
+			response = CommercialProduct.class, tags={ "GetCommercialProductByProductNameOrProductId" })
+    @ApiResponses(value = { 
+    		@ApiResponse(code = 200, message = "Success", response = CommercialProduct.class, responseContainer = "List"),
+        @ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
+		@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
+        @ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
+        @ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
 	@RequestMapping(value = "/product", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON })
-	public List<CommercialProduct> getCommercialProduct(@RequestParam Map<String, String> queryParams) {
+	public List<CommercialProduct> getCommercialProduct(
+			@ApiParam(value = "Device Id for getting commercial product to displayed. possible value can be comma separated device Id like 093353,080004") @RequestParam(value = "productId", required = false) String productId,
+			@ApiParam(value = "Product Name for getting commercial product to displayed. possible value can be comma separated product names are like Fibre Activation Fee,ATA Device") @RequestParam(value = "productName", required = false) String productName) {
 		List<CommercialProduct> commProductDetails = null;
 
-		if (!queryParams.isEmpty() && Validator.validateProduct(queryParams)) {
-			LogHelper.info(this, "Query parameter(s) passed in the request: " + queryParams);
-
-			String productId = queryParams.containsKey(PRODUCT_ID) ? queryParams.get(PRODUCT_ID) : null;
-			String productName = queryParams.containsKey(PRODUCT_NAME) ? queryParams.get(PRODUCT_NAME) : null;
 			
-			if (StringUtils.isNotBlank(productId)) {
-				LogHelper.info(this, "Get the list of Product Details for the Product Id passed as request params: " + productId);
-				commProductDetails = deviceService.getCommercialProductDetails(productId);
-			} else if (StringUtils.isNotBlank(productName)) {
-				LogHelper.info(this, "Get the list of Product Details for the Product Name passed as request params: " + productName);
-				commProductDetails = deviceService.getCommercialProductDetails(productName);
-			}else {
+			if (StringUtils.isBlank(productId) && StringUtils.isBlank(productName)) {
 				LogHelper.error(this, "Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
 				throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
+			} else {
+				LogHelper.info(this, "Get the list of Product Details for the Product Name passed as request params: " + productName);
+				commProductDetails = deviceService.getCommercialProductDetails(productName);
 			}
-		} else {
-			LogHelper.error(this, "Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
-			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
-		}
 		
 		return commProductDetails;
 	}
@@ -674,16 +670,20 @@ public class DeviceController {
 	 * @param groupType
 	 * @return List of ProductGroups
 	 */
-	@ApiIgnore
+	@ApiOperation(value = "The service gets the details of the Product group in the response.", 
+			notes = "The service gets the details of the Product group in the response.",
+			response = Group.class, tags={ "GetProductGroupByGroupType" })
+    @ApiResponses(value = { 
+    		@ApiResponse(code = 200, message = "Success", response = Group.class, responseContainer = "List"),
+        @ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
+		@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
+        @ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
+        @ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
 	@RequestMapping(value = "/productGroup", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON })
-	public List<Group> getProductGroupByGroupType(@RequestParam Map<String, String> queryParams) {
+	public List<Group> getProductGroupByGroupType(
+			@ApiParam(value = "Product group Type for getting product group to displayed. possible value can be like DEVICE_PAYM or DEVICE_PAYG") @RequestParam(value = "groupType", required = false) String groupType) {
 		List<Group> groupDetails = null;
 
-		if (!queryParams.isEmpty() && Validator.validateProductGroup(queryParams)) {
-			LogHelper.info(this, "Query parameter(s) passed in the request: " + queryParams);
-
-			String groupType=queryParams.containsKey(Constants.STRING_GROUP_TYPE) ? queryParams.get(Constants.STRING_GROUP_TYPE) : null;
-			
 			if (StringUtils.isNotBlank(groupType)) {
 				LogHelper.info(this, "Get the list of Product Details for the Product Id passed as request params: " + groupType);
 				groupDetails = deviceService.getProductGroupByType(groupType);
@@ -691,10 +691,6 @@ public class DeviceController {
 				LogHelper.error(this, "Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
 				throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
 			}
-		} else {
-			LogHelper.error(this, "Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
-			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
-		}
 		return groupDetails;
 	}
 }

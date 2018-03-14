@@ -20,13 +20,13 @@ public class CommercialProduct {
 
 	protected Duration duration;
 
-	@JsonIgnore
+	
 	protected Discount discount;
 
 	@JsonIgnore
 	protected String warranty;
 
-	@JsonIgnore
+	
 	protected String condition;
 
 	protected List<String> categories;
@@ -36,7 +36,7 @@ public class CommercialProduct {
 	protected PriceDetail priceDetail;
 
 	protected List<ProductAllowance> productAllowance;
-	@JsonIgnore
+	
 	protected BoxPrice boxPrice;
 
 	protected ProductAvailability productAvailability;
@@ -44,9 +44,9 @@ public class CommercialProduct {
 	protected List<Relationship> productRelationshipList;
 
 	protected Boolean isDeviceProduct;
-	@JsonIgnore
+	
 	protected String inclusiveEligibility;
-	@JsonIgnore
+	
 	protected boolean omniChannelDiscountEligible;
 	@JsonIgnore
 	protected String version;
@@ -120,7 +120,7 @@ public class CommercialProduct {
 	protected Boolean fastMoving;
 	@JsonIgnore
 	protected String stockThresholdLimit;
-	@JsonIgnore
+	
 	protected List<EligibleChannel> listOfEligibleChannels;
 	
 	public String getId() {

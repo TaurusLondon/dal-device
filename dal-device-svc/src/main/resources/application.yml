@@ -41,7 +41,7 @@ icp:
     defaultPageNumber: 0  
 
 elasticsearch:
-  host: https://vpc-digitalx-sit2-solr-es-kjt2vz5gkf35e73z7oyqtsd32e.eu-west-1.es.amazonaws.com/  
+  host: https://vpc-digitalx-dev-solr-es-hne32eyterqfesg3zzkpeg25q4.eu-west-1.es.amazonaws.com/  
 
   cache:
     jcache:

@@ -156,7 +156,7 @@ public class Validator {
 	 * @author manoj.bera
 	 * @param queryParams
 	 * @return
-	 */
+	 *//*
 	public static boolean validateProduct(Map<String, String> queryParams)
 	{
 		List<String> validParams = Arrays.asList("productId","productName");
@@ -164,16 +164,16 @@ public class Validator {
 		return validateParams(queryParams, validParams);
 	}
 	
-	/**
+	*//**
 	 * @author manoj.bera
 	 * @param queryParams
 	 * @return
-	 */
+	 *//*
 	public static boolean validateProductGroup(Map<String, String> queryParams)
 	{
 		List<String> validParams = Arrays.asList("groupType");
 		
 		return validateParams(queryParams, validParams);
-	}
+	}*/
 
 }
