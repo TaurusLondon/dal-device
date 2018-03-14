@@ -4307,7 +4307,14 @@ public class DeviceServiceImpl implements DeviceService {
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper.searchQueryForProductGroup(groupType);
 		SearchResponse groupResponse = deviceDao.getResponseFromDataSource(queryContextMap);
 		LogHelper.info(this, "converting elasticsearch response into standard json object response");
-		return response.getListOfGroupFromJson(groupResponse);
+		response.getListOfGroupFromJson(groupResponse);
+		List<Group>  listOfGroup = response.getListOfGroupFromJson(groupResponse);
+		if(CollectionUtils.isEmpty(listOfGroup))
+		{
+			LogHelper.error(this, ExceptionMessages.NULL_VALUE_GROUP_TYPE +" : " +groupType);
+			throw new ApplicationException(ExceptionMessages.NULL_VALUE_GROUP_TYPE);
+		}
+		return listOfGroup;
 	}
 	/**
 	 * 

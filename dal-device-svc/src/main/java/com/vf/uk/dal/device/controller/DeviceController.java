@@ -684,7 +684,7 @@ public class DeviceController {
         @ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
 	@RequestMapping(value = "/productGroup", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON })
 	public List<Group> getProductGroupByGroupType(
-			@ApiParam(value = "Product group Type for getting product group to displayed. possible value can be like DEVICE_PAYM or DEVICE_PAYG") @RequestParam(value = "groupType", required = false) String groupType) {
+			@NotNull@ApiParam(value = "Product group Type for getting product group to displayed. possible value can be like DEVICE_PAYM or DEVICE_PAYG") @RequestParam(value = "groupType", required = true) String groupType) {
 		List<Group> groupDetails = null;
 
 			if (StringUtils.isNotBlank(groupType)) {
