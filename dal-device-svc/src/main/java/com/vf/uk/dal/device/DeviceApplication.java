@@ -3,6 +3,7 @@ package com.vf.uk.dal.device;
 import java.util.concurrent.Executor;
 
 import org.elasticsearch.client.RestHighLevelClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +29,8 @@ public class DeviceApplication {
 	 * 
 	 * @param args
 	 */
+	@Autowired
+	ElasticsearchRestCient elasticsearchRestCient;
 	public static void main(String[] args) {
 		SpringApplication.run(DeviceApplication.class, args);
 	}
@@ -49,6 +52,6 @@ public class DeviceApplication {
 	
 	@Bean
 	public RestHighLevelClient getRestClientObject() {
-		return ElasticsearchRestCient.getClient();
+		return elasticsearchRestCient.getClient();
 	}
 }

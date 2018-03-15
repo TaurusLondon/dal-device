@@ -11,6 +11,8 @@ import java.util.Map;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.configuration.YAMLConfigurationSource;
 import com.vf.uk.dal.common.logger.LogHelper;
@@ -22,11 +24,14 @@ import com.vf.uk.dal.device.utils.Constants;
  * @author dharmapuri.veerabhad
  *
  */
+@Component
 public class ElasticsearchRestCient {
 
-	private static String vpcEndPoint = getYamlConfig().get(Constants.ELASTIC_SEARCH_HOST);
+	@Value("${elasticsearch.host}")
+	private String vpcEndPoint ;
+	//= getYamlConfig().get(Constants.ELASTIC_SEARCH_HOST);
 
-	private static RestHighLevelClient restClient;
+	private RestHighLevelClient restClient;
 	
 	/* Default constructor */
 	private ElasticsearchRestCient() {
@@ -37,7 +42,7 @@ public class ElasticsearchRestCient {
 	 *  creates rest client object
 	 * @return
 	 */
-	public static RestHighLevelClient getClient() {
+	public RestHighLevelClient getClient() {
 		if (restClient == null) {
 			restClient = createRestClient();
 			LogHelper.info(RestClient.class, "Rest client object created" );
@@ -49,7 +54,7 @@ public class ElasticsearchRestCient {
 	 * Closes active rest client object
 	 * @throws IOException
 	 */
-	public static void closeRestClient() throws IOException {
+	public void closeRestClient() throws IOException {
 		try {
 			restClient.close();
 			LogHelper.info(RestClient.class, "Rest client object closed" );
@@ -102,7 +107,7 @@ public class ElasticsearchRestCient {
 	 * Method to create Rest Client object
 	 * @return
 	 */
-	private static RestHighLevelClient createRestClient() {
+	private RestHighLevelClient createRestClient() {
 		try {
 			LogHelper.info(RestClient.class, "Rest client creation with VPC end point::" + vpcEndPoint);
 			InetAddress address = InetAddress.getByName(new URL(vpcEndPoint).getHost());
