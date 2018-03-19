@@ -570,8 +570,12 @@ public class DeviceServiceImpl implements DeviceService {
 					 operatingSystem, mustHaveFeatures, sortBy, sortOption,
 					 pageNumber, pageSize, journeyType);
 			List<FacetField> facetList=getProductGroupFacetModel(Constants.STRING_DEVICE_PAYG, journeyType);
-			productGroupFacetModelForFacets= new ProductGroupFacetModel();
-			productGroupFacetModelForFacets.setListOfFacetsFields(facetList);
+			productGroupFacetModelForFacets= null;
+			if(facetList!=null && CollectionUtils.isEmpty(facetList))
+			{
+				productGroupFacetModelForFacets=new ProductGroupFacetModel();
+				productGroupFacetModelForFacets.setListOfFacetsFields(facetList);
+			}
 			//productGroupFacetModelForFacets = deviceDao.getProductGroupsWithFacets(Filters.HANDSET_PAYG, journeyType);
 		} else if (groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYM)) {
 			productGroupFacetModel=getProductGroupFacetModel(Constants.STRING_DEVICE_PAYM, make, capacity, colour, 
@@ -581,8 +585,13 @@ public class DeviceServiceImpl implements DeviceService {
 					sortOption, pageNumber, pageSize, journeyType);*/
 			//productGroupFacetModelForFacets = deviceDao.getProductGroupsWithFacets(Filters.HANDSET, journeyType);
 			List<FacetField> facetList=getProductGroupFacetModel(Constants.STRING_DEVICE_PAYM, journeyType);
-			productGroupFacetModelForFacets= new ProductGroupFacetModel();
-			productGroupFacetModelForFacets.setListOfFacetsFields(facetList);
+			productGroupFacetModelForFacets= null;
+			if(facetList!=null && CollectionUtils.isEmpty(facetList))
+			{
+				productGroupFacetModelForFacets=new ProductGroupFacetModel();
+				productGroupFacetModelForFacets.setListOfFacetsFields(facetList);
+			}
+			
 		}
 		LogHelper.info(this, "Facets :"
 				+ (null != productGroupFacetModelForFacets ? productGroupFacetModelForFacets.getNumFound() : null));
@@ -819,8 +828,12 @@ public class DeviceServiceImpl implements DeviceService {
 					 operatingSystem, mustHaveFeatures, sortBy, sortOption,
 					 pageNumber, pageSize, journeyType);
 			List<FacetField> facetList=getProductGroupFacetModel(Constants.STRING_DEVICE_PAYG, journeyType);
-			productGroupFacetModelForFacets= new ProductGroupFacetModel();
-			productGroupFacetModelForFacets.setListOfFacetsFields(facetList);
+			productGroupFacetModelForFacets= null;
+			if(facetList!=null && CollectionUtils.isEmpty(facetList))
+			{
+				productGroupFacetModelForFacets=new ProductGroupFacetModel();
+				productGroupFacetModelForFacets.setListOfFacetsFields(facetList);
+			}
 			//productGroupFacetModelForFacets = deviceDao.getProductGroupsWithFacets(Filters.HANDSET_PAYG, journeyType);
 		} else {
 			/*productGroupFacetModel = deviceDao.getProductGroupsWithFacets(Filters.HANDSET, filterCriteria, sortBy,
@@ -829,8 +842,12 @@ public class DeviceServiceImpl implements DeviceService {
 					 operatingSystem, mustHaveFeatures, sortBy, sortOption,
 					 pageNumber, pageSize, journeyType);
 			List<FacetField> facetList=getProductGroupFacetModel(Constants.STRING_DEVICE_PAYM, journeyType);
-			productGroupFacetModelForFacets= new ProductGroupFacetModel();
-			productGroupFacetModelForFacets.setListOfFacetsFields(facetList);
+			productGroupFacetModelForFacets= null;
+			if(facetList!=null && CollectionUtils.isEmpty(facetList))
+			{
+				productGroupFacetModelForFacets=new ProductGroupFacetModel();
+				productGroupFacetModelForFacets.setListOfFacetsFields(facetList);
+			}
 			//productGroupFacetModelForFacets = deviceDao.getProductGroupsWithFacets(Filters.HANDSET, journeyType);
 
 		}
