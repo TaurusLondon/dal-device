@@ -12,7 +12,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.logger.LogHelper;
-import com.vf.uk.dal.device.datasource.conf.ElasticsearchRestCient;
 
 @Component
 public class BazaarVoiceCache {
