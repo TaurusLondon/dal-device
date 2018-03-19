@@ -1,5 +1,6 @@
 package com.vf.uk.dal.device.dao.impl;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -25,9 +26,13 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.http.entity.ContentType;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
+import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.client.Requests;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -60,23 +65,10 @@ import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.DaoUtils;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 import com.vf.uk.dal.device.utils.ResponseMappingHelper;
-import com.vf.uk.dal.device.utils.SolrConnectionProvider;
 import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 import com.vf.uk.dal.utility.entity.BundleDetails;
 import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
 import com.vf.uk.dal.utility.entity.CoupleRelation;
-import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
-import com.vodafone.business.service.RequestManager;
-import com.vodafone.common.Filters;
-import com.vodafone.solrmodels.BundleModel;
-import com.vodafone.solrmodels.MerchandisingPromotionModel;
-import com.vodafone.solrmodels.OfferAppliedPriceModel;
-import com.vodafone.solrmodels.ProductGroupFacetModel;
-import com.vodafone.solrmodels.ProductGroupModel;
-import com.vodafone.solrmodels.ProductModel;
-
-import uk.co.vodafone.business.IncrementalIndexManager;
-import uk.co.vodafone.customexceptions.SolrDeviceHotFixException;
 
 /**
  * 1.Implementation of DeviceDAO Interface 2.DeviceDaoImpl should make call to
@@ -109,8 +101,8 @@ public class DeviceDaoImpl implements DeviceDao {
 	 @Autowired
 	 ResponseMappingHelper response;
 	 
-	private RequestManager requestManager = null;
-	/*private CommercialProductRepository commercialProductRepository = null;
+	 /*private RequestManager requestManager = null;
+	private CommercialProductRepository commercialProductRepository = null;
 	private CommercialBundleRepository commercialBundleRepository = null;
 	private ProductGroupRepository productGroupRepository = null;
 	private MerchandisingPromotionRepository merchandisingPromotionRepository = null;
@@ -401,7 +393,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	 * @param memberId
 	 * @return
 	 */
-	public Boolean validateMemeber1(String memberId) {
+	/*public Boolean validateMemeber1(String memberId) {
 		Boolean memberFlag = false;
 		List<String> listOfProduct = new ArrayList<>();
 		listOfProduct.add(memberId);
@@ -438,7 +430,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		return memberFlag;
 
 	}
-
+*/
 	/**
 	 * calculation of price
 	 * 
@@ -943,7 +935,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		}
 	}*/
 
-	@Override
+	/*@Override
 	public List<OfferAppliedPriceModel> getBundleAndHardwarePriceFromSolr(List<String> deviceIds, String offerCode,
 			String journeyType) {
 
@@ -952,7 +944,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		LogHelper.info(this, "End --> End -->  After calling  getOfferAppliedPrices_Solr");
 
 		return list;
-	}
+	}*/
 
 	/*@Override
 	public Collection<CommercialProduct> getListCommercialProductRepositoryByLeadMemberId(List<String> leadMemberId) {
@@ -986,7 +978,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	/**
 	 * @author manoj.bera
 	 */
-	@Override
+	/*@Override
 	public void movePreCalcDataToSolr(List<DevicePreCalculatedData> preCalcPlanList) {
 		try {
 			String zookeeperHost = ConfigHelper.getString(Constants.ZOOKEEPER_HOST_STRING,
@@ -1006,12 +998,12 @@ public class DeviceDaoImpl implements DeviceDao {
 			LogHelper.info(this, "Not Able To Load Data In Solr : " + ex);
 			throw new ApplicationException(ExceptionMessages.SOLR_INDEXING_ERROR);
 		}
-	}
+	}*/
 
 	/**
 	 * 
 	 */
-	@Override
+	/*@Override
 	public ProductGroupFacetModel getProductGroupsWithFacets(Filters filterKey, String filterCriteria, String sortBy,
 			String sortOption, Integer pageNumber, Integer pageSize, String journeyType) {
 		ProductGroupFacetModel productGroupFacetModel = null;
@@ -1036,11 +1028,11 @@ public class DeviceDaoImpl implements DeviceDao {
 		}
 		return productGroupFacetModel;
 	}
-
+*/
 	/**
 	 * 
 	 */
-	@Override
+	/*@Override
 	public ProductGroupFacetModel getProductGroupsWithFacets(Filters filterKey, String journeyType) {
 		ProductGroupFacetModel productGroupFacetModel = null;
 		try {
@@ -1062,11 +1054,11 @@ public class DeviceDaoImpl implements DeviceDao {
 		}
 		return productGroupFacetModel;
 	}
-
+*/
 	/**
 	 * 
 	 */
-	@Override
+	/*@Override
 	public List<ProductModel> getProductModel(List<String> listOfProducts) {
 		List<ProductModel> productModel = null;
 		try {
@@ -1083,13 +1075,13 @@ public class DeviceDaoImpl implements DeviceDao {
 		}
 		return productModel;
 	}
-
+*/
 	/**
 	 * 
 	 * @param listOfLeadPlanId
 	 * @return
 	 */
-	@Override
+	/*@Override
 	public List<BundleModel> getBundleDetails(List<String> listOfLeadPlanId) {
 		List<BundleModel> bundleModel = null;
 		try {
@@ -1104,7 +1096,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		}
 		return bundleModel;
 	}
-
+*/
 	@Override
 	public List<BazaarVoice> getReviewRatingList(List<String> listMemberIds) {
 
@@ -1340,7 +1332,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		return commercialProducts;
 	}*/
 
-	@Override
+	/*@Override
 	public List<MerchandisingPromotionModel> getJourneyTypeCompatibleOfferCodes(String journeyType) {
 		List<MerchandisingPromotionModel> listOfMerchandisingPromotions = null;
 
@@ -1394,7 +1386,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		}
 
 		return listOfMerchandisingPromotions;
-	}
+	}*/
 
 	/**
 	 * @author aditya.oli Method to initialize requestManager if it is null.
@@ -1403,13 +1395,13 @@ public class DeviceDaoImpl implements DeviceDao {
 	 *         single object/connection for the entire session.
 	 * @return RequestManager
 	 */
-	@Override
+	/*@Override
 	public RequestManager getRequestManager() {
 		if (requestManager == null) {
 			requestManager = SolrConnectionProvider.getSolrConnection();
 		}
 		return requestManager;
-	}
+	}*/
 
 	/**
 	 * @author aditya.oli Method to initialize CommercialProductRepository if it
@@ -1599,11 +1591,11 @@ public class DeviceDaoImpl implements DeviceDao {
 	 *         Product Group Models.
 	 * @return List<ProductGroupModel>
 	 */
-	@Override
+	/*@Override
 	public List<ProductGroupModel> getListOfProductGroupsFromSolr() {
 		getRequestManager();
 		return requestManager.getProductGroups(Filters.HANDSET);
-	}
+	}*/
 
 	/**
 	 * @author aditya.oli This method returns the List of Group from Solr by
@@ -1642,11 +1634,11 @@ public class DeviceDaoImpl implements DeviceDao {
 	 *            listOfProduct
 	 * @return List<ProductModel>
 	 */
-	@Override
+	/*@Override
 	public List<ProductModel> getListOfProductModelFromSolr(List<String> listOfProduct) {
 		getRequestManager();
 		return requestManager.getProductModel(listOfProduct);
-	}
+	}*/
 
 	/**
 	 * @author aditya.oli This method is used to fetch the list of Offer Applied
@@ -1658,12 +1650,12 @@ public class DeviceDaoImpl implements DeviceDao {
 	 *            offerCode
 	 * @return List<OfferAppliedPriceModel>
 	 */
-	@Override
+	/*@Override
 	public List<OfferAppliedPriceModel> getListOfOfferAppliedPriceModelFromSolr(List<String> deviceIds,
 			String offerCode) {
 		getRequestManager();
 		return requestManager.getOfferAppliedPrices(deviceIds, offerCode);
-	}
+	}*/
 
 	/**
 	 * @author aditya.oli This method takes the filter key, filter criteria,
@@ -1685,13 +1677,13 @@ public class DeviceDaoImpl implements DeviceDao {
 	 *            pageSize
 	 * @return ProductGroupFacetModel
 	 */
-	@Override
+	/*@Override
 	public ProductGroupFacetModel getProductGroupFacetModelfromSolr(Filters filterKey, String filterCriteria,
 			String sortBy, String sortOption, Integer pageNumber, Integer pageSize) {
 		getRequestManager();
 		return requestManager.getProductGroupsWithFacets(filterKey, filterCriteria, sortBy, sortOption, pageNumber,
 				pageSize);
-	}
+	}*/
 
 	/**
 	 * @author aditya.oli This method takes the Filter key as parameter, sends
@@ -1701,11 +1693,11 @@ public class DeviceDaoImpl implements DeviceDao {
 	 *            filterKey
 	 * @return ProductGroupFacetModel
 	 */
-	@Override
+	/*@Override
 	public ProductGroupFacetModel getProductGroupFacetModelForFilterKeyfromSolr(Filters filterKey) {
 		getRequestManager();
 		return requestManager.getProductGroupsWithFacets(filterKey);
-	}
+	}*/
 
 	/**
 	 * @author aditya.oli This method takes a list of Strings as a request
@@ -1716,11 +1708,11 @@ public class DeviceDaoImpl implements DeviceDao {
 	 *            listOfLeadPlanId
 	 * @return List<BundleModel>
 	 */
-	@Override
+	/*@Override
 	public List<BundleModel> getBundleModelListFromSolr(List<String> listOfLeadPlanId) {
 		getRequestManager();
 		return requestManager.getBundleDetails(listOfLeadPlanId);
-	}
+	}*/
 
 	/**
 	 * @author aditya.oli This method retrieves the Group object from
@@ -1747,12 +1739,12 @@ public class DeviceDaoImpl implements DeviceDao {
 	 *            journeyType
 	 * @return List<MerchandisingPromotionModel>
 	 */
-	@Override
+	/*@Override
 	public List<MerchandisingPromotionModel> getListOfMerchandisingPromotionModelFromSolr(String groupType,
 			String journeyType) {
 		getRequestManager();
 		return requestManager.getMerchandisingPromotionsByProductLineAndPackageType(groupType, journeyType);
-	}
+	}*/
 
 	/*@Override
 	public List<CommercialBundle> fetchCommericalBundlesbyList(List<String> listOfBundleIds) {
@@ -1881,7 +1873,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		return response.getListOfMerchandisingPromotionFromJson(bundleResponse);
 	}
 	/**
-	 * 
+	 * @author manoj.bera
 	 * @param deviceId
 	 * @return
 	 */
@@ -1892,19 +1884,71 @@ public class DeviceDaoImpl implements DeviceDao {
 		LogHelper.info(this, "converting elasticsearch response into Commercial Product object response");
 		return response.getCommercialProduct(commercialProduct);
 	}
-	
+	/**
+	 * @author manoj.bera
+	 * @param groupType
+	 * @return
+	 */
 	public List<Group> getProductGroupByType(String groupType) {
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper.searchQueryForProductGroup(groupType);
 		SearchResponse groupResponse = getResponseFromDataSource(queryContextMap);
 		LogHelper.info(this, "converting elasticsearch response into standard json object response");
 		return response.getListOfGroupFromJson(groupResponse);
 	}
-	
+	/**
+	 * @author manoj.bera
+	 * @param bundleId
+	 * @return
+	 */
 	public CommercialBundle getCommercialBundle(String bundleId) {
 		SearchRequest queryContextMapForLeadPlanId = DeviceQueryBuilderHelper
 				.searchQueryForCommercialProductAndCommercialBundle(bundleId);
 		SearchResponse commercialBundleResponse = getResponseFromDataSource(queryContextMapForLeadPlanId);
 		LogHelper.info(this, "converting elasticsearch response into Commercial Bundle object response");
 		return response.getCommercialBundle(commercialBundleResponse);
+	}
+	/**
+	 * @author manoj.bera
+	 * @param id
+	 * @param data
+	 */
+	@Override
+	public void getUpdateElasticSearch(String id ,  String data) 
+	{
+		try {
+			UpdateRequest updateRequest = new UpdateRequest(Constants.DEFAULT_ENDPOINT_FOR_DENORMALIZED_INDEX, "models", id);
+			updateRequest.doc(data, XContentType.JSON);
+			restClient.update(updateRequest,new BasicHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString()));
+			
+			UpdateRequest updateRequestForNull = new UpdateRequest(Constants.DEFAULT_ENDPOINT_FOR_DENORMALIZED_INDEX, "models", id)
+			        .doc(org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder()
+			            .startObject()
+			            .field("id", id )
+			            .endObject());
+			restClient.update(updateRequestForNull);
+		} catch (IOException e) {
+			LogHelper.error(this, "::::::Exception From es ::::::" + e);
+		}
+	}
+	/**
+	 * @author manoj.bera
+	 * @param id
+	 * @param data
+	 */
+	@Override
+	public void getIndexElasticSearch(String id ,  String data) 
+	{
+		try {
+			IndexRequest updateRequestForILSPromo = Requests
+					.indexRequest(ConfigHelper.getString(Constants.ELASTIC_SEARCH_ENDPOINT_DENORMALISED_DATA,
+							Constants.DEFAULT_ENDPOINT_FOR_DENORMALIZED_INDEX));
+			updateRequestForILSPromo.type("models");
+			updateRequestForILSPromo.id(id);
+			updateRequestForILSPromo.source(data, XContentType.JSON);
+			restClient.index(updateRequestForILSPromo,
+					new BasicHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString()));
+		} catch (IOException e) {
+			LogHelper.error(this, "::::::Exception From es ::::::" + e);
+		}
 	}
 }

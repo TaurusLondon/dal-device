@@ -93,11 +93,11 @@ public class Constants {
 	public static final String STRING_DEFAULT_STOCKID = "VFWarehouse";
 	public static final String STRING_WAREHOUSE_ID = "WAREHOUSE_ID";
 	public static final String STRING_STOCK_STATUS = "In Stock";
-	public static final String STRING_EQUIPMENT_MAKE_COLON = "EquipmentMake:";
-	public static final String STRING_COLOUR_COLON = "FacetColour:";
-	public static final String STRING_CAPACITY_COLON = "Capacity:";
-	public static final String STRING_OPERATING_SYSTEM = "OperatingSystem:";
-	public static final String STRING_MUST_HAVE_FEATURES_WITH_COLON = "MustHaveFeatures:";
+	public static final String STRING_EQUIPMENT_MAKE_COLON = "equipmentMake";
+	public static final String STRING_COLOUR_COLON = "facetColour";
+	public static final String STRING_CAPACITY_COLON = "capacity";
+	public static final String STRING_OPERATING_SYSTEM = "operatingSystem";
+	public static final String STRING_MUST_HAVE_FEATURES_WITH_COLON = "mustHaveFeatures";
 	public static final String STRING_AND = " AND ";
 	public static final String STRING_FACET_COLOUR = "FacetColour";
 	public static final String STRING_FACET_CAPACITY = "Capacity";
@@ -227,7 +227,6 @@ public class Constants {
 	 */
 	public static final String PAYG_DEVICE="Mobile Phones";
 	
-	public static final String ELASTIC_SEARCH_HOST= "elasticsearch.host";
 	
 	public static final int DEFAULT_PORT = -1;
 	
@@ -269,9 +268,9 @@ public class Constants {
 	
 	public static final String ELASTIC_SEARCH_INDEX_SIZE="ELASTIC_SEARCH_INDEX_SIZE";
 	
-	public static final String BAZAAR_VOICE_PART1= "bazaarvoice.urlPart1";
+	/*public static final String BAZAAR_VOICE_PART1= "bazaarvoice.urlPart1";
 	
-	public static final String BAZAAR_VOICE_PART2= "bazaarvoice.urlPart2";
+	public static final String BAZAAR_VOICE_PART2= "bazaarvoice.urlPart2";*/
 	
 	// Regular Expression to identify list of ProductIds with comma separated.
 	public static final String NUMER_REG_EXP = "[0-9]{6}";
@@ -283,4 +282,31 @@ public class Constants {
 	public static final String ELASTIC_SEARCH_ENDPOINT_NORMALISED_DATA="ELASTIC_SEARCH_NORMALIZED_DATA_INDEX";
 	
 	public static final String ELASTIC_SEARCH_ENDPOINT_DENORMALISED_DATA="ELASTIC_SEARCH_DENORMALIZED_DATA_INDEX";
+	
+	public static final String STRING_PRODUCT_LINE="productLine";
+	
+	public static final String STRING_PACKAGE_TYPE="packageType";
+	
+	public static final String STRING_TYPE="type";
+	
+	public static final String STRING_UPGRADED_LEAD_DEVICE_ID="upgradeLeadDeviceId";
+	
+	public static final String STRING_NON_UPGRADED_LEAD_DEVICE_ID="nonUpgradeLeadDeviceId";
+	
+	public static final String STRING_PRODUCT_ID = "productId";
+	
+	public static final String STRING_BUNDLE_ID = "bundleId";
+	
+	public static final String STRING_OFFER_CODE = "offerCode";
+	
+	public static final String STRING_JOURNEY_TYPE = "journeyType";
+	
+	public static final String STRING_COLOUR_FOR_FACET = "colour";
+	
+	public static final String STRING_PRODUCT = "product";
+	
+	public static final String STRING_BUNDLE = "bundle";
+	
+	public static final String STRING_OFFER = "offer";
+	
 }

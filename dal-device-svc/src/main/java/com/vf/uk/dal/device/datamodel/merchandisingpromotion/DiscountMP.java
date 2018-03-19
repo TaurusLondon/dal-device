@@ -1,32 +1,20 @@
 package com.vf.uk.dal.device.datamodel.merchandisingpromotion;
 
-import com.tangosol.io.pof.annotation.Portable;
-import com.tangosol.io.pof.annotation.PortableProperty;
 
-@Portable
 public class DiscountMP {
-	/*
-	 * POF Index Numbers
-	 */
-	private static final int TYPE = 0;
-	private static final int VALUE = 1;
-	private static final int QUALIFYRECURRINGCOST = 2;
-	private static final int PRIORITY = 3;
 	
-	@PortableProperty(TYPE)
     protected String type;
-	@PortableProperty(VALUE)
+
     protected float value;
-	@PortableProperty(QUALIFYRECURRINGCOST)
+
     protected float qualifyingRecurringCost;
-	@PortableProperty(PRIORITY)
+
     protected Long priority;
 	
 	
 	
 	public DiscountMP() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public String getType() {
 		return type;

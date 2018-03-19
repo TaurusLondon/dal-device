@@ -41,7 +41,6 @@ import com.vf.uk.dal.device.entity.Specification;
 import com.vf.uk.dal.device.entity.SpecificationGroup;
 import com.vf.uk.dal.device.entity.StepPricingInfo;
 import com.vf.uk.dal.device.test.BeanTest;
-import com.vf.uk.dal.device.utils.CohAddressProvider;
 import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
@@ -99,7 +98,6 @@ public class EntityTest
  		BeanTest.test(Specification.class);
  		BeanTest.test(SpecificationGroup.class);
  		BeanTest.test(StepPricingInfo.class);
- 		BeanTest.test(CohAddressProvider.class);
  		BeanTest.test(Constants.class);
  		BeanTest.test(DeviceDaoImpl.class);
  		BeanTest.test(StockInfo.class);

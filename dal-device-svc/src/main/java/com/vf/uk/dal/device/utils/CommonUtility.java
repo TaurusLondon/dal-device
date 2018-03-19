@@ -397,8 +397,8 @@ public  class CommonUtility {
 		BundleAndHardwarePromotions[] response = null;
 		try {
 			
-			LogHelper.info(CommonUtility.class,"http://PROMOTION-V1/promotion/queries/ForBundleAndHardware------POST URL\n"+"PayLoad\n Start calling");
-			response = restTemplate.postForObject("http://PROMOTION-V1/promotion/queries/ForBundleAndHardware",
+			LogHelper.info(CommonUtility.class,"http://PROMOTION-V1/es/promotion/queries/ForBundleAndHardware------POST URL\n"+"PayLoad\n Start calling");
+			response = restTemplate.postForObject("http://PROMOTION-V1/es/promotion/queries/ForBundleAndHardware",
 					request, BundleAndHardwarePromotions[].class);
 		} catch (RestClientException e) {
 			// Stanley - Added error logging

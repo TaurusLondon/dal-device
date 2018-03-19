@@ -1,4 +1,4 @@
-package com.vf.uk.dal.device.utils;
+/*package com.vf.uk.dal.device.utils;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -9,9 +9,9 @@ import com.vf.uk.dal.common.beans.Environment;
 import com.vf.uk.dal.common.configuration.ConfigHelper;
 import com.vf.uk.dal.common.logger.LogHelper;
 
-/**
+*//**
  * Connection details to cohernece
- * **/
+ * **//*
 public class CohAddressProvider implements com.tangosol.net.AddressProvider {
 	@Autowired
 	Environment props;
@@ -55,4 +55,4 @@ public class CohAddressProvider implements com.tangosol.net.AddressProvider {
 
 		return addr;
 	}
-}
+}*/

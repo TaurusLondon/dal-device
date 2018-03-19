@@ -7,6 +7,7 @@ import java.net.URLConnection;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
@@ -16,11 +17,15 @@ import com.vf.uk.dal.device.datasource.conf.ElasticsearchRestCient;
 @Component
 public class BazaarVoiceCache {
 
+	@Value("${bazaarvoice.urlPart1}")
+	private String urlPart1 ;
+	
+	@Value("${bazaarvoice.urlPart2}")
+	private String urlPart2 ;
+	
     @Cacheable(value = "bazaarVoiceCache", key = "#deviceId")
     public String getBazaarVoiceReviews(String deviceId) {
     	LogHelper.info(this,new Date()+" Retrieving from BazaarVoice : " + deviceId);
-    	 String urlPart1 = ElasticsearchRestCient.getYamlConfig().get(Constants.BAZAAR_VOICE_PART1);
-    	 String urlPart2 = ElasticsearchRestCient.getYamlConfig().get(Constants.BAZAAR_VOICE_PART2);
         String jsonObject = null;
         URL connection;
 		URLConnection urlConn;

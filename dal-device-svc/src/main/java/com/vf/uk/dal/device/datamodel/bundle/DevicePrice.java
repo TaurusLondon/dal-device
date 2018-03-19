@@ -1,8 +1,6 @@
 
 package com.vf.uk.dal.device.datamodel.bundle;
 
-import com.tangosol.io.pof.annotation.Portable;
-import com.tangosol.io.pof.annotation.PortableProperty;
 
 
 public class DevicePrice {
@@ -22,7 +20,7 @@ public class DevicePrice {
 	
 	public DevicePrice() {
 		super();
-		// TODO Auto-generated constructor stub
+
 	}
 	public String getDeviceId() {
 		return deviceId;

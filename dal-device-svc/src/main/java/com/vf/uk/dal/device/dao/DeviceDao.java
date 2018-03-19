@@ -15,20 +15,6 @@ import com.vf.uk.dal.device.entity.DeviceTile;
 import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
 import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 import com.vf.uk.dal.utility.entity.BundleDetails;
-import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
-import com.vodafone.business.service.RequestManager;
-import com.vodafone.common.Filters;
-import com.vodafone.solrmodels.BundleModel;
-import com.vodafone.solrmodels.MerchandisingPromotionModel;
-import com.vodafone.solrmodels.OfferAppliedPriceModel;
-import com.vodafone.solrmodels.ProductGroupFacetModel;
-import com.vodafone.solrmodels.ProductGroupModel;
-import com.vodafone.solrmodels.ProductModel;
-
-// TODO: Auto-generated Javadoc
-/**
- * 1.DAO layer for coherence and solr.
- **/
 
 public interface DeviceDao {
 
@@ -119,7 +105,7 @@ public interface DeviceDao {
 	 * @param preCalcPlanList
 	 *            the pre calc plan list
 	 */
-	public void movePreCalcDataToSolr(List<DevicePreCalculatedData> preCalcPlanList);
+	//public void movePreCalcDataToSolr(List<DevicePreCalculatedData> preCalcPlanList);
 
 	/**
 	 * Gets the product groups with facets.
@@ -140,8 +126,8 @@ public interface DeviceDao {
 	 *            the journey type
 	 * @return the product groups with facets
 	 */
-	public ProductGroupFacetModel getProductGroupsWithFacets(Filters filterKey, String filterCriteria, String sortBy,
-			String sortOption, Integer pageNumber, Integer pageSize, String journeyType);
+	/*public ProductGroupFacetModel getProductGroupsWithFacets(Filters filterKey, String filterCriteria, String sortBy,
+			String sortOption, Integer pageNumber, Integer pageSize, String journeyType);*/
 
 	/**
 	 * Gets the product groups with facets.
@@ -152,7 +138,7 @@ public interface DeviceDao {
 	 *            the journey type
 	 * @return the product groups with facets
 	 */
-	public ProductGroupFacetModel getProductGroupsWithFacets(Filters filterKey, String journeyType);
+	//public ProductGroupFacetModel getProductGroupsWithFacets(Filters filterKey, String journeyType);
 
 	/**
 	 * Gets the product model.
@@ -161,7 +147,7 @@ public interface DeviceDao {
 	 *            the list of products
 	 * @return the product model
 	 */
-	public List<ProductModel> getProductModel(List<String> listOfProducts);
+	//public List<ProductModel> getProductModel(List<String> listOfProducts);
 
 	/**
 	 * Gets the bundle details.
@@ -170,7 +156,7 @@ public interface DeviceDao {
 	 *            the list of lead plan id
 	 * @return the bundle details
 	 */
-	public List<BundleModel> getBundleDetails(List<String> listOfLeadPlanId);
+	//public List<BundleModel> getBundleDetails(List<String> listOfLeadPlanId);
 
 	/**
 	 * Gets the review rating list.
@@ -251,8 +237,8 @@ public interface DeviceDao {
 	 *            the journey type
 	 * @return the bundle and hardware price from solr
 	 */
-	public List<OfferAppliedPriceModel> getBundleAndHardwarePriceFromSolr(List<String> deviceIds, String offerCode,
-			String journeyType);
+	/*public List<OfferAppliedPriceModel> getBundleAndHardwarePriceFromSolr(List<String> deviceIds, String offerCode,
+			String journeyType);*/
 
 	/**
 	 * Gets the group by prod group name.
@@ -282,7 +268,7 @@ public interface DeviceDao {
 	 * @return the journey type compatible offer codes
 	 */
 
-	public List<MerchandisingPromotionModel> getJourneyTypeCompatibleOfferCodes(String journeyType);
+	//public List<MerchandisingPromotionModel> getJourneyTypeCompatibleOfferCodes(String journeyType);
 
 	/**
 	 * Gets the journey type compatible offer codes.
@@ -293,14 +279,14 @@ public interface DeviceDao {
 	 *            the journey type
 	 * @return the journey type compatible offer codes
 	 */
-	public List<MerchandisingPromotionModel> getJourneyTypeCompatibleOfferCodes(String bundleClass, String journeyType);
+	//public List<MerchandisingPromotionModel> getJourneyTypeCompatibleOfferCodes(String bundleClass, String journeyType);
 
 	/**
 	 * Gets the request manager.
 	 *
 	 * @return the request manager
 	 */
-	public RequestManager getRequestManager();
+	//public RequestManager getRequestManager();
 
 	/**
 	 * Gets the commercial product repository.
@@ -371,7 +357,7 @@ public interface DeviceDao {
 	 *
 	 * @return the list of product groups from solr
 	 */
-	public List<ProductGroupModel> getListOfProductGroupsFromSolr();
+	//public List<ProductGroupModel> getListOfProductGroupsFromSolr();
 
 	/**
 	 * Gets the list of groups from product group repository.
@@ -399,7 +385,7 @@ public interface DeviceDao {
 	 *            the list of product
 	 * @return the list of product model from solr
 	 */
-	public List<ProductModel> getListOfProductModelFromSolr(List<String> listOfProduct);
+	//public List<ProductModel> getListOfProductModelFromSolr(List<String> listOfProduct);
 
 	/**
 	 * Gets the list of offer applied price model from solr.
@@ -410,8 +396,8 @@ public interface DeviceDao {
 	 *            the offer code
 	 * @return the list of offer applied price model from solr
 	 */
-	public List<OfferAppliedPriceModel> getListOfOfferAppliedPriceModelFromSolr(List<String> deviceIds,
-			String offerCode);
+	/*public List<OfferAppliedPriceModel> getListOfOfferAppliedPriceModelFromSolr(List<String> deviceIds,
+			String offerCode);*/
 
 	/**
 	 * Gets the product group facet modelfrom solr.
@@ -430,8 +416,8 @@ public interface DeviceDao {
 	 *            the page size
 	 * @return the product group facet modelfrom solr
 	 */
-	public ProductGroupFacetModel getProductGroupFacetModelfromSolr(Filters filterKey, String filterCriteria,
-			String sortBy, String sortOption, Integer pageNumber, Integer pageSize);
+	/*public ProductGroupFacetModel getProductGroupFacetModelfromSolr(Filters filterKey, String filterCriteria,
+			String sortBy, String sortOption, Integer pageNumber, Integer pageSize);*/
 
 	/**
 	 * Gets the product group facet model for filter keyfrom solr.
@@ -440,7 +426,7 @@ public interface DeviceDao {
 	 *            the filter key
 	 * @return the product group facet model for filter keyfrom solr
 	 */
-	public ProductGroupFacetModel getProductGroupFacetModelForFilterKeyfromSolr(Filters filterKey);
+	//public ProductGroupFacetModel getProductGroupFacetModelForFilterKeyfromSolr(Filters filterKey);
 
 	/**
 	 * Gets the bundle model list from solr.
@@ -449,7 +435,7 @@ public interface DeviceDao {
 	 *            the list of lead plan id
 	 * @return the bundle model list from solr
 	 */
-	public List<BundleModel> getBundleModelListFromSolr(List<String> listOfLeadPlanId);
+	//public List<BundleModel> getBundleModelListFromSolr(List<String> listOfLeadPlanId);
 
 	/**
 	 * Gets the group from product group repository.
@@ -480,8 +466,8 @@ public interface DeviceDao {
 	 *            the journey type
 	 * @return the list of merchandising promotion model from solr
 	 */
-	public List<MerchandisingPromotionModel> getListOfMerchandisingPromotionModelFromSolr(String groupType,
-			String journeyType);
+	/*public List<MerchandisingPromotionModel> getListOfMerchandisingPromotionModelFromSolr(String groupType,
+			String journeyType);*/
 
 	/**
 	 * Gets the list of commercial products from commercial product repository.
@@ -579,13 +565,20 @@ public interface DeviceDao {
 	
 	/**
 	 * 
-	 * @author manoj.bera
-	 * @param params
-	 * @param query
-	 * @param endPoint
+	 * @param searchRequest
 	 * @return
 	 */
-	//public Response getResponseFromDataSource(Map<String, String> params, String query);
-	
 	public SearchResponse getResponseFromDataSource(SearchRequest searchRequest);
+	/**
+	 * 
+	 * @param id
+	 * @param data
+	 */
+	public void getUpdateElasticSearch(String id ,  String data);
+	/**
+	 * 
+	 * @param id
+	 * @param data
+	 */
+	public void getIndexElasticSearch(String id ,  String data);
 }

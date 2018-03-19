@@ -1,10 +1,15 @@
 package com.vf.uk.dal.device.datamodel.product;
 
-import com.tangosol.io.pof.annotation.Portable;
-import com.tangosol.io.pof.annotation.PortableProperty;
 
-@Portable
 public class EligibleChannel {
+	
+	private String channelName;
+
+	private String startDate;
+
+	private String endDate;
+
+	
 	public String getChannelName() {
 		return channelName;
 	}
@@ -23,10 +28,5 @@ public class EligibleChannel {
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
-	@PortableProperty(0)
-	private String channelName;
-	@PortableProperty(1)
-	private String startDate;
-	@PortableProperty(2)
-	private String endDate;
-}
+
+	}

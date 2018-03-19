@@ -190,7 +190,6 @@ public class DeviceTileCacheDAO {
 		if (i.length > 0) {
 			result = 1;
 		}
-
 		return result;
 	}
 	/**
@@ -302,7 +301,6 @@ public class DeviceTileCacheDAO {
 		if (i.length > 0) {
 			result = 1;
 		}
-
 		return result;
 		}
 	

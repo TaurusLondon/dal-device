@@ -6,10 +6,17 @@ import java.util.List;
 import org.elasticsearch.action.search.SearchResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import com.vf.uk.dal.common.logger.LogHelper;
+import com.vf.uk.dal.device.datamodel.bundle.BundleModel;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
+import com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotionModel;
+import com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceModel;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
+import com.vf.uk.dal.device.datamodel.product.ProductModel;
+import com.vf.uk.dal.device.datamodel.productgroups.FacetField;
 import com.vf.uk.dal.device.datamodel.productgroups.Group;
+import com.vf.uk.dal.device.datamodel.productgroups.ProductGroupModel;
 
 @Component
 public class ResponseMappingHelper {
@@ -153,5 +160,107 @@ public class ResponseMappingHelper {
 		return obj;
 	
 	}
+	/**
+	 * 
+	 * @param response
+	 * @return
+	 */
+	public List<MerchandisingPromotionModel> getListOfMerchandisingPromotionModelFromJson(SearchResponse response) {
 
+		List<MerchandisingPromotionModel> merchandisingPromotionModelList = new ArrayList<>();
+		try {
+			merchandisingPromotionModelList=esUtils.getListOfObject(response, MerchandisingPromotionModel.class);
+			LogHelper.info(ResponseMappingHelper.class, "<---- Product group list: "+ merchandisingPromotionModelList.size() + "---->");
+		} catch (Exception e) {
+			LogHelper.error(ResponseMappingHelper.class, "::::::Exception occurred preparing List of product Group from ES response:::::: " + e);
+		}
+		return merchandisingPromotionModelList;
+	
+	}
+	/**
+	 * 
+	 * @param response
+	 * @return
+	 */
+	public List<ProductGroupModel> getListOfProductGroupModel(SearchResponse response) {
+
+		List<ProductGroupModel> productGroupModel = null;
+		try {
+			productGroupModel=esUtils.getListOfObject(response, ProductGroupModel.class);
+			LogHelper.info(ResponseMappingHelper.class, "<---- Product group Model ");
+		} catch (Exception e) {
+			LogHelper.error(ResponseMappingHelper.class, "::::::Exception occurred preparing List of product Group from ES response:::::: " + e);
+		}
+		return productGroupModel;
+	
+	}
+	/**
+	 * 
+	 * @param response
+	 * @return
+	 */
+	public List<ProductModel> getListOfProductModel(SearchResponse response) {
+
+		List<ProductModel> productModel = null;
+		try {
+			productModel=esUtils.getListOfObject(response, ProductModel.class);
+			LogHelper.info(ResponseMappingHelper.class, "<---- Product group Model ");
+		} catch (Exception e) {
+			LogHelper.error(ResponseMappingHelper.class, "::::::Exception occurred preparing List of product Group from ES response:::::: " + e);
+		}
+		return productModel;
+	
+	}
+	/**
+	 * 
+	 * @param response
+	 * @return
+	 */
+	public List<BundleModel> getListOfBundleModel(SearchResponse response) {
+
+		List<BundleModel> bundleModel = null;
+		try {
+			bundleModel=esUtils.getListOfObject(response, BundleModel.class);
+			LogHelper.info(ResponseMappingHelper.class, "<---- Product group Model ");
+		} catch (Exception e) {
+			LogHelper.error(ResponseMappingHelper.class, "::::::Exception occurred preparing List of product Group from ES response:::::: " + e);
+		}
+		return bundleModel;
+	
+	}
+	/**
+	 * 
+	 * @param response
+	 * @return
+	 */
+	public List<OfferAppliedPriceModel> getListOfOfferAppliedPriceModel(SearchResponse response) {
+
+		List<OfferAppliedPriceModel> offerAppliedPriceModel = null;
+		try {
+			offerAppliedPriceModel=esUtils.getListOfObject(response, OfferAppliedPriceModel.class);
+			LogHelper.info(ResponseMappingHelper.class, "<---- Product group Model ");
+		} catch (Exception e) {
+			LogHelper.error(ResponseMappingHelper.class, "::::::Exception occurred preparing List of product Group from ES response:::::: " + e);
+		}
+		return offerAppliedPriceModel;
+	
+	}
+	
+	/**
+	 * 
+	 * @param response
+	 * @return
+	 */
+	public List<FacetField> getFacetField(SearchResponse response) {
+
+		List<FacetField> facetField = null;
+		try {
+			facetField=esUtils.getListOfObjectForAggrs(response);
+			LogHelper.info(ResponseMappingHelper.class, "<---- Product group Model ");
+		} catch (Exception e) {
+			LogHelper.error(ResponseMappingHelper.class, "::::::Exception occurred preparing List of product Group from ES response:::::: " + e);
+		}
+		return facetField;
+	
+	}
 }

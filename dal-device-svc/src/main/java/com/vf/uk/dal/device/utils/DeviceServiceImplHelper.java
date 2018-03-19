@@ -7,15 +7,20 @@ import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.dao.DeviceDao;
+import com.vf.uk.dal.device.datamodel.bundle.BundleModel;
+import com.vf.uk.dal.device.datamodel.product.ProductModel;
+import com.vf.uk.dal.device.querybuilder.DeviceQueryBuilderHelper;
+import com.vf.uk.dal.device.svc.DeviceService;
 import com.vf.uk.dal.utility.entity.BundleDetails;
 import com.vf.uk.dal.utility.entity.BundleModelAndPrice;
-import com.vodafone.solrmodels.BundleModel;
-import com.vodafone.solrmodels.ProductModel;
+
 
 @Component
 public class DeviceServiceImplHelper {
@@ -23,15 +28,18 @@ public class DeviceServiceImplHelper {
 	@Autowired
 	DeviceDao deviceDao;
 	
-	/**
-	 * 
+	@Autowired
+	ResponseMappingHelper response;
+	/*
+	*//**
+	 * @author manoj.bera
 	 * @param make
 	 * @param capacity
 	 * @param colour
 	 * @param operatingSystem
 	 * @param mustHaveFeatures
 	 * @return
-	 */
+	 *//*
 	public String getFilterCriteria(String make, String capacity, String colour, String operatingSystem,
 			String mustHaveFeatures) {
 		String newCapacity;
@@ -78,7 +86,7 @@ public class DeviceServiceImplHelper {
 			}
 		}
 		return filterCriteria;
-	}
+	}*/
 	/**
 	 * 
 	 * @param filter
@@ -120,8 +128,9 @@ public class DeviceServiceImplHelper {
 	public BundleModelAndPrice calculatePlan(Float creditLimit, List<String> listOfProductsNew,
 			List<ProductModel> listOfProductModelNew) {
 		// get the compatible plans for lead device id/ device id
-		List<ProductModel> listOfProductModel = deviceDao.getProductModel(listOfProductsNew);
+		//List<ProductModel> listOfProductModel = deviceDao.getProductModel(listOfProductsNew);
 		
+		List<ProductModel> listOfProductModel = getListOfProductModel(listOfProductsNew);
 		BundleModelAndPrice bundleModelAndPrice = new BundleModelAndPrice();
 		
 		BundleModel bundleModel = null;
@@ -136,8 +145,8 @@ public class DeviceServiceImplHelper {
 			listOfLeadPlanIdNew.add(prodModel.getLeadPlanId());
 
 			// get the bundle details for new plan
-			List<BundleModel> listOfBundleDetails = deviceDao.getBundleDetails(listOfLeadPlanIdNew);
-			
+			//List<BundleModel> listOfBundleDetails = deviceDao.getBundleDetails(listOfLeadPlanIdNew);
+			List<BundleModel> listOfBundleDetails = getListOfBundleModel(listOfLeadPlanIdNew);
 			LogHelper.info(this, "List of bundle details  "+listOfBundleDetails);
 			if (listOfBundleDetails != null && !listOfBundleDetails.isEmpty()) {
 				bundleModel = listOfBundleDetails.get(0);
@@ -171,7 +180,8 @@ public class DeviceServiceImplHelper {
 						bundleModel = null;
 						listOfLeadPlanIdNew = new ArrayList<>();
 						listOfLeadPlanIdNew = prodModel.getListOfCompatibleBundles();
-						List<BundleModel> listOfBundleDetails1 = deviceDao.getBundleDetails(listOfLeadPlanIdNew);
+						//List<BundleModel> listOfBundleDetails1 = deviceDao.getBundleDetails(listOfLeadPlanIdNew);
+						List<BundleModel> listOfBundleDetails1 = getListOfBundleModel(listOfLeadPlanIdNew);;
 						// now get the lowest monthly plan for the bundle list
 						// and use this plan
 						bundleModelAndPrice = getLowestMontlyPrice(creditLimit, listOfBundleDetails1, bundleDetails, bundleModelAndPrice);
@@ -288,5 +298,31 @@ public class DeviceServiceImplHelper {
 		return deviceMap;
 
 	}
-
+	/**
+	 * 
+	 * @param bundleIds
+	 * @return
+	 */
+	public List<BundleModel> getListOfBundleModel(List<String> bundleIds) 
+	{
+		SearchRequest queryContextMap = DeviceQueryBuilderHelper.searchQueryForBundleModel(bundleIds);;
+		SearchResponse bundleModelResponse = deviceDao.getResponseFromDataSource(queryContextMap);
+		LogHelper.info(this, "converting elasticsearch response into standard json object response");
+		return response.getListOfBundleModel(bundleModelResponse);
+		
+	}
+	/**
+	 * 
+	 * @param deviceIds
+	 * @return
+	 */
+	public List<ProductModel> getListOfProductModel(List<String> deviceIds) 
+	{
+		SearchRequest queryContextMap = DeviceQueryBuilderHelper.searchQueryForProductModel(deviceIds);;
+		SearchResponse productModelResponse = deviceDao.getResponseFromDataSource(queryContextMap);
+		LogHelper.info(this, "converting elasticsearch response into standard json object response");
+		return response.getListOfProductModel(productModelResponse);
+		
+	}
+	
 }

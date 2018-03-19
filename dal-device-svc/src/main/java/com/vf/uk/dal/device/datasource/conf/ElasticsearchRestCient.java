@@ -5,8 +5,6 @@ import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
@@ -14,7 +12,6 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.vf.uk.dal.common.configuration.YAMLConfigurationSource;
 import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.utils.Constants;
 
@@ -69,7 +66,7 @@ public class ElasticsearchRestCient {
 	 * 
 	 * @return
 	 */
-	public static Map<String, String> getYamlConfig() {
+	/*public static Map<String, String> getYamlConfig() {
 		Map<String, String> configMap = new HashMap<>();
 		try {
 			YAMLConfigurationSource source = new YAMLConfigurationSource("application.yml");
@@ -84,7 +81,7 @@ public class ElasticsearchRestCient {
 		}
 		return configMap;
 
-	}
+	}*/
 
 	/**
 	 * Method to create Rest Client object

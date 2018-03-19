@@ -33,7 +33,9 @@ import com.vf.uk.dal.device.beans.test.DeviceTestBeans;
 import com.vf.uk.dal.device.common.test.CommonMethods;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
+import com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceModel;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
+import com.vf.uk.dal.device.datamodel.productgroups.ProductGroupFacetModel;
 import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
 import com.vf.uk.dal.device.entity.DeviceDetails;
@@ -52,7 +54,6 @@ import com.vf.uk.dal.device.utils.CommonUtility;
 import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.DaoUtils;
 import com.vf.uk.dal.device.utils.ResponseMappingHelper;
-import com.vf.uk.dal.device.utils.SolrConnectionProvider;
 import com.vf.uk.dal.device.validator.Validator;
 import com.vf.uk.dal.utility.entity.BundleDetails;
 import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
@@ -62,9 +63,6 @@ import com.vf.uk.dal.utility.entity.PriceForProduct;
 import com.vf.uk.dal.utility.entity.RecommendedProductListRequest;
 import com.vf.uk.dal.utility.entity.RecommendedProductListResponse;
 import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
-import com.vodafone.common.Filters;
-import com.vodafone.solrmodels.OfferAppliedPriceModel;
-import com.vodafone.solrmodels.ProductGroupFacetModel;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = DeviceTestBeans.class)
@@ -153,10 +151,11 @@ public class DeviceServiceImplTest
 				.willReturn(CommonMethods.getPriceForProduct_For_GetAccessoriesForDevice());
 		
 		
-		given(this.deviceDAOMock.getJourneyTypeCompatibleOfferCodes("journeyType")).willReturn(CommonMethods.getMerChandisingPromotion());
-		ProductGroupFacetModel productGroupFacetModel = CommonMethods.getProductGroupFacetModel();
-		productGroupFacetModel.setListOfProductGroups(CommonMethods.getListOfProductGroupModels());
-		given(this.deviceDAOMock.getProductGroupFacetModelfromSolr(Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any())).willReturn(productGroupFacetModel);
+		given(this.response.getListOfMerchandisingPromotionModelFromJson(Matchers.anyObject())).willReturn(CommonMethods.getMerChandisingPromotion());
+		//ProductGroupFacetModel productGroupFacetModel = CommonMethods.getProductGroupFacetModel();
+		//productGroupFacetModel.setListOfProductGroups(CommonMethods.getListOfProductGroupModels());
+		//this.deviceDAOMock.getProductGroupFacetModelfromSolr(Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any())
+		given(response.getListOfProductGroupModel(Matchers.anyObject())).willReturn(CommonMethods.getListOfProductGroupMode());
 		
 	}
 	/*@Test
@@ -834,7 +833,7 @@ public class DeviceServiceImplTest
 		{
 		}
 	}
-	
+	/*
 	@Test
 	public void testSolrMock()
 	{
@@ -857,7 +856,7 @@ public class DeviceServiceImplTest
 				
 			}
 		}
-	}
+	}*/
 	@Test
 	public void testGetDeviceListForErrors(){
 		 
@@ -1001,7 +1000,7 @@ public class DeviceServiceImplTest
 	@Test
 	public void testvalidateMemeber1()
 	{
-		given(this.deviceDAOMock.getProductModel(Matchers.anyList())).willReturn(CommonMethods.getProductModel());
+		given(this.response.getListOfProductModel(Matchers.anyObject())).willReturn(CommonMethods.getProductModel());
 		try
 		{
 			deviceService.validateMemeber1("12345","Upgrade");
@@ -1016,9 +1015,8 @@ public class DeviceServiceImplTest
 	{
 		ProductGroupFacetModel productGroupFacetModel = CommonMethods.getProductGroupFacetModel();
 		productGroupFacetModel.setListOfProductGroups(CommonMethods.getProductGroupModel());
-		given(this.deviceDAOMock.getProductGroupsWithFacets(Matchers.any(), Matchers.any(), Matchers.any(),
-				Matchers.any(), Matchers.any(), Matchers.any(),Matchers.any())).willReturn(productGroupFacetModel);
-		given(this.deviceDAOMock.getProductGroupsWithFacets(Matchers.any(),Matchers.anyString())).willReturn(CommonMethods.getProductGroupFacetModel1());
+		given(response.getListOfProductGroupModel(Matchers.anyObject())).willReturn(CommonMethods.getListOfProductGroupMode());
+		given(this.response.getFacetField(Matchers.anyObject())).willReturn(CommonMethods.getListOfFacetField());
 		try
 		{
 			deviceService.getDeviceListForConditionalAccept("HANDSET", "make", "model", "DEVICE_PAYM", "Order", 5, 6, "12", "red", "os", "somefeature", (float) 500.00,"");
@@ -1212,10 +1210,12 @@ public class DeviceServiceImplTest
 	}
 	@Test
 	public void nullTestForGetDeviceListForGroupTypeWithOutConditionalAcceptance() {
-		given(deviceDAOMock.getProductGroupsWithFacets(Matchers.any(), Matchers.any(), Matchers.any(),
-				Matchers.any(), Matchers.any(), Matchers.any(),Matchers.any())).willReturn(CommonMethods.getProductGroupFacetModel1());
-		given(deviceDAOMock.getProductGroupsWithFacets(Filters.HANDSET,"Upgrade")).willReturn(CommonMethods.getProductGroupFacetModel1());
-		given(deviceDAOMock.getProductModel(Matchers.anyList())).willReturn(CommonMethods.getProductModel());
+		/*given(deviceDAOMock.getProductGroupsWithFacets(Matchers.any(), Matchers.any(), Matchers.any(),
+				Matchers.any(), Matchers.any(), Matchers.any(),Matchers.any())).willReturn(CommonMethods.getProductGroupFacetModel1());*/
+		given(response.getListOfProductGroupModel(Matchers.anyObject())).willReturn(CommonMethods.getListOfProductGroupMode());
+		//given(deviceDAOMock.getProductGroupsWithFacets(Filters.HANDSET,"Upgrade")).willReturn(CommonMethods.getProductGroupFacetModel1());
+		given(response.getFacetField(Matchers.anyObject())).willReturn(CommonMethods.getListOfFacetField());
+		given(response.getListOfProductModel(Matchers.anyObject())).willReturn(CommonMethods.getProductModel());
 		
 		FacetedDevice deviceLists=null;
 		try{ 
@@ -1230,12 +1230,14 @@ public class DeviceServiceImplTest
 	}
 	@Test
 	public void nullTestForGetDeviceListForGroupTypeWithOutConditionalAcceptance1() {
-		given(deviceDAOMock.getProductGroupsWithFacets(Matchers.any(), Matchers.any(), Matchers.any(),
-				Matchers.any(), Matchers.any(), Matchers.any(),Matchers.any())).willReturn(CommonMethods.getProductGroupFacetModel1());
-		given(deviceDAOMock.getProductGroupsWithFacets(Filters.HANDSET,"SecondLine")).willReturn(CommonMethods.getProductGroupFacetModel1());
-		given(deviceDAOMock.getProductModel(Matchers.anyList())).willReturn(CommonMethods.getProductModel());
-		given(deviceDAOMock.getBundleAndHardwarePriceFromSolr(Matchers.anyList(),Matchers.anyString(),Matchers.anyString())).willReturn(CommonMethods.getOfferAppliedPriceModel());
-		given(this.deviceDAOMock.getJourneyTypeCompatibleOfferCodes("Upgrade")).willReturn(CommonMethods.getMerChandisingPromotion1());
+/*		given(deviceDAOMock.getProductGroupsWithFacets(Matchers.any(), Matchers.any(), Matchers.any(),
+				Matchers.any(), Matchers.any(), Matchers.any(),Matchers.any())).willReturn(CommonMethods.getProductGroupFacetModel1());*/
+		given(response.getListOfProductGroupModel(Matchers.anyObject())).willReturn(CommonMethods.getListOfProductGroupMode());
+		//given(deviceDAOMock.getProductGroupsWithFacets(Filters.HANDSET,"SecondLine")).willReturn(CommonMethods.getProductGroupFacetModel1());
+		given(response.getFacetField(Matchers.anyObject())).willReturn(CommonMethods.getListOfFacetField());
+		given(response.getListOfProductModel(Matchers.anyObject())).willReturn(CommonMethods.getProductModel());
+		given(response.getListOfOfferAppliedPriceModel(Matchers.anyObject())).willReturn(CommonMethods.getOfferAppliedPriceModel());
+		given(this.response.getListOfMerchandisingPromotionModelFromJson(Matchers.anyObject())).willReturn(CommonMethods.getMerChandisingPromotion1());
 		
 		
 		FacetedDevice deviceLists=null;
@@ -1251,14 +1253,14 @@ public class DeviceServiceImplTest
 	}
 	@Test(expected=Exception.class)
 	public void nullTestForGetDeviceListForExcption() {
-		given(this.deviceDAOMock.getJourneyTypeCompatibleOfferCodes("JourneyType")).willReturn(CommonMethods.getMerChandisingPromotion());
+		given(this.response.getListOfMerchandisingPromotionModelFromJson(Matchers.anyObject())).willReturn(CommonMethods.getMerChandisingPromotion());
 		deviceService.getDeviceList("Handset","apple", "iPhone 7", "DEVICE_PAYM",
 					"Priority", 0, 9,"32 GB","White","iOS","Great Camera","JourneyType",null,null, "447582367723", true);
 		
 	}
 	@Test(expected=Exception.class)
 	public void nullTestForGetDeviceListForExcption1() {
-		given(this.deviceDAOMock.getJourneyTypeCompatibleOfferCodes("Upgrade")).willReturn(CommonMethods.getMerChandisingPromotion());
+		given(this.response.getListOfMerchandisingPromotionModelFromJson(Matchers.anyObject())).willReturn(CommonMethods.getMerChandisingPromotion());
 		
 		deviceService.getDeviceList("Handset","apple", "iPhone 7", "DEVICE_PAYM",
 					"Priority", 0, 9,"32 GB","White","iOS","Great Camera","Upgrade",null,"offerCode", "447582367723", true);
@@ -1266,14 +1268,14 @@ public class DeviceServiceImplTest
 	}
 	@Test(expected=Exception.class)
 	public void nullTestForGetDeviceListForExcption3() {
-		given(this.deviceDAOMock.getJourneyTypeCompatibleOfferCodes("SecondLine")).willReturn(CommonMethods.getMerChandisingPromotion());
+		given(this.response.getListOfMerchandisingPromotionModelFromJson(Matchers.anyObject())).willReturn(CommonMethods.getMerChandisingPromotion());
 		deviceService.getDeviceList("Handset","apple", "iPhone 7", "DEVICE_PAYM",
 					"Priority", 0, 9,"32 GB","White","iOS","Great Camera","SecondLine",null,"offerCode", "447582367723", true);
 		
 	}
 	@Test(expected=Exception.class)
 	public void nullTestForGetDeviceListForExcption4() {
-		given(this.deviceDAOMock.getJourneyTypeCompatibleOfferCodes("SecondLine")).willReturn(CommonMethods.getMerChandisingPromotion());
+		given(this.response.getListOfMerchandisingPromotionModelFromJson(Matchers.anyObject())).willReturn(CommonMethods.getMerChandisingPromotion());
 		deviceService.getDeviceList("Handset","apple", "iPhone 7", "DEVICE_PAYM",
 					"Priority", 0, 9,"32 GB","White","iOS","Great Camera","SecondLine",null,"W_HH_PAYM_02", null, true);
 		
@@ -1319,5 +1321,11 @@ public class DeviceServiceImplTest
 		Validator.validateGetDeviceList(new HashMap());
 		Validator.validateJourneyType("acquisition");
 	}
-	
+
+	@Test
+	public void notNullTestForIndexPrecalData() {
+		List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.DevicePreCalculatedData> deviceListObjectList =
+				DaoUtils.convertDevicePreCalDataToSolrData(CommonMethods.getDevicePreCal());
+		deviceService.indexPrecalData(deviceListObjectList);
+	}
 }

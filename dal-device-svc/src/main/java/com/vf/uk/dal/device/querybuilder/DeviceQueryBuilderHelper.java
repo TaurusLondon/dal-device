@@ -1,15 +1,22 @@
 package com.vf.uk.dal.device.querybuilder;
 
+import java.util.Arrays;
 import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 
 import com.vf.uk.dal.common.configuration.ConfigHelper;
 import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.SingletonMapperUtility;
+
 
 public class DeviceQueryBuilderHelper {
 
@@ -20,6 +27,9 @@ public class DeviceQueryBuilderHelper {
 	private static SearchSourceBuilder searchRequestBuilder = SingletonMapperUtility.getSearchSourceBuilder();
 	private static SearchRequest searchRequest = new SearchRequest(ConfigHelper.getString(
 			Constants.ELASTIC_SEARCH_ENDPOINT_NORMALISED_DATA, Constants.DEFAULT_ENDPOINT_FOR_NORMALIZED_INDEX));
+	
+	private static SearchRequest searchRequestForSolr = new SearchRequest(ConfigHelper.getString(
+			Constants.ELASTIC_SEARCH_ENDPOINT_DENORMALISED_DATA,Constants.DEFAULT_ENDPOINT_FOR_DENORMALIZED_INDEX));
 
 	/**
 	 * 
@@ -262,6 +272,206 @@ public class DeviceQueryBuilderHelper {
 
 		}
 		return searchRequest;
+	}
+	/**
+	 * @author manoj.bera
+	 * @param listOfDeviceIds
+	 * @return
+	 */
+	public static SearchRequest searchQueryForMerchandisingPromotionModel(List<String> journeyType, String groupName) {
+		searchRequestBuilder.clearRescorers();
+		try {
+			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
+			SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+			searchSourceBuilder.from(from);
+			searchSourceBuilder.size(size);
+			BoolQueryBuilder qb = QueryBuilders.boolQuery();
+			qb.must(QueryBuilders.termQuery(Constants.STRING_PRODUCT_LINE+Constants.STRING_KEY_WORD, groupName));//.operator(Operator.AND)
+			qb.must(QueryBuilders.termsQuery(Constants.STRING_PACKAGE_TYPE+Constants.STRING_KEY_WORD, journeyType));
+			searchSourceBuilder.query(qb);
+			searchRequestForSolr.source(searchSourceBuilder);
+
+		} catch (Exception e) {
+			LogHelper.error(DeviceQueryBuilderHelper.class,
+					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
+
+		}
+		return searchRequestForSolr;
+	}
+	public static SearchRequest searchQueryForProductGroupModel(String groupType, String make,
+			String capacity, String colour, String operatingSystem,String mustHaveFeatures,String sortBy, 
+			String sortOption, Integer pageNumber, Integer pageSize, String journeyType) {
+		try {
+			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
+			SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+			searchSourceBuilder.from(pageNumber);
+			searchSourceBuilder.size(pageSize);
+			if (StringUtils.isNotEmpty(sortOption) && sortOption.equalsIgnoreCase(Constants.SORT_OPTION_ASC)) {
+				searchSourceBuilder.sort(sortBy.toLowerCase(), SortOrder.ASC);
+			} else if (StringUtils.isNotEmpty(sortOption) && sortOption.equalsIgnoreCase(Constants.SORT_OPTION_DESC)) {
+				searchSourceBuilder.sort(sortBy.toLowerCase(), SortOrder.DESC);
+			}
+			BoolQueryBuilder qb = getFilterCriteria(make, capacity, colour, operatingSystem,
+					mustHaveFeatures);
+			qb.must(QueryBuilders.termQuery(Constants.STRING_TYPE+Constants.STRING_KEY_WORD, groupType));
+			
+			if (Constants.STRING_UPGRADE.equalsIgnoreCase(journeyType)) {
+				qb.must(QueryBuilders.wildcardQuery(Constants.STRING_UPGRADED_LEAD_DEVICE_ID, "*"));
+			} else if ( StringUtils.isBlank(journeyType) || Constants.JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyType) || 
+					Constants.STRING_SECOND_LINE.equalsIgnoreCase(journeyType)) {
+				qb.must(QueryBuilders.wildcardQuery(Constants.STRING_NON_UPGRADED_LEAD_DEVICE_ID, "*"));
+			}
+			searchSourceBuilder.query(qb);
+			searchRequestForSolr.source(searchSourceBuilder);
+
+		} catch (Exception e) {
+			LogHelper.error(DeviceQueryBuilderHelper.class,
+					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
+
+		}
+		return searchRequestForSolr;
+	}
+	private static BoolQueryBuilder getFilterCriteria(String make, String capacity, String colour, String operatingSystem,
+			String mustHaveFeatures) {
+		BoolQueryBuilder qb = QueryBuilders.boolQuery();
+		if (StringUtils.isNotBlank(make)) {
+		qb.must(QueryBuilders.termsQuery(Constants.STRING_EQUIPMENT_MAKE_COLON+Constants.STRING_KEY_WORD,
+				Arrays.asList(make.split(","))));
+		}
+		if (capacity != null && !"\"\"".equals(capacity)) {
+			qb.must(QueryBuilders.termsQuery(Constants.STRING_CAPACITY_COLON+Constants.STRING_KEY_WORD,
+					Arrays.asList(capacity.split(","))));
+		}
+		if (colour != null && !"\"\"".equals(colour)) {
+			qb.must(QueryBuilders.termsQuery(Constants.STRING_COLOUR_COLON+Constants.STRING_KEY_WORD,
+					Arrays.asList(colour.split(","))));
+		}
+		if (operatingSystem != null && !"\"\"".equals(operatingSystem)) {
+			qb.must(QueryBuilders.termsQuery(Constants.STRING_OPERATING_SYSTEM+Constants.STRING_KEY_WORD,
+					Arrays.asList(operatingSystem.split(","))));
+		}
+		if (mustHaveFeatures != null && !"\"\"".equals(mustHaveFeatures)) {
+			qb.must(QueryBuilders.termsQuery(Constants.STRING_MUST_HAVE_FEATURES_WITH_COLON+Constants.STRING_KEY_WORD,
+					Arrays.asList(mustHaveFeatures.split(","))));
+		}
+		return qb;
+	}
+	public static SearchRequest searchQueryForFacetCount(String groupType , String journeyType)
+	{
+		try {
+			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
+			SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+			searchSourceBuilder.size(from);
+			BoolQueryBuilder qb = QueryBuilders.boolQuery();
+			qb.must(QueryBuilders.termQuery(Constants.STRING_TYPE+Constants.STRING_KEY_WORD, groupType));
+			if (Constants.STRING_UPGRADE.equalsIgnoreCase(journeyType)) {
+				qb.must(QueryBuilders.wildcardQuery(Constants.STRING_UPGRADED_LEAD_DEVICE_ID, "*"));
+			} else if ( StringUtils.isBlank(journeyType) || Constants.JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyType) || 
+					Constants.STRING_SECOND_LINE.equalsIgnoreCase(journeyType)) {
+				qb.must(QueryBuilders.wildcardQuery(Constants.STRING_NON_UPGRADED_LEAD_DEVICE_ID, "*"));
+			}
+			TermsAggregationBuilder  make=AggregationBuilders.terms(Constants.STRING_EQUIPMENT_MAKE_COLON).field(Constants.STRING_EQUIPMENT_MAKE_COLON+Constants.STRING_KEY_WORD);
+			TermsAggregationBuilder  capacity=AggregationBuilders.terms(Constants.STRING_CAPACITY_COLON).field(Constants.STRING_CAPACITY_COLON+Constants.STRING_KEY_WORD);
+			TermsAggregationBuilder  facetColour=AggregationBuilders.terms(Constants.STRING_COLOUR_COLON).field(Constants.STRING_COLOUR_COLON+Constants.STRING_KEY_WORD);
+			TermsAggregationBuilder  operatingSystem=AggregationBuilders.terms(Constants.STRING_OPERATING_SYSTEM).field(Constants.STRING_OPERATING_SYSTEM+Constants.STRING_KEY_WORD);
+			TermsAggregationBuilder  mustHaveFeatures=AggregationBuilders.terms(Constants.STRING_MUST_HAVE_FEATURES_WITH_COLON).field(Constants.STRING_MUST_HAVE_FEATURES_WITH_COLON+Constants.STRING_KEY_WORD);
+			TermsAggregationBuilder  colour=AggregationBuilders.terms(Constants.STRING_COLOUR_FOR_FACET).field(Constants.STRING_COLOUR_FOR_FACET+Constants.STRING_KEY_WORD);
+			searchSourceBuilder.aggregation(make);
+			searchSourceBuilder.aggregation(capacity);
+			searchSourceBuilder.aggregation(facetColour);
+			searchSourceBuilder.aggregation(operatingSystem);
+			searchSourceBuilder.aggregation(mustHaveFeatures);
+			searchSourceBuilder.aggregation(colour);
+			searchSourceBuilder.query(qb);
+			searchRequestForSolr.source(searchSourceBuilder);
+
+		} catch (Exception e) {
+			LogHelper.error(DeviceQueryBuilderHelper.class,
+					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
+
+		}
+		return searchRequestForSolr;
+	}
+	/**
+	 * @author manoj.bera
+	 * @param deviceIds
+	 * @return
+	 */
+	public static SearchRequest searchQueryForProductModel(List<String> deviceIds)
+	{
+		try {
+			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
+			SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+			searchSourceBuilder.from(from);
+			searchSourceBuilder.size(deviceIds.size());
+			BoolQueryBuilder qb = QueryBuilders.boolQuery();
+			qb.must(QueryBuilders.termsQuery(Constants.STRING_PRODUCT_ID+Constants.STRING_KEY_WORD, deviceIds));
+			qb.must(QueryBuilders.wildcardQuery(Constants.STRING_ID, Constants.STRING_PRODUCT+"*"));
+			searchSourceBuilder.query(qb);
+			searchRequestForSolr.source(searchSourceBuilder);
+
+		} catch (Exception e) {
+			LogHelper.error(DeviceQueryBuilderHelper.class,
+					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
+
+		}
+		return searchRequestForSolr;
+	}
+	/**
+	 * @author manoj.bera
+	 * @param bundleIds
+	 * @return
+	 */
+	public static SearchRequest searchQueryForBundleModel(List<String> bundleIds)
+	{
+		try {
+			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
+			SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+			searchSourceBuilder.from(from);
+			searchSourceBuilder.size(bundleIds.size());
+			BoolQueryBuilder qb = QueryBuilders.boolQuery();
+			qb.must(QueryBuilders.termsQuery(Constants.STRING_BUNDLE_ID+Constants.STRING_KEY_WORD, bundleIds));
+			qb.must(QueryBuilders.wildcardQuery(Constants.STRING_ID, Constants.STRING_BUNDLE+"*"));
+			searchSourceBuilder.query(qb);
+			searchRequestForSolr.source(searchSourceBuilder);
+
+		} catch (Exception e) {
+			LogHelper.error(DeviceQueryBuilderHelper.class,
+					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
+
+		}
+		return searchRequestForSolr;
+	}
+
+	/**
+	 * @author manoj.bera
+	 * @param deviceIds
+	 * @param journeyType
+	 * @param offerCode
+	 * @return
+	 */
+	public static SearchRequest searchQueryForOfferAppliedPriceModel(List<String> deviceIds , 
+			String journeyType, String offerCode)
+	{
+		try {
+			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
+			SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+			searchSourceBuilder.from(from);
+			searchSourceBuilder.size(size);
+			BoolQueryBuilder qb = QueryBuilders.boolQuery();
+			qb.must(QueryBuilders.termsQuery(Constants.STRING_PRODUCT_ID+Constants.STRING_KEY_WORD, deviceIds));
+			qb.must(QueryBuilders.termQuery(Constants.STRING_OFFER_CODE+Constants.STRING_KEY_WORD, offerCode));
+			qb.must(QueryBuilders.termQuery(Constants.STRING_JOURNEY_TYPE+Constants.STRING_KEY_WORD, journeyType));
+			qb.must(QueryBuilders.wildcardQuery(Constants.STRING_ID, Constants.STRING_OFFER+"*"));
+			searchSourceBuilder.query(qb);
+			searchRequestForSolr.source(searchSourceBuilder);
+
+		} catch (Exception e) {
+			LogHelper.error(DeviceQueryBuilderHelper.class,
+					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
+
+		}
+		return searchRequestForSolr;
 	}
 
 }

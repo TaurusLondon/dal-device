@@ -4,15 +4,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.aggregations.Aggregation;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vf.uk.dal.common.logger.LogHelper;
+import com.vf.uk.dal.device.datamodel.productgroups.Count;
+import com.vf.uk.dal.device.datamodel.productgroups.FacetField;
 
 @Component
 public class ElasticSearchUtils {
@@ -79,5 +84,31 @@ public class ElasticSearchUtils {
 		} catch (IOException e) {
 			LogHelper.error(ResponseMappingHelper.class, "::::::Exception occurred preparing Commercial Product list from ES response:::::: " + e);
 		}return null;
+	}
+	
+	public List<FacetField> getListOfObjectForAggrs(SearchResponse response)
+	{
+		List<FacetField> res=new ArrayList<>();
+		try {
+		Map<String, Aggregation> aggrsMap=response.getAggregations().getAsMap();
+		for (Map.Entry<String, Aggregation> entry : aggrsMap.entrySet()) {
+			FacetField facetFeild=new FacetField();
+			facetFeild.setName(entry.getKey());
+			Terms stringTerms = (Terms) entry.getValue();
+			List<Count> listOfCount = new ArrayList<>();
+			stringTerms.getBuckets().forEach(
+				      bucket -> {
+				    	  Count count=new Count();
+				    	  count.setCount(bucket.getDocCount());
+				    	  count.setName(bucket.getKey().toString());
+				    	  listOfCount.add(count);
+				      });
+			facetFeild.setValues(listOfCount);
+			res.add(facetFeild);
+		}
+		} catch (Exception e) {
+			LogHelper.error(ElasticSearchUtils.class, "Exception occured while executing thread pool :" + e);
+		}
+		return res;
 	}
 }

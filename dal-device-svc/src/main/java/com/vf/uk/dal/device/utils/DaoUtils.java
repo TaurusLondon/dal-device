@@ -12,15 +12,19 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.solr.client.solrj.response.FacetField;
-import org.apache.solr.client.solrj.response.FacetField.Count;
 
 import com.vf.uk.dal.common.configuration.ConfigHelper;
 import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.datamodel.bundle.Allowance;
+import com.vf.uk.dal.device.datamodel.bundle.BundleModel;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
+import com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceModel;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
 import com.vf.uk.dal.device.datamodel.product.ItemAttribute;
+import com.vf.uk.dal.device.datamodel.product.ProductModel;
+import com.vf.uk.dal.device.datamodel.productgroups.Count;
+import com.vf.uk.dal.device.datamodel.productgroups.FacetField;
+import com.vf.uk.dal.device.datamodel.productgroups.ProductGroupModel;
 import com.vf.uk.dal.device.entity.Accessory;
 import com.vf.uk.dal.device.entity.Attributes;
 import com.vf.uk.dal.device.entity.Device;
@@ -67,10 +71,6 @@ import com.vf.uk.dal.utility.solr.entity.MonthlyPrice;
 import com.vf.uk.dal.utility.solr.entity.OfferAppliedPriceDetails;
 import com.vf.uk.dal.utility.solr.entity.OneOffDiscountPrice;
 import com.vf.uk.dal.utility.solr.entity.OneOffPrice;
-import com.vodafone.solrmodels.BundleModel;
-import com.vodafone.solrmodels.OfferAppliedPriceModel;
-import com.vodafone.solrmodels.ProductGroupModel;
-import com.vodafone.solrmodels.ProductModel;
 
 /**
  * Mapping of coherence and solr entities to Device entities.
@@ -1945,10 +1945,10 @@ public class DaoUtils {
 	 * @param listOfMedia
 	 * @return
 	 */
-	public static List<com.vodafone.pojos.fromjson.device.Media> getListOfSolrMedia(List<Media> listOfMedia) {
-		List<com.vodafone.pojos.fromjson.device.Media> mediaList = new ArrayList<>();
+	public static List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.Media> getListOfSolrMedia(List<Media> listOfMedia) {
+		List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.Media> mediaList = new ArrayList<>();
 		listOfMedia.forEach(media -> {
-			com.vodafone.pojos.fromjson.device.Media mediaObject = new com.vodafone.pojos.fromjson.device.Media();
+			com.vf.uk.dal.device.datamodel.merchandisingpromotion.Media mediaObject = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.Media();
 
 			mediaObject.setId(media.getId());
 
@@ -1970,15 +1970,15 @@ public class DaoUtils {
 	 * @param offerAppliedPriceList
 	 * @return
 	 */
-	public static List<com.vodafone.pojos.fromjson.device.OfferAppliedPriceDetails> getListOfOfferAppliedPriceDetails(
+	public static List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceDetails> getListOfOfferAppliedPriceDetails(
 			List<OfferAppliedPriceDetails> offerAppliedPriceList) {
-		List<com.vodafone.pojos.fromjson.device.OfferAppliedPriceDetails> OfferAppliedListForSolr = new ArrayList<>();
+		List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceDetails> OfferAppliedListForSolr = new ArrayList<>();
 		for (OfferAppliedPriceDetails offerAppliedPrice : offerAppliedPriceList) {
-			com.vodafone.pojos.fromjson.device.OfferAppliedPriceDetails OfferAppliedPriceDetails = new com.vodafone.pojos.fromjson.device.OfferAppliedPriceDetails();
+			com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceDetails OfferAppliedPriceDetails = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceDetails();
 			com.vf.uk.dal.utility.solr.entity.BundlePrice bundlePrice1 = offerAppliedPrice.getBundlePrice();
-			com.vodafone.pojos.fromjson.device.BundlePrice bundlePrice = new com.vodafone.pojos.fromjson.device.BundlePrice();
+			com.vf.uk.dal.device.datamodel.merchandisingpromotion.BundlePrice bundlePrice = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.BundlePrice();
 
-			com.vodafone.pojos.fromjson.device.MonthlyPrice monthlyPrice = new com.vodafone.pojos.fromjson.device.MonthlyPrice();
+			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MonthlyPrice monthlyPrice = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.MonthlyPrice();
 
 			MonthlyPrice mnthlyPrice = bundlePrice1.getMonthlyPrice();
 
@@ -1990,7 +1990,7 @@ public class DaoUtils {
 				monthlyPrice.setVat(Float.valueOf(mnthlyPrice.getVat()));
 			}
 			bundlePrice.setMonthlyPrice(monthlyPrice);
-			com.vodafone.pojos.fromjson.device.MonthlyDiscountPrice monthlyDiscountPrice = new com.vodafone.pojos.fromjson.device.MonthlyDiscountPrice();
+			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MonthlyDiscountPrice monthlyDiscountPrice = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.MonthlyDiscountPrice();
 
 			MonthlyDiscountPrice mnthlydiscPrice = bundlePrice1.getMonthlyDiscountPrice();
 			if (mnthlydiscPrice != null && mnthlydiscPrice.getGross() != null) {
@@ -2004,11 +2004,11 @@ public class DaoUtils {
 			}
 			bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
 
-			com.vodafone.pojos.fromjson.device.HardwarePrice hardwarePrice = new com.vodafone.pojos.fromjson.device.HardwarePrice();
+			com.vf.uk.dal.device.datamodel.merchandisingpromotion.HardwarePrice hardwarePrice = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.HardwarePrice();
 
 			com.vf.uk.dal.utility.solr.entity.HardwarePrice hardwarePrice1 = offerAppliedPrice.getHardwarePrice();
 
-			com.vodafone.pojos.fromjson.device.OneOffPrice oneOffPrice = new com.vodafone.pojos.fromjson.device.OneOffPrice();
+			com.vf.uk.dal.device.datamodel.merchandisingpromotion.OneOffPrice oneOffPrice = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.OneOffPrice();
 
 			OneOffPrice oneOffPrice1 = hardwarePrice1.getOneOffPrice();
 
@@ -2021,7 +2021,7 @@ public class DaoUtils {
 			}
 			hardwarePrice.setOneOffPrice(oneOffPrice);
 
-			com.vodafone.pojos.fromjson.device.OneOffDiscountPrice oneOffDiscountPrice = new com.vodafone.pojos.fromjson.device.OneOffDiscountPrice();
+			com.vf.uk.dal.device.datamodel.merchandisingpromotion.OneOffDiscountPrice oneOffDiscountPrice = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.OneOffDiscountPrice();
 
 			OneOffDiscountPrice OneOffDiscountPrice1 = hardwarePrice1.getOneOffDiscountPrice();
 
@@ -2051,23 +2051,23 @@ public class DaoUtils {
 	 * @param priceInfo
 	 * @return
 	 */
-	public static com.vodafone.pojos.fromjson.device.PriceInfo getPriceForSolr(
+	public static com.vf.uk.dal.device.datamodel.merchandisingpromotion.PriceInfo getPriceForSolr(
 			com.vf.uk.dal.utility.solr.entity.PriceInfo priceInfo) {
-		com.vodafone.pojos.fromjson.device.PriceInfo priceInfoObject = new com.vodafone.pojos.fromjson.device.PriceInfo();
+		com.vf.uk.dal.device.datamodel.merchandisingpromotion.PriceInfo priceInfoObject = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.PriceInfo();
 
 		List<com.vf.uk.dal.utility.solr.entity.OfferAppliedPriceDetails> listOfOfferAppliedPriceDetails = priceInfo
 				.getOfferAppliedPrices();
-		List<com.vodafone.pojos.fromjson.device.OfferAppliedPriceDetails> listOfOfferAppliedPriceDetailsForSolr = null;
+		List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceDetails> listOfOfferAppliedPriceDetailsForSolr = null;
 		if (listOfOfferAppliedPriceDetails != null && !listOfOfferAppliedPriceDetails.isEmpty()) {
 			listOfOfferAppliedPriceDetailsForSolr = getListOfOfferAppliedPriceDetails(listOfOfferAppliedPriceDetails);
 		}
 
 		com.vf.uk.dal.utility.solr.entity.BundlePrice bundlePrice1 = priceInfo.getBundlePrice();
-		com.vodafone.pojos.fromjson.device.BundlePrice bundlePrice = new com.vodafone.pojos.fromjson.device.BundlePrice();
+		com.vf.uk.dal.device.datamodel.merchandisingpromotion.BundlePrice bundlePrice = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.BundlePrice();
 		if (bundlePrice1 != null) {
-			com.vodafone.pojos.fromjson.device.MonthlyPrice monthlyPrice = new com.vodafone.pojos.fromjson.device.MonthlyPrice();
+			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MonthlyPrice monthlyPrice = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.MonthlyPrice();
 
-			com.vodafone.pojos.fromjson.device.MonthlyDiscountPrice monthlyDiscountPrice = new com.vodafone.pojos.fromjson.device.MonthlyDiscountPrice();
+			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MonthlyDiscountPrice monthlyDiscountPrice = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.MonthlyDiscountPrice();
 
 			MonthlyPrice mnthlyPrice = bundlePrice1.getMonthlyPrice();
 
@@ -2091,11 +2091,11 @@ public class DaoUtils {
 			bundlePrice.setBundleId(bundlePrice1.getBundleId());
 			bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
 		}
-		com.vodafone.pojos.fromjson.device.HardwarePrice hardwarePrice = new com.vodafone.pojos.fromjson.device.HardwarePrice();
+		com.vf.uk.dal.device.datamodel.merchandisingpromotion.HardwarePrice hardwarePrice = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.HardwarePrice();
 
 		com.vf.uk.dal.utility.solr.entity.HardwarePrice hardwarePrice1 = priceInfo.getHardwarePrice();
 		if (hardwarePrice1 != null) {
-			com.vodafone.pojos.fromjson.device.OneOffPrice oneOffPrice = new com.vodafone.pojos.fromjson.device.OneOffPrice();
+			com.vf.uk.dal.device.datamodel.merchandisingpromotion.OneOffPrice oneOffPrice = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.OneOffPrice();
 
 			OneOffPrice oneOffPrice1 = hardwarePrice1.getOneOffPrice();
 
@@ -2108,7 +2108,7 @@ public class DaoUtils {
 			}
 			hardwarePrice.setOneOffPrice(oneOffPrice);
 
-			com.vodafone.pojos.fromjson.device.OneOffDiscountPrice oneOffDiscountPrice = new com.vodafone.pojos.fromjson.device.OneOffDiscountPrice();
+			com.vf.uk.dal.device.datamodel.merchandisingpromotion.OneOffDiscountPrice oneOffDiscountPrice = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.OneOffDiscountPrice();
 
 			OneOffDiscountPrice OneOffDiscountPrice1 = hardwarePrice1.getOneOffDiscountPrice();
 
@@ -2135,21 +2135,21 @@ public class DaoUtils {
 	 * @param preCalcPlanList
 	 * @return
 	 */
-	public static List<com.vodafone.pojos.fromjson.device.DevicePreCalculatedData> convertDevicePreCalDataToSolrData(
+	public static List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.DevicePreCalculatedData> convertDevicePreCalDataToSolrData(
 			List<DevicePreCalculatedData> preCalcPlanList) {
-		List<com.vodafone.pojos.fromjson.device.DevicePreCalculatedData> deviceListObjectList = new ArrayList<>();
+		List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.DevicePreCalculatedData> deviceListObjectList = new ArrayList<>();
 
 		preCalcPlanList.forEach(preCalList -> {
-			com.vodafone.pojos.fromjson.device.DevicePreCalculatedData deviceListObject = new com.vodafone.pojos.fromjson.device.DevicePreCalculatedData();
+			com.vf.uk.dal.device.datamodel.merchandisingpromotion.DevicePreCalculatedData deviceListObject = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.DevicePreCalculatedData();
 
-			List<com.vodafone.pojos.fromjson.device.Media> mediaList = null;
+			List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.Media> mediaList = null;
 			List<Media> listOfMedia = preCalList.getMedia();
 			if (listOfMedia != null && !listOfMedia.isEmpty()) {
 				mediaList = getListOfSolrMedia(listOfMedia);
 
 			}
 
-			com.vodafone.pojos.fromjson.device.PriceInfo priceInfoObject = null;
+			com.vf.uk.dal.device.datamodel.merchandisingpromotion.PriceInfo priceInfoObject = null;
 			if (preCalList.getPriceInfo() != null) {
 				priceInfoObject = getPriceForSolr(preCalList.getPriceInfo());
 			}
@@ -2425,7 +2425,8 @@ public class DaoUtils {
 												bundleDescription = mediaStrList[i + 1];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PRICEESTABLISH)) {
+													Constants.STRING_MEDIA_PRICEESTABLISH) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												bundlePriceEstablishedLabel = mediaStrList[i + 1];
 											}
 
@@ -2436,7 +2437,8 @@ public class DaoUtils {
 											bundleMerchecdising.setMpType(bundleMpType);
 											bundleMerchecdising.setPriceEstablishedLabel(bundlePriceEstablishedLabel);
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PROMOTION)) {
+													Constants.STRING_MEDIA_PROMOTION) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												promotionMedia = mediaStrList[i + 1];
 											}
 											if (StringUtils.isNotBlank(promotionMedia))
@@ -2460,7 +2462,8 @@ public class DaoUtils {
 												hardwareDescription = mediaStrList[i + 1];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PRICEESTABLISH)) {
+													Constants.STRING_MEDIA_PRICEESTABLISH)  && StringUtils.isNotBlank(mediaStrList[i + 1])
+													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePriceEstablishedLabel = mediaStrList[i + 1];
 											}
 											com.vf.uk.dal.device.entity.MerchandisingPromotion hardwareMerchecdising = new MerchandisingPromotion();
@@ -2471,7 +2474,8 @@ public class DaoUtils {
 											hardwareMerchecdising
 													.setPriceEstablishedLabel(hardwarePriceEstablishedLabel);
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PROMOTION)) {
+													Constants.STRING_MEDIA_PROMOTION) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePromotionMedia = mediaStrList[i + 1];
 											}
 											if (StringUtils.isNotBlank(promotionMedia))
@@ -2522,7 +2526,8 @@ public class DaoUtils {
 													bundleDescription = mediaStrList[i + 1];
 												}
 												if (StringUtils.containsIgnoreCase(mediaStrList[i],
-														Constants.STRING_MEDIA_PRICEESTABLISH)) {
+														Constants.STRING_MEDIA_PRICEESTABLISH) && StringUtils.isNotBlank(mediaStrList[i + 1])
+														&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 													bundlePriceEstablishedLabel = mediaStrList[i + 1];
 												}
 												com.vf.uk.dal.device.entity.MerchandisingPromotion bundleMerchecdising = new MerchandisingPromotion();
@@ -2534,7 +2539,8 @@ public class DaoUtils {
 														.setPriceEstablishedLabel(bundlePriceEstablishedLabel);
 												bundleMerchecdising.setTag(bundleTag);
 												if (StringUtils.containsIgnoreCase(mediaStrList[i],
-														Constants.STRING_MEDIA_PROMOTION)) {
+														Constants.STRING_MEDIA_PROMOTION) && StringUtils.isNotBlank(mediaStrList[i + 1])
+														&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 													promotionMedia = mediaStrList[i + 1];
 												}
 												if (StringUtils.isNotBlank(promotionMedia))
@@ -2558,7 +2564,8 @@ public class DaoUtils {
 													hardwareDescription = mediaStrList[i + 1];
 												}
 												if (StringUtils.containsIgnoreCase(mediaStrList[i],
-														Constants.STRING_MEDIA_PRICEESTABLISH)) {
+														Constants.STRING_MEDIA_PRICEESTABLISH) && StringUtils.isNotBlank(mediaStrList[i + 1])
+														&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 													hardwarePriceEstablishedLabel = mediaStrList[i + 1];
 												}
 												com.vf.uk.dal.device.entity.MerchandisingPromotion hardwareMerchecdising = new MerchandisingPromotion();
@@ -2570,7 +2577,8 @@ public class DaoUtils {
 														.setPriceEstablishedLabel(hardwarePriceEstablishedLabel);
 												hardwareMerchecdising.setTag(hardwareTag);
 												if (StringUtils.containsIgnoreCase(mediaStrList[i],
-														Constants.STRING_MEDIA_PROMOTION)) {
+														Constants.STRING_MEDIA_PROMOTION) && StringUtils.isNotBlank(mediaStrList[i + 1])
+														&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 													hardwarePromotionMedia = mediaStrList[i + 1];
 												}
 												if (StringUtils.isNotBlank(hardwarePromotionMedia))
@@ -2607,7 +2615,8 @@ public class DaoUtils {
 												bundleDescription = mediaStrList[i + 1];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PRICEESTABLISH)) {
+													Constants.STRING_MEDIA_PRICEESTABLISH) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												bundlePriceEstablishedLabel = mediaStrList[i + 1];
 											}
 											com.vf.uk.dal.device.entity.MerchandisingPromotion bundleMerchecdising = new MerchandisingPromotion();
@@ -2618,7 +2627,8 @@ public class DaoUtils {
 											bundleMerchecdising.setPriceEstablishedLabel(bundlePriceEstablishedLabel);
 											bundleMerchecdising.setTag(bundleTag);
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PROMOTION)) {
+													Constants.STRING_MEDIA_PROMOTION) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												promotionMedia = mediaStrList[i + 1];
 											}
 											if (StringUtils.isNotBlank(promotionMedia))
@@ -2641,7 +2651,8 @@ public class DaoUtils {
 												hardwareDescription = mediaStrList[i + 1];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PRICEESTABLISH)) {
+													Constants.STRING_MEDIA_PRICEESTABLISH) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePriceEstablishedLabel = mediaStrList[i + 1];
 											}
 											com.vf.uk.dal.device.entity.MerchandisingPromotion hardwareMerchecdising = new MerchandisingPromotion();
@@ -2653,7 +2664,8 @@ public class DaoUtils {
 													.setPriceEstablishedLabel(hardwarePriceEstablishedLabel);
 											hardwareMerchecdising.setTag(hardwareTag);
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PROMOTION)) {
+													Constants.STRING_MEDIA_PROMOTION) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePromotionMedia = mediaStrList[i + 1];
 											}
 											if (StringUtils.isNotBlank(hardwarePromotionMedia))
@@ -2690,7 +2702,8 @@ public class DaoUtils {
 												bundleDescription = mediaStrList[i + 1];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PRICEESTABLISH)) {
+													Constants.STRING_MEDIA_PRICEESTABLISH) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												bundlePriceEstablishedLabel = mediaStrList[i + 1];
 											}
 											com.vf.uk.dal.device.entity.MerchandisingPromotion bundleMerchecdising = new MerchandisingPromotion();
@@ -2701,7 +2714,8 @@ public class DaoUtils {
 											bundleMerchecdising.setPriceEstablishedLabel(bundlePriceEstablishedLabel);
 											bundleMerchecdising.setTag(bundleTag);
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PROMOTION)) {
+													Constants.STRING_MEDIA_PROMOTION) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												promotionMedia = mediaStrList[i + 1];
 											}
 											if (StringUtils.isNotBlank(promotionMedia))
@@ -2724,7 +2738,8 @@ public class DaoUtils {
 												hardwareDescription = mediaStrList[i + 1];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PRICEESTABLISH)) {
+													Constants.STRING_MEDIA_PRICEESTABLISH) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePriceEstablishedLabel = mediaStrList[i + 1];
 											}
 											com.vf.uk.dal.device.entity.MerchandisingPromotion hardwareMerchecdising = new MerchandisingPromotion();
@@ -2736,7 +2751,8 @@ public class DaoUtils {
 													.setPriceEstablishedLabel(hardwarePriceEstablishedLabel);
 											hardwareMerchecdising.setTag(hardwareTag);
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PROMOTION)) {
+													Constants.STRING_MEDIA_PROMOTION) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePromotionMedia = mediaStrList[i + 1];
 											}
 											if (StringUtils.isNotBlank(hardwarePromotionMedia))
@@ -2773,7 +2789,8 @@ public class DaoUtils {
 												bundleDescription = mediaStrList[i + 1];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PRICEESTABLISH)) {
+													Constants.STRING_MEDIA_PRICEESTABLISH) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												bundlePriceEstablishedLabel = mediaStrList[i + 1];
 											}
 											com.vf.uk.dal.device.entity.MerchandisingPromotion bundleMerchecdising = new MerchandisingPromotion();
@@ -2784,7 +2801,8 @@ public class DaoUtils {
 											bundleMerchecdising.setPriceEstablishedLabel(bundlePriceEstablishedLabel);
 											bundleMerchecdising.setTag(bundleTag);
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PROMOTION)) {
+													Constants.STRING_MEDIA_PROMOTION) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												promotionMedia = mediaStrList[i + 1];
 											}
 											if (StringUtils.isNotBlank(promotionMedia))
@@ -2807,7 +2825,8 @@ public class DaoUtils {
 												hardwareDescription = mediaStrList[i + 1];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PRICEESTABLISH)) {
+													Constants.STRING_MEDIA_PRICEESTABLISH) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePriceEstablishedLabel = mediaStrList[i + 1];
 											}
 											com.vf.uk.dal.device.entity.MerchandisingPromotion hardwareMerchecdising = new MerchandisingPromotion();
@@ -2819,7 +2838,8 @@ public class DaoUtils {
 													.setPriceEstablishedLabel(hardwarePriceEstablishedLabel);
 											hardwareMerchecdising.setTag(hardwareTag);
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PROMOTION)) {
+													Constants.STRING_MEDIA_PROMOTION) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePromotionMedia = mediaStrList[i + 1];
 											}
 											if (StringUtils.isNotBlank(hardwarePromotionMedia))
@@ -2857,12 +2877,14 @@ public class DaoUtils {
 												bundleDescription = mediaStrList[i + 1];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PRICEESTABLISH)) {
+													Constants.STRING_MEDIA_PRICEESTABLISH) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												bundlePriceEstablishedLabel = mediaStrList[i + 1];
 											}
 
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PROMOTION)) {
+													Constants.STRING_MEDIA_PROMOTION) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												promotionMedia = mediaStrList[i + 1];
 											}
 											com.vf.uk.dal.device.entity.MerchandisingPromotion bundleMerchecdising = new MerchandisingPromotion();
@@ -2892,11 +2914,13 @@ public class DaoUtils {
 												hardwareDescription = mediaStrList[i + 1];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PRICEESTABLISH)) {
+													Constants.STRING_MEDIA_PRICEESTABLISH) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePriceEstablishedLabel = mediaStrList[i + 1];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PROMOTION)) {
+													Constants.STRING_MEDIA_PROMOTION) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePromotionMedia = mediaStrList[i + 1];
 											}
 											com.vf.uk.dal.device.entity.MerchandisingPromotion hardwareMerchecdising = new MerchandisingPromotion();

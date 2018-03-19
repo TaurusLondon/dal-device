@@ -1,6 +1,6 @@
 package com.vf.uk.dal.utility.entity;
 
-import com.vodafone.solrmodels.BundleModel;
+import com.vf.uk.dal.device.datamodel.bundle.BundleModel;
 
 public class BundleModelAndPrice {
 	

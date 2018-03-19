@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.solr.client.solrj.response.FacetField;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.json.simple.JSONObject;
@@ -31,17 +30,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.common.registry.client.RegistryClient;
 import com.vf.uk.dal.device.dao.DeviceDao;
+import com.vf.uk.dal.device.datamodel.bundle.BundleModel;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
 import com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion;
+import com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotionModel;
+import com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceModel;
 import com.vf.uk.dal.device.datamodel.product.BazaarVoice;
+import com.vf.uk.dal.device.datamodel.product.CacheOfferAppliedPriceModel;
+import com.vf.uk.dal.device.datamodel.product.CacheProductModel;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
 import com.vf.uk.dal.device.datamodel.product.ProductGroups;
+import com.vf.uk.dal.device.datamodel.product.ProductModel;
+import com.vf.uk.dal.device.datamodel.productgroups.CacheProductGroupModel;
+import com.vf.uk.dal.device.datamodel.productgroups.FacetField;
 import com.vf.uk.dal.device.datamodel.productgroups.Group;
 import com.vf.uk.dal.device.datamodel.productgroups.Member;
+import com.vf.uk.dal.device.datamodel.productgroups.ProductGroupFacetModel;
+import com.vf.uk.dal.device.datamodel.productgroups.ProductGroupModel;
 import com.vf.uk.dal.device.entity.Accessory;
 import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
@@ -84,13 +94,6 @@ import com.vf.uk.dal.utility.entity.PriceForAccessory;
 import com.vf.uk.dal.utility.entity.PriceForProduct;
 import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
 import com.vf.uk.dal.utility.solr.entity.OfferAppliedPriceDetails;
-import com.vodafone.common.Filters;
-import com.vodafone.solrmodels.BundleModel;
-import com.vodafone.solrmodels.MerchandisingPromotionModel;
-import com.vodafone.solrmodels.OfferAppliedPriceModel;
-import com.vodafone.solrmodels.ProductGroupFacetModel;
-import com.vodafone.solrmodels.ProductGroupModel;
-import com.vodafone.solrmodels.ProductModel;
 
 /**
  * This class should implement all the methods of DeviceService and should
@@ -120,6 +123,7 @@ public class DeviceServiceImpl implements DeviceService {
 	@Autowired
 	DeviceRecommendationService deviceRecommendationService;
 
+	ObjectMapper mapper=new ObjectMapper();
 	@Override
 	public List<DeviceTile> getListOfDeviceTile(String make, String model, String groupType, String deviceId,
 			Double creditLimit, String journeyType, String offerCode, String bundleId) {
@@ -448,7 +452,8 @@ public class DeviceServiceImpl implements DeviceService {
 		listOfProduct.add(memberId);
 		Date startDateTime = null;
 		Date endDateTime = null;
-		List<ProductModel> productModel = deviceDao.getProductModel(listOfProduct);
+		//List<ProductModel> productModel = deviceDao.getProductModel(listOfProduct);
+		List<ProductModel> productModel = getListOfProductModel(listOfProduct);
 		if (productModel != null && !productModel.isEmpty()) {
 			for (ProductModel productModel2 : productModel) {
 				if (productModel2.getProductStartDate() != null) {
@@ -552,21 +557,32 @@ public class DeviceServiceImpl implements DeviceService {
 		ProductGroupFacetModel productGroupFacetModelForFacets = null;
 		String sortBy;
 		String sortOption;
-		String filterCriteria;
+		/*String filterCriteria;
 		filterCriteria = deviceHelper.getFilterCriteria(make, capacity, colour, operatingSystem, mustHaveFeatures);
-
+*/
 		List<String> criteriaOfSort = getSortCriteria(sortCriteria);
 		sortOption = criteriaOfSort.get(0);
 		sortBy = criteriaOfSort.get(1);
 		if (groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG)) {
-			productGroupFacetModel = deviceDao.getProductGroupsWithFacets(Filters.HANDSET_PAYG, filterCriteria, sortBy,
-					sortOption, pageNumber, pageSize, journeyType);
-			productGroupFacetModelForFacets = deviceDao.getProductGroupsWithFacets(Filters.HANDSET_PAYG, journeyType);
+			/*productGroupFacetModel = deviceDao.getProductGroupsWithFacets(Filters.HANDSET_PAYG, filterCriteria, sortBy,
+					sortOption, pageNumber, pageSize, journeyType);*/
+			productGroupFacetModel=getProductGroupFacetModel(Constants.STRING_DEVICE_PAYG, make, capacity, colour, 
+					 operatingSystem, mustHaveFeatures, sortBy, sortOption,
+					 pageNumber, pageSize, journeyType);
+			List<FacetField> facetList=getProductGroupFacetModel(Constants.STRING_DEVICE_PAYG, journeyType);
+			productGroupFacetModelForFacets= new ProductGroupFacetModel();
+			productGroupFacetModelForFacets.setListOfFacetsFields(facetList);
+			//productGroupFacetModelForFacets = deviceDao.getProductGroupsWithFacets(Filters.HANDSET_PAYG, journeyType);
 		} else if (groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYM)) {
-			productGroupFacetModel = deviceDao.getProductGroupsWithFacets(Filters.HANDSET, filterCriteria, sortBy,
-					sortOption, pageNumber, pageSize, journeyType);
-			productGroupFacetModelForFacets = deviceDao.getProductGroupsWithFacets(Filters.HANDSET, journeyType);
-
+			productGroupFacetModel=getProductGroupFacetModel(Constants.STRING_DEVICE_PAYM, make, capacity, colour, 
+					 operatingSystem, mustHaveFeatures, sortBy, sortOption,
+					 pageNumber, pageSize, journeyType);
+			/*productGroupFacetModel = deviceDao.getProductGroupsWithFacets(Filters.HANDSET, filterCriteria, sortBy,
+					sortOption, pageNumber, pageSize, journeyType);*/
+			//productGroupFacetModelForFacets = deviceDao.getProductGroupsWithFacets(Filters.HANDSET, journeyType);
+			List<FacetField> facetList=getProductGroupFacetModel(Constants.STRING_DEVICE_PAYM, journeyType);
+			productGroupFacetModelForFacets= new ProductGroupFacetModel();
+			productGroupFacetModelForFacets.setListOfFacetsFields(facetList);
 		}
 		LogHelper.info(this, "Facets :"
 				+ (null != productGroupFacetModelForFacets ? productGroupFacetModelForFacets.getNumFound() : null));
@@ -609,7 +625,8 @@ public class DeviceServiceImpl implements DeviceService {
 				throw new ApplicationException(ExceptionMessages.NO_LEAD_MEMBER_ID_COMING_FROM_SOLR);
 			}
 			LogHelper.error(this, "Lead DeviceId List Coming From Solr------------:  " + listOfProducts);
-			List<ProductModel> listOfProductModel = deviceDao.getProductModel(listOfProducts);
+			//List<ProductModel> listOfProductModel = deviceDao.getProductModel(listOfProducts);
+			List<ProductModel> listOfProductModel = getListOfProductModel(listOfProducts);
 			List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
 
 			Map<String, List<OfferAppliedPriceModel>> offerPriceMap = new HashMap<>();
@@ -662,13 +679,16 @@ public class DeviceServiceImpl implements DeviceService {
 									&& !StringUtils.equals(Constants.JOURNEY_TYPE_ACQUISITION, journeyType)) {
 						if (StringUtils.isNotBlank(offerCode)) {
 							List<MerchandisingPromotionModel> listOfMerchandisingPromotions = null;
-							listOfMerchandisingPromotions = deviceDao.getJourneyTypeCompatibleOfferCodes(journeyType);
+							//listOfMerchandisingPromotions = deviceDao.getJourneyTypeCompatibleOfferCodes(journeyType);
+							listOfMerchandisingPromotions=getListOfMerchandisingPromotionModel(Constants.OFFERCODE_PAYM, journeyType);
 							MerchandisingPromotionModel merchandisingPromotionModel = listOfMerchandisingPromotions
 									.stream().filter(promotionModel -> offerCode.equals(promotionModel.getTag()))
 									.findAny().orElse(null);
 							if (merchandisingPromotionModel != null) {
-								List<OfferAppliedPriceModel> listOfOfferAppliedPrice = deviceDao
-										.getBundleAndHardwarePriceFromSolr(listOfProducts, offerCode, journeyType);
+								/*List<OfferAppliedPriceModel> listOfOfferAppliedPrice = deviceDao
+										.getBundleAndHardwarePriceFromSolr(listOfProducts, offerCode, journeyType);*/
+								List<OfferAppliedPriceModel> listOfOfferAppliedPrice = 
+										getListOfOfferAppliedPriceModel(listOfProducts, journeyType, offerCode);
 								listOfOfferAppliedPrice.forEach(offers -> {
 									List<OfferAppliedPriceModel> offeredPrice;
 									if (offerPriceMap.containsKey(offers.getHardwareId())) {
@@ -681,9 +701,10 @@ public class DeviceServiceImpl implements DeviceService {
 								});
 							}
 						}
-						List<OfferAppliedPriceModel> listOfWithoutOfferAppliedPrice = deviceDao
+						/*List<OfferAppliedPriceModel> listOfWithoutOfferAppliedPrice = deviceDao
 								.getBundleAndHardwarePriceFromSolr(listOfProducts, Constants.DATA_NOT_FOUND,
-										journeyType);
+										journeyType);*/
+						List<OfferAppliedPriceModel> listOfWithoutOfferAppliedPrice = getListOfOfferAppliedPriceModel(listOfProducts, journeyType, Constants.DATA_NOT_FOUND);
 						listOfWithoutOfferAppliedPrice.forEach(offers -> {
 							List<OfferAppliedPriceModel> offeredPrice;
 							if (withoutOfferPriceMap.containsKey(offers.getHardwareId())) {
@@ -777,7 +798,7 @@ public class DeviceServiceImpl implements DeviceService {
 		ProductGroupFacetModel productGroupFacetModelForFacets;
 		String sortBy;
 		String sortOption;
-		String filterCriteria;
+	//	String filterCriteria;
 		List<CommercialProduct> ls = null;
 
 		// these three needs to be populated
@@ -786,19 +807,31 @@ public class DeviceServiceImpl implements DeviceService {
 		List<ProductModel> listOfProductModel = new ArrayList<>();
 		List<String> listOfProducts = new ArrayList<>();
 
-		filterCriteria = deviceHelper.getFilterCriteria(make, capacity, colour, operatingSystem, mustHaveFeatures);
+	//	filterCriteria = deviceHelper.getFilterCriteria(make, capacity, colour, operatingSystem, mustHaveFeatures);
 
 		List<String> criteriaOfSort = getSortCriteria(sortCriteria);
 		sortOption = criteriaOfSort.get(0);
 		sortBy = criteriaOfSort.get(1);
 		if (groupType.equals(Constants.STRING_DEVICE_PAYG)) {
-			productGroupFacetModel = deviceDao.getProductGroupsWithFacets(Filters.HANDSET_PAYG, filterCriteria, sortBy,
-					sortOption, pageNumber, pageSize, journeyType);
-			productGroupFacetModelForFacets = deviceDao.getProductGroupsWithFacets(Filters.HANDSET_PAYG, journeyType);
+			/*productGroupFacetModel = deviceDao.getProductGroupsWithFacets(Filters.HANDSET_PAYG, filterCriteria, sortBy,
+					sortOption, pageNumber, pageSize, journeyType);*/
+			productGroupFacetModel=getProductGroupFacetModel(Constants.STRING_DEVICE_PAYG, make, capacity, colour, 
+					 operatingSystem, mustHaveFeatures, sortBy, sortOption,
+					 pageNumber, pageSize, journeyType);
+			List<FacetField> facetList=getProductGroupFacetModel(Constants.STRING_DEVICE_PAYG, journeyType);
+			productGroupFacetModelForFacets= new ProductGroupFacetModel();
+			productGroupFacetModelForFacets.setListOfFacetsFields(facetList);
+			//productGroupFacetModelForFacets = deviceDao.getProductGroupsWithFacets(Filters.HANDSET_PAYG, journeyType);
 		} else {
-			productGroupFacetModel = deviceDao.getProductGroupsWithFacets(Filters.HANDSET, filterCriteria, sortBy,
-					sortOption, pageNumber, pageSize, journeyType);
-			productGroupFacetModelForFacets = deviceDao.getProductGroupsWithFacets(Filters.HANDSET, journeyType);
+			/*productGroupFacetModel = deviceDao.getProductGroupsWithFacets(Filters.HANDSET, filterCriteria, sortBy,
+					sortOption, pageNumber, pageSize, journeyType);*/
+			productGroupFacetModel=getProductGroupFacetModel(Constants.STRING_DEVICE_PAYM, make, capacity, colour, 
+					 operatingSystem, mustHaveFeatures, sortBy, sortOption,
+					 pageNumber, pageSize, journeyType);
+			List<FacetField> facetList=getProductGroupFacetModel(Constants.STRING_DEVICE_PAYM, journeyType);
+			productGroupFacetModelForFacets= new ProductGroupFacetModel();
+			productGroupFacetModelForFacets.setListOfFacetsFields(facetList);
+			//productGroupFacetModelForFacets = deviceDao.getProductGroupsWithFacets(Filters.HANDSET, journeyType);
 
 		}
 		LogHelper.info(this, "Facets :"
@@ -1208,7 +1241,10 @@ public class DeviceServiceImpl implements DeviceService {
 					}
 				});
 			}
-			deviceDao.movePreCalcDataToSolr(devicePreCalculatedData);
+			List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.DevicePreCalculatedData> deviceListObjectList = DaoUtils
+					.convertDevicePreCalDataToSolrData(devicePreCalculatedData);
+			indexPrecalData(deviceListObjectList);
+			//deviceDao.movePreCalcDataToSolr(devicePreCalculatedData);
 		} catch (Exception e) {
 			exceptionFlag = true;
 			LogHelper.error(this, jobId + "==>" + e);
@@ -1222,6 +1258,195 @@ public class DeviceServiceImpl implements DeviceService {
 			deviceTileCacheDAO.endTransaction();
 		}
 		return CompletableFuture.completedFuture(i);
+	}
+	@Override
+	public void indexPrecalData(List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.DevicePreCalculatedData> preCalcDataList) {
+		try {
+ 			Map<String , CacheProductGroupModel> productModelMap= new HashMap<>();
+			for (com.vf.uk.dal.device.datamodel.merchandisingpromotion.DevicePreCalculatedData deviceListObject : preCalcDataList) {
+				CacheProductModel productModel = new CacheProductModel();
+
+				String productId = "product_" + Integer.parseInt(deviceListObject.getDeviceId());
+				productModel.setId(productId);
+				productModel.setRating(deviceListObject.getRating());
+				productModel.setLeadPlanId(deviceListObject.getLeadPlanId());
+				productModel.setProductGroupName(deviceListObject.getProductGroupName());
+				productModel.setProductGroupId(deviceListObject.getProductGroupId());
+				productModel.setUpgradeLeadPlanId(deviceListObject.getUpgradeLeadPlanId());
+				productModel.setNonUpgradeLeadPlanId(deviceListObject.getNonUpgradeLeadPlanId());
+
+				// Loading hardware Price
+				if (deviceListObject.getPriceInfo() != null
+						&& deviceListObject.getPriceInfo().getHardwarePrice() != null
+						&& deviceListObject.getPriceInfo().getHardwarePrice().getOneOffPrice() != null) {
+					productModel.setOneOffGrossPrice(
+							deviceListObject.getPriceInfo().getHardwarePrice().getOneOffPrice().getGross());
+					productModel.setOneOffNetPrice(
+							deviceListObject.getPriceInfo().getHardwarePrice().getOneOffPrice().getNet());
+					productModel.setOneOffVatPrice(
+							deviceListObject.getPriceInfo().getHardwarePrice().getOneOffPrice().getVat());
+				}
+				if (deviceListObject.getPriceInfo() != null
+						&& deviceListObject.getPriceInfo().getHardwarePrice() != null
+						&& deviceListObject.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice() != null) {
+					productModel.setOneOffDiscountedGrossPrice(
+							deviceListObject.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice().getGross());
+					productModel.setOneOffDiscountedNetPrice(
+							deviceListObject.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice().getNet());
+					productModel.setOneOffDiscountedVatPrice(
+							deviceListObject.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice().getVat());
+				}
+				// Loading Bundle Price
+
+				if (deviceListObject.getPriceInfo() != null && deviceListObject.getPriceInfo().getBundlePrice() != null
+						&& deviceListObject.getPriceInfo().getBundlePrice().getMonthlyPrice() != null) {
+					productModel.setBundleMonthlyPriceGross(
+							deviceListObject.getPriceInfo().getBundlePrice().getMonthlyPrice().getGross());
+					productModel.setBundleMonthlyPriceNet(
+							deviceListObject.getPriceInfo().getBundlePrice().getMonthlyPrice().getNet());
+					productModel.setBundleMonthlyPriceVat(
+							deviceListObject.getPriceInfo().getBundlePrice().getMonthlyPrice().getVat());
+				}
+				if (deviceListObject.getPriceInfo() != null && deviceListObject.getPriceInfo().getBundlePrice() != null
+						&& deviceListObject.getPriceInfo().getBundlePrice().getMonthlyDiscountPrice() != null) {
+					productModel.setBundleMonthlyDiscPriceGross(
+							deviceListObject.getPriceInfo().getBundlePrice().getMonthlyDiscountPrice().getGross());
+					productModel.setBundleMonthlyDiscPriceNet(
+							deviceListObject.getPriceInfo().getBundlePrice().getMonthlyDiscountPrice().getNet());
+					productModel.setBundleMonthlyDiscPriceVat(
+							deviceListObject.getPriceInfo().getBundlePrice().getMonthlyDiscountPrice().getVat());
+				}
+				List<String> merchandisngList = new ArrayList<>();
+				if (deviceListObject.getMedia() != null && CollectionUtils.isNotEmpty(deviceListObject.getMedia())) {
+					for (com.vf.uk.dal.device.datamodel.merchandisingpromotion.Media mediaObject : deviceListObject.getMedia()) {
+						String media = mediaObject.getId() + "|" + mediaObject.getValue() + "|" + mediaObject.getType()
+								+ "|" + mediaObject.getPromoCategory() + "|" + mediaObject.getOfferCode() + "|"
+								+ mediaObject.getDescription() + "|" + mediaObject.getDiscountId();
+						merchandisngList.add(media);
+					}
+					productModel.setMerchandisingMedia(merchandisngList);
+				}
+				deviceDao.getUpdateElasticSearch(productId, mapper.writeValueAsString(productModel));
+
+				if (StringUtils.isNotBlank(deviceListObject.getProductGroupId())) {
+					String productGroupId = "productGroup_" + deviceListObject.getProductGroupId();
+					if (productModelMap.containsKey(productGroupId)) {
+						CacheProductGroupModel productgroupModel = productModelMap.get(productGroupId);
+						if (StringUtils.isNotBlank(deviceListObject.getLeadPlanId())) {
+							productgroupModel.setLeadPlanId(deviceListObject.getLeadPlanId());
+						}
+						if (deviceListObject.getMinimumCost() != null) {
+							if (productgroupModel.getMinimumCost() != null
+									&& deviceListObject.getMinimumCost() < productgroupModel.getMinimumCost()) {
+								productgroupModel.setMinimumCost(deviceListObject.getMinimumCost());
+							}
+						} else if (deviceListObject.getMinimumCost() != null
+								&& productgroupModel.getMinimumCost() == null) {
+							productgroupModel.setMinimumCost(deviceListObject.getMinimumCost());
+						}
+						if (StringUtils.isNotBlank(deviceListObject.getDeviceId())) {
+							productgroupModel.setLeadDeviceId(deviceListObject.getDeviceId());
+						}
+						productgroupModel.setRating(deviceListObject.getRating());
+
+						if (StringUtils.isNotBlank(deviceListObject.getUpgradeLeadDeviceId())) {
+							productgroupModel.setUpgradeLeadDeviceId(deviceListObject.getUpgradeLeadDeviceId());
+						}
+						if (StringUtils.isNotBlank(deviceListObject.getNonUpgradeLeadDeviceId())) {
+							productgroupModel.setNonUpgradeLeadDeviceId(deviceListObject.getNonUpgradeLeadDeviceId());
+						}
+						if (StringUtils.isNotBlank(deviceListObject.getUpgradeLeadPlanId())) {
+							productgroupModel.setUpgradeLeadPlanId(deviceListObject.getUpgradeLeadPlanId());
+						}
+						if (StringUtils.isNotBlank(deviceListObject.getNonUpgradeLeadPlanId())) {
+							productgroupModel.setNonUpgradeLeadPlanId(deviceListObject.getNonUpgradeLeadPlanId());
+						}
+						productModelMap.put(productGroupId, productgroupModel);
+					} else {
+						CacheProductGroupModel productgroupModel = new CacheProductGroupModel();
+						productgroupModel.setId(productGroupId);
+						productgroupModel.setLeadPlanId(deviceListObject.getLeadPlanId());
+						productgroupModel.setMinimumCost(deviceListObject.getMinimumCost());
+						productgroupModel.setLeadDeviceId(deviceListObject.getDeviceId());
+						productgroupModel.setRating(deviceListObject.getRating());
+						productgroupModel.setUpgradeLeadDeviceId(deviceListObject.getUpgradeLeadDeviceId());
+						productgroupModel.setNonUpgradeLeadDeviceId(deviceListObject.getNonUpgradeLeadDeviceId());
+						productgroupModel.setUpgradeLeadPlanId(deviceListObject.getUpgradeLeadPlanId());
+						productgroupModel.setNonUpgradeLeadPlanId(deviceListObject.getNonUpgradeLeadPlanId());
+						productModelMap.put(productGroupId, productgroupModel);
+					}
+				}
+				if (deviceListObject.getPriceInfo() != null) {
+					List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceDetails> offerAppliedPrice = deviceListObject
+							.getPriceInfo().getOfferAppliedPrices();
+					if (offerAppliedPrice != null && CollectionUtils.isEmpty(offerAppliedPrice)) {
+						for (com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceDetails offerAppliedPriceObject : offerAppliedPrice) {
+
+							CacheOfferAppliedPriceModel offerPrice = new CacheOfferAppliedPriceModel();
+							if (offerAppliedPriceObject.getBundlePrice() != null
+									&& offerAppliedPriceObject.getDeviceId() != null
+									&& offerAppliedPriceObject.getOfferCode() != null
+									&& offerAppliedPriceObject.getBundlePrice().getBundleId() != null) {
+								String id = "offerApplied_" + offerAppliedPriceObject.getDeviceId() + "_"
+										+ offerAppliedPriceObject.getOfferCode() + "_"
+										+ offerAppliedPriceObject.getBundlePrice().getBundleId() + "_"
+										+ offerAppliedPriceObject.getJourneyType();
+								offerPrice.setId(id);
+								offerPrice.setProductId(offerAppliedPriceObject.getDeviceId());
+								offerPrice.setOfferCode(offerAppliedPriceObject.getOfferCode());
+								offerPrice.setBundleId(offerAppliedPriceObject.getBundlePrice().getBundleId());
+								offerPrice.setJourneyType(offerAppliedPriceObject.getJourneyType());
+								com.vf.uk.dal.device.datamodel.merchandisingpromotion.MonthlyPrice monthlyPrice = offerAppliedPriceObject
+										.getBundlePrice().getMonthlyPrice();
+								com.vf.uk.dal.device.datamodel.merchandisingpromotion.MonthlyDiscountPrice monthlyDiscountPrice = offerAppliedPriceObject
+										.getBundlePrice().getMonthlyDiscountPrice();
+								if (monthlyPrice != null) {
+									offerPrice.setMonthlyGrossPrice(monthlyPrice.getGross());
+									offerPrice.setMonthlyNetPrice(monthlyPrice.getNet());
+									offerPrice.setMonthlyVatPrice(monthlyPrice.getVat());
+								}
+
+								if (monthlyDiscountPrice != null) {
+									offerPrice.setMonthlyDiscountedGrossPrice(monthlyDiscountPrice.getGross());
+									offerPrice.setMonthlyDiscountedNetPrice(monthlyDiscountPrice.getNet());
+									offerPrice.setMonthlyDiscountedVatPrice(monthlyDiscountPrice.getVat());
+								}
+
+								com.vf.uk.dal.device.datamodel.merchandisingpromotion.HardwarePrice hardwarePrice = offerAppliedPriceObject
+										.getHardwarePrice();
+								if (hardwarePrice != null) {
+									offerPrice.setHardwareId(hardwarePrice.getHardwareId());
+									com.vf.uk.dal.device.datamodel.merchandisingpromotion.OneOffPrice oneOffPrice = hardwarePrice
+											.getOneOffPrice();
+									com.vf.uk.dal.device.datamodel.merchandisingpromotion.OneOffDiscountPrice oneOffDiscountPrice = hardwarePrice
+											.getOneOffDiscountPrice();
+									if (oneOffPrice != null) {
+										offerPrice.setOneOffGrossPrice(oneOffPrice.getGross());
+										offerPrice.setOneOffNetPrice(oneOffPrice.getNet());
+										offerPrice.setOneOffVatPrice(oneOffPrice.getVat());
+									}
+
+									if (oneOffDiscountPrice != null) {
+										offerPrice.setOneOffDiscountedGrossPrice(oneOffDiscountPrice.getGross());
+										offerPrice.setOneOffDiscountedNetPrice(oneOffDiscountPrice.getNet());
+										offerPrice.setOneOffDiscountedVatPrice(oneOffDiscountPrice.getVat());
+
+									}
+								}
+								deviceDao.getIndexElasticSearch(id, mapper.writeValueAsString(offerPrice));
+							}
+						}
+					}
+				}
+			}
+			for (Map.Entry<String,CacheProductGroupModel> entry : productModelMap.entrySet()) {
+				deviceDao.getUpdateElasticSearch(entry.getKey(), mapper.writeValueAsString(entry.getValue()));
+			}
+			
+			
+		} catch (Exception e) {
+			LogHelper.error(this, "::::::Exception From es ::::::" + e);
+		}
 	}
 
 	/**
@@ -1246,9 +1471,10 @@ public class DeviceServiceImpl implements DeviceService {
 
 		Set<String> listOfOfferCodes = new HashSet<>();
 
-		List<MerchandisingPromotionModel> listOfMerchandisingPromotions = deviceDao.getJourneyTypeCompatibleOfferCodes(
-				Constants.OFFERCODE_PAYM, Constants.JOURNEY_TYPE_SECONDLINE_UPGRADE);
-
+		/*List<MerchandisingPromotionModel> listOfMerchandisingPromotions = deviceDao.getJourneyTypeCompatibleOfferCodes(
+				Constants.OFFERCODE_PAYM, Constants.JOURNEY_TYPE_SECONDLINE_UPGRADE);*/
+		List<MerchandisingPromotionModel> listOfMerchandisingPromotions =getListOfMerchandisingPromotionModel(Constants.OFFERCODE_PAYM, 
+				Constants.JOURNEY_TYPE_SECONDLINE_UPGRADE);
 		listOfMerchandisingPromotions.forEach(promotionModel -> {
 			if (StringUtils.isNotBlank(promotionModel.getTag())
 					&& promotionModel.getPackageType().contains(Constants.JOURNEY_TYPE_SECONDLINE)) {
@@ -4365,5 +4591,97 @@ public class DeviceServiceImpl implements DeviceService {
 			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID);
 		}
 		return getListOfCommercialProduct(listOfProdIdsOrNames);
+	}
+	/**
+	 * 
+	 * @param journeyType
+	 * @param groupType
+	 * @return
+	 */
+	public List<MerchandisingPromotionModel> getListOfMerchandisingPromotionModel(String groupType,String journeyType) 
+	{
+		List<String> journeyTypes= Arrays.asList(journeyType.split(","));
+		SearchRequest queryContextMap = DeviceQueryBuilderHelper
+				.searchQueryForMerchandisingPromotionModel(journeyTypes,groupType);
+		SearchResponse bundleResponse = deviceDao.getResponseFromDataSource(queryContextMap);
+		LogHelper.info(this, "converting elasticsearch response into standard json object response");
+		return response.getListOfMerchandisingPromotionModelFromJson(bundleResponse);
+	}
+	/**
+	 * 
+	 * @author manoj.bera
+	 * @param groupType
+	 * @param make
+	 * @param capacity
+	 * @param colour
+	 * @param operatingSystem
+	 * @param mustHaveFeatures
+	 * @param sortBy
+	 * @param sortOption
+	 * @param pageNumber
+	 * @param pageSize
+	 * @param journeyType
+	 * @return
+	 */
+	public ProductGroupFacetModel getProductGroupFacetModel(String groupType, String make,String capacity, String colour, 
+			String operatingSystem,String mustHaveFeatures,String sortBy, String sortOption,
+			Integer pageNumber, Integer pageSize, String journeyType) 
+	{
+		ProductGroupFacetModel productGroupFacetModel=new ProductGroupFacetModel();
+		SearchRequest queryContextMap = DeviceQueryBuilderHelper
+				.searchQueryForProductGroupModel(groupType, make, capacity, colour, 
+						operatingSystem, mustHaveFeatures, sortBy, sortOption,
+						pageNumber, pageSize,  journeyType);
+		SearchResponse bundleResponse = deviceDao.getResponseFromDataSource(queryContextMap);
+		LogHelper.info(this, "converting elasticsearch response into standard json object response");
+		List<ProductGroupModel> listOfProductGroups=response.getListOfProductGroupModel(bundleResponse);
+		productGroupFacetModel.setListOfProductGroups(listOfProductGroups);
+		productGroupFacetModel.setNumFound(Long.valueOf(listOfProductGroups.size()));
+		productGroupFacetModel.setListOfFacetsFields(null);
+		
+		return productGroupFacetModel;
+	}
+	/**
+	 * 
+	 * @param groupType
+	 * @param journeyType
+	 * @return
+	 */
+	public List<FacetField> getProductGroupFacetModel(String groupType, String journeyType) 
+	{
+		SearchRequest queryContextMap = DeviceQueryBuilderHelper.searchQueryForFacetCount(groupType , journeyType);;
+		SearchResponse bundleResponse = deviceDao.getResponseFromDataSource(queryContextMap);
+		LogHelper.info(this, "converting elasticsearch response into standard json object response");
+		return response.getFacetField(bundleResponse);		
+	}
+	/**
+	 * 
+	 * @param deviceIds
+	 * @return
+	 */
+	public List<ProductModel> getListOfProductModel(List<String> deviceIds) 
+	{
+		SearchRequest queryContextMap = DeviceQueryBuilderHelper.searchQueryForProductModel(deviceIds);;
+		SearchResponse productModelResponse = deviceDao.getResponseFromDataSource(queryContextMap);
+		LogHelper.info(this, "converting elasticsearch response into standard json object response");
+		return response.getListOfProductModel(productModelResponse);
+		
+	}
+	
+	/**
+	 * @author manoj.bera
+	 * @param deviceIds
+	 * @param journeyType
+	 * @param offerCode
+	 * @return
+	 */
+	public List<OfferAppliedPriceModel> getListOfOfferAppliedPriceModel(List<String> deviceIds, String journeyType, String offerCode) 
+	{
+		SearchRequest queryContextMap = DeviceQueryBuilderHelper.searchQueryForOfferAppliedPriceModel(deviceIds,
+				journeyType, offerCode);
+		SearchResponse bundleModelResponse = deviceDao.getResponseFromDataSource(queryContextMap);
+		LogHelper.info(this, "converting elasticsearch response into standard json object response");
+		return response.getListOfOfferAppliedPriceModel(bundleModelResponse);
+
 	}
 }

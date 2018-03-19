@@ -3,7 +3,6 @@ package com.vf.uk.dal.device.datamodel.product;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tangosol.io.pof.annotation.PortableProperty;
 
 public class CommercialProduct {
 
@@ -122,6 +121,8 @@ public class CommercialProduct {
 	protected String stockThresholdLimit;
 	
 	protected List<EligibleChannel> listOfEligibleChannels;
+	
+	protected String paymentType;
 	
 	public String getId() {
 		return id;
@@ -465,7 +466,6 @@ public class CommercialProduct {
 	public void setPaymentType(String paymentType) {
 		this.paymentType = paymentType;
 	}
-	@PortableProperty(56)
-	protected String paymentType;
+
 
 }

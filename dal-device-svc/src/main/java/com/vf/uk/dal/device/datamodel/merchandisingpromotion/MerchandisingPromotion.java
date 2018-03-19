@@ -3,6 +3,9 @@ package com.vf.uk.dal.device.datamodel.merchandisingpromotion;
 import java.sql.Timestamp;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
 
 public class MerchandisingPromotion {
 
@@ -33,6 +36,8 @@ public class MerchandisingPromotion {
 	
 	private String version;
 	
+	
+	@JsonProperty("condition1")
 	private Condition condition;
 	
 	private List<MerchandisingProduct> products;
@@ -206,13 +211,13 @@ public class MerchandisingPromotion {
 	}
 
 
-
+	//@JsonGetter{"condition"}
 	public Condition getCondition() {
 		return condition;
 	}
 
 
-
+	//@JsonSetter("condition1")
 	public void setCondition(Condition condition) {
 		this.condition = condition;
 	}

@@ -244,4 +244,9 @@ public interface DeviceService {
 	 */
 	public List<Group> getProductGroupByType(String groupType);
 	
+	/**
+	 * 
+	 * @param preCalcDataList
+	 */
+	public void indexPrecalData(List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.DevicePreCalculatedData> preCalcDataList);
 }
