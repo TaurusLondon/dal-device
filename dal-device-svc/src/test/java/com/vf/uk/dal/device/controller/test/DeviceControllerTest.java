@@ -1771,9 +1771,19 @@ public class DeviceControllerTest {
 	
 	@Test
 	public void notGetProductGroupModel(){
-		given(response.getListOfProductModel(Matchers.anyObject())).willReturn(CommonMethods.getProductModel());
-		given(response.getListOfProductGroupModel(Matchers.anyObject())).willReturn(CommonMethods.getProductGroupModelForDeliveryMethod());
-		Assert.assertNotNull(deviceController.getProductGroupModel("093353,092660"));
-		
+		try {
+			given(response.getListOfProductModel(Matchers.anyObject())).willReturn(CommonMethods.getProductModel());
+			given(response.getListOfProductGroupModel(Matchers.anyObject())).willReturn(CommonMethods.getProductGroupModelForDeliveryMethod());
+			Assert.assertNotNull(deviceController.getProductGroupModel("093353,092660"));
+		} catch (Exception e1) {
+		}
+		try{
+			deviceController.getProductGroupModel(null);	
+		}catch(Exception e){}
+		try{
+			given(response.getListOfProductModel(Matchers.anyObject())).willReturn(CommonMethods.getProductModel());
+			given(response.getListOfProductGroupModel(Matchers.anyObject())).willReturn(new ArrayList<>());
+			deviceController.getProductGroupModel("093353,092660");
+		}catch(Exception e){}
 	}
 }
