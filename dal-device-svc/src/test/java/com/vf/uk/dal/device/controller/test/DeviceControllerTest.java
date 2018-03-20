@@ -1768,4 +1768,12 @@ public class DeviceControllerTest {
 		Assert.assertNotNull(deviceController.getAccessoriesOfDevice("093353",null,null));
 	
 	}
+	
+	@Test
+	public void notGetProductGroupModel(){
+		given(response.getListOfProductModel(Matchers.anyObject())).willReturn(CommonMethods.getProductModel());
+		given(response.getListOfProductGroupModel(Matchers.anyObject())).willReturn(CommonMethods.getProductGroupModelForDeliveryMethod());
+		Assert.assertNotNull(deviceController.getProductGroupModel("093353,092660"));
+		
+	}
 }

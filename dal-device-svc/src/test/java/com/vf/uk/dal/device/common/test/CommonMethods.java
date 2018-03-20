@@ -200,7 +200,13 @@ public class CommonMethods {
 
 	public static List<ProductModel> getProductModel() {
 		List<ProductModel> productModelList = new ArrayList<>();
+		List<String> list = new ArrayList<>();
+		String productgroup="CompatibleDeliveryMethods_CnC_PremiumDelivery@Compatible Delivery";
+		String productgroup1="CompatibleDeliveryMethods_CnC_Delivery@Compatible Delivery";
+		list.add(productgroup);
+		list.add(productgroup1);
 		ProductModel model = new ProductModel();
+		model.setProductGroups(list);
 		model.setProductId("093353");
 		model.setPreDesc("preDesc");
 		model.setProductClass("HANDSET");
@@ -293,6 +299,7 @@ public class CommonMethods {
 		// List<String>
 
 		ProductModel model1 = new ProductModel();
+		model1.setProductGroups(list);
 		model1.setProductId("092660");
 		model1.setPreDesc("preDesc");
 		model1.setProductClass("HANDSET");
@@ -4281,5 +4288,30 @@ public class CommonMethods {
 		facetList.add(facet);
 		facetList.add(facet1);
 		return facetList;
+	}
+	
+	public static List<ProductGroupModel> getProductGroupModelForDeliveryMethod() {
+		List<ProductGroupModel> productGroupModelList = new ArrayList<ProductGroupModel>();
+		ProductGroupModel productGroupModel = new ProductGroupModel();
+		productGroupModel.setId("productGroup_1");
+		productGroupModel.setImageUrl("http://image.png");
+		List<String> variantsList = new ArrayList<String>();
+		variantsList.add("093353|1");
+		variantsList.add("092660|5");
+		productGroupModel.setListOfVariants(variantsList);
+		productGroupModel.setName("CompatibleDeliveryMethods_CnC_PremiumDelivery");
+		productGroupModel.setPriority(1);
+		productGroupModel.setType("Compatible Delivery");
+		
+		ProductGroupModel productGroupMode = new ProductGroupModel();
+		productGroupMode.setId("productGroup_2");
+		productGroupMode.setImageUrl("http://image.png");
+		productGroupMode.setListOfVariants(variantsList);
+		productGroupMode.setName("CompatibleDeliveryMethods_CnC_Delivery");
+		productGroupMode.setPriority(1);
+		productGroupMode.setType("Compatible Delivery");
+		productGroupModelList.add(productGroupMode);
+		productGroupModelList.add(productGroupModel);
+		return productGroupModelList;
 	}
 }

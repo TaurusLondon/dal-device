@@ -309,4 +309,8 @@ public class Constants {
 	
 	public static final String STRING_OFFER = "offer";
 	
+	public static final String COMPATIBLE_DELIVERY="Compatible Delivery";
+	
+	public static final String STRING_DISPLAY_NAME="displayName";
+	
 }

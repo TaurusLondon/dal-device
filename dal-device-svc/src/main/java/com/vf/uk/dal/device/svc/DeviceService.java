@@ -8,6 +8,7 @@ import org.json.simple.JSONObject;
 
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
 import com.vf.uk.dal.device.datamodel.productgroups.Group;
+import com.vf.uk.dal.device.datamodel.productgroups.ProductGroupModelMap;
 import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.entity.DeviceDetails;
@@ -249,4 +250,10 @@ public interface DeviceService {
 	 * @param preCalcDataList
 	 */
 	public void indexPrecalData(List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.DevicePreCalculatedData> preCalcDataList);
+	/**
+	 * 
+	 * @param deviceIds
+	 * @return
+	 */
+	public ProductGroupModelMap getMapOfProductModelForGetDeliveryMethod(String deviceIds);
 }

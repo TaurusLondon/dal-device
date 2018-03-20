@@ -29,6 +29,7 @@ import com.vf.uk.dal.common.urlparams.FilterCriteria;
 import com.vf.uk.dal.common.urlparams.PaginationCriteria;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
 import com.vf.uk.dal.device.datamodel.productgroups.Group;
+import com.vf.uk.dal.device.datamodel.productgroups.ProductGroupModelMap;
 import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.entity.DeviceDetails;
@@ -695,5 +696,40 @@ public class DeviceController {
 				throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
 			}
 		return groupDetails;
+	}
+	
+	/**
+	 * Handles requests to return the Map of Product Group Model from Product Catalog. It takes Product Id(s) as input.
+	 * This is an Entity API which will return Map of Product Group Model with applying small business logic.
+	 * 
+	 * @param productIds
+	 * 
+	 * @return Map of Product Group Model
+	 */
+	@ApiOperation(value = "Handles requests to return the Map of Product Group Model from Product Catalog. It takes Product Id(s) as input.", 
+			notes = "This is an Entity API which will return Map of Product Group Model with applying small business logic.",
+			response = ProductGroupModelMap.class, tags={ "ProductGroupModelMap" })
+    @ApiResponses(value = { 
+    		@ApiResponse(code = 200, message = "Success", response = ProductGroupModelMap.class),
+        @ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
+		@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
+        @ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
+        @ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
+	@RequestMapping(value = "/device/getDeliveryMethod/getProductGroupModel", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON })
+	public ProductGroupModelMap getProductGroupModel(
+			@ApiParam(value = "Device Id for getting product Group to displayed. possible value can be comma separated device Id like 093353,080004") @RequestParam(value = "productId", required = false) String productId)
+	{
+		ProductGroupModelMap productGroupModelDetails = null;
+
+			
+			if (StringUtils.isBlank(productId)) {
+				LogHelper.error(this, "Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
+				throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
+			} else {
+				LogHelper.info(this, "Get the list of Product Details for the Product Id (s) passed as request params: " + productId);
+				productGroupModelDetails = deviceService.getMapOfProductModelForGetDeliveryMethod(productId);
+			}
+		
+		return productGroupModelDetails;
 	}
 }

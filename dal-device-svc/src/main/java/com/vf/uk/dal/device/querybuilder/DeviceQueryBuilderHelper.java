@@ -2,6 +2,7 @@ package com.vf.uk.dal.device.querybuilder;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.action.search.SearchRequest;
@@ -473,5 +474,29 @@ public class DeviceQueryBuilderHelper {
 		}
 		return searchRequestForSolr;
 	}
+	/**
+	 * 
+	 * @param displayNames
+	 * @param groupType
+	 * @return
+	 */
+	public static SearchRequest searchQueryForProductGroupModelForDeliverMethod(Set<String> displayNames, String groupType) {
+		try {
+			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
+			SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+			searchSourceBuilder.from(from);
+			searchSourceBuilder.size(displayNames.size());
+			BoolQueryBuilder qb = QueryBuilders.boolQuery();
+			qb.must(QueryBuilders.termQuery(Constants.STRING_TYPE+Constants.STRING_KEY_WORD, groupType));
+			qb.must(QueryBuilders.termsQuery(Constants.STRING_DISPLAY_NAME+Constants.STRING_KEY_WORD, displayNames));
+			searchSourceBuilder.query(qb);
+			searchRequestForSolr.source(searchSourceBuilder);
 
+		} catch (Exception e) {
+			LogHelper.error(DeviceQueryBuilderHelper.class,
+					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
+
+		}
+		return searchRequestForSolr;
+	}
 }

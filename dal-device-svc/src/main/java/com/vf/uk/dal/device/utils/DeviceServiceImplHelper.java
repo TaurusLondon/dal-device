@@ -16,8 +16,8 @@ import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.datamodel.bundle.BundleModel;
 import com.vf.uk.dal.device.datamodel.product.ProductModel;
+import com.vf.uk.dal.device.datamodel.productgroups.ProductGroupModel;
 import com.vf.uk.dal.device.querybuilder.DeviceQueryBuilderHelper;
-import com.vf.uk.dal.device.svc.DeviceService;
 import com.vf.uk.dal.utility.entity.BundleDetails;
 import com.vf.uk.dal.utility.entity.BundleModelAndPrice;
 
@@ -287,7 +287,7 @@ public class DeviceServiceImplHelper {
 	}
 
 	public Map<String, String> getLeadDeviceMap(List<String> listOfProductVariants) {
-		Map<String, String> deviceMap = new HashMap<String, String>();
+		Map<String, String> deviceMap = new HashMap<>();
 
 		for (String id : listOfProductVariants) {
 			if (id.indexOf('|') != -1) {
@@ -324,5 +324,4 @@ public class DeviceServiceImplHelper {
 		return response.getListOfProductModel(productModelResponse);
 		
 	}
-	
 }
