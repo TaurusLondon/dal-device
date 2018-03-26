@@ -67,9 +67,9 @@ public class CommercialProduct {
 	protected String eligibilitySubflow;
 
 	protected List<Allowance> allowanceDisplay;
-	@JsonIgnore
+	
 	protected boolean ageRestricted;
-	@JsonIgnore
+	
 	protected Delivery delivery;
 
 	protected boolean isBattery;
