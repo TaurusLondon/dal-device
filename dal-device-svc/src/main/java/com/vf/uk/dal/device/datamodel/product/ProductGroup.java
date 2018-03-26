@@ -7,12 +7,11 @@ public class ProductGroup {
 	  
     private String productGroupName;
 	 
-    private String groupRole;
+    private String productGroupRole;
 	
 	
 	public ProductGroup() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public String getProductGroupName() {
 		return productGroupName;
@@ -21,17 +20,17 @@ public class ProductGroup {
 		this.productGroupName = productGroupName;
 	}
 	public String getProductGroupRole() {
-		return groupRole;
+		return productGroupRole;
 	}
 	public void setProductGroupRole(String productGroupRole) {
-		this.groupRole = productGroupRole;
+		this.productGroupRole = productGroupRole;
 	}
-	@Override
+	/*@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((productGroupName == null) ? 0 : productGroupName.hashCode());
-		result = prime * result + ((groupRole == null) ? 0 : groupRole.hashCode());
+		result = prime * result + ((prolductGroupRole == null) ? 0 : prolductGroupRole.hashCode());
 		return result;
 	}
 	@Override
@@ -48,17 +47,17 @@ public class ProductGroup {
 				return false;
 		} else if (!productGroupName.equals(other.productGroupName))
 			return false;
-		if (groupRole == null) {
-			if (other.groupRole != null)
+		if (prolductGroupRole == null) {
+			if (other.prolductGroupRole != null)
 				return false;
-		} else if (!groupRole.equals(other.groupRole))
+		} else if (!prolductGroupRole.equals(other.prolductGroupRole))
 			return false;
 		return true;
 	}
 	@Override
 	public String toString() {
-		return "ProductGroup [productGroupName=" + productGroupName + ", productGroupType=" + groupRole + "]";
-	}
+		return "ProductGroup [productGroupName=" + productGroupName + ", prolductGroupRole=" + prolductGroupRole + "]";
+	}*/
     
 	
 
