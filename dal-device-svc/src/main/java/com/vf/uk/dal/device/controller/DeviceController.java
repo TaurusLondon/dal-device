@@ -717,7 +717,7 @@ public class DeviceController {
         @ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
 	@RequestMapping(value = "/device/getDeliveryMethod/getProductGroupModel", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON })
 	public ProductGroupModelMap getProductGroupModel(
-			@NotNull @ApiParam(value = "Device Id for getting product Group to displayed. possible value can be comma separated device Id like 093353,080004") @RequestParam(value = "productId", required = false) String productId)
+			@NotNull @ApiParam(value = "Device Id for getting product Group to displayed. possible value can be comma separated device Id like 093353,080004") @RequestParam(value = "productId", required = true) String productId)
 	{
 		ProductGroupModelMap productGroupModelDetails = null;
 
