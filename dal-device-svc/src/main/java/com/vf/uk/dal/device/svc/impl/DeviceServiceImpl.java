@@ -572,7 +572,7 @@ public class DeviceServiceImpl implements DeviceService {
 					 pageNumber, pageSize, journeyType);
 			List<FacetField> facetList=getProductGroupFacetModel(Constants.STRING_DEVICE_PAYG, journeyType);
 			productGroupFacetModelForFacets= null;
-			if(facetList!=null && CollectionUtils.isEmpty(facetList))
+			if(facetList!=null && CollectionUtils.isNotEmpty(facetList))
 			{
 				productGroupFacetModelForFacets=new ProductGroupFacetModel();
 				productGroupFacetModelForFacets.setListOfFacetsFields(facetList);
@@ -587,7 +587,7 @@ public class DeviceServiceImpl implements DeviceService {
 			//productGroupFacetModelForFacets = deviceDao.getProductGroupsWithFacets(Filters.HANDSET, journeyType);
 			List<FacetField> facetList=getProductGroupFacetModel(Constants.STRING_DEVICE_PAYM, journeyType);
 			productGroupFacetModelForFacets= null;
-			if(facetList!=null && CollectionUtils.isEmpty(facetList))
+			if(facetList!=null && CollectionUtils.isNotEmpty(facetList))
 			{
 				productGroupFacetModelForFacets=new ProductGroupFacetModel();
 				productGroupFacetModelForFacets.setListOfFacetsFields(facetList);
