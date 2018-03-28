@@ -1218,7 +1218,8 @@ public class DeviceServiceImpl implements DeviceService {
 	 */
 	@Override
 	@Async
-	public CompletableFuture<Integer> cacheDeviceTile(String groupType, String jobId) {
+	public CompletableFuture<Integer> cacheDeviceTile(String groupType, String jobId, String version) {
+		Constants.CATALOG_VERSION.set(version);
 		int i = 0;
 		List<OfferAppliedPriceDetails> offerAppliedPrices = new ArrayList<>();
 
@@ -1284,7 +1285,7 @@ public class DeviceServiceImpl implements DeviceService {
 			for (com.vf.uk.dal.device.datamodel.merchandisingpromotion.DevicePreCalculatedData deviceListObject : preCalcDataList) {
 				CacheProductModel productModel = new CacheProductModel();
 
-				String productId = "product_" + Integer.parseInt(deviceListObject.getDeviceId());
+				String productId = deviceListObject.getDeviceId();
 				productModel.setId(productId);
 				productModel.setRating(deviceListObject.getRating());
 				productModel.setLeadPlanId(deviceListObject.getLeadPlanId());
@@ -1344,10 +1345,11 @@ public class DeviceServiceImpl implements DeviceService {
 					}
 					productModel.setMerchandisingMedia(merchandisngList);
 				}
-				deviceDao.getUpdateElasticSearch(productId, mapper.writeValueAsString(productModel));
+				String productIdForUpdate = Constants.STRING_PRODUCT+"product_" + deviceListObject.getDeviceId();
+				deviceDao.getUpdateElasticSearch(productIdForUpdate, mapper.writeValueAsString(productModel));
 
 				if (StringUtils.isNotBlank(deviceListObject.getProductGroupId())) {
-					String productGroupId = "productGroup_" + deviceListObject.getProductGroupId();
+					String productGroupId = deviceListObject.getProductGroupId();
 					if (productModelMap.containsKey(productGroupId)) {
 						CacheProductGroupModel productgroupModel = productModelMap.get(productGroupId);
 						if (StringUtils.isNotBlank(deviceListObject.getLeadPlanId())) {
@@ -1458,7 +1460,8 @@ public class DeviceServiceImpl implements DeviceService {
 				}
 			}
 			for (Map.Entry<String,CacheProductGroupModel> entry : productModelMap.entrySet()) {
-				deviceDao.getUpdateElasticSearch(entry.getKey(), mapper.writeValueAsString(entry.getValue()));
+				String productGroupId = Constants.STRING_OPT+"productGroup_" + entry.getKey();
+				deviceDao.getUpdateElasticSearch(productGroupId, mapper.writeValueAsString(entry.getValue()));
 			}
 			
 			
@@ -4484,7 +4487,7 @@ public class DeviceServiceImpl implements DeviceService {
 	 */
 	public CommercialBundle getCommercialBundle(String bundleId) {
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper
-				.searchQueryForCommercialProductAndCommercialBundle(bundleId);
+				.searchQueryForCommercialProductAndCommercialBundle(bundleId , Constants.STRING_BUNDLE);
 		SearchResponse commercialBundleResponse = deviceDao.getResponseFromDataSource(queryContextMap);
 		LogHelper.info(this, "converting elasticsearch response into Commercial Bundle object response");
 		return response.getCommercialBundle(commercialBundleResponse);
@@ -4497,7 +4500,7 @@ public class DeviceServiceImpl implements DeviceService {
 	 */
 	public List<CommercialBundle> getListOfCommercialBundle(List<String> bundleIds) {
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper
-				.searchQueryForListOfCommercialProductAndCommercialBundle(bundleIds);
+				.searchQueryForListOfCommercialProductAndCommercialBundle(bundleIds, Constants.STRING_BUNDLE);
 		SearchResponse commercialBundleResponse = deviceDao.getResponseFromDataSource(queryContextMap);
 		LogHelper.info(this, "converting elasticsearch response into Commercial Bundle List object response");
 		return response.getListOfCommercialBundleFromJson(commercialBundleResponse);
@@ -4510,7 +4513,7 @@ public class DeviceServiceImpl implements DeviceService {
 	 */
 	public List<CommercialProduct> getListOfCommercialProduct(List<String> deviceIds) {
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper
-				.searchQueryForListOfCommercialProductAndCommercialBundle(deviceIds);
+				.searchQueryForListOfCommercialProductAndCommercialBundle(deviceIds, Constants.STRING_PRODUCT);
 		SearchResponse commercialListForInsuranceResponse = deviceDao.getResponseFromDataSource(queryContextMap);
 		LogHelper.info(this, "converting elasticsearch response into List Of CommercialProduct object response");
 		return response.getCommercialProductFromJson(commercialListForInsuranceResponse);
@@ -4523,7 +4526,7 @@ public class DeviceServiceImpl implements DeviceService {
 	 */
 	public CommercialProduct getCommercialProduct(String deviceId) {
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper
-				.searchQueryForCommercialProductAndCommercialBundle(deviceId);
+				.searchQueryForCommercialProductAndCommercialBundle(deviceId , Constants.STRING_PRODUCT);
 		SearchResponse commercialProduct = deviceDao.getResponseFromDataSource(queryContextMap);
 		LogHelper.info(this, "converting elasticsearch response into Commercial Product object response");
 		return response.getCommercialProduct(commercialProduct);

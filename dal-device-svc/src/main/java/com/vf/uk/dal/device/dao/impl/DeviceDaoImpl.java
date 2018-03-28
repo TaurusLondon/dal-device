@@ -1879,7 +1879,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	 */
 	public CommercialProduct getCommercialProduct(String deviceId) {
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper
-				.searchQueryForCommercialProductAndCommercialBundle(deviceId);
+				.searchQueryForCommercialProductAndCommercialBundle(deviceId , Constants.STRING_PRODUCT);
 		SearchResponse commercialProduct = getResponseFromDataSource(queryContextMap);
 		LogHelper.info(this, "converting elasticsearch response into Commercial Product object response");
 		return response.getCommercialProduct(commercialProduct);
@@ -1902,7 +1902,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	 */
 	public CommercialBundle getCommercialBundle(String bundleId) {
 		SearchRequest queryContextMapForLeadPlanId = DeviceQueryBuilderHelper
-				.searchQueryForCommercialProductAndCommercialBundle(bundleId);
+				.searchQueryForCommercialProductAndCommercialBundle(bundleId , Constants.STRING_BUNDLE);
 		SearchResponse commercialBundleResponse = getResponseFromDataSource(queryContextMapForLeadPlanId);
 		LogHelper.info(this, "converting elasticsearch response into Commercial Bundle object response");
 		return response.getCommercialBundle(commercialBundleResponse);
@@ -1916,14 +1916,14 @@ public class DeviceDaoImpl implements DeviceDao {
 	public void getUpdateElasticSearch(String id ,  String data) 
 	{
 		try {
-			UpdateRequest updateRequest = new UpdateRequest(Constants.DEFAULT_ENDPOINT_FOR_DENORMALIZED_INDEX, "models", id);
+			UpdateRequest updateRequest = new UpdateRequest(Constants.CATALOG_VERSION.get(), "models", id);
 			updateRequest.doc(data, XContentType.JSON);
 			restClient.update(updateRequest,new BasicHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString()));
 			
-			UpdateRequest updateRequestForNull = new UpdateRequest(Constants.DEFAULT_ENDPOINT_FOR_DENORMALIZED_INDEX, "models", id)
+			UpdateRequest updateRequestForNull = new UpdateRequest(Constants.CATALOG_VERSION.get(), "models", id)
 			        .doc(org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder()
 			            .startObject()
-			            .field("id", id )
+			            .field("_id", id )
 			            .endObject());
 			restClient.update(updateRequestForNull);
 		} catch (IOException e) {
@@ -1940,8 +1940,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	{
 		try {
 			IndexRequest updateRequestForILSPromo = Requests
-					.indexRequest(ConfigHelper.getString(Constants.ELASTIC_SEARCH_ENDPOINT_DENORMALISED_DATA,
-							Constants.DEFAULT_ENDPOINT_FOR_DENORMALIZED_INDEX));
+					.indexRequest(Constants.CATALOG_VERSION.get());
 			updateRequestForILSPromo.type("models");
 			updateRequestForILSPromo.id(id);
 			updateRequestForILSPromo.source(data, XContentType.JSON);

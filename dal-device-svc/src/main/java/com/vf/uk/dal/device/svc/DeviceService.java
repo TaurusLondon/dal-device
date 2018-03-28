@@ -101,7 +101,7 @@ public interface DeviceService {
 	 * @return
 	 */
 	//@Transactional(rollbackFor = {Exception.class})
-	public CompletableFuture<Integer> cacheDeviceTile(String groupType,String jobId) ;
+	public CompletableFuture<Integer> cacheDeviceTile(String groupType,String jobId , String version) ;
 	/**
 	 * 
 	 * @param deviceId

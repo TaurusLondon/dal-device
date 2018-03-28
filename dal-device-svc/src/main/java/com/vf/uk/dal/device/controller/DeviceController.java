@@ -9,6 +9,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.commons.lang.StringUtils;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -59,6 +60,7 @@ import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping(value = "")
+@EnableAspectJAutoProxy(proxyTargetClass=true)
 public class DeviceController {
 
 	@Autowired
@@ -451,7 +453,7 @@ public class DeviceController {
 				CacheDeviceTileResponse cacheDeviceTileResponse = deviceService.insertCacheDeviceToDb();
 				ResponseEntity<CacheDeviceTileResponse> response = new ResponseEntity<>(cacheDeviceTileResponse,
 						HttpStatus.CREATED);
-				deviceService.cacheDeviceTile(groupType, cacheDeviceTileResponse.getJobId());
+				deviceService.cacheDeviceTile(groupType, cacheDeviceTileResponse.getJobId(), Constants.CATALOG_VERSION.get());
 
 				return response;
 			} else {
