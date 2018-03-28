@@ -13,16 +13,13 @@ public class ProductGroupModel {
 	@JsonProperty("productId")
 	private String leadSkuId;
 	
-	@JsonProperty("displayName")
 	private String name;
 	
 	@JsonProperty("imageURLsFullFront")
 	private String imageUrl;
 	
-	@JsonProperty("recurringCharge")
 	private float minimumRecurringPrice;
 	
-	@JsonProperty("upfrontCost")
 	private float minimumUpfrontCost;
 
 	private float rating;
