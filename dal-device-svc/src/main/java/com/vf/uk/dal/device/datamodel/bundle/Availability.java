@@ -15,11 +15,8 @@ public class Availability {
 
 	
 	
-	//@PortableProperty(START)
     private Date start;
-	//@PortableProperty(END)
     private Date end;
-    //@PortableProperty(SALESEXPIRED)
     private Boolean salesExpired;
     
     

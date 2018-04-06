@@ -89,7 +89,7 @@ public  class CommonUtility {
 		requestForBundleAndHardware.setBundleAndHardwareList(bundleAndHardwareTupleList);
 		requestForBundleAndHardware.setOfferCode(offerCode);
 		requestForBundleAndHardware.setPackageType(journeyType);
-		PriceForBundleAndHardware[] client = new PriceForBundleAndHardware[7000];;
+		PriceForBundleAndHardware[] client = new PriceForBundleAndHardware[7000];
 		try {
 			LogHelper.info(CommonUtility.class, "Start --> Calling  Price.calculateForBundleAndHardware");
 			client = restTemplate.postForObject("http://PRICE-V1/es/price/calculateForBundleAndHardware",

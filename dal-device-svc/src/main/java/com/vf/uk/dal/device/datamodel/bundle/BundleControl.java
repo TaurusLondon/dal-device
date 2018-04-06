@@ -7,9 +7,10 @@
 
 package com.vf.uk.dal.device.datamodel.bundle;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class BundleControl {
 
-	
 	private boolean isDisplayableinLife;
 	
 	private boolean isSellableinLife;
@@ -33,47 +34,53 @@ public class BundleControl {
 	
 	public BundleControl() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public boolean isDisplayableinLife() {
 		return isDisplayableinLife;
 	}
+	@JsonProperty("isDisplayableinLife")
 	public void setDisplayableinLife(boolean isDisplayableinLife) {
 		this.isDisplayableinLife = isDisplayableinLife;
 	}
 	public boolean isSellableinLife() {
 		return isSellableinLife;
 	}
+	@JsonProperty("isSellableinLife")
 	public void setSellableinLife(boolean isSellableinLife) {
 		this.isSellableinLife = isSellableinLife;
 	}
 	public boolean isDisplayableAcq() {
 		return isDisplayableAcq;
 	}
+	@JsonProperty("isDisplayableAcq")
 	public void setDisplayableAcq(boolean isDisplayableAcq) {
 		this.isDisplayableAcq = isDisplayableAcq;
 	}
 	public boolean isSellableRet() {
 		return isSellableRet;
 	}
+	@JsonProperty("isSellableRet")
 	public void setSellableRet(boolean isSellableRet) {
 		this.isSellableRet = isSellableRet;
 	}
 	public boolean isDisplayableRet() {
 		return isDisplayableRet;
 	}
+	@JsonProperty("isDisplayableRet")
 	public void setDisplayableRet(boolean isDisplayableRet) {
 		this.isDisplayableRet = isDisplayableRet;
 	}
 	public boolean isSellableAcq() {
 		return isSellableAcq;
 	}
+	@JsonProperty("isSellableAcq")
 	public void setSellableAcq(boolean isSellableAcq) {
 		this.isSellableAcq = isSellableAcq;
 	}
 	public boolean isDisplayableSavedBasket() {
 		return isDisplayableSavedBasket;
 	}
+	@JsonProperty("isDisplayableSavedBasket")
 	public void setDisplayableSavedBasket(boolean isDisplayableSavedBasket) {
 		this.isDisplayableSavedBasket = isDisplayableSavedBasket;
 	}

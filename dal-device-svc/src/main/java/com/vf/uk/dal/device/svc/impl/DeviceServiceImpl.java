@@ -1,5 +1,7 @@
 package com.vf.uk.dal.device.svc.impl;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeParseException;
@@ -22,6 +24,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
@@ -30,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
@@ -2570,7 +2574,7 @@ public class DeviceServiceImpl implements DeviceService {
 							&& commercialProduct.getEquipment().getModel().equalsIgnoreCase(model)) {
 						// Begin User Story 9116
 						String leadPlanFromCommercialProduct = commercialProduct.getLeadPlanId();
-						List<String> compatiblePlans = commercialProduct.getListOfCompatiblePlanIds();
+						List<String> compatiblePlans = commercialProduct.getListOfCompatiblePlanIds()==null?Collections.emptyList():commercialProduct.getListOfCompatiblePlanIds();
 						if (StringUtils.isNotBlank(journeyType)
 								&& Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
 								&& commercialProduct.getProductControl() != null
@@ -2744,6 +2748,7 @@ public class DeviceServiceImpl implements DeviceService {
 								if (!promotionsMap.isEmpty() && promotionsMap.containsKey(hardwareID)) {
 									List<BundleAndHardwarePromotions> listOfPromotionLocal = promotionsMap
 											.get(hardwareID);
+									System.out.println(priceForBundleAndHardware);
 									listOfPromotionLocal.forEach(promotion -> {
 										if (promotion.getBundleId().equalsIgnoreCase(
 												priceForBundleAndHardware.getBundlePrice().getBundleId()))
@@ -4554,7 +4559,6 @@ public class DeviceServiceImpl implements DeviceService {
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper.searchQueryForProductGroup(groupType);
 		SearchResponse groupResponse = deviceDao.getResponseFromDataSource(queryContextMap);
 		LogHelper.info(this, "converting elasticsearch response into standard json object response");
-		response.getListOfGroupFromJson(groupResponse);
 		List<Group>  listOfGroup = response.getListOfGroupFromJson(groupResponse);
 		if(CollectionUtils.isEmpty(listOfGroup))
 		{
