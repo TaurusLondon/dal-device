@@ -2187,9 +2187,10 @@ public class DaoUtils {
 	public static FacetedDevice convertProductModelListToDeviceList(List<ProductModel> listOfProductModel,
 			List<String> listOfProducts, List<FacetField> facetFieldList, String groupType, List<CommercialProduct> ls,
 			Map<String, BundleModel> bundleModelMap, Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice,
-			String offerCode, Map<String, String> groupNameWithProdId, Map<String, BundlePrice> bundleModelAndPriceMap,
+			String offerCode1, Map<String, String> groupNameWithProdId, Map<String, BundlePrice> bundleModelAndPriceMap,
 			Map<String, BundleAndHardwarePromotions> promotionmap, Map<String, Boolean> isLeadMemberFromSolr,
 			Map<String, List<OfferAppliedPriceModel>> withoutOfferPriceMap, String journeyType) {
+		String offerCode=offerCode1;
 		List<Device> deviceList = new ArrayList<>();
 		FacetedDevice facetedDevice = new FacetedDevice();
 		MerchandisingPromotionsPackage merchandisingPromotionsPackage = null;
@@ -2349,6 +2350,7 @@ public class DaoUtils {
 									if (priceForOfferCode.getBundlePrice() != null
 											&& priceForOfferCode.getHardwarePrice() != null) {
 										offerFlag = true;
+										offerCode=null;
 										deviceDetails.setPriceInfo(priceForOfferCode);
 									}
 								}

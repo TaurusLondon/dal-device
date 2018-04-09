@@ -552,7 +552,7 @@ public interface DeviceDao {
 	 * @return
 	 */
 	public CompletableFuture<List<PriceForBundleAndHardware>> getPriceForBundleAndHardwareListFromTupleListAsync(
-			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String packageType);
+			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String packageType, String version);
 	
 	/**
 	 * 
@@ -561,7 +561,7 @@ public interface DeviceDao {
 	 * @return
 	 */
 	public CompletableFuture<List<BundleAndHardwarePromotions>> getBundleAndHardwarePromotionsListFromBundleListAsync(
-			List<BundleAndHardwareTuple> bundleHardwareTupleList, String journeyType);
+			List<BundleAndHardwareTuple> bundleHardwareTupleList, String journeyType, String version);
 	
 	/**
 	 * 

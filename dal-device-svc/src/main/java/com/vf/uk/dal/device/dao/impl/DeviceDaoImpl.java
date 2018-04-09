@@ -533,16 +533,16 @@ public class DeviceDaoImpl implements DeviceDao {
 		if (commercialBundle != null) {
 			if ( Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
 					&& commercialBundle.getBundleControl() != null
-					&& commercialBundle.getBundleControl().isSellableRet()
-					&& commercialBundle.getBundleControl().isDisplayableRet()
+					&& commercialBundle.getBundleControl().getIsSellableRet()
+					&& commercialBundle.getBundleControl().getIsDisplayableRet()
 					&& !commercialBundle.getAvailability().getSalesExpired()) {
 				sellableCheck = true;
 			}
 
 			if (!Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
 					&& commercialBundle.getBundleControl() != null
-					&& commercialBundle.getBundleControl().isSellableAcq()
-					&& commercialBundle.getBundleControl().isDisplayableAcq()
+					&& commercialBundle.getBundleControl().getIsSellableAcq()
+					&& commercialBundle.getBundleControl().getIsDisplayableAcq()
 					&& !commercialBundle.getAvailability().getSalesExpired()) {
 				sellableCheck = true;
 			}
@@ -1804,12 +1804,13 @@ public class DeviceDaoImpl implements DeviceDao {
 	}
 	@Override
 	public CompletableFuture<List<PriceForBundleAndHardware>> getPriceForBundleAndHardwareListFromTupleListAsync(
-			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType) {
+			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType, String version) {
 		LogHelper.info(this, "Start -->  calling  getPriceForBundleAndHardwareListFromTupleList_PriceAPI");
 
 		return CompletableFuture.supplyAsync(new Supplier<List<PriceForBundleAndHardware>>() {
 			@Override
 			public List<PriceForBundleAndHardware> get() {
+				Constants.CATALOG_VERSION.set(version);
 				return CommonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode, registryclnt, journeyType);
 			}
 		});
@@ -1818,13 +1819,14 @@ public class DeviceDaoImpl implements DeviceDao {
 	
 	@Override
 	public CompletableFuture<List<com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions>> getBundleAndHardwarePromotionsListFromBundleListAsync(
-			List<BundleAndHardwareTuple> bundleHardwareTupleList, String journeyType) {
+			List<BundleAndHardwareTuple> bundleHardwareTupleList, String journeyType, String version) {
 		LogHelper.info(this, "Start -->  calling  getBundleAndHardwarePromotionsListFromBundleListAsync");
 
 		return CompletableFuture
 				.supplyAsync(new Supplier<List<com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions>>() {
 					@Override
 					public List<com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions> get() {
+						Constants.CATALOG_VERSION.set(version);
 						return CommonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList, journeyType,registryclnt);
 					}
 				});
@@ -1879,7 +1881,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	 */
 	public CommercialProduct getCommercialProduct(String deviceId) {
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper
-				.searchQueryForCommercialProductAndCommercialBundle(deviceId);
+				.searchQueryForCommercialProductAndCommercialBundle(deviceId , Constants.STRING_PRODUCT);
 		SearchResponse commercialProduct = getResponseFromDataSource(queryContextMap);
 		LogHelper.info(this, "converting elasticsearch response into Commercial Product object response");
 		return response.getCommercialProduct(commercialProduct);
@@ -1902,7 +1904,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	 */
 	public CommercialBundle getCommercialBundle(String bundleId) {
 		SearchRequest queryContextMapForLeadPlanId = DeviceQueryBuilderHelper
-				.searchQueryForCommercialProductAndCommercialBundle(bundleId);
+				.searchQueryForCommercialProductAndCommercialBundle(bundleId , Constants.STRING_BUNDLE);
 		SearchResponse commercialBundleResponse = getResponseFromDataSource(queryContextMapForLeadPlanId);
 		LogHelper.info(this, "converting elasticsearch response into Commercial Bundle object response");
 		return response.getCommercialBundle(commercialBundleResponse);
@@ -1916,14 +1918,14 @@ public class DeviceDaoImpl implements DeviceDao {
 	public void getUpdateElasticSearch(String id ,  String data) 
 	{
 		try {
-			UpdateRequest updateRequest = new UpdateRequest(Constants.DEFAULT_ENDPOINT_FOR_DENORMALIZED_INDEX, "models", id);
+			UpdateRequest updateRequest = new UpdateRequest(Constants.CATALOG_VERSION.get(), "models", id);
 			updateRequest.doc(data, XContentType.JSON);
 			restClient.update(updateRequest,new BasicHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString()));
 			
-			UpdateRequest updateRequestForNull = new UpdateRequest(Constants.DEFAULT_ENDPOINT_FOR_DENORMALIZED_INDEX, "models", id)
+			UpdateRequest updateRequestForNull = new UpdateRequest(Constants.CATALOG_VERSION.get(), "models", id)
 			        .doc(org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder()
 			            .startObject()
-			            .field("id", id )
+			            .field("_id", id )
 			            .endObject());
 			restClient.update(updateRequestForNull);
 		} catch (IOException e) {
@@ -1940,8 +1942,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	{
 		try {
 			IndexRequest updateRequestForILSPromo = Requests
-					.indexRequest(ConfigHelper.getString(Constants.ELASTIC_SEARCH_ENDPOINT_DENORMALISED_DATA,
-							Constants.DEFAULT_ENDPOINT_FOR_DENORMALIZED_INDEX));
+					.indexRequest(Constants.CATALOG_VERSION.get());
 			updateRequestForILSPromo.type("models");
 			updateRequestForILSPromo.id(id);
 			updateRequestForILSPromo.source(data, XContentType.JSON);

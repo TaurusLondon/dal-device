@@ -22,10 +22,8 @@ public class CommercialProduct {
 	
 	protected Discount discount;
 
-	@JsonIgnore
 	protected String warranty;
 
-	
 	protected String condition;
 
 	protected List<String> categories;
@@ -93,7 +91,7 @@ public class CommercialProduct {
 	protected List<HelpURL> listOfhelpURLs;
 
 	protected List<Group> specificationGroups;
-	@JsonIgnore
+
 	protected String inTheBox;
 
 	protected String contentVersion;
@@ -115,9 +113,9 @@ public class CommercialProduct {
 	protected List<Recommendations> recommendataions;
 
 	protected List<String> listOfCompatiblePlanIds;
-	@JsonIgnore
+
 	protected Boolean fastMoving;
-	@JsonIgnore
+	
 	protected String stockThresholdLimit;
 	
 	protected List<EligibleChannel> listOfEligibleChannels;

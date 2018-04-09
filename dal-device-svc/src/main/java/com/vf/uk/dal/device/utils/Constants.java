@@ -313,4 +313,17 @@ public class Constants {
 	
 	public static final String STRING_DISPLAY_NAME="displayName";
 	
+	public static ThreadLocal<String> CATALOG_VERSION=new ThreadLocal<>();
+	
+	public static final String  ELASTIC_SEARCH_ALIAS="ELASTIC_SEARCH_ALIAS";
+	public static final String  DEFAULT_ELASTIC_SEARCH_ALIAS ="vodafoneindex";
+	
+	public static final String REQUEST_HEADER_ACCEPT_DATETIME="Accept-DateTime";
+	
+	public static final String STRING_ALL_TYPE="__type";
+	
+	public static final String STRING_RAW="raw_";
+	
+	public static final String STRING_OPT = "opt_";
+	
 }

@@ -13,16 +13,13 @@ public class ProductGroupModel {
 	@JsonProperty("productId")
 	private String leadSkuId;
 	
-	@JsonProperty("displayName")
 	private String name;
 	
 	@JsonProperty("imageURLsFullFront")
 	private String imageUrl;
 	
-	@JsonProperty("recurringCharge")
 	private float minimumRecurringPrice;
 	
-	@JsonProperty("upfrontCost")
 	private float minimumUpfrontCost;
 
 	private float rating;
@@ -65,10 +62,8 @@ public class ProductGroupModel {
 
 	private String nonUpgradeLeadPlanId;
 	
-	@JsonFormat(pattern="EEE MMM dd HH:mm:ss z yyyy")
 	private Date createDate;
 	
-	@JsonFormat(pattern="EEE MMM dd HH:mm:ss z yyyy")
 	private Date modifiedDate;
 
 	public String getId() {

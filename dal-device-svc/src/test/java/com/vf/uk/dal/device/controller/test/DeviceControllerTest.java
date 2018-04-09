@@ -165,7 +165,7 @@ public class DeviceControllerTest {
 		List<DeviceTile> deviceDetails = null;
 		given(response.getCommercialProductFromJson(Matchers.anyObject())).willReturn(CommonMethods.getCommercialProductsListOfMakeAndModel());
 		given(response.getListOfGroupFromJson(Matchers.anyObject())).willReturn(CommonMethods.getListOfProductGroupFromProductGroupRepository());
-		given(deviceDAOMock.getPriceForBundleAndHardwareListFromTupleListAsync(Matchers.anyList(), Matchers.anyString(), Matchers.anyString())).willReturn(CommonMethods.getPriceForBundleAndHardwareListFromTupleListAsync());
+		given(deviceDAOMock.getPriceForBundleAndHardwareListFromTupleListAsync(Matchers.anyList(), Matchers.anyString(), Matchers.anyString(), Matchers.anyString())).willReturn(CommonMethods.getPriceForBundleAndHardwareListFromTupleListAsync());
 		try {
 			deviceDetails = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM", null, null, null,
 					null, null);
@@ -182,8 +182,8 @@ public class DeviceControllerTest {
 		List<DeviceTile> deviceDetails = null;
 		given(response.getCommercialProductFromJson(Matchers.anyObject())).willReturn(CommonMethods.getCommercialProductsListOfMakeAndModel());
 		given(response.getListOfGroupFromJson(Matchers.anyObject())).willReturn(CommonMethods.getListOfProductGroupFromProductGroupRepository());
-		given(deviceDAOMock.getPriceForBundleAndHardwareListFromTupleListAsync(Matchers.anyList(), Matchers.anyString(), Matchers.anyString())).willReturn(CommonMethods.getPriceForBundleAndHardwareListFromTupleListAsync());
-		given(deviceDAOMock.getBundleAndHardwarePromotionsListFromBundleListAsync(Matchers.anyList(), Matchers.anyString())).willReturn(CommonMethods.getBundleAndHardwarePromotionsListFromBundleListAsync());
+		given(deviceDAOMock.getPriceForBundleAndHardwareListFromTupleListAsync(Matchers.anyList(), Matchers.anyString(), Matchers.anyString(),Matchers.anyString())).willReturn(CommonMethods.getPriceForBundleAndHardwareListFromTupleListAsync());
+		given(deviceDAOMock.getBundleAndHardwarePromotionsListFromBundleListAsync(Matchers.anyList(), Matchers.anyString(), Matchers.anyString())).willReturn(CommonMethods.getBundleAndHardwarePromotionsListFromBundleListAsync());
 		try {
 			deviceDetails = deviceController.getListOfDeviceTile("Apple", "iPhone-7", "DEVICE_PAYM", null, null, "110345",
 					null, null);

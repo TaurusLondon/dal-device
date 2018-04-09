@@ -23,6 +23,7 @@ import com.vf.uk.dal.device.datamodel.productgroups.FacetField;
 public class ElasticSearchUtils {
 	
 	ObjectMapper mapper = SingletonMapperUtility.getObjectMapper();
+	
 	/**
 	 * @author manoj.bera
 	 * @param response
