@@ -7,7 +7,6 @@
 
 package com.vf.uk.dal.device.datamodel.bundle;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class BundleControl {
 
@@ -34,74 +33,152 @@ public class BundleControl {
 	
 	public BundleControl() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
-	public boolean isDisplayableinLife() {
+
+
+		
+
+	public boolean getIsDisplayableinLife() {
 		return isDisplayableinLife;
 	}
-	@JsonProperty("isDisplayableinLife")
+
+
+
+
 	public void setDisplayableinLife(boolean isDisplayableinLife) {
 		this.isDisplayableinLife = isDisplayableinLife;
 	}
-	public boolean isSellableinLife() {
+
+
+
+
+	public boolean getIsSellableinLife() {
 		return isSellableinLife;
 	}
-	@JsonProperty("isSellableinLife")
+
+
+
+
 	public void setSellableinLife(boolean isSellableinLife) {
 		this.isSellableinLife = isSellableinLife;
 	}
-	public boolean isDisplayableAcq() {
+
+
+
+
+	public boolean getIsDisplayableAcq() {
 		return isDisplayableAcq;
 	}
-	@JsonProperty("isDisplayableAcq")
+
+
+
+
 	public void setDisplayableAcq(boolean isDisplayableAcq) {
 		this.isDisplayableAcq = isDisplayableAcq;
 	}
-	public boolean isSellableRet() {
+
+
+
+
+	public boolean getIsSellableRet() {
 		return isSellableRet;
 	}
-	@JsonProperty("isSellableRet")
+
+
+
+
 	public void setSellableRet(boolean isSellableRet) {
 		this.isSellableRet = isSellableRet;
 	}
-	public boolean isDisplayableRet() {
+
+
+
+
+	public boolean getIsDisplayableRet() {
 		return isDisplayableRet;
 	}
-	@JsonProperty("isDisplayableRet")
+
+
+
+
 	public void setDisplayableRet(boolean isDisplayableRet) {
 		this.isDisplayableRet = isDisplayableRet;
 	}
-	public boolean isSellableAcq() {
+
+
+
+
+	public boolean getIsSellableAcq() {
 		return isSellableAcq;
 	}
-	@JsonProperty("isSellableAcq")
+
+
+
+
 	public void setSellableAcq(boolean isSellableAcq) {
 		this.isSellableAcq = isSellableAcq;
 	}
-	public boolean isDisplayableSavedBasket() {
+
+
+
+
+	public boolean getIsDisplayableSavedBasket() {
 		return isDisplayableSavedBasket;
 	}
-	@JsonProperty("isDisplayableSavedBasket")
+
+
+
+
 	public void setDisplayableSavedBasket(boolean isDisplayableSavedBasket) {
 		this.isDisplayableSavedBasket = isDisplayableSavedBasket;
 	}
+
+
+
+
 	public Long getOrder() {
 		return order;
 	}
+
+
+
+
 	public void setOrder(Long order) {
 		this.order = order;
 	}
-	public boolean isAffiliateExport() {
+
+
+
+
+	public boolean getIssAffiliateExport() {
 		return affiliateExport;
 	}
+
+
+
+
 	public void setAffiliateExport(boolean affiliateExport) {
 		this.affiliateExport = affiliateExport;
 	}
+
+
+
+
 	public String getCompareWith() {
 		return compareWith;
 	}
+
+
+
+
 	public void setCompareWith(String compareWith) {
 		this.compareWith = compareWith;
 	}
+
+	
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -118,6 +195,10 @@ public class BundleControl {
 		result = prime * result + ((order == null) ? 0 : order.hashCode());
 		return result;
 	}
+
+
+
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -155,6 +236,10 @@ public class BundleControl {
 			return false;
 		return true;
 	}
+
+
+
+
 	@Override
 	public String toString() {
 		return "BundleControl [isDisplayableinLife=" + isDisplayableinLife + ", isSellableinLife=" + isSellableinLife
@@ -163,7 +248,5 @@ public class BundleControl {
 				+ isDisplayableSavedBasket + ", order=" + order + ", affiliateExport=" + affiliateExport
 				+ ", compareWith=" + compareWith + "]";
 	}
-
-
 
 }

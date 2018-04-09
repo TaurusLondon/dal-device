@@ -1,7 +1,5 @@
 package com.vf.uk.dal.device.svc.impl;
 
-import java.io.File;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeParseException;
@@ -24,7 +22,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.io.FileUtils;
+import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
@@ -33,7 +31,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
@@ -2487,16 +2484,16 @@ public class DeviceServiceImpl implements DeviceService {
 		if (commercialBundle != null) {
 			if (Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
 					&& commercialBundle.getBundleControl() != null
-					&& commercialBundle.getBundleControl().isSellableRet()
-					&& commercialBundle.getBundleControl().isDisplayableRet()
+					&& commercialBundle.getBundleControl().getIsSellableRet()
+					&& commercialBundle.getBundleControl().getIsDisplayableRet()
 					&& !commercialBundle.getAvailability().getSalesExpired()) {
 				sellableCheck = true;
 			}
 
 			if (!Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
 					&& commercialBundle.getBundleControl() != null
-					&& commercialBundle.getBundleControl().isSellableAcq()
-					&& commercialBundle.getBundleControl().isDisplayableAcq()
+					&& commercialBundle.getBundleControl().getIsSellableAcq()
+					&& commercialBundle.getBundleControl().getIsDisplayableAcq()
 					&& !commercialBundle.getAvailability().getSalesExpired()) {
 				sellableCheck = true;
 			}
@@ -2683,9 +2680,9 @@ public class DeviceServiceImpl implements DeviceService {
 					Map<String, PriceForBundleAndHardware> priceMapForParticularDevice = new HashMap<>();
 					if (!groupType.equals(Constants.STRING_DEVICE_PAYG)) {
 						if (bundleAndHardwareTupleList != null && !bundleAndHardwareTupleList.isEmpty()) {
-							CompletableFuture<List<PriceForBundleAndHardware>> calculatePriceTask = deviceDao.getPriceForBundleAndHardwareListFromTupleListAsync(bundleAndHardwareTupleList, offerCode, journeyType);
+							CompletableFuture<List<PriceForBundleAndHardware>> calculatePriceTask = deviceDao.getPriceForBundleAndHardwareListFromTupleListAsync(bundleAndHardwareTupleList, offerCode, journeyType, Constants.CATALOG_VERSION.get());
 							CompletableFuture<List<com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions>> promotionTask = deviceDao
-									.getBundleAndHardwarePromotionsListFromBundleListAsync(bundleAndHardwareTupleList, journeyType);
+									.getBundleAndHardwarePromotionsListFromBundleListAsync(bundleAndHardwareTupleList, journeyType, Constants.CATALOG_VERSION.get());
 
 							try {
 								CompletableFuture.allOf(calculatePriceTask, promotionTask).get();
@@ -2748,7 +2745,6 @@ public class DeviceServiceImpl implements DeviceService {
 								if (!promotionsMap.isEmpty() && promotionsMap.containsKey(hardwareID)) {
 									List<BundleAndHardwarePromotions> listOfPromotionLocal = promotionsMap
 											.get(hardwareID);
-									System.out.println(priceForBundleAndHardware);
 									listOfPromotionLocal.forEach(promotion -> {
 										if (promotion.getBundleId().equalsIgnoreCase(
 												priceForBundleAndHardware.getBundlePrice().getBundleId()))
@@ -3016,16 +3012,16 @@ public class DeviceServiceImpl implements DeviceService {
 		if (commercialBundle != null) {
 			if (Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
 					&& commercialBundle.getBundleControl() != null
-					&& commercialBundle.getBundleControl().isSellableRet()
-					&& commercialBundle.getBundleControl().isDisplayableRet()
+					&& commercialBundle.getBundleControl().getIsSellableRet()
+					&& commercialBundle.getBundleControl().getIsDisplayableRet()
 					&& !commercialBundle.getAvailability().getSalesExpired()) {
 				sellableCheck = true;
 			}
 
 			if (!Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
 					&& commercialBundle.getBundleControl() != null
-					&& commercialBundle.getBundleControl().isSellableAcq()
-					&& commercialBundle.getBundleControl().isDisplayableAcq()
+					&& commercialBundle.getBundleControl().getIsSellableAcq()
+					&& commercialBundle.getBundleControl().getIsDisplayableAcq()
 					&& !commercialBundle.getAvailability().getSalesExpired()) {
 				sellableCheck = true;
 			}
@@ -4504,11 +4500,29 @@ public class DeviceServiceImpl implements DeviceService {
 	 * @return
 	 */
 	public List<CommercialBundle> getListOfCommercialBundle(List<String> bundleIds) {
+		if(bundleIds.size()>80)
+		{
+			List<String> bundleIds1=bundleIds.subList(0, (bundleIds.size()/2));
+			List<String> bundleIds2=bundleIds.subList((bundleIds.size()/2), bundleIds.size());
+			SearchRequest queryContextMap = DeviceQueryBuilderHelper
+					.searchQueryForListOfCommercialProductAndCommercialBundle(bundleIds1, Constants.STRING_BUNDLE);
+			SearchResponse commercialBundleResponse = deviceDao.getResponseFromDataSource(queryContextMap);
+			LogHelper.info(this, "converting elasticsearch response into Commercial Bundle List object response");
+			List<CommercialBundle> list1= response.getListOfCommercialBundleFromJson(commercialBundleResponse);
+			SearchRequest queryContextMap1 = DeviceQueryBuilderHelper
+					.searchQueryForListOfCommercialProductAndCommercialBundle(bundleIds2, Constants.STRING_BUNDLE);
+			SearchResponse commercialBundleResponse1 = deviceDao.getResponseFromDataSource(queryContextMap1);
+			LogHelper.info(this, "converting elasticsearch response into Commercial Bundle List object response");
+			list1.addAll(response.getListOfCommercialBundleFromJson(commercialBundleResponse1));
+			return list1;
+			
+		}else{
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper
 				.searchQueryForListOfCommercialProductAndCommercialBundle(bundleIds, Constants.STRING_BUNDLE);
 		SearchResponse commercialBundleResponse = deviceDao.getResponseFromDataSource(queryContextMap);
 		LogHelper.info(this, "converting elasticsearch response into Commercial Bundle List object response");
 		return response.getListOfCommercialBundleFromJson(commercialBundleResponse);
+		}
 	}
 	
 	/**

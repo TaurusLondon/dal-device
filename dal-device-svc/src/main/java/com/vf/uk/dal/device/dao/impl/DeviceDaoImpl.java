@@ -533,16 +533,16 @@ public class DeviceDaoImpl implements DeviceDao {
 		if (commercialBundle != null) {
 			if ( Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
 					&& commercialBundle.getBundleControl() != null
-					&& commercialBundle.getBundleControl().isSellableRet()
-					&& commercialBundle.getBundleControl().isDisplayableRet()
+					&& commercialBundle.getBundleControl().getIsSellableRet()
+					&& commercialBundle.getBundleControl().getIsDisplayableRet()
 					&& !commercialBundle.getAvailability().getSalesExpired()) {
 				sellableCheck = true;
 			}
 
 			if (!Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
 					&& commercialBundle.getBundleControl() != null
-					&& commercialBundle.getBundleControl().isSellableAcq()
-					&& commercialBundle.getBundleControl().isDisplayableAcq()
+					&& commercialBundle.getBundleControl().getIsSellableAcq()
+					&& commercialBundle.getBundleControl().getIsDisplayableAcq()
 					&& !commercialBundle.getAvailability().getSalesExpired()) {
 				sellableCheck = true;
 			}
@@ -1804,12 +1804,13 @@ public class DeviceDaoImpl implements DeviceDao {
 	}
 	@Override
 	public CompletableFuture<List<PriceForBundleAndHardware>> getPriceForBundleAndHardwareListFromTupleListAsync(
-			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType) {
+			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType, String version) {
 		LogHelper.info(this, "Start -->  calling  getPriceForBundleAndHardwareListFromTupleList_PriceAPI");
 
 		return CompletableFuture.supplyAsync(new Supplier<List<PriceForBundleAndHardware>>() {
 			@Override
 			public List<PriceForBundleAndHardware> get() {
+				Constants.CATALOG_VERSION.set(version);
 				return CommonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode, registryclnt, journeyType);
 			}
 		});
@@ -1818,13 +1819,14 @@ public class DeviceDaoImpl implements DeviceDao {
 	
 	@Override
 	public CompletableFuture<List<com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions>> getBundleAndHardwarePromotionsListFromBundleListAsync(
-			List<BundleAndHardwareTuple> bundleHardwareTupleList, String journeyType) {
+			List<BundleAndHardwareTuple> bundleHardwareTupleList, String journeyType, String version) {
 		LogHelper.info(this, "Start -->  calling  getBundleAndHardwarePromotionsListFromBundleListAsync");
 
 		return CompletableFuture
 				.supplyAsync(new Supplier<List<com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions>>() {
 					@Override
 					public List<com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions> get() {
+						Constants.CATALOG_VERSION.set(version);
 						return CommonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList, journeyType,registryclnt);
 					}
 				});
