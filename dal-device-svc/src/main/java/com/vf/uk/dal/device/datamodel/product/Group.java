@@ -2,15 +2,13 @@ package com.vf.uk.dal.device.datamodel.product;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 
 public class Group {
 
 	protected String groupName;
 
 	protected Long priority;
-	@JsonIgnore
+
 	protected boolean comparable;
 
 	protected List<Specification> specifications;
