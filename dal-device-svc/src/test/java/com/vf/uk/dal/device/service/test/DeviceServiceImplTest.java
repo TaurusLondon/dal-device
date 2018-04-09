@@ -29,6 +29,7 @@ import com.vf.uk.dal.common.configuration.ConfigHelper;
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.registry.client.RegistryClient;
 import com.vf.uk.dal.common.registry.client.Utility;
+import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
 import com.vf.uk.dal.device.beans.test.DeviceTestBeans;
 import com.vf.uk.dal.device.common.test.CommonMethods;
 import com.vf.uk.dal.device.dao.DeviceDao;
@@ -95,8 +96,12 @@ public class DeviceServiceImplTest
 	@MockBean
 	ConfigHelper configHelperMock;
 	
+	@Autowired
+	CatalogServiceAspect aspect;
+	
 	@Before
 	public void setupMockBehaviour() throws Exception {
+		aspect.beforeAdvice(null);
 		String jsonString=new String(Utility.readFile("\\rest-mock\\COMMON-V1.json"));
          CurrentJourney obj=new ObjectMapper().readValue(jsonString, CurrentJourney.class);  
          given(registry.getRestTemplate()).willReturn(restTemplate);
