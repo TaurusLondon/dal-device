@@ -396,7 +396,6 @@ public  class CommonUtility {
 		request.setJourneyType(journeyType);
 		BundleAndHardwarePromotions[] response = null;
 		try {
-			
 			LogHelper.info(CommonUtility.class,"http://PROMOTION-V1/es/promotion/queries/ForBundleAndHardware------POST URL\n"+"PayLoad\n Start calling");
 			response = restTemplate.postForObject("http://PROMOTION-V1/es/promotion/queries/ForBundleAndHardware",
 					request, BundleAndHardwarePromotions[].class);
@@ -873,12 +872,12 @@ public  class CommonUtility {
 			//boolean isCompatible=commercialBundle.getProductLines().containsAll(productLinesList);
 			boolean isCompatible=commercialBundle.getProductLines().stream().anyMatch(productLinesList.get(0)::equalsIgnoreCase)?true:commercialBundle.getProductLines().stream().anyMatch(productLinesList.get(1)::equalsIgnoreCase)?true:false;
 			if((StringUtils.isBlank(journeyType) || StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_ACQUISITION) || StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_SECONDLINE) )&& isCompatible && dateValidationForOffers(startDateTime,
-					endDateTime, Constants.DATE_FORMAT_COHERENCE) && !commercialBundle.getAvailability().getSalesExpired() && commercialBundle.getBundleControl().isDisplayableAcq() && commercialBundle.getBundleControl().isSellableAcq())
+					endDateTime, Constants.DATE_FORMAT_COHERENCE) && !commercialBundle.getAvailability().getSalesExpired() && commercialBundle.getBundleControl().getIsDisplayableAcq() && commercialBundle.getBundleControl().getIsSellableAcq())
 			{
 				flag =true;
 			}
 			if((StringUtils.isNotBlank(journeyType) && StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_UPGRADE) )&& isCompatible && dateValidationForOffers(startDateTime,
-					endDateTime, Constants.DATE_FORMAT_COHERENCE) && !commercialBundle.getAvailability().getSalesExpired() && commercialBundle.getBundleControl().isDisplayableRet() && commercialBundle.getBundleControl().isSellableRet())
+					endDateTime, Constants.DATE_FORMAT_COHERENCE) && !commercialBundle.getAvailability().getSalesExpired() && commercialBundle.getBundleControl().getIsDisplayableRet() && commercialBundle.getBundleControl().getIsSellableRet())
 			{
 				flag =true;
 			}
@@ -922,14 +921,14 @@ public  class CommonUtility {
 		if (StringUtils.isNotBlank(journeyType)
 				&& Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
 				&& commercialBundle.getBundleControl() != null
-				&& commercialBundle.getBundleControl().isSellableRet()
-				&& commercialBundle.getBundleControl().isDisplayableRet()
+				&& commercialBundle.getBundleControl().getIsSellableRet()
+				&& commercialBundle.getBundleControl().getIsDisplayableRet()
 				&&!commercialBundle.getAvailability().getSalesExpired()) {
 			sellableCheck = true;
 		}else if (!Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
 				 && commercialBundle.getBundleControl() != null
-					&& commercialBundle.getBundleControl().isSellableAcq()
-					&& commercialBundle.getBundleControl().isDisplayableAcq()
+					&& commercialBundle.getBundleControl().getIsSellableAcq()
+					&& commercialBundle.getBundleControl().getIsDisplayableAcq()
 					&& !commercialBundle.getAvailability().getSalesExpired()) {
 				sellableCheck = true;
 		 }
@@ -957,12 +956,12 @@ public  class CommonUtility {
 			//boolean isCompatible=commercialBundle.getProductLines().containsAll(productLinesList);
 			boolean isCompatible=commercialBundle.getProductLines().stream().anyMatch(productLinesList.get(0)::equalsIgnoreCase)?true:commercialBundle.getProductLines().stream().anyMatch(productLinesList.get(1)::equalsIgnoreCase)?true:false;
 			if((StringUtils.isBlank(journeyType) || !StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_UPGRADE) )&& isCompatible && dateValidationForOffers(startDateTime,
-					endDateTime, Constants.DATE_FORMAT_COHERENCE) && !commercialBundle.getAvailability().getSalesExpired() && commercialBundle.getBundleControl().isDisplayableAcq() && commercialBundle.getBundleControl().isSellableAcq())
+					endDateTime, Constants.DATE_FORMAT_COHERENCE) && !commercialBundle.getAvailability().getSalesExpired() && commercialBundle.getBundleControl().getIsDisplayableAcq() && commercialBundle.getBundleControl().getIsSellableAcq())
 			{
 				flag =true;
 			}
 			else if(StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_UPGRADE)&& isCompatible && dateValidationForOffers(startDateTime,
-					endDateTime, Constants.DATE_FORMAT_COHERENCE) && !commercialBundle.getAvailability().getSalesExpired() && commercialBundle.getBundleControl().isDisplayableRet() && commercialBundle.getBundleControl().isSellableRet())
+					endDateTime, Constants.DATE_FORMAT_COHERENCE) && !commercialBundle.getAvailability().getSalesExpired() && commercialBundle.getBundleControl().getIsDisplayableRet() && commercialBundle.getBundleControl().getIsSellableRet())
 			{
 				flag =true;
 			}
