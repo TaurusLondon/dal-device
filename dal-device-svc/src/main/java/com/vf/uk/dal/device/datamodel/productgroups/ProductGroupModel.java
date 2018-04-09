@@ -62,10 +62,8 @@ public class ProductGroupModel {
 
 	private String nonUpgradeLeadPlanId;
 	
-	@JsonFormat(pattern="EEE MMM dd HH:mm:ss z yyyy")
 	private Date createDate;
 	
-	@JsonFormat(pattern="EEE MMM dd HH:mm:ss z yyyy")
 	private Date modifiedDate;
 
 	public String getId() {

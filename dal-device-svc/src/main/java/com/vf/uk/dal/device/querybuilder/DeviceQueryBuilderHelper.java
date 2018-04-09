@@ -512,7 +512,7 @@ public class DeviceQueryBuilderHelper {
 			searchRequestBuilder.size(displayNames.size());
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
 			qb.must(QueryBuilders.termQuery(Constants.STRING_TYPE+Constants.STRING_KEY_WORD, groupType));
-			qb.must(QueryBuilders.termsQuery(Constants.STRING_DISPLAY_NAME+Constants.STRING_KEY_WORD, displayNames));
+			qb.must(QueryBuilders.termsQuery(Constants.STRING_GROUP_NAME+Constants.STRING_KEY_WORD, displayNames));
 			searchRequestBuilder.query(qb);
 			searchRequest.source(searchRequestBuilder);
 
