@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.aspectj.lang.JoinPoint;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,6 +36,7 @@ import com.vf.uk.dal.common.registry.client.Utility;
 import com.vf.uk.dal.common.urlparams.FilterCriteria;
 import com.vf.uk.dal.common.urlparams.FilterOperator;
 import com.vf.uk.dal.common.urlparams.PaginationCriteria;
+import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
 import com.vf.uk.dal.device.beans.test.DeviceTestBeans;
 import com.vf.uk.dal.device.common.test.CommonMethods;
 import com.vf.uk.dal.device.controller.DeviceController;
@@ -93,9 +95,13 @@ public class DeviceControllerTest {
 
 	@MockBean
 	DeviceTileCacheDAO deviceTileCache;
+	
+	@Autowired
+	CatalogServiceAspect aspect;
 
 	@Before
 	public void setupMockBehaviour() throws Exception {
+		aspect.beforeAdvice(null);
 		String jsonString = new String(Utility.readFile("\\rest-mock\\COMMON-V1.json"));
 		CurrentJourney obj = new ObjectMapper().readValue(jsonString, CurrentJourney.class);
 		given(registry.getRestTemplate()).willReturn(restTemplate);

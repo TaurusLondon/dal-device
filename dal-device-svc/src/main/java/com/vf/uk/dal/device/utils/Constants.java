@@ -313,7 +313,7 @@ public class Constants {
 	
 	public static final String STRING_DISPLAY_NAME="displayName";
 	
-	public static ThreadLocal<String> CATALOG_VERSION=new ThreadLocal<>();
+	public static final ThreadLocal<String> CATALOG_VERSION=new ThreadLocal<>();
 	
 	public static final String  ELASTIC_SEARCH_ALIAS="ELASTIC_SEARCH_ALIAS";
 	public static final String  DEFAULT_ELASTIC_SEARCH_ALIAS ="vodafoneindex";
