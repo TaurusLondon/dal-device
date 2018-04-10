@@ -4525,21 +4525,21 @@ public class DeviceServiceImpl implements DeviceService {
 			LogHelper.info(this, "converting elasticsearch response into Commercial Bundle List object response");
 			List<CommercialBundle> list1= response.getListOfCommercialBundleFromJson(commercialBundleResponse);
 			
-			List<String> bundleIds2=bundleIds.subList(bundleOneForthSize+1, (bundleOneForthSize+bundleOneForthSize));
+			List<String> bundleIds2=bundleIds.subList(bundleOneForthSize, (bundleOneForthSize+bundleOneForthSize));
 			SearchRequest queryContextMap1 = DeviceQueryBuilderHelper
 					.searchQueryForListOfCommercialProductAndCommercialBundle(bundleIds2, Constants.STRING_BUNDLE);
 			SearchResponse commercialBundleResponse1 = deviceDao.getResponseFromDataSource(queryContextMap1);
 			LogHelper.info(this, "converting elasticsearch response into Commercial Bundle List object response");
 			List<CommercialBundle> list2= response.getListOfCommercialBundleFromJson(commercialBundleResponse1);
 			
-			List<String> bundleIds3=bundleIds.subList((bundleOneForthSize+bundleOneForthSize)+1, (bundleOneForthSize+bundleOneForthSize+bundleOneForthSize));
+			List<String> bundleIds3=bundleIds.subList((bundleOneForthSize+bundleOneForthSize), (bundleOneForthSize+bundleOneForthSize+bundleOneForthSize));
 			SearchRequest queryContextMap2 = DeviceQueryBuilderHelper
 					.searchQueryForListOfCommercialProductAndCommercialBundle(bundleIds3, Constants.STRING_BUNDLE);
 			SearchResponse commercialBundleResponse2 = deviceDao.getResponseFromDataSource(queryContextMap2);
 			LogHelper.info(this, "converting elasticsearch response into Commercial Bundle List object response");
 			List<CommercialBundle> list3= response.getListOfCommercialBundleFromJson(commercialBundleResponse2);
 			
-			List<String> bundleIds4=bundleIds.subList((bundleOneForthSize+bundleOneForthSize+bundleOneForthSize)+1, (bundleIds.size()));
+			List<String> bundleIds4=bundleIds.subList((bundleOneForthSize+bundleOneForthSize+bundleOneForthSize), (bundleIds.size()));
 			SearchRequest queryContextMap3 = DeviceQueryBuilderHelper
 					.searchQueryForListOfCommercialProductAndCommercialBundle(bundleIds4, Constants.STRING_BUNDLE);
 			SearchResponse commercialBundleResponse3 = deviceDao.getResponseFromDataSource(queryContextMap3);

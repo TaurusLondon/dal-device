@@ -7,7 +7,9 @@ import java.net.URL;
 import java.net.UnknownHostException;
 
 import org.apache.http.HttpHost;
+import org.apache.http.client.config.RequestConfig;
 import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -108,7 +110,15 @@ public class ElasticsearchRestCient {
 		try {
 			LogHelper.info(RestClient.class, "Rest client creation with VPC end point::" + vpcEndPoint);
 			InetAddress address = InetAddress.getByName(new URL(vpcEndPoint).getHost());
-			restClient= new RestHighLevelClient(  RestClient.builder(new HttpHost(address, address.getHostName(), Constants.DEFAULT_PORT, Constants.HTTPS_SCHEME)));
+			restClient= new RestHighLevelClient(RestClient.builder(new HttpHost(address, address.getHostName(), 
+					Constants.DEFAULT_PORT, Constants.HTTPS_SCHEME)).setRequestConfigCallback(new RestClientBuilder.RequestConfigCallback() {
+			            @Override
+			            public RequestConfig.Builder customizeRequestConfig(RequestConfig.Builder requestConfigBuilder) {
+			                return requestConfigBuilder.setConnectTimeout(5000)
+			                        .setSocketTimeout(60000);
+			            }
+			        })
+			        .setMaxRetryTimeoutMillis(60000));
 			LogHelper.info(RestClient.class, "Rest Client created Successfully  with  VPC End point ::" + vpcEndPoint);
 		} catch (UnknownHostException | MalformedURLException e) {
 			LogHelper.error(RestClient.class, "Error ocuured while creating ES Rest client" + e);
