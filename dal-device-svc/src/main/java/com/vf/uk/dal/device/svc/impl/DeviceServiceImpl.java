@@ -1564,8 +1564,9 @@ public class DeviceServiceImpl implements DeviceService {
 				List<CommercialProduct> listOfCommercialProduct  = getListOfCommercialProduct(listOfDeviceId);;
 				if (listOfCommercialProduct != null && !listOfCommercialProduct.isEmpty()) {
 					listOfCommercialProduct.forEach(commercialProduct -> {
-						if (commercialProduct.getListOfCompatiblePlanIds() != null
-								&& !commercialProduct.getListOfCompatiblePlanIds().isEmpty()) {
+						List<String> listOfCompatiblePlanIds=commercialProduct.getListOfCompatiblePlanIds()== null || 
+								commercialProduct.getListOfCompatiblePlanIds().isEmpty()?Collections.emptyList():commercialProduct.getListOfCompatiblePlanIds();
+						if (!listOfCompatiblePlanIds.isEmpty()) {
 							List<String> compatibleBundleIds = commercialProduct.getListOfCompatiblePlanIds();
 							listOfCimpatiblePlanMap.put(commercialProduct.getId(), compatibleBundleIds);
 							setOfCompatiblePlanIds.addAll(compatibleBundleIds);
@@ -1577,8 +1578,7 @@ public class DeviceServiceImpl implements DeviceService {
 								bundleAndHardwareTupleListJourneyAware.add(bundleAndHardwareTupleLocal);
 							});
 						}
-						if (StringUtils.isNotBlank(commercialProduct.getLeadPlanId()) && commercialProduct
-								.getListOfCompatiblePlanIds().contains(commercialProduct.getLeadPlanId())) {
+						if (StringUtils.isNotBlank(commercialProduct.getLeadPlanId()) && listOfCompatiblePlanIds.contains(commercialProduct.getLeadPlanId())) {
 							listOfLeadPlanId.put(commercialProduct.getId(), commercialProduct.getLeadPlanId());
 							BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
 							bundleAndHardwareTuple.setBundleId(commercialProduct.getLeadPlanId());
@@ -4500,7 +4500,7 @@ public class DeviceServiceImpl implements DeviceService {
 	 * @return
 	 */
 	public List<CommercialBundle> getListOfCommercialBundle(List<String> bundleIds) {
-		if(bundleIds.size()>80)
+		if(bundleIds.size()>80 && bundleIds.size()<201)
 		{
 			List<String> bundleIds1=bundleIds.subList(0, (bundleIds.size()/2));
 			List<String> bundleIds2=bundleIds.subList((bundleIds.size()/2), bundleIds.size());
@@ -4516,6 +4516,40 @@ public class DeviceServiceImpl implements DeviceService {
 			list1.addAll(response.getListOfCommercialBundleFromJson(commercialBundleResponse1));
 			return list1;
 			
+		}else if(bundleIds.size()>200){
+			int bundleOneForthSize=bundleIds.size()/4;
+			List<String> bundleIds1=bundleIds.subList(0, bundleOneForthSize);
+			SearchRequest queryContextMap = DeviceQueryBuilderHelper
+					.searchQueryForListOfCommercialProductAndCommercialBundle(bundleIds1, Constants.STRING_BUNDLE);
+			SearchResponse commercialBundleResponse = deviceDao.getResponseFromDataSource(queryContextMap);
+			LogHelper.info(this, "converting elasticsearch response into Commercial Bundle List object response");
+			List<CommercialBundle> list1= response.getListOfCommercialBundleFromJson(commercialBundleResponse);
+			
+			List<String> bundleIds2=bundleIds.subList(bundleOneForthSize+1, (bundleOneForthSize+bundleOneForthSize));
+			SearchRequest queryContextMap1 = DeviceQueryBuilderHelper
+					.searchQueryForListOfCommercialProductAndCommercialBundle(bundleIds2, Constants.STRING_BUNDLE);
+			SearchResponse commercialBundleResponse1 = deviceDao.getResponseFromDataSource(queryContextMap1);
+			LogHelper.info(this, "converting elasticsearch response into Commercial Bundle List object response");
+			List<CommercialBundle> list2= response.getListOfCommercialBundleFromJson(commercialBundleResponse1);
+			
+			List<String> bundleIds3=bundleIds.subList((bundleOneForthSize+bundleOneForthSize)+1, (bundleOneForthSize+bundleOneForthSize+bundleOneForthSize));
+			SearchRequest queryContextMap2 = DeviceQueryBuilderHelper
+					.searchQueryForListOfCommercialProductAndCommercialBundle(bundleIds3, Constants.STRING_BUNDLE);
+			SearchResponse commercialBundleResponse2 = deviceDao.getResponseFromDataSource(queryContextMap2);
+			LogHelper.info(this, "converting elasticsearch response into Commercial Bundle List object response");
+			List<CommercialBundle> list3= response.getListOfCommercialBundleFromJson(commercialBundleResponse2);
+			
+			List<String> bundleIds4=bundleIds.subList((bundleOneForthSize+bundleOneForthSize+bundleOneForthSize)+1, (bundleIds.size()));
+			SearchRequest queryContextMap3 = DeviceQueryBuilderHelper
+					.searchQueryForListOfCommercialProductAndCommercialBundle(bundleIds4, Constants.STRING_BUNDLE);
+			SearchResponse commercialBundleResponse3 = deviceDao.getResponseFromDataSource(queryContextMap3);
+			LogHelper.info(this, "converting elasticsearch response into Commercial Bundle List object response");
+			List<CommercialBundle> list4= response.getListOfCommercialBundleFromJson(commercialBundleResponse3);
+			
+			list1.addAll(list2);
+			list1.addAll(list3);
+			list1.addAll(list4);
+			return list1;
 		}else{
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper
 				.searchQueryForListOfCommercialProductAndCommercialBundle(bundleIds, Constants.STRING_BUNDLE);

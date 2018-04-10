@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class MerchandisingPromotionModel {
 
-	@JsonProperty("id")
 	private String tag;
 
 	private String label;
@@ -20,7 +19,6 @@ public class MerchandisingPromotionModel {
 
 	private String productPath;
 	
-	@JsonProperty("type")
 	private String objectType;
 	
 	@JsonProperty("desc")
