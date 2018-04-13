@@ -4500,7 +4500,7 @@ public class DeviceServiceImpl implements DeviceService {
 	 * @return
 	 */
 	public List<CommercialBundle> getListOfCommercialBundle(List<String> bundleIds) {
-		if(bundleIds.size()>80 && bundleIds.size()<201)
+		/*if(bundleIds.size()>80 && bundleIds.size()<201)
 		{
 			List<String> bundleIds1=bundleIds.subList(0, (bundleIds.size()/2));
 			List<String> bundleIds2=bundleIds.subList((bundleIds.size()/2), bundleIds.size());
@@ -4550,13 +4550,13 @@ public class DeviceServiceImpl implements DeviceService {
 			list1.addAll(list3);
 			list1.addAll(list4);
 			return list1;
-		}else{
+		}else{*/
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper
 				.searchQueryForListOfCommercialProductAndCommercialBundle(bundleIds, Constants.STRING_BUNDLE);
 		SearchResponse commercialBundleResponse = deviceDao.getResponseFromDataSource(queryContextMap);
 		LogHelper.info(this, "converting elasticsearch response into Commercial Bundle List object response");
 		return response.getListOfCommercialBundleFromJson(commercialBundleResponse);
-		}
+		//}
 	}
 	
 	/**

@@ -161,7 +161,6 @@ public class DeviceQueryBuilderHelper {
 				qb.must(QueryBuilders.termsQuery(Constants.STRING_ID + Constants.STRING_KEY_WORD, idsOrNames));
 			} else {
 				qb.must(QueryBuilders.termsQuery(Constants.STRING_GROUP_NAME + Constants.STRING_KEY_WORD, idsOrNames));
-				
 			}
 				qb.must(QueryBuilders.termQuery(Constants.STRING_ALL_TYPE + Constants.STRING_KEY_WORD, Constants.STRING_RAW+type).boost(2.0F)).boost(3.0F);
 			searchRequestBuilder.query(qb);
