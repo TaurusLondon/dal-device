@@ -4,11 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.validation.Valid;
+
+import org.springframework.validation.annotation.Validated;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * PriceForBundleAndHardware
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-04-14T09:23:00.845Z")
+@Validated
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-04-17T05:45:22.340Z")
 
 public class PriceForBundleAndHardware   {
   @JsonProperty("bundlePrice")
@@ -30,189 +38,160 @@ public class PriceForBundleAndHardware   {
   private Price monthlyDiscountPrice = null;
 
   @JsonProperty("stepPrices")
-  private List<StepPricingInfo> stepPrices = new ArrayList<>();
-  /**
-   * 
-   * @param bundlePrice
-   * @return
-   */
+  @Valid
+  private List<StepPricingInfo> stepPrices = null;
+
   public PriceForBundleAndHardware bundlePrice(BundlePrice bundlePrice) {
     this.bundlePrice = bundlePrice;
     return this;
   }
 
-   /**
+  /**
    * Get bundlePrice
    * @return bundlePrice
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
 
   public BundlePrice getBundlePrice() {
     return bundlePrice;
   }
-  /**
-   * 
-   * @param bundlePrice
-   */
+
   public void setBundlePrice(BundlePrice bundlePrice) {
     this.bundlePrice = bundlePrice;
   }
-  /**
-   * 
-   * @param hardwarePrice
-   * @return
-   */
+
   public PriceForBundleAndHardware hardwarePrice(HardwarePrice hardwarePrice) {
     this.hardwarePrice = hardwarePrice;
     return this;
   }
 
-   /**
+  /**
    * Get hardwarePrice
    * @return hardwarePrice
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
 
   public HardwarePrice getHardwarePrice() {
     return hardwarePrice;
   }
-  /**
-   * 
-   * @param hardwarePrice
-   */
+
   public void setHardwarePrice(HardwarePrice hardwarePrice) {
     this.hardwarePrice = hardwarePrice;
   }
-  /**
-   * 
-   * @param oneOffPrice
-   * @return
-   */
+
   public PriceForBundleAndHardware oneOffPrice(Price oneOffPrice) {
     this.oneOffPrice = oneOffPrice;
     return this;
   }
 
-   /**
+  /**
    * Get oneOffPrice
    * @return oneOffPrice
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
 
   public Price getOneOffPrice() {
     return oneOffPrice;
   }
-  /**
-   * /**
-   * 
-   * @param oneOffPrice
-   */
+
   public void setOneOffPrice(Price oneOffPrice) {
     this.oneOffPrice = oneOffPrice;
   }
-  /**
-   * 
-   * @param oneOffDiscountPrice
-   * @return
-   */
+
   public PriceForBundleAndHardware oneOffDiscountPrice(Price oneOffDiscountPrice) {
     this.oneOffDiscountPrice = oneOffDiscountPrice;
     return this;
   }
 
-   /**
+  /**
    * Get oneOffDiscountPrice
    * @return oneOffDiscountPrice
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
 
   public Price getOneOffDiscountPrice() {
     return oneOffDiscountPrice;
   }
-  /**
-   * 
-   * @param oneOffDiscountPrice
-   */
+
   public void setOneOffDiscountPrice(Price oneOffDiscountPrice) {
     this.oneOffDiscountPrice = oneOffDiscountPrice;
   }
-  /**
-   * 
-   * @param monthlyPrice
-   * @return
-   */
+
   public PriceForBundleAndHardware monthlyPrice(Price monthlyPrice) {
     this.monthlyPrice = monthlyPrice;
     return this;
   }
 
-   /**
+  /**
    * Get monthlyPrice
    * @return monthlyPrice
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
 
   public Price getMonthlyPrice() {
     return monthlyPrice;
   }
-  /**
-   * 
-   * @param monthlyPrice
-   */
+
   public void setMonthlyPrice(Price monthlyPrice) {
     this.monthlyPrice = monthlyPrice;
   }
-  /**
-   * 
-   * @param monthlyDiscountPrice
-   * @return
-   */
+
   public PriceForBundleAndHardware monthlyDiscountPrice(Price monthlyDiscountPrice) {
     this.monthlyDiscountPrice = monthlyDiscountPrice;
     return this;
   }
 
-   /**
+  /**
    * Get monthlyDiscountPrice
    * @return monthlyDiscountPrice
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
 
   public Price getMonthlyDiscountPrice() {
     return monthlyDiscountPrice;
   }
-  /**
-   * 
-   * @param monthlyDiscountPrice
-   */
+
   public void setMonthlyDiscountPrice(Price monthlyDiscountPrice) {
     this.monthlyDiscountPrice = monthlyDiscountPrice;
   }
-  /**
-   * 
-   * @param stepPrices
-   * @return
-   */
+
   public PriceForBundleAndHardware stepPrices(List<StepPricingInfo> stepPrices) {
     this.stepPrices = stepPrices;
     return this;
   }
-  /**
-   * 
-   * @param stepPricesItem
-   * @return
-   */
+
   public PriceForBundleAndHardware addStepPricesItem(StepPricingInfo stepPricesItem) {
+    if (this.stepPrices == null) {
+      this.stepPrices = new ArrayList<StepPricingInfo>();
+    }
     this.stepPrices.add(stepPricesItem);
     return this;
   }
 
-   /**
+  /**
    * Get stepPrices
    * @return stepPrices
   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
 
   public List<StepPricingInfo> getStepPrices() {
     return stepPrices;
   }
-  /**
-   * 
-   * @param stepPrices
-   */
+
   public void setStepPrices(List<StepPricingInfo> stepPrices) {
     this.stepPrices = stepPrices;
   }
