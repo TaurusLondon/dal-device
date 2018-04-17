@@ -412,10 +412,12 @@ public class DaoUtils {
 		deviceDetails.setMerchandisingControl(merchandisingControl);
 
 		List<MerchandisingPromotions> listOfMerchandisingPromotion = new ArrayList<>();
-		for (String singlePromotion : cohProduct.getPromoteAs().getPromotionName()) {
-			MerchandisingPromotions merchandisingPromotion = new MerchandisingPromotions();
-			merchandisingPromotion.setPromotionName(singlePromotion);
-			listOfMerchandisingPromotion.add(merchandisingPromotion);
+		if (cohProduct.getPromoteAs()!=null && !cohProduct.getPromoteAs().getPromotionName().isEmpty()) {
+			for (String singlePromotion : cohProduct.getPromoteAs().getPromotionName()) {
+				MerchandisingPromotions merchandisingPromotion = new MerchandisingPromotions();
+				merchandisingPromotion.setPromotionName(singlePromotion);
+				listOfMerchandisingPromotion.add(merchandisingPromotion);
+			} 
 		}
 		deviceDetails.setMerchandisingPromotion(listOfMerchandisingPromotion);
 
