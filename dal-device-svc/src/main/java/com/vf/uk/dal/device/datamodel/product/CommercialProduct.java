@@ -56,7 +56,7 @@ public class CommercialProduct {
 	
 	protected String seoIndex;
 	
-	protected String seoRobots;
+	protected List<String> seoRobots;
 	
 	protected String productSubClass;
 
@@ -266,10 +266,10 @@ public class CommercialProduct {
 	public void setSeoIndex(String seoIndex) {
 		this.seoIndex = seoIndex;
 	}
-	public String getSeoRobots() {
+	public List<String> getSeoRobots() {
 		return seoRobots;
 	}
-	public void setSeoRobots(String seoRobots) {
+	public void setSeoRobots(List<String> seoRobots) {
 		this.seoRobots = seoRobots;
 	}
 	public String getProductSubClass() {
