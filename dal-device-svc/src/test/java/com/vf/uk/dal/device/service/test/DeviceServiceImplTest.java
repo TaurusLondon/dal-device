@@ -151,7 +151,7 @@ public class DeviceServiceImplTest
 		bundleAndHardwareTupleList.add(bundleAndHardwareTuple);
 		given(this.deviceDAOMock.getPriceForBundleAndHardware(bundleAndHardwareTupleList,null,null)).willReturn(CommonMethods.getPriceForBundleAndHardware1());
 		
-		given(restTemplate.postForObject("http://PRICE-V1/es/price/product",
+		given(restTemplate.postForObject("http://PRICE-V1/price/product",
 		CommonMethods.bundleDeviceAndProductsList_For_GetAccessoriesOfDevice(), PriceForProduct.class))
 				.willReturn(CommonMethods.getPriceForProduct_For_GetAccessoriesForDevice());
 		
@@ -657,7 +657,7 @@ public class DeviceServiceImplTest
 	
 	public void testForGetBundleDetailsFromComplansListingAPIForException()
 	{
-		given(restTemplate.getForObject("http://BUNDLES-V1/es/bundles/catalogue/bundle/queries/byDeviceId/093353//?sort=priority",BundleDetails.class)).willThrow(new ApplicationException(""));
+		given(restTemplate.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byDeviceId/093353//?sort=priority",BundleDetails.class)).willThrow(new ApplicationException(""));
 		CommonUtility.getBundleDetailsFromComplansListingAPI("093353", "priority",
 				registry);
 	}
@@ -802,7 +802,7 @@ public class DeviceServiceImplTest
 		try {
 			jsonString = new String(Utility.readFile("\\rest-mock\\PRICE-V1.json"));
 			com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[] obj=mapper.readValue(jsonString, com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[].class);
-			given(restTemplate.postForObject("http://PRICE-V1/es/price/calculateForBundleAndHardware" ,requestForBundleAndHardware,com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[].class)).willReturn(obj);
+			given(restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware" ,requestForBundleAndHardware,com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[].class)).willReturn(obj);
 			
 			RequestForBundleAndHardware requestForBundleAndHardwarelocal=new RequestForBundleAndHardware();
 			
@@ -830,7 +830,7 @@ public class DeviceServiceImplTest
 			requestForBundleAndHardwarelocal.setBundleAndHardwareList(bundleAndHardwareTupleListlocal);
 			requestForBundleAndHardwarelocal.setOfferCode(null);
 			
-			given(restTemplate.postForObject("http://PRICE-V1/es/price/calculateForBundleAndHardware" ,requestForBundleAndHardwarelocal,com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[].class)).willReturn(obj);
+			given(restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware" ,requestForBundleAndHardwarelocal,com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[].class)).willReturn(obj);
 		
 			deviceService.getDeviceListFromPricing("DEVICE_PAYM");
 		}
@@ -1054,7 +1054,7 @@ public class DeviceServiceImplTest
 		mapper1.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
 		BundleDetailsForAppSrv obj=mapper1.readValue(jsonString, BundleDetailsForAppSrv.class);  
         given(registry.getRestTemplate()).willReturn(restTemplate);
-        given(restTemplate.getForObject("http://BUNDLES-V1/es/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=123&journeyType=Upgrade", BundleDetailsForAppSrv.class )).willReturn(obj);
+        given(restTemplate.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=123&journeyType=Upgrade", BundleDetailsForAppSrv.class )).willReturn(obj);
 		Assert.assertNotNull(deviceService.getLeadPlanIdForDeviceId("123","Upgrade"));
 	}
 	@Test
@@ -1066,7 +1066,7 @@ public class DeviceServiceImplTest
 		mapper1.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
 		BundleDetailsForAppSrv obj=mapper1.readValue(jsonString, BundleDetailsForAppSrv.class);  
         given(registry.getRestTemplate()).willReturn(restTemplate);
-        given(restTemplate.getForObject("http://BUNDLES-V1/es/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=123&journeyType=Upgrade", BundleDetailsForAppSrv.class )).willReturn(obj);
+        given(restTemplate.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=123&journeyType=Upgrade", BundleDetailsForAppSrv.class )).willReturn(obj);
 		Assert.assertNotNull(deviceService.getLeadPlanIdForDeviceId("123","Upgrade"));
 	}
 	@Test
@@ -1183,7 +1183,7 @@ public class DeviceServiceImplTest
 		PriceForProduct price = new PriceForProduct();
 		price.setPriceForAccessoryes(null);
 		price.setPriceForExtras(null);
-		given(restTemplate.postForObject("http://PRICE-V1/es/price/product" ,deviceAndProductsList,PriceForProduct.class)).willReturn(price);
+		given(restTemplate.postForObject("http://PRICE-V1/price/product" ,deviceAndProductsList,PriceForProduct.class)).willReturn(price);
 		try{
 			CommonUtility.getAccessoryPriceDetails(deviceAndProductsList, registry);
 		}

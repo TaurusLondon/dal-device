@@ -105,7 +105,7 @@ public class DeviceControllerTest {
 		String jsonString = new String(Utility.readFile("\\rest-mock\\COMMON-V1.json"));
 		CurrentJourney obj = new ObjectMapper().readValue(jsonString, CurrentJourney.class);
 		given(registry.getRestTemplate()).willReturn(restTemplate);
-		given(restTemplate.getForObject("http://BUNDLES-V1/es/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=" +"093353"+"&journeyType="+null, BundleDetailsForAppSrv.class )).willReturn(CommonMethods.getCoupledBundleListForDevice());
+		given(restTemplate.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=" +"093353"+"&journeyType="+null, BundleDetailsForAppSrv.class )).willReturn(CommonMethods.getCoupledBundleListForDevice());
 		given(restTemplate.getForObject(
 				"http://COMMON-V1/common/journey/" + "c1a42269-6562-4c96-b3be-1ca2a6681d57" + "/queries/currentJourney",
 				CurrentJourney.class)).willReturn(obj);
@@ -338,7 +338,7 @@ public class DeviceControllerTest {
 			String jsonString = new String(Utility.readFile("\\BundleandhardwarePromotuions.json"));
 			BundleAndHardwarePromotions[] obj = new ObjectMapper().readValue(jsonString,
 					BundleAndHardwarePromotions[].class);
-			given(restTemplate.postForObject("http://PROMOTION-V1/es/promotion/queries/ForBundleAndHardware", request,
+			given(restTemplate.postForObject("http://PROMOTION-V1/promotion/queries/ForBundleAndHardware", request,
 					BundleAndHardwarePromotions[].class)).willReturn(obj);
 			String url = "http://CUSTOMER-V1/customer/subscription/msisdn:7741655541/sourcePackageSummary";
 			given(restTemplate.getForObject(url, SourcePackageSummary.class)).willReturn(CommonMethods.getSourcePackageSummary());
@@ -656,7 +656,7 @@ public class DeviceControllerTest {
 		bundleList.add(bundle);
 		requestForBundleAndHardware.setBundleAndHardwareList(bundleList);
 		requestForBundleAndHardware.setOfferCode("W_HH_PAYM_OC_01");
-		given(restTemplate.postForObject("http://PRICE-V1/es/price/calculateForBundleAndHardware",
+		given(restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
 				requestForBundleAndHardware, com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[].class))
 						.willReturn(obj);
 
@@ -696,7 +696,7 @@ public class DeviceControllerTest {
 		bundleList.add(bundle);
 		requestForBundleAndHardware.setBundleAndHardwareList(bundleList);
 		requestForBundleAndHardware.setOfferCode("W_HH_PAYM_OC_01");
-		given(restTemplate.postForObject("http://PRICE-V1/es/price/calculateForBundleAndHardware",
+		given(restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
 				requestForBundleAndHardware, com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[].class))
 						.willReturn(obj1);
 
@@ -709,7 +709,7 @@ public class DeviceControllerTest {
 		BundleDetailsForAppSrv obj = mapper1.readValue(jsonString, BundleDetailsForAppSrv.class);
 		given(registry.getRestTemplate()).willReturn(restTemplate);
 		given(restTemplate.getForObject(
-				"http://BUNDLES-V1/es/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=123",
+				"http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=123",
 				BundleDetailsForAppSrv.class)).willReturn(obj);
 		try {
 			deviceController.cacheDeviceTile();
@@ -1528,7 +1528,7 @@ public class DeviceControllerTest {
 			requestForBundleAndHardware.setBundleAndHardwareList(bundleList);
 			requestForBundleAndHardware.setOfferCode("NA");
 			requestForBundleAndHardware.setPackageType("Upgrade");
-			given(restTemplate.postForObject("http://PRICE-V1/es/price/calculateForBundleAndHardware",
+			given(restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
 					requestForBundleAndHardware, com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[].class))
 							.willReturn(obj);
 
@@ -1581,7 +1581,7 @@ public class DeviceControllerTest {
 	@Test
 	public void notNullTestForgetDeviceDetails1() {
 		DeviceDetails deviceDetails = new DeviceDetails();
-		given(restTemplate.getForObject("http://BUNDLES-V1/es/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=093353", BundleDetailsForAppSrv.class)).willReturn(CommonMethods.getCoupledBundleListForDevice());
+		given(restTemplate.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=093353", BundleDetailsForAppSrv.class)).willReturn(CommonMethods.getCoupledBundleListForDevice());
 		deviceDetails = deviceController.getDeviceDetails("093353",null,null);
 		Assert.assertNotNull(deviceDetails);
 	}
@@ -1657,7 +1657,7 @@ public class DeviceControllerTest {
 		requestForBundleAndHardware.setBundleAndHardwareList(bundleList);
 		requestForBundleAndHardware.setOfferCode(null);
 		requestForBundleAndHardware.setPackageType(null);
-		given(restTemplate.postForObject("http://PRICE-V1/es/price/calculateForBundleAndHardware",
+		given(restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
 				requestForBundleAndHardware, com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[].class))
 						.willReturn(obj);
 
@@ -1764,7 +1764,7 @@ public class DeviceControllerTest {
 		deviceAndProductsList.setOfferCode(null);
 		deviceAndProductsList.setPackageType(null);
 		given(registry.getRestTemplate()).willReturn(restTemplate);
-		given(restTemplate.postForObject("http://PRICE-V1/es/price/product",
+		given(restTemplate.postForObject("http://PRICE-V1/price/product",
 				deviceAndProductsList, PriceForProduct.class))
 				.willReturn(CommonMethods.getPriceForProduct_For_GetAccessories());
 		

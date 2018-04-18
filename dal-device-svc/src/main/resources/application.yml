@@ -6,7 +6,7 @@ info:
     version: @project.version@
     projectName: @project.artifactId@
 server:
-  contextPath: /es/devices/catalogue
+  contextPath: /devices/catalogue
   port: 8080
   ssl:
     enabled: true

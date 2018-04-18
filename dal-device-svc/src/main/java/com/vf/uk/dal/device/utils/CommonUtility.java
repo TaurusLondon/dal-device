@@ -92,7 +92,7 @@ public  class CommonUtility {
 		PriceForBundleAndHardware[] client = new PriceForBundleAndHardware[7000];
 		try {
 			LogHelper.info(CommonUtility.class, "Start --> Calling  Price.calculateForBundleAndHardware");
-			client = restTemplate.postForObject("http://PRICE-V1/es/price/calculateForBundleAndHardware",
+			client = restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
 					requestForBundleAndHardware, PriceForBundleAndHardware[].class);
 			LogHelper.info(CommonUtility.class, "End --> Calling  Price.calculateForBundleAndHardware");
 		} catch (Exception e) {
@@ -113,7 +113,7 @@ public  class CommonUtility {
 		try {
 			LogHelper.info(CommonUtility.class, "Start --> Calling  Bundle.getCoupledBundleList");
 			RestTemplate restTemplate =registryClient.getRestTemplate();
-			return restTemplate.getForObject("http://BUNDLES-V1/es/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=" +deviceId+"&journeyType="+journeyType, BundleDetailsForAppSrv.class );
+			return restTemplate.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=" +deviceId+"&journeyType="+journeyType, BundleDetailsForAppSrv.class );
 		} catch (Exception e) {
 			LogHelper.error(CommonUtility.class, ""+e);
 			throw new ApplicationException(ExceptionMessages.COUPLEBUNDLELIST_API_EXCEPTION);
@@ -133,7 +133,7 @@ public  class CommonUtility {
 			RegistryClient registryClient) {
 		RestTemplate restTemplate = registryClient.getRestTemplate();
 		LogHelper.info(CommonUtility.class, "Start -->  calling  Bundle.GetCompatibleListAPI");
-		String URL = "http://BUNDLES-V1/es/bundles/catalogue/bundle/queries/byDeviceId/" + deviceId + "/";
+		String URL = "http://BUNDLES-V1/bundles/catalogue/bundle/queries/byDeviceId/" + deviceId + "/";
 		if (sortCriteria != null && StringUtils.isNotBlank(sortCriteria)) {
 			URL += "/?sort=" + sortCriteria;
 		}
@@ -190,7 +190,7 @@ public  class CommonUtility {
 		PriceForProduct client;
 		try{
 			LogHelper.info(CommonUtility.class, "Start -->  calling  Price.product");
-		 client=restTemplate.postForObject("http://PRICE-V1/es/price/product" ,bundleDeviceAndProductsList,PriceForProduct.class);
+		 client=restTemplate.postForObject("http://PRICE-V1/price/product" ,bundleDeviceAndProductsList,PriceForProduct.class);
 		 LogHelper.info(CommonUtility.class, "End -->  calling  Price.product");
 		}catch(Exception e){
 			LogHelper.error(CommonUtility.class, "getAccessoryPriceDetails API Exception---------------"+e);
@@ -209,7 +209,7 @@ public  class CommonUtility {
 			requestForBundleAndHardware.setOfferCode(offerCode);
 			requestForBundleAndHardware.setPackageType(journeyType);
 			LogHelper.info(CommonUtility.class, "Start --> Calling  Price.calculateForBundleAndHardware");
-			com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[] client=restTemplate.postForObject("http://PRICE-V1/es/price/calculateForBundleAndHardware" ,requestForBundleAndHardware,com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[].class);
+			com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[] client=restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware" ,requestForBundleAndHardware,com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[].class);
 			LogHelper.info(CommonUtility.class, "End --> Calling  Price.calculateForBundleAndHardware");
 			ObjectMapper mapper = new ObjectMapper();
 			priceList= mapper.convertValue(client, new TypeReference<List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>>(){});
@@ -396,8 +396,8 @@ public  class CommonUtility {
 		request.setJourneyType(journeyType);
 		BundleAndHardwarePromotions[] response = null;
 		try {
-			LogHelper.info(CommonUtility.class,"http://PROMOTION-V1/es/promotion/queries/ForBundleAndHardware------POST URL\n"+"PayLoad\n Start calling");
-			response = restTemplate.postForObject("http://PROMOTION-V1/es/promotion/queries/ForBundleAndHardware",
+			LogHelper.info(CommonUtility.class,"http://PROMOTION-V1/promotion/queries/ForBundleAndHardware------POST URL\n"+"PayLoad\n Start calling");
+			response = restTemplate.postForObject("http://PROMOTION-V1/promotion/queries/ForBundleAndHardware",
 					request, BundleAndHardwarePromotions[].class);
 		} catch (RestClientException e) {
 			// Stanley - Added error logging
