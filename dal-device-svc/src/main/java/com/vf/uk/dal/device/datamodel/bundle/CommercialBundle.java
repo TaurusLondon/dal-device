@@ -2,6 +2,8 @@ package com.vf.uk.dal.device.datamodel.bundle;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 public class CommercialBundle {
 	
@@ -60,6 +62,7 @@ public class CommercialBundle {
 	
 	private String seoIndex;
 	
+	@JsonIgnore
 	private String seoRobots;
 	
 	
