@@ -2394,7 +2394,9 @@ public class DaoUtils {
 						String hardwareMpType = null;
 						String hardwarePriceEstablishedLabel = null;
 						String hardwarePromotionMedia = null;
-						for (String mediaStr : productModel.getMerchandisingMedia()) {
+						List<String> listOfMerchendising=(productModel.getMerchandisingMedia()==null ||
+								productModel.getMerchandisingMedia().isEmpty())?Collections.emptyList():productModel.getMerchandisingMedia();
+						for (String mediaStr : listOfMerchendising) {
 
 							String[] mediaStrList = mediaStr.split("\\|");
 							if (mediaStrList.length == 7) {

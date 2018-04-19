@@ -1925,7 +1925,7 @@ public class DeviceDaoImpl implements DeviceDao {
 			UpdateRequest updateRequestForNull = new UpdateRequest(Constants.CATALOG_VERSION.get(), "models", id)
 			        .doc(org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder()
 			            .startObject()
-			            .field("_id", id )
+			            //.field("_id", id )
 			            .endObject());
 			restClient.update(updateRequestForNull);
 		} catch (IOException e) {

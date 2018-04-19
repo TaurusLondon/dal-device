@@ -1346,7 +1346,7 @@ public class DeviceServiceImpl implements DeviceService {
 					}
 					productModel.setMerchandisingMedia(merchandisngList);
 				}
-				String productIdForUpdate = Constants.STRING_PRODUCT+"product_" + deviceListObject.getDeviceId();
+				String productIdForUpdate = Constants.STRING_OPT+Constants.STRING_PRODUCT+"_" + deviceListObject.getDeviceId();
 				deviceDao.getUpdateElasticSearch(productIdForUpdate, mapper.writeValueAsString(productModel));
 
 				if (StringUtils.isNotBlank(deviceListObject.getProductGroupId())) {
@@ -1775,9 +1775,9 @@ public class DeviceServiceImpl implements DeviceService {
 									deviceSpecificCompatiblePlan.forEach(planId -> {
 										CommercialBundle commercialBundle = commercialBundleMap.get(planId);
 										String bundleId = commercialBundle.getId();
-										List<String> listOfPromoteAs = commercialBundle.getPromoteAs()
-												.getPromotionName();
-										if (!listOfPromoteAs.isEmpty()) {
+										List<String> listOfPromoteAs = commercialBundle.getPromoteAs()==null?Collections.emptyList():
+												commercialBundle.getPromoteAs().getPromotionName();
+										if (listOfPromoteAs!=null && !listOfPromoteAs.isEmpty()) {
 											listOfPromoteAs.forEach(promoteAs -> {
 												if (listOfOfferCodes.contains(promoteAs)) {
 													List<BundleAndHardwareTuple> bundleAndHardwareTupleListOffer = null;
@@ -1817,7 +1817,7 @@ public class DeviceServiceImpl implements DeviceService {
 						listOfPriceForBundleAndHardware.clear();
 						LogHelper.error(this, " Exception occured when call happen to compatible bundles api: " + e);
 					}
-				}
+			}
 				Map<String, Map<String, List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>>> ilsPriceForJourneyAwareOfferCodeMap = new HashMap<>();
 				if (!bundleHardwareTroupleMap.isEmpty()) {
 					String jouneyType = null;
