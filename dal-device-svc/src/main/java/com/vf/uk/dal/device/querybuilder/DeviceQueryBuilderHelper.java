@@ -246,6 +246,8 @@ public class DeviceQueryBuilderHelper {
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
 			qb.must(QueryBuilders.termsQuery(Constants.STRING_Tag + Constants.STRING_KEY_WORD,
 					promotionAsTags.toArray()));
+			qb.must(QueryBuilders.termQuery(Constants.STRING_ALL_TYPE + Constants.STRING_KEY_WORD,
+					Constants.STRING_RAW+Constants.STRING_PROMOTION));
 			searchRequestBuilder.query(qb);
 			LogHelper.info(DeviceQueryBuilderHelper.class,
 					" <-----  Setting up Elasticsearch parameters and query  ----->");

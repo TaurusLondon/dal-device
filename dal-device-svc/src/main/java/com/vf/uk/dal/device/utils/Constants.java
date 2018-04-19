@@ -326,4 +326,6 @@ public class Constants {
 	
 	public static final String STRING_OPT = "opt_";
 	
+	public static final String STRING_PROMOTION="promotion";
+	
 }
