@@ -1,5 +1,6 @@
 package com.vf.uk.dal.device.querybuilder;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -156,7 +157,6 @@ public class DeviceQueryBuilderHelper {
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(idsOrNames.size());
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
-
 			if (idsOrNames.get(0).matches(Constants.NUMER_REG_EXP)) {
 				qb.must(QueryBuilders.termsQuery(Constants.STRING_ID + Constants.STRING_KEY_WORD, idsOrNames));
 			} else {
@@ -521,6 +521,38 @@ public class DeviceQueryBuilderHelper {
 			LogHelper.error(DeviceQueryBuilderHelper.class,
 					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
 
+		}
+		return searchRequest;
+	}
+	
+	private static String[] includes=  null;
+	private static final String[] ex = new String[0];
+	static{
+		includes=new String[]{"id","name","desc","paymentType","availability","commitment","productLines",
+			"deviceSpecificPricing","serviceProducts","allowances","recurringCharge",
+			"displayName","listOfimageURLs","specificationGroups","bundleControl","displayGroup"};
+	}
+	public static SearchRequest searchQueryForListOfCommercialBundle(List<String> idsOrNames , String type) {
+		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
+		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
+		try {
+			
+			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
+			searchRequestBuilder.from(from);
+			searchRequestBuilder.size(idsOrNames.size());
+			
+			searchRequestBuilder.fetchSource(includes,ex );//storedFields(fields);
+			BoolQueryBuilder qb = QueryBuilders.boolQuery();
+				qb.must(QueryBuilders.termsQuery(Constants.STRING_ID + Constants.STRING_KEY_WORD, idsOrNames));
+				qb.must(QueryBuilders.termQuery(Constants.STRING_ALL_TYPE + Constants.STRING_KEY_WORD, Constants.STRING_RAW+type).boost(2.0F)).boost(3.0F);
+			searchRequestBuilder.query(qb);
+			LogHelper.info(DeviceQueryBuilderHelper.class,
+					" <-----  Setting up Elasticsearch parameters and query  ----->");
+			searchRequest.source(searchRequestBuilder);
+
+		} catch (Exception e) {
+			LogHelper.error(DeviceQueryBuilderHelper.class,
+					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
 		}
 		return searchRequest;
 	}

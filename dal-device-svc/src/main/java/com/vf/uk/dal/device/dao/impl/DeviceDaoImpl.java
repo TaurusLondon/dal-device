@@ -1111,6 +1111,10 @@ public class DeviceDaoImpl implements DeviceDao {
 			response = restClient.search(searchRequest,
 					new BasicHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString()));
 		} catch (Exception e) {
+			if(StringUtils.containsIgnoreCase(e.getMessage(), ExceptionMessages.Index_NOT_FOUND_EXCEPTION)){
+				LogHelper.error(this, ExceptionMessages.Index_NOT_FOUND_EXCEPTION);
+				throw new ApplicationException(ExceptionMessages.Index_NOT_FOUND_EXCEPTION);
+			}
 			LogHelper.error(this, "::::::Exception occured while querieng bundle models from ES " + e);
 		}
 		LogHelper.info(this, "End call time Elasticsearch" + System.currentTimeMillis());

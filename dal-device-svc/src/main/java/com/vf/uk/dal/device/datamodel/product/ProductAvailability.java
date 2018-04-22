@@ -21,7 +21,6 @@ public class ProductAvailability {
 	
     public ProductAvailability() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Date getStart() {

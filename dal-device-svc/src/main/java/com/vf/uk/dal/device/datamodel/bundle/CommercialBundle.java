@@ -19,7 +19,7 @@ public class CommercialBundle {
 	
 	private Commitment commitment;
 	
-	private List<String> categories;
+	//private List<String> categories;
 	
 	private List<String> productLines;// Changed from bundleLines to
 										// ProductLines
@@ -71,19 +71,19 @@ public class CommercialBundle {
 	
 	private String displayName;
 	
-	private String contentDesc;
+	//private String contentDesc;
 	
 	//private String fullDetails;
 	
-	private String descMobile;
+	//private String descMobile;
 	
-	private String fullDetailsMobile;
+	//private String fullDetailsMobile;
 	
-	private String contentVersion;
+	//private String contentVersion;
 	
 	private List<ImageURL> listOfimageURLs;
 	
-	private List<MediaURL> listOfmediaURLs;
+	//private List<MediaURL> listOfmediaURLs;
 	
 	private List<Group> specificationGroups;
 
@@ -91,9 +91,9 @@ public class CommercialBundle {
 	
 	private BundleControl bundleControl;
 	
-	private ProductGroups productGroups;
+	//private ProductGroups productGroups;
 	
-	private Misc misc;
+	//private Misc misc;
 	
 	private PromoteAs promoteAs;
 	
@@ -103,7 +103,7 @@ public class CommercialBundle {
 	
 	private String displayGroup;
 	
-	private String merchandisingVersion;
+	//private String merchandisingVersion;
 	
 	
 //	private List<BundlePriceOverride> bundlePriceOverride;
@@ -168,13 +168,13 @@ public class CommercialBundle {
 		this.commitment = commitment;
 	}
 
-	public List<String> getCategories() {
+	/*public List<String> getCategories() {
 		return categories;
 	}
 
 	public void setCategories(List<String> categories) {
 		this.categories = categories;
-	}
+	}*/
 
 	public List<String> getProductLines() {
 		return productLines;
@@ -328,7 +328,7 @@ public class CommercialBundle {
 		this.displayName = displayName;
 	}
 
-	public String getContentDesc() {
+	/*public String getContentDesc() {
 		return contentDesc;
 	}
 
@@ -336,13 +336,13 @@ public class CommercialBundle {
 		this.contentDesc = contentDesc;
 	}
 
-	/*public String getFullDetails() {
+	public String getFullDetails() {
 		return fullDetails;
 	}
 
 	public void setFullDetails(String fullDetails) {
 		this.fullDetails = fullDetails;
-	}*/
+	}
 
 	public String getDescMobile() {
 		return descMobile;
@@ -368,20 +368,19 @@ public class CommercialBundle {
 		this.contentVersion = contentVersion;
 	}
 
-	public List<ImageURL> getListOfimageURLs() {
-		return listOfimageURLs;
-	}
-
-	public void setListOfimageURLs(List<ImageURL> listOfimageURLs) {
-		this.listOfimageURLs = listOfimageURLs;
-	}
-
 	public List<MediaURL> getListOfmediaURLs() {
 		return listOfmediaURLs;
 	}
 
 	public void setListOfmediaURLs(List<MediaURL> listOfmediaURLs) {
 		this.listOfmediaURLs = listOfmediaURLs;
+	}*/
+	public List<ImageURL> getListOfimageURLs() {
+		return listOfimageURLs;
+	}
+
+	public void setListOfimageURLs(List<ImageURL> listOfimageURLs) {
+		this.listOfimageURLs = listOfimageURLs;
 	}
 
 	public List<Group> getSpecificationGroups() {
@@ -400,21 +399,21 @@ public class CommercialBundle {
 		this.bundleControl = bundleControl;
 	}
 
-	public ProductGroups getProductGroups() {
+	/*public ProductGroups getProductGroups() {
 		return productGroups;
 	}
 
 	public void setProductGroups(ProductGroups productGroups) {
 		this.productGroups = productGroups;
-	}
+	}*/
 
-	public Misc getMisc() {
+	/*public Misc getMisc() {
 		return misc;
 	}
 
 	public void setMisc(Misc misc) {
 		this.misc = misc;
-	}
+	}*/
 
 	public PromoteAs getPromoteAs() {
 		return promoteAs;
@@ -424,6 +423,14 @@ public class CommercialBundle {
 		this.promoteAs = promoteAs;
 	}
 
+
+		public String getDisplayGroup() {
+		return displayGroup;
+	}
+
+	public void setDisplayGroup(String displayGroup) {
+		this.displayGroup = displayGroup;
+	}
 	/*public List<BundleDeviceSpecificPricingOverrides> getBundleDeviceSpecificPricingOverrides() {
 		return bundleDeviceSpecificPricingOverrides;
 	}
@@ -439,14 +446,6 @@ public class CommercialBundle {
 
 	public void setPostSaleJourney(String postSaleJourney) {
 		this.postSaleJourney = postSaleJourney;
-	}*/
-
-	public String getDisplayGroup() {
-		return displayGroup;
-	}
-
-	public void setDisplayGroup(String displayGroup) {
-		this.displayGroup = displayGroup;
 	}
 
 	public String getMerchandisingVersion() {
@@ -457,7 +456,7 @@ public class CommercialBundle {
 		this.merchandisingVersion = merchandisingVersion;
 	}
 
-	/*public List<BundlePriceOverride> getBundlePriceOverride() {
+	public List<BundlePriceOverride> getBundlePriceOverride() {
 		return bundlePriceOverride;
 	}
 
@@ -495,7 +494,7 @@ public class CommercialBundle {
 		this.listOfEligibleChannels = listOfEligibleChannels;
 	}*/
 
-	@Override
+	/*@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -508,25 +507,25 @@ public class CommercialBundle {
 		//result = prime * result + ((bundlePriceOverride == null) ? 0 : bundlePriceOverride.hashCode());
 		result = prime * result + ((categories == null) ? 0 : categories.hashCode());
 		result = prime * result + ((commitment == null) ? 0 : commitment.hashCode());
-		result = prime * result + ((contentDesc == null) ? 0 : contentDesc.hashCode());
-		result = prime * result + ((contentVersion == null) ? 0 : contentVersion.hashCode());
+		//result = prime * result + ((contentDesc == null) ? 0 : contentDesc.hashCode());
+		//result = prime * result + ((contentVersion == null) ? 0 : contentVersion.hashCode());
 		result = prime * result + ((desc == null) ? 0 : desc.hashCode());
-		result = prime * result + ((descMobile == null) ? 0 : descMobile.hashCode());
+		//result = prime * result + ((descMobile == null) ? 0 : descMobile.hashCode());
 		result = prime * result + ((deviceSpecificPricing == null) ? 0 : deviceSpecificPricing.hashCode());
-		result = prime * result + ((displayGroup == null) ? 0 : displayGroup.hashCode());
+		//result = prime * result + ((displayGroup == null) ? 0 : displayGroup.hashCode());
 		result = prime * result + ((displayName == null) ? 0 : displayName.hashCode());
 	//	result = prime * result + ((eligibilitySubflow == null) ? 0 : eligibilitySubflow.hashCode());
 		//result = prime * result + ((fullDetails == null) ? 0 : fullDetails.hashCode());
-		result = prime * result + ((fullDetailsMobile == null) ? 0 : fullDetailsMobile.hashCode());
+		//result = prime * result + ((fullDetailsMobile == null) ? 0 : fullDetailsMobile.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		//result = prime * result + (isDiscountable ? 1231 : 1237);
 		//result = prime * result + ((listOfEligibleChannels == null) ? 0 : listOfEligibleChannels.hashCode());
 		result = prime * result + ((listOfimageURLs == null) ? 0 : listOfimageURLs.hashCode());
-		result = prime * result + ((listOfmediaURLs == null) ? 0 : listOfmediaURLs.hashCode());
-		result = prime * result + ((merchandisingVersion == null) ? 0 : merchandisingVersion.hashCode());
+		//result = prime * result + ((listOfmediaURLs == null) ? 0 : listOfmediaURLs.hashCode());
+		//result = prime * result + ((merchandisingVersion == null) ? 0 : merchandisingVersion.hashCode());
 		//result = prime * result + ((metadataVersion == null) ? 0 : metadataVersion.hashCode());
 		//result = prime * result + ((migrationPaths == null) ? 0 : migrationPaths.hashCode());
-		result = prime * result + ((misc == null) ? 0 : misc.hashCode());
+		//result = prime * result + ((misc == null) ? 0 : misc.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((paymentType == null) ? 0 : paymentType.hashCode());
 		//result = prime * result + ((postSaleJourney == null) ? 0 : postSaleJourney.hashCode());
@@ -547,9 +546,9 @@ public class CommercialBundle {
 		//result = prime * result + ((upgradePaths == null) ? 0 : upgradePaths.hashCode());
 		//result = prime * result + ((version == null) ? 0 : version.hashCode());
 		return result;
-	}
+	}*/
 
-	@Override
+	/*@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -568,17 +567,17 @@ public class CommercialBundle {
 				return false;
 		} else if (!availability.equals(other.availability))
 			return false;
-		/*if (bundleComposition == null) {
+		if (bundleComposition == null) {
 			if (other.bundleComposition != null)
 				return false;
 		} else if (!bundleComposition.equals(other.bundleComposition))
-			return false;*/
+			return false;
 		if (bundleControl == null) {
 			if (other.bundleControl != null)
 				return false;
 		} else if (!bundleControl.equals(other.bundleControl))
 			return false;
-		/*if (bundleDeviceSpecificPricingOverrides == null) {
+		if (bundleDeviceSpecificPricingOverrides == null) {
 			if (other.bundleDeviceSpecificPricingOverrides != null)
 				return false;
 		} else if (!bundleDeviceSpecificPricingOverrides.equals(other.bundleDeviceSpecificPricingOverrides))
@@ -587,7 +586,7 @@ public class CommercialBundle {
 			if (other.bundlePriceOverride != null)
 				return false;
 		} else if (!bundlePriceOverride.equals(other.bundlePriceOverride))
-			return false;*/
+			return false;
 		if (categories == null) {
 			if (other.categories != null)
 				return false;
@@ -633,7 +632,7 @@ public class CommercialBundle {
 				return false;
 		} else if (!displayName.equals(other.displayName))
 			return false;
-		/*if (eligibilitySubflow == null) {
+		if (eligibilitySubflow == null) {
 			if (other.eligibilitySubflow != null)
 				return false;
 		} else if (!eligibilitySubflow.equals(other.eligibilitySubflow))
@@ -642,7 +641,7 @@ public class CommercialBundle {
 			if (other.fullDetails != null)
 				return false;
 		} else if (!fullDetails.equals(other.fullDetails))
-			return false;*/
+			return false;
 		if (fullDetailsMobile == null) {
 			if (other.fullDetailsMobile != null)
 				return false;
@@ -653,13 +652,13 @@ public class CommercialBundle {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		/*if (isDiscountable != other.isDiscountable)
+		if (isDiscountable != other.isDiscountable)
 			return false;
 		if (listOfEligibleChannels == null) {
 			if (other.listOfEligibleChannels != null)
 				return false;
 		} else if (!listOfEligibleChannels.equals(other.listOfEligibleChannels))
-			return false;*/
+			return false;
 		if (listOfimageURLs == null) {
 			if (other.listOfimageURLs != null)
 				return false;
@@ -675,7 +674,7 @@ public class CommercialBundle {
 				return false;
 		} else if (!merchandisingVersion.equals(other.merchandisingVersion))
 			return false;
-		/*if (metadataVersion == null) {
+		if (metadataVersion == null) {
 			if (other.metadataVersion != null)
 				return false;
 		} else if (!metadataVersion.equals(other.metadataVersion))
@@ -684,7 +683,7 @@ public class CommercialBundle {
 			if (other.migrationPaths != null)
 				return false;
 		} else if (!migrationPaths.equals(other.migrationPaths))
-			return false;*/
+			return false;
 		if (misc == null) {
 			if (other.misc != null)
 				return false;
@@ -700,7 +699,7 @@ public class CommercialBundle {
 				return false;
 		} else if (!paymentType.equals(other.paymentType))
 			return false;
-		/*if (postSaleJourney == null) {
+		if (postSaleJourney == null) {
 			if (other.postSaleJourney != null)
 				return false;
 		} else if (!postSaleJourney.equals(other.postSaleJourney))
@@ -709,7 +708,7 @@ public class CommercialBundle {
 			if (other.preToPostPaths != null)
 				return false;
 		} else if (!preToPostPaths.equals(other.preToPostPaths))
-			return false;*/
+			return false;
 		if (productGroups == null) {
 			if (other.productGroups != null)
 				return false;
@@ -725,17 +724,17 @@ public class CommercialBundle {
 				return false;
 		} else if (!promoteAs.equals(other.promoteAs))
 			return false;
-		/*if (recommendataions == null) {
+		if (recommendataions == null) {
 			if (other.recommendataions != null)
 				return false;
 		} else if (!recommendataions.equals(other.recommendataions))
-			return false;*/
+			return false;
 		if (recurringCharge == null) {
 			if (other.recurringCharge != null)
 				return false;
 		} else if (!recurringCharge.equals(other.recurringCharge))
 			return false;
-		/*if (seoCanonical == null) {
+		if (seoCanonical == null) {
 			if (other.seoCanonical != null)
 				return false;
 		} else if (!seoCanonical.equals(other.seoCanonical))
@@ -759,7 +758,7 @@ public class CommercialBundle {
 			if (other.seoRobots != null)
 				return false;
 		} else if (!seoRobots.equals(other.seoRobots))
-			return false;*/
+			return false;
 		if (serviceProducts == null) {
 			if (other.serviceProducts != null)
 				return false;
@@ -770,7 +769,7 @@ public class CommercialBundle {
 				return false;
 		} else if (!specificationGroups.equals(other.specificationGroups))
 			return false;
-		/*if (terminationFee == null) {
+		if (terminationFee == null) {
 			if (other.terminationFee != null)
 				return false;
 		} else if (!terminationFee.equals(other.terminationFee))
@@ -784,64 +783,22 @@ public class CommercialBundle {
 			if (other.version != null)
 				return false;
 		} else if (!version.equals(other.version))
-			return false;*/
+			return false;
 		return true;
-	}
+	}*/
 
 
-
-	@Override
-	public String toString() {
-		return "CommercialBundle [id=" + id + ", name=" + name + ", desc=" + desc + ", paymentType=" + paymentType
-				+ ", availability=" + availability + ", commitment=" + commitment + ", categories=" + categories
-				+ ", productLines=" + productLines + ", deviceSpecificPricing=" + deviceSpecificPricing
-				+ ", serviceProducts=" + serviceProducts + ", allowances=" + allowances + ", recurringCharge="
-				+ recurringCharge + ", displayName=" + displayName + ", contentDesc=" + contentDesc + ", descMobile="
-				+ descMobile + ", fullDetailsMobile=" + fullDetailsMobile + ", contentVersion=" + contentVersion
-				+ ", listOfimageURLs=" + listOfimageURLs + ", listOfmediaURLs=" + listOfmediaURLs
-				+ ", specificationGroups=" + specificationGroups + ", bundleControl=" + bundleControl
-				+ ", productGroups=" + productGroups + ", misc=" + misc + ", promoteAs=" + promoteAs + ", displayGroup="
-				+ displayGroup + ", merchandisingVersion=" + merchandisingVersion + ", getId()=" + getId()
-				+ ", getName()=" + getName() + ", getDesc()=" + getDesc() + ", getPaymentType()=" + getPaymentType()
-				+ ", getAvailability()=" + getAvailability() + ", getCommitment()=" + getCommitment()
-				+ ", getCategories()=" + getCategories() + ", getProductLines()=" + getProductLines()
-				+ ", getDeviceSpecificPricing()=" + getDeviceSpecificPricing() + ", getServiceProducts()="
-				+ getServiceProducts() + ", getAllowances()=" + getAllowances() + ", getRecurringCharge()="
-				+ getRecurringCharge() + ", getDisplayName()=" + getDisplayName() + ", getContentDesc()="
-				+ getContentDesc() + ", getDescMobile()=" + getDescMobile() + ", getFullDetailsMobile()="
-				+ getFullDetailsMobile() + ", getContentVersion()=" + getContentVersion() + ", getListOfimageURLs()="
-				+ getListOfimageURLs() + ", getListOfmediaURLs()=" + getListOfmediaURLs()
-				+ ", getSpecificationGroups()=" + getSpecificationGroups() + ", getBundleControl()="
-				+ getBundleControl() + ", getProductGroups()=" + getProductGroups() + ", getMisc()=" + getMisc()
-				+ ", getPromoteAs()=" + getPromoteAs() + ", getDisplayGroup()=" + getDisplayGroup()
-				+ ", getMerchandisingVersion()=" + getMerchandisingVersion() + ", hashCode()=" + hashCode()
-				+ ", getClass()=" + getClass() + ", toString()=" + super.toString() + "]";
-	}
 
 	/*@Override
 	public String toString() {
 		return "CommercialBundle [id=" + id + ", name=" + name + ", desc=" + desc + ", paymentType=" + paymentType
 				+ ", availability=" + availability + ", commitment=" + commitment + ", categories=" + categories
 				+ ", productLines=" + productLines + ", deviceSpecificPricing=" + deviceSpecificPricing
-				+ ", bundleComposition=" + bundleComposition 
-				+ ", serviceProducts=" + serviceProducts + ", allowances="
-				+ allowances + ", recurringCharge=" + recurringCharge + ", terminationFee=" + terminationFee
-				+ ", migrationPaths=" + migrationPaths + ", upgradePaths=" + upgradePaths + ", preToPostPaths="
-				+ preToPostPaths + ", isDiscountable=" + isDiscountable + ", version=" + version + ", metadataVersion="
-				+ metadataVersion + ", seoCanonical=" + seoCanonical + ", seoDescription=" + seoDescription
-				+ ", seoKeywords=" + seoKeywords + ", seoIndex=" + seoIndex + ", seoRobots=" + seoRobots
-				+ ", eligibilitySubflow=" + eligibilitySubflow + ", displayName=" + displayName + ", contentDesc="
-				+ contentDesc + ", fullDetails=" + fullDetails + ", descMobile=" + descMobile + ", fullDetailsMobile="
-				+ fullDetailsMobile + ", contentVersion=" + contentVersion + ", listOfimageURLs=" + listOfimageURLs
-				+ ", listOfmediaURLs=" + listOfmediaURLs + ", specificationGroups=" + specificationGroups
-				+ ", bundleControl=" + bundleControl + ", productGroups=" + productGroups + ", misc=" + misc
-				+ ", promoteAs=" + promoteAs + ", bundleDeviceSpecificPricingOverrides="
-				+ bundleDeviceSpecificPricingOverrides + ", postSaleJourney=" + postSaleJourney + ", displayGroup="
-				+ displayGroup + ", merchandisingVersion=" + merchandisingVersion + ", bundlePriceOverride="
-				+ bundlePriceOverride + ", recommendataions=" + recommendataions + ", listOfEligibleChannels="
-				+ listOfEligibleChannels + "]";
+				+ ", serviceProducts=" + serviceProducts + ", allowances=" + allowances + ", recurringCharge="
+				+ recurringCharge + ", displayName=" + displayName + ", listOfimageURLs=" + listOfimageURLs
+				+ ", specificationGroups=" + specificationGroups + ", bundleControl=" + bundleControl
+				+ ", productGroups=" + productGroups + ", promoteAs=" + promoteAs + ", displayGroup=" + displayGroup
+				+ "]";
 	}*/
-
-	
 
 }
