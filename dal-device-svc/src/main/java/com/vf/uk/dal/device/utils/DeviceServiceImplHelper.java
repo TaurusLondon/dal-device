@@ -16,7 +16,6 @@ import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.datamodel.bundle.BundleModel;
 import com.vf.uk.dal.device.datamodel.product.ProductModel;
-import com.vf.uk.dal.device.datamodel.productgroups.ProductGroupModel;
 import com.vf.uk.dal.device.querybuilder.DeviceQueryBuilderHelper;
 import com.vf.uk.dal.utility.entity.BundleDetails;
 import com.vf.uk.dal.utility.entity.BundleModelAndPrice;
@@ -30,63 +29,6 @@ public class DeviceServiceImplHelper {
 	
 	@Autowired
 	ResponseMappingHelper response;
-	/*
-	*//**
-	 * @author manoj.bera
-	 * @param make
-	 * @param capacity
-	 * @param colour
-	 * @param operatingSystem
-	 * @param mustHaveFeatures
-	 * @return
-	 *//*
-	public String getFilterCriteria(String make, String capacity, String colour, String operatingSystem,
-			String mustHaveFeatures) {
-		String newCapacity;
-		String newColour;
-		String newOperatingSystem;
-		String filterCriteria = "";
-		String newMustHaveFeatures;
-		if (StringUtils.isNotEmpty(make)) {
-			String newMake = getFilterForDeviceList(make, Constants.STRING_EQUIPMENT_MAKE_COLON);
-			filterCriteria = newMake;
-		}
-
-		if (capacity != null && !"\"\"".equals(capacity)) {
-			newCapacity = getFilterForDeviceList(capacity, Constants.STRING_CAPACITY_COLON);
-			if (StringUtils.isNotEmpty(filterCriteria)) {
-				filterCriteria = filterCriteria + Constants.STRING_AND + newCapacity;
-			} else {
-				filterCriteria = newCapacity;
-			}
-		}
-		if (colour != null && !"\"\"".equals(colour)) {
-			newColour = getFilterForDeviceList(colour, Constants.STRING_COLOUR_COLON);
-			if (StringUtils.isNotEmpty(filterCriteria)) {
-				filterCriteria = filterCriteria + Constants.STRING_AND + newColour;
-			} else {
-				filterCriteria = newColour;
-			}
-		}
-		if (operatingSystem != null && !"\"\"".equals(operatingSystem)) {
-			newOperatingSystem = getFilterForDeviceList(operatingSystem, Constants.STRING_OPERATING_SYSTEM);
-			if (StringUtils.isNotEmpty(filterCriteria)) {
-				filterCriteria = filterCriteria + Constants.STRING_AND + newOperatingSystem;
-			} else {
-				filterCriteria = newOperatingSystem;
-			}
-		}
-		if (mustHaveFeatures != null && !"\"\"".equals(mustHaveFeatures)) {
-			newMustHaveFeatures = getFilterForDeviceList(mustHaveFeatures,
-					Constants.STRING_MUST_HAVE_FEATURES_WITH_COLON);
-			if (StringUtils.isNotEmpty(filterCriteria)) {
-				filterCriteria = filterCriteria + Constants.STRING_AND + newMustHaveFeatures;
-			} else {
-				filterCriteria = newMustHaveFeatures;
-			}
-		}
-		return filterCriteria;
-	}*/
 	/**
 	 * 
 	 * @param filter
@@ -127,34 +69,25 @@ public class DeviceServiceImplHelper {
 	 */
 	public BundleModelAndPrice calculatePlan(Float creditLimit, List<String> listOfProductsNew,
 			List<ProductModel> listOfProductModelNew) {
-		// get the compatible plans for lead device id/ device id
-		//List<ProductModel> listOfProductModel = deviceDao.getProductModel(listOfProductsNew);
 		
 		List<ProductModel> listOfProductModel = getListOfProductModel(listOfProductsNew);
 		BundleModelAndPrice bundleModelAndPrice = new BundleModelAndPrice();
 		
 		BundleModel bundleModel = null;
-		// Map<String, BundleModel> bundleModelMapNew = new HashMap<>();
 		if (listOfProductModel != null && !listOfProductModel.isEmpty()) {
 			
 			LogHelper.info(this, "inside CP for lead device "+listOfProductsNew);
 			List<String> listOfLeadPlanIdNew = new ArrayList<>();
 			ProductModel prodModel = listOfProductModel.get(0);
-			// get the leadplan id
 			LogHelper.info(this, "LEad Plan id  "+prodModel.getLeadPlanId());
 			listOfLeadPlanIdNew.add(prodModel.getLeadPlanId());
 
-			// get the bundle details for new plan
-			//List<BundleModel> listOfBundleDetails = deviceDao.getBundleDetails(listOfLeadPlanIdNew);
 			List<BundleModel> listOfBundleDetails = getListOfBundleModel(listOfLeadPlanIdNew);
 			LogHelper.info(this, "List of bundle details  "+listOfBundleDetails);
 			if (listOfBundleDetails != null && !listOfBundleDetails.isEmpty()) {
 				bundleModel = listOfBundleDetails.get(0);
 				
 				LogHelper.info(this, "LeadBundle detaisls gross "+bundleModel.getMonthlyGrossPrice());
-				LogHelper.info(this, "LeadBundle detaisls net "+bundleModel.getMonthlyNetPrice());
-				// check the monthly gros of bundle with credit limit
-				// if (bundleModel.getMonthlyGrossPrice() <= creditLimit) {
 				BundleDetails bundleDetails = deviceDao.getBundleDetailsFromComplansListingAPI(prodModel.getProductId(),
 						null);
 				com.vf.uk.dal.utility.entity.BundlePrice bundlePrice = null;
@@ -180,10 +113,7 @@ public class DeviceServiceImplHelper {
 						bundleModel = null;
 						listOfLeadPlanIdNew = new ArrayList<>();
 						listOfLeadPlanIdNew = prodModel.getListOfCompatibleBundles();
-						//List<BundleModel> listOfBundleDetails1 = deviceDao.getBundleDetails(listOfLeadPlanIdNew);
 						List<BundleModel> listOfBundleDetails1 = getListOfBundleModel(listOfLeadPlanIdNew);;
-						// now get the lowest monthly plan for the bundle list
-						// and use this plan
 						bundleModelAndPrice = getLowestMontlyPrice(creditLimit, listOfBundleDetails1, bundleDetails, bundleModelAndPrice);
 					} else {
 						if (bundlePrice.getMonthlyPrice() != null) {
@@ -220,8 +150,6 @@ public class DeviceServiceImplHelper {
 				.getMerchandisingPromotions();
 		Float monthlyPrice = null;
 		if (null != merchandisingPromotion) {
-			/*com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion merchanPromo = deviceDao
-					.getMerchandisingPromotionByPromotionName(merchandisingPromotion.getTag());*/
 			if (StringUtils.containsIgnoreCase(Constants.FULL_DURATION, merchandisingPromotion.getMpType())) {
 				if(StringUtils.isNotBlank(bundlePrice.getMonthlyDiscountPrice().getGross())){
 					monthlyPrice = Float.parseFloat(bundlePrice.getMonthlyDiscountPrice().getGross());

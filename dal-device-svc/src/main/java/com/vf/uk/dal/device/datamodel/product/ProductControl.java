@@ -11,8 +11,6 @@ package com.vf.uk.dal.device.datamodel.product;
 
 import java.sql.Timestamp;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 
 public class ProductControl {
 

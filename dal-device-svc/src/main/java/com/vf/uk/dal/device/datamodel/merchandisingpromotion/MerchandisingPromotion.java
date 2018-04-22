@@ -3,8 +3,8 @@ package com.vf.uk.dal.device.datamodel.merchandisingpromotion;
 import java.sql.Timestamp;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
 
 
 public class MerchandisingPromotion {
@@ -28,8 +28,10 @@ public class MerchandisingPromotion {
 	
 	private String actionOnRemove;
 	
+	@JsonFormat(pattern="dd/MM/yyyy HH:mm:ss")
 	private Timestamp startDateTime;
 	
+	@JsonFormat(pattern="dd/MM/yyyy HH:mm:ss")
 	private Timestamp endDateTime;
 	
 	private boolean confirmRequired;

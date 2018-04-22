@@ -215,9 +215,11 @@ public class DaoUtils {
 					.getFreeExtrasForHardware();
 			List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccForHardwares = listOfOfferPacks.get(0)
 					.getFreeAccForHardware();
+			List<CataloguepromotionqueriesForBundleAndHardwareSash> sashBundleConditional = listOfOfferPacks.get(0)
+					.getConditionalSashBanner();
 			merchandisingMedia.addAll(CommonUtility.getMediaListForBundleAndHardware(entertainmentPacks, dataAllowances,
 					planCouplingPromotions, sash, secureNet, sashBannerForHardware, freeExtras, freeAccessories,
-					freeExtrasForPlans, freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares));
+					freeExtrasForPlans, freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares, sashBundleConditional));
 		}
 
 		// MediaLink for PricePromotions
@@ -496,9 +498,11 @@ public class DaoUtils {
 					.getFreeExtrasForHardware();
 			List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccForHardwares = promotions
 					.getFreeAccForHardware();
+			List<CataloguepromotionqueriesForBundleAndHardwareSash> sashBundleConditional = listOfOfferPacks.get(0)
+					.getConditionalSashBanner();
 			merchandisingMedia.addAll(CommonUtility.getMediaListForBundleAndHardware(entertainmentPacks, dataAllowances,
 					planCouplingPromotions, sash, secureNet, sashBannerForHardware, freeExtras, freeAccessories,
-					freeExtrasForPlans, freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares));
+					freeExtrasForPlans, freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares, sashBundleConditional));
 		}
 
 		List<com.vf.uk.dal.device.datamodel.product.Group> listOfSpecificationGroups = cohProduct.getSpecificationGroups();
@@ -2979,10 +2983,12 @@ public class DaoUtils {
 									.getFreeExtrasForHardware();
 							List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccForHardwares = promotions
 									.getFreeAccForHardware();
+							List<CataloguepromotionqueriesForBundleAndHardwareSash> sashBundleConditional = promotions
+									.getConditionalSashBanner();
 							mediaList.addAll(CommonUtility.getMediaListForBundleAndHardware(entertainmentPacks,
 									dataAllowances, planCouplingPromotions, sash, secureNet, sashBannerForHardware,
 									freeExtras, freeAccessories, freeExtrasForPlans, freeAccForPlans,
-									freeExtrasForHardwares, freeAccForHardwares));
+									freeExtrasForHardwares, freeAccForHardwares,sashBundleConditional));
 
 							merchandisingPromotionsPackage = assembleMerchandisingPromotion(promotions,
 									entertainmentPacks, dataAllowances, planCouplingPromotions, sash, secureNet,
@@ -3951,9 +3957,11 @@ public class DaoUtils {
 					.getFreeExtrasForHardware();
 			List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccForHardwares = promotions
 					.getFreeAccForHardware();
+			List<CataloguepromotionqueriesForBundleAndHardwareSash> sashBundleConditional = promotions
+					.getConditionalSashBanner();
 			merchandisingMedia.addAll(CommonUtility.getMediaListForBundleAndHardware(entertainmentPacks, dataAllowances,
 					planCouplingPromotions, sash, secureNet, sashBannerForHardware, freeExtras, freeAccessories,
-					freeExtrasForPlans, freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares));
+					freeExtrasForPlans, freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares,sashBundleConditional));
 		}
 
 		deviceSummary.setFromPricing(null);

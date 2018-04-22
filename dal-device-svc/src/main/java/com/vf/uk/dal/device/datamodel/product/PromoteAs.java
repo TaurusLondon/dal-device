@@ -8,7 +8,6 @@
 
 package com.vf.uk.dal.device.datamodel.product;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -18,10 +17,7 @@ public class PromoteAs {
     private List<String> promotionName;
 
 	
-	public PromoteAs() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	
 
 	public List<String> getPromotionName() {
 		return promotionName;

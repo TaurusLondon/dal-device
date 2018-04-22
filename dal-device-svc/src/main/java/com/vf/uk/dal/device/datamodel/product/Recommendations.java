@@ -10,13 +10,6 @@ public class Recommendations {
 	
      
      
-	public Recommendations() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-
-
 	public String getType() {
 		return type;
 	}

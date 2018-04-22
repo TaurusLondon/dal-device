@@ -2,7 +2,6 @@ package com.vf.uk.dal.device.datamodel.bundle;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 public class CommercialBundle {
@@ -27,46 +26,46 @@ public class CommercialBundle {
 	
 	private List<DevicePrice> deviceSpecificPricing;
 	
-	private BundleComposition bundleComposition;
+	//private BundleComposition bundleComposition;
 	
 	private List<ServiceProduct> serviceProducts;
 	
 	private List<Allowance> allowances;
 	
 	private Float recurringCharge;
+	//@JsonIgnore
+	//private TerminationFee terminationFee;
+	//@JsonIgnore
+	//private List<Path> migrationPaths;
+	//@JsonIgnore
+	//private List<Path> upgradePaths;
+	//@JsonIgnore
+	//private List<Path> preToPostPaths;
 	
-	private TerminationFee terminationFee;
-	
-	private List<Path> migrationPaths;
-	
-	private List<Path> upgradePaths;
-	
-	private List<Path> preToPostPaths;
-	
-	private boolean isDiscountable;
-	
-	private String version;
+	//private boolean isDiscountable;
+	//@JsonIgnore
+	//private String version;
 
 	
 
 	// Attributes of MEF Metadata file
-	
-	private String metadataVersion;
+	//@JsonIgnore
+	//private String metadataVersion;
 
 	
-	private String seoCanonical;
+	//private String seoCanonical;
 	
-	private String seoDescription;
+	//private String seoDescription;
 	
-	private String seoKeywords;
+	//private String seoKeywords;
 	
-	private String seoIndex;
+	//private String seoIndex;
 	
-	@JsonIgnore
-	private String seoRobots;
+	//@JsonIgnore
+	//private String seoRobots;
 	
 	
-	private String eligibilitySubflow;
+	//private String eligibilitySubflow;
 
 	// Attributes of MEF Content file
 	
@@ -74,7 +73,7 @@ public class CommercialBundle {
 	
 	private String contentDesc;
 	
-	private String fullDetails;
+	//private String fullDetails;
 	
 	private String descMobile;
 	
@@ -98,38 +97,31 @@ public class CommercialBundle {
 	
 	private PromoteAs promoteAs;
 	
-	private List<BundleDeviceSpecificPricingOverrides> bundleDeviceSpecificPricingOverrides;
+	//private List<BundleDeviceSpecificPricingOverrides> bundleDeviceSpecificPricingOverrides;
 	
-	private String postSaleJourney;
+	//private String postSaleJourney;
 	
 	private String displayGroup;
 	
 	private String merchandisingVersion;
 	
 	
-	private List<BundlePriceOverride> bundlePriceOverride;
+//	private List<BundlePriceOverride> bundlePriceOverride;
 	
-	private List<Recommendations> recommendataions;
+//	private List<Recommendations> recommendataions;
 	
 	
-	private List<EligibleChannel> listOfEligibleChannels;
+//	private List<EligibleChannel> listOfEligibleChannels;
 	
 	
 	
 	public CommercialBundle() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	/*@Override
-	public int getImplVersion() {
-		// TODO Auto-generated method stub
-		return VERSION;
-	}*/
 
 	
 	public String getId() {
-		// TODO Auto-generated method stub
 		return this.id;
 	}
 	public void setBundleID(String id) {
@@ -199,14 +191,14 @@ public class CommercialBundle {
 	public void setDeviceSpecificPricing(List<DevicePrice> deviceSpecificPricing) {
 		this.deviceSpecificPricing = deviceSpecificPricing;
 	}
-
+	/*
 	public BundleComposition getBundleComposition() {
 		return bundleComposition;
 	}
 
 	public void setBundleComposition(BundleComposition bundleComposition) {
 		this.bundleComposition = bundleComposition;
-	}
+	}*/
 
 	public List<ServiceProduct> getServiceProducts() {
 		return serviceProducts;
@@ -232,7 +224,7 @@ public class CommercialBundle {
 		this.recurringCharge = recurringCharge;
 	}
 
-	public TerminationFee getTerminationFee() {
+	/*public TerminationFee getTerminationFee() {
 		return terminationFee;
 	}
 
@@ -326,7 +318,7 @@ public class CommercialBundle {
 
 	public void setEligibilitySubflow(String eligibilitySubflow) {
 		this.eligibilitySubflow = eligibilitySubflow;
-	}
+	}*/
 
 	public String getDisplayName() {
 		return displayName;
@@ -344,13 +336,13 @@ public class CommercialBundle {
 		this.contentDesc = contentDesc;
 	}
 
-	public String getFullDetails() {
+	/*public String getFullDetails() {
 		return fullDetails;
 	}
 
 	public void setFullDetails(String fullDetails) {
 		this.fullDetails = fullDetails;
-	}
+	}*/
 
 	public String getDescMobile() {
 		return descMobile;
@@ -432,7 +424,7 @@ public class CommercialBundle {
 		this.promoteAs = promoteAs;
 	}
 
-	public List<BundleDeviceSpecificPricingOverrides> getBundleDeviceSpecificPricingOverrides() {
+	/*public List<BundleDeviceSpecificPricingOverrides> getBundleDeviceSpecificPricingOverrides() {
 		return bundleDeviceSpecificPricingOverrides;
 	}
 
@@ -447,7 +439,7 @@ public class CommercialBundle {
 
 	public void setPostSaleJourney(String postSaleJourney) {
 		this.postSaleJourney = postSaleJourney;
-	}
+	}*/
 
 	public String getDisplayGroup() {
 		return displayGroup;
@@ -465,7 +457,7 @@ public class CommercialBundle {
 		this.merchandisingVersion = merchandisingVersion;
 	}
 
-	public List<BundlePriceOverride> getBundlePriceOverride() {
+	/*public List<BundlePriceOverride> getBundlePriceOverride() {
 		return bundlePriceOverride;
 	}
 
@@ -501,7 +493,7 @@ public class CommercialBundle {
 
 	public void setListOfEligibleChannels(List<EligibleChannel> listOfEligibleChannels) {
 		this.listOfEligibleChannels = listOfEligibleChannels;
-	}
+	}*/
 
 	@Override
 	public int hashCode() {
@@ -509,11 +501,11 @@ public class CommercialBundle {
 		int result = 1;
 		result = prime * result + ((allowances == null) ? 0 : allowances.hashCode());
 		result = prime * result + ((availability == null) ? 0 : availability.hashCode());
-		result = prime * result + ((bundleComposition == null) ? 0 : bundleComposition.hashCode());
+		//result = prime * result + ((bundleComposition == null) ? 0 : bundleComposition.hashCode());
 		result = prime * result + ((bundleControl == null) ? 0 : bundleControl.hashCode());
-		result = prime * result + ((bundleDeviceSpecificPricingOverrides == null) ? 0
-				: bundleDeviceSpecificPricingOverrides.hashCode());
-		result = prime * result + ((bundlePriceOverride == null) ? 0 : bundlePriceOverride.hashCode());
+		//result = prime * result + ((bundleDeviceSpecificPricingOverrides == null) ? 0
+			//	: bundleDeviceSpecificPricingOverrides.hashCode());
+		//result = prime * result + ((bundlePriceOverride == null) ? 0 : bundlePriceOverride.hashCode());
 		result = prime * result + ((categories == null) ? 0 : categories.hashCode());
 		result = prime * result + ((commitment == null) ? 0 : commitment.hashCode());
 		result = prime * result + ((contentDesc == null) ? 0 : contentDesc.hashCode());
@@ -523,37 +515,37 @@ public class CommercialBundle {
 		result = prime * result + ((deviceSpecificPricing == null) ? 0 : deviceSpecificPricing.hashCode());
 		result = prime * result + ((displayGroup == null) ? 0 : displayGroup.hashCode());
 		result = prime * result + ((displayName == null) ? 0 : displayName.hashCode());
-		result = prime * result + ((eligibilitySubflow == null) ? 0 : eligibilitySubflow.hashCode());
-		result = prime * result + ((fullDetails == null) ? 0 : fullDetails.hashCode());
+	//	result = prime * result + ((eligibilitySubflow == null) ? 0 : eligibilitySubflow.hashCode());
+		//result = prime * result + ((fullDetails == null) ? 0 : fullDetails.hashCode());
 		result = prime * result + ((fullDetailsMobile == null) ? 0 : fullDetailsMobile.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + (isDiscountable ? 1231 : 1237);
-		result = prime * result + ((listOfEligibleChannels == null) ? 0 : listOfEligibleChannels.hashCode());
+		//result = prime * result + (isDiscountable ? 1231 : 1237);
+		//result = prime * result + ((listOfEligibleChannels == null) ? 0 : listOfEligibleChannels.hashCode());
 		result = prime * result + ((listOfimageURLs == null) ? 0 : listOfimageURLs.hashCode());
 		result = prime * result + ((listOfmediaURLs == null) ? 0 : listOfmediaURLs.hashCode());
 		result = prime * result + ((merchandisingVersion == null) ? 0 : merchandisingVersion.hashCode());
-		result = prime * result + ((metadataVersion == null) ? 0 : metadataVersion.hashCode());
-		result = prime * result + ((migrationPaths == null) ? 0 : migrationPaths.hashCode());
+		//result = prime * result + ((metadataVersion == null) ? 0 : metadataVersion.hashCode());
+		//result = prime * result + ((migrationPaths == null) ? 0 : migrationPaths.hashCode());
 		result = prime * result + ((misc == null) ? 0 : misc.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((paymentType == null) ? 0 : paymentType.hashCode());
-		result = prime * result + ((postSaleJourney == null) ? 0 : postSaleJourney.hashCode());
-		result = prime * result + ((preToPostPaths == null) ? 0 : preToPostPaths.hashCode());
+		//result = prime * result + ((postSaleJourney == null) ? 0 : postSaleJourney.hashCode());
+		//result = prime * result + ((preToPostPaths == null) ? 0 : preToPostPaths.hashCode());
 		result = prime * result + ((productGroups == null) ? 0 : productGroups.hashCode());
 		result = prime * result + ((productLines == null) ? 0 : productLines.hashCode());
 		result = prime * result + ((promoteAs == null) ? 0 : promoteAs.hashCode());
-		result = prime * result + ((recommendataions == null) ? 0 : recommendataions.hashCode());
+		//result = prime * result + ((recommendataions == null) ? 0 : recommendataions.hashCode());
 		result = prime * result + ((recurringCharge == null) ? 0 : recurringCharge.hashCode());
-		result = prime * result + ((seoCanonical == null) ? 0 : seoCanonical.hashCode());
-		result = prime * result + ((seoDescription == null) ? 0 : seoDescription.hashCode());
-		result = prime * result + ((seoIndex == null) ? 0 : seoIndex.hashCode());
-		result = prime * result + ((seoKeywords == null) ? 0 : seoKeywords.hashCode());
-		result = prime * result + ((seoRobots == null) ? 0 : seoRobots.hashCode());
-		result = prime * result + ((serviceProducts == null) ? 0 : serviceProducts.hashCode());
+		//result = prime * result + ((seoCanonical == null) ? 0 : seoCanonical.hashCode());
+		//result = prime * result + ((seoDescription == null) ? 0 : seoDescription.hashCode());
+		//result = prime * result + ((seoIndex == null) ? 0 : seoIndex.hashCode());
+		//result = prime * result + ((seoKeywords == null) ? 0 : seoKeywords.hashCode());
+		//result = prime * result + ((seoRobots == null) ? 0 : seoRobots.hashCode());
+		//result = prime * result + ((serviceProducts == null) ? 0 : serviceProducts.hashCode());
 		result = prime * result + ((specificationGroups == null) ? 0 : specificationGroups.hashCode());
-		result = prime * result + ((terminationFee == null) ? 0 : terminationFee.hashCode());
-		result = prime * result + ((upgradePaths == null) ? 0 : upgradePaths.hashCode());
-		result = prime * result + ((version == null) ? 0 : version.hashCode());
+		//result = prime * result + ((terminationFee == null) ? 0 : terminationFee.hashCode());
+		//result = prime * result + ((upgradePaths == null) ? 0 : upgradePaths.hashCode());
+		//result = prime * result + ((version == null) ? 0 : version.hashCode());
 		return result;
 	}
 
@@ -576,17 +568,17 @@ public class CommercialBundle {
 				return false;
 		} else if (!availability.equals(other.availability))
 			return false;
-		if (bundleComposition == null) {
+		/*if (bundleComposition == null) {
 			if (other.bundleComposition != null)
 				return false;
 		} else if (!bundleComposition.equals(other.bundleComposition))
-			return false;
+			return false;*/
 		if (bundleControl == null) {
 			if (other.bundleControl != null)
 				return false;
 		} else if (!bundleControl.equals(other.bundleControl))
 			return false;
-		if (bundleDeviceSpecificPricingOverrides == null) {
+		/*if (bundleDeviceSpecificPricingOverrides == null) {
 			if (other.bundleDeviceSpecificPricingOverrides != null)
 				return false;
 		} else if (!bundleDeviceSpecificPricingOverrides.equals(other.bundleDeviceSpecificPricingOverrides))
@@ -595,7 +587,7 @@ public class CommercialBundle {
 			if (other.bundlePriceOverride != null)
 				return false;
 		} else if (!bundlePriceOverride.equals(other.bundlePriceOverride))
-			return false;
+			return false;*/
 		if (categories == null) {
 			if (other.categories != null)
 				return false;
@@ -641,7 +633,7 @@ public class CommercialBundle {
 				return false;
 		} else if (!displayName.equals(other.displayName))
 			return false;
-		if (eligibilitySubflow == null) {
+		/*if (eligibilitySubflow == null) {
 			if (other.eligibilitySubflow != null)
 				return false;
 		} else if (!eligibilitySubflow.equals(other.eligibilitySubflow))
@@ -650,7 +642,7 @@ public class CommercialBundle {
 			if (other.fullDetails != null)
 				return false;
 		} else if (!fullDetails.equals(other.fullDetails))
-			return false;
+			return false;*/
 		if (fullDetailsMobile == null) {
 			if (other.fullDetailsMobile != null)
 				return false;
@@ -661,13 +653,13 @@ public class CommercialBundle {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (isDiscountable != other.isDiscountable)
+		/*if (isDiscountable != other.isDiscountable)
 			return false;
 		if (listOfEligibleChannels == null) {
 			if (other.listOfEligibleChannels != null)
 				return false;
 		} else if (!listOfEligibleChannels.equals(other.listOfEligibleChannels))
-			return false;
+			return false;*/
 		if (listOfimageURLs == null) {
 			if (other.listOfimageURLs != null)
 				return false;
@@ -683,7 +675,7 @@ public class CommercialBundle {
 				return false;
 		} else if (!merchandisingVersion.equals(other.merchandisingVersion))
 			return false;
-		if (metadataVersion == null) {
+		/*if (metadataVersion == null) {
 			if (other.metadataVersion != null)
 				return false;
 		} else if (!metadataVersion.equals(other.metadataVersion))
@@ -692,7 +684,7 @@ public class CommercialBundle {
 			if (other.migrationPaths != null)
 				return false;
 		} else if (!migrationPaths.equals(other.migrationPaths))
-			return false;
+			return false;*/
 		if (misc == null) {
 			if (other.misc != null)
 				return false;
@@ -708,7 +700,7 @@ public class CommercialBundle {
 				return false;
 		} else if (!paymentType.equals(other.paymentType))
 			return false;
-		if (postSaleJourney == null) {
+		/*if (postSaleJourney == null) {
 			if (other.postSaleJourney != null)
 				return false;
 		} else if (!postSaleJourney.equals(other.postSaleJourney))
@@ -717,7 +709,7 @@ public class CommercialBundle {
 			if (other.preToPostPaths != null)
 				return false;
 		} else if (!preToPostPaths.equals(other.preToPostPaths))
-			return false;
+			return false;*/
 		if (productGroups == null) {
 			if (other.productGroups != null)
 				return false;
@@ -733,17 +725,17 @@ public class CommercialBundle {
 				return false;
 		} else if (!promoteAs.equals(other.promoteAs))
 			return false;
-		if (recommendataions == null) {
+		/*if (recommendataions == null) {
 			if (other.recommendataions != null)
 				return false;
 		} else if (!recommendataions.equals(other.recommendataions))
-			return false;
+			return false;*/
 		if (recurringCharge == null) {
 			if (other.recurringCharge != null)
 				return false;
 		} else if (!recurringCharge.equals(other.recurringCharge))
 			return false;
-		if (seoCanonical == null) {
+		/*if (seoCanonical == null) {
 			if (other.seoCanonical != null)
 				return false;
 		} else if (!seoCanonical.equals(other.seoCanonical))
@@ -767,7 +759,7 @@ public class CommercialBundle {
 			if (other.seoRobots != null)
 				return false;
 		} else if (!seoRobots.equals(other.seoRobots))
-			return false;
+			return false;*/
 		if (serviceProducts == null) {
 			if (other.serviceProducts != null)
 				return false;
@@ -778,7 +770,7 @@ public class CommercialBundle {
 				return false;
 		} else if (!specificationGroups.equals(other.specificationGroups))
 			return false;
-		if (terminationFee == null) {
+		/*if (terminationFee == null) {
 			if (other.terminationFee != null)
 				return false;
 		} else if (!terminationFee.equals(other.terminationFee))
@@ -792,16 +784,47 @@ public class CommercialBundle {
 			if (other.version != null)
 				return false;
 		} else if (!version.equals(other.version))
-			return false;
+			return false;*/
 		return true;
 	}
+
+
 
 	@Override
 	public String toString() {
 		return "CommercialBundle [id=" + id + ", name=" + name + ", desc=" + desc + ", paymentType=" + paymentType
 				+ ", availability=" + availability + ", commitment=" + commitment + ", categories=" + categories
 				+ ", productLines=" + productLines + ", deviceSpecificPricing=" + deviceSpecificPricing
-				+ ", bundleComposition=" + bundleComposition + ", serviceProducts=" + serviceProducts + ", allowances="
+				+ ", serviceProducts=" + serviceProducts + ", allowances=" + allowances + ", recurringCharge="
+				+ recurringCharge + ", displayName=" + displayName + ", contentDesc=" + contentDesc + ", descMobile="
+				+ descMobile + ", fullDetailsMobile=" + fullDetailsMobile + ", contentVersion=" + contentVersion
+				+ ", listOfimageURLs=" + listOfimageURLs + ", listOfmediaURLs=" + listOfmediaURLs
+				+ ", specificationGroups=" + specificationGroups + ", bundleControl=" + bundleControl
+				+ ", productGroups=" + productGroups + ", misc=" + misc + ", promoteAs=" + promoteAs + ", displayGroup="
+				+ displayGroup + ", merchandisingVersion=" + merchandisingVersion + ", getId()=" + getId()
+				+ ", getName()=" + getName() + ", getDesc()=" + getDesc() + ", getPaymentType()=" + getPaymentType()
+				+ ", getAvailability()=" + getAvailability() + ", getCommitment()=" + getCommitment()
+				+ ", getCategories()=" + getCategories() + ", getProductLines()=" + getProductLines()
+				+ ", getDeviceSpecificPricing()=" + getDeviceSpecificPricing() + ", getServiceProducts()="
+				+ getServiceProducts() + ", getAllowances()=" + getAllowances() + ", getRecurringCharge()="
+				+ getRecurringCharge() + ", getDisplayName()=" + getDisplayName() + ", getContentDesc()="
+				+ getContentDesc() + ", getDescMobile()=" + getDescMobile() + ", getFullDetailsMobile()="
+				+ getFullDetailsMobile() + ", getContentVersion()=" + getContentVersion() + ", getListOfimageURLs()="
+				+ getListOfimageURLs() + ", getListOfmediaURLs()=" + getListOfmediaURLs()
+				+ ", getSpecificationGroups()=" + getSpecificationGroups() + ", getBundleControl()="
+				+ getBundleControl() + ", getProductGroups()=" + getProductGroups() + ", getMisc()=" + getMisc()
+				+ ", getPromoteAs()=" + getPromoteAs() + ", getDisplayGroup()=" + getDisplayGroup()
+				+ ", getMerchandisingVersion()=" + getMerchandisingVersion() + ", hashCode()=" + hashCode()
+				+ ", getClass()=" + getClass() + ", toString()=" + super.toString() + "]";
+	}
+
+	/*@Override
+	public String toString() {
+		return "CommercialBundle [id=" + id + ", name=" + name + ", desc=" + desc + ", paymentType=" + paymentType
+				+ ", availability=" + availability + ", commitment=" + commitment + ", categories=" + categories
+				+ ", productLines=" + productLines + ", deviceSpecificPricing=" + deviceSpecificPricing
+				+ ", bundleComposition=" + bundleComposition 
+				+ ", serviceProducts=" + serviceProducts + ", allowances="
 				+ allowances + ", recurringCharge=" + recurringCharge + ", terminationFee=" + terminationFee
 				+ ", migrationPaths=" + migrationPaths + ", upgradePaths=" + upgradePaths + ", preToPostPaths="
 				+ preToPostPaths + ", isDiscountable=" + isDiscountable + ", version=" + version + ", metadataVersion="
@@ -817,7 +840,7 @@ public class CommercialBundle {
 				+ displayGroup + ", merchandisingVersion=" + merchandisingVersion + ", bundlePriceOverride="
 				+ bundlePriceOverride + ", recommendataions=" + recommendataions + ", listOfEligibleChannels="
 				+ listOfEligibleChannels + "]";
-	}
+	}*/
 
 	
 

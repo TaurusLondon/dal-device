@@ -88,43 +88,29 @@ public class DeviceDaoImpl implements DeviceDao {
 
 	@Autowired
 	DataSource datasource;
-	
-	/*@Autowired
-	RestClient restClient;*/
-	
+
 	@Autowired
 	RestHighLevelClient restClient;
-	
-	 @Autowired
-	 BazaarVoiceCache bzrVoiceCache;
 
-	 @Autowired
-	 ResponseMappingHelper response;
-	 
-	 /*private RequestManager requestManager = null;
-	private CommercialProductRepository commercialProductRepository = null;
-	private CommercialBundleRepository commercialBundleRepository = null;
-	private ProductGroupRepository productGroupRepository = null;
-	private MerchandisingPromotionRepository merchandisingPromotionRepository = null;
-	private BazaarReviewRepository bazaarReviewRepository = null;*/
-	
-	//private String endPoint=ConfigHelper.getString(Constants.ELASTIC_SEARCH_ENDPOINT, Constants.DEFAULT_ENDPOINT_FOR_VODAFONE5_INDEX)+Constants.SEARCH_FOR_VODAFONE5_INDEX;
-	
+	@Autowired
+	BazaarVoiceCache bzrVoiceCache;
+
+	@Autowired
+	ResponseMappingHelper response;
+
 	@Override
 	public List<DeviceTile> getDeviceTileById(String id, String offerCode, String journeyTypeInput) {
 		String journeyType;
-		if (StringUtils.isBlank(journeyTypeInput) || (!Constants.JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyTypeInput) 
-				&& !Constants.JOURNEY_TYPE_UPGRADE.equalsIgnoreCase(journeyTypeInput) && !Constants.JOURNEY_TYPE_SECONDLINE.equalsIgnoreCase(journeyTypeInput))) {
+		if (StringUtils.isBlank(journeyTypeInput)
+				|| (!Constants.JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyTypeInput)
+						&& !Constants.JOURNEY_TYPE_UPGRADE.equalsIgnoreCase(journeyTypeInput)
+						&& !Constants.JOURNEY_TYPE_SECONDLINE.equalsIgnoreCase(journeyTypeInput))) {
 			journeyType = Constants.JOURNEY_TYPE_ACQUISITION;
-		}else{
-			journeyType =journeyTypeInput;
+		} else {
+			journeyType = journeyTypeInput;
 		}
 		String strGroupType = null;
 		LogHelper.info(this, "Start  -->  calling  CommercialProductRepository.get");
-		/*if (null == commercialProductRepository) {
-			commercialProductRepository = CoherenceConnectionProvider.getCommercialProductRepoConnection();
-		}
-		CommercialProduct commercialProduct = commercialProductRepository.get(id);*/
 		CommercialProduct commercialProduct = getCommercialProduct(id);
 		LogHelper.info(this, "End  -->  After calling  CommercialProductRepository.get");
 
@@ -138,8 +124,9 @@ public class DeviceDaoImpl implements DeviceDao {
 			List<DeviceSummary> listOfDeviceSummary = new ArrayList<>();
 			DeviceSummary deviceSummary = null;
 			deviceTile.setDeviceId(id);
-			String avarageOverallRating = getDeviceReviewRating(new ArrayList<>(Arrays.asList(id)))
-					.get(CommonUtility.appendPrefixString(id));
+			Map<String, String> rating = getDeviceReviewRating(new ArrayList<>(Arrays.asList(id)));
+			String avarageOverallRating = rating.containsKey(CommonUtility.appendPrefixString(id))
+					? rating.get(CommonUtility.appendPrefixString(id)) : "na";
 			deviceTile.setRating(avarageOverallRating);
 			if (commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)) {
 				strGroupType = Constants.STRING_DEVICE_PAYM;// Constants.STRING_DEVICE;
@@ -148,13 +135,9 @@ public class DeviceDaoImpl implements DeviceDao {
 			}
 
 			LogHelper.info(this, "Start -->  calling  productGroupRepository.getProductGroupsByType");
-			/*if (productGroupRepository == null) {
-				productGroupRepository = CoherenceConnectionProvider.getProductGroupRepoRepository();
-			}
-			List<Group> listOfProductGroup = productGroupRepository.getProductGroupsByType(strGroupType);*/
-			List<Group> listOfProductGroup= getProductGroupByType(strGroupType);
+			List<Group> listOfProductGroup = getProductGroupByType(strGroupType);
 			LogHelper.info(this, "End -->  After calling  productGroupRepository.getProductGroupsByType");
-			
+
 			if (listOfProductGroup != null && !listOfProductGroup.isEmpty()) {
 				for (Group productGroup : listOfProductGroup) {
 					if (productGroup.getMembers() != null && !productGroup.getMembers().isEmpty()) {
@@ -190,11 +173,8 @@ public class DeviceDaoImpl implements DeviceDao {
 			}
 
 			LogHelper.info(this, "Start -->  calling  bundleRepository.get");
-			/*if (commercialBundleRepository == null) {
-				commercialBundleRepository = CoherenceConnectionProvider.getCommercialBundleRepoConnection();
-			}
-			CommercialBundle comBundle = commercialBundleRepository.get(leadPlanId);*/
-			CommercialBundle comBundle  = getCommercialBundle(leadPlanId);
+			CommercialBundle comBundle = (leadPlanId == null || StringUtils.isEmpty(leadPlanId)) ? null
+					: getCommercialBundle(leadPlanId);
 			LogHelper.info(this, "End -->  After calling  bundleRepository.get");
 
 			List<BundleAndHardwarePromotions> promotions = null;
@@ -248,64 +228,56 @@ public class DeviceDaoImpl implements DeviceDao {
 	 * @param groupName
 	 * @return List<ProductGroup>
 	 */
-/*	@Override
-	public List<ProductGroup> getProductGroupByGroupTypeGroupName(String groupType, String groupName) {
-		List<ProductGroup> productGroupList = null;
-		List<ProductGroupModel> listOfProductGroupModel = null;
-		List<ProductGroupModel> listOfProductGroupModelForGroupName;
-		listOfProductGroupModelForGroupName = new ArrayList<>();
-		try {
-			if (requestManager == null) {
-				requestManager = SolrConnectionProvider.getSolrConnection();
-			}
-			if (groupType != null && groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYM)) {
-
-				LogHelper.info(this, "Start -->  calling  getProductGroups_Solr");
-				listOfProductGroupModel = requestManager.getProductGroups(Filters.HANDSET);
-				LogHelper.info(this, "End -->  After calling  getProductGroups_Solr");
-
-			} else {
-				LogHelper.error(this, Constants.NO_DATA_FOUND_FOR_GROUP_TYPE + groupType);
-				throw new ApplicationException(ExceptionMessages.NULL_VALUE_GROUP_TYPE);
-			}
-
-			if (listOfProductGroupModel != null && !listOfProductGroupModel.isEmpty()) {
-				productGroupList = new ArrayList<>();
-				if (groupName == null) {
-					productGroupList = DaoUtils.convertGroupProductToProductGroupDetails(listOfProductGroupModel);
-				} else {
-					for (ProductGroupModel productGroupModel : listOfProductGroupModel) {
-						if (productGroupModel.getName().equals(groupName)) {
-							listOfProductGroupModelForGroupName.add(productGroupModel);
-							productGroupList = DaoUtils
-									.convertGroupProductToProductGroupDetails(listOfProductGroupModelForGroupName);
-						}
-					}
-				}
-				if (productGroupList.isEmpty()) {
-					LogHelper.error(this, "No data found for given group name:" + groupName);
-					throw new ApplicationException(ExceptionMessages.NULL_VALUE_GROUP_NAME);
-				}
-			} else {
-				LogHelper.error(this, "No data found for given group name:" + groupType);
-				throw new ApplicationException(ExceptionMessages.NULL_VALUE_GROUP_TYPE);
-			}
-
-		} catch (org.apache.solr.common.SolrException solrExcp) {
-			SolrConnectionProvider.closeSolrConnection();
-			LogHelper.error(this, " SolrException: " + solrExcp);
-			throw new ApplicationException(ExceptionMessages.SOLR_CONNECTION_EXCEPTION);
-		}
-		return productGroupList;
-	}
-*/
+	/*
+	 * @Override public List<ProductGroup>
+	 * getProductGroupByGroupTypeGroupName(String groupType, String groupName) {
+	 * List<ProductGroup> productGroupList = null; List<ProductGroupModel>
+	 * listOfProductGroupModel = null; List<ProductGroupModel>
+	 * listOfProductGroupModelForGroupName; listOfProductGroupModelForGroupName
+	 * = new ArrayList<>(); try { if (requestManager == null) { requestManager =
+	 * SolrConnectionProvider.getSolrConnection(); } if (groupType != null &&
+	 * groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYM)) {
+	 * 
+	 * LogHelper.info(this, "Start -->  calling  getProductGroups_Solr");
+	 * listOfProductGroupModel =
+	 * requestManager.getProductGroups(Filters.HANDSET); LogHelper.info(this,
+	 * "End -->  After calling  getProductGroups_Solr");
+	 * 
+	 * } else { LogHelper.error(this, Constants.NO_DATA_FOUND_FOR_GROUP_TYPE +
+	 * groupType); throw new
+	 * ApplicationException(ExceptionMessages.NULL_VALUE_GROUP_TYPE); }
+	 * 
+	 * if (listOfProductGroupModel != null &&
+	 * !listOfProductGroupModel.isEmpty()) { productGroupList = new
+	 * ArrayList<>(); if (groupName == null) { productGroupList =
+	 * DaoUtils.convertGroupProductToProductGroupDetails(listOfProductGroupModel
+	 * ); } else { for (ProductGroupModel productGroupModel :
+	 * listOfProductGroupModel) { if
+	 * (productGroupModel.getName().equals(groupName)) {
+	 * listOfProductGroupModelForGroupName.add(productGroupModel);
+	 * productGroupList = DaoUtils .convertGroupProductToProductGroupDetails(
+	 * listOfProductGroupModelForGroupName); } } } if
+	 * (productGroupList.isEmpty()) { LogHelper.error(this,
+	 * "No data found for given group name:" + groupName); throw new
+	 * ApplicationException(ExceptionMessages.NULL_VALUE_GROUP_NAME); } } else {
+	 * LogHelper.error(this, "No data found for given group name:" + groupType);
+	 * throw new ApplicationException(ExceptionMessages.NULL_VALUE_GROUP_TYPE);
+	 * }
+	 * 
+	 * } catch (org.apache.solr.common.SolrException solrExcp) {
+	 * SolrConnectionProvider.closeSolrConnection(); LogHelper.error(this,
+	 * " SolrException: " + solrExcp); throw new
+	 * ApplicationException(ExceptionMessages.SOLR_CONNECTION_EXCEPTION); }
+	 * return productGroupList; }
+	 */
 	/**
 	 * Returns leadSkuId based on the priority
 	 * 
 	 * @param deviceGroupMember
 	 * @return leadSkuId
 	 */
-	public String findLeadSkuBasedOnPriority(List<com.vf.uk.dal.device.datamodel.productgroups.Member> deviceGroupMember) {
+	public String findLeadSkuBasedOnPriority(
+			List<com.vf.uk.dal.device.datamodel.productgroups.Member> deviceGroupMember) {
 		String leadSkuId = null;
 		Long maxPriority;
 		List<Long> listOfPriority = new ArrayList<>();
@@ -358,10 +330,6 @@ public class DeviceDaoImpl implements DeviceDao {
 		Boolean memberFlag = false;
 
 		LogHelper.info(this, "Start --->  calling  CommercialProductRepository.get");
-		/*if (commercialProductRepository == null) {
-			commercialProductRepository = CoherenceConnectionProvider.getCommercialProductRepoConnection();
-		}
-		CommercialProduct comProduct = commercialProductRepository.get(memberId);*/
 		CommercialProduct comProduct = getCommercialProduct(memberId);
 		LogHelper.info(this, "End --->  After calling  CommercialProductRepository.get");
 
@@ -393,44 +361,36 @@ public class DeviceDaoImpl implements DeviceDao {
 	 * @param memberId
 	 * @return
 	 */
-	/*public Boolean validateMemeber1(String memberId) {
-		Boolean memberFlag = false;
-		List<String> listOfProduct = new ArrayList<>();
-		listOfProduct.add(memberId);
-		Date startDateTime = null;
-		Date endDateTime = null;
-		List<ProductModel> productModel = requestManager.getProductModel(listOfProduct);
-		if (productModel != null && !productModel.isEmpty()) {
-			for (ProductModel productModel2 : productModel) {
-				if (productModel2.getProductStartDate() != null) {
-					try {
-						startDateTime = new SimpleDateFormat("dd/MM/yyyy").parse(productModel2.getProductStartDate());
-					} catch (ParseException e) {
-						LogHelper.error(this, "Parse Exception: " + e);
-					}
-				}
-				if (productModel2.getProductEndDate() != null) {
-					try {
-						endDateTime = new SimpleDateFormat("dd/MM/yyyy").parse(productModel2.getProductEndDate());
-					} catch (ParseException ex) {
-						LogHelper.error(this, "Parse Exception: " + ex);
-					}
-				}
-				boolean preOrderableFlag = Boolean.parseBoolean(productModel2.getPreOrderable());
-
-				if (productModel2.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)
-						&& DaoUtils.dateValidation(startDateTime, endDateTime, preOrderableFlag)
-						&& (Constants.STRING_TRUE.equalsIgnoreCase(productModel2.getIsDisplayableAcq())
-								&& Constants.STRING_TRUE.equalsIgnoreCase(productModel2.getIsSellableAcq()))) {
-					memberFlag = true;
-				}
-			}
-		}
-
-		return memberFlag;
-
-	}
-*/
+	/*
+	 * public Boolean validateMemeber1(String memberId) { Boolean memberFlag =
+	 * false; List<String> listOfProduct = new ArrayList<>();
+	 * listOfProduct.add(memberId); Date startDateTime = null; Date endDateTime
+	 * = null; List<ProductModel> productModel =
+	 * requestManager.getProductModel(listOfProduct); if (productModel != null
+	 * && !productModel.isEmpty()) { for (ProductModel productModel2 :
+	 * productModel) { if (productModel2.getProductStartDate() != null) { try {
+	 * startDateTime = new
+	 * SimpleDateFormat("dd/MM/yyyy").parse(productModel2.getProductStartDate())
+	 * ; } catch (ParseException e) { LogHelper.error(this, "Parse Exception: "
+	 * + e); } } if (productModel2.getProductEndDate() != null) { try {
+	 * endDateTime = new
+	 * SimpleDateFormat("dd/MM/yyyy").parse(productModel2.getProductEndDate());
+	 * } catch (ParseException ex) { LogHelper.error(this, "Parse Exception: " +
+	 * ex); } } boolean preOrderableFlag =
+	 * Boolean.parseBoolean(productModel2.getPreOrderable());
+	 * 
+	 * if (productModel2.getProductClass().equalsIgnoreCase(Constants.
+	 * STRING_HANDSET) && DaoUtils.dateValidation(startDateTime, endDateTime,
+	 * preOrderableFlag) &&
+	 * (Constants.STRING_TRUE.equalsIgnoreCase(productModel2.getIsDisplayableAcq
+	 * ()) &&
+	 * Constants.STRING_TRUE.equalsIgnoreCase(productModel2.getIsSellableAcq()))
+	 * ) { memberFlag = true; } } }
+	 * 
+	 * return memberFlag;
+	 * 
+	 * }
+	 */
 	/**
 	 * calculation of price
 	 * 
@@ -531,7 +491,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		}
 		boolean sellableCheck = false;
 		if (commercialBundle != null) {
-			if ( Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
+			if (Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
 					&& commercialBundle.getBundleControl() != null
 					&& commercialBundle.getBundleControl().getIsSellableRet()
 					&& commercialBundle.getBundleControl().getIsDisplayableRet()
@@ -687,6 +647,8 @@ public class DeviceDaoImpl implements DeviceDao {
 
 				if (Double.parseDouble(gross) < Double.parseDouble(gross1)) {
 					return -1;
+				} else if (Double.compare(Double.parseDouble(gross), Double.parseDouble(gross1)) == 0) {
+					return 0;
 				} else
 					return 1;
 
@@ -749,6 +711,7 @@ public class DeviceDaoImpl implements DeviceDao {
 
 	/**
 	 * need to be checked
+	 * 
 	 * @param prioritySorted
 	 * @return
 	 */
@@ -759,10 +722,12 @@ public class DeviceDaoImpl implements DeviceDao {
 		return prioritySorted;
 	}
 
-	class SortedPriorityList implements Comparator<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion> {
+	class SortedPriorityList
+			implements Comparator<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion> {
 
 		@Override
-		public int compare(com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion listOfMerchandising,
+		public int compare(
+				com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion listOfMerchandising,
 				com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion listOfMerchandising2) {
 
 			if (listOfMerchandising.getPriority() != null && listOfMerchandising2.getPriority() != null) {
@@ -882,221 +847,6 @@ public class DeviceDaoImpl implements DeviceDao {
 		return jsonObject;
 	}
 
-	/*@Override
-	public com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion getMerchandisingPromotionByPromotionName(
-			String promotionName) {
-
-		LogHelper.info(this, "Start -->  calling  merchandisingPromotionRepository.get");
-		if (merchandisingPromotionRepository == null) {
-			merchandisingPromotionRepository = CoherenceConnectionProvider.getMerchandisingRepoConnection();
-		}
-		com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion merchandisingPromotion = merchandisingPromotionRepository
-				.get(promotionName);
-		LogHelper.info(this, "End -->  After calling  merchandisingPromotionRepository.get");
-		return merchandisingPromotion;
-	}*/
-
-	/*@Override
-	public List<Group> getProductGroupsByType(String groupType) {
-		try {
-			if (productGroupRepository == null) {
-				productGroupRepository = CoherenceConnectionProvider.getProductGroupRepoRepository();
-			}
-			LogHelper.info(this, "Start --> Calling  productRepository.getByName");
-			List<Group> groupList = productGroupRepository.getProductGroupsByType(groupType);
-			LogHelper.info(this, "End --> End -->  After calling  productRepository.getProductByClass");
-			return groupList;
-
-		} catch (Exception e) {
-			LogHelper.error(this, "Coherence Issue " + e);
-			throw new ApplicationException(ExceptionMessages.INVALID_COHERENCE_DATA);
-		}
-	}*/
-
-	/**
-	 * 
-	 */
-	/*@Override
-	public CommercialProduct getCommercialProductRepositoryByLeadMemberId(String leadMemberId) {
-		try {
-			LogHelper.info(this, "Start -->  calling  CommercialProductRepository.get");
-			if (commercialProductRepository == null) {
-				commercialProductRepository = CoherenceConnectionProvider.getCommercialProductRepoConnection();
-			}
-			CommercialProduct commercialProduct = commercialProductRepository.get(leadMemberId);
-			LogHelper.info(this, "End -->  After calling  CommercialProductRepository.get");
-
-			return commercialProduct;
-
-		} catch (NullPointerException np) {
-			LogHelper.error(this, " Invalid Data Coming From Coherence " + np);
-			LogHelper.info(this, "Invalid MemberId " + leadMemberId);
-			throw new ApplicationException(ExceptionMessages.INVALID_COHERENCE_DATA);
-		}
-	}*/
-
-	/*@Override
-	public List<OfferAppliedPriceModel> getBundleAndHardwarePriceFromSolr(List<String> deviceIds, String offerCode,
-			String journeyType) {
-
-		LogHelper.info(this, "Start --> Calling  getOfferAppliedPrices_Solr");
-		List<OfferAppliedPriceModel> list = requestManager.getOfferAppliedPrices(deviceIds, offerCode, journeyType);
-		LogHelper.info(this, "End --> End -->  After calling  getOfferAppliedPrices_Solr");
-
-		return list;
-	}*/
-
-	/*@Override
-	public Collection<CommercialProduct> getListCommercialProductRepositoryByLeadMemberId(List<String> leadMemberId) {
-		Collection<CommercialProduct> commercialProductList = null;
-		try {
-
-			LogHelper.info(this, "Start -->  calling  productRepository.getAll");
-			if (commercialProductRepository == null) {
-				commercialProductRepository = CoherenceConnectionProvider.getCommercialProductRepoConnection();
-			}
-			commercialProductList = new ArrayList<>(commercialProductRepository.getAll(leadMemberId));
-			LogHelper.info(this, "End -->  After calling  productRepository.getAll");
-
-		} catch (Exception np) {
-			LogHelper.error(this, "Invalid Data Coming From Coherence " + np);
-			LogHelper.info(this, "Invalid MemberId " + leadMemberId);
-			return commercialProductList;
-		}
-		return commercialProductList;
-	}*/
-
-	/**
-	 * 
-	 */
-	/*@Override
-	public StockAvailability getStockAvailabilityByMemberId(String memberId) {
-		StockAvailabilityRepository stockrepository = new StockAvailabilityRepository();
-		return stockrepository.get(memberId);
-	}*/
-
-	/**
-	 * @author manoj.bera
-	 */
-	/*@Override
-	public void movePreCalcDataToSolr(List<DevicePreCalculatedData> preCalcPlanList) {
-		try {
-			String zookeeperHost = ConfigHelper.getString(Constants.ZOOKEEPER_HOST_STRING,
-					Constants.DEFAULT_ZOOKEEPER_HOST_STRING);
-			String aliasName = ConfigHelper.getString(Constants.ALIAS_NAME, Constants.DEFAULT_ALIAS_NAME);
-			String zookeeperUserName = ConfigHelper.getString(Constants.ZOOKEEPER_USERNAME,
-					Constants.DEFAULT_ZOOKEEPER_USERNAME);
-			String zookeeperpass = ConfigHelper.getString(Constants.ZOOKEEPER_PASS, Constants.DEFAULT_ZOOKEEPER_PASS);
-			List<com.vodafone.pojos.fromjson.device.DevicePreCalculatedData> deviceListObjectList = DaoUtils
-					.convertDevicePreCalDataToSolrData(preCalcPlanList);
-			IncrementalIndexManager manager = new IncrementalIndexManager();
-			manager.deviceHotfix(zookeeperHost, aliasName, zookeeperUserName, zookeeperpass, deviceListObjectList);
-		} catch (SolrDeviceHotFixException sdhfe) {
-			LogHelper.info(this, "Not Able To Load Data In Solr : " + sdhfe);
-			throw new ApplicationException(ExceptionMessages.SOLR_INDEXING_ERROR);
-		} catch (Exception ex) {
-			LogHelper.info(this, "Not Able To Load Data In Solr : " + ex);
-			throw new ApplicationException(ExceptionMessages.SOLR_INDEXING_ERROR);
-		}
-	}*/
-
-	/**
-	 * 
-	 */
-	/*@Override
-	public ProductGroupFacetModel getProductGroupsWithFacets(Filters filterKey, String filterCriteria, String sortBy,
-			String sortOption, Integer pageNumber, Integer pageSize, String journeyType) {
-		ProductGroupFacetModel productGroupFacetModel = null;
-		try {
-			if (requestManager == null) {
-				requestManager = SolrConnectionProvider.getSolrConnection();
-			}
-
-			LogHelper.info(this, "Start --> Calling  getProductGroupsWithFacets_Solr");
-			productGroupFacetModel = requestManager.getProductGroupsWithFacetsByJourneyType(filterKey, filterCriteria,
-					sortBy, sortOption, pageNumber, pageSize, Arrays.asList(journeyType));
-			LogHelper.info(this, "End --> After calling  getProductGroupsWithFacets_Solr");
-			// }
-		} catch (org.apache.solr.common.SolrException solrExcp) {
-			SolrConnectionProvider.closeSolrConnection();
-			LogHelper.error(this, "  SolrException: " + solrExcp);
-			throw new ApplicationException(ExceptionMessages.SOLR_CONNECTION_EXCEPTION);
-		} catch (Exception exp) {
-			SolrConnectionProvider.closeSolrConnection();
-			LogHelper.error(this, "Exception: " + exp);
-			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_SOLR);
-		}
-		return productGroupFacetModel;
-	}
-*/
-	/**
-	 * 
-	 */
-	/*@Override
-	public ProductGroupFacetModel getProductGroupsWithFacets(Filters filterKey, String journeyType) {
-		ProductGroupFacetModel productGroupFacetModel = null;
-		try {
-			if (requestManager == null) {
-				requestManager = SolrConnectionProvider.getSolrConnection();
-			}
-			LogHelper.info(this, "Start --> Calling  getProductGroupsWithFacets_Solr");
-			productGroupFacetModel = requestManager.getProductGroupFacetModelByJourneyType(filterKey,
-					Arrays.asList(journeyType));
-			LogHelper.info(this, "End --> After Calling  getProductGroupsWithFacets_Solr");
-		} catch (org.apache.solr.common.SolrException solrExcp) {
-			SolrConnectionProvider.closeSolrConnection();
-			LogHelper.error(this, "SolrException : " + solrExcp);
-			throw new ApplicationException(ExceptionMessages.SOLR_CONNECTION_EXCEPTION);
-		} catch (Exception exp) {
-			SolrConnectionProvider.closeSolrConnection();
-			LogHelper.error(this, "Exception: " + exp);
-			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_SOLR);
-		}
-		return productGroupFacetModel;
-	}
-*/
-	/**
-	 * 
-	 */
-	/*@Override
-	public List<ProductModel> getProductModel(List<String> listOfProducts) {
-		List<ProductModel> productModel = null;
-		try {
-			if (requestManager == null) {
-				requestManager = SolrConnectionProvider.getSolrConnection();
-			}
-			LogHelper.info(this, "Start --> Calling  getProductModel_Solr");
-			productModel = requestManager.getProductModel(listOfProducts);
-			LogHelper.info(this, "End --> Calling  getProductModel_Solr");
-		} catch (org.apache.solr.common.SolrException solrExcp) {
-			SolrConnectionProvider.closeSolrConnection();
-			LogHelper.error(this, " SolrException : " + solrExcp);
-			throw new ApplicationException(ExceptionMessages.SOLR_CONNECTION_EXCEPTION);
-		}
-		return productModel;
-	}
-*/
-	/**
-	 * 
-	 * @param listOfLeadPlanId
-	 * @return
-	 */
-	/*@Override
-	public List<BundleModel> getBundleDetails(List<String> listOfLeadPlanId) {
-		List<BundleModel> bundleModel = null;
-		try {
-			if (requestManager == null) {
-				requestManager = SolrConnectionProvider.getSolrConnection();
-			}
-			bundleModel = requestManager.getBundleDetails(listOfLeadPlanId);
-		} catch (org.apache.solr.common.SolrException solrExcp) {
-			SolrConnectionProvider.closeSolrConnection();
-			LogHelper.error(this, " SolrException: " + solrExcp);
-			throw new ApplicationException(ExceptionMessages.SOLR_CONNECTION_EXCEPTION);
-		}
-		return bundleModel;
-	}
-*/
 	@Override
 	public List<BazaarVoice> getReviewRatingList(List<String> listMemberIds) {
 
@@ -1161,30 +911,6 @@ public class DeviceDaoImpl implements DeviceDao {
 		return bvReviewAndRateMap;
 	}
 
-	/*@Override
-	public CommercialProduct getCommercialProductByProductId(String productId) {
-
-		LogHelper.info(this, "Start -->  calling  CommercialProductRepository.get");
-		if (commercialProductRepository == null) {
-			commercialProductRepository = CoherenceConnectionProvider.getCommercialProductRepoConnection();
-		}
-		CommercialProduct commercialProduct = commercialProductRepository.get(productId);
-		LogHelper.info(this, "End -->  After calling  CommercialProductRepository.get");
-		return commercialProduct;
-	}
-
-	@Override
-	public CommercialBundle getCommercialBundleByBundleId(String bundleId) {
-
-		LogHelper.info(this, "Start -->  calling  bundleRepository.get");
-		if (commercialBundleRepository == null) {
-			commercialBundleRepository = CoherenceConnectionProvider.getCommercialBundleRepoConnection();
-		}
-		CommercialBundle commercialBundle = commercialBundleRepository.get(bundleId);
-		LogHelper.info(this, "End -->  After calling  bundleRepository.get");
-		return commercialBundle;
-	}
-*/
 	@Override
 	public List<PriceForBundleAndHardware> getPriceForBundleAndHardware(
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType) {
@@ -1282,201 +1008,6 @@ public class DeviceDaoImpl implements DeviceDao {
 		}
 		return response;
 	}
-
-	/*@Override
-	public Collection<CommercialBundle> getListCommercialBundleRepositoryByCompatiblePlanList(List<String> planIdList) {
-		Collection<CommercialBundle> commercialBundleList = null;
-		try {
-			if (commercialBundleRepository == null) {
-				commercialBundleRepository = CoherenceConnectionProvider.getCommercialBundleRepoConnection();
-			}
-			LogHelper.info(this, "Start --> Calling BundleRepository.getAll");
-			commercialBundleList = commercialBundleRepository.getAll(planIdList);
-			LogHelper.info(this, "End --> End -->  After calling  BundleRepository.getAll");
-
-		} catch (Exception e) {
-			LogHelper.error(this, "==>" + e);
-			return commercialBundleList;
-		}
-		return commercialBundleList;
-	}
-
-	@Override
-	public Group getGroupByProdGroupName(String groupName, String groupType) {
-
-		Group group;
-		try {
-			LogHelper.info(this, "Start -->  calling  getCommercialProductByDeviceId.get");
-			if (productGroupRepository == null) {
-				productGroupRepository = new ProductGroupRepository();
-			}
-			group = productGroupRepository.getProductGroup(groupName, groupType);
-			LogHelper.info(this, "End -->  After calling  getCommercialProductByDeviceId.get");
-		} catch (NullPointerException np) {
-			LogHelper.error(this, "Invalid Data Coming From Coherence " + np);
-			throw new ApplicationException(ExceptionMessages.INVALID_COHERENCE_DATA);
-		}
-		return group;
-	}
-
-	@Override
-	public List<CommercialProduct> getCommercialProductsList(List<String> productIdsList) {
-
-		LogHelper.info(this, "Start -->  calling  productRepository.getAll");
-		if (commercialProductRepository == null) {
-			commercialProductRepository = CoherenceConnectionProvider.getCommercialProductRepoConnection();
-		}
-		List<CommercialProduct> commercialProducts = new ArrayList<>(
-				commercialProductRepository.getAll(productIdsList));
-		LogHelper.info(this, "End -->  After calling  productRepository.getAll");
-		return commercialProducts;
-	}*/
-
-	/*@Override
-	public List<MerchandisingPromotionModel> getJourneyTypeCompatibleOfferCodes(String journeyType) {
-		List<MerchandisingPromotionModel> listOfMerchandisingPromotions = null;
-
-		try {
-			if (requestManager == null) {
-				requestManager = SolrConnectionProvider.getSolrConnection();
-			}
-			LogHelper.info(this, "Start -->  calling  getMerchandisingPromotionsByProductLineAndPackageType_Solr");
-			listOfMerchandisingPromotions = requestManager.getMerchandisingPromotionsByProductLineAndPackageType("PAYM",
-					journeyType);
-			LogHelper.info(this, "End -->  After calling  getMerchandisingPromotionsByProductLineAndPackageType_solr");
-		} catch (org.apache.solr.common.SolrException solrExcp) {
-			SolrConnectionProvider.closeSolrConnection();
-			LogHelper.error(this, "SolrException: " + solrExcp);
-			throw new ApplicationException(ExceptionMessages.SOLR_CONNECTION_EXCEPTION);
-		}
-
-		return listOfMerchandisingPromotions;
-	}
-
-	@Override
-	public List<MerchandisingPromotionModel> getJourneyTypeCompatibleOfferCodes(String grouptype, String journeyType) {
-		List<MerchandisingPromotionModel> listOfMerchandisingPromotions = null;
-
-		try {
-			if (requestManager == null) {
-				requestManager = SolrConnectionProvider.getSolrConnection();
-			}
-			if (grouptype.equals(Constants.OFFERCODE_PAYM)) {
-				if (Constants.JOURNEY_TYPE_SECONDLINE_UPGRADE.equalsIgnoreCase(journeyType)) {
-					listOfMerchandisingPromotions = requestManager
-							.getMerchandisingPromotionsByProductLineAndPackageType(grouptype,
-									Constants.JOURNEY_TYPE_SECONDLINE_UPGRADE);
-				}
-				if (Constants.JOURNEY_TYPE_UPGRADE.equalsIgnoreCase(journeyType)) {
-					listOfMerchandisingPromotions = requestManager
-							.getMerchandisingPromotionsByProductLineAndPackageType(grouptype,
-									Constants.JOURNEY_TYPE_UPGRADE);
-				}
-				if (Constants.JOURNEY_TYPE_SECONDLINE.equalsIgnoreCase(journeyType)) {
-					listOfMerchandisingPromotions = requestManager
-							.getMerchandisingPromotionsByProductLineAndPackageType(grouptype,
-									Constants.JOURNEY_TYPE_SECONDLINE);
-				}
-			}
-
-		} catch (org.apache.solr.common.SolrException solrExcp) {
-			SolrConnectionProvider.closeSolrConnection();
-			LogHelper.error(this, "SolrException: " + solrExcp);
-			throw new ApplicationException(ExceptionMessages.SOLR_CONNECTION_EXCEPTION);
-		}
-
-		return listOfMerchandisingPromotions;
-	}*/
-
-	/**
-	 * @author aditya.oli Method to initialize requestManager if it is null.
-	 *         Else, send it as it was initialized. This depicts an
-	 *         implementation of the Singleton design pattern where we use a
-	 *         single object/connection for the entire session.
-	 * @return RequestManager
-	 */
-	/*@Override
-	public RequestManager getRequestManager() {
-		if (requestManager == null) {
-			requestManager = SolrConnectionProvider.getSolrConnection();
-		}
-		return requestManager;
-	}*/
-
-	/**
-	 * @author aditya.oli Method to initialize CommercialProductRepository if it
-	 *         is null. Else, send it as it was initialized. This depicts an
-	 *         implementation of the Singleton design pattern where we use a
-	 *         single object/connection for the entire session.
-	 * @return CommercialProductRepository
-	 */
-	/*@Override
-	public CommercialProductRepository getCommercialProductRepository() {
-		if (commercialProductRepository == null) {
-			commercialProductRepository = CoherenceConnectionProvider.getCommercialProductRepoConnection();
-		}
-		return commercialProductRepository;
-	}*/
-
-	/**
-	 * @author aditya.oli Method to initialize CommercialBundleRepository if it
-	 *         is null. Else, send it as it was initialized. This depicts an
-	 *         implementation of the Singleton design pattern where we use a
-	 *         single object/connection for the entire session.
-	 * @return CommercialBundleRepository
-	 */
-	/*@Override
-	public CommercialBundleRepository getCommercialBundleRepository() {
-		if (commercialBundleRepository == null) {
-			commercialBundleRepository = CoherenceConnectionProvider.getCommercialBundleRepoConnection();
-		}
-		return commercialBundleRepository;
-	}*/
-
-	/**
-	 * @author aditya.oli Method to initialize ProductGroupRepository if it is
-	 *         null. Else, send it as it was initialized. This depicts an
-	 *         implementation of the Singleton design pattern where we use a
-	 *         single object/connection for the entire session.
-	 * @return ProductGroupRepository
-	 */
-	/*@Override
-	public ProductGroupRepository getProductGroupRepository() {
-		if (productGroupRepository == null) {
-			productGroupRepository = CoherenceConnectionProvider.getProductGroupRepoRepository();
-		}
-		return productGroupRepository;
-	}*/
-
-	/**
-	 * @author aditya.oli Method to initialize MerchandisingPromotionRepository
-	 *         if it is null. Else, send it as it was initialized. This depicts
-	 *         an implementation of the Singleton design pattern where we use a
-	 *         single object/connection for the entire session.
-	 * @return MerchandisingPromotionRepository
-	 */
-	/*@Override
-	public MerchandisingPromotionRepository getMerchandisingPromotionRepository() {
-		if (merchandisingPromotionRepository == null) {
-			merchandisingPromotionRepository = CoherenceConnectionProvider.getMerchandisingRepoConnection();
-		}
-		return merchandisingPromotionRepository;
-	}*/
-
-	/**
-	 * @author aditya.oli This method is used to initialize the Bazaar Review
-	 *         Repository which happens to be a third party repository used for
-	 *         reviews.
-	 * @return BazaarReviewRepository
-	 */
-	/*@Override
-	public BazaarReviewRepository getBazaarReviewRepository() {
-		if (bazaarReviewRepository == null) {
-			bazaarReviewRepository = new BazaarReviewRepository();
-		}
-		return bazaarReviewRepository;
-	}*/
-
 	/**
 	 * @author aditya.oli This method checks whether Bazaar Review Repository
 	 *         has been initialized or not. If yes, it gets the Bazaar Voice
@@ -1488,61 +1019,12 @@ public class DeviceDaoImpl implements DeviceDao {
 	 */
 	@Override
 	public BazaarVoice getBazaarVoice(String skuId) {
-		BazaarVoice bazaarVoice=new BazaarVoice();
+		BazaarVoice bazaarVoice = new BazaarVoice();
 		bazaarVoice.setSkuId(skuId);
 		bazaarVoice.setJsonsource(getDeviceReviewDetails(CommonUtility.appendPrefixString(skuId)));
 		return bazaarVoice;
-		/*getBazaarReviewRepository();
-		return bazaarReviewRepository.get(CommonUtility.appendPrefixString(skuId));*/
 	}
 
-	/**
-	 * @author aditya.oli This method returns the List of CommercialProducts
-	 *         from coherence's CommercialProductRepository for the respective
-	 *         parameters.
-	 * @param String
-	 *            make
-	 * @param String
-	 *            model
-	 * @return List<CommercialProduct>
-	 */
-	/*@Override
-	public List<CommercialProduct> getListOfCommercialProductsFromCommercialProductRepository(String make,
-			String model) {
-		getCommercialProductRepository();
-		return commercialProductRepository.getByMakeANDModel(make, model);
-	}*/
-
-	/**
-	 * @author aditya.oli This method returns the List of groups from
-	 *         coherence's ProductGroupRepository for a particular groupType
-	 *         passed in the parameter.
-	 * @param String
-	 *            groupType
-	 * @return List<Group>
-	 */
-	/*@Override
-	public List<Group> getListOfProductGroupFromProductGroupRepository(String groupType) {
-		getProductGroupRepository();
-		return productGroupRepository.getProductGroupsByType(groupType);
-	}*/
-
-	/**
-	 * @author aditya.oli This method gets all the Commercial Bundles from
-	 *         coherence's CommercialBundleRepository, for the list of planIds
-	 *         passed in the parameter as returns all the Commercial Bundles in
-	 *         the form of a list.
-	 * @param List<String>
-	 *            listOfLeadPlan
-	 * @return Collection<CommercialBundle>
-	 * 
-	 */
-	/*@Override
-	public Collection<CommercialBundle> getAllCommercialBundlesFromCommercialBundleRepository(
-			List<String> listofLeadPlan) {
-		getCommercialBundleRepository();
-		return commercialBundleRepository.getAll(listofLeadPlan);
-	}*/
 
 	/**
 	 * @author aditya.oli This method fetches and returns the Commercial Bundle
@@ -1553,228 +1035,13 @@ public class DeviceDaoImpl implements DeviceDao {
 	 * @return CommercialBundle
 	 */
 	public CommercialBundle getCommercialBundleFromCommercialBundleRepository(String bundleId) {
-		 return getCommercialBundle(bundleId);
+		return getCommercialBundle(bundleId);
 	}
-
-	/**
-	 * @author aditya.oli This method fetches and returns the Commercial Product
-	 *         from coherence's CommercialProductRepository by taking the
-	 *         product's Id as a parameter.
-	 * @param String
-	 *            deviceId
-	 * @return CommercialProduct
-	 */
-	/*@Override
-	public CommercialProduct getCommercialProductFromCommercialProductRepository(String deviceId) {
-		getCommercialProductRepository();
-		return commercialProductRepository.get(deviceId);
-	}
-*/
-	/**
-	 * @author aditya.oli This method fetches and returns the Merchandising
-	 *         Promotion from coherence's MerchandisingPromotionRepository by
-	 *         taking the promotion's name as a parameter.
-	 * @param String
-	 *            promotionName
-	 * @return MerchandisingPromotion
-	 */
-	/*@Override
-	public com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion getMerchandisingPromotionBasedOnPromotionName(
-			String promotionName) {
-		getMerchandisingPromotionRepository();
-		return merchandisingPromotionRepository.get(promotionName);
-	}*/
-
-	/**
-	 * @author aditya.oli This method returns the List of Product Group Models
-	 *         by sending the Filters to Solr and retrieving the respective
-	 *         Product Group Models.
-	 * @return List<ProductGroupModel>
-	 */
-	/*@Override
-	public List<ProductGroupModel> getListOfProductGroupsFromSolr() {
-		getRequestManager();
-		return requestManager.getProductGroups(Filters.HANDSET);
-	}*/
-
-	/**
-	 * @author aditya.oli This method returns the List of Group from Solr by
-	 *         sending the list of Device Group names and retrieving the
-	 *         respective List of Groups.
-	 * @param List<String>
-	 *            listOfDeviceGroupName
-	 * @return List<Group>
-	 */
-	/*@Override
-	public List<Group> getListOfGroupsFromProductGroupRepository(List<String> listOfDeviceGroupName) {
-		getProductGroupRepository();
-		return new ArrayList<Group>(productGroupRepository.getAll(listOfDeviceGroupName));
-	}*/
-
-	/**
-	 * @author aditya.oli This method takes the List of String as a parameter
-	 *         and returns the List of Commercial Products from coherence, each
-	 *         corresponding to the data sent in as a parameter.
-	 * @param List<String>
-	 *            productList
-	 * @return Collection<CommercialProduct>
-	 */
-	/*@Override
-	public Collection<CommercialProduct> getCommercialProductListFromCommercialProductRepository(
-			List<String> productList) {
-		getCommercialProductRepository();
-		return commercialProductRepository.getAll(productList);
-	}*/
-
-	/**
-	 * @author aditya.oli This method takes the List of String as a parameter
-	 *         and sends it to Solr to fetch the List of Product Models
-	 *         corresponding to the each of the data values sent in the request.
-	 * @param List<String>
-	 *            listOfProduct
-	 * @return List<ProductModel>
-	 */
-	/*@Override
-	public List<ProductModel> getListOfProductModelFromSolr(List<String> listOfProduct) {
-		getRequestManager();
-		return requestManager.getProductModel(listOfProduct);
-	}*/
-
-	/**
-	 * @author aditya.oli This method is used to fetch the list of Offer Applied
-	 *         Price Models from Solr, which are retrieved by passing the List
-	 *         of device Ids, and the offerCode applicable.
-	 * @param List<String>
-	 *            deviceIds
-	 * @param String
-	 *            offerCode
-	 * @return List<OfferAppliedPriceModel>
-	 */
-	/*@Override
-	public List<OfferAppliedPriceModel> getListOfOfferAppliedPriceModelFromSolr(List<String> deviceIds,
-			String offerCode) {
-		getRequestManager();
-		return requestManager.getOfferAppliedPrices(deviceIds, offerCode);
-	}*/
-
-	/**
-	 * @author aditya.oli This method takes the filter key, filter criteria,
-	 *         sort by, sort option, page number and the page size as parameters
-	 *         and send them the Solr to fetch the Product Group Facet Model
-	 *         depending on the values sent in the request, that match with Solr
-	 *         data.
-	 * @param Filters
-	 *            filterKey
-	 * @param String
-	 *            filterCriteria
-	 * @param String
-	 *            sortBy
-	 * @param String
-	 *            sortOption
-	 * @param Integer
-	 *            pageNumber
-	 * @param Integer
-	 *            pageSize
-	 * @return ProductGroupFacetModel
-	 */
-	/*@Override
-	public ProductGroupFacetModel getProductGroupFacetModelfromSolr(Filters filterKey, String filterCriteria,
-			String sortBy, String sortOption, Integer pageNumber, Integer pageSize) {
-		getRequestManager();
-		return requestManager.getProductGroupsWithFacets(filterKey, filterCriteria, sortBy, sortOption, pageNumber,
-				pageSize);
-	}*/
-
-	/**
-	 * @author aditya.oli This method takes the Filter key as parameter, sends
-	 *         it to Solr, and fetches the Product Group Facet Model which is
-	 *         retrieved by sending the filter key as the only parameter.
-	 * @param Filters
-	 *            filterKey
-	 * @return ProductGroupFacetModel
-	 */
-	/*@Override
-	public ProductGroupFacetModel getProductGroupFacetModelForFilterKeyfromSolr(Filters filterKey) {
-		getRequestManager();
-		return requestManager.getProductGroupsWithFacets(filterKey);
-	}*/
-
-	/**
-	 * @author aditya.oli This method takes a list of Strings as a request
-	 *         parameter, and fetches the respective list of Bundle Models from
-	 *         Solr for the data respective to each entry in the list that was
-	 *         sent as input.
-	 * @param List<String>
-	 *            listOfLeadPlanId
-	 * @return List<BundleModel>
-	 */
-	/*@Override
-	public List<BundleModel> getBundleModelListFromSolr(List<String> listOfLeadPlanId) {
-		getRequestManager();
-		return requestManager.getBundleDetails(listOfLeadPlanId);
-	}*/
-
-	/**
-	 * @author aditya.oli This method retrieves the Group object from
-	 *         Coherence's Product Group Repository by taking the groupName and
-	 *         groupType as parameter.
-	 * @param String
-	 *            groupName
-	 * @param String
-	 *            groupType
-	 * @return Group
-	 */
-	/*@Override
-	public Group getGroupFromProductGroupRepository(String groupName, String groupType) {
-		getProductGroupRepository();
-		return productGroupRepository.getProductGroup(groupName, groupType);
-	}*/
-
-	/**
-	 * @author aditya.oli This method takes a string journeyType as a parameter,
-	 *         and then sends it to Solr along with String PAYM as another
-	 *         parameter, and returns the list of Merchandising Promotion Models
-	 *         from Solr back to the service layer.
-	 * @param String
-	 *            journeyType
-	 * @return List<MerchandisingPromotionModel>
-	 */
-	/*@Override
-	public List<MerchandisingPromotionModel> getListOfMerchandisingPromotionModelFromSolr(String groupType,
-			String journeyType) {
-		getRequestManager();
-		return requestManager.getMerchandisingPromotionsByProductLineAndPackageType(groupType, journeyType);
-	}*/
-
-	/*@Override
-	public List<CommercialBundle> fetchCommericalBundlesbyList(List<String> listOfBundleIds) {
-		LogHelper.info(this, "Start -->  calling  bundleRepository.getAll");
-		if (commercialBundleRepository == null) {
-			commercialBundleRepository = CoherenceConnectionProvider.getCommercialBundleRepoConnection();
-		}
-		Collection<CommercialBundle> commercialBundles = commercialBundleRepository.getAll(listOfBundleIds);
-		LogHelper.info(this, "End -->  After calling  bundleRepository.get");
-		return new ArrayList<CommercialBundle>(commercialBundles);
-	}*/
 
 	@Override
 	public Map<String, MerchandisingPromotion> getMerchandisingPromotionsEntityFromRepo(List<String> promotionAsTags) {
 		List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion> listOfMerchandisingPromotions = null;
 		Map<String, MerchandisingPromotion> promotions = new HashMap<>();
-
-		/*if (merchandisingPromotionRepository == null) {
-			merchandisingPromotionRepository = CoherenceConnectionProvider.getMerchandisingRepoConnection();
-		}
-
-		LogHelper.info(this, "Start -->  calling  getMerchandisingPromotionsByTag_Solr");
-		// String queryString = String.join(",", promotionAsTags);
-		Collection<com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion> colls = merchandisingPromotionRepository
-				.getAll(promotionAsTags);
-		LogHelper.info(this, "End -->  After calling  getMerchandisingPromotionsByTag_Solr");
-		if (colls != null && !colls.isEmpty()) {
-			listOfMerchandisingPromotions = new ArrayList<com.vodafone.merchandisingPromotion.pojo.MerchandisingPromotion>(
-					colls);
-		}*/
 		listOfMerchandisingPromotions = getMerchandising(promotionAsTags);
 		if (listOfMerchandisingPromotions != null && !listOfMerchandisingPromotions.isEmpty()) {
 			listOfMerchandisingPromotions.forEach(solrModel -> {
@@ -1802,9 +1069,11 @@ public class DeviceDaoImpl implements DeviceDao {
 		}
 		return promotions;
 	}
+
 	@Override
 	public CompletableFuture<List<PriceForBundleAndHardware>> getPriceForBundleAndHardwareListFromTupleListAsync(
-			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType, String version) {
+			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType,
+			String version) {
 		LogHelper.info(this, "Start -->  calling  getPriceForBundleAndHardwareListFromTupleList_PriceAPI");
 
 		return CompletableFuture.supplyAsync(new Supplier<List<PriceForBundleAndHardware>>() {
@@ -1816,7 +1085,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		});
 
 	}
-	
+
 	@Override
 	public CompletableFuture<List<com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions>> getBundleAndHardwarePromotionsListFromBundleListAsync(
 			List<BundleAndHardwareTuple> bundleHardwareTupleList, String journeyType, String version) {
@@ -1827,27 +1096,13 @@ public class DeviceDaoImpl implements DeviceDao {
 					@Override
 					public List<com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions> get() {
 						Constants.CATALOG_VERSION.set(version);
-						return CommonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList, journeyType,registryclnt);
+						return CommonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList,
+								journeyType, registryclnt);
 					}
 				});
 
 	}
-	/*@Override
-	public Response getResponseFromDataSource(Map<String, String> params, String query) {
-		Response response = null;
-		try {
-			LogHelper.info(this, "Start --> Calling  getBundlesByJourneyType_Solr");
-			if(params!=null) {
-			    response = restClient.performRequest("GET", endPoint, params,	new StringEntity(query, ContentType.APPLICATION_JSON));
-			}else {
-				response = restClient.performRequest("GET", endPoint, java.util.Collections.emptyMap(),	new StringEntity(query, ContentType.APPLICATION_JSON));	
-			}
-			LogHelper.info(this, "End --> End -->  After calling  getBundlesByJourneyType_Solr");
-		} catch (Exception e) {
-			LogHelper.error(this, "::::::Exception occured while querieng bundle models from ES " + e);
-		}
-		return response;
-	}*/
+
 	@Override
 	public SearchResponse getResponseFromDataSource(SearchRequest searchRequest) {
 		LogHelper.info(this, "Start call time Elasticsearch" + System.currentTimeMillis());
@@ -1861,6 +1116,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		LogHelper.info(this, "End call time Elasticsearch" + System.currentTimeMillis());
 		return response;
 	}
+
 	/**
 	 * 
 	 * @param promotionAsTags
@@ -1868,12 +1124,12 @@ public class DeviceDaoImpl implements DeviceDao {
 	 */
 	public List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion> getMerchandising(
 			List<String> promotionAsTags) {
-		SearchRequest queryContextMap = DeviceQueryBuilderHelper
-				.searchQueryForMerchandisingByTagName(promotionAsTags);
+		SearchRequest queryContextMap = DeviceQueryBuilderHelper.searchQueryForMerchandisingByTagName(promotionAsTags);
 		SearchResponse bundleResponse = getResponseFromDataSource(queryContextMap);
 		LogHelper.info(this, "converting elasticsearch response into standard json object response");
 		return response.getListOfMerchandisingPromotionFromJson(bundleResponse);
 	}
+
 	/**
 	 * @author manoj.bera
 	 * @param deviceId
@@ -1881,11 +1137,12 @@ public class DeviceDaoImpl implements DeviceDao {
 	 */
 	public CommercialProduct getCommercialProduct(String deviceId) {
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper
-				.searchQueryForCommercialProductAndCommercialBundle(deviceId , Constants.STRING_PRODUCT);
+				.searchQueryForCommercialProductAndCommercialBundle(deviceId, Constants.STRING_PRODUCT);
 		SearchResponse commercialProduct = getResponseFromDataSource(queryContextMap);
 		LogHelper.info(this, "converting elasticsearch response into Commercial Product object response");
 		return response.getCommercialProduct(commercialProduct);
 	}
+
 	/**
 	 * @author manoj.bera
 	 * @param groupType
@@ -1897,6 +1154,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		LogHelper.info(this, "converting elasticsearch response into standard json object response");
 		return response.getListOfGroupFromJson(groupResponse);
 	}
+
 	/**
 	 * @author manoj.bera
 	 * @param bundleId
@@ -1904,45 +1162,43 @@ public class DeviceDaoImpl implements DeviceDao {
 	 */
 	public CommercialBundle getCommercialBundle(String bundleId) {
 		SearchRequest queryContextMapForLeadPlanId = DeviceQueryBuilderHelper
-				.searchQueryForCommercialProductAndCommercialBundle(bundleId , Constants.STRING_BUNDLE);
+				.searchQueryForCommercialProductAndCommercialBundle(bundleId, Constants.STRING_BUNDLE);
 		SearchResponse commercialBundleResponse = getResponseFromDataSource(queryContextMapForLeadPlanId);
 		LogHelper.info(this, "converting elasticsearch response into Commercial Bundle object response");
 		return response.getCommercialBundle(commercialBundleResponse);
 	}
+
 	/**
 	 * @author manoj.bera
 	 * @param id
 	 * @param data
 	 */
 	@Override
-	public void getUpdateElasticSearch(String id ,  String data) 
-	{
+	public void getUpdateElasticSearch(String id, String data) {
 		try {
 			UpdateRequest updateRequest = new UpdateRequest(Constants.CATALOG_VERSION.get(), "models", id);
 			updateRequest.doc(data, XContentType.JSON);
-			restClient.update(updateRequest,new BasicHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString()));
-			
+			restClient.update(updateRequest,
+					new BasicHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString()));
+
 			UpdateRequest updateRequestForNull = new UpdateRequest(Constants.CATALOG_VERSION.get(), "models", id)
-			        .doc(org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder()
-			            .startObject()
-			            //.field("_id", id )
-			            .endObject());
+					.doc(org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder().startObject()
+							.endObject());
 			restClient.update(updateRequestForNull);
 		} catch (IOException e) {
 			LogHelper.error(this, "::::::Exception From es ::::::" + e);
 		}
 	}
+
 	/**
 	 * @author manoj.bera
 	 * @param id
 	 * @param data
 	 */
 	@Override
-	public void getIndexElasticSearch(String id ,  String data) 
-	{
+	public void getIndexElasticSearch(String id, String data) {
 		try {
-			IndexRequest updateRequestForILSPromo = Requests
-					.indexRequest(Constants.CATALOG_VERSION.get());
+			IndexRequest updateRequestForILSPromo = Requests.indexRequest(Constants.CATALOG_VERSION.get());
 			updateRequestForILSPromo.type("models");
 			updateRequestForILSPromo.id(id);
 			updateRequestForILSPromo.source(data, XContentType.JSON);
