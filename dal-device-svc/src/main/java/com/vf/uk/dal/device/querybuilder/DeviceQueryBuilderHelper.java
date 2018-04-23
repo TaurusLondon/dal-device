@@ -25,12 +25,13 @@ public class DeviceQueryBuilderHelper {
 			Constants.DEFAULT_ELASTIC_SEARCH_INDEX_SIZE);
 	private static int from = ConfigHelper.getInt(Constants.ELASTIC_SEARCH_INDEX_START_FROM,
 			Constants.DEFAULT_ELASTIC_SEARCH_START_INDEX);
-	//private static SearchSourceBuilder searchRequestBuilder = SingletonMapperUtility.getSearchSourceBuilder();
-	//private static SearchRequest searchRequest = new SearchRequest("vodafoneindex");
-	//ConfigHelper.getString(Constants.ELASTIC_SEARCH_ENDPOINT_NORMALISED_DATA, Constants.DEFAULT_ENDPOINT_FOR_NORMALIZED_INDEX)
-	//private static SearchRequest searchRequestForSolr = new SearchRequest("vodafoneindex");
-	//ConfigHelper.getString(Constants.ELASTIC_SEARCH_ENDPOINT_DENORMALISED_DATA,Constants.DEFAULT_ENDPOINT_FOR_DENORMALIZED_INDEX)
-
+	private static String[] includes=  null;
+	private static final String[] ex = new String[0];
+	static{
+		includes=new String[]{"id","name","desc","paymentType","availability","commitment","productLines",
+			"deviceSpecificPricing","serviceProducts","allowances","recurringCharge",
+			"displayName","listOfimageURLs","specificationGroups","bundleControl","displayGroup"};
+	}
 	/**
 	 * 
 	 * @author manoj.bera
@@ -525,26 +526,41 @@ public class DeviceQueryBuilderHelper {
 		return searchRequest;
 	}
 	
-	private static String[] includes=  null;
-	private static final String[] ex = new String[0];
-	static{
-		includes=new String[]{"id","name","desc","paymentType","availability","commitment","productLines",
-			"deviceSpecificPricing","serviceProducts","allowances","recurringCharge",
-			"displayName","listOfimageURLs","specificationGroups","bundleControl","displayGroup"};
-	}
 	public static SearchRequest searchQueryForListOfCommercialBundle(List<String> idsOrNames , String type) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
 		try {
 			
-			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
+			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping ForCommercial Bundle------>");
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(idsOrNames.size());
 			
-			searchRequestBuilder.fetchSource(includes,ex );//storedFields(fields);
+			searchRequestBuilder.fetchSource(includes,ex );
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
 				qb.must(QueryBuilders.termsQuery(Constants.STRING_ID + Constants.STRING_KEY_WORD, idsOrNames));
 				qb.must(QueryBuilders.termQuery(Constants.STRING_ALL_TYPE + Constants.STRING_KEY_WORD, Constants.STRING_RAW+type).boost(2.0F)).boost(3.0F);
+			searchRequestBuilder.query(qb);
+			LogHelper.info(DeviceQueryBuilderHelper.class,
+					" <-----  Setting up Elasticsearch parameters and query For Commercial Bundle ----->");
+			searchRequest.source(searchRequestBuilder);
+
+		} catch (Exception e) {
+			LogHelper.error(DeviceQueryBuilderHelper.class,
+					"::::::Exception in using Elasticsearch QueryBuilder For Commercial Bundle :::::: " + e);
+		}
+		return searchRequest;
+	}
+	
+	public static SearchRequest searchQueryForCommercialBundle(String Id , String type) {
+		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
+		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
+		
+		searchRequestBuilder.fetchSource(includes,ex );
+		try {
+			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
+			BoolQueryBuilder qb = QueryBuilders.boolQuery();
+			qb.must(QueryBuilders.termQuery(Constants.STRING_ID+Constants.STRING_KEY_WORD, Id));
+			qb.must(QueryBuilders.termQuery(Constants.STRING_ALL_TYPE + Constants.STRING_KEY_WORD, Constants.STRING_RAW+type));
 			searchRequestBuilder.query(qb);
 			LogHelper.info(DeviceQueryBuilderHelper.class,
 					" <-----  Setting up Elasticsearch parameters and query  ----->");
@@ -553,6 +569,7 @@ public class DeviceQueryBuilderHelper {
 		} catch (Exception e) {
 			LogHelper.error(DeviceQueryBuilderHelper.class,
 					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
+
 		}
 		return searchRequest;
 	}

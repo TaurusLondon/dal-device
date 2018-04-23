@@ -2502,8 +2502,8 @@ public class DeviceServiceImpl implements DeviceService {
 						// End User Story 9116
 					}
 				});
-				List<CommercialBundle> commercialBundles = getCommercialBundleList(new ArrayList<>(listofLeadBundleId));/*getListOfCommercialBundle(
-						new ArrayList<>(listofLeadBundleId));*/
+				List<CommercialBundle> commercialBundles = getListOfCommercialBundle(
+						new ArrayList<>(listofLeadBundleId));
 				commercialBundles.forEach(commercialBundle -> {
 					commerBundleIdMap.put(commercialBundle.getId(), commercialBundle);
 				});
@@ -2687,8 +2687,8 @@ public class DeviceServiceImpl implements DeviceService {
 					 */
 					Map<String, CommercialBundle> commercialBundleMap = new HashMap<>();
 					if (!listofLeadPlan.isEmpty()) {
-						List<CommercialBundle> comBundle = getCommercialBundleList(new ArrayList<>(listofLeadPlan));
-								//getListOfCommercialBundle(new ArrayList<>(listofLeadPlan));
+						List<CommercialBundle> comBundle = 
+								getListOfCommercialBundle(new ArrayList<>(listofLeadPlan));
 						if (comBundle != null && !comBundle.isEmpty()) {
 							comBundle.forEach(commercialBundle -> {
 								commercialBundleMap.put(commercialBundle.getId(), commercialBundle);
@@ -4369,7 +4369,7 @@ public class DeviceServiceImpl implements DeviceService {
 	 */
 	public CommercialBundle getCommercialBundle(String bundleId) {
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper
-				.searchQueryForCommercialProductAndCommercialBundle(bundleId, Constants.STRING_BUNDLE);
+				.searchQueryForCommercialBundle(bundleId, Constants.STRING_BUNDLE);
 		SearchResponse commercialBundleResponse = deviceDao.getResponseFromDataSource(queryContextMap);
 		LogHelper.info(this, "converting elasticsearch response into Commercial Bundle object response");
 		return response.getCommercialBundle(commercialBundleResponse);
@@ -4383,7 +4383,7 @@ public class DeviceServiceImpl implements DeviceService {
 	public List<CommercialBundle> getListOfCommercialBundle(List<String> bundleIds) {
 
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper
-				.searchQueryForListOfCommercialProductAndCommercialBundle(bundleIds, Constants.STRING_BUNDLE);
+				.searchQueryForListOfCommercialBundle(bundleIds, Constants.STRING_BUNDLE);
 		SearchResponse commercialBundleResponse = deviceDao.getResponseFromDataSource(queryContextMap);
 		LogHelper.info(this, "converting elasticsearch response into Commercial Bundle List object response");
 		return response.getListOfCommercialBundleFromJson(commercialBundleResponse);
@@ -4665,14 +4665,4 @@ public class DeviceServiceImpl implements DeviceService {
 		LogHelper.info(this, "converting elasticsearch response into standard json object response");
 		return response.getListOfProductGroupModel(bundleResponse);
 	}
-	public List<CommercialBundle> getCommercialBundleList(List<String> bundleIds) {
-
-		SearchRequest queryContextMap = DeviceQueryBuilderHelper
-				.searchQueryForListOfCommercialBundle(bundleIds, Constants.STRING_BUNDLE);
-		SearchResponse commercialBundleResponse = deviceDao.getResponseFromDataSource(queryContextMap);
-		LogHelper.info(this, "converting elasticsearch response into Commercial Bundle List object response");
-		return response.getListOfCommercialBundleFromJson(commercialBundleResponse);
-	}
-
-	
 }
