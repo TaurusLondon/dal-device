@@ -874,14 +874,14 @@ public class CommonMethods {
 		com.vf.uk.dal.device.datamodel.product.Specification specification1 = new com.vf.uk.dal.device.datamodel.product.Specification();
 		com.vf.uk.dal.device.datamodel.product.Specification specification2 = new com.vf.uk.dal.device.datamodel.product.Specification();
 		specification.setComparable(true);
-		specification.setKey(true);
+		specification.setIsKey(true);
 		specification.setName("Colour");
 		specification.setPriority((long) 1);
 		specification.setValue("Red");
 		specification.setValueType("");
 		specification.setValueUOM("");
 		specification1.setComparable(true);
-		specification1.setKey(true);
+		specification1.setIsKey(true);
 		specification1.setName("Capacity");
 		specification1.setPriority((long) 1);
 		specification1.setValue("60");
@@ -889,7 +889,7 @@ public class CommonMethods {
 		specification1.setValueUOM("GB");
 
 		specification2.setComparable(true);
-		specification2.setKey(true);
+		specification2.setIsKey(true);
 		specification2.setName("HexValue");
 		specification2.setPriority((long) 1);
 		specification2.setValue("#E5000");
@@ -1136,7 +1136,7 @@ public class CommonMethods {
 		com.vf.uk.dal.device.datamodel.product.Specification specification1 = new com.vf.uk.dal.device.datamodel.product.Specification();
 		com.vf.uk.dal.device.datamodel.product.Specification specification2 = new com.vf.uk.dal.device.datamodel.product.Specification();
 		specification.setComparable(true);
-		specification.setKey(true);
+		specification.setIsKey(true);
 		specification.setName("Colour");
 		specification.setPriority((long) 1);
 		specification.setValue("Red");
@@ -1144,7 +1144,7 @@ public class CommonMethods {
 		specification.setValueUOM("");
 
 		specification1.setComparable(true);
-		specification1.setKey(true);
+		specification1.setIsKey(true);
 		specification1.setName("Capacity");
 		specification1.setPriority((long) 1);
 		specification1.setValue("60");
@@ -1152,7 +1152,7 @@ public class CommonMethods {
 		specification1.setValueUOM("GB");
 
 		specification2.setComparable(true);
-		specification2.setKey(true);
+		specification2.setIsKey(true);
 		specification2.setName("HexValue");
 		specification2.setPriority((long) 1);
 		specification2.setValue("#E5000");
@@ -2278,14 +2278,14 @@ public class CommonMethods {
 		com.vf.uk.dal.device.datamodel.product.Specification specification1 = new com.vf.uk.dal.device.datamodel.product.Specification();
 		com.vf.uk.dal.device.datamodel.product.Specification specification2 = new com.vf.uk.dal.device.datamodel.product.Specification();
 		specification.setComparable(true);
-		specification.setKey(true);
+		specification.setIsKey(true);
 		specification.setName("Colour");
 		specification.setPriority((long) 1);
 		specification.setValue("Red");
 		specification.setValueType("");
 		specification.setValueUOM("");
 		specification1.setComparable(true);
-		specification1.setKey(true);
+		specification1.setIsKey(true);
 		specification1.setName("Capacity");
 		specification1.setPriority((long) 1);
 		specification1.setValue("60");
@@ -2293,7 +2293,7 @@ public class CommonMethods {
 		specification1.setValueUOM("GB");
 
 		specification2.setComparable(true);
-		specification2.setKey(true);
+		specification2.setIsKey(true);
 		specification2.setName("HexValue");
 		specification2.setPriority((long) 1);
 		specification2.setValue("#E5000");
@@ -2420,14 +2420,14 @@ public class CommonMethods {
 		com.vf.uk.dal.device.datamodel.product.Specification specification1 = new com.vf.uk.dal.device.datamodel.product.Specification();
 		com.vf.uk.dal.device.datamodel.product.Specification specification2 = new com.vf.uk.dal.device.datamodel.product.Specification();
 		specification.setComparable(true);
-		specification.setKey(true);
+		specification.setIsKey(true);
 		specification.setName("Colour");
 		specification.setPriority((long) 1);
 		specification.setValue("Red");
 		specification.setValueType("");
 		specification.setValueUOM("");
 		specification1.setComparable(true);
-		specification1.setKey(true);
+		specification1.setIsKey(true);
 		specification1.setName("Capacity");
 		specification1.setPriority((long) 1);
 		specification1.setValue("60");
@@ -2435,7 +2435,7 @@ public class CommonMethods {
 		specification1.setValueUOM("GB");
 
 		specification2.setComparable(true);
-		specification2.setKey(true);
+		specification2.setIsKey(true);
 		specification2.setName("HexValue");
 		specification2.setPriority((long) 1);
 		specification2.setValue("#E5000");
@@ -2626,14 +2626,14 @@ public class CommonMethods {
 		com.vf.uk.dal.device.datamodel.product.Specification specification1 = new com.vf.uk.dal.device.datamodel.product.Specification();
 		com.vf.uk.dal.device.datamodel.product.Specification specification2 = new com.vf.uk.dal.device.datamodel.product.Specification();
 		specification.setComparable(true);
-		specification.setKey(true);
+		specification.setIsKey(true);
 		specification.setName("Colour");
 		specification.setPriority((long) 1);
 		specification.setValue("Red");
 		specification.setValueType("");
 		specification.setValueUOM("");
 		specification1.setComparable(true);
-		specification1.setKey(true);
+		specification1.setIsKey(true);
 		specification1.setName("Capacity");
 		specification1.setPriority((long) 1);
 		specification1.setValue("60");
@@ -2641,7 +2641,7 @@ public class CommonMethods {
 		specification1.setValueUOM("GB");
 
 		specification2.setComparable(true);
-		specification2.setKey(true);
+		specification2.setIsKey(true);
 		specification2.setName("HexValue");
 		specification2.setPriority((long) 1);
 		specification2.setValue("#E5000");
@@ -2844,14 +2844,14 @@ public class CommonMethods {
 		com.vf.uk.dal.device.datamodel.product.Specification specification1 = new com.vf.uk.dal.device.datamodel.product.Specification();
 		com.vf.uk.dal.device.datamodel.product.Specification specification2 = new com.vf.uk.dal.device.datamodel.product.Specification();
 		specification.setComparable(true);
-		specification.setKey(true);
+		specification.setIsKey(true);
 		specification.setName("Colour");
 		specification.setPriority((long) 1);
 		specification.setValue("Red");
 		specification.setValueType("");
 		specification.setValueUOM("");
 		specification1.setComparable(true);
-		specification1.setKey(true);
+		specification1.setIsKey(true);
 		specification1.setName("Capacity");
 		specification1.setPriority((long) 1);
 		specification1.setValue("60");
@@ -2859,7 +2859,7 @@ public class CommonMethods {
 		specification1.setValueUOM("GB");
 
 		specification2.setComparable(true);
-		specification2.setKey(true);
+		specification2.setIsKey(true);
 		specification2.setName("HexValue");
 		specification2.setPriority((long) 1);
 		specification2.setValue("#E5000");
@@ -2974,14 +2974,14 @@ public class CommonMethods {
 		com.vf.uk.dal.device.datamodel.product.Specification specification1 = new com.vf.uk.dal.device.datamodel.product.Specification();
 		com.vf.uk.dal.device.datamodel.product.Specification specification2 = new com.vf.uk.dal.device.datamodel.product.Specification();
 		specification.setComparable(true);
-		specification.setKey(true);
+		specification.setIsKey(true);
 		specification.setName("Colour");
 		specification.setPriority((long) 1);
 		specification.setValue("Red");
 		specification.setValueType("");
 		specification.setValueUOM("");
 		specification1.setComparable(true);
-		specification1.setKey(true);
+		specification1.setIsKey(true);
 		specification1.setName("Capacity");
 		specification1.setPriority((long) 1);
 		specification1.setValue("60");
@@ -2989,7 +2989,7 @@ public class CommonMethods {
 		specification1.setValueUOM("GB");
 
 		specification2.setComparable(true);
-		specification2.setKey(true);
+		specification2.setIsKey(true);
 		specification2.setName("HexValue");
 		specification2.setPriority((long) 1);
 		specification2.setValue("#E5000");
@@ -3106,14 +3106,14 @@ public class CommonMethods {
 		com.vf.uk.dal.device.datamodel.product.Specification specification1 = new com.vf.uk.dal.device.datamodel.product.Specification();
 		com.vf.uk.dal.device.datamodel.product.Specification specification2 = new com.vf.uk.dal.device.datamodel.product.Specification();
 		specification.setComparable(true);
-		specification.setKey(true);
+		specification.setIsKey(true);
 		specification.setName("Colour");
 		specification.setPriority((long) 1);
 		specification.setValue("Red");
 		specification.setValueType("");
 		specification.setValueUOM("");
 		specification1.setComparable(true);
-		specification1.setKey(true);
+		specification1.setIsKey(true);
 		specification1.setName("Capacity");
 		specification1.setPriority((long) 1);
 		specification1.setValue("60");
@@ -3121,7 +3121,7 @@ public class CommonMethods {
 		specification1.setValueUOM("GB");
 
 		specification2.setComparable(true);
-		specification2.setKey(true);
+		specification2.setIsKey(true);
 		specification2.setName("HexValue");
 		specification2.setPriority((long) 1);
 		specification2.setValue("#E5000");

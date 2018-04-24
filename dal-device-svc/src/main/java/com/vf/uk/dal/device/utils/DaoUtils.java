@@ -130,12 +130,14 @@ public class DaoUtils {
 		}
 		deviceSummary.setDisplayDescription(commercialProduct.getPreDesc());
 
-		List<com.vf.uk.dal.device.datamodel.product.Group> listOfSpecificationGroups = commercialProduct.getSpecificationGroups();
+		List<com.vf.uk.dal.device.datamodel.product.Group> listOfSpecificationGroups = commercialProduct
+				.getSpecificationGroups();
 
 		if (listOfSpecificationGroups != null && !listOfSpecificationGroups.isEmpty()) {
 			for (com.vf.uk.dal.device.datamodel.product.Group specificationGroup : listOfSpecificationGroups) {
 				if (specificationGroup.getGroupName().equalsIgnoreCase(Constants.STRING_COLOUR)) {
-					List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup.getSpecifications();
+					List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup
+							.getSpecifications();
 					if (listOfSpec != null && !listOfSpec.isEmpty()) {
 						for (com.vf.uk.dal.device.datamodel.product.Specification spec : listOfSpec) {
 							if (spec.getName().equalsIgnoreCase(Constants.STRING_COLOUR)) {
@@ -148,7 +150,8 @@ public class DaoUtils {
 					}
 				}
 				if (specificationGroup.getGroupName().equalsIgnoreCase(Constants.STRING_CAPACITY)) {
-					List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup.getSpecifications();
+					List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup
+							.getSpecifications();
 					if (listOfSpec != null && !listOfSpec.isEmpty()) {
 						for (com.vf.uk.dal.device.datamodel.product.Specification spec : listOfSpec) {
 							if (spec.getName().equalsIgnoreCase(Constants.STRING_CAPACITY)) {
@@ -219,7 +222,8 @@ public class DaoUtils {
 					.getConditionalSashBanner();
 			merchandisingMedia.addAll(CommonUtility.getMediaListForBundleAndHardware(entertainmentPacks, dataAllowances,
 					planCouplingPromotions, sash, secureNet, sashBannerForHardware, freeExtras, freeAccessories,
-					freeExtrasForPlans, freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares, sashBundleConditional));
+					freeExtrasForPlans, freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares,
+					sashBundleConditional));
 		}
 
 		// MediaLink for PricePromotions
@@ -414,12 +418,12 @@ public class DaoUtils {
 		deviceDetails.setMerchandisingControl(merchandisingControl);
 
 		List<MerchandisingPromotions> listOfMerchandisingPromotion = new ArrayList<>();
-		if (cohProduct.getPromoteAs()!=null && !cohProduct.getPromoteAs().getPromotionName().isEmpty()) {
+		if (cohProduct.getPromoteAs() != null && !cohProduct.getPromoteAs().getPromotionName().isEmpty()) {
 			for (String singlePromotion : cohProduct.getPromoteAs().getPromotionName()) {
 				MerchandisingPromotions merchandisingPromotion = new MerchandisingPromotions();
 				merchandisingPromotion.setPromotionName(singlePromotion);
 				listOfMerchandisingPromotion.add(merchandisingPromotion);
-			} 
+			}
 		}
 		deviceDetails.setMerchandisingPromotion(listOfMerchandisingPromotion);
 
@@ -502,10 +506,12 @@ public class DaoUtils {
 					.getConditionalSashBanner();
 			merchandisingMedia.addAll(CommonUtility.getMediaListForBundleAndHardware(entertainmentPacks, dataAllowances,
 					planCouplingPromotions, sash, secureNet, sashBannerForHardware, freeExtras, freeAccessories,
-					freeExtrasForPlans, freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares, sashBundleConditional));
+					freeExtrasForPlans, freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares,
+					sashBundleConditional));
 		}
 
-		List<com.vf.uk.dal.device.datamodel.product.Group> listOfSpecificationGroups = cohProduct.getSpecificationGroups();
+		List<com.vf.uk.dal.device.datamodel.product.Group> listOfSpecificationGroups = cohProduct
+				.getSpecificationGroups();
 		List<Specification> listOfSpecification;
 		List<SpecificationGroup> listOfSpecificationGroup = new ArrayList<>();
 		SpecificationGroup specificationGroups;
@@ -516,7 +522,8 @@ public class DaoUtils {
 				specificationGroups.setPriority(specificationGroup.getPriority().intValue());
 				specificationGroups.setComparable(specificationGroup.isComparable());
 				listOfSpecification = new ArrayList<>();
-				List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup.getSpecifications();
+				List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup
+						.getSpecifications();
 				Specification specification;
 				if (listOfSpec != null && !listOfSpec.isEmpty()) {
 					for (com.vf.uk.dal.device.datamodel.product.Specification spec : listOfSpec) {
@@ -525,7 +532,7 @@ public class DaoUtils {
 						specification.setValue(spec.getValue());
 						specification.setPriority(spec.getPriority().intValue());
 						specification.setComparable(spec.isComparable());
-						specification.setIsKey(spec.isKey());
+						specification.setIsKey(spec.getIsKey());
 						specification.setValueType(spec.getValueType());
 						specification.setValueUOM(spec.getValueUOM());
 						specification.setDescription(spec.getDescription());
@@ -782,7 +789,8 @@ public class DaoUtils {
 
 				MediaLink mediaLink;
 				if (commercialProduct.getListOfimageURLs() != null) {
-					for (com.vf.uk.dal.device.datamodel.product.ImageURL imageURL : commercialProduct.getListOfimageURLs()) {
+					for (com.vf.uk.dal.device.datamodel.product.ImageURL imageURL : commercialProduct
+							.getListOfimageURLs()) {
 						if (StringUtils.isNotBlank(imageURL.getImageURL())) {
 							mediaLink = new MediaLink();
 							mediaLink.setId(imageURL.getImageName());
@@ -793,7 +801,8 @@ public class DaoUtils {
 					}
 				}
 				if (commercialProduct.getListOfmediaURLs() != null) {
-					for (com.vf.uk.dal.device.datamodel.product.MediaURL mediaURL : commercialProduct.getListOfmediaURLs()) {
+					for (com.vf.uk.dal.device.datamodel.product.MediaURL mediaURL : commercialProduct
+							.getListOfmediaURLs()) {
 						if (StringUtils.isNotBlank(mediaURL.getMediaURL())) {
 							mediaLink = new MediaLink();
 							mediaLink.setId(mediaURL.getMediaName());
@@ -820,14 +829,16 @@ public class DaoUtils {
 				if (commercialProduct.getMisc() != null && commercialProduct.getMisc().getItemAttribute() != null
 						&& !commercialProduct.getMisc().getItemAttribute().isEmpty()) {
 					for (ItemAttribute item : commercialProduct.getMisc().getItemAttribute()) {
-						attribute = new Attributes();
-						attribute.setKey(item.getKey());
-						attribute.setType(item.getType());
-						attribute.setValue(item.getValue());
-						attribute.setValueUOM(item.getValueUOM());
-						attList.add(attribute);
+						if (StringUtils.isNotBlank(item.getKey())) {
+							attribute = new Attributes();
+							attribute.setKey(item.getKey());
+							attribute.setType(item.getType());
+							attribute.setValue(item.getValue());
+							attribute.setValueUOM(item.getValueUOM());
+							attList.add(attribute);
+						}
 					}
-					accessory.setAttributes(attList);
+					accessory.setAttributes(attList.isEmpty() ? null : attList);
 				}
 			}
 		}
@@ -887,7 +898,8 @@ public class DaoUtils {
 
 			insurance.setMerchandisingMedia(merchandisingMedia);
 
-			List<com.vf.uk.dal.device.datamodel.product.Group> listOfSpecificationGroups = insuranceProduct.getSpecificationGroups();
+			List<com.vf.uk.dal.device.datamodel.product.Group> listOfSpecificationGroups = insuranceProduct
+					.getSpecificationGroups();
 			List<Specification> listOfSpecification;
 			List<SpecificationGroup> listOfSpecificationGroup = new ArrayList<>();
 			SpecificationGroup specificationGroups;
@@ -898,7 +910,8 @@ public class DaoUtils {
 					specificationGroups.setPriority(specificationGroup.getPriority().intValue());
 					specificationGroups.setComparable(specificationGroup.isComparable());
 					listOfSpecification = new ArrayList<>();
-					List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup.getSpecifications();
+					List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup
+							.getSpecifications();
 					Specification specification;
 					if (listOfSpec != null && !listOfSpec.isEmpty()) {
 						for (com.vf.uk.dal.device.datamodel.product.Specification spec : listOfSpec) {
@@ -907,7 +920,7 @@ public class DaoUtils {
 							specification.setValue(spec.getValue());
 							specification.setPriority(spec.getPriority().intValue());
 							specification.setComparable(spec.isComparable());
-							specification.setIsKey(spec.isKey());
+							specification.setIsKey(spec.getIsKey());
 							specification.setValueType(spec.getValueType());
 							specification.setValueUOM(spec.getValueUOM());
 							specification.setDescription(spec.getDescription());
@@ -1116,8 +1129,7 @@ public class DaoUtils {
 	 */
 	public static Map<String, Object> getPriceInfoForSolr(
 			com.vf.uk.dal.utility.entity.PriceForBundleAndHardware priceForBundleAndHardware,
-			Map<String, List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>> listOfPriceForBundleAndHardwareWithOfferCode) 
-	{
+			Map<String, List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>> listOfPriceForBundleAndHardwareWithOfferCode) {
 
 		Map<String, Object> result = new HashMap<>();
 		List<com.vf.uk.dal.utility.solr.entity.Media> listOfMedia = new ArrayList<>();
@@ -1339,7 +1351,7 @@ public class DaoUtils {
 		result.put("price", priceinfo);
 		result.put("media", listOfMedia);
 		return result;
-	
+
 	}
 
 	/**
@@ -1374,8 +1386,7 @@ public class DaoUtils {
 	 * @return
 	 */
 	public static Map<String, Object> getListOfOfferAppliedPrice(String deviceId,
-			Map<String, Map<String, Map<String, List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>>>> ilsPriceForBundleAndHardwareMap) 
-	{
+			Map<String, Map<String, Map<String, List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>>>> ilsPriceForBundleAndHardwareMap) {
 
 		Map<String, Object> result = new HashMap<>();
 		List<OfferAppliedPriceDetails> listOfOfferAppliedPriceDetails = new ArrayList<>();
@@ -1645,7 +1656,7 @@ public class DaoUtils {
 		result.put("offeredPrice", listOfOfferAppliedPriceDetails);
 		result.put("media", listOfMedia);
 		return result;
-	
+
 	}
 
 	/**
@@ -1951,7 +1962,8 @@ public class DaoUtils {
 	 * @param listOfMedia
 	 * @return
 	 */
-	public static List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.Media> getListOfSolrMedia(List<Media> listOfMedia) {
+	public static List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.Media> getListOfSolrMedia(
+			List<Media> listOfMedia) {
 		List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.Media> mediaList = new ArrayList<>();
 		listOfMedia.forEach(media -> {
 			com.vf.uk.dal.device.datamodel.merchandisingpromotion.Media mediaObject = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.Media();
@@ -2196,7 +2208,7 @@ public class DaoUtils {
 			String offerCode1, Map<String, String> groupNameWithProdId, Map<String, BundlePrice> bundleModelAndPriceMap,
 			Map<String, BundleAndHardwarePromotions> promotionmap, Map<String, Boolean> isLeadMemberFromSolr,
 			Map<String, List<OfferAppliedPriceModel>> withoutOfferPriceMap, String journeyType) {
-		String offerCode=offerCode1;
+		String offerCode = offerCode1;
 		List<Device> deviceList = new ArrayList<>();
 		FacetedDevice facetedDevice = new FacetedDevice();
 		MerchandisingPromotionsPackage merchandisingPromotionsPackage = null;
@@ -2356,7 +2368,7 @@ public class DaoUtils {
 									if (priceForOfferCode.getBundlePrice() != null
 											&& priceForOfferCode.getHardwarePrice() != null) {
 										offerFlag = true;
-										offerCode=null;
+										offerCode = null;
 										deviceDetails.setPriceInfo(priceForOfferCode);
 									}
 								}
@@ -2398,8 +2410,9 @@ public class DaoUtils {
 						String hardwareMpType = null;
 						String hardwarePriceEstablishedLabel = null;
 						String hardwarePromotionMedia = null;
-						List<String> listOfMerchendising=(productModel.getMerchandisingMedia()==null ||
-								productModel.getMerchandisingMedia().isEmpty())?Collections.emptyList():productModel.getMerchandisingMedia();
+						List<String> listOfMerchendising = (productModel.getMerchandisingMedia() == null
+								|| productModel.getMerchandisingMedia().isEmpty()) ? Collections.emptyList()
+										: productModel.getMerchandisingMedia();
 						for (String mediaStr : listOfMerchendising) {
 
 							String[] mediaStrList = mediaStr.split("\\|");
@@ -2435,7 +2448,8 @@ public class DaoUtils {
 												bundleDescription = mediaStrList[i + 1];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PRICEESTABLISH) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													Constants.STRING_MEDIA_PRICEESTABLISH)
+													&& StringUtils.isNotBlank(mediaStrList[i + 1])
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												bundlePriceEstablishedLabel = mediaStrList[i + 1];
 											}
@@ -2447,7 +2461,8 @@ public class DaoUtils {
 											bundleMerchecdising.setMpType(bundleMpType);
 											bundleMerchecdising.setPriceEstablishedLabel(bundlePriceEstablishedLabel);
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PROMOTION) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													Constants.STRING_MEDIA_PROMOTION)
+													&& StringUtils.isNotBlank(mediaStrList[i + 1])
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												promotionMedia = mediaStrList[i + 1];
 											}
@@ -2472,7 +2487,8 @@ public class DaoUtils {
 												hardwareDescription = mediaStrList[i + 1];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PRICEESTABLISH)  && StringUtils.isNotBlank(mediaStrList[i + 1])
+													Constants.STRING_MEDIA_PRICEESTABLISH)
+													&& StringUtils.isNotBlank(mediaStrList[i + 1])
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePriceEstablishedLabel = mediaStrList[i + 1];
 											}
@@ -2484,7 +2500,8 @@ public class DaoUtils {
 											hardwareMerchecdising
 													.setPriceEstablishedLabel(hardwarePriceEstablishedLabel);
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PROMOTION) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													Constants.STRING_MEDIA_PROMOTION)
+													&& StringUtils.isNotBlank(mediaStrList[i + 1])
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePromotionMedia = mediaStrList[i + 1];
 											}
@@ -2536,7 +2553,8 @@ public class DaoUtils {
 													bundleDescription = mediaStrList[i + 1];
 												}
 												if (StringUtils.containsIgnoreCase(mediaStrList[i],
-														Constants.STRING_MEDIA_PRICEESTABLISH) && StringUtils.isNotBlank(mediaStrList[i + 1])
+														Constants.STRING_MEDIA_PRICEESTABLISH)
+														&& StringUtils.isNotBlank(mediaStrList[i + 1])
 														&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 													bundlePriceEstablishedLabel = mediaStrList[i + 1];
 												}
@@ -2549,7 +2567,8 @@ public class DaoUtils {
 														.setPriceEstablishedLabel(bundlePriceEstablishedLabel);
 												bundleMerchecdising.setTag(bundleTag);
 												if (StringUtils.containsIgnoreCase(mediaStrList[i],
-														Constants.STRING_MEDIA_PROMOTION) && StringUtils.isNotBlank(mediaStrList[i + 1])
+														Constants.STRING_MEDIA_PROMOTION)
+														&& StringUtils.isNotBlank(mediaStrList[i + 1])
 														&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 													promotionMedia = mediaStrList[i + 1];
 												}
@@ -2574,7 +2593,8 @@ public class DaoUtils {
 													hardwareDescription = mediaStrList[i + 1];
 												}
 												if (StringUtils.containsIgnoreCase(mediaStrList[i],
-														Constants.STRING_MEDIA_PRICEESTABLISH) && StringUtils.isNotBlank(mediaStrList[i + 1])
+														Constants.STRING_MEDIA_PRICEESTABLISH)
+														&& StringUtils.isNotBlank(mediaStrList[i + 1])
 														&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 													hardwarePriceEstablishedLabel = mediaStrList[i + 1];
 												}
@@ -2587,7 +2607,8 @@ public class DaoUtils {
 														.setPriceEstablishedLabel(hardwarePriceEstablishedLabel);
 												hardwareMerchecdising.setTag(hardwareTag);
 												if (StringUtils.containsIgnoreCase(mediaStrList[i],
-														Constants.STRING_MEDIA_PROMOTION) && StringUtils.isNotBlank(mediaStrList[i + 1])
+														Constants.STRING_MEDIA_PROMOTION)
+														&& StringUtils.isNotBlank(mediaStrList[i + 1])
 														&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 													hardwarePromotionMedia = mediaStrList[i + 1];
 												}
@@ -2625,7 +2646,8 @@ public class DaoUtils {
 												bundleDescription = mediaStrList[i + 1];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PRICEESTABLISH) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													Constants.STRING_MEDIA_PRICEESTABLISH)
+													&& StringUtils.isNotBlank(mediaStrList[i + 1])
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												bundlePriceEstablishedLabel = mediaStrList[i + 1];
 											}
@@ -2637,7 +2659,8 @@ public class DaoUtils {
 											bundleMerchecdising.setPriceEstablishedLabel(bundlePriceEstablishedLabel);
 											bundleMerchecdising.setTag(bundleTag);
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PROMOTION) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													Constants.STRING_MEDIA_PROMOTION)
+													&& StringUtils.isNotBlank(mediaStrList[i + 1])
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												promotionMedia = mediaStrList[i + 1];
 											}
@@ -2661,7 +2684,8 @@ public class DaoUtils {
 												hardwareDescription = mediaStrList[i + 1];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PRICEESTABLISH) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													Constants.STRING_MEDIA_PRICEESTABLISH)
+													&& StringUtils.isNotBlank(mediaStrList[i + 1])
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePriceEstablishedLabel = mediaStrList[i + 1];
 											}
@@ -2674,7 +2698,8 @@ public class DaoUtils {
 													.setPriceEstablishedLabel(hardwarePriceEstablishedLabel);
 											hardwareMerchecdising.setTag(hardwareTag);
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PROMOTION) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													Constants.STRING_MEDIA_PROMOTION)
+													&& StringUtils.isNotBlank(mediaStrList[i + 1])
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePromotionMedia = mediaStrList[i + 1];
 											}
@@ -2712,7 +2737,8 @@ public class DaoUtils {
 												bundleDescription = mediaStrList[i + 1];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PRICEESTABLISH) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													Constants.STRING_MEDIA_PRICEESTABLISH)
+													&& StringUtils.isNotBlank(mediaStrList[i + 1])
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												bundlePriceEstablishedLabel = mediaStrList[i + 1];
 											}
@@ -2724,7 +2750,8 @@ public class DaoUtils {
 											bundleMerchecdising.setPriceEstablishedLabel(bundlePriceEstablishedLabel);
 											bundleMerchecdising.setTag(bundleTag);
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PROMOTION) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													Constants.STRING_MEDIA_PROMOTION)
+													&& StringUtils.isNotBlank(mediaStrList[i + 1])
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												promotionMedia = mediaStrList[i + 1];
 											}
@@ -2748,7 +2775,8 @@ public class DaoUtils {
 												hardwareDescription = mediaStrList[i + 1];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PRICEESTABLISH) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													Constants.STRING_MEDIA_PRICEESTABLISH)
+													&& StringUtils.isNotBlank(mediaStrList[i + 1])
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePriceEstablishedLabel = mediaStrList[i + 1];
 											}
@@ -2761,7 +2789,8 @@ public class DaoUtils {
 													.setPriceEstablishedLabel(hardwarePriceEstablishedLabel);
 											hardwareMerchecdising.setTag(hardwareTag);
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PROMOTION) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													Constants.STRING_MEDIA_PROMOTION)
+													&& StringUtils.isNotBlank(mediaStrList[i + 1])
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePromotionMedia = mediaStrList[i + 1];
 											}
@@ -2799,7 +2828,8 @@ public class DaoUtils {
 												bundleDescription = mediaStrList[i + 1];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PRICEESTABLISH) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													Constants.STRING_MEDIA_PRICEESTABLISH)
+													&& StringUtils.isNotBlank(mediaStrList[i + 1])
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												bundlePriceEstablishedLabel = mediaStrList[i + 1];
 											}
@@ -2811,7 +2841,8 @@ public class DaoUtils {
 											bundleMerchecdising.setPriceEstablishedLabel(bundlePriceEstablishedLabel);
 											bundleMerchecdising.setTag(bundleTag);
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PROMOTION) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													Constants.STRING_MEDIA_PROMOTION)
+													&& StringUtils.isNotBlank(mediaStrList[i + 1])
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												promotionMedia = mediaStrList[i + 1];
 											}
@@ -2835,7 +2866,8 @@ public class DaoUtils {
 												hardwareDescription = mediaStrList[i + 1];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PRICEESTABLISH) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													Constants.STRING_MEDIA_PRICEESTABLISH)
+													&& StringUtils.isNotBlank(mediaStrList[i + 1])
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePriceEstablishedLabel = mediaStrList[i + 1];
 											}
@@ -2848,7 +2880,8 @@ public class DaoUtils {
 													.setPriceEstablishedLabel(hardwarePriceEstablishedLabel);
 											hardwareMerchecdising.setTag(hardwareTag);
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PROMOTION) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													Constants.STRING_MEDIA_PROMOTION)
+													&& StringUtils.isNotBlank(mediaStrList[i + 1])
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePromotionMedia = mediaStrList[i + 1];
 											}
@@ -2887,13 +2920,15 @@ public class DaoUtils {
 												bundleDescription = mediaStrList[i + 1];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PRICEESTABLISH) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													Constants.STRING_MEDIA_PRICEESTABLISH)
+													&& StringUtils.isNotBlank(mediaStrList[i + 1])
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												bundlePriceEstablishedLabel = mediaStrList[i + 1];
 											}
 
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PROMOTION) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													Constants.STRING_MEDIA_PROMOTION)
+													&& StringUtils.isNotBlank(mediaStrList[i + 1])
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												promotionMedia = mediaStrList[i + 1];
 											}
@@ -2924,12 +2959,14 @@ public class DaoUtils {
 												hardwareDescription = mediaStrList[i + 1];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PRICEESTABLISH) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													Constants.STRING_MEDIA_PRICEESTABLISH)
+													&& StringUtils.isNotBlank(mediaStrList[i + 1])
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePriceEstablishedLabel = mediaStrList[i + 1];
 											}
 											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													Constants.STRING_MEDIA_PROMOTION) && StringUtils.isNotBlank(mediaStrList[i + 1])
+													Constants.STRING_MEDIA_PROMOTION)
+													&& StringUtils.isNotBlank(mediaStrList[i + 1])
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePromotionMedia = mediaStrList[i + 1];
 											}
@@ -2988,7 +3025,7 @@ public class DaoUtils {
 							mediaList.addAll(CommonUtility.getMediaListForBundleAndHardware(entertainmentPacks,
 									dataAllowances, planCouplingPromotions, sash, secureNet, sashBannerForHardware,
 									freeExtras, freeAccessories, freeExtrasForPlans, freeAccForPlans,
-									freeExtrasForHardwares, freeAccForHardwares,sashBundleConditional));
+									freeExtrasForHardwares, freeAccForHardwares, sashBundleConditional));
 
 							merchandisingPromotionsPackage = assembleMerchandisingPromotion(promotions,
 									entertainmentPacks, dataAllowances, planCouplingPromotions, sash, secureNet,
@@ -3961,19 +3998,22 @@ public class DaoUtils {
 					.getConditionalSashBanner();
 			merchandisingMedia.addAll(CommonUtility.getMediaListForBundleAndHardware(entertainmentPacks, dataAllowances,
 					planCouplingPromotions, sash, secureNet, sashBannerForHardware, freeExtras, freeAccessories,
-					freeExtrasForPlans, freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares,sashBundleConditional));
+					freeExtrasForPlans, freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares,
+					sashBundleConditional));
 		}
 
 		deviceSummary.setFromPricing(null);
 
 		deviceSummary.setDisplayDescription(commercialProduct.getPreDesc());
 
-		List<com.vf.uk.dal.device.datamodel.product.Group> listOfSpecificationGroups = commercialProduct.getSpecificationGroups();
+		List<com.vf.uk.dal.device.datamodel.product.Group> listOfSpecificationGroups = commercialProduct
+				.getSpecificationGroups();
 
 		if (listOfSpecificationGroups != null && !listOfSpecificationGroups.isEmpty()) {
 			for (com.vf.uk.dal.device.datamodel.product.Group specificationGroup : listOfSpecificationGroups) {
 				if (specificationGroup.getGroupName().equalsIgnoreCase(Constants.STRING_COLOUR)) {
-					List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup.getSpecifications();
+					List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup
+							.getSpecifications();
 					if (listOfSpec != null && !listOfSpec.isEmpty()) {
 						for (com.vf.uk.dal.device.datamodel.product.Specification spec : listOfSpec) {
 							if (spec.getName().equalsIgnoreCase(Constants.STRING_COLOUR)) {
@@ -3986,7 +4026,8 @@ public class DaoUtils {
 					}
 				}
 				if (specificationGroup.getGroupName().equalsIgnoreCase(Constants.STRING_CAPACITY)) {
-					List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup.getSpecifications();
+					List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup
+							.getSpecifications();
 					if (listOfSpec != null && !listOfSpec.isEmpty()) {
 						for (com.vf.uk.dal.device.datamodel.product.Specification spec : listOfSpec) {
 							if (spec.getName().equalsIgnoreCase(Constants.STRING_CAPACITY)) {
