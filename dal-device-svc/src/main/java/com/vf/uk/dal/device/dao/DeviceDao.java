@@ -16,6 +16,12 @@ import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
 import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 import com.vf.uk.dal.utility.entity.BundleDetails;
 
+/**
+ * 
+ * This is used to achieve abstraction
+ * 
+ *
+ */
 public interface DeviceDao {
 
 	/**
@@ -135,6 +141,7 @@ public interface DeviceDao {
 	 * @param bundleAndHardwareTupleList
 	 * @param offerCode
 	 * @param packageType
+	 * @param version
 	 * @return
 	 */
 	public CompletableFuture<List<PriceForBundleAndHardware>> getPriceForBundleAndHardwareListFromTupleListAsync(
@@ -145,6 +152,7 @@ public interface DeviceDao {
 	 * 
 	 * @param bundleHardwareTupleList
 	 * @param journeyType
+	 * @param version
 	 * @return
 	 */
 	public CompletableFuture<List<BundleAndHardwarePromotions>> getBundleAndHardwarePromotionsListFromBundleListAsync(

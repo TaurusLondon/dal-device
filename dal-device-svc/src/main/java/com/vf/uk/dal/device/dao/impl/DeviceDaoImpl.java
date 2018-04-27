@@ -273,7 +273,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	/**
 	 * Returns leadSkuId based on the priority
 	 * 
-	 * @param deviceGroupMember
+	 * @param<com.vf.uk.dal.device.datamodel.productgroups.Member> deviceGroupMember
 	 * @return leadSkuId
 	 */
 	public String findLeadSkuBasedOnPriority(
@@ -288,7 +288,7 @@ public class DeviceDaoImpl implements DeviceDao {
 			maxPriority = java.util.Collections.max(listOfPriority);
 
 			for (com.vf.uk.dal.device.datamodel.productgroups.Member member : deviceGroupMember) {
-				if (maxPriority == member.getPriority()) {
+				if (maxPriority.equals(member.getPriority())) {
 					leadSkuId = member.getId();
 				}
 			}
@@ -841,7 +841,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	 */
 	@Override
 	public String getDeviceReviewDetails(String deviceId) {
-		String jsonObject = null;
+		String jsonObject;
 		LogHelper.info(this, "Start -->  calling  BazaarReviewRepository.get");
 		jsonObject = bzrVoiceCache.getBazaarVoiceReviews(deviceId);
 		return jsonObject;
@@ -872,10 +872,10 @@ public class DeviceDaoImpl implements DeviceDao {
 	 */
 	public Map<String, String> getDeviceReviewRating(List<String> listMemberIds) {
 
-		List<BazaarVoice> response = getReviewRatingList(listMemberIds);
+		List<BazaarVoice> bazarVoiceResponse = getReviewRatingList(listMemberIds);
 		HashMap<String, String> bvReviewAndRateMap = new HashMap<>();
 		try {
-			for (BazaarVoice bazaarVoice : response) {
+			for (BazaarVoice bazaarVoice : bazarVoiceResponse) {
 				if (bazaarVoice != null) {
 					if (!bazaarVoice.getJsonsource().isEmpty()) {
 						org.json.JSONObject jSONObject = new org.json.JSONObject(bazaarVoice.getJsonsource());
@@ -1030,8 +1030,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	 * @author aditya.oli This method fetches and returns the Commercial Bundle
 	 *         from coherence's CommercialBundleRepository by taking the
 	 *         bundle's Id as a parameter.
-	 * @param String
-	 *            bundleId
+	 * @param bundleId
 	 * @return CommercialBundle
 	 */
 	public CommercialBundle getCommercialBundleFromCommercialBundleRepository(String bundleId) {
@@ -1040,7 +1039,7 @@ public class DeviceDaoImpl implements DeviceDao {
 
 	@Override
 	public Map<String, MerchandisingPromotion> getMerchandisingPromotionsEntityFromRepo(List<String> promotionAsTags) {
-		List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion> listOfMerchandisingPromotions = null;
+		List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion> listOfMerchandisingPromotions;
 		Map<String, MerchandisingPromotion> promotions = new HashMap<>();
 		listOfMerchandisingPromotions = getMerchandising(promotionAsTags);
 		if (listOfMerchandisingPromotions != null && !listOfMerchandisingPromotions.isEmpty()) {

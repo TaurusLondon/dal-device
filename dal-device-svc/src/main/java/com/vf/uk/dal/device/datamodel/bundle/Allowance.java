@@ -2,6 +2,11 @@ package com.vf.uk.dal.device.datamodel.bundle;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * 
+ * Allowance class
+ *
+ */
 public class Allowance
 {
     private String type;

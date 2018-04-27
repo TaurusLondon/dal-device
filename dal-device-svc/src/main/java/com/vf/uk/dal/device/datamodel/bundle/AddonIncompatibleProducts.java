@@ -15,7 +15,6 @@ public class AddonIncompatibleProducts {
 	
 	public AddonIncompatibleProducts() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 

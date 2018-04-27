@@ -244,7 +244,7 @@ public class DeviceController {
 	}*/
 
 	/**
-	 * Handles requests for getComaptibleAccessories Service with input as deviceId.
+	 * 
 	 * @param deviceId
 	 * @param journeyType
 	 * @param offerCode
@@ -602,7 +602,7 @@ public class DeviceController {
 			}
 			return listOfDeviceDetails;
 		} else{
-			LogHelper.error(this, "Query parameter(s) passed in the request is invalid"+ExceptionMessages.INVALID_QUERY_PARAMS);
+			LogHelper.error(this, ExceptionMessages.INVALID_QUERY_PARAMS);
 			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
 		}
 
@@ -653,7 +653,7 @@ public class DeviceController {
 	public List<CommercialProduct> getCommercialProduct(
 			@ApiParam(value = "Device Id for getting commercial product to displayed. possible value can be comma separated device Id like 093353,080004") @RequestParam(value = "productId", required = false) String productId,
 			@ApiParam(value = "Product Name for getting commercial product to displayed. possible value can be comma separated product names are like Fibre Activation Fee,ATA Device") @RequestParam(value = "productName", required = false) String productName) {
-		List<CommercialProduct> commProductDetails = null;
+		List<CommercialProduct> commProductDetails;
 
 			
 			if (StringUtils.isBlank(productId) && StringUtils.isBlank(productName)) {
@@ -688,7 +688,7 @@ public class DeviceController {
 	@RequestMapping(value = "/productGroup", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON })
 	public List<Group> getProductGroupByGroupType(
 			@NotNull@ApiParam(value = "Product group Type for getting product group to displayed. possible value can be like DEVICE_PAYM or DEVICE_PAYG") @RequestParam(value = "groupType", required = true) String groupType) {
-		List<Group> groupDetails = null;
+		List<Group> groupDetails;
 
 			if (StringUtils.isNotBlank(groupType)) {
 				LogHelper.info(this, "Get the list of Product Details for the Product Id passed as request params: " + groupType);
@@ -721,7 +721,7 @@ public class DeviceController {
 	public ProductGroupModelMap getProductGroupModel(
 			@NotNull @ApiParam(value = "Device Id for getting product Group to displayed. possible value can be comma separated device Id like 093353,080004") @RequestParam(value = "productId", required = true) String productId)
 	{
-		ProductGroupModelMap productGroupModelDetails = null;
+		ProductGroupModelMap productGroupModelDetails;
 
 			
 			if (StringUtils.isBlank(productId)) {

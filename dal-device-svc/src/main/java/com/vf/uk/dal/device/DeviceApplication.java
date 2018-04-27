@@ -25,12 +25,12 @@ import com.vf.uk.dal.device.datasource.conf.ElasticsearchRestCient;
 @EnableAsync 
 @EnableCaching
 public class DeviceApplication {
+	@Autowired
+	ElasticsearchRestCient elasticsearchRestCient;
 	/**
 	 * 
 	 * @param args
 	 */
-	@Autowired
-	ElasticsearchRestCient elasticsearchRestCient;
 	public static void main(String[] args) {
 		SpringApplication.run(DeviceApplication.class, args);
 	}

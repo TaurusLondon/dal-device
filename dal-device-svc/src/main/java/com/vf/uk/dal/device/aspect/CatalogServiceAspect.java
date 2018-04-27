@@ -15,10 +15,19 @@ import com.vf.uk.dal.common.configuration.ConfigHelper;
 import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.utils.Constants;
 
+/**
+ * 
+ * This Aspect class to handle catalog Version 
+ *
+ */
 @Aspect
 @Component
 public class CatalogServiceAspect {
 
+	/**
+	 * 
+	 * @param joinPoint
+	 */
 	@Before(value = "execution(* com.vf.uk.dal.device.controller.*.*(..))")
 	public void beforeAdvice(JoinPoint joinPoint) {
 
@@ -42,50 +51,4 @@ public class CatalogServiceAspect {
 		LogHelper.info(this, Constants.CATALOG_VERSION.get());
 	}
 
-	/*@Before(value = "execution(* com.vf.uk.dal.bundle.dao.*.*(..))")
-	public void beforeAdvice(JoinPoint joinPoint) {
-
-		String version = null;
-		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-		if (requestAttributes instanceof ServletRequestAttributes) {
-			HttpServletRequest servletRequest = ((ServletRequestAttributes) requestAttributes).getRequest();
-			String versionFromHeader = servletRequest.getHeader("Accept-Version");
-			if (StringUtils.isNotBlank(versionFromHeader)) {
-				version = "dal-catlog-" + versionFromHeader;
-				Constants.CATALOG_VERSION.set("dal-catlog-" + versionFromHeader);
-			}else {
-				Constants.CATALOG_VERSION.set(null);
-			}
-			
-		}
-		if (!StringUtils.isNotBlank(version) && !StringUtils.isNotBlank(Constants.CATALOG_VERSION.get())) {
-			Constants.CATALOG_VERSION.set(
-					ConfigHelper.getString(Constants.ELASTIC_SEARCH_ALIAS, Constants.DEFAULT_ELASTIC_SEARCH_ALIAS));
-		}
-		System.out.println(Constants.CATALOG_VERSION.get());
-	}
-
-*/ /* @After(value = "execution(* com.vf.uk.dal.bundle.dao.*.*(..))")
-	public void beforeAdvice1(JoinPoint joinPoint) {
-
-		String version = null;
-		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-		if (requestAttributes instanceof ServletRequestAttributes) {
-			HttpServletRequest servletRequest = ((ServletRequestAttributes) requestAttributes).getRequest();
-			String versionFromHeader = servletRequest.getHeader("Accept-Version");
-			if (StringUtils.isNotBlank(versionFromHeader)) {
-				version = "dal-catlog-" + versionFromHeader;
-				Constants.CATALOG_VERSION.set("dal-catlog-" + versionFromHeader);
-			}else {
-				Constants.CATALOG_VERSION.set(null);
-			}
-			
-		}
-		if (!StringUtils.isNotBlank(version) && !StringUtils.isNotBlank(Constants.CATALOG_VERSION.get())) {
-			Constants.CATALOG_VERSION.set(
-					ConfigHelper.getString(Constants.ELASTIC_SEARCH_ALIAS, Constants.DEFAULT_ELASTIC_SEARCH_ALIAS));
-		}
-		System.out.println(Constants.CATALOG_VERSION.get());
-	}
-*/
 }

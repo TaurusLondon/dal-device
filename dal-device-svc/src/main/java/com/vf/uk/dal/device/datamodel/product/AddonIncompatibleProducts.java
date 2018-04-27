@@ -12,10 +12,11 @@ public class AddonIncompatibleProducts {
 	
     private String endDate;
 	
-	
+	/**
+	 * public constructor
+	 */
 	public AddonIncompatibleProducts() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 
