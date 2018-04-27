@@ -1,6 +1,5 @@
 package com.vf.uk.dal.device.querybuilder;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
