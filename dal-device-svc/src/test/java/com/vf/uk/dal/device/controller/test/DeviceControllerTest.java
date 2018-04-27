@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.aspectj.lang.JoinPoint;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -105,7 +104,7 @@ public class DeviceControllerTest {
 		String jsonString = new String(Utility.readFile("\\rest-mock\\COMMON-V1.json"));
 		CurrentJourney obj = new ObjectMapper().readValue(jsonString, CurrentJourney.class);
 		given(registry.getRestTemplate()).willReturn(restTemplate);
-		given(restTemplate.getForObject("http://BUNDLES-V1/es/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=" +"093353"+"&journeyType="+null, BundleDetailsForAppSrv.class )).willReturn(CommonMethods.getCoupledBundleListForDevice());
+		given(restTemplate.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=" +"093353"+"&journeyType="+null, BundleDetailsForAppSrv.class )).willReturn(CommonMethods.getCoupledBundleListForDevice());
 		given(restTemplate.getForObject(
 				"http://COMMON-V1/common/journey/" + "c1a42269-6562-4c96-b3be-1ca2a6681d57" + "/queries/currentJourney",
 				CurrentJourney.class)).willReturn(obj);
@@ -338,7 +337,7 @@ public class DeviceControllerTest {
 			String jsonString = new String(Utility.readFile("\\BundleandhardwarePromotuions.json"));
 			BundleAndHardwarePromotions[] obj = new ObjectMapper().readValue(jsonString,
 					BundleAndHardwarePromotions[].class);
-			given(restTemplate.postForObject("http://PROMOTION-V1/es/promotion/queries/ForBundleAndHardware", request,
+			given(restTemplate.postForObject("http://PROMOTION-V1/promotion/queries/ForBundleAndHardware", request,
 					BundleAndHardwarePromotions[].class)).willReturn(obj);
 			String url = "http://CUSTOMER-V1/customer/subscription/msisdn:7741655541/sourcePackageSummary";
 			given(restTemplate.getForObject(url, SourcePackageSummary.class)).willReturn(CommonMethods.getSourcePackageSummary());
@@ -656,7 +655,7 @@ public class DeviceControllerTest {
 		bundleList.add(bundle);
 		requestForBundleAndHardware.setBundleAndHardwareList(bundleList);
 		requestForBundleAndHardware.setOfferCode("W_HH_PAYM_OC_01");
-		given(restTemplate.postForObject("http://PRICE-V1/es/price/calculateForBundleAndHardware",
+		given(restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
 				requestForBundleAndHardware, com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[].class))
 						.willReturn(obj);
 
@@ -696,56 +695,12 @@ public class DeviceControllerTest {
 		bundleList.add(bundle);
 		requestForBundleAndHardware.setBundleAndHardwareList(bundleList);
 		requestForBundleAndHardware.setOfferCode("W_HH_PAYM_OC_01");
-		given(restTemplate.postForObject("http://PRICE-V1/es/price/calculateForBundleAndHardware",
+		given(restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
 				requestForBundleAndHardware, com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[].class))
 						.willReturn(obj1);
-		/* CommonUtility
-			.getPriceDetailsUsingBundleHarwareTrouple(bundleAndHardwareTupleListForNonLeanPlanId, null,
-					null, registryclnt);*/
-		List<BundleAndHardwareTuple> bundleList1 = new ArrayList<>();
-		RequestForBundleAndHardware requestForBundleAndHardware1 = new RequestForBundleAndHardware();
-		BundleAndHardwareTuple bundle1 = new BundleAndHardwareTuple();
-		bundle1.setBundleId("110154");
-		bundle1.setHardwareId("124");
-		bundleList1.add(bundle1);
-		requestForBundleAndHardware1.setBundleAndHardwareList(bundleList1);
-		given(restTemplate.postForObject("http://PRICE-V1/es/price/calculateForBundleAndHardware" ,requestForBundleAndHardware1,com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[].class)).willReturn(obj1);			
 
 		// given(deviceDAOMock.getStockAvailabilityByMemberId(Matchers.anyString())).willReturn(CommonMethods.getStockAvailability());
 
-		List<BundleAndHardwareTuple> bundleList2 = new ArrayList<>();
-		RequestForBundleAndHardware requestForBundleAndHardware2 = new RequestForBundleAndHardware();
-		BundleAndHardwareTuple bundle2 = new BundleAndHardwareTuple();
-		bundle2.setBundleId("110154");
-		bundle2.setHardwareId("123");
-		bundleList2.add(bundle2);
-		BundleAndHardwareTuple bundle3 = new BundleAndHardwareTuple();
-		bundle3.setBundleId("110166");
-		bundle3.setHardwareId("123");
-		bundleList2.add(bundle3);
-		BundleAndHardwareTuple bundle4 = new BundleAndHardwareTuple();
-		bundle4.setBundleId("110156");
-		bundle4.setHardwareId("123");
-		bundleList2.add(bundle4);
-		BundleAndHardwareTuple bundle5 = new BundleAndHardwareTuple();
-		bundle5.setBundleId("110154");
-		bundle5.setHardwareId("124");
-		bundleList2.add(bundle5);
-		BundleAndHardwareTuple bundle6 = new BundleAndHardwareTuple();
-		bundle6.setBundleId("110166");
-		bundle6.setHardwareId("124");
-		bundleList2.add(bundle6);
-		BundleAndHardwareTuple bundle7 = new BundleAndHardwareTuple();
-		bundle7.setBundleId("110166");
-		bundle7.setHardwareId("124");
-		bundleList2.add(bundle7);
-		BundleAndHardwareTuple bundle8 = new BundleAndHardwareTuple();
-		bundle8.setBundleId("110156");
-		bundle8.setHardwareId("124");
-		bundleList2.add(bundle8);
-		requestForBundleAndHardware2.setBundleAndHardwareList(bundleList2);
-		given(restTemplate.postForObject("http://PRICE-V1/es/price/calculateForBundleAndHardware" ,requestForBundleAndHardware2,com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[].class)).willReturn(obj1);
-		
 		String jsonString = new String(Utility.readFile("\\rest-mock\\BUNDLES-V1.json"));
 		ObjectMapper mapper1 = new ObjectMapper();
 		mapper1.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
@@ -753,9 +708,8 @@ public class DeviceControllerTest {
 		BundleDetailsForAppSrv obj = mapper1.readValue(jsonString, BundleDetailsForAppSrv.class);
 		given(registry.getRestTemplate()).willReturn(restTemplate);
 		given(restTemplate.getForObject(
-				"http://BUNDLES-V1/es/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=123",
+				"http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=123",
 				BundleDetailsForAppSrv.class)).willReturn(obj);
-		given(response.getListOfMerchandisingPromotionModelFromJson(Matchers.any())).willReturn(CommonMethods.getMerChandisingPromotion());
 		try {
 			deviceController.cacheDeviceTile();
 		} catch (Exception e) {
@@ -1573,7 +1527,7 @@ public class DeviceControllerTest {
 			requestForBundleAndHardware.setBundleAndHardwareList(bundleList);
 			requestForBundleAndHardware.setOfferCode("NA");
 			requestForBundleAndHardware.setPackageType("Upgrade");
-			given(restTemplate.postForObject("http://PRICE-V1/es/price/calculateForBundleAndHardware",
+			given(restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
 					requestForBundleAndHardware, com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[].class))
 							.willReturn(obj);
 
@@ -1626,7 +1580,7 @@ public class DeviceControllerTest {
 	@Test
 	public void notNullTestForgetDeviceDetails1() {
 		DeviceDetails deviceDetails = new DeviceDetails();
-		given(restTemplate.getForObject("http://BUNDLES-V1/es/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=093353", BundleDetailsForAppSrv.class)).willReturn(CommonMethods.getCoupledBundleListForDevice());
+		given(restTemplate.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=093353", BundleDetailsForAppSrv.class)).willReturn(CommonMethods.getCoupledBundleListForDevice());
 		deviceDetails = deviceController.getDeviceDetails("093353",null,null);
 		Assert.assertNotNull(deviceDetails);
 	}
@@ -1702,7 +1656,7 @@ public class DeviceControllerTest {
 		requestForBundleAndHardware.setBundleAndHardwareList(bundleList);
 		requestForBundleAndHardware.setOfferCode(null);
 		requestForBundleAndHardware.setPackageType(null);
-		given(restTemplate.postForObject("http://PRICE-V1/es/price/calculateForBundleAndHardware",
+		given(restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
 				requestForBundleAndHardware, com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[].class))
 						.willReturn(obj);
 
@@ -1809,14 +1763,14 @@ public class DeviceControllerTest {
 		deviceAndProductsList.setOfferCode(null);
 		deviceAndProductsList.setPackageType(null);
 		given(registry.getRestTemplate()).willReturn(restTemplate);
-		given(restTemplate.postForObject("http://PRICE-V1/es/price/product",
+		given(restTemplate.postForObject("http://PRICE-V1/price/product",
 				deviceAndProductsList, PriceForProduct.class))
 				.willReturn(CommonMethods.getPriceForProduct_For_GetAccessories());
 		
 		given(response.getListOfGroupFromJson(Matchers.anyObject())).willReturn(CommonMethods.getListOfProductGroupForAccessories());
 		given(response.getCommercialProductFromJson(Matchers.anyObject())).willReturn(CommonMethods.getListOfCommercialProductsForAccessory());
 		given(response.getCommercialProduct(Matchers.anyObject())).willReturn(CommonMethods.getCommercialProductByDeviceIdForAccessory());
-	//	Assert.assertNotNull(deviceController.getAccessoriesOfDevice("093353",null,null));
+		Assert.assertNotNull(deviceController.getAccessoriesOfDevice("093353",null,null));
 	
 	}
 	
@@ -1837,9 +1791,4 @@ public class DeviceControllerTest {
 			deviceController.getProductGroupModel("093353,092660");
 		}catch(Exception e){}
 	}
-	/*@Test
-	public void notNullGetListOfOfferAppliedPrice(){
-		List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>>>> ilsPriceForBundleAndHardwareMap
-		DaoUtils.getListOfOfferAppliedPrice("093353", ilsPriceForBundleAndHardwareMap)
-	}*/
 }
