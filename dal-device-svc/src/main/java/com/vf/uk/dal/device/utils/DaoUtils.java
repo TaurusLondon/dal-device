@@ -563,6 +563,7 @@ public class DaoUtils {
 
 					if (priceForBundleAndHardware.getHardwarePrice().getOneOffPrice().getGross().equalsIgnoreCase(
 							priceForBundleAndHardware.getHardwarePrice().getOneOffDiscountPrice().getGross())) {
+						
 						priceForBundleAndHardware.getHardwarePrice().getOneOffDiscountPrice().setGross(null);
 						priceForBundleAndHardware.getHardwarePrice().getOneOffDiscountPrice().setVat(null);
 						priceForBundleAndHardware.getHardwarePrice().getOneOffDiscountPrice().setNet(null);
@@ -587,6 +588,8 @@ public class DaoUtils {
 						priceForBundleAndHardware.getMonthlyDiscountPrice().setNet(null);
 					}
 				}
+				
+				
 				deviceDetails.setPriceInfo(priceForBundleAndHardware);
 
 				/**
