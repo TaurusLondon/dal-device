@@ -35,7 +35,17 @@ endpoints:
    enabled: true
  info:
    enabled: true  
-
+ env:
+   enabled: true 
+ metrics:
+   enabled: true
+ mappings:
+   enabled: true
+ shutdown:
+   enabled: false
+ trace:
+   enabled: true
+   
 management:
  health:  
    solr:
