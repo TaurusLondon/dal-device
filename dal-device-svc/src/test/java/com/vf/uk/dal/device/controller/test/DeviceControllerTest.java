@@ -518,7 +518,7 @@ public class DeviceControllerTest {
 					e.toString());
 		}
 	}
-
+	
 	public void nullTestgetDeviceTileByIdForException() {
 		
 		deviceController.getDeviceTileById("093353",null,"W_HH_OC_01");
@@ -1711,7 +1711,8 @@ public class DeviceControllerTest {
 				CommonMethods.getCataloguepromotionqueriesForBundleAndHardwareSecureNet(), CommonMethods.getCataloguepromotionqueriesForHardwareSash(), 
 				CommonMethods.getCataloguepromotionqueriesForBundleAndHardwareExtras(), CommonMethods.getCataloguepromotionqueriesForBundleAndHardwareAccessory(),
 				CommonMethods.getCataloguepromotionqueriesForBundleAndHardwareExtras(), CommonMethods.getCataloguepromotionqueriesForBundleAndHardwareAccessory(),
-				CommonMethods.getCataloguepromotionqueriesForBundleAndHardwareExtras(), CommonMethods.getCataloguepromotionqueriesForBundleAndHardwareAccessory());
+				CommonMethods.getCataloguepromotionqueriesForBundleAndHardwareExtras(), CommonMethods.getCataloguepromotionqueriesForBundleAndHardwareAccessory(),
+				CommonMethods.getCataloguepromotionqueriesForBundleAndHardwareSash());
 	}
 	@Test
 	public void notNullgetListOfIlsPriceWithoutOfferCode(){

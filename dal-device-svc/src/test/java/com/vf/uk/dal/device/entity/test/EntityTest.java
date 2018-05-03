@@ -17,6 +17,7 @@ import com.vf.uk.dal.device.entity.DeviceTile;
 import com.vf.uk.dal.device.entity.Discount;
 import com.vf.uk.dal.device.entity.Duration;
 import com.vf.uk.dal.device.entity.Equipment;
+import com.vf.uk.dal.device.entity.GroupDetails;
 import com.vf.uk.dal.device.entity.HardwarePrice;
 import com.vf.uk.dal.device.entity.Insurance;
 import com.vf.uk.dal.device.entity.KeepDeviceChangePlanRequest;
@@ -191,6 +192,7 @@ public class EntityTest
  		BeanTest.test(BundleAndHardwarePromotions.class);
  		BeanTest.test(BundleAndHardwareRequest.class);
  		BeanTest.test( CataloguepromotionqueriesForBundleAndHardwareFreeData.class);
+ 		BeanTest.test( GroupDetails.class);
  		
  	}
 }

@@ -27,6 +27,9 @@ public class FacetedDevice   {
 
   @JsonProperty("message")
   private String message = null;
+  
+  @JsonProperty("productGroupDetails")
+  private List<GroupDetails> productGroupDetails = null;
 /**
  * 
  * @param newFacet
@@ -175,7 +178,35 @@ public class FacetedDevice   {
     this.message = message;
   }
 
+  public FacetedDevice productGroupDetails(List<GroupDetails> productGroupDetails) {
+	    this.productGroupDetails = productGroupDetails;
+	    return this;
+	  }
 
+	  public FacetedDevice addProductGroupDetailsItem(GroupDetails productGroupDetailsItem) {
+	    if (this.productGroupDetails == null) {
+	      this.productGroupDetails = new ArrayList<GroupDetails>();
+	    }
+	    this.productGroupDetails.add(productGroupDetailsItem);
+	    return this;
+	  }
+
+	  /**
+	   * Get productGroupDetails
+	   * @return productGroupDetails
+	  **/
+	  @ApiModelProperty(value = "")
+
+	  @Valid
+
+	  public List<GroupDetails> getProductGroupDetails() {
+	    return productGroupDetails;
+	  }
+
+	  public void setProductGroupDetails(List<GroupDetails> productGroupDetails) {
+	    this.productGroupDetails = productGroupDetails;
+	  }
+	  
   @Override
   public boolean equals(java.lang.Object o) {
     if (this == o) {
@@ -184,16 +215,18 @@ public class FacetedDevice   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
+   
     FacetedDevice facetedDevice = (FacetedDevice) o;
+    boolean a= Objects.equals(this.message, facetedDevice.message) &&
+    	    Objects.equals(this.productGroupDetails, facetedDevice.productGroupDetails);
     return Objects.equals(this.newFacet, facetedDevice.newFacet) &&
         Objects.equals(this.device, facetedDevice.device) &&
-        Objects.equals(this.noOfRecordsFound, facetedDevice.noOfRecordsFound) &&
-        Objects.equals(this.message, facetedDevice.message);
+        Objects.equals(this.noOfRecordsFound, facetedDevice.noOfRecordsFound) && a;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(newFacet, device, noOfRecordsFound, message);
+    return Objects.hash(newFacet, device, noOfRecordsFound, message, productGroupDetails);
   }
 
   @Override
@@ -205,6 +238,7 @@ public class FacetedDevice   {
     sb.append("    device: ").append(toIndentedString(device)).append("\n");
     sb.append("    noOfRecordsFound: ").append(toIndentedString(noOfRecordsFound)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
+    sb.append("    productGroupDetails: ").append(toIndentedString(productGroupDetails)).append("\n");
     sb.append("}");
     return sb.toString();
   }

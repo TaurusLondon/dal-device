@@ -173,7 +173,7 @@ public class DeviceServiceImpl implements DeviceService {
 	public List<DeviceTile> getDeviceTileById(String id, String offerCode, String journeyType) {
 		List<DeviceTile> deviceTileList;
 		deviceTileList = deviceDao.getDeviceTileById(id, offerCode, journeyType);
-		if(deviceTileList.isEmpty()||deviceTileList==null){
+		if(deviceTileList!=null && deviceTileList.isEmpty()||deviceTileList==null){
 			throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 		}
 		else
