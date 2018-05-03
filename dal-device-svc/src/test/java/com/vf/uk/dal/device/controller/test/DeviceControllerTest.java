@@ -518,6 +518,7 @@ public class DeviceControllerTest {
 					e.toString());
 		}
 	}
+	
 
 	public void nullTestgetDeviceTileByIdForException() {
 		
