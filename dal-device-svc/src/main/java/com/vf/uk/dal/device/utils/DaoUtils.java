@@ -3034,7 +3034,7 @@ public class DaoUtils {
 							merchandisingPromotionsPackage = assembleMerchandisingPromotion(promotions,
 									entertainmentPacks, dataAllowances, planCouplingPromotions, sash, secureNet,
 									sashBannerForHardware, freeExtras, freeAccessories, freeExtrasForPlans,
-									freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares);
+									freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares,sashBundleConditional);
 
 						}
 						if (StringUtils.isNotBlank(productModel.getImageURLsThumbsFront())) {
@@ -4204,6 +4204,24 @@ public class DaoUtils {
 				}
 				bundlePromotions.setSashBannerPromotion(sashBannerPromotion);
 			}
+			if (CollectionUtils.isNotEmpty(bundleAndHardwarePromotion.getConditionalSashBanner())) {
+				/* Assembly of sashBannerPromotion */
+				MerchandisingPromotion sashBannerCondition= new MerchandisingPromotion();
+				CataloguepromotionqueriesForBundleAndHardwareSash sashBannerForConditional = bundleAndHardwarePromotion
+						.getConditionalSashBanner().get(0);
+				sashBannerCondition.setTag(sashBannerForConditional.getTag());
+				sashBannerCondition.setDescription(sashBannerForConditional.getDescription());
+				sashBannerCondition.setLabel(sashBannerForConditional.getLabel());
+				sashBannerCondition.setMpType(sashBannerForConditional.getType());
+				sashBannerCondition.setPackageType(sashBannerForConditional.getPackageType());
+				if (StringUtils.isNotBlank(sashBannerForConditional.getPriority())) {
+					sashBannerCondition.setPriority(Integer.valueOf(sashBannerForConditional.getPriority()));
+				}
+				if (StringUtils.isNotBlank(sashBannerForConditional.getPromotionMedia())) {
+					sashBannerCondition.setPromotionMedia(sashBannerForConditional.getPromotionMedia());
+				}
+				bundlePromotions.setConditionalSashBannerPromotion(sashBannerCondition);
+			}
 
 			if (CollectionUtils.isNotEmpty(bundleAndHardwarePromotion.getEntertainmentPacks())) {
 				/* Assembly of entertainmentPackPromotion */
@@ -4363,7 +4381,8 @@ public class DaoUtils {
 			List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtrasForPlans,
 			List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccForPlans,
 			List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtrasForHardwares,
-			List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccForHardwares) {
+			List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccForHardwares,
+			List<CataloguepromotionqueriesForBundleAndHardwareSash> sashBundleConditional) {
 
 		MerchandisingPromotionsPackage promotionsPackage = new MerchandisingPromotionsPackage();
 		MerchandisingPromotionsWrapper bundlePromotions = new MerchandisingPromotionsWrapper();
@@ -4504,6 +4523,24 @@ public class DaoUtils {
 				sashBannerPromotion.setPromotionMedia(sashBannerForHardware.getPromotionMedia());
 			}
 			hardwarePromotions.setSashBannerPromotion(sashBannerPromotion);
+		}
+		if (CollectionUtils.isNotEmpty(sashBundleConditional)) {
+			/* Assembly of sashBannerForHardware */
+			MerchandisingPromotion sashBannerConditionalMerch = new MerchandisingPromotion();
+			CataloguepromotionqueriesForBundleAndHardwareSash sashBannerCondition = sashBundleConditional.get(0);
+			sashBannerConditionalMerch.setTag(sashBannerCondition.getTag());
+			sashBannerConditionalMerch.setDescription(sashBannerCondition.getDescription());
+			sashBannerConditionalMerch.setLabel(sashBannerCondition.getLabel());
+			sashBannerConditionalMerch.setMpType(sashBannerCondition.getType());
+			sashBannerConditionalMerch.setPackageType(sashBannerCondition.getPackageType());
+			sashBannerConditionalMerch.setFootNotes(sashBannerCondition.getFootNotes());
+			if (StringUtils.isNotBlank(sashBannerCondition.getPriority())) {
+				sashBannerConditionalMerch.setPriority(Integer.valueOf(sashBannerCondition.getPriority()));
+			}
+			if (StringUtils.isNotBlank(sashBannerCondition.getPromotionMedia())) {
+				sashBannerConditionalMerch.setPromotionMedia(sashBannerCondition.getPromotionMedia());
+			}
+			hardwarePromotions.setConditionalSashBannerPromotion(sashBannerConditionalMerch);
 		}
 
 		if (CollectionUtils.isNotEmpty(freeAccForHardwares)) {
