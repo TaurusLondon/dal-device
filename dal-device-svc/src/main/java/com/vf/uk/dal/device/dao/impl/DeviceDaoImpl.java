@@ -210,10 +210,11 @@ public class DeviceDaoImpl implements DeviceDao {
 				LogHelper.error(this, "No data found for given criteria :" + id);
 				throw new ApplicationException(ExceptionMessages.NO_DATA_FOR_GIVEN_SEARCH_CRITERIA);
 			}
-			if(deviceSummary!=null)
+			if(deviceSummary!=null){
 			listOfDeviceSummary.add(deviceSummary);
-			if(!listOfDeviceSummary.isEmpty())
 			deviceTile.setDeviceSummary(listOfDeviceSummary);
+			}
+			
 			if(CollectionUtils.isNotEmpty(deviceTile.getDeviceSummary())||deviceTile.getDeviceSummary()!=null)
 			listOfDeviceTile.add(deviceTile);
 		} else {
