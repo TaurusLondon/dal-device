@@ -22,6 +22,7 @@ import java.util.function.Supplier;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.entity.ContentType;
 import org.apache.http.message.BasicHeader;
@@ -209,9 +210,11 @@ public class DeviceDaoImpl implements DeviceDao {
 				LogHelper.error(this, "No data found for given criteria :" + id);
 				throw new ApplicationException(ExceptionMessages.NO_DATA_FOR_GIVEN_SEARCH_CRITERIA);
 			}
-
+			if(deviceSummary!=null)
 			listOfDeviceSummary.add(deviceSummary);
+			if(!listOfDeviceSummary.isEmpty())
 			deviceTile.setDeviceSummary(listOfDeviceSummary);
+			if(CollectionUtils.isNotEmpty(deviceTile.getDeviceSummary())||deviceTile.getDeviceSummary()!=null)
 			listOfDeviceTile.add(deviceTile);
 		} else {
 			LogHelper.error(this, "No data found for given Device Id :" + id);
@@ -507,9 +510,10 @@ public class DeviceDaoImpl implements DeviceDao {
 				sellableCheck = true;
 			}
 		}
-
+		List<String> compatiblePlans=commercialProduct.getListOfCompatiblePlanIds()==null||commercialProduct.getListOfCompatiblePlanIds().isEmpty()?
+				Collections.emptyList():commercialProduct.getListOfCompatiblePlanIds();
 		if (StringUtils.isNotBlank(commercialProduct.getLeadPlanId())
-				&& commercialProduct.getListOfCompatiblePlanIds().contains(commercialProduct.getLeadPlanId())
+				&& compatiblePlans.contains(commercialProduct.getLeadPlanId())
 				&& sellableCheck) {
 			bundleAndHardwareTuple = new BundleAndHardwareTuple();
 			bundleAndHardwareTuple.setBundleId(commercialProduct.getLeadPlanId());
