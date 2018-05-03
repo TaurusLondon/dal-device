@@ -17,20 +17,20 @@ import com.vf.uk.dal.common.configuration.ConfigHelper;
 import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.utils.Constants;
 
-
 public class DeviceQueryBuilderHelper {
 
 	private static int size = ConfigHelper.getInt(Constants.ELASTIC_SEARCH_INDEX_SIZE,
 			Constants.DEFAULT_ELASTIC_SEARCH_INDEX_SIZE);
 	private static int from = ConfigHelper.getInt(Constants.ELASTIC_SEARCH_INDEX_START_FROM,
 			Constants.DEFAULT_ELASTIC_SEARCH_START_INDEX);
-	private static String[] includes=  null;
+	private static String[] includes = null;
 	private static final String[] ex = new String[0];
-	static{
-		includes=new String[]{"id","name","desc","paymentType","availability","commitment","productLines",
-			"deviceSpecificPricing","serviceProducts","allowances","recurringCharge",
-			"displayName","listOfimageURLs","specificationGroups","bundleControl","displayGroup"};
+	static {
+		includes = new String[] { "id", "name", "desc", "paymentType", "availability", "commitment", "productLines",
+				"deviceSpecificPricing", "serviceProducts", "allowances", "recurringCharge", "displayName",
+				"listOfimageURLs", "specificationGroups", "bundleControl", "displayGroup" };
 	}
+
 	/**
 	 * 
 	 * @author manoj.bera
@@ -119,14 +119,15 @@ public class DeviceQueryBuilderHelper {
 	 * @param Id
 	 * @return
 	 */
-	public static SearchRequest searchQueryForCommercialProductAndCommercialBundle(String Id , String type) {
+	public static SearchRequest searchQueryForCommercialProductAndCommercialBundle(String Id, String type) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
 		try {
 			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
-			qb.must(QueryBuilders.termQuery(Constants.STRING_ID+Constants.STRING_KEY_WORD, Id));
-			qb.must(QueryBuilders.termQuery(Constants.STRING_ALL_TYPE + Constants.STRING_KEY_WORD, Constants.STRING_RAW+type));
+			qb.must(QueryBuilders.termQuery(Constants.STRING_ID + Constants.STRING_KEY_WORD, Id));
+			qb.must(QueryBuilders.termQuery(Constants.STRING_ALL_TYPE + Constants.STRING_KEY_WORD,
+					Constants.STRING_RAW + type));
 			searchRequestBuilder.query(qb);
 			LogHelper.info(DeviceQueryBuilderHelper.class,
 					" <-----  Setting up Elasticsearch parameters and query  ----->");
@@ -142,14 +143,14 @@ public class DeviceQueryBuilderHelper {
 
 	/**
 	 * 
-	 * @author manoj.bera
-	 * Method to build query for either list of ProductIds or list of Product
-	 * Names.
+	 * @author manoj.bera Method to build query for either list of ProductIds or
+	 *         list of Product Names.
 	 * 
 	 * @param ids
 	 * @return searchQueryMap
 	 */
-	public static SearchRequest searchQueryForListOfCommercialProductAndCommercialBundle(List<String> idsOrNames , String type) {
+	public static SearchRequest searchQueryForListOfCommercialProductAndCommercialBundle(List<String> idsOrNames,
+			String type) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
 		try {
@@ -162,7 +163,9 @@ public class DeviceQueryBuilderHelper {
 			} else {
 				qb.must(QueryBuilders.termsQuery(Constants.STRING_GROUP_NAME + Constants.STRING_KEY_WORD, idsOrNames));
 			}
-				qb.must(QueryBuilders.termQuery(Constants.STRING_ALL_TYPE + Constants.STRING_KEY_WORD, Constants.STRING_RAW+type).boost(2.0F)).boost(3.0F);
+			qb.must(QueryBuilders
+					.termQuery(Constants.STRING_ALL_TYPE + Constants.STRING_KEY_WORD, Constants.STRING_RAW + type)
+					.boost(2.0F)).boost(3.0F);
 			searchRequestBuilder.query(qb);
 			LogHelper.info(DeviceQueryBuilderHelper.class,
 					" <-----  Setting up Elasticsearch parameters and query  ----->");
@@ -247,7 +250,7 @@ public class DeviceQueryBuilderHelper {
 			qb.must(QueryBuilders.termsQuery(Constants.STRING_Tag + Constants.STRING_KEY_WORD,
 					promotionAsTags.toArray()));
 			qb.must(QueryBuilders.termQuery(Constants.STRING_ALL_TYPE + Constants.STRING_KEY_WORD,
-					Constants.STRING_RAW+Constants.STRING_PROMOTION));
+					Constants.STRING_RAW + Constants.STRING_PROMOTION));
 			searchRequestBuilder.query(qb);
 			LogHelper.info(DeviceQueryBuilderHelper.class,
 					" <-----  Setting up Elasticsearch parameters and query  ----->");
@@ -273,7 +276,7 @@ public class DeviceQueryBuilderHelper {
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
 			qb.must(QueryBuilders.matchPhraseQuery(Constants.STRING_Tag, promotionAsTag));
 			qb.must(QueryBuilders.termQuery(Constants.STRING_ALL_TYPE + Constants.STRING_KEY_WORD,
-					Constants.STRING_RAW+Constants.STRING_PROMOTION));
+					Constants.STRING_RAW + Constants.STRING_PROMOTION));
 			searchRequestBuilder.query(qb);
 			LogHelper.info(DeviceQueryBuilderHelper.class,
 					" <-----  Setting up Elasticsearch parameters and query  ----->");
@@ -286,6 +289,7 @@ public class DeviceQueryBuilderHelper {
 		}
 		return searchRequest;
 	}
+
 	/**
 	 * @author manoj.bera
 	 * @param listOfDeviceIds
@@ -296,12 +300,13 @@ public class DeviceQueryBuilderHelper {
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
 		try {
 			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
-			//SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+			// SearchSourceBuilder searchSourceBuilder = new
+			// SearchSourceBuilder();
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(size);
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
-			qb.must(QueryBuilders.termQuery(Constants.STRING_PRODUCT_LINE+Constants.STRING_KEY_WORD, groupName));//.operator(Operator.AND)
-			qb.must(QueryBuilders.termsQuery(Constants.STRING_PACKAGE_TYPE+Constants.STRING_KEY_WORD, journeyType));
+			qb.must(QueryBuilders.termQuery(Constants.STRING_PRODUCT_LINE + Constants.STRING_KEY_WORD, groupName));// .operator(Operator.AND)
+			qb.must(QueryBuilders.termsQuery(Constants.STRING_PACKAGE_TYPE + Constants.STRING_KEY_WORD, journeyType));
 			searchRequestBuilder.query(qb);
 			searchRequest.source(searchRequestBuilder);
 
@@ -312,9 +317,10 @@ public class DeviceQueryBuilderHelper {
 		}
 		return searchRequest;
 	}
-	public static SearchRequest searchQueryForProductGroupModel(String groupType, String make,
-			String capacity, String colour, String operatingSystem,String mustHaveFeatures,String sortBy, 
-			String sortOption, Integer pageNumber, Integer pageSize, String journeyType) {
+
+	public static SearchRequest searchQueryForProductGroupModel(String groupType, String make, String capacity,
+			String colour, String operatingSystem, String mustHaveFeatures, String sortBy, String sortOption,
+			Integer pageNumber, Integer pageSize, String journeyType) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
 		try {
@@ -326,14 +332,14 @@ public class DeviceQueryBuilderHelper {
 			} else if (StringUtils.isNotEmpty(sortOption) && sortOption.equalsIgnoreCase(Constants.SORT_OPTION_DESC)) {
 				searchRequestBuilder.sort(sortBy.toLowerCase(), SortOrder.DESC);
 			}
-			BoolQueryBuilder qb = getFilterCriteria(make, capacity, colour, operatingSystem,
-					mustHaveFeatures);
-			qb.must(QueryBuilders.termQuery(Constants.STRING_TYPE+Constants.STRING_KEY_WORD, groupType));
-			
+			BoolQueryBuilder qb = getFilterCriteria(make, capacity, colour, operatingSystem, mustHaveFeatures);
+			qb.must(QueryBuilders.termQuery(Constants.STRING_TYPE + Constants.STRING_KEY_WORD, groupType));
+
 			if (Constants.STRING_UPGRADE.equalsIgnoreCase(journeyType)) {
 				qb.must(QueryBuilders.wildcardQuery(Constants.STRING_UPGRADED_LEAD_DEVICE_ID, "*"));
-			} else if ( StringUtils.isBlank(journeyType) || Constants.JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyType) || 
-					Constants.STRING_SECOND_LINE.equalsIgnoreCase(journeyType)) {
+			} else if (StringUtils.isBlank(journeyType)
+					|| Constants.JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyType)
+					|| Constants.STRING_SECOND_LINE.equalsIgnoreCase(journeyType)) {
 				qb.must(QueryBuilders.wildcardQuery(Constants.STRING_NON_UPGRADED_LEAD_DEVICE_ID, "*"));
 			}
 			searchRequestBuilder.query(qb);
@@ -346,54 +352,90 @@ public class DeviceQueryBuilderHelper {
 		}
 		return searchRequest;
 	}
-	private static BoolQueryBuilder getFilterCriteria(String make, String capacity, String colour, String operatingSystem,
-			String mustHaveFeatures) {
+
+	private static BoolQueryBuilder getFilterCriteria(String make, String capacity, String colour,
+			String operatingSystem, String mustHaveFeatures) {
 		BoolQueryBuilder qb = QueryBuilders.boolQuery();
 		if (StringUtils.isNotBlank(make)) {
-		qb.must(QueryBuilders.termsQuery(Constants.STRING_EQUIPMENT_MAKE_COLON+Constants.STRING_KEY_WORD,
-				Arrays.asList(make.split(","))));
+			String[] makeArray = make.split(",");
+			if (makeArray.length == 1) {
+				qb.must(QueryBuilders.matchPhraseQuery(Constants.STRING_EQUIPMENT_MAKE_COLON, make));
+			} else {
+				qb.must(QueryBuilders.termsQuery(Constants.STRING_EQUIPMENT_MAKE_COLON + Constants.STRING_KEY_WORD,
+						Arrays.asList(makeArray)));
+			}
 		}
 		if (capacity != null && !"\"\"".equals(capacity)) {
-			qb.must(QueryBuilders.termsQuery(Constants.STRING_CAPACITY_COLON+Constants.STRING_KEY_WORD,
-					Arrays.asList(capacity.split(","))));
+			String[] capa = capacity.split(",");
+			if (capa.length == 1) {
+				qb.must(QueryBuilders.matchPhraseQuery(Constants.STRING_CAPACITY_COLON, capacity));
+			} else {
+				qb.must(QueryBuilders.termsQuery(Constants.STRING_CAPACITY_COLON + Constants.STRING_KEY_WORD,
+						Arrays.asList(capa)));
+			}
 		}
 		if (colour != null && !"\"\"".equals(colour)) {
-			qb.must(QueryBuilders.termsQuery(Constants.STRING_COLOUR_COLON+Constants.STRING_KEY_WORD,
-					Arrays.asList(colour.split(","))));
+			String[] color = colour.split(",");
+			if (color.length == 1) {
+				qb.must(QueryBuilders.matchPhraseQuery(Constants.STRING_CAPACITY_COLON, colour));
+			} else {
+				qb.must(QueryBuilders.termsQuery(Constants.STRING_COLOUR_COLON + Constants.STRING_KEY_WORD,
+						Arrays.asList(color)));
+			}
 		}
 		if (operatingSystem != null && !"\"\"".equals(operatingSystem)) {
-			qb.must(QueryBuilders.termsQuery(Constants.STRING_OPERATING_SYSTEM+Constants.STRING_KEY_WORD,
-					Arrays.asList(operatingSystem.split(","))));
+			String[] os = operatingSystem.split(",");
+			if (os.length == 1) {
+				qb.must(QueryBuilders.matchPhraseQuery(Constants.STRING_OPERATING_SYSTEM, operatingSystem));
+			} else {
+				qb.must(QueryBuilders.termsQuery(Constants.STRING_OPERATING_SYSTEM + Constants.STRING_KEY_WORD,
+						Arrays.asList(os)));
+			}
 		}
 		if (mustHaveFeatures != null && !"\"\"".equals(mustHaveFeatures)) {
-			qb.must(QueryBuilders.termsQuery(Constants.STRING_MUST_HAVE_FEATURES_WITH_COLON+Constants.STRING_KEY_WORD,
-					Arrays.asList(mustHaveFeatures.split(","))));
+			String[] mhf = mustHaveFeatures.split(",");
+			if (mhf.length == 1) {
+				qb.must(QueryBuilders.matchPhraseQuery(Constants.STRING_MUST_HAVE_FEATURES_WITH_COLON, mustHaveFeatures));
+			} else {
+				qb.must(QueryBuilders.termsQuery(
+						Constants.STRING_MUST_HAVE_FEATURES_WITH_COLON + Constants.STRING_KEY_WORD,
+						Arrays.asList(mhf)));
+			}
 		}
 		return qb;
 	}
-	public static SearchRequest searchQueryForFacetCount(String groupType , String journeyType)
-	{
+
+	public static SearchRequest searchQueryForFacetCount(String groupType, String journeyType) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
 		try {
 			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
-			//SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-			
+			// SearchSourceBuilder searchSourceBuilder = new
+			// SearchSourceBuilder();
+
 			searchRequestBuilder.size(from);
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
-			qb.must(QueryBuilders.termQuery(Constants.STRING_TYPE+Constants.STRING_KEY_WORD, groupType));
+			qb.must(QueryBuilders.termQuery(Constants.STRING_TYPE + Constants.STRING_KEY_WORD, groupType));
 			if (Constants.STRING_UPGRADE.equalsIgnoreCase(journeyType)) {
 				qb.must(QueryBuilders.wildcardQuery(Constants.STRING_UPGRADED_LEAD_DEVICE_ID, "*"));
-			} else if ( StringUtils.isBlank(journeyType) || Constants.JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyType) || 
-					Constants.STRING_SECOND_LINE.equalsIgnoreCase(journeyType)) {
+			} else if (StringUtils.isBlank(journeyType)
+					|| Constants.JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyType)
+					|| Constants.STRING_SECOND_LINE.equalsIgnoreCase(journeyType)) {
 				qb.must(QueryBuilders.wildcardQuery(Constants.STRING_NON_UPGRADED_LEAD_DEVICE_ID, "*"));
 			}
-			TermsAggregationBuilder  make=AggregationBuilders.terms(Constants.STRING_EQUIPMENT_MAKE_COLON).field(Constants.STRING_EQUIPMENT_MAKE_COLON+Constants.STRING_KEY_WORD);
-			TermsAggregationBuilder  capacity=AggregationBuilders.terms(Constants.STRING_CAPACITY_COLON).field(Constants.STRING_CAPACITY_COLON+Constants.STRING_KEY_WORD);
-			TermsAggregationBuilder  facetColour=AggregationBuilders.terms(Constants.STRING_COLOUR_COLON).field(Constants.STRING_COLOUR_COLON+Constants.STRING_KEY_WORD);
-			TermsAggregationBuilder  operatingSystem=AggregationBuilders.terms(Constants.STRING_OPERATING_SYSTEM).field(Constants.STRING_OPERATING_SYSTEM+Constants.STRING_KEY_WORD);
-			TermsAggregationBuilder  mustHaveFeatures=AggregationBuilders.terms(Constants.STRING_MUST_HAVE_FEATURES_WITH_COLON).field(Constants.STRING_MUST_HAVE_FEATURES_WITH_COLON+Constants.STRING_KEY_WORD);
-			TermsAggregationBuilder  colour=AggregationBuilders.terms(Constants.STRING_COLOUR_FOR_FACET).field(Constants.STRING_COLOUR_FOR_FACET+Constants.STRING_KEY_WORD);
+			TermsAggregationBuilder make = AggregationBuilders.terms(Constants.STRING_EQUIPMENT_MAKE_COLON)
+					.field(Constants.STRING_EQUIPMENT_MAKE_COLON + Constants.STRING_KEY_WORD);
+			TermsAggregationBuilder capacity = AggregationBuilders.terms(Constants.STRING_CAPACITY_COLON)
+					.field(Constants.STRING_CAPACITY_COLON + Constants.STRING_KEY_WORD);
+			TermsAggregationBuilder facetColour = AggregationBuilders.terms(Constants.STRING_COLOUR_COLON)
+					.field(Constants.STRING_COLOUR_COLON + Constants.STRING_KEY_WORD);
+			TermsAggregationBuilder operatingSystem = AggregationBuilders.terms(Constants.STRING_OPERATING_SYSTEM)
+					.field(Constants.STRING_OPERATING_SYSTEM + Constants.STRING_KEY_WORD);
+			TermsAggregationBuilder mustHaveFeatures = AggregationBuilders
+					.terms(Constants.STRING_MUST_HAVE_FEATURES_WITH_COLON)
+					.field(Constants.STRING_MUST_HAVE_FEATURES_WITH_COLON + Constants.STRING_KEY_WORD);
+			TermsAggregationBuilder colour = AggregationBuilders.terms(Constants.STRING_COLOUR_FOR_FACET)
+					.field(Constants.STRING_COLOUR_FOR_FACET + Constants.STRING_KEY_WORD);
 			searchRequestBuilder.aggregation(make);
 			searchRequestBuilder.aggregation(capacity);
 			searchRequestBuilder.aggregation(facetColour);
@@ -410,24 +452,27 @@ public class DeviceQueryBuilderHelper {
 		}
 		return searchRequest;
 	}
+
 	/**
 	 * @author manoj.bera
 	 * @param deviceIds
 	 * @return
 	 */
-	public static SearchRequest searchQueryForProductModel(List<String> deviceIds)
-	{
+	public static SearchRequest searchQueryForProductModel(List<String> deviceIds) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
 		try {
 			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
-			//SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+			// SearchSourceBuilder searchSourceBuilder = new
+			// SearchSourceBuilder();
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(deviceIds.size());
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
-			qb.must(QueryBuilders.termsQuery(Constants.STRING_PRODUCT_ID+Constants.STRING_KEY_WORD, deviceIds));
-			//qb.must(QueryBuilders.wildcardQuery(Constants.STRING_ID, Constants.STRING_PRODUCT+"*"));
-			qb.must(QueryBuilders.termsQuery(Constants.STRING_ALL_TYPE+Constants.STRING_KEY_WORD, Constants.STRING_OPT+Constants.STRING_PRODUCT));
+			qb.must(QueryBuilders.termsQuery(Constants.STRING_PRODUCT_ID + Constants.STRING_KEY_WORD, deviceIds));
+			// qb.must(QueryBuilders.wildcardQuery(Constants.STRING_ID,
+			// Constants.STRING_PRODUCT+"*"));
+			qb.must(QueryBuilders.termsQuery(Constants.STRING_ALL_TYPE + Constants.STRING_KEY_WORD,
+					Constants.STRING_OPT + Constants.STRING_PRODUCT));
 			searchRequestBuilder.query(qb);
 			searchRequest.source(searchRequestBuilder);
 
@@ -438,24 +483,27 @@ public class DeviceQueryBuilderHelper {
 		}
 		return searchRequest;
 	}
+
 	/**
 	 * @author manoj.bera
 	 * @param bundleIds
 	 * @return
 	 */
-	public static SearchRequest searchQueryForBundleModel(List<String> bundleIds)
-	{
+	public static SearchRequest searchQueryForBundleModel(List<String> bundleIds) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
 		try {
 			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
-			//SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+			// SearchSourceBuilder searchSourceBuilder = new
+			// SearchSourceBuilder();
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(bundleIds.size());
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
-			qb.must(QueryBuilders.termsQuery(Constants.STRING_BUNDLE_ID+Constants.STRING_KEY_WORD, bundleIds));
-			qb.must(QueryBuilders.termsQuery(Constants.STRING_ALL_TYPE+Constants.STRING_KEY_WORD, Constants.STRING_OPT+Constants.STRING_BUNDLE));
-			//qb.must(QueryBuilders.wildcardQuery(Constants.STRING_ID, Constants.STRING_BUNDLE+"*"));
+			qb.must(QueryBuilders.termsQuery(Constants.STRING_BUNDLE_ID + Constants.STRING_KEY_WORD, bundleIds));
+			qb.must(QueryBuilders.termsQuery(Constants.STRING_ALL_TYPE + Constants.STRING_KEY_WORD,
+					Constants.STRING_OPT + Constants.STRING_BUNDLE));
+			// qb.must(QueryBuilders.wildcardQuery(Constants.STRING_ID,
+			// Constants.STRING_BUNDLE+"*"));
 			searchRequestBuilder.query(qb);
 			searchRequest.source(searchRequestBuilder);
 
@@ -474,21 +522,21 @@ public class DeviceQueryBuilderHelper {
 	 * @param offerCode
 	 * @return
 	 */
-	public static SearchRequest searchQueryForOfferAppliedPriceModel(List<String> deviceIds , 
-			String journeyType, String offerCode)
-	{
+	public static SearchRequest searchQueryForOfferAppliedPriceModel(List<String> deviceIds, String journeyType,
+			String offerCode) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
 		try {
 			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
-			//SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+			// SearchSourceBuilder searchSourceBuilder = new
+			// SearchSourceBuilder();
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(size);
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
-			qb.must(QueryBuilders.termsQuery(Constants.STRING_PRODUCT_ID+Constants.STRING_KEY_WORD, deviceIds));
-			qb.must(QueryBuilders.termQuery(Constants.STRING_OFFER_CODE+Constants.STRING_KEY_WORD, offerCode));
-			qb.must(QueryBuilders.termQuery(Constants.STRING_JOURNEY_TYPE+Constants.STRING_KEY_WORD, journeyType));
-			qb.must(QueryBuilders.wildcardQuery(Constants.STRING_ID, Constants.STRING_OFFER+"*"));
+			qb.must(QueryBuilders.termsQuery(Constants.STRING_PRODUCT_ID + Constants.STRING_KEY_WORD, deviceIds));
+			qb.must(QueryBuilders.termQuery(Constants.STRING_OFFER_CODE + Constants.STRING_KEY_WORD, offerCode));
+			qb.must(QueryBuilders.termQuery(Constants.STRING_JOURNEY_TYPE + Constants.STRING_KEY_WORD, journeyType));
+			qb.must(QueryBuilders.wildcardQuery(Constants.STRING_ID, Constants.STRING_OFFER + "*"));
 			searchRequestBuilder.query(qb);
 			searchRequest.source(searchRequestBuilder);
 
@@ -499,23 +547,26 @@ public class DeviceQueryBuilderHelper {
 		}
 		return searchRequest;
 	}
+
 	/**
 	 * 
 	 * @param displayNames
 	 * @param groupType
 	 * @return
 	 */
-	public static SearchRequest searchQueryForProductGroupModelForDeliverMethod(Set<String> displayNames, String groupType) {
+	public static SearchRequest searchQueryForProductGroupModelForDeliverMethod(Set<String> displayNames,
+			String groupType) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
 		try {
 			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
-			//SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+			// SearchSourceBuilder searchSourceBuilder = new
+			// SearchSourceBuilder();
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(displayNames.size());
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
-			qb.must(QueryBuilders.termQuery(Constants.STRING_TYPE+Constants.STRING_KEY_WORD, groupType));
-			qb.must(QueryBuilders.termsQuery(Constants.STRING_GROUP_NAME+Constants.STRING_KEY_WORD, displayNames));
+			qb.must(QueryBuilders.termQuery(Constants.STRING_TYPE + Constants.STRING_KEY_WORD, groupType));
+			qb.must(QueryBuilders.termsQuery(Constants.STRING_GROUP_NAME + Constants.STRING_KEY_WORD, displayNames));
 			searchRequestBuilder.query(qb);
 			searchRequest.source(searchRequestBuilder);
 
@@ -526,20 +577,23 @@ public class DeviceQueryBuilderHelper {
 		}
 		return searchRequest;
 	}
-	
-	public static SearchRequest searchQueryForListOfCommercialBundle(List<String> idsOrNames , String type) {
+
+	public static SearchRequest searchQueryForListOfCommercialBundle(List<String> idsOrNames, String type) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
 		try {
-			
-			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping ForCommercial Bundle------>");
+
+			LogHelper.info(DeviceQueryBuilderHelper.class,
+					"<------Elasticsearch query mapping ForCommercial Bundle------>");
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(idsOrNames.size());
-			
-			searchRequestBuilder.fetchSource(includes,ex );
+
+			searchRequestBuilder.fetchSource(includes, ex);
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
-				qb.must(QueryBuilders.termsQuery(Constants.STRING_ID + Constants.STRING_KEY_WORD, idsOrNames));
-				qb.must(QueryBuilders.termQuery(Constants.STRING_ALL_TYPE + Constants.STRING_KEY_WORD, Constants.STRING_RAW+type).boost(2.0F)).boost(3.0F);
+			qb.must(QueryBuilders.termsQuery(Constants.STRING_ID + Constants.STRING_KEY_WORD, idsOrNames));
+			qb.must(QueryBuilders
+					.termQuery(Constants.STRING_ALL_TYPE + Constants.STRING_KEY_WORD, Constants.STRING_RAW + type)
+					.boost(2.0F)).boost(3.0F);
 			searchRequestBuilder.query(qb);
 			LogHelper.info(DeviceQueryBuilderHelper.class,
 					" <-----  Setting up Elasticsearch parameters and query For Commercial Bundle ----->");
@@ -551,17 +605,18 @@ public class DeviceQueryBuilderHelper {
 		}
 		return searchRequest;
 	}
-	
-	public static SearchRequest searchQueryForCommercialBundle(String Id , String type) {
+
+	public static SearchRequest searchQueryForCommercialBundle(String Id, String type) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
-		
-		searchRequestBuilder.fetchSource(includes,ex );
+
+		searchRequestBuilder.fetchSource(includes, ex);
 		try {
 			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
-			qb.must(QueryBuilders.termQuery(Constants.STRING_ID+Constants.STRING_KEY_WORD, Id));
-			qb.must(QueryBuilders.termQuery(Constants.STRING_ALL_TYPE + Constants.STRING_KEY_WORD, Constants.STRING_RAW+type));
+			qb.must(QueryBuilders.termQuery(Constants.STRING_ID + Constants.STRING_KEY_WORD, Id));
+			qb.must(QueryBuilders.termQuery(Constants.STRING_ALL_TYPE + Constants.STRING_KEY_WORD,
+					Constants.STRING_RAW + type));
 			searchRequestBuilder.query(qb);
 			LogHelper.info(DeviceQueryBuilderHelper.class,
 					" <-----  Setting up Elasticsearch parameters and query  ----->");

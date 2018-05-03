@@ -35,7 +35,7 @@ public class CatalogServiceAspect {
 		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
 		if (requestAttributes instanceof ServletRequestAttributes) {
 			HttpServletRequest servletRequest = ((ServletRequestAttributes) requestAttributes).getRequest();
-			String versionFromHeader = servletRequest.getHeader("dal-catalogue-version");
+			String versionFromHeader = servletRequest.getHeader("Accept-Version");
 			if (StringUtils.isNotBlank(versionFromHeader)) {
 				version = "dal-cat-" + versionFromHeader;
 				Constants.CATALOG_VERSION.set(version);

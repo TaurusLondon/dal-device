@@ -3410,7 +3410,7 @@ public class DaoUtils {
 				monthlyPrice.setVat(CommonUtility.getpriceFormat(productModel.getBundleMonthlyPriceVat()));
 				bundlePrice.setMonthlyPrice(monthlyPrice);
 				bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
-				bundlePrice.setBundleId(productModel.getLeadPlanIdNew());
+				bundlePrice.setBundleId(leadPlanId);
 				priceForBundleAndHardware.setMonthlyPrice(monthlyPrice);
 				priceForBundleAndHardware.setMonthlyDiscountPrice(monthlyDiscountPrice);
 				priceForBundleAndHardware.setBundlePrice(bundlePrice);
