@@ -34,6 +34,7 @@ import com.vf.uk.dal.device.entity.Equipment;
 import com.vf.uk.dal.device.entity.Facet;
 import com.vf.uk.dal.device.entity.FacetWithCount;
 import com.vf.uk.dal.device.entity.FacetedDevice;
+import com.vf.uk.dal.device.entity.GroupDetails;
 import com.vf.uk.dal.device.entity.HardwarePrice;
 import com.vf.uk.dal.device.entity.Insurance;
 import com.vf.uk.dal.device.entity.Insurances;
@@ -2211,8 +2212,9 @@ public class DaoUtils {
 			Map<String, BundleModel> bundleModelMap, Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice,
 			String offerCode1, Map<String, String> groupNameWithProdId, Map<String, BundlePrice> bundleModelAndPriceMap,
 			Map<String, BundleAndHardwarePromotions> promotionmap, Map<String, Boolean> isLeadMemberFromSolr,
-			Map<String, List<OfferAppliedPriceModel>> withoutOfferPriceMap, String journeyType) {
+			Map<String, List<OfferAppliedPriceModel>> withoutOfferPriceMap, String journeyType,Map<String, GroupDetails> productGroupdetailsMap) {
 		String offerCode = offerCode1;
+		List<GroupDetails> listOfGroupDetails = new ArrayList<>();
 		List<Device> deviceList = new ArrayList<>();
 		FacetedDevice facetedDevice = new FacetedDevice();
 		MerchandisingPromotionsPackage merchandisingPromotionsPackage = null;
@@ -2256,6 +2258,10 @@ public class DaoUtils {
 				if (listOfProducts.contains(productModel.getProductId())) {
 					if (productModel.getProductClass().equalsIgnoreCase(Constants.STRING_PRODUCT_MODEL)) {
 						String leadPlanId = null;
+						GroupDetails groupdeatils=productGroupdetailsMap.containsKey(productModel.getProductId())?productGroupdetailsMap.get(productModel.getProductId()):null;
+						if (groupdeatils!=null) {
+							listOfGroupDetails.add(groupdeatils);
+						}
 						if (StringUtils.isNotBlank(journeyType)
 								&& StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_UPGRADE)) {
 							leadPlanId = productModel.getUpgradeLeadPlanId();
@@ -3193,6 +3199,7 @@ public class DaoUtils {
 		}
 		facetedDevice.setDevice(deviceList);
 		facetedDevice.setNoOfRecordsFound(count);
+		facetedDevice.setProductGroupDetails(listOfGroupDetails);
 		return facetedDevice;
 	}
 

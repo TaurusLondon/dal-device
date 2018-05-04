@@ -63,6 +63,7 @@ import com.vf.uk.dal.device.entity.DeviceSummary;
 import com.vf.uk.dal.device.entity.DeviceTile;
 import com.vf.uk.dal.device.entity.Equipment;
 import com.vf.uk.dal.device.entity.FacetedDevice;
+import com.vf.uk.dal.device.entity.GroupDetails;
 import com.vf.uk.dal.device.entity.Insurance;
 import com.vf.uk.dal.device.entity.Insurances;
 import com.vf.uk.dal.device.entity.MediaLink;
@@ -539,6 +540,23 @@ public class DeviceServiceImpl implements DeviceService {
 
 	/**
 	 * 
+	 * @param productGroupModel
+	 * @param productGroupdetailsMap
+	 * @param deviceId
+	 */
+	public void getProductGroupdetailsMap(ProductGroupModel productGroupModel, Map<String, GroupDetails> productGroupdetailsMap,
+			String deviceId) {
+		GroupDetails groupDetails = new GroupDetails();
+		groupDetails.setGroupName(productGroupModel.getName());
+		groupDetails.setGroupId(productGroupModel.getId());
+		groupDetails.setColor(productGroupModel.getColour());
+		groupDetails.size(productGroupModel.getCapacity());
+		productGroupdetailsMap.put(deviceId, groupDetails);
+
+	}
+	
+	/**
+	 * 
 	 * @param productClass
 	 * @param make
 	 * @param model
@@ -560,6 +578,7 @@ public class DeviceServiceImpl implements DeviceService {
 		FacetedDevice facetedDevice;
 		ProductGroupFacetModel productGroupFacetModel = null;
 		ProductGroupFacetModel productGroupFacetModelForFacets = null;
+		Map<String, GroupDetails> productGroupdetailsMap = new HashMap<>();
 		String sortBy;
 		String sortOption;
 		List<String> criteriaOfSort = getSortCriteria(sortCriteria);
@@ -601,11 +620,13 @@ public class DeviceServiceImpl implements DeviceService {
 									&& !StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_UPGRADE)))) {
 						listOfProducts.add(productGroupModel.getNonUpgradeLeadDeviceId());
 						isLeadMemberFromSolr.put("leadMember", true);
+						getProductGroupdetailsMap(productGroupModel,productGroupdetailsMap,productGroupModel.getNonUpgradeLeadDeviceId());
 					} else if (StringUtils.isNotBlank(productGroupModel.getUpgradeLeadDeviceId())
 							&& StringUtils.isNotBlank(journeyType)
 							&& StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_UPGRADE)) {
 						listOfProducts.add(productGroupModel.getUpgradeLeadDeviceId());
 						isLeadMemberFromSolr.put("leadMember", true);
+						getProductGroupdetailsMap(productGroupModel,productGroupdetailsMap,productGroupModel.getUpgradeLeadDeviceId());
 					} else {
 						List<String> variantsList = productGroupModel.getListOfVariants();
 						if (variantsList != null && !variantsList.isEmpty()) {
@@ -614,6 +635,7 @@ public class DeviceServiceImpl implements DeviceService {
 							if (StringUtils.isNotBlank(leadMember)) {
 								groupNameWithProdId.put(leadMember, productGroupModel.getName());
 								listOfProducts.add(leadMember);
+								getProductGroupdetailsMap(productGroupModel,productGroupdetailsMap,leadMember);
 							}
 						}
 					}
@@ -721,7 +743,7 @@ public class DeviceServiceImpl implements DeviceService {
 					? productGroupFacetModelForFacets.getListOfFacetsFields() : null;
 			facetedDevice = DaoUtils.convertProductModelListToDeviceList(listOfProductModel, listOfProducts,
 					facetFields, groupType, null, null, offerPriceMap, offerCode, groupNameWithProdId, null,
-					promotionmap, isLeadMemberFromSolr, withoutOfferPriceMap, journeyType);
+					promotionmap, isLeadMemberFromSolr, withoutOfferPriceMap, journeyType, productGroupdetailsMap);
 
 		} else {
 			LogHelper.error(this, "No ProductGroups Found for the given search criteria: ");
@@ -905,7 +927,7 @@ public class DeviceServiceImpl implements DeviceService {
 			LogHelper.info(DaoUtils.class, "Entering convertProductModelListToDeviceList ");
 			facetedDevice = DaoUtils.convertProductModelListToDeviceList(listOfProductModel, listOfProducts,
 					productGroupFacetModelForFacets.getListOfFacetsFields(), groupType, ls, bundleModelMap, null, null,
-					groupNameWithProdId, bundleModelAndPriceMap, null, isLeadMemberFromSolr, null, journeyType);
+					groupNameWithProdId, bundleModelAndPriceMap, null, isLeadMemberFromSolr, null, journeyType, Collections.emptyMap());
 			LogHelper.info(DaoUtils.class, "exiting convertProductModelListToDeviceList ");
 			facetedDevice.setNoOfRecordsFound(productGroupFacetModel.getNumFound());
 

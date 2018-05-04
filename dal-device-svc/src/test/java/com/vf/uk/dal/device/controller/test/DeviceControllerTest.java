@@ -397,7 +397,7 @@ public class DeviceControllerTest {
 		FacetedDevice deviceDetailsList = null;
 		try {
 			PaginationCriteria paginationCriteria = new PaginationCriteria(9, 0);
-
+			ServiceContext.urlParamContext.remove();
 			ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
 			deviceDetailsList = deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple",
 					"iPhone-7", "White", "iOS 9", "32 GB", null, "Great Camera", "Upgrade", null, "W_HH_OC_02", "-1");
@@ -1490,6 +1490,7 @@ public class DeviceControllerTest {
 	@Test
 	public void notNullTestForcacheDeviceTileWithoutOfferCode()
 			throws JsonParseException, JsonMappingException, IOException {
+		ServiceContext.urlParamContext.remove();
 		List<FilterCriteria> fcList = new ArrayList<FilterCriteria>();
 		fcList.add(new FilterCriteria("groupType", FilterOperator.EQUALTO, "DEVICE_PAYM"));
 		ServiceContext.setURLParamContext(new URLParamContext("", "", fcList, null));
