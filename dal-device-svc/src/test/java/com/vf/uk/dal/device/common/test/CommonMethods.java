@@ -61,6 +61,7 @@ import com.vf.uk.dal.device.entity.DeviceTile;
 import com.vf.uk.dal.device.entity.Discount;
 import com.vf.uk.dal.device.entity.Facet;
 import com.vf.uk.dal.device.entity.FacetedDevice;
+import com.vf.uk.dal.device.entity.GroupDetails;
 import com.vf.uk.dal.device.entity.HardwarePrice;
 import com.vf.uk.dal.device.entity.Insurance;
 import com.vf.uk.dal.device.entity.Insurances;
@@ -4313,5 +4314,20 @@ public class CommonMethods {
 		productGroupModelList.add(productGroupMode);
 		productGroupModelList.add(productGroupModel);
 		return productGroupModelList;
+	}
+	
+	public static GroupDetails getGroupDetails() {
+		List<String> size = new ArrayList<>();
+		size.add("32 GB");
+		size.add("128 GB");
+		List<String> colour = new ArrayList<>();
+		colour.add("Black");
+		colour.add("White");
+		GroupDetails groupDetails = new GroupDetails();
+		groupDetails.setGroupId("1");
+		groupDetails.setGroupName("Apple iPhone 7");
+		groupDetails.setColor(colour);
+		groupDetails.setSize(size);
+		return groupDetails;
 	}
 }

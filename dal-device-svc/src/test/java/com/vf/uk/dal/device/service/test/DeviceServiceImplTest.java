@@ -43,6 +43,7 @@ import com.vf.uk.dal.device.entity.DeviceDetails;
 import com.vf.uk.dal.device.entity.DeviceSummary;
 import com.vf.uk.dal.device.entity.DeviceTile;
 import com.vf.uk.dal.device.entity.FacetedDevice;
+import com.vf.uk.dal.device.entity.GroupDetails;
 import com.vf.uk.dal.device.entity.Insurances;
 import com.vf.uk.dal.device.entity.Member;
 import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
@@ -473,6 +474,9 @@ public class DeviceServiceImplTest
 	 */
 	@Test
 	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList() {
+		Map<String, GroupDetails> productGroupdetailsMap = new HashMap<>();
+		productGroupdetailsMap.put("093353", CommonMethods.getGroupDetails());
+		productGroupdetailsMap.put("092660", CommonMethods.getGroupDetails());
 		Map<String,String> groupNameWithProdId=new HashMap<String, String>();
 		groupNameWithProdId.put("Apple", "10936");
 		groupNameWithProdId.put("Samsung","7630");
@@ -485,11 +489,14 @@ public class DeviceServiceImplTest
 				CommonMethods.getListOfProducts(),CommonMethods.getProductGroupFacetModel1().getListOfFacetsFields(),
 				"DEVICE_PAYM",null,null,listOfOfferAppliedPrice,"W_HH_OC_02",
 				groupNameWithProdId ,null,null,
-				isLeadMemberFromSolr,listOfOfferAppliedPrice,"Upgrade");
+				isLeadMemberFromSolr,listOfOfferAppliedPrice,"Upgrade",productGroupdetailsMap);
 		Assert.assertNotNull(deviceList);
 	}
 	@Test
 	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList1() {
+		Map<String, GroupDetails> productGroupdetailsMap = new HashMap<>();
+		productGroupdetailsMap.put("093353", CommonMethods.getGroupDetails());
+		productGroupdetailsMap.put("092660", CommonMethods.getGroupDetails());
 		Map<String,String> groupNameWithProdId=new HashMap<String, String>();
 		groupNameWithProdId.put("Apple", "10936");
 		groupNameWithProdId.put("Samsung","7630");
@@ -505,11 +512,14 @@ public class DeviceServiceImplTest
 				CommonMethods.getListOfProducts(),CommonMethods.getProductGroupFacetModel1().getListOfFacetsFields(),
 				"DEVICE_PAYM",null,null,listOfOfferAppliedPrice1,null,
 				groupNameWithProdId ,null,null,
-				isLeadMemberFromSolr,listOfOfferAppliedPrice,"Upgrade");
+				isLeadMemberFromSolr,listOfOfferAppliedPrice,"Upgrade",productGroupdetailsMap);
 		Assert.assertNotNull(deviceList);
 	}
 	@Test
 	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList2() {
+		Map<String, GroupDetails> productGroupdetailsMap = new HashMap<>();
+		productGroupdetailsMap.put("093353", CommonMethods.getGroupDetails());
+		productGroupdetailsMap.put("092660", CommonMethods.getGroupDetails());
 		Map<String,String> groupNameWithProdId=new HashMap<String, String>();
 		groupNameWithProdId.put("Apple", "10936");
 		groupNameWithProdId.put("Samsung","7630");
@@ -522,12 +532,15 @@ public class DeviceServiceImplTest
 				CommonMethods.getListOfProducts(),CommonMethods.getProductGroupFacetModel1().getListOfFacetsFields(),
 				"DEVICE_PAYM",null,null,listOfOfferAppliedPrice1,null,
 				groupNameWithProdId ,null,null,
-				isLeadMemberFromSolr,listOfOfferAppliedPrice1,"Upgrade");
+				isLeadMemberFromSolr,listOfOfferAppliedPrice1,"Upgrade",productGroupdetailsMap);
 		Assert.assertNotNull(deviceList);
 	}
 	
 	@Test
 	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList3() {
+		Map<String, GroupDetails> productGroupdetailsMap = new HashMap<>();
+		productGroupdetailsMap.put("093353", CommonMethods.getGroupDetails());
+		productGroupdetailsMap.put("092660", CommonMethods.getGroupDetails());
 		Map<String,String> groupNameWithProdId=new HashMap<String, String>();
 		groupNameWithProdId.put("Apple", "10936");
 		groupNameWithProdId.put("Samsung","7630");
@@ -540,12 +553,15 @@ public class DeviceServiceImplTest
 				CommonMethods.getListOfProducts(),CommonMethods.getProductGroupFacetModel1().getListOfFacetsFields(),
 				"DEVICE_PAYM",null,null,listOfOfferAppliedPrice1,null,
 				groupNameWithProdId ,null,null,
-				isLeadMemberFromSolr,listOfOfferAppliedPrice1,null);
+				isLeadMemberFromSolr,listOfOfferAppliedPrice1,null,productGroupdetailsMap);
 		Assert.assertNotNull(deviceList);
 	}
 	
 	@Test
 	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList4() {
+		Map<String, GroupDetails> productGroupdetailsMap = new HashMap<>();
+		productGroupdetailsMap.put("093353", CommonMethods.getGroupDetails());
+		productGroupdetailsMap.put("092660", CommonMethods.getGroupDetails());
 		Map<String,String> groupNameWithProdId=new HashMap<String, String>();
 		groupNameWithProdId.put("Apple", "10936");
 		groupNameWithProdId.put("Samsung","7630");
@@ -561,11 +577,14 @@ public class DeviceServiceImplTest
 				CommonMethods.getListOfProducts(),CommonMethods.getProductGroupFacetModel1().getListOfFacetsFields(),
 				"DEVICE_PAYM",null,null,listOfOfferAppliedPrice1,"W_HH_OC_02",
 				groupNameWithProdId ,null,null,
-				isLeadMemberFromSolr,listOfOfferAppliedPrice,"Upgrade");
+				isLeadMemberFromSolr,listOfOfferAppliedPrice,"Upgrade",productGroupdetailsMap);
 		Assert.assertNotNull(deviceList);
 	}
 	@Test
 	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList5() {
+		Map<String, GroupDetails> productGroupdetailsMap = new HashMap<>();
+		productGroupdetailsMap.put("093353", CommonMethods.getGroupDetails());
+		productGroupdetailsMap.put("092660", CommonMethods.getGroupDetails());
 		Map<String,String> groupNameWithProdId=new HashMap<String, String>();
 		groupNameWithProdId.put("Apple", "10936");
 		groupNameWithProdId.put("Samsung","7630");
@@ -578,11 +597,14 @@ public class DeviceServiceImplTest
 				CommonMethods.getListOfProducts(),CommonMethods.getProductGroupFacetModel1().getListOfFacetsFields(),
 				"DEVICE_PAYM",null,null,listOfOfferAppliedPrice1,"W_HH_OC_02",
 				groupNameWithProdId ,null,null,
-				isLeadMemberFromSolr,listOfOfferAppliedPrice1,"Upgrade");
+				isLeadMemberFromSolr,listOfOfferAppliedPrice1,"Upgrade",productGroupdetailsMap);
 		Assert.assertNotNull(deviceList);
 	}
 	@Test
 	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceListPayG() {
+		Map<String, GroupDetails> productGroupdetailsMap = new HashMap<>();
+		productGroupdetailsMap.put("093353", CommonMethods.getGroupDetails());
+		productGroupdetailsMap.put("092660", CommonMethods.getGroupDetails());
 		Map<String,String> groupNameWithProdId=new HashMap<String, String>();
 		groupNameWithProdId.put("Apple", "10936");
 		groupNameWithProdId.put("Samsung","7630");
@@ -595,7 +617,7 @@ public class DeviceServiceImplTest
 				CommonMethods.getListOfProducts(),CommonMethods.getProductGroupFacetModel1().getListOfFacetsFields(),
 				"DEVICE_PAYG",null,null,null,null,
 				groupNameWithProdId ,null,null,
-				isLeadMemberFromSolr,null,Constants.JOURNEY_TYPE_ACQUISITION);
+				isLeadMemberFromSolr,null,Constants.JOURNEY_TYPE_ACQUISITION,productGroupdetailsMap);
 		Assert.assertNotNull(deviceList);
 	}
 	/*@Test

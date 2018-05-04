@@ -300,8 +300,6 @@ public class DeviceQueryBuilderHelper {
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
 		try {
 			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
-			// SearchSourceBuilder searchSourceBuilder = new
-			// SearchSourceBuilder();
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(size);
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
@@ -395,7 +393,8 @@ public class DeviceQueryBuilderHelper {
 		if (mustHaveFeatures != null && !"\"\"".equals(mustHaveFeatures)) {
 			String[] mhf = mustHaveFeatures.split(",");
 			if (mhf.length == 1) {
-				qb.must(QueryBuilders.matchPhraseQuery(Constants.STRING_MUST_HAVE_FEATURES_WITH_COLON, mustHaveFeatures));
+				qb.must(QueryBuilders.matchPhraseQuery(Constants.STRING_MUST_HAVE_FEATURES_WITH_COLON,
+						mustHaveFeatures));
 			} else {
 				qb.must(QueryBuilders.termsQuery(
 						Constants.STRING_MUST_HAVE_FEATURES_WITH_COLON + Constants.STRING_KEY_WORD,
@@ -410,9 +409,6 @@ public class DeviceQueryBuilderHelper {
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
 		try {
 			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
-			// SearchSourceBuilder searchSourceBuilder = new
-			// SearchSourceBuilder();
-
 			searchRequestBuilder.size(from);
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
 			qb.must(QueryBuilders.termQuery(Constants.STRING_TYPE + Constants.STRING_KEY_WORD, groupType));
@@ -463,14 +459,10 @@ public class DeviceQueryBuilderHelper {
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
 		try {
 			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
-			// SearchSourceBuilder searchSourceBuilder = new
-			// SearchSourceBuilder();
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(deviceIds.size());
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
 			qb.must(QueryBuilders.termsQuery(Constants.STRING_PRODUCT_ID + Constants.STRING_KEY_WORD, deviceIds));
-			// qb.must(QueryBuilders.wildcardQuery(Constants.STRING_ID,
-			// Constants.STRING_PRODUCT+"*"));
 			qb.must(QueryBuilders.termsQuery(Constants.STRING_ALL_TYPE + Constants.STRING_KEY_WORD,
 					Constants.STRING_OPT + Constants.STRING_PRODUCT));
 			searchRequestBuilder.query(qb);
@@ -494,16 +486,12 @@ public class DeviceQueryBuilderHelper {
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
 		try {
 			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
-			// SearchSourceBuilder searchSourceBuilder = new
-			// SearchSourceBuilder();
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(bundleIds.size());
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
 			qb.must(QueryBuilders.termsQuery(Constants.STRING_BUNDLE_ID + Constants.STRING_KEY_WORD, bundleIds));
 			qb.must(QueryBuilders.termsQuery(Constants.STRING_ALL_TYPE + Constants.STRING_KEY_WORD,
 					Constants.STRING_OPT + Constants.STRING_BUNDLE));
-			// qb.must(QueryBuilders.wildcardQuery(Constants.STRING_ID,
-			// Constants.STRING_BUNDLE+"*"));
 			searchRequestBuilder.query(qb);
 			searchRequest.source(searchRequestBuilder);
 
@@ -528,8 +516,6 @@ public class DeviceQueryBuilderHelper {
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
 		try {
 			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
-			// SearchSourceBuilder searchSourceBuilder = new
-			// SearchSourceBuilder();
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(size);
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
@@ -560,8 +546,6 @@ public class DeviceQueryBuilderHelper {
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
 		try {
 			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
-			// SearchSourceBuilder searchSourceBuilder = new
-			// SearchSourceBuilder();
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(displayNames.size());
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
