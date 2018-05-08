@@ -43,10 +43,10 @@
 			<artifactId>dal-core</artifactId>
 			<version>9.2.0</version>
 			<exclusions> 
-				<exclusion>
+				<!-- <exclusion>
 					<artifactId>slf4j-log4j12</artifactId>
 					<groupId>org.slf4j</groupId>
-				</exclusion>
+				</exclusion> -->
 				<exclusion>
 					<artifactId>slf4j-api</artifactId>
 					<groupId>org.slf4j</groupId>
@@ -61,154 +61,13 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- <dependency>
-			<groupId>com.vf.uk.dal</groupId>
-			<artifactId>solr</artifactId>
-			<version>6.3.0</version>
-		</dependency> -->
-		<dependency>
-			<groupId>com.vf.uk.dal.solr</groupId>
-			<artifactId>commons</artifactId>
-			<version>2.5</version>
-		</dependency>
-		<dependency>
-			<groupId>com.vf.uk.dal.solr</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.4.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.vf.uk.dal.solr</groupId>
-			<artifactId>httpcore</artifactId>
-			<version>4.4.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.vf.uk.dal.solr</groupId>
-			<artifactId>httpmime</artifactId>
-			<version>4.4.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.vf.uk.dal.solr</groupId>
-			<artifactId>noggit</artifactId>
-			<version>0.6</version>
-		</dependency>
-		<dependency>
-			<groupId>com.vf.uk.dal.solr</groupId>
-			<artifactId>stax2</artifactId>
-			<version>3.1.4</version>
-		</dependency>
-		<dependency>
-			<groupId>com.vf.uk.dal.solr</groupId>
-			<artifactId>woodstox</artifactId>
-			<version>4.4.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.vf.uk.dal.solr</groupId>
-			<artifactId>jcl-over-slf4j</artifactId>
-			<version>1.7.7</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>log4j-over-slf4j</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>logback-classic</artifactId>
-					<groupId>ch.qos.logback</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>com.vf.uk.dal.solr</groupId>
-			<artifactId>jul-to-slf4j</artifactId>
-			<version>1.7.7</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>log4j-over-slf4j</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>logback-classic</artifactId>
-					<groupId>ch.qos.logback</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>com.vf.uk.dal.solr</groupId>
-			<artifactId>zookeeper</artifactId>
-			<version>3.4.6</version>
-		</dependency>
-		<dependency>
-			<groupId>com.vf.uk.dal.solr</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.7.7</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>log4j-over-slf4j</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>logback-classic</artifactId>
-					<groupId>ch.qos.logback</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>com.vf.uk.dal.solr</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>log4j-over-slf4j</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>logback-classic</artifactId>
-					<groupId>ch.qos.logback</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>com.vf.uk.dal.solr</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-		</dependency>
-		<!-- <dependency>
-			<groupId>com.vf.uk.dal.solr</groupId>
-			<artifactId>solr-query-manager</artifactId>
-			<version>8.1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>Solr</groupId>
-			<artifactId>IndexManager</artifactId>
-			<version>8.1.0</version>
-		</dependency> -->
 		<!-- Coherence Jars -->
-	<!--	<dependency>
-		 	<groupId>com.vf.uk.dal</groupId>
-			<artifactId>coherence</artifactId>
-			<version>12.2.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.vf.uk.dal.coh</groupId>
-			<artifactId>coherence-domain</artifactId>
-			<version>8.1.0</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>slf4j-log4j12</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>com.vf.uk.dal.coh</groupId>
-			<artifactId>coherence-logging-utility</artifactId>
-			<version>8.1.0</version>
-		</dependency> -->
 		<!-- LoggingUtility uses slf4j-ext and json-simple jar -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-ext</artifactId>
 			<version>1.7.20</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>com.googlecode.json-simple</groupId>
 			<artifactId>json-simple</artifactId>
@@ -250,11 +109,6 @@
 			<version>2.6.1</version>
 			<scope>compile</scope>
 		</dependency>
-		<!-- <dependency>
-			<groupId>org.elasticsearch.client</groupId>
-			<artifactId>elasticsearch-rest-client-sniffer</artifactId>
-			<version>6.0.1</version>
-		</dependency> -->
 		<dependency>
 			<groupId>org.elasticsearch</groupId>
 			<artifactId>elasticsearch</artifactId>
@@ -265,11 +119,6 @@
     <artifactId>elasticsearch-rest-high-level-client</artifactId>
     <version>6.0.1</version>
       </dependency>
-		<!-- <dependency>
-			<groupId>org.elasticsearch.client</groupId>
-			<artifactId>transport</artifactId>
-			<version>6.2.0</version>
-		</dependency> -->
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
 			<artifactId>ehcache</artifactId>
@@ -277,6 +126,16 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>log4j-over-slf4j</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 	<!-- To Support Sonar Code Fixes we have added the JDK Version 1.8 -->
