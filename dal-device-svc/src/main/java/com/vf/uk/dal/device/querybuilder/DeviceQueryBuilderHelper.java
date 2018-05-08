@@ -357,7 +357,7 @@ public class DeviceQueryBuilderHelper {
 		if (StringUtils.isNotBlank(make)) {
 			String[] makeArray = make.split(",");
 			if (makeArray.length == 1) {
-				qb.must(QueryBuilders.termQuery(Constants.STRING_EQUIPMENT_MAKE_COLON + Constants.STRING_KEY_WORD, make));
+				qb.must(QueryBuilders.termQuery(Constants.STRING_EQUIPMENT_MAKE_COLON + Constants.STRING_KEY_WORD, make.replace("\"", "")));
 			} else {
 				qb.must(QueryBuilders.termsQuery(Constants.STRING_EQUIPMENT_MAKE_COLON + Constants.STRING_KEY_WORD,
 						Arrays.asList(makeArray)));
@@ -366,7 +366,7 @@ public class DeviceQueryBuilderHelper {
 		if (capacity != null && !"\"\"".equals(capacity)) {
 			String[] capa = capacity.split(",");
 			if (capa.length == 1) {
-				qb.must(QueryBuilders.termQuery(Constants.STRING_CAPACITY_COLON + Constants.STRING_KEY_WORD, capacity));
+				qb.must(QueryBuilders.termQuery(Constants.STRING_CAPACITY_COLON + Constants.STRING_KEY_WORD, capacity.replace("\"", "")));
 			} else {
 				qb.must(QueryBuilders.termsQuery(Constants.STRING_CAPACITY_COLON + Constants.STRING_KEY_WORD,
 						Arrays.asList(capa)));
@@ -375,7 +375,7 @@ public class DeviceQueryBuilderHelper {
 		if (colour != null && !"\"\"".equals(colour)) {
 			String[] color = colour.split(",");
 			if (color.length == 1) {
-				qb.must(QueryBuilders.termQuery(Constants.STRING_COLOUR_COLON+ Constants.STRING_KEY_WORD, colour));
+				qb.must(QueryBuilders.termQuery(Constants.STRING_COLOUR_COLON+ Constants.STRING_KEY_WORD, colour.replace("\"", "")));
 			} else {
 				qb.must(QueryBuilders.termsQuery(Constants.STRING_COLOUR_COLON + Constants.STRING_KEY_WORD,
 						Arrays.asList(color)));
@@ -384,7 +384,7 @@ public class DeviceQueryBuilderHelper {
 		if (operatingSystem != null && !"\"\"".equals(operatingSystem)) {
 			String[] os = operatingSystem.split(",");
 			if (os.length == 1) {
-				qb.must(QueryBuilders.termQuery(Constants.STRING_OPERATING_SYSTEM + Constants.STRING_KEY_WORD, operatingSystem));
+				qb.must(QueryBuilders.termQuery(Constants.STRING_OPERATING_SYSTEM + Constants.STRING_KEY_WORD, operatingSystem.replace("\"", "")));
 			} else {
 				qb.must(QueryBuilders.termsQuery(Constants.STRING_OPERATING_SYSTEM + Constants.STRING_KEY_WORD,
 						Arrays.asList(os)));
@@ -394,7 +394,7 @@ public class DeviceQueryBuilderHelper {
 			String[] mhf = mustHaveFeatures.split(",");
 			if (mhf.length == 1) {
 				qb.must(QueryBuilders.termQuery(Constants.STRING_MUST_HAVE_FEATURES_WITH_COLON + Constants.STRING_KEY_WORD,
-						mustHaveFeatures));
+						mustHaveFeatures.replace("\"", "")));
 			} else {
 				qb.must(QueryBuilders.termsQuery(
 						Constants.STRING_MUST_HAVE_FEATURES_WITH_COLON + Constants.STRING_KEY_WORD,
