@@ -375,7 +375,7 @@ public class DeviceQueryBuilderHelper {
 		if (colour != null && !"\"\"".equals(colour)) {
 			String[] color = colour.split(",");
 			if (color.length == 1) {
-				qb.must(QueryBuilders.matchPhraseQuery(Constants.STRING_CAPACITY_COLON, colour));
+				qb.must(QueryBuilders.matchPhraseQuery(Constants.STRING_COLOUR_COLON, colour));
 			} else {
 				qb.must(QueryBuilders.termsQuery(Constants.STRING_COLOUR_COLON + Constants.STRING_KEY_WORD,
 						Arrays.asList(color)));
