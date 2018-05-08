@@ -4101,7 +4101,7 @@ public class DaoUtils {
 
 		// MediaLink for PricePromotions
 		if (priceforBundleAndHardware != null) {
-			deviceSummary.setPriceInfo(priceforBundleAndHardware);
+			deviceSummary.setPriceInfo(getCalculatedPrice(priceforBundleAndHardware));
 			// Hardware Promotion
 			if (priceforBundleAndHardware.getHardwarePrice() != null) {
 

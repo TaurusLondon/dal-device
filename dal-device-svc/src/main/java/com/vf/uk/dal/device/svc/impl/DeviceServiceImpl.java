@@ -4593,7 +4593,6 @@ public class DeviceServiceImpl implements DeviceService {
 	 */
 	public List<ProductModel> getListOfProductModel(List<String> deviceIds) {
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper.searchQueryForProductModel(deviceIds);
-		;
 		SearchResponse productModelResponse = deviceDao.getResponseFromDataSource(queryContextMap);
 		LogHelper.info(this, "converting elasticsearch response into standard json object response");
 		return response.getListOfProductModel(productModelResponse);
