@@ -356,50 +356,29 @@ public class DeviceQueryBuilderHelper {
 		BoolQueryBuilder qb = QueryBuilders.boolQuery();
 		if (StringUtils.isNotBlank(make)) {
 			String[] makeArray = make.replace("\"", "").split(",");
-			if (makeArray.length == 1) {
-				qb.must(QueryBuilders.termQuery(Constants.STRING_EQUIPMENT_MAKE_COLON + Constants.STRING_KEY_WORD, makeArray[0]));
-			} else {
 				qb.must(QueryBuilders.termsQuery(Constants.STRING_EQUIPMENT_MAKE_COLON + Constants.STRING_KEY_WORD,
 						Arrays.asList(makeArray)));
-			}
 		}
 		if (capacity != null && !"\"\"".equals(capacity)) {
 			String[] capa = capacity.replace("\"", "").split(",");
-			if (capa.length == 1) {
-				qb.must(QueryBuilders.termQuery(Constants.STRING_CAPACITY_COLON + Constants.STRING_KEY_WORD, capa[0]));
-			} else {
 				qb.must(QueryBuilders.termsQuery(Constants.STRING_CAPACITY_COLON + Constants.STRING_KEY_WORD,
 						Arrays.asList(capa)));
-			}
 		}
 		if (colour != null && !"\"\"".equals(colour)) {
 			String[] color = colour.replace("\"", "").split(",");
-			if (color.length == 1) {
-				qb.must(QueryBuilders.termQuery(Constants.STRING_COLOUR_COLON+ Constants.STRING_KEY_WORD, color[0]));
-			} else {
 				qb.must(QueryBuilders.termsQuery(Constants.STRING_COLOUR_COLON + Constants.STRING_KEY_WORD,
 						Arrays.asList(color)));
-			}
 		}
 		if (operatingSystem != null && !"\"\"".equals(operatingSystem)) {
 			String[] os = operatingSystem.replace("\"", "").split(",");
-			if (os.length == 1) {
-				qb.must(QueryBuilders.termQuery(Constants.STRING_OPERATING_SYSTEM + Constants.STRING_KEY_WORD, os[0]));
-			} else {
 				qb.must(QueryBuilders.termsQuery(Constants.STRING_OPERATING_SYSTEM + Constants.STRING_KEY_WORD,
 						Arrays.asList(os)));
-			}
 		}
 		if (mustHaveFeatures != null && !"\"\"".equals(mustHaveFeatures)) {
 			String[] mhf = mustHaveFeatures.replace("\"", "").split(",");
-			if (mhf.length == 1) {
-				qb.must(QueryBuilders.termQuery(Constants.STRING_MUST_HAVE_FEATURES_WITH_COLON + Constants.STRING_KEY_WORD,
-						mhf[0]));
-			} else {
 				qb.must(QueryBuilders.termsQuery(
 						Constants.STRING_MUST_HAVE_FEATURES_WITH_COLON + Constants.STRING_KEY_WORD,
 						Arrays.asList(mhf)));
-			}
 		}
 		return qb;
 	}
