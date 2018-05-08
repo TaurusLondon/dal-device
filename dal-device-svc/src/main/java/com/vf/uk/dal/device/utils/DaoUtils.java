@@ -2308,7 +2308,7 @@ public class DaoUtils {
 						if (productModel.getRating() != null && productModel.getRating() > 0.0) {
 							deviceDetails.setRating(String.valueOf(productModel.getRating()));
 						} else {
-							deviceDetails.setRating(Constants.DEVICE_RATING_NA);
+							deviceDetails.setRating(Constants.DEVICE_RATING_NA.toLowerCase());
 						}
 						deviceDetails.setMake(productModel.getEquipmentMake());
 						deviceDetails.setModel(productModel.getEquipmentModel());
