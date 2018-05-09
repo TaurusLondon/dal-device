@@ -18,35 +18,34 @@ import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.gson.annotations.SerializedName;
 
 /**
  * MerchandisingPromotion
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2017-09-27T07:05:02.425Z")
 public class MerchandisingPromotion {
-  @SerializedName("tag")
+  @JsonProperty("tag")
   private String tag = null;
 
-  @SerializedName("label")
+  @JsonProperty("label")
   private String label = null;
 
-  @SerializedName("description")
+  @JsonProperty("description")
   private String description = null;
 
-  @SerializedName("discountId")
+  @JsonProperty("discountId")
   private String discountId = null;
 
-  @SerializedName("mpType")
+  @JsonProperty("mpType")
   private String mpType = null;
   
   private String priceEstablishedLabel = null;
   
-  @SerializedName("priority")
+  @JsonProperty("priority")
   private Integer priority = null;
   
   /** The promotion media. */
-  @SerializedName("promotionMedia")
+  @JsonProperty("promotionMedia")
   private String promotionMedia = null;
   
   /** The package type. */
