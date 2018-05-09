@@ -1268,7 +1268,8 @@ public class DeviceServiceImpl implements DeviceService {
 			List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.DevicePreCalculatedData> preCalcDataList) {
 		try {
 			Map<String, CacheProductGroupModel> productModelMap = new HashMap<>();
-			for (com.vf.uk.dal.device.datamodel.merchandisingpromotion.DevicePreCalculatedData deviceListObject : preCalcDataList) {
+			for (com.vf.uk.dal.device.datamodel.merchandisingpromotion.DevicePreCalculatedData deviceListObject : preCalcDataList)
+			{
 				CacheProductModel productModel = new CacheProductModel();
 
 				String productId = deviceListObject.getDeviceId();
@@ -1385,7 +1386,7 @@ public class DeviceServiceImpl implements DeviceService {
 				if (deviceListObject.getPriceInfo() != null) {
 					List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceDetails> offerAppliedPrice = deviceListObject
 							.getPriceInfo().getOfferAppliedPrices();
-					if (offerAppliedPrice != null && CollectionUtils.isEmpty(offerAppliedPrice)) {
+					if (offerAppliedPrice != null && CollectionUtils.isNotEmpty(offerAppliedPrice)) {
 						for (com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceDetails offerAppliedPriceObject : offerAppliedPrice) {
 
 							CacheOfferAppliedPriceModel offerPrice = new CacheOfferAppliedPriceModel();
@@ -4580,7 +4581,6 @@ public class DeviceServiceImpl implements DeviceService {
 	 */
 	public List<FacetField> getProductGroupFacetModel(String groupType, String journeyType) {
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper.searchQueryForFacetCount(groupType, journeyType);
-		;
 		SearchResponse bundleResponse = deviceDao.getResponseFromDataSource(queryContextMap);
 		LogHelper.info(this, "converting elasticsearch response into standard json object response");
 		return response.getFacetField(bundleResponse);
