@@ -2559,11 +2559,13 @@ public class DeviceServiceImpl implements DeviceService {
 										leadPlanIdMap.put(member.getId(), bundleId);
 										listofLeadPlan.add(bundleId);
 									} else {
+										List<String> listOfCompatiblePlanIds = commercialProduct.getListOfCompatiblePlanIds() == null
+									 	? Collections.emptyList(): ommercialProduct.getListOfCompatiblePlanIds();
 										bundleIdMap.put(commercialProduct.getId(), false);
 										if (StringUtils.isNotBlank(commercialProduct.getLeadPlanId())
 												&& isJourneySpecificLeadPlan(commerBundleIdMap,
 														commercialProduct.getLeadPlanId(), journeyType)
-												&& commercialProduct.getListOfCompatiblePlanIds()
+												&& listOfCompatiblePlanIds
 														.contains(commercialProduct.getLeadPlanId())) {
 											Set<BundleAndHardwareTuple> setOfBundleAndHardwareTuple = getBundleHardwarePriceMap(
 													commercialProduct.getLeadPlanId(), null, commercialProduct.getId());
