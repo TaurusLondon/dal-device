@@ -335,5 +335,6 @@ public class Constants {
 	public static final String OFFER_CODE = "offerCode";
 	public static final String numberExp = "[0-9]{6}";
 	public static final String creditLimitExp = "[0-9]*";
+	public static final String zero = "0";
 	
 }

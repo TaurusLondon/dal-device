@@ -182,7 +182,12 @@ public  class CommonUtility {
 	public static String appendPrefixString(String deviceId)
 	{
 		StringBuilder target= new StringBuilder(Constants.PREFIX_SKU);
-		target.append(deviceId.substring(1, deviceId.length()));
+		String leadingZero=deviceId.substring(0, 1);
+		if (leadingZero.equals(Constants.zero)) {
+			target.append(deviceId.substring(1, deviceId.length()));
+		}else{
+			target.append(deviceId);
+		}
 		return target.toString();
 	}
 	public static PriceForProduct getAccessoryPriceDetails(BundleDeviceAndProductsList bundleDeviceAndProductsList,RegistryClient registryClient) {
