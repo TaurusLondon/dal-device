@@ -72,16 +72,21 @@
          "bundlePrice":          {
             "bundleId": "110151",
             "monthlyPrice":             {
-               "gross": "72",
-               "net": "60",
-               "vat": "12"
+               "gross": "7",
+               "net": "4",
+               "vat": "3"
             },
             "monthlyDiscountPrice":             {
                "gross": null,
                "net": null,
                "vat": null
             },
-            "merchandisingPromotions": null
+            "merchandisingPromotions":             {
+               "tag": "handset.limited.GBP",
+               "label": "12 months £12 off plan",
+               "discountId": "106127",
+               "description": "For 12 Months, then"
+            }
          },
          "hardwarePrice":          {
             "hardwareId": "093353",

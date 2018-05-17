@@ -1497,7 +1497,7 @@
     "priceVAT" : 0.0
   },
   "promoteAs" : {
-    "promotionName" : [ "handset.hardware.percentage", "handset.hardware.percentage.2", "10GB.Iphone.2017", "accessories.conditional.expired", "accessories.conditional.future", "accessory.free.expire", "banner.paym", "voucher.handset.hardware.gbp", "voucher.handset.hardware.percentage" ]
+    "promotionName" : [ "handset.hardware.percentage", "handset.hardware.percentage.2", "10GB.Iphone.2017", "accessories.conditional.expired", "accessories.conditional.future", "accessory.free.expire", "banner.paym", "sash.banner", "voucher.handset.hardware.gbp", "voucher.handset.hardware.percentage" ]
   },
   "leadPlanId" : "110075",
   "recommendataions" : null,

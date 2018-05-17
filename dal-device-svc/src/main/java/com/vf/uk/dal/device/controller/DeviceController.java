@@ -1,20 +1,15 @@
 package com.vf.uk.dal.device.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.lang.StringUtils;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,19 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.vf.uk.dal.common.context.ServiceContext;
 import com.vf.uk.dal.common.exception.ApplicationException;
-import com.vf.uk.dal.common.exception.SystemException;
 import com.vf.uk.dal.common.logger.LogHelper;
-import com.vf.uk.dal.common.urlparams.FilterCriteria;
 import com.vf.uk.dal.common.urlparams.PaginationCriteria;
-import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
-import com.vf.uk.dal.device.datamodel.productgroups.Group;
-import com.vf.uk.dal.device.datamodel.productgroups.ProductGroupModelMap;
-import com.vf.uk.dal.device.entity.AccessoryTileGroup;
-import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
-import com.vf.uk.dal.device.entity.DeviceDetails;
 import com.vf.uk.dal.device.entity.DeviceTile;
 import com.vf.uk.dal.device.entity.FacetedDevice;
-import com.vf.uk.dal.device.entity.Insurances;
 import com.vf.uk.dal.device.entity.KeepDeviceChangePlanRequest;
 import com.vf.uk.dal.device.svc.DeviceService;
 import com.vf.uk.dal.device.utils.Constants;
@@ -48,7 +34,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * 1.Controller should able handle all the request and response for the device
@@ -60,145 +45,33 @@ import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping(value = "")
-@EnableAspectJAutoProxy(proxyTargetClass=true)
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 public class DeviceController {
 
 	@Autowired
 	DeviceService deviceService;
 
-	private static final String GROUP_TYPE = "groupType";
-	private static final String DEVICE_ID_IS_EMPTY = "Device Id is Empty";
-	private static final String DEVICE_ID = "deviceId";
-	private static final String JOURNEY_TYPE = "journeyType";
-	private static final String OFFER_CODE = "offerCode";
-	private static final String numberExp = "[0-9]{6}";
-	private static final String creditLimitExp = "[0-9]*";
-	
 	/**
 	 * Handles requests for getDeviceTile Service with input as
-	 * GROUP_NAME,GROUP_TYPE in URL as query.
-	 * performance improved by @author manoj.bera
+	 * GROUP_NAME,GROUP_TYPE in URL as query. performance improved by @author
+	 * manoj.bera
+	 * 
 	 * @param ex
 	 * @return
 	 */
 	@ExceptionHandler(MissingServletRequestParameterException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public com.vf.uk.dal.common.exception.ErrorResponse handleMissingParams(MissingServletRequestParameterException ex) {
-		
-		return new com.vf.uk.dal.common.exception.ErrorResponse(400, "DEVICE_INVALID_INPUT", "Missing mandatory parameter "+ex.getParameterName()); 
-		
-	}
-	/**
-	 * 
-	 * @param make
-	 * @param model
-	 * @param groupType
-	 * @param journeyType
-	 * @param offerCode
-	 * @param bundleId
-	 * @param deviceId
-	 * @param creditLimit
-	 * @return
-	 */
-	@ApiOperation(value = "Get the list of device tiles based on the filter criteria. Pagination also defined", notes = "The service gets the details of the device tiles from coherence based on the filter criteria in the response.", response = DeviceTile.class, responseContainer = "List", tags={ "DeviceTile", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Success", response = DeviceTile.class, responseContainer = "List"),
-        @ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
-		@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
-        @ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
-        @ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
-	@RequestMapping(value = "/deviceTile/queries/byMakeModel/", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
-	public List<DeviceTile> getListOfDeviceTile(@NotNull@ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"apple\".", required = true) @RequestParam(value = "make", required = true) String make,
-	         @NotNull@ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"iphone7\".", required = true) @RequestParam(value = "model", required = true) String model,
-	         @NotNull@ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"DEVICE_PAYM\" or \"DEVICE_PAYG\" or \"DATA_DEVICE_PAYM\".", required = true) @RequestParam(value = "groupType", required = true) String groupType,
-	        @ApiParam(value = "The journey that user undertakes \"acquisition\", \"upgrade\", \"ils\" etc.") @RequestParam(value = "journeyType", required = false) String journeyType,
-	        @ApiParam(value = "Promotional offer code applicable") @RequestParam(value = "offerCode", required = false) String offerCode,
-	        @ApiParam(value = "bundle Id for comaptible devices needs to displayed") @RequestParam(value = "bundleId", required = false) String bundleId,
-	        @ApiParam(value = "device Id for comaptible devices needs to displayed") @RequestParam(value = "deviceId", required = false) String deviceId,
-	        @ApiParam(value = "creditLimit applicable for the customer in case of conditional accept state") @RequestParam(value = "creditLimit", required = false) String creditLimit) {
-		
-			List<DeviceTile> listOfDeviceTile;
-			Double creditLimitParam = null;
-			if (deviceId != null && !deviceId.matches(numberExp)) {
-				LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
-				throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
-			}
-			if (creditLimit != null) {
-				if(StringUtils.isNotBlank(creditLimit)){
-					if(!creditLimit.matches(creditLimitExp)) {
-						throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
-					}
-					if (!Validator.validateCreditLimit(creditLimit)) {
-						throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
-					} else {
-					try{
-						creditLimitParam = Double.parseDouble(creditLimit);
-					} catch(NumberFormatException ex){
-						LogHelper.error(this, "Credit limit value not correct " + ex);
-						throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
-					}
-					}
-				} else if(StringUtils.isBlank(creditLimit)){
-					throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
-				}
-				
-			}
-			if ((StringUtils.isBlank(make) || "\"\"".equals(make))
-					&& (StringUtils.isBlank(model) || "\"\"".equals(model))) {
-				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_MAKE_MODEL);
-			} else if (StringUtils.isBlank(make) || "\"\"".equals(make)) {
-				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_MAKE);
-			} else if (StringUtils.isBlank(model) || "\"\"".equals(model)) {
-				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_MODEL);
-			}
-			
-			if(bundleId != null && (!bundleId.matches(numberExp) || bundleId.matches("[0]*"))) {
-				LogHelper.error(this,ExceptionMessages.INVALID_BUNDLE);
-				throw new ApplicationException(ExceptionMessages.INVALID_BUNDLE_ID);
-			}
-			listOfDeviceTile = deviceService.getListOfDeviceTile(make, model, groupType, deviceId,
-					creditLimitParam, journeyType, offerCode, bundleId);
-			return listOfDeviceTile;
-		
-	}
+	public com.vf.uk.dal.common.exception.ErrorResponse handleMissingParams(
+			MissingServletRequestParameterException ex) {
 
-	/**
-	 * Handles requests for getDeviceDetails Service with input as deviceId.
-	 * @param deviceId
-	 * @param journeyType
-	 * @param offerCode
-	 * @return
-	 */
-	@ApiOperation(value = "Get the device details for the given device Id", notes = "The service gets the details of the device specially price, equipment, specification, features, merchandising, etc in the response.", response = DeviceDetails.class, tags={ "Device", })
-    @RequestMapping(value = "/device/{deviceId}", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
-	@ApiResponses(value = { 
-	        @ApiResponse(code = 200, message = "Success", response = DeviceDetails.class),
-	        @ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
-	        @ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
-	        @ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
-	public DeviceDetails getDeviceDetails(@NotNull@ApiParam(value = "Unique Id of the device being requested",required=true ) @PathVariable("deviceId") String deviceId,
-	        @ApiParam(value = "Type of journey that the user undertakes e.g. \"Acquisition\", \"upgrade\", \"ils\" etc.") @RequestParam(value = "journeyType", required = false) String journeyType,
-	        @ApiParam(value = "Offer code that defines what type of promotional discount needs to be displaced.") @RequestParam(value = "offerCode", required = false) String offerCode) {
-		DeviceDetails deviceDetails;
-		LogHelper.info(this, ":::::::Test Logger for VSTS migration And Validate Pipeline Validation::::::::");
-		if (StringUtils.isNotBlank(deviceId)) {
-			if (!deviceId.matches(numberExp)) {
-				LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
-				throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
-			}
-			String journeyTypeLocal=StringUtils.isNotBlank(journeyType)?journeyType:Constants.JOURNEY_TYPE_ACQUISITION;
-			deviceDetails = deviceService.getDeviceDetails(deviceId, journeyTypeLocal, offerCode);
-		} else {
-			LogHelper.error(this, DEVICE_ID_IS_EMPTY);
-			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
-		}
-		
-		return deviceDetails;
-	}
+		return new com.vf.uk.dal.common.exception.ErrorResponse(400, "DEVICE_INVALID_INPUT",
+				"Missing mandatory parameter " + ex.getParameterName());
 
+	}
+	
 	/**
 	 * Handles requests for getDeviceTile Service with input as deviceId.
+	 * 
 	 * @param queryParams
 	 * @return
 	 */
@@ -216,7 +89,7 @@ public class DeviceController {
 			@ApiParam(value = "Journey Type") @RequestParam(value = "journeyType", required = false) String journeyType,
 			@ApiParam(value = "Promotional Offer Code that's applicable") @RequestParam(value = "offerCode", required = false) String offerCode) {
 		List<DeviceTile> listOfDeviceTile;
-		if (!deviceId.matches(numberExp)) {
+		if (!deviceId.matches(Constants.numberExp)) {
 			LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
 			throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 		}
@@ -225,266 +98,101 @@ public class DeviceController {
 		return listOfDeviceTile;
 	}
 
-
-
 	/**
 	 * Handles requests for GetProductList Service with input as SIMO in URL as
-	 * @return
-	 */
-	/*@ApiIgnore
-	@RequestMapping(value = "/productGroup", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
-	public List<ProductGroup> getProductGroup() {
-		List<ProductGroup> productGroup;
-		String groupType;
-		String groupName;
-		groupType = getFilterValue(GROUP_TYPE);
-		groupName = getFilterValue(GROUP_NAME);
-		productGroup = deviceService.getProductGroupByGroupTypeGroupName(groupType, groupName);
-		return productGroup;
-	}*/
-
-	/**
 	 * 
-	 * @param deviceId
+	 * @return
+	 */
+	/*
+	 * @ApiIgnore
+	 * 
+	 * @RequestMapping(value = "/productGroup", method = RequestMethod.GET,
+	 * produces = javax.ws.rs.core.MediaType.APPLICATION_JSON) public
+	 * List<ProductGroup> getProductGroup() { List<ProductGroup> productGroup;
+	 * String groupType; String groupName; groupType =
+	 * getFilterValue(GROUP_TYPE); groupName = getFilterValue(GROUP_NAME);
+	 * productGroup =
+	 * deviceService.getProductGroupByGroupTypeGroupName(groupType, groupName);
+	 * return productGroup; }
+	 */
+
+	/**
+	 * Handles requests for getDeviceList Service
+	 * 
+	 * @param productClass
+	 * @param groupType
+	 * @param sort
+	 * @param pageNumber
+	 * @param pageSize
+	 * @param make
+	 * @param model
+	 * @param color
+	 * @param operatingSystem
+	 * @param capacity
+	 * @param msisdn
+	 * @param mustHaveFeatures
 	 * @param journeyType
+	 * @param includeRecommendations
 	 * @param offerCode
+	 * @param creditLimit
 	 * @return
 	 */
-	@ApiOperation(value = "Get compatible accessory details for the given device Id", notes = "The service gets the details of compatible accessory along with the necessary information in the response.", response = AccessoryTileGroup.class, responseContainer = "List", tags={ "AccessoryTileGroup", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Success", response = AccessoryTileGroup.class, responseContainer = "List"),
-        @ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
-		@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
-        @ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
-        @ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
-	@RequestMapping(value = "/accessory/queries/byDeviceId/", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
-	public List<AccessoryTileGroup> getAccessoriesOfDevice(@NotNull@ApiParam(value = "Unique Id of the device being requested", required = true) @RequestParam(value = "deviceId", required = true) String deviceId,
-	        @ApiParam(value = "The journey that the user undertakes") @RequestParam(value = "journeyType", required = false) String journeyType,
-	        @ApiParam(value = "Promotional offer applicable") @RequestParam(value = "offerCode", required = false) String offerCode) {
-		List<AccessoryTileGroup> listOfAccessoryTileGroup;
-		if (StringUtils.isNotBlank(deviceId)) {
-				if (!deviceId.matches(numberExp)) {
-					LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
-					throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
-				}
-				LogHelper.info(this, "Start -->  calling  getAccessoriesOfDevice");
-				listOfAccessoryTileGroup = deviceService.getAccessoriesOfDevice(deviceId,journeyType,offerCode);
-				LogHelper.info(this, "End -->  calling  getAccessoriesOfDevice");
-			} else {
-				LogHelper.error(this, DEVICE_ID_IS_EMPTY);
-				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
-			}
-			return listOfAccessoryTileGroup;
-		
-	}
-			
-		/**
-		 * Handles requests for getDeviceList Service
-		 * @param productClass
-		 * @param groupType
-		 * @param sort
-		 * @param pageNumber
-		 * @param pageSize
-		 * @param make
-		 * @param model
-		 * @param color
-		 * @param operatingSystem
-		 * @param capacity
-		 * @param msisdn
-		 * @param mustHaveFeatures
-		 * @param journeyType
-		 * @param includeRecommendations
-		 * @param offerCode
-		 * @param creditLimit
-		 * @return
-		 */
-	 @ApiOperation(value = "Get the list of devices based on the filter criteria, like productGroup brand Name. Pagination, sorting, filteration also defined", notes = "The service gets the details of the device list from Solr based on the filter criteria in the response.", response = FacetedDevice.class, tags={ "DeviceTile", })
-	    @ApiResponses(value = { 
-	        @ApiResponse(code = 200, message = "Success", response = FacetedDevice.class),
-	        @ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
-	        @ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
-	        @ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
-			@RequestMapping(value = "/deviceTile", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
-			public FacetedDevice getDeviceList(@NotNull@ApiParam(value = "Values on which the attributes should be filtered upon.", required = true) @RequestParam(value = "productClass", required = true) String productClass,
-			         @NotNull@ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"DEVICE_PAYM\" or \"DEVICE_PAYG\" or \"DATA_DEVICE_PAYM\".", required = true) @RequestParam(value = "groupType", required = true) String groupType,
-			         @NotNull@ApiParam(value = "Values of attributes based on which solr will provide the sorted response, like Most Popular(Priority),Rating, New Releases, Brand(a-z)(z-a) but need to pass EquipmentMake to api, MonthlyPrice(lo-hi)(hi-lo)(Need to pass RecurringCharge).", required = true) @RequestParam(value = "sort", required = true) String sort,
-			        @ApiParam(value = "Page Number") @RequestParam(value = "pageNumber", required = false) Integer pageNumber,
-			        @ApiParam(value = "Page Size") @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			        @ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"apple\". Make is also known as Manufacturer.") @RequestParam(value = "make", required = false) String make,
-			        @ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"iphone7\".", required = false) @RequestParam(value = "model", required = false) String model,
-			        @ApiParam(value = "Filter by Colour of the device as in specification groups. Please note the value of this filter should be passed in double quotes. example: colour = \"Black\",\"Gold\"") @RequestParam(value = "color", required = false) String color,
-			        @ApiParam(value = "Filter by OS of the device as in specification groups. Please note the value of this filter should be passed in double quotes. example: operatingSystem = \"iOS 10\",\"iOS 9\"") @RequestParam(value = "operatingSystem", required = false) String operatingSystem,
-			        @ApiParam(value = "Filter by capacity of the device as in specification groups. Please note the value of this filter should be passed in double quotes. example: capacity = \"32 GB\",\"8 GB\"") @RequestParam(value = "capacity", required = false) String capacity,
-			        @ApiParam(value = "Msisdn of the customer.") @RequestParam(value = "msisdn", required = false) String msisdn,
-			        @ApiParam(value = "One or more of the following token separated by comma. \"physicalKeyboard\", \"greatCamera\", \"goodBattery\", \"bigScreen\", \"4GEnabled\", 'lightWeight\"") @RequestParam(value = "mustHaveFeatures", required = false) String mustHaveFeatures,
-			        @ApiParam(value = "When user selects device for Upgrade.") @RequestParam(value = "journeyType", required = false) String journeyType,
-			        @ApiParam(value = "When user selects device for Upgrade.") @RequestParam(value = "includeRecommendations", required = false) String includeRecommendations,
-			        @ApiParam(value = "Promotional offer code applicable.") @RequestParam(value = "offerCode", required = false) String offerCode,
-			        @ApiParam(value = "Monthly credit limit applicable in case of conditional accept.(Credit Limit is not completely implemented for Device List)") @RequestParam(value = "creditLimit", required = false) String creditLimit){
-				
-				boolean includeRecommendationsParam = false;
-				FacetedDevice facetedDevice;
-					
-					/**
-					 * @author suranjit_kashyap 
-					 * @Sprint 6.6 Start
-					 */
-					
-					if (StringUtils.isNotBlank(includeRecommendations) && !Validator.validateIncludeRecommendation(includeRecommendations)) {
-						throw new ApplicationException(ExceptionMessages.INVALID_INCLUDERECOMMENDATION);
-					}
-					int pageNumberParam =0;
-					int pageSizeParam=0;
-					//Retrieving Pagesize and Pagenumber
-                    PaginationCriteria paginationCriteria = ServiceContext.getPaginationCriteria();
-                   if(paginationCriteria!=null)
-                    {
-                	   pageNumberParam = paginationCriteria.getPageNumber();
-                	   pageSizeParam = paginationCriteria.getPageSize();
-                    }
-					if (!Validator.validatePageSize(pageSizeParam)) {
-						throw new SystemException(ExceptionMessages.PAGESIZE_NEGATIVE_ERROR);
-					}
-					
-					if (!Validator.validatePageNumber(pageNumberParam)) {
-						throw new SystemException(ExceptionMessages.PAGENUMBER_NEGATIVE_ERROR);
-					}
-					
-					if (StringUtils.isNotBlank(msisdn) && !Validator.validateMSISDN(msisdn) && Constants.STRING_TRUE.equalsIgnoreCase(includeRecommendations)) {
-						throw new ApplicationException(ExceptionMessages.INVALID_MSISDN);
-					}
-					
-					/**
-					 * @author suranjit_kashyap
-					 * @Sprint 6.6 End
-					 */
-					
-					includeRecommendationsParam = Boolean.valueOf(includeRecommendations);
-					Float creditLimitparam = null;
-					
-					if (creditLimit != null) {
-						if(StringUtils.isNotBlank(creditLimit)){
-							if(!creditLimit.matches(creditLimitExp)) {
-								throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
-							}
-							if (!Validator.validateCreditLimit(creditLimit)) {
-								throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
-							} else {
-							try{
-								creditLimitparam = Float.parseFloat(creditLimit);
-							} catch(NumberFormatException ex){
-								LogHelper.error(this, "Credit limit value not correct " + ex);
-								throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
-							}
-							}
-						} else if(StringUtils.isBlank(creditLimit)){
-							throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
-						}
-						
-					} 					
-					
-					//Retrieving sort value
-					String sortCriteria = ServiceContext.getSortCriteria();
-					LogHelper.info(this, "Start -->  calling  getDeviceList");
-					facetedDevice = deviceService.getDeviceList(productClass,make,model,groupType,sortCriteria,pageNumberParam,
-							pageSizeParam,capacity,color,operatingSystem,mustHaveFeatures,
-							journeyType, creditLimitparam,offerCode, msisdn, includeRecommendationsParam);
-					LogHelper.info(this, "End -->  calling  getDeviceList");
-				
-			return facetedDevice;
-	}
-
-	/**
-	 * Handles requests for getInsuranceById Service with input as deviceId.
-	 * @param deviceId
-	 * @param journeyType
-	 * @return
-	 */
-			 @ApiOperation(value = "Get the list of insurance", notes = "The service gets the details of insurance available with device.", response = Insurances.class, tags={ "Insurances", })
-			    @ApiResponses(value = { 
-			        @ApiResponse(code = 200, message = "Success", response = Insurances.class),
-			        @ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
-					@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
-			        @ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
-			        @ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
-	@RequestMapping(value = "/insurance/queries/byDeviceId/", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
-	public Insurances getInsuranceById(@NotNull@ApiParam(value = "Values based on which inssurnace will be fetched.", required = true) @RequestParam(value = "deviceId", required = true) String deviceId,
-	        @ApiParam(value = "user journey") @RequestParam(value = "journeyType", required = false) String journeyType) {
-
-		Insurances insurance;
-			if (StringUtils.isNotBlank(deviceId)) {
-				if (!deviceId.matches(numberExp)) {
-					LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
-					throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
-				}
-				LogHelper.info(this, "Start -->  calling  getInusranceByDeviceId");
-				insurance = deviceService.getInsuranceByDeviceId(deviceId,journeyType);
-				LogHelper.info(this, "End -->  calling  getInsuranceDeviceId");
-			} else {
-				LogHelper.error(this, DEVICE_ID_IS_EMPTY);
-				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
-			}
-			return insurance;
-		
-	}
-
-	/**
-	 * Saves the details of the devices into database
-	 * @return
-	 */
-	@ApiOperation(value = "Cache the Device Tile Details in Solr.", notes = "Cache the Device Tile Details in Solr.", response = CacheDeviceTileResponse.class, tags = {
+	@ApiOperation(value = "Get the list of devices based on the filter criteria, like productGroup brand Name. Pagination, sorting, filteration also defined", notes = "The service gets the details of the device list from Solr based on the filter criteria in the response.", response = FacetedDevice.class, tags = {
 			"DeviceTile", })
-	@ApiResponses(value = { 
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = FacetedDevice.class),
 			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 201, message = "Success", response = CacheDeviceTileResponse.class),
 			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
+	@RequestMapping(value = "/deviceTile", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
+	public FacetedDevice getDeviceList(
+			@NotNull @ApiParam(value = "Values on which the attributes should be filtered upon.", required = true) @RequestParam(value = "productClass", required = true) String productClass,
+			@NotNull @ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"DEVICE_PAYM\" or \"DEVICE_PAYG\" or \"DATA_DEVICE_PAYM\".", required = true) @RequestParam(value = "groupType", required = true) String groupType,
+			@NotNull @ApiParam(value = "Values of attributes based on which solr will provide the sorted response, like Most Popular(Priority),Rating, New Releases, Brand(a-z)(z-a) but need to pass EquipmentMake to api, MonthlyPrice(lo-hi)(hi-lo)(Need to pass RecurringCharge).", required = true) @RequestParam(value = "sort", required = true) String sort,
+			@ApiParam(value = "Page Number") @RequestParam(value = "pageNumber", required = false) Integer pageNumber,
+			@ApiParam(value = "Page Size") @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"apple\". Make is also known as Manufacturer.") @RequestParam(value = "make", required = false) String make,
+			@ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"iphone7\".", required = false) @RequestParam(value = "model", required = false) String model,
+			@ApiParam(value = "Filter by Colour of the device as in specification groups. Please note the value of this filter should be passed in double quotes. example: colour = \"Black\",\"Gold\"") @RequestParam(value = "color", required = false) String color,
+			@ApiParam(value = "Filter by OS of the device as in specification groups. Please note the value of this filter should be passed in double quotes. example: operatingSystem = \"iOS 10\",\"iOS 9\"") @RequestParam(value = "operatingSystem", required = false) String operatingSystem,
+			@ApiParam(value = "Filter by capacity of the device as in specification groups. Please note the value of this filter should be passed in double quotes. example: capacity = \"32 GB\",\"8 GB\"") @RequestParam(value = "capacity", required = false) String capacity,
+			@ApiParam(value = "Msisdn of the customer.") @RequestParam(value = "msisdn", required = false) String msisdn,
+			@ApiParam(value = "One or more of the following token separated by comma. \"physicalKeyboard\", \"greatCamera\", \"goodBattery\", \"bigScreen\", \"4GEnabled\", 'lightWeight\"") @RequestParam(value = "mustHaveFeatures", required = false) String mustHaveFeatures,
+			@ApiParam(value = "When user selects device for Upgrade.") @RequestParam(value = "journeyType", required = false) String journeyType,
+			@ApiParam(value = "When user selects device for Upgrade.") @RequestParam(value = "includeRecommendations", required = false) String includeRecommendations,
+			@ApiParam(value = "Promotional offer code applicable.") @RequestParam(value = "offerCode", required = false) String offerCode,
+			@ApiParam(value = "Monthly credit limit applicable in case of conditional accept.(Credit Limit is not completely implemented for Device List)") @RequestParam(value = "creditLimit", required = false) String creditLimit) {
 
-	@RequestMapping(value = "/deviceTile/cacheDeviceTile", method = RequestMethod.POST, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
-	public ResponseEntity<CacheDeviceTileResponse> cacheDeviceTile() {
-		String groupType = getFilterValue(GROUP_TYPE);
-
-		if (StringUtils.isNotBlank(groupType)) {
-			if (StringUtils.containsIgnoreCase(groupType, Constants.STRING_DEVICE_PAYG)
-					|| StringUtils.containsIgnoreCase(groupType, Constants.STRING_DEVICE_PAYM)
-					|| StringUtils.containsIgnoreCase(groupType, Constants.STRING_DEVICE_NEARLY_NEW)) {
-				CacheDeviceTileResponse cacheDeviceTileResponse = deviceService.insertCacheDeviceToDb();
-				ResponseEntity<CacheDeviceTileResponse> response = new ResponseEntity<>(cacheDeviceTileResponse,
-						HttpStatus.CREATED);
-				deviceService.cacheDeviceTile(groupType, cacheDeviceTileResponse.getJobId(), Constants.CATALOG_VERSION.get());
-
-				return response;
-			} else {
-				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_GROUP_TYPE);
-			}
-		} else
-			throw new ApplicationException(ExceptionMessages.NULL_OR_EMPTY_GROUP_TYPE);
-	}
-
-	/**
-	 * 
-	 * Checks the filterValue coming from ServiceContext based on incoming
-	 * filterName.
-	 *
-	 * @param String
-	 * 
-	 * @return String
-	 **/
-
-	private String getFilterValue(String filterName) {
-		String ret = null;
-		List<FilterCriteria> filterCriteriaList = ServiceContext.getFilterCriteria();
-		if (filterCriteriaList != null && !filterCriteriaList.isEmpty()) {
-			for (FilterCriteria filterCriteria : filterCriteriaList) {
-				if (filterCriteria.getFilterFieldName().equals(filterName)) {
-					ret = filterCriteria.getFilterFieldValue().trim();
-				}
-			}
+		boolean includeRecommendationsParam = false;
+		FacetedDevice facetedDevice;
+		if (StringUtils.isNotBlank(includeRecommendations)) {
+			Validator.validateIncludeRecommendation(includeRecommendations);
 		}
-		return ret;
+		int pageNumberParam = 0;
+		int pageSizeParam = 0;
+		PaginationCriteria paginationCriteria = ServiceContext.getPaginationCriteria();
+		if (paginationCriteria != null) {
+			pageNumberParam = paginationCriteria.getPageNumber();
+			pageSizeParam = paginationCriteria.getPageSize();
+			Validator.validatePageSize(pageSizeParam, pageNumberParam);
+		}
+		if (StringUtils.isNotBlank(msisdn)) {
+			Validator.validateMSISDN(msisdn, includeRecommendations);
+		}
+		includeRecommendationsParam = Boolean.valueOf(includeRecommendations);
+		Float creditLimitparam = null;
+
+		if (creditLimit != null) {
+			creditLimitparam = Validator.validateForCreditLimit(creditLimit);
+		}
+		String sortCriteria = ServiceContext.getSortCriteria();
+		facetedDevice = deviceService.getDeviceList(productClass, make, model, groupType, sortCriteria, pageNumberParam,
+				pageSizeParam, capacity, color, operatingSystem, mustHaveFeatures, journeyType, creditLimitparam,
+				offerCode, msisdn, includeRecommendationsParam);
+		return facetedDevice;
 	}
+
+	
 
 	/**
 	 * 
@@ -493,15 +201,13 @@ public class DeviceController {
 	 * @param allowedRecurringPriceLimit
 	 * @return
 	 */
-	@ApiOperation(value = "The service gets the details of the device specially price, equipment, specification, features, merchandising, etc in the response.", 
-			notes = "The service gets the details of the bundleDetails from API based on the bundleId, deviceId in the response.",
-			response = BundleDetails.class, tags={ "KeepDeviceChangePlan" })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Success", response = BundleDetails.class),
-        @ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
-		@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
-        @ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
-        @ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
+	@ApiOperation(value = "The service gets the details of the device specially price, equipment, specification, features, merchandising, etc in the response.", notes = "The service gets the details of the bundleDetails from API based on the bundleId, deviceId in the response.", response = BundleDetails.class, tags = {
+			"KeepDeviceChangePlan" })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = BundleDetails.class),
+			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
+			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
+			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
+			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
 	@RequestMapping(value = "/plan/action/keepDeviceChangePlan", method = RequestMethod.POST, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
 	public BundleDetails getKeepDeviceChangePlan(@RequestBody KeepDeviceChangePlanRequest keepDeviceChangePlanRequest) {
 		BundleDetails bundleDetails;
@@ -547,191 +253,5 @@ public class DeviceController {
 		}
 
 		return bundleDetails;
-	}
-
-	/**
-	 * Returns review details for the given deviceId
-	 * 
-	 * @param deviceId
-	 * @return
-	 */
-	 @ApiOperation(value = "Get the reviews for a specific device Id. Response is coming from Bazar Voice(third party) API.", notes = "The service gets the reviews of a particular device variant",tags={ "Review", })
-	    @ApiResponses(value = { 
-	        @ApiResponse(code = 200, message = "Success"),
-	        @ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
-	        @ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
-	        @ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
-	@RequestMapping(value = "/device/{deviceId}/review", method = RequestMethod.GET, produces = {
-			MediaType.APPLICATION_JSON })
-	public JSONObject getDeviceReviewDetails(@NotNull@ApiParam(value = "Unique Id of the device for which the review is being requested",
-	required = true) @PathVariable(DEVICE_ID) String deviceId) {
-
-		Validator.validateDeviceId(deviceId);
-		LogHelper.info(this, "Start -->  calling  getDeviceReviewDetails");
-		return deviceService.getDeviceReviewDetails(deviceId);
-
-	}
-
-	/**
-	 * Returns List of Device details for the given List of devices
-	 * @param queryParams
-	 * @return
-	 */
-	 @ApiIgnore
-	@RequestMapping(value = "/device/", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON })
-	public List<DeviceDetails> getListOfDeviceDetails(@RequestParam Map<String, String> queryParams) {
-
-		if (!queryParams.isEmpty() && Validator.validateDeviceId(queryParams)) {
-			
-			LogHelper.info(this, "Query parameter(s) passed in the request "+queryParams);
-			List<DeviceDetails> listOfDeviceDetails;
-
-			String deviceId = queryParams.containsKey(DEVICE_ID) ? queryParams.get(DEVICE_ID) : null;
-			String journeyType = queryParams.containsKey(JOURNEY_TYPE) ? queryParams.get(JOURNEY_TYPE) : null;
-			String offerCode = queryParams.containsKey(OFFER_CODE) ? queryParams.get(OFFER_CODE) : null;
-			
-			if (deviceId != null) {
-				LogHelper.info(this, "Get the list of device details for the device id passed as request params "+deviceId);
-				LogHelper.info(this, "Start -->  calling  getListOfDeviceDetails");
-				listOfDeviceDetails = deviceService.getListOfDeviceDetails(deviceId,offerCode,journeyType);
-				LogHelper.info(this, "End -->  calling  getListofDeviceDetails");
-			} else {
-				LogHelper.error(this, DEVICE_ID_IS_EMPTY);
-				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
-			}
-			return listOfDeviceDetails;
-		} else{
-			LogHelper.error(this, ExceptionMessages.INVALID_QUERY_PARAMS);
-			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
-		}
-
-	}
-/**
- * 
- * @param jobId
- * @return
- */
-	@ApiOperation(value = "Get the Cache Device Tile job status.", notes = "Get the Cache Device Tile job status.", response = CacheDeviceTileResponse.class, tags = {
-			"DeviceTile", })
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Success", response = CacheDeviceTileResponse.class),
-			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
-
-	@RequestMapping(value = "/deviceTile/cacheDeviceTile/{jobId}/status", method = RequestMethod.GET, produces = {
-			MediaType.APPLICATION_JSON })
-	public CacheDeviceTileResponse getCacheDeviceJobStatus(
-			@ApiParam(value = "Device group Type", required = true) @PathVariable("jobId") String jobId) {
-
-		return deviceService.getCacheDeviceJobStatus(jobId);
-
-	}
-	
-	
-	/**
-	 * Handles requests to return the Commercial Products from Product Catalog. It takes either Product Id(s) or product Name(s) as input.
-	 * This is an Entity API which will return Commercial Products without applying any business logic.
-	 * 
-	 * @param productIds
-	 * @param productNames
-	 * 
-	 * @return List of CommercialProducts
-	 */
-	@ApiOperation(value = "The service gets the details of the commercial Product in the response.", 
-			notes = "The service gets the details of the commercial Product in the response.",
-			response = CommercialProduct.class, tags={ "GetCommercialProductByProductNameOrProductId" })
-    @ApiResponses(value = { 
-    		@ApiResponse(code = 200, message = "Success", response = CommercialProduct.class, responseContainer = "List"),
-        @ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
-		@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
-        @ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
-        @ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
-	@RequestMapping(value = "/product", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON })
-	public List<CommercialProduct> getCommercialProduct(
-			@ApiParam(value = "Device Id for getting commercial product to displayed. possible value can be comma separated device Id like 093353,080004") @RequestParam(value = "productId", required = false) String productId,
-			@ApiParam(value = "Product Name for getting commercial product to displayed. possible value can be comma separated product names are like Fibre Activation Fee,ATA Device") @RequestParam(value = "productName", required = false) String productName) {
-		List<CommercialProduct> commProductDetails;
-
-			
-			if (StringUtils.isBlank(productId) && StringUtils.isBlank(productName)) {
-				LogHelper.error(this, "Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
-				throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
-			} else if (StringUtils.isNotBlank(productName)) {
-				LogHelper.info(this, "Get the list of Product Details for the Product Name passed as request params: " + productName);
-				commProductDetails = deviceService.getCommercialProductDetails(productName);
-			}else {
-				LogHelper.info(this, "Get the list of Product Details for the Product Name passed as request params: " + productName);
-				commProductDetails = deviceService.getCommercialProductDetails(productId);
-			}
-		
-		return commProductDetails;
-	}
-	/**
-	 * Handles requests to return the Product Groups from Product Catalog by taking groupType as input.
-	 * This is an Entity API which will return Commercial ProductGroups without applying any business logic.
-	 * 
-	 * @param groupType
-	 * @return List of ProductGroups
-	 */
-	@ApiOperation(value = "The service gets the details of the Product group in the response.", 
-			notes = "The service gets the details of the Product group in the response.",
-			response = Group.class, tags={ "GetProductGroupByGroupType" })
-    @ApiResponses(value = { 
-    		@ApiResponse(code = 200, message = "Success", response = Group.class, responseContainer = "List"),
-        @ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
-		@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
-        @ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
-        @ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
-	@RequestMapping(value = "/productGroup", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON })
-	public List<Group> getProductGroupByGroupType(
-			@NotNull@ApiParam(value = "Product group Type for getting product group to displayed. possible value can be like DEVICE_PAYM or DEVICE_PAYG") @RequestParam(value = "groupType", required = true) String groupType) {
-		List<Group> groupDetails;
-
-			if (StringUtils.isNotBlank(groupType)) {
-				LogHelper.info(this, "Get the list of Product Details for the Product Id passed as request params: " + groupType);
-				groupDetails = deviceService.getProductGroupByType(groupType);
-			}else {
-				LogHelper.error(this, "Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
-				throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
-			}
-		return groupDetails;
-	}
-	
-	/**
-	 * Handles requests to return the Map of Product Group Model from Product Catalog. It takes Product Id(s) as input.
-	 * This is an Entity API which will return Map of Product Group Model with applying small business logic.
-	 * 
-	 * @param productIds
-	 * 
-	 * @return Map of Product Group Model
-	 */
-	@ApiOperation(value = "Handles requests to return the Map of Product Group Model from Product Catalog. It takes Product Id(s) as input.", 
-			notes = "This is an Entity API which will return Map of Product Group Model with applying small business logic.",
-			response = ProductGroupModelMap.class, tags={ "ProductGroupModelMap" })
-    @ApiResponses(value = { 
-    		@ApiResponse(code = 200, message = "Success", response = ProductGroupModelMap.class),
-        @ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
-		@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
-        @ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
-        @ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
-	@RequestMapping(value = "/device/getDeliveryMethod/getProductGroupModel", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON })
-	public ProductGroupModelMap getProductGroupModel(
-			@NotNull @ApiParam(value = "Device Id for getting product Group to displayed. possible value can be comma separated device Id like 093353,080004") @RequestParam(value = "productId", required = true) String productId)
-	{
-		ProductGroupModelMap productGroupModelDetails;
-
-			
-			if (StringUtils.isBlank(productId)) {
-				LogHelper.error(this, "Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
-				throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
-			} else {
-				LogHelper.info(this, "Get the list of Product Details for the Product Id (s) passed as request params: " + productId);
-				productGroupModelDetails = deviceService.getMapOfProductModelForGetDeliveryMethod(productId);
-			}
-		
-		return productGroupModelDetails;
 	}
 }

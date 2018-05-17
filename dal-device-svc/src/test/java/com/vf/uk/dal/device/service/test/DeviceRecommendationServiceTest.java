@@ -20,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 import com.vf.uk.dal.common.registry.client.RegistryClient;
 import com.vf.uk.dal.device.beans.test.DeviceTestBeans;
 import com.vf.uk.dal.device.dao.DeviceDao;
+import com.vf.uk.dal.device.dao.DeviceTileCacheDAO;
 import com.vf.uk.dal.device.entity.Device;
 import com.vf.uk.dal.device.entity.FacetedDevice;
 import com.vf.uk.dal.device.svc.DeviceRecommendationService;
@@ -44,6 +45,9 @@ public class DeviceRecommendationServiceTest {
 	
 	@MockBean
 	DeviceDao deviceDAOMock;
+	
+	@MockBean
+	DeviceTileCacheDAO cacheDao;
 	
 	@MockBean
 	FacetedDevice facetedDeviceMock;

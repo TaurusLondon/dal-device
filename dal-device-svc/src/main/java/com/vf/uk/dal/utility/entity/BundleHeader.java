@@ -85,19 +85,19 @@ public class BundleHeader {
 	private String mobileServiceId = null;
 
 	/** The allowance. */
-	private List<BundleAllowance> allowance = new ArrayList<BundleAllowance>();
+	private List<BundleAllowance> allowance = new ArrayList<>();
 
 	/** The roaming allowance. */
-	private List<BundleAllowance> roamingAllowance = new ArrayList<BundleAllowance>();
+	private List<BundleAllowance> roamingAllowance = new ArrayList<>();
 
 	/** The merchandising media. */
-	private List<MediaLink> merchandisingMedia = new ArrayList<MediaLink>();
+	private List<MediaLink> merchandisingMedia = new ArrayList<>();
 
 	/** The price info. */
 	private PriceForBundleAndHardware priceInfo = null;
 
 	/** The mcs. */
-	private List<MonthlyCostSaver> mcs = new ArrayList<MonthlyCostSaver>();
+	private List<MonthlyCostSaver> mcs = new ArrayList<>();
 
 	/**
 	 * Sku id.

@@ -28,7 +28,6 @@ public class BazaarVoiceCache {
         String jsonObject = null;
         URL connection;
 		URLConnection urlConn;
-		//"http://api.bazaarvoice.com/data/reviews.json?apiversion=5.4&passkey=a1nyq80ufv2yvznpitrjbco7e&Filter=ProductID:" + deviceId + "&Include=Products&Stats=Reviews&locale=en_GB"
 		try {
 			connection = new URL(urlPart1+deviceId+urlPart2);
 			urlConn = connection.openConnection();

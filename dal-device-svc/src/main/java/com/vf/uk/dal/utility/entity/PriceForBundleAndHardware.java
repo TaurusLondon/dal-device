@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.validation.annotation.Validated;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.vf.uk.dal.device.entity.BundlePrice;
 
 import io.swagger.annotations.ApiModelProperty;
 

@@ -1,0 +1,71 @@
+package com.vf.uk.dal.device.dao;
+
+import java.util.List;
+
+import com.vf.uk.dal.common.exception.ApplicationException;
+import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
+import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
+import com.vf.uk.dal.utility.solr.entity.Media;
+import com.vf.uk.dal.utility.solr.entity.OfferAppliedPriceDetails;
+
+public interface DeviceTileCacheDAO {
+
+	/**
+	 * Insert cache device to db.
+	 *
+	 * @return the cache device tile response
+	 */
+	public CacheDeviceTileResponse insertCacheDeviceToDb();
+
+	/**
+	 * Update cache device to db.
+	 *
+	 * @param jobId
+	 *            the job id
+	 * @param jobStatus
+	 *            the job status
+	 */
+	public void updateCacheDeviceToDb(String jobId, String jobStatus);
+
+	/**
+	 * Gets the cache device job status.
+	 *
+	 * @param jobId
+	 *            the job id
+	 * @return the cache device job status
+	 * @throws ApplicationException
+	 *             the application exception
+	 */
+	public CacheDeviceTileResponse getCacheDeviceJobStatus(String jobId) throws ApplicationException;
+	/**
+	 * 
+	 */
+	public void rollBackTransaction();
+	/**
+	 * 
+	 */
+	public void endTransaction();
+	/**
+	 * 
+	 */
+	public void beginTransaction();
+	/**
+	 * 
+	 * @param mediaList
+	 * @param deviceId
+	 * @return
+	 */
+	public int saveDeviceMediaData(List<Media> mediaList, String deviceId) ;
+	/**
+	 * 
+	 * @param listProductGroupForDeviceListing
+	 * @return
+	 */
+	public int saveDeviceListPreCalcData(List<DevicePreCalculatedData> listProductGroupForDeviceListing);
+	/**
+	 * 
+	 * @param offerAppliedPricesList
+	 * @return
+	 */
+	public int saveDeviceListILSCalcData(List<OfferAppliedPriceDetails> offerAppliedPricesList);
+}

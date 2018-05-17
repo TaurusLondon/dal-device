@@ -27,6 +27,7 @@ import com.vf.uk.dal.device.entity.MediaLink;
 import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
 import com.vf.uk.dal.device.entity.RequestForBundleAndHardware;
 import com.vf.uk.dal.device.entity.SourcePackageSummary;
+import com.vf.uk.dal.device.helper.DeviceServiceImplUtility;
 import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 import com.vf.uk.dal.utility.entity.BundleAndHardwareRequest;
 import com.vf.uk.dal.utility.entity.BundleDetails;
@@ -199,8 +200,8 @@ public  class CommonUtility {
 		return mapper.convertValue(client, new TypeReference<PriceForProduct>(){});
 		
 	}
-	public static List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware> getPriceDetailsUsingBundleHarwareTrouple(List<BundleAndHardwareTuple> bundleAndHardwareTupleList,String offerCode,String journeyType,RegistryClient registryClient) {
-		List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware> priceList=null;
+	public static List<PriceForBundleAndHardware> getPriceDetailsUsingBundleHarwareTrouple(List<BundleAndHardwareTuple> bundleAndHardwareTupleList,String offerCode,String journeyType,RegistryClient registryClient) {
+		List<PriceForBundleAndHardware> priceList=null;
 		try {
 			RestTemplate restTemplate =registryClient.getRestTemplate();
 			RequestForBundleAndHardware requestForBundleAndHardware=new RequestForBundleAndHardware();
@@ -208,10 +209,10 @@ public  class CommonUtility {
 			requestForBundleAndHardware.setOfferCode(offerCode);
 			requestForBundleAndHardware.setPackageType(journeyType);
 			LogHelper.info(CommonUtility.class, "Start --> Calling  Price.calculateForBundleAndHardware");
-			com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[] client=restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware" ,requestForBundleAndHardware,com.vf.uk.dal.utility.entity.PriceForBundleAndHardware[].class);
+			PriceForBundleAndHardware[] client=restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware" ,requestForBundleAndHardware,PriceForBundleAndHardware[].class);
 			LogHelper.info(CommonUtility.class, "End --> Calling  Price.calculateForBundleAndHardware");
 			ObjectMapper mapper = new ObjectMapper();
-			priceList= mapper.convertValue(client, new TypeReference<List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>>(){});
+			priceList= mapper.convertValue(client, new TypeReference<List<PriceForBundleAndHardware>>(){});
 		} catch (Exception e) {
 			LogHelper.error(CommonUtility.class, ""+e);
 			throw new ApplicationException(ExceptionMessages.PRICING_API_EXCEPTION);
@@ -883,39 +884,12 @@ public  class CommonUtility {
 		
 		return mediaList;
 	}
-	public static boolean isValidBundleForProduct(com.vf.uk.dal.utility.entity.PriceForBundleAndHardware price,
-			Map<String,CommercialBundle> commercialBundleMap,List<String> productLinesList,String journeyType)
-	{
-		boolean flag =false;
-		String bundleId=price.getBundlePrice().getBundleId();
-		if(commercialBundleMap.containsKey(bundleId))
-		{
-			CommercialBundle commercialBundle= commercialBundleMap.get(bundleId);
-			String startDateTime = null;
-			String endDateTime = null;
-			if (commercialBundle.getAvailability().getStart() != null) {
-				startDateTime = getDateToString(commercialBundle.getAvailability().getStart(),
-						Constants.DATE_FORMAT_COHERENCE);
-			}
-			if (commercialBundle.getAvailability().getEnd() != null) {
-				endDateTime = getDateToString(commercialBundle.getAvailability().getEnd(),
-						Constants.DATE_FORMAT_COHERENCE);
-			}
-			//boolean isCompatible=commercialBundle.getProductLines().containsAll(productLinesList);
-			boolean isCompatible=commercialBundle.getProductLines().stream().anyMatch(productLinesList.get(0)::equalsIgnoreCase)?true:commercialBundle.getProductLines().stream().anyMatch(productLinesList.get(1)::equalsIgnoreCase)?true:false;
-			if((StringUtils.isBlank(journeyType) || StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_ACQUISITION) || StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_SECONDLINE) )&& isCompatible && dateValidationForOffers(startDateTime,
-					endDateTime, Constants.DATE_FORMAT_COHERENCE) && !commercialBundle.getAvailability().getSalesExpired() && commercialBundle.getBundleControl().getIsDisplayableAcq() && commercialBundle.getBundleControl().getIsSellableAcq())
-			{
-				flag =true;
-			}
-			if((StringUtils.isNotBlank(journeyType) && StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_UPGRADE) )&& isCompatible && dateValidationForOffers(startDateTime,
-					endDateTime, Constants.DATE_FORMAT_COHERENCE) && !commercialBundle.getAvailability().getSalesExpired() && commercialBundle.getBundleControl().getIsDisplayableRet() && commercialBundle.getBundleControl().getIsSellableRet())
-			{
-				flag =true;
-			}
-		}
-		return flag;
-	}
+	/**
+	 * 
+	 * @param availableFromDate
+	 * @param strDateFormat
+	 * @return
+	 */
 	public static Boolean dateValidationForProduct(String availableFromDate,String strDateFormat) {
 		boolean flag = false;
 		SimpleDateFormat dateFormat = new SimpleDateFormat(strDateFormat);
@@ -939,34 +913,12 @@ public  class CommonUtility {
 	}
 	/**
 	 * 
-	 * @author manoj.bera
-	 * @sprint 7.2
-	 * @param commercialBundle
+	 * @param price
+	 * @param commercialBundleMap
+	 * @param productLinesList
 	 * @param journeyType
 	 * @return
 	 */
-	public static boolean isValidBundleForJourney(CommercialBundle commercialBundle, String journeyType)
-	{
-		boolean sellableCheck = false;
-		if(commercialBundle != null)
-		{
-		if (StringUtils.isNotBlank(journeyType)
-				&& Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
-				&& commercialBundle.getBundleControl() != null
-				&& commercialBundle.getBundleControl().getIsSellableRet()
-				&& commercialBundle.getBundleControl().getIsDisplayableRet()
-				&&!commercialBundle.getAvailability().getSalesExpired()) {
-			sellableCheck = true;
-		}else if (!Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
-				 && commercialBundle.getBundleControl() != null
-					&& commercialBundle.getBundleControl().getIsSellableAcq()
-					&& commercialBundle.getBundleControl().getIsDisplayableAcq()
-					&& !commercialBundle.getAvailability().getSalesExpired()) {
-				sellableCheck = true;
-		 }
-		}	
-		return sellableCheck;
-	}
 	public static boolean isValidJourneySpecificBundle(PriceForBundleAndHardware price,
 			Map<String,CommercialBundle> commercialBundleMap,List<String> productLinesList,String journeyType)
 	{
@@ -987,13 +939,15 @@ public  class CommonUtility {
 			}
 			//boolean isCompatible=commercialBundle.getProductLines().containsAll(productLinesList);
 			boolean isCompatible=commercialBundle.getProductLines().stream().anyMatch(productLinesList.get(0)::equalsIgnoreCase)?true:commercialBundle.getProductLines().stream().anyMatch(productLinesList.get(1)::equalsIgnoreCase)?true:false;
-			if((StringUtils.isBlank(journeyType) || !StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_UPGRADE) )&& isCompatible && dateValidationForOffers(startDateTime,
-					endDateTime, Constants.DATE_FORMAT_COHERENCE) && !commercialBundle.getAvailability().getSalesExpired() && commercialBundle.getBundleControl().getIsDisplayableAcq() && commercialBundle.getBundleControl().getIsSellableAcq())
+			if(DeviceServiceImplUtility.isNonUpgrade(journeyType) && isCompatible && dateValidationForOffers(startDateTime,
+					endDateTime, Constants.DATE_FORMAT_COHERENCE) && !commercialBundle.getAvailability().getSalesExpired() && 
+					DeviceServiceImplUtility.isNonUpgradeCommercialBundle(commercialBundle))
 			{
 				flag =true;
 			}
-			else if(StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_UPGRADE)&& isCompatible && dateValidationForOffers(startDateTime,
-					endDateTime, Constants.DATE_FORMAT_COHERENCE) && !commercialBundle.getAvailability().getSalesExpired() && commercialBundle.getBundleControl().getIsDisplayableRet() && commercialBundle.getBundleControl().getIsSellableRet())
+			else if(DeviceServiceImplUtility.isUpgrade(journeyType)&& isCompatible && dateValidationForOffers(startDateTime,
+					endDateTime, Constants.DATE_FORMAT_COHERENCE) && !commercialBundle.getAvailability().getSalesExpired() && 
+					DeviceServiceImplUtility.isUpgradeFromCommercialBundle(commercialBundle))
 			{
 				flag =true;
 			}

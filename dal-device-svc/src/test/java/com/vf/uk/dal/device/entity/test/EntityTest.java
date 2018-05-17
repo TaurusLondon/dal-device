@@ -11,6 +11,7 @@ import com.vf.uk.dal.device.entity.BundleHeaderForDevice;
 import com.vf.uk.dal.device.entity.BundlePrice;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.entity.DeviceDetails;
+import com.vf.uk.dal.device.entity.DeviceFinancingOption;
 import com.vf.uk.dal.device.entity.DeviceList;
 import com.vf.uk.dal.device.entity.DeviceSummary;
 import com.vf.uk.dal.device.entity.DeviceTile;
@@ -81,8 +82,8 @@ public class EntityTest
  		BeanTest.test(Discount.class);
  		BeanTest.test(Duration.class);
  		BeanTest.test(Equipment.class);
-// 		BeanTest.test(Error.class);
  		BeanTest.test(HardwarePrice.class);
+ 		BeanTest.test(DeviceFinancingOption.class);
  		BeanTest.test(Insurance.class);
  		BeanTest.test(MediaLink.class);
  		BeanTest.test(Member.class);
@@ -113,7 +114,6 @@ public class EntityTest
  		BeanTest.test(com.vf.uk.dal.utility.entity.Discount.class);
  		BeanTest.test(com.vf.uk.dal.utility.entity.MerchandisingPromotion.class);
  		BeanTest.test(com.vf.uk.dal.utility.entity.StepPricingInfo.class);
- 		BeanTest.test(com.vf.uk.dal.utility.entity.BundlePrice.class);
  		BeanTest.test(com.vf.uk.dal.utility.entity.HardwarePrice.class);
  		BeanTest.test(com.vf.uk.dal.utility.entity.MediaLink.class);
  		BeanTest.test(com.vf.uk.dal.utility.entity.MonthlyCostSaver.class);
