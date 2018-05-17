@@ -328,4 +328,12 @@ public class Constants {
 	
 	public static final String STRING_PROMOTION="promotion";
 	
+	public static final String GROUP_TYPE = "groupType";
+	public static final String DEVICE_ID_IS_EMPTY = "Device Id is Empty";
+	public static final String DEVICE_ID = "deviceId";
+	public static final String JOURNEY_TYPE = "journeyType";
+	public static final String OFFER_CODE = "offerCode";
+	public static final String numberExp = "[0-9]{6}";
+	public static final String creditLimitExp = "[0-9]*";
+	
 }

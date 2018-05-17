@@ -7,11 +7,8 @@ import java.util.concurrent.CompletableFuture;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 
-import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.datamodel.product.BazaarVoice;
 import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
-import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
-import com.vf.uk.dal.device.entity.DeviceTile;
 import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
 import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 import com.vf.uk.dal.utility.entity.BundleDetails;
@@ -23,19 +20,6 @@ import com.vf.uk.dal.utility.entity.BundleDetails;
  *
  */
 public interface DeviceDao {
-
-	/**
-	 * Gets the device tile by id.
-	 *
-	 * @param id
-	 *            the id
-	 * @param offerCode
-	 *            the offer code
-	 * @param journeyType
-	 *            the journey type
-	 * @return the device tile by id
-	 */
-	public List<DeviceTile> getDeviceTileById(String id, String offerCode, String journeyType);
 
 	/**
 	 * Gets the bundle details from complans listing API.
@@ -56,24 +40,6 @@ public interface DeviceDao {
 	 * @return the device review details
 	 */
 	public String getDeviceReviewDetails(String deviceId);
-
-	/**
-	 * Gets the review rating list.
-	 *
-	 * @param listMemberIds
-	 *            the list member ids
-	 * @return the review rating list
-	 */
-	public List<BazaarVoice> getReviewRatingList(List<String> listMemberIds);
-
-	/**
-	 * Gets the device review rating.
-	 *
-	 * @param listMemberIds
-	 *            the list member ids
-	 * @return the device review rating
-	 */
-	public Map<String, String> getDeviceReviewRating(List<String> listMemberIds);
 
 	/**
 	 * Gets the price for bundle and hardware.
@@ -97,34 +63,6 @@ public interface DeviceDao {
 	 * @return the bazaar voice
 	 */
 	public BazaarVoice getBazaarVoice(String skuId);
-
-	/**
-	 * Insert cache device to db.
-	 *
-	 * @return the cache device tile response
-	 */
-	public CacheDeviceTileResponse insertCacheDeviceToDb();
-
-	/**
-	 * Update cache device to db.
-	 *
-	 * @param jobId
-	 *            the job id
-	 * @param jobStatus
-	 *            the job status
-	 */
-	public void updateCacheDeviceToDb(String jobId, String jobStatus);
-
-	/**
-	 * Gets the cache device job status.
-	 *
-	 * @param jobId
-	 *            the job id
-	 * @return the cache device job status
-	 * @throws ApplicationException
-	 *             the application exception
-	 */
-	public CacheDeviceTileResponse getCacheDeviceJobStatus(String jobId) throws ApplicationException;
 
 	/**
 	 * Gets the merchandising promotions entity from solr model.

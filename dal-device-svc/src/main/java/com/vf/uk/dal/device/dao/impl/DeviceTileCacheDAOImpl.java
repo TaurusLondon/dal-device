@@ -1,21 +1,29 @@
-package com.vf.uk.dal.device.utils;
+package com.vf.uk.dal.device.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.configuration.DataSourceInitializer;
+import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
+import com.vf.uk.dal.device.dao.DeviceTileCacheDAO;
+import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
+import com.vf.uk.dal.device.utils.ExceptionMessages;
 import com.vf.uk.dal.utility.solr.entity.BundlePrice;
 import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
 import com.vf.uk.dal.utility.solr.entity.HardwarePrice;
@@ -33,9 +41,15 @@ import com.vf.uk.dal.utility.solr.entity.PriceInfo;
  *
  */
 @Component("deviceTileCacheDAO")
-public class DeviceTileCacheDAO {
+public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO{
 	@Autowired
 	DataSourceInitializer dataSourceInitializer;
+	
+	@Autowired
+	JdbcTemplate jdbcTemplate;
+
+	@Autowired
+	DataSource datasource;
 /**
  * 
  * @return
@@ -69,6 +83,7 @@ public class DeviceTileCacheDAO {
  * @param listProductGroupForDeviceListing
  * @return
  */
+	@Override
 	public int saveDeviceListPreCalcData(List<DevicePreCalculatedData> listProductGroupForDeviceListing) {
 		int result = 0;
 		if (count("DEVICE_LIST_PRE_CALC_MEDIA") > 0) {
@@ -162,6 +177,7 @@ public class DeviceTileCacheDAO {
 	 * @param mediaList
 	 * @param deviceId
 	 */
+	@Override
 	public int saveDeviceMediaData(List<Media> mediaList, String deviceId) {
 		int result=0;
 		LogHelper.info(this, "Begin DEVICE_LIST_PRE_CALC_MEDIA ");
@@ -197,6 +213,7 @@ public class DeviceTileCacheDAO {
 	 * @param listProductGroupForDeviceListing
 	 * @return
 	 */
+	@Override
 	public int saveDeviceListILSCalcData(List<OfferAppliedPriceDetails> offerAppliedPricesList) {
 		int result = 0;
 		if (count("DEVICE_OFFERAPPLIED_PRICE_DATA") > 0) {
@@ -306,7 +323,7 @@ public class DeviceTileCacheDAO {
 	
 	Connection conn = null;
 
-	
+	@Override
 	public void beginTransaction() {
 		try {
 			conn = DataSourceUtils.getConnection(getJdbcTemplate().getDataSource());
@@ -317,7 +334,7 @@ public class DeviceTileCacheDAO {
 	}
 
 	// Method to End JDBC Transaction
-	
+	@Override
 	public void endTransaction() {
 		try {
 			conn.commit();
@@ -335,7 +352,7 @@ public class DeviceTileCacheDAO {
 	}
 
 	// Method to roll back JDBC Transaction
-	
+	@Override
 	public void rollBackTransaction() {
 		try {
 			conn.rollback();
@@ -350,5 +367,96 @@ public class DeviceTileCacheDAO {
 				LogHelper.error(this, "Exception occurred while closing connection" + e);
 			}
 		}
+	}
+	/**
+	 * 
+	 */
+	@Override
+	public CacheDeviceTileResponse insertCacheDeviceToDb() {
+		jdbcTemplate.setDataSource(datasource);
+		Connection conn = DataSourceUtils.getConnection(jdbcTemplate.getDataSource());
+		String jobId = UUID.randomUUID().toString();
+		CacheDeviceTileResponse cacheDeviceTileResponse = new CacheDeviceTileResponse();
+		try {
+
+			String jobStatus = "INPROGRESS";
+
+			cacheDeviceTileResponse.setJobId(jobId);
+			cacheDeviceTileResponse.setJobStatus(jobStatus);
+
+			conn.setAutoCommit(false);
+			String query = "INSERT INTO DALMS_CACHE_SERVICES (JOB_ID, JOB_NAME, JOB_USER_ID, JOB_START, JOB_STATUS, JOB_LAST_UPDATED) "
+					+ "VALUES (?, ?, ?, ?, ?, ?)";
+			Object[] params = new Object[] { jobId, "CacheDevice", null, new Timestamp(new Date().getTime()), jobStatus,
+					new Timestamp(new Date().getTime()) };
+			jdbcTemplate.update(query, params);
+			LogHelper.info(this, jobId + " inserted in DALMS_CACHE_SERVICES_TABLE");
+			conn.commit();
+
+		} catch (DataAccessException | SQLException e) {
+			LogHelper.error(this, jobId + "==> " + e);
+		} finally {
+			try {
+				if (conn != null && !conn.isClosed()) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				LogHelper.error(this, jobId + "Exception occurred while closing connection ==> " + e);
+			}
+		}
+
+		return cacheDeviceTileResponse;
+	}
+
+	@Override
+	public void updateCacheDeviceToDb(String jobId, String jobStatus) {
+		jdbcTemplate.setDataSource(datasource);
+		Connection conn = null;
+
+		try {
+			conn = DataSourceUtils.getConnection(jdbcTemplate.getDataSource());
+			conn.setAutoCommit(false);
+			String query = "UPDATE DALMS_CACHE_SERVICES SET JOB_STATUS = ?, JOB_END = ?, JOB_LAST_UPDATED = ? WHERE JOB_ID = ?";
+			Object[] params = new Object[] { jobStatus, new Timestamp(new Date().getTime()),
+					new Timestamp(new Date().getTime()), jobId };
+			jdbcTemplate.update(query, params);
+
+			LogHelper.info(this, jobId + " updated with status " + jobStatus + " in DALMS_CACHE_SERVICES_TABLE");
+			conn.commit();
+		} catch (DataAccessException | SQLException e) {
+			LogHelper.error(this, jobId + "==> " + e);
+		} finally {
+			try {
+				if (conn != null && !conn.isClosed()) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				LogHelper.error(this, jobId + "Exception occurred while closing connection ==> " + e);
+			}
+		}
+
+	}
+
+	@Override
+	public CacheDeviceTileResponse getCacheDeviceJobStatus(String jobId) throws ApplicationException {
+
+		CacheDeviceTileResponse response = new CacheDeviceTileResponse();
+		String jobStatus = null;
+		try {
+			jdbcTemplate.setDataSource(datasource);
+			String query = "SELECT JOB_STATUS FROM DALMS_CACHE_SERVICES WHERE JOB_ID = '" + jobId + "'";
+			jobStatus = jdbcTemplate.queryForObject(query, String.class);
+			if (StringUtils.isEmpty(jobStatus) || StringUtils.isBlank(jobStatus)) {
+				throw new ApplicationException(ExceptionMessages.INVALID_JOB_ID);
+			} else {
+				response.setJobId(jobId);
+				response.setJobStatus(jobStatus);
+			}
+
+		} catch (Exception exception) {
+			LogHelper.error(this, jobId + "==>" + exception);
+			throw new ApplicationException(ExceptionMessages.INVALID_JOB_ID);
+		}
+		return response;
 	}
 }
