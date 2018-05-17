@@ -2560,7 +2560,7 @@ public class DeviceServiceImpl implements DeviceService {
 										listofLeadPlan.add(bundleId);
 									} else {
 										List<String> listOfCompatiblePlanIds = commercialProduct.getListOfCompatiblePlanIds() == null
-									 	? Collections.emptyList(): commercialProduct.getListOfCompatiblePlanIds();
+									 	? Collections.emptyList(): ommercialProduct.getListOfCompatiblePlanIds();
 										bundleIdMap.put(commercialProduct.getId(), false);
 										if (StringUtils.isNotBlank(commercialProduct.getLeadPlanId())
 												&& isJourneySpecificLeadPlan(commerBundleIdMap,
