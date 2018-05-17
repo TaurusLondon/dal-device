@@ -7,7 +7,7 @@ info:
     projectName: @project.artifactId@
 server:
   contextPath: /devices/catalogue
-  port: 8085
+  port: 8080
   ssl:
     enabled: true
     key-store: classpath:keystore.jks
@@ -61,7 +61,7 @@ icp:
       logTopic: logs
  
   config:
-    jdbcUrl: jdbc:oracle:thin:@e18dbref.cqrpvr4944ct.eu-west-1.rds.amazonaws.com:1521:E18DBREF
+    jdbcUrl: jdbc:oracle:thin:@100.66.65.222:1521:oradb
     jdbcUserName: daluser
     jdbcUserPwd: simple4u
     
@@ -70,7 +70,7 @@ icp:
     defaultPageNumber: 0  
 
 elasticsearch:
-  host: https://vpc-digitalx-sit2-solr-es-kjt2vz5gkf35e73z7oyqtsd32e.eu-west-1.es.amazonaws.com/ 
+  host: https://vpc-digitalx-dev-solr-es-hne32eyterqfesg3zzkpeg25q4.eu-west-1.es.amazonaws.com/  
 
   cache:
     jcache:
