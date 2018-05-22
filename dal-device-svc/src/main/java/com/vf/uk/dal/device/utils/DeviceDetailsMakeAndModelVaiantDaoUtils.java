@@ -199,7 +199,11 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 						specification = new Specification();
 						specification.setName(spec.getName());
 						specification.setValue(spec.getValue());
-						specification.setPriority(spec.getPriority().intValue());
+						if (spec.getPriority()==null) {
+							specification.setPriority(null);
+						}else{
+							specification.setPriority(spec.getPriority().intValue());
+						}
 						specification.setComparable(spec.isComparable());
 						specification.setIsKey(spec.getIsKey());
 						specification.setValueType(spec.getValueType());
