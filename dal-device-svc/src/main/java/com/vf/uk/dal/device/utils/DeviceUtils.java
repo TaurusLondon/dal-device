@@ -748,7 +748,6 @@ public class DeviceUtils {
 	 */
 	public static void getMinimumPriceMap(Map<String, String> minimumPriceMap,
 			Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap) {
-		try {
 			String minimumPrice = null;
 			for (Entry<String, List<PriceForBundleAndHardware>> entry : groupNamePriceMap.entrySet()) {
 				if (entry.getValue() != null && !entry.getValue().isEmpty()) {
@@ -756,9 +755,6 @@ public class DeviceUtils {
 				}
 				minimumPriceMap.put(entry.getKey(), minimumPrice);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 	/**
 	 * 
