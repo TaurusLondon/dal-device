@@ -748,13 +748,33 @@ public class DeviceUtils {
 	 */
 	public static void getMinimumPriceMap(Map<String, String> minimumPriceMap,
 			Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap) {
-		String minimumPrice = null;
-		for (Entry<String, List<PriceForBundleAndHardware>> entry : groupNamePriceMap.entrySet()) {
-			if (entry.getValue() != null && !entry.getValue().isEmpty()) {
-				minimumPrice = DeviceUtils.leastMonthlyPrice(entry.getValue());
+		try {
+			String minimumPrice = null;
+			for (Entry<String, List<PriceForBundleAndHardware>> entry : groupNamePriceMap.entrySet()) {
+				if (entry.getValue() != null && !entry.getValue().isEmpty()) {
+					minimumPrice = DeviceUtils.leastMonthlyPrice(entry.getValue());
+				}
+				minimumPriceMap.put(entry.getKey(), minimumPrice);
 			}
-			minimumPriceMap.put(entry.getKey(), minimumPrice);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+	}
+	/**
+	 * 
+	 * @param minimumPriceMap
+	 * @param groupNamePriceMap
+	 * @return
+	 */
+	public static void getMinimumPriceMapForPayG(Map<String, String> minimumPriceMap,
+			Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap) {
+			String minimumPrice = null;
+			for (Entry<String, List<PriceForBundleAndHardware>> entry : groupNamePriceMap.entrySet()) {
+				if (entry.getValue() != null && !entry.getValue().isEmpty()) {
+					minimumPrice = DeviceUtils.leastMonthlyPriceForpayG(entry.getValue());
+				}
+				minimumPriceMap.put(entry.getKey(), minimumPrice);
+			}
 	}
 
 	/**

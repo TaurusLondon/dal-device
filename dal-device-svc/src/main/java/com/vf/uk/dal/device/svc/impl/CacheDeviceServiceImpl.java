@@ -536,7 +536,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService{
 					}
 				}
 				if (!groupNamePriceMap.isEmpty()) {
-					DeviceUtils.getMinimumPriceMap(minimumPriceMap, groupNamePriceMap);
+					DeviceUtils.getMinimumPriceMapForPayG(minimumPriceMap, groupNamePriceMap);
 				}
 			}
 			Map<String, String> ratingsReviewMap = deviceServiceCommonUtility.getDeviceReviewRating_Implementation(deviceIds);
