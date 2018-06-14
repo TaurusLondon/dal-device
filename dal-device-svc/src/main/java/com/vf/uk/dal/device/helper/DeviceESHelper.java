@@ -251,12 +251,7 @@ public class DeviceESHelper {
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper.searchQueryForProductGroup(groupType);
 		SearchResponse groupResponse = deviceDao.getResponseFromDataSource(queryContextMap);
 		LogHelper.info(this, "converting elasticsearch response into standard json object response");
-		List<Group> listOfGroup = response.getListOfGroupFromJson(groupResponse);
-		if (CollectionUtils.isEmpty(listOfGroup)) {
-			LogHelper.error(this, ExceptionMessages.NULL_VALUE_GROUP_TYPE + " : " + groupType);
-			throw new ApplicationException(ExceptionMessages.NULL_VALUE_GROUP_TYPE);
-		}
-		return listOfGroup;
+		return response.getListOfGroupFromJson(groupResponse);
 	}
 	/**
 	 * 

@@ -84,7 +84,12 @@ public class DeviceEntityServiceImpl implements DeviceEntityService {
 	 */
 	@Override
 	public List<Group> getProductGroupByType(String groupType) {
-		return deviceEs.getProductGroupByType(groupType);
+		List<Group> listOfGroup= deviceEs.getProductGroupByType(groupType);
+		if (CollectionUtils.isEmpty(listOfGroup)) {
+			LogHelper.error(this, ExceptionMessages.NULL_VALUE_GROUP_TYPE + " : " + groupType);
+			throw new ApplicationException(ExceptionMessages.NULL_VALUE_GROUP_TYPE);
+		}
+		return listOfGroup;
 	}
 	/**
 	 * 
