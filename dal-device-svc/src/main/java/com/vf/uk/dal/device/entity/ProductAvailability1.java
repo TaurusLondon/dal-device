@@ -11,7 +11,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
 
-public class ProductAvailability   {
+public class ProductAvailability1   {
   @JsonProperty("startDate")
   private String startDate = null;
 
@@ -25,7 +25,7 @@ public class ProductAvailability   {
  * @param startDate
  * @return
  */
-  public ProductAvailability startDate(String startDate) {
+  public ProductAvailability1 startDate(String startDate) {
     this.startDate = startDate;
     return this;
   }
@@ -52,7 +52,7 @@ public class ProductAvailability   {
  * @param endDate
  * @return
  */
-  public ProductAvailability endDate(String endDate) {
+  public ProductAvailability1 endDate(String endDate) {
     this.endDate = endDate;
     return this;
   }
@@ -79,7 +79,7 @@ public class ProductAvailability   {
  * @param salesExpired
  * @return
  */
-  public ProductAvailability salesExpired(Boolean salesExpired) {
+  public ProductAvailability1 salesExpired(Boolean salesExpired) {
     this.salesExpired = salesExpired;
     return this;
   }
@@ -111,7 +111,7 @@ public class ProductAvailability   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ProductAvailability productAvailability = (ProductAvailability) o;
+    ProductAvailability1 productAvailability = (ProductAvailability1) o;
     return Objects.equals(this.startDate, productAvailability.startDate) &&
         Objects.equals(this.endDate, productAvailability.endDate) &&
         Objects.equals(this.salesExpired, productAvailability.salesExpired);

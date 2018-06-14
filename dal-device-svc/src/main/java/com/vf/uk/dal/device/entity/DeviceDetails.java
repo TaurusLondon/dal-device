@@ -56,7 +56,7 @@ public class DeviceDetails   {
   private String leadPlanId = null;
 
   @JsonProperty("productAvailability")
-  private ProductAvailability productAvailability = null;
+  private com.vf.uk.dal.device.entity.ProductAvailability1 productAvailability = null;
 
   @JsonProperty("media")
   private List<MediaLink> media = null;
@@ -492,7 +492,7 @@ public class DeviceDetails   {
  * @param productAvailability
  * @return
  */
-  public DeviceDetails productAvailability(ProductAvailability productAvailability) {
+  public DeviceDetails productAvailability(ProductAvailability1 productAvailability) {
     this.productAvailability = productAvailability;
     return this;
   }
@@ -508,14 +508,14 @@ public class DeviceDetails   {
  * 
  * @return
  */
-  public ProductAvailability getProductAvailability() {
+  public ProductAvailability1 getProductAvailability() {
     return productAvailability;
   }
 /**
  * 
  * @param productAvailability
  */
-  public void setProductAvailability(ProductAvailability productAvailability) {
+  public void setProductAvailability(ProductAvailability1 productAvailability) {
     this.productAvailability = productAvailability;
   }
 /**

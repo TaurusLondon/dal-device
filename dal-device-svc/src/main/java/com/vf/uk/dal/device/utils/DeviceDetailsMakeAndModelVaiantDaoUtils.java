@@ -23,7 +23,7 @@ import com.vf.uk.dal.device.entity.MerchandisingPromotionsWrapper;
 import com.vf.uk.dal.device.entity.MetaData;
 import com.vf.uk.dal.device.entity.Price;
 import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
-import com.vf.uk.dal.device.entity.ProductAvailability;
+import com.vf.uk.dal.device.entity.ProductAvailability1;
 import com.vf.uk.dal.device.entity.Specification;
 import com.vf.uk.dal.device.entity.SpecificationGroup;
 import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
@@ -51,7 +51,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 	public static DeviceDetails convertCoherenceDeviceToDeviceDetails(CommercialProduct cohProduct,
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware,
 			List<BundleAndHardwarePromotions> listOfOfferPacks) {
-		ProductAvailability productAvailability = new ProductAvailability();
+		ProductAvailability1 productAvailability = new ProductAvailability1();
 
 		List<MediaLink> merchandisingMedia = new ArrayList<>();
 

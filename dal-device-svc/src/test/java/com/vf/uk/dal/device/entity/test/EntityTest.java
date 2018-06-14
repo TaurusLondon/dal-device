@@ -34,7 +34,7 @@ import com.vf.uk.dal.device.entity.OfferPacks;
 import com.vf.uk.dal.device.entity.Price;
 import com.vf.uk.dal.device.entity.PriceForBundle;
 import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
-import com.vf.uk.dal.device.entity.ProductAvailability;
+import com.vf.uk.dal.device.entity.ProductAvailability1;
 import com.vf.uk.dal.device.entity.ProductGroup;
 import com.vf.uk.dal.device.entity.ProductGroupForDeviceListing;
 import com.vf.uk.dal.device.entity.RequestForBundleAndHardware;
@@ -95,7 +95,7 @@ public class EntityTest
  		BeanTest.test(Price.class);
  		BeanTest.test(PriceForBundle.class);
  		BeanTest.test(PriceForBundleAndHardware.class);
- 		BeanTest.test(ProductAvailability.class);
+ 		BeanTest.test(ProductAvailability1.class);
  		BeanTest.test(ProductGroup.class);
  		BeanTest.test(Specification.class);
  		BeanTest.test(SpecificationGroup.class);
