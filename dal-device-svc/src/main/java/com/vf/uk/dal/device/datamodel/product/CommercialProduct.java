@@ -6,121 +6,121 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class CommercialProduct {
 
-	protected String id;
+	private String id;
 
-	protected Long order;
+	private Long order;
 
-	protected String name;
+	private String name;
 
-	protected String productClass;
-
-	
-	protected Boolean isServicesProduct;
-
-	protected Duration duration;
+	private String productClass;
 
 	
-	protected Discount discount;
+	private Boolean isServicesProduct;
 
-	protected String warranty;
+	private Duration duration;
 
-	protected String condition;
-
-	protected List<String> categories;
-
-	protected List<String> productLines;
-
-	protected PriceDetail priceDetail;
-
-	protected List<ProductAllowance> productAllowance;
 	
-	protected BoxPrice boxPrice;
+	private Discount discount;
 
-	protected ProductAvailability productAvailability;
-	
-	protected List<Relationship> productRelationshipList;
+	private String warranty;
 
-	protected Boolean isDeviceProduct;
+	private String condition;
+
+	private List<String> categories;
+
+	private List<String> productLines;
+
+	private PriceDetail priceDetail;
+
+	private List<ProductAllowance> productAllowance;
 	
-	protected String inclusiveEligibility;
+	private BoxPrice boxPrice;
+
+	private com.vf.uk.dal.device.datamodel.product.ProductAvailability productAvailability;
 	
-	protected boolean omniChannelDiscountEligible;
+	private List<Relationship> productRelationshipList;
+
+	private Boolean isDeviceProduct;
+	
+	private String inclusiveEligibility;
+	
+	private boolean omniChannelDiscountEligible;
 	@JsonIgnore
-	protected String version;
+	private String version;
 	
-	protected String seoCanonical;
+	private String seoCanonical;
 	
-	protected String seoDescription;
+	private String seoDescription;
 	
-	protected String seoKeywords;
+	private String seoKeywords;
 	
-	protected String seoIndex;
+	private String seoIndex;
 	
-	protected List<String> seoRobots;
+	private List<String> seoRobots;
 	
-	protected String productSubClass;
+	private String productSubClass;
 
-	protected Equipment equipment;
+	private Equipment equipment;
 
-	protected String eligibilitySubflow;
+	private String eligibilitySubflow;
 
-	protected List<Allowance> allowanceDisplay;
+	private List<Allowance> allowanceDisplay;
 	
-	protected boolean ageRestricted;
+	private boolean ageRestricted;
 	
-	protected Delivery delivery;
+	private Delivery delivery;
 
-	protected boolean isBattery;
+	private boolean isBattery;
 	@JsonIgnore
-	protected String metadataVersion;
+	private String metadataVersion;
 
-	protected String displayName;
+	private String displayName;
 
-	protected String preDesc;
+	private String preDesc;
 
-	protected String postDesc;
+	private String postDesc;
 
-	protected String preDescMobile;
+	private String preDescMobile;
 
-	protected String postDescMobile;
+	private String postDescMobile;
 
-	protected List<ImageURL> listOfimageURLs;
+	private List<ImageURL> listOfimageURLs;
 
-	protected List<MediaURL> listOfmediaURLs;
+	private List<MediaURL> listOfmediaURLs;
 
-	protected List<HelpURL> listOfhelpURLs;
+	private List<HelpURL> listOfhelpURLs;
 
-	protected List<Group> specificationGroups;
+	private List<Group> specificationGroups;
 
-	protected String inTheBox;
+	private String inTheBox;
 
-	protected String contentVersion;
+	private String contentVersion;
 
-	protected ProductControl productControl;
+	private ProductControl productControl;
 
-	protected ProductGroups productGroups;
+	private ProductGroups productGroups;
 
-	protected Misc misc;
+	private Misc misc;
 
-	protected ProductPriceOverride productPriceOverride;
+	private ProductPriceOverride productPriceOverride;
 
-	protected PromoteAs promoteAs;
+	private PromoteAs promoteAs;
 	@JsonIgnore
-	protected String MerchandisingVersion;
+	private String MerchandisingVersion;
 
-	protected String leadPlanId;
+	private String leadPlanId;
 
-	protected List<Recommendations> recommendataions;
+	private List<Recommendations> recommendataions;
 
-	protected List<String> listOfCompatiblePlanIds;
+	private List<String> listOfCompatiblePlanIds;
 
-	protected Boolean fastMoving;
+	private Boolean fastMoving;
 	
-	protected String stockThresholdLimit;
+	private String stockThresholdLimit;
 	
-	protected List<EligibleChannel> listOfEligibleChannels;
+	private List<EligibleChannel> listOfEligibleChannels;
 	
-	protected String paymentType;
+	private String paymentType;
 	
 	public String getId() {
 		return id;

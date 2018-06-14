@@ -3,19 +3,13 @@ package com.vf.uk.dal.device.datamodel.product;
 
 import java.sql.Date;
 
-import io.swagger.annotations.ApiModelProperty;
-
 
 public class ProductAvailability {
 
-	
-	@ApiModelProperty(hidden=true)
     private Date start;
 	
-	@ApiModelProperty(hidden=true)
     private Date end;
 	
-	@ApiModelProperty(hidden=true)
     private boolean salesExpired;
 
 	
