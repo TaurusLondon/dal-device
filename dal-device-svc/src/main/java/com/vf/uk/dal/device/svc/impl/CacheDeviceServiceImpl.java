@@ -548,7 +548,6 @@ public class CacheDeviceServiceImpl implements CacheDeviceService{
 			});
 		} else {
 			LogHelper.error(this, "Receieved Null Values for the given product group type");
-			throw new ApplicationException(ExceptionMessages.NULL_VALUE_GROUP_TYPE);
 		}
 		return listOfProductGroupRepository;
 
