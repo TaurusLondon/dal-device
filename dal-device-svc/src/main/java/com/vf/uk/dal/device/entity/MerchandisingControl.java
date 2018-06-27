@@ -5,6 +5,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
+
 /**
  * MerchandisingControl
  */
@@ -59,7 +60,6 @@ public class MerchandisingControl   {
    * IS the device Disellable in ECare
    * @return isDisplayableECare
   **/
-  @ApiModelProperty(value = "IS the device Disellable in ECare")
 
 
   public Boolean getIsDisplayableECare() {
@@ -86,7 +86,6 @@ public class MerchandisingControl   {
    * IS the device sellable ECare
    * @return isSellableECare
   **/
-  @ApiModelProperty(value = "IS the device sellable ECare")
 
 
   public Boolean getIsSellableECare() {
@@ -113,7 +112,6 @@ public class MerchandisingControl   {
    * IS the prdevice Dsellable
    * @return isDisplayableAcq
   **/
-  @ApiModelProperty(value = "IS the prdevice Dsellable")
 
 
   public Boolean getIsDisplayableAcq() {
@@ -140,7 +138,6 @@ public class MerchandisingControl   {
    * IS the prdevice Dsellable
    * @return isSellableRet
   **/
-  @ApiModelProperty(value = "IS the prdevice Dsellable")
 
 
   public Boolean getIsSellableRet() {
@@ -167,7 +164,6 @@ public class MerchandisingControl   {
    * IS the device Disellable Ret
    * @return isDisplayableRet
   **/
-  @ApiModelProperty(value = "IS the device Disellable Ret")
 
 /**
  * 
@@ -197,7 +193,6 @@ public class MerchandisingControl   {
    * IS the device sellable acq
    * @return isSellableAcq
   **/
-  @ApiModelProperty(value = "IS the device sellable acq")
 
 
   public Boolean getIsSellableAcq() {
@@ -224,7 +219,6 @@ public class MerchandisingControl   {
    * IS the device Displayable in basket
    * @return isDisplayableSavedBasket
   **/
-  @ApiModelProperty(value = "IS the device Displayable in basket")
 
 
   public Boolean getIsDisplayableSavedBasket() {
@@ -278,7 +272,6 @@ public class MerchandisingControl   {
    * Can the device pre order
    * @return preorderable
   **/
-  @ApiModelProperty(value = "Can the device pre order")
 
 
   public Boolean getPreorderable() {
@@ -332,7 +325,6 @@ public class MerchandisingControl   {
    * Can the device back order
    * @return backorderable
   **/
-  @ApiModelProperty(value = "Can the device back order")
 
 
   public Boolean getBackorderable() {

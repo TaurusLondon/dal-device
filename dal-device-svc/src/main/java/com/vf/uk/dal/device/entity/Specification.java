@@ -147,7 +147,6 @@ public class Specification {
 	 * 
 	 * @return comparable
 	 **/
-	@ApiModelProperty(value = "Identify if the feature is coparable")
 
 	public Boolean getComparable() {
 		return comparable;
@@ -176,7 +175,6 @@ public class Specification {
 	 * 
 	 * @return isKey
 	 **/
-	@ApiModelProperty(value = "Identify if this a key feature")
 
 	public Boolean getIsKey() {
 		return isKey;
@@ -321,7 +319,6 @@ public class Specification {
 	 * 
 	 * @return hideInList
 	 **/
-	@ApiModelProperty(value = "A hidden note to the specification")
 
 	public Boolean getHideInList() {
 		return hideInList;

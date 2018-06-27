@@ -19,7 +19,7 @@ public class ProductAvailability1   {
   private String endDate = null;
 
   @JsonProperty("salesExpired")
-  private Boolean salesExpired = null;
+  private Boolean salesExpired;
 /**
  * 
  * @param startDate
@@ -88,8 +88,6 @@ public class ProductAvailability1   {
    * Whether the sale of the product has been expired, Yes or No
    * @return salesExpired
   **/
-  @ApiModelProperty(value = "Whether the sale of the product has been expired, Yes or No")
-
 
   public Boolean getSalesExpired() {
     return salesExpired;
