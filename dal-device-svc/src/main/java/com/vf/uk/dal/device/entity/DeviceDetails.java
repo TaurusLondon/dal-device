@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
 
+
 /**
  * DeviceDetails
  */
@@ -174,9 +175,8 @@ public class DeviceDetails   {
    * Is Valid Offer Present
    * @return validOffer
   **/
-  @ApiModelProperty(value = "Is Valid Offer Present")
 
-/**
+  /**
  * 
  * @return
  */

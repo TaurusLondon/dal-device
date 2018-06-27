@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
 
-// TODO: Auto-generated Javadoc
 /**
  * DeviceSummary.
  */
@@ -724,7 +723,6 @@ public class DeviceSummary {
 	 *
 	 * @return isCompatible
 	 */
-	@ApiModelProperty(value = "Is the device compatible with the given bundle")
 
 	/**
 	 * 
@@ -761,7 +759,6 @@ public class DeviceSummary {
 	 *
 	 * @return preOrderable
 	 */
-	@ApiModelProperty(value = "Is the device pre-orderable as per MEF")
 
 	/**
 	 * 
@@ -836,7 +833,6 @@ public class DeviceSummary {
 	 *
 	 * @return isAffordable
 	 */
-	@ApiModelProperty(value = "flag to showcase whether the device is affordable or not in conditional accept scenario")
 
 	/**
 	 * 
@@ -873,7 +869,6 @@ public class DeviceSummary {
 	 *
 	 * @return fromPricing
 	 */
-	@ApiModelProperty(value = "flag to show associated/from price")
 
 	/**
 	 * 

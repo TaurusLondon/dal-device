@@ -97,8 +97,6 @@ public class SpecificationGroup   {
    *  Identify if the feature is coparable
    * @return comparable
   **/
-  @ApiModelProperty(value = " Identify if the feature is coparable")
-
 
   public Boolean getComparable() {
     return comparable;
