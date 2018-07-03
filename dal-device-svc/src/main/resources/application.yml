@@ -3,7 +3,7 @@ spring:
     name: DEVICES-V1
 info:
   build:
-    version: @project.version@
+    version: @swaggerVersion@
     projectName: @project.artifactId@
 server:
   contextPath: /devices/catalogue
