@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>com.vf.uk.dal</groupId> 
 	<artifactId>dal-device-svc</artifactId>
-	<version>9.6.4</version>
+	<version>9.6.5</version>
 	<packaging>jar</packaging>
 	<build>
 		<plugins>
@@ -148,6 +148,7 @@
 			**/DeviceApplication.java,
 			**/datamodel/**
 		</sonar.coverage.exclusions>
+		<swaggerVersion>9.6.0</swaggerVersion>
 	</properties>
 	<!-- Ends here -->
 </project>
