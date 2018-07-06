@@ -1,4 +1,7 @@
 package com.vf.uk.dal.utility.solr.entity;
+
+import java.util.List;
+
 /**
  * 
  * HardwarePrice
@@ -11,6 +14,23 @@ public class HardwarePrice
     private OneOffPrice oneOffPrice;
 
     private OneOffDiscountPrice oneOffDiscountPrice;
+    
+    private List<DeviceFinancingOption> financingOptions = null;
+    
+    /**
+     * 
+     * @return
+     */
+    public List<DeviceFinancingOption> getFinancingOptions() {
+		return financingOptions;
+	}
+    /**
+     * 
+     * @param financingOptions
+     */
+	public void setFinancingOptions(List<DeviceFinancingOption> financingOptions) {
+		this.financingOptions = financingOptions;
+	}
     /**
      * 
      * @param hardwareId

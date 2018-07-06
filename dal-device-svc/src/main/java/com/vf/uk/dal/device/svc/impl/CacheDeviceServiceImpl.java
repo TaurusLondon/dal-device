@@ -23,7 +23,9 @@ import com.vf.uk.dal.common.registry.client.RegistryClient;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.dao.DeviceTileCacheDAO;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
+import com.vf.uk.dal.device.datamodel.merchandisingpromotion.DeviceFinancingOption;
 import com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotionModel;
+import com.vf.uk.dal.device.datamodel.merchandisingpromotion.Price;
 import com.vf.uk.dal.device.datamodel.product.CacheOfferAppliedPriceModel;
 import com.vf.uk.dal.device.datamodel.product.CacheProductModel;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
@@ -617,7 +619,37 @@ public class CacheDeviceServiceImpl implements CacheDeviceService{
 					productModel.setOneOffDiscountedVatPrice(
 							deviceListObject.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice().getVat());
 				}
-
+                if(deviceListObject.getPriceInfo() != null
+						&& deviceListObject.getPriceInfo().getHardwarePrice() != null)
+                {
+                	List<DeviceFinancingOption> deviceFinancingOption = deviceListObject.getPriceInfo().getHardwarePrice().getFinancingOptions();
+					List<com.vf.uk.dal.device.datamodel.product.DeviceFinancingOption> financeOptions = null;
+				
+					if (deviceFinancingOption != null && !deviceFinancingOption.isEmpty()) {
+						financeOptions = new ArrayList<>();
+						for (DeviceFinancingOption financsOption : deviceFinancingOption) {
+							com.vf.uk.dal.device.datamodel.product.DeviceFinancingOption finance = new com.vf.uk.dal.device.datamodel.product.DeviceFinancingOption();
+							finance.setApr(financsOption.getApr());
+							finance.setDeviceFinancingId(financsOption.getDeviceFinancingId());
+							finance.setFinanceProvider(financsOption.getFinanceProvider());
+							finance.setFinanceTerm(financsOption.getFinanceTerm());
+							Price monthly = financsOption.getMonthlyPrice();
+							com.vf.uk.dal.device.datamodel.product.Price deviceMonthlyPrice = new com.vf.uk.dal.device.datamodel.product.Price();
+							deviceMonthlyPrice.setGross(monthly.getGross());
+							deviceMonthlyPrice.setNet(monthly.getNet());
+							deviceMonthlyPrice.setVat(monthly.getVat());
+							finance.setMonthlyPrice(deviceMonthlyPrice);
+							Price totalInterest = financsOption.getMonthlyPrice();
+							com.vf.uk.dal.device.datamodel.product.Price totalPriceWithInterest = new com.vf.uk.dal.device.datamodel.product.Price();
+							totalPriceWithInterest.setGross(totalInterest.getGross());
+							totalPriceWithInterest.setNet(totalInterest.getNet());
+							totalPriceWithInterest.setVat(totalInterest.getVat());
+							finance.setTotalPriceWithInterest(totalPriceWithInterest);
+							financeOptions.add(finance);
+						}
+					}
+					productModel.setFinancingOptions(financeOptions);
+                }
 				if (deviceListObject.getPriceInfo() != null && deviceListObject.getPriceInfo().getBundlePrice() != null
 						&& deviceListObject.getPriceInfo().getBundlePrice().getMonthlyPrice() != null) {
 					productModel.setBundleMonthlyPriceGross(
@@ -755,6 +787,33 @@ public class CacheDeviceServiceImpl implements CacheDeviceService{
 										offerPrice.setOneOffDiscountedVatPrice(oneOffDiscountPrice.getVat());
 
 									}
+									List<DeviceFinancingOption> deviceFinancingOption = deviceListObject.getPriceInfo().getHardwarePrice().getFinancingOptions();
+									List<com.vf.uk.dal.device.datamodel.product.DeviceFinancingOption> financeOptions = null;
+								
+									if (deviceFinancingOption != null && !deviceFinancingOption.isEmpty()) {
+										financeOptions = new ArrayList<>();
+										for (DeviceFinancingOption financsOption : deviceFinancingOption) {
+											com.vf.uk.dal.device.datamodel.product.DeviceFinancingOption finance = new com.vf.uk.dal.device.datamodel.product.DeviceFinancingOption();
+											finance.setApr(financsOption.getApr());
+											finance.setDeviceFinancingId(financsOption.getDeviceFinancingId());
+											finance.setFinanceProvider(financsOption.getFinanceProvider());
+											finance.setFinanceTerm(financsOption.getFinanceTerm());
+											Price monthly = financsOption.getMonthlyPrice();
+											com.vf.uk.dal.device.datamodel.product.Price deviceMonthlyPrice = new com.vf.uk.dal.device.datamodel.product.Price();
+											deviceMonthlyPrice.setGross(monthly.getGross());
+											deviceMonthlyPrice.setNet(monthly.getNet());
+											deviceMonthlyPrice.setVat(monthly.getVat());
+											finance.setMonthlyPrice(deviceMonthlyPrice);
+											Price totalInterest = financsOption.getMonthlyPrice();
+											com.vf.uk.dal.device.datamodel.product.Price totalPriceWithInterest = new com.vf.uk.dal.device.datamodel.product.Price();
+											totalPriceWithInterest.setGross(totalInterest.getGross());
+											totalPriceWithInterest.setNet(totalInterest.getNet());
+											totalPriceWithInterest.setVat(totalInterest.getVat());
+											finance.setTotalPriceWithInterest(totalPriceWithInterest);
+											financeOptions.add(finance);
+										}
+									}
+									offerPrice.setFinancingOptions(financeOptions);
 								}
 								deviceDao.getIndexElasticSearch(id, mapper.writeValueAsString(offerPrice));
 							}

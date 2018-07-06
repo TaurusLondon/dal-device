@@ -242,7 +242,11 @@ public class ProductModel {
 	
 	private String ageRestricted;
 	private String internationalMinutesUOM;
+	private List<DeviceFinancingOption> financingOptions = null;
 
+	public List<DeviceFinancingOption> getFinancingOptions() {
+		return financingOptions;
+	}
 	
 	/**
 	 * 
