@@ -52,7 +52,25 @@
                      "Upgrade",
                      "SecondLine"
                   ]
-               }
+               },
+		 "financingOptions": [
+                {
+                    "financeTerm": "24",
+                    "financeProvider": "PayPal",
+                    "apr": "16.9",
+                    "monthlyPrice": {
+                        "gross": "14.41",
+                        "net": "12",
+                        "vat": "2.40"
+                    },
+                    "totalPriceWithInterest": {
+                        "gross": "345.68",
+                        "net": "288.07",
+                        "vat": "57.61"
+                    },
+                    "deviceFinancingId": "OVCTYUVZRR"
+                }
+            ]
       },
       "oneOffPrice":       {
          "gross": "0",
