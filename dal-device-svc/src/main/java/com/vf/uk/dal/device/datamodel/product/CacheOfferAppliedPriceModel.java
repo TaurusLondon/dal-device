@@ -1,5 +1,7 @@
 package com.vf.uk.dal.device.datamodel.product;
 
+import java.util.List;
+
 public class CacheOfferAppliedPriceModel {
 
 	private String id;
@@ -37,6 +39,16 @@ public class CacheOfferAppliedPriceModel {
 	private Float oneOffDiscountedVatPrice;
 	
 	private String journeyType;
+	
+	private List<DeviceFinancingOption> financingOptions = null;
+
+	public List<DeviceFinancingOption> getFinancingOptions() {
+		return financingOptions;
+	}
+
+	public void setFinancingOptions(List<DeviceFinancingOption> financingOptions) {
+		this.financingOptions = financingOptions;
+	}
 
 	public String getJourneyType() {
 		return journeyType;

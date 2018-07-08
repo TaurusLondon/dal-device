@@ -15,6 +15,7 @@ import com.vf.uk.dal.device.datamodel.bundle.BundleModel;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
 import com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceModel;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
+import com.vf.uk.dal.device.datamodel.product.DeviceFinancingOption;
 import com.vf.uk.dal.device.datamodel.product.ProductModel;
 import com.vf.uk.dal.device.datamodel.productgroups.Count;
 import com.vf.uk.dal.device.datamodel.productgroups.FacetField;
@@ -1347,6 +1348,39 @@ public class DeviceTilesDaoUtils {
 		}
 
 	}
+	/**
+	 * 
+	 * @param deviceFinancingOption
+	 * @return
+	 */
+	public static List<com.vf.uk.dal.device.entity.DeviceFinancingOption> getDeviceFinaceOptions (List<DeviceFinancingOption> deviceFinancingOption){
+		List<com.vf.uk.dal.device.entity.DeviceFinancingOption> financeOptions = null;
+		if(deviceFinancingOption!=null && !deviceFinancingOption.isEmpty())
+		{
+			financeOptions = new ArrayList<>();
+				for(DeviceFinancingOption financsOption: deviceFinancingOption){
+				com.vf.uk.dal.device.entity.DeviceFinancingOption finance= new com.vf.uk.dal.device.entity.DeviceFinancingOption();
+				finance.setApr(financsOption.getApr());
+				finance.setDeviceFinancingId(financsOption.getDeviceFinancingId());
+				finance.setFinanceProvider(financsOption.getFinanceProvider());
+				finance.setFinanceTerm(financsOption.getFinanceTerm());
+				com.vf.uk.dal.device.datamodel.product.Price monthly= financsOption.getMonthlyPrice();
+				com.vf.uk.dal.device.entity.Price deviceMonthlyPrice = new com.vf.uk.dal.device.entity.Price();
+				deviceMonthlyPrice.setGross(monthly.getGross());
+				deviceMonthlyPrice.setNet(monthly.getNet());
+				deviceMonthlyPrice.setVat(monthly.getVat());
+				finance.setMonthlyPrice(deviceMonthlyPrice);
+				com.vf.uk.dal.device.datamodel.product.Price totalInterest= financsOption.getMonthlyPrice();
+				com.vf.uk.dal.device.entity.Price totalPriceWithInterest = new com.vf.uk.dal.device.entity.Price();
+				totalPriceWithInterest.setGross(totalInterest.getGross());
+				totalPriceWithInterest.setNet(totalInterest.getNet());
+				totalPriceWithInterest.setVat(totalInterest.getVat());
+				finance.setTotalPriceWithInterest(totalPriceWithInterest);
+				financeOptions.add(finance);
+			}
+		}
+		return financeOptions;
+	}
 
 	/**
 	 * 
@@ -1376,6 +1410,7 @@ public class DeviceTilesDaoUtils {
 						hardwarePrice.setOneOffPrice(oneOffPrice);
 						hardwarePrice.setOneOffDiscountPrice(oneOffDiscountPrice);
 						hardwarePrice.setHardwareId(offer.getProductId());
+						hardwarePrice.setFinancingOptions(getDeviceFinaceOptions(offer.getFinancingOptions()));
 						priceForBundleAndHardware.setOneOffDiscountPrice(oneOffDiscountPrice);
 						priceForBundleAndHardware.setOneOffPrice(oneOffPrice);
 						priceForBundleAndHardware.setHardwarePrice(hardwarePrice);
@@ -1394,6 +1429,7 @@ public class DeviceTilesDaoUtils {
 						hardwarePrice.setOneOffPrice(oneOffPrice);
 						hardwarePrice.setOneOffDiscountPrice(oneOffDiscountPrice);
 						hardwarePrice.setHardwareId(offer.getProductId());
+						hardwarePrice.setFinancingOptions(getDeviceFinaceOptions(offer.getFinancingOptions()));
 						priceForBundleAndHardware.setOneOffDiscountPrice(oneOffDiscountPrice);
 						priceForBundleAndHardware.setOneOffPrice(oneOffPrice);
 						priceForBundleAndHardware.setHardwarePrice(hardwarePrice);
@@ -1463,6 +1499,7 @@ public class DeviceTilesDaoUtils {
 				hardwarePrice.setOneOffPrice(oneOffPrice);
 				hardwarePrice.setOneOffDiscountPrice(oneOffDiscountPrice);
 				hardwarePrice.setHardwareId(productModel.getProductId());
+				hardwarePrice.setFinancingOptions(getDeviceFinaceOptions(productModel.getFinancingOptions()));
 				priceForBundleAndHardware.setOneOffDiscountPrice(oneOffDiscountPrice);
 				priceForBundleAndHardware.setOneOffPrice(oneOffPrice);
 				priceForBundleAndHardware.setHardwarePrice(hardwarePrice);
@@ -1481,6 +1518,7 @@ public class DeviceTilesDaoUtils {
 				hardwarePrice.setOneOffPrice(oneOffPrice);
 				hardwarePrice.setOneOffDiscountPrice(oneOffDiscountPrice);
 				hardwarePrice.setHardwareId(productModel.getProductId());
+				hardwarePrice.setFinancingOptions(getDeviceFinaceOptions(productModel.getFinancingOptions()));
 				priceForBundleAndHardware.setOneOffDiscountPrice(oneOffDiscountPrice);
 				priceForBundleAndHardware.setOneOffPrice(oneOffPrice);
 				priceForBundleAndHardware.setHardwarePrice(hardwarePrice);

@@ -2,24 +2,25 @@ package com.vf.uk.dal.device.datamodel.product;
 
 import java.util.List;
 
+
 public class CacheProductModel {
 
 	private String id;
-	
+
 	private Float rating;
-	
+
 	private String leadPlanId;
-	
+
 	private String productGroupName;
-	
+
 	private String productGroupId;
-	
+
 	private String upgradeLeadPlanId;
-	
+
 	private String nonUpgradeLeadPlanId;
-	
+
 	private List<String> merchandisingMedia;
-	
+
 	private Float oneOffGrossPrice;
 
 	private Float oneOffNetPrice;
@@ -43,6 +44,16 @@ public class CacheProductModel {
 	private Float bundleMonthlyDiscPriceNet;
 
 	private Float bundleMonthlyDiscPriceVat;
+
+	private List<DeviceFinancingOption> financingOptions = null;
+
+	public List<DeviceFinancingOption> getFinancingOptions() {
+		return financingOptions;
+	}
+
+	public void setFinancingOptions(List<DeviceFinancingOption> financingOptions) {
+		this.financingOptions = financingOptions;
+	}
 
 	public String getId() {
 		return id;

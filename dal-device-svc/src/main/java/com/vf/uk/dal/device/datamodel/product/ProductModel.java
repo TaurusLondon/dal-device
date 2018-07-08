@@ -241,8 +241,18 @@ public class ProductModel {
 	private String maxQuantity;
 	
 	private String ageRestricted;
+	
 	private String internationalMinutesUOM;
+	
+	private List<DeviceFinancingOption> financingOptions = null;
 
+	public void setFinancingOptions(List<DeviceFinancingOption> financingOptions) {
+		this.financingOptions = financingOptions;
+	}
+
+	public List<DeviceFinancingOption> getFinancingOptions() {
+		return financingOptions;
+	}
 	
 	/**
 	 * 

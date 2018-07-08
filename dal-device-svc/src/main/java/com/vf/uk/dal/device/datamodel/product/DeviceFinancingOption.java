@@ -1,19 +1,12 @@
-package com.vf.uk.dal.device.entity;
+package com.vf.uk.dal.device.datamodel.product;
 
 import java.util.Objects;
 
-import javax.validation.Valid;
-
-import org.springframework.validation.annotation.Validated;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import io.swagger.annotations.ApiModelProperty;
 
 /**
  * DeviceFinancingOption
  */
-@Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-04-17T05:45:22.340Z")
 
 public class DeviceFinancingOption   {
@@ -46,7 +39,6 @@ public class DeviceFinancingOption   {
 	 * 
 	 * @return financeTerm
 	 **/
-	@ApiModelProperty(value = "Duration of finance")
 
 	public String getFinanceTerm() {
 		return financeTerm;
@@ -66,7 +58,6 @@ public class DeviceFinancingOption   {
 	 * 
 	 * @return financeProvider
 	 **/
-	@ApiModelProperty(value = "Name of the finance provider")
 
 	public String getFinanceProvider() {
 		return financeProvider;
@@ -86,7 +77,6 @@ public class DeviceFinancingOption   {
 	 * 
 	 * @return apr
 	 **/
-	@ApiModelProperty(value = "Annual interest rate")
 
 	public String getApr() {
 		return apr;
@@ -106,10 +96,6 @@ public class DeviceFinancingOption   {
 	 * 
 	 * @return monthlyPrice
 	 **/
-	@ApiModelProperty(value = "")
-
-	@Valid
-
 	public Price getMonthlyPrice() {
 		return monthlyPrice;
 	}
@@ -128,9 +114,6 @@ public class DeviceFinancingOption   {
 	 * 
 	 * @return totalPriceWithInterest
 	 **/
-	@ApiModelProperty(value = "")
-
-	@Valid
 
 	public Price getTotalPriceWithInterest() {
 		return totalPriceWithInterest;
@@ -150,7 +133,6 @@ public class DeviceFinancingOption   {
 	 * 
 	 * @return deviceFinancingId
 	 **/
-	@ApiModelProperty(value = "device financing Id")
 
 	public String getDeviceFinancingId() {
 		return deviceFinancingId;
