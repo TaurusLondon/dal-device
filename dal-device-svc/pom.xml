@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>com.vf.uk.dal</groupId> 
 	<artifactId>dal-device-svc</artifactId>
-	<version>9.6.6</version>
+	<version>10.1.0</version>
 	<packaging>jar</packaging>
 	<build>
 		<plugins>
@@ -44,10 +44,6 @@
 			<version>9.6.3</version>
 			<exclusions> 
 				<exclusion>
-					<artifactId>slf4j-log4j12</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-				<exclusion>
 					<artifactId>slf4j-api</artifactId>
 					<groupId>org.slf4j</groupId>
 				</exclusion>
@@ -55,10 +51,10 @@
 					<artifactId>servlet-api</artifactId>
 					<groupId>javax.servlet</groupId>
 				</exclusion>
-				<!-- <exclusion>
+				<exclusion>
 					<artifactId>log4j-over-slf4j</artifactId>
 					<groupId>org.slf4j</groupId>
-				</exclusion> -->
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<!-- Coherence Jars -->
