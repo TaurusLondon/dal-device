@@ -1370,7 +1370,7 @@ public class DeviceTilesDaoUtils {
 				deviceMonthlyPrice.setNet(monthly.getNet());
 				deviceMonthlyPrice.setVat(monthly.getVat());
 				finance.setMonthlyPrice(deviceMonthlyPrice);
-				com.vf.uk.dal.device.datamodel.product.Price totalInterest= financsOption.getMonthlyPrice();
+				com.vf.uk.dal.device.datamodel.product.Price totalInterest= financsOption.getTotalPriceWithInterest();
 				com.vf.uk.dal.device.entity.Price totalPriceWithInterest = new com.vf.uk.dal.device.entity.Price();
 				totalPriceWithInterest.setGross(totalInterest.getGross());
 				totalPriceWithInterest.setNet(totalInterest.getNet());
