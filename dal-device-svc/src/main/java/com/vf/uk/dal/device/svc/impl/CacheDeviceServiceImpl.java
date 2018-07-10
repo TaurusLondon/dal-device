@@ -639,7 +639,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService{
 							deviceMonthlyPrice.setNet(monthly.getNet());
 							deviceMonthlyPrice.setVat(monthly.getVat());
 							finance.setMonthlyPrice(deviceMonthlyPrice);
-							Price totalInterest = financsOption.getMonthlyPrice();
+							Price totalInterest = financsOption.getTotalPriceWithInterest();
 							com.vf.uk.dal.device.datamodel.product.Price totalPriceWithInterest = new com.vf.uk.dal.device.datamodel.product.Price();
 							totalPriceWithInterest.setGross(totalInterest.getGross());
 							totalPriceWithInterest.setNet(totalInterest.getNet());
@@ -804,7 +804,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService{
 											deviceMonthlyPrice.setNet(monthly.getNet());
 											deviceMonthlyPrice.setVat(monthly.getVat());
 											finance.setMonthlyPrice(deviceMonthlyPrice);
-											Price totalInterest = financsOption.getMonthlyPrice();
+											Price totalInterest = financsOption.getTotalPriceWithInterest();
 											com.vf.uk.dal.device.datamodel.product.Price totalPriceWithInterest = new com.vf.uk.dal.device.datamodel.product.Price();
 											totalPriceWithInterest.setGross(totalInterest.getGross());
 											totalPriceWithInterest.setNet(totalInterest.getNet());

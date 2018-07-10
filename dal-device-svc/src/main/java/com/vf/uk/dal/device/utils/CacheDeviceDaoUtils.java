@@ -309,7 +309,7 @@ public class CacheDeviceDaoUtils {
 				deviceMonthlyPrice.setNet(monthly.getNet());
 				deviceMonthlyPrice.setVat(monthly.getVat());
 				finance.setMonthlyPrice(deviceMonthlyPrice);
-				com.vf.uk.dal.device.entity.Price totalInterest = financsOption.getMonthlyPrice();
+				com.vf.uk.dal.device.entity.Price totalInterest = financsOption.getTotalPriceWithInterest();
 				com.vf.uk.dal.utility.solr.entity.Price totalPriceWithInterest = new com.vf.uk.dal.utility.solr.entity.Price();
 				totalPriceWithInterest.setGross(totalInterest.getGross());
 				totalPriceWithInterest.setNet(totalInterest.getNet());
@@ -523,8 +523,7 @@ public class CacheDeviceDaoUtils {
 									deviceMonthlyPrice.setNet(monthly.getNet());
 									deviceMonthlyPrice.setVat(monthly.getVat());
 									finance.setMonthlyPrice(deviceMonthlyPrice);
-									com.vf.uk.dal.device.entity.Price totalInterest = financsOption.getMonthlyPrice();
-									com.vf.uk.dal.utility.solr.entity.Price totalPriceWithInterest = new com.vf.uk.dal.utility.solr.entity.Price();
+									com.vf.uk.dal.device.entity.Price totalInterest = financsOption.getTotalPriceWithInterest();									com.vf.uk.dal.utility.solr.entity.Price totalPriceWithInterest = new com.vf.uk.dal.utility.solr.entity.Price();
 									totalPriceWithInterest.setGross(totalInterest.getGross());
 									totalPriceWithInterest.setNet(totalInterest.getNet());
 									totalPriceWithInterest.setVat(totalInterest.getVat());
@@ -841,7 +840,7 @@ public class CacheDeviceDaoUtils {
 								deviceMonthlyPrice.setNet(monthly.getNet());
 								deviceMonthlyPrice.setVat(monthly.getVat());
 								finance.setMonthlyPrice(deviceMonthlyPrice);
-								com.vf.uk.dal.device.entity.Price totalInterest = financsOption.getMonthlyPrice();
+								com.vf.uk.dal.device.entity.Price totalInterest = financsOption.getTotalPriceWithInterest();
 								com.vf.uk.dal.utility.solr.entity.Price totalPriceWithInterest = new com.vf.uk.dal.utility.solr.entity.Price();
 								totalPriceWithInterest.setGross(totalInterest.getGross());
 								totalPriceWithInterest.setNet(totalInterest.getNet());
@@ -1159,7 +1158,7 @@ public class CacheDeviceDaoUtils {
 					deviceMonthlyPrice.setNet(monthly.getNet());
 					deviceMonthlyPrice.setVat(monthly.getVat());
 					finance.setMonthlyPrice(deviceMonthlyPrice);
-					com.vf.uk.dal.utility.solr.entity.Price totalInterest = financsOption.getMonthlyPrice();
+					com.vf.uk.dal.utility.solr.entity.Price totalInterest = financsOption.getTotalPriceWithInterest();
 					com.vf.uk.dal.device.datamodel.merchandisingpromotion.Price totalPriceWithInterest = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.Price();
 					totalPriceWithInterest.setGross(totalInterest.getGross());
 					totalPriceWithInterest.setNet(totalInterest.getNet());
@@ -1264,7 +1263,7 @@ public class CacheDeviceDaoUtils {
 					deviceMonthlyPrice.setNet(monthly.getNet());
 					deviceMonthlyPrice.setVat(monthly.getVat());
 					finance.setMonthlyPrice(deviceMonthlyPrice);
-					com.vf.uk.dal.utility.solr.entity.Price totalInterest = financsOption.getMonthlyPrice();
+					com.vf.uk.dal.utility.solr.entity.Price totalInterest = financsOption.getTotalPriceWithInterest();
 					com.vf.uk.dal.device.datamodel.merchandisingpromotion.Price totalPriceWithInterest = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.Price();
 					totalPriceWithInterest.setGross(totalInterest.getGross());
 					totalPriceWithInterest.setNet(totalInterest.getNet());
