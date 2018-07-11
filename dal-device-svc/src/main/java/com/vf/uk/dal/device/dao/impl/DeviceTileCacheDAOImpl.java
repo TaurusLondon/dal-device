@@ -444,8 +444,9 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO{
 		String jobStatus = null;
 		try {
 			jdbcTemplate.setDataSource(datasource);
-			String query = "SELECT JOB_STATUS FROM DALMS_CACHE_SERVICES WHERE JOB_ID = '" + jobId + "'";
-			jobStatus = jdbcTemplate.queryForObject(query, String.class);
+			String query = "SELECT JOB_STATUS FROM DALMS_CACHE_SERVICES WHERE JOB_ID = ?";
+			Object[] params = new Object[] { jobId };
+			jobStatus = jdbcTemplate.queryForObject(query, String.class,params);
 			if (StringUtils.isEmpty(jobStatus) || StringUtils.isBlank(jobStatus)) {
 				throw new ApplicationException(ExceptionMessages.INVALID_JOB_ID);
 			} else {

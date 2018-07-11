@@ -68,7 +68,7 @@ public class DeviceController {
 				"Missing mandatory parameter " + ex.getParameterName());
 
 	}
-	
+
 	/**
 	 * Handles requests for getDeviceTile Service with input as deviceId.
 	 * 
@@ -97,24 +97,6 @@ public class DeviceController {
 
 		return listOfDeviceTile;
 	}
-
-	/**
-	 * Handles requests for GetProductList Service with input as SIMO in URL as
-	 * 
-	 * @return
-	 */
-	/*
-	 * @ApiIgnore
-	 * 
-	 * @RequestMapping(value = "/productGroup", method = RequestMethod.GET,
-	 * produces = javax.ws.rs.core.MediaType.APPLICATION_JSON) public
-	 * List<ProductGroup> getProductGroup() { List<ProductGroup> productGroup;
-	 * String groupType; String groupName; groupType =
-	 * getFilterValue(GROUP_TYPE); groupName = getFilterValue(GROUP_NAME);
-	 * productGroup =
-	 * deviceService.getProductGroupByGroupTypeGroupName(groupType, groupName);
-	 * return productGroup; }
-	 */
 
 	/**
 	 * Handles requests for getDeviceList Service
@@ -191,8 +173,6 @@ public class DeviceController {
 				offerCode, msisdn, includeRecommendationsParam);
 		return facetedDevice;
 	}
-
-	
 
 	/**
 	 * 
