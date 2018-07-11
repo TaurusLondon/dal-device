@@ -130,27 +130,6 @@ public class DeviceServiceImpl implements DeviceService {
 	/**
 	 * Handles requests from controller and connects to DAO.
 	 * 
-	 * @param groupType
-	 * @param groupName
-	 * @return List<ProductGroup>
-	 */
-	/*
-	 * @Override public List<ProductGroup>
-	 * getProductGroupByGroupTypeGroupName(String groupType, String groupName) {
-	 * List<ProductGroup> productGroup; if (groupType == null ||
-	 * groupType.isEmpty()) { LogHelper.error(this, "Group Type is null"); throw
-	 * new
-	 * ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_GROUPTYPE);
-	 * } else { productGroup =
-	 * deviceDao.getProductGroupByGroupTypeGroupName(groupType, groupName); }
-	 * return productGroup;
-	 * 
-	 * }
-	 */
-
-	/**
-	 * Handles requests from controller and connects to DAO.
-	 * 
 	 * @param productClass
 	 * @param make
 	 * @param model

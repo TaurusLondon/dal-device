@@ -59,56 +59,6 @@ public class DeviceDaoImpl implements DeviceDao {
 	DeviceESHelper deviceEs;
 
 	/**
-	 * Returns list of ProductGroup based on groupType and groupName.
-	 * 
-	 * @param groupType
-	 * @param groupName
-	 * @return List<ProductGroup>
-	 */
-	/*
-	 * @Override public List<ProductGroup>
-	 * getProductGroupByGroupTypeGroupName(String groupType, String groupName) {
-	 * List<ProductGroup> productGroupList = null; List<ProductGroupModel>
-	 * listOfProductGroupModel = null; List<ProductGroupModel>
-	 * listOfProductGroupModelForGroupName; listOfProductGroupModelForGroupName
-	 * = new ArrayList<>(); try { if (requestManager == null) { requestManager =
-	 * SolrConnectionProvider.getSolrConnection(); } if (groupType != null &&
-	 * groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYM)) {
-	 * 
-	 * LogHelper.info(this, "Start -->  calling  getProductGroups_Solr");
-	 * listOfProductGroupModel =
-	 * requestManager.getProductGroups(Filters.HANDSET); LogHelper.info(this,
-	 * "End -->  After calling  getProductGroups_Solr");
-	 * 
-	 * } else { LogHelper.error(this, Constants.NO_DATA_FOUND_FOR_GROUP_TYPE +
-	 * groupType); throw new
-	 * ApplicationException(ExceptionMessages.NULL_VALUE_GROUP_TYPE); }
-	 * 
-	 * if (listOfProductGroupModel != null &&
-	 * !listOfProductGroupModel.isEmpty()) { productGroupList = new
-	 * ArrayList<>(); if (groupName == null) { productGroupList =
-	 * DaoUtils.convertGroupProductToProductGroupDetails(listOfProductGroupModel
-	 * ); } else { for (ProductGroupModel productGroupModel :
-	 * listOfProductGroupModel) { if
-	 * (productGroupModel.getName().equals(groupName)) {
-	 * listOfProductGroupModelForGroupName.add(productGroupModel);
-	 * productGroupList = DaoUtils .convertGroupProductToProductGroupDetails(
-	 * listOfProductGroupModelForGroupName); } } } if
-	 * (productGroupList.isEmpty()) { LogHelper.error(this,
-	 * "No data found for given group name:" + groupName); throw new
-	 * ApplicationException(ExceptionMessages.NULL_VALUE_GROUP_NAME); } } else {
-	 * LogHelper.error(this, "No data found for given group name:" + groupType);
-	 * throw new ApplicationException(ExceptionMessages.NULL_VALUE_GROUP_TYPE);
-	 * }
-	 * 
-	 * } catch (org.apache.solr.common.SolrException solrExcp) {
-	 * SolrConnectionProvider.closeSolrConnection(); LogHelper.error(this,
-	 * " SolrException: " + solrExcp); throw new
-	 * ApplicationException(ExceptionMessages.SOLR_CONNECTION_EXCEPTION); }
-	 * return productGroupList; }
-	 */
-
-	/**
 	 * 
 	 * @param deviceId
 	 * @param sortCriteria
