@@ -150,7 +150,7 @@ public class CommonMethods {
 		return deviceDetails;
 	}
 
-	public static DeviceDetails getDevice1(String id) {
+	public static DeviceDetails getDevice_One(String id) {
 		DeviceDetails deviceDetails = new DeviceDetails();
 		deviceDetails.setDeviceId("093353");
 		deviceDetails.setName("Apple Iphone 6s");
@@ -871,10 +871,10 @@ public class CommonMethods {
 		CommercialProduct commercialProduct = getCommercialProduct();
 		commercialProduct.setLeadPlanId(null);
 		list.add(commercialProduct);
-		list.add(getCommercialProduct1());
-		list.add(getCommercialProduct2());
-		list.add(getCommercialProduct3());
-		list.add(getCommercialProduct5());
+		list.add(getCommercialProduct_One());
+		list.add(getCommercialProduct_Two());
+		list.add(getCommercialProduct_Three());
+		list.add(getCommercialProduct_Five());
 		return list;
 	}
 
@@ -1105,7 +1105,7 @@ public class CommonMethods {
 		return groupList;
 	}
 
-	public static List<Group> getGroup12() {
+	public static List<Group> getGroup_Two() {
 		List<Group> groupList = new ArrayList<>();
 		Group group = new Group();
 		group.setVersion("1.0");
@@ -1226,7 +1226,7 @@ public class CommonMethods {
 		return bundle;
 	}
 
-	public static CommercialProduct getCommercialProduct1() {
+	public static CommercialProduct getCommercialProduct_One() {
 		CommercialProduct commercialProduct = new CommercialProduct();
 
 		commercialProduct.setProductClass("pClass");
@@ -1349,7 +1349,7 @@ public class CommonMethods {
 		return commercialProduct;
 	}
 
-	public static CommercialBundle getCommercialBundle1() {
+	public static CommercialBundle getCommercialBundle_One() {
 		CommercialBundle bundle = new CommercialBundle();
 		bundle.setBundleID("109154");
 		bundle.setName("24mth BandO 500min 500MB Standard");
@@ -1428,7 +1428,7 @@ public class CommonMethods {
 		return bundle;
 	}
 
-	public static CommercialBundle getCommercialBundle2() {
+	public static CommercialBundle getCommercialBundle_Two() {
 		CommercialBundle bundle = new CommercialBundle();
 		bundle.setBundleID("109154");
 		bundle.setName("24mth BandO 500min 500MB Standard");
@@ -1507,7 +1507,7 @@ public class CommonMethods {
 		return bundle;
 	}
 
-	public static CommercialBundle getCommercialBundle3() {
+	public static CommercialBundle getCommercialBundle_Three() {
 		CommercialBundle bundle = new CommercialBundle();
 		bundle.setBundleID("109154");
 		bundle.setName("24mth BandO 500min 500MB Standard");
@@ -1911,7 +1911,7 @@ public class CommonMethods {
 		return bundleDetails;
 	}
 
-	public static BundleDetails getCompatibleBundleListJson3() {
+	public static BundleDetails getCompatibleBundleListJson_Three() {
 		BundleDetails bundleDetails = new BundleDetails();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
@@ -1925,7 +1925,7 @@ public class CommonMethods {
 		return bundleDetails;
 	}
 
-	public static BundleDetails getCompatibleBundleListJson4() {
+	public static BundleDetails getCompatibleBundleListJson_Four() {
 		BundleDetails bundleDetails = new BundleDetails();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
@@ -1939,7 +1939,7 @@ public class CommonMethods {
 		return bundleDetails;
 	}
 
-	public static BundleDetails getCompatibleBundleListJson5() {
+	public static BundleDetails getCompatibleBundleListJson_Five() {
 		BundleDetails bundleDetails = new BundleDetails();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
@@ -1953,7 +1953,7 @@ public class CommonMethods {
 		return bundleDetails;
 	}
 
-	public static ProductGroupFacetModel getProductGroupFacetModel1() {
+	public static ProductGroupFacetModel getProductGroupFacetModel_One() {
 		ProductGroupFacetModel product = new ProductGroupFacetModel();
 		List<FacetField> faceList = new ArrayList<>();
 		List<Count> lcont = new ArrayList<>();
@@ -2008,7 +2008,7 @@ public class CommonMethods {
 		return bundleDetails;
 	}
 
-	public static BundleDetails getCompatibleBundleListJson1() {
+	public static BundleDetails getCompatibleBundleListJson_One() {
 		BundleDetails bundleDetails = new BundleDetails();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
@@ -2296,7 +2296,7 @@ public class CommonMethods {
 		return bazaarList;
 	}
 
-	public static StockAvailability getStockAvailability1() {
+	public static StockAvailability getStockAvailability_One() {
 		StockAvailability cohbundle = new StockAvailability();
 		String jsonString = "";
 		try {
@@ -2401,7 +2401,7 @@ public class CommonMethods {
 		return queryparams;
 	}
 
-	public static CommercialProduct getCommercialProduct2() {
+	public static CommercialProduct getCommercialProduct_Two() {
 		CommercialProduct commercialProduct = new CommercialProduct();
 
 		// commercialProduct.setProductClass("pClass");
@@ -2550,7 +2550,7 @@ public class CommonMethods {
 		return mem;
 	}
 
-	public static CommercialProduct getCommercialProduct3() {
+	public static CommercialProduct getCommercialProduct_Three() {
 		CommercialProduct commercialProduct = new CommercialProduct();
 
 		// commercialProduct.setProductClass("pClass");
@@ -2678,7 +2678,7 @@ public class CommonMethods {
 		return commercialProduct;
 	}
 
-	public static List<PriceForBundleAndHardware> getPriceForBundleAndHardware1() {
+	public static List<PriceForBundleAndHardware> getPriceForBundleAndHardware_One() {
 		List<PriceForBundleAndHardware> priceForBundleAndHardwareList = new ArrayList<PriceForBundleAndHardware>();
 
 		PriceForBundleAndHardware priceInfo = new PriceForBundleAndHardware();
@@ -2749,7 +2749,7 @@ public class CommonMethods {
 		return priceForBundleAndHardwareList;
 	}
 
-	public static CommercialProduct getCommercialProduct5() {
+	public static CommercialProduct getCommercialProduct_Five() {
 		CommercialProduct commercialProduct = new CommercialProduct();
 
 		// commercialProduct.setProductClass("pClass");
@@ -3088,7 +3088,7 @@ public class CommonMethods {
 		return commercialProduct;
 	}
 
-	public static CommercialProduct getCommercialProductForCacheDeviceTile1() {
+	public static CommercialProduct getCommercialProductForCacheDeviceTile_One() {
 		CommercialProduct commercialProduct = new CommercialProduct();
 
 		// commercialProduct.setProductClass("pClass");
@@ -3433,7 +3433,7 @@ public class CommonMethods {
 		return merchandisingPromotionModelList;
 	}
 
-	public static List<MerchandisingPromotionModel> getMerChandisingPromotion1() {
+	public static List<MerchandisingPromotionModel> getMerChandisingPromotion_One() {
 		List<MerchandisingPromotionModel> merchandisingPromotionModelList = new ArrayList<>();
 		MerchandisingPromotionModel merchandisingPromotionModel = new MerchandisingPromotionModel();
 
@@ -4125,7 +4125,7 @@ public class CommonMethods {
 	}
 
 	@JsonIgnoreProperties(ignoreUnknown = true)
-	public static CommercialProduct getCommercialProductsListOfAccessoriesWithEndDate1() {
+	public static CommercialProduct getCommercialProductsListOfAccessoriesWithEndDate_One() {
 
 		try {
 
@@ -4154,7 +4154,7 @@ public class CommonMethods {
 		return null;
 	}
 
-	public static List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion> getMerchandisingPromotion1() {
+	public static List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion> getMerchandisingPromotion_One() {
 		List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion> merchandisingPromotionsList = new ArrayList<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion>();
 		com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion merchandisingPromotions = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion();
 		// MerchandisingPromotion merchandisingPromotions1 = new
@@ -4748,7 +4748,7 @@ public class CommonMethods {
 		hardwarePrice.setOneOffDiscountPrice(oneOffDiscountPrice);
 		hardwarePrice.setOneOffPrice(oneOffPrice);
 		hardwarePrice.setFinancingOptions(getDeviceFinaceOptions1());
-		
+
 		priceInfo.setHardwarePrice(hardwarePrice);
 		priceInfo.setMonthlyDiscountPrice(monthlyDiscountPrice);
 		priceInfo.setMonthlyPrice(monthlyPrice);
@@ -4788,7 +4788,7 @@ public class CommonMethods {
 		hardwarePrice1.setOneOffDiscountPrice(oneOffDiscountPrice);
 		hardwarePrice1.setOneOffPrice(oneOffPrice);
 		hardwarePrice1.setFinancingOptions(getDeviceFinaceOptions1());
-		
+
 		priceInfo1.setHardwarePrice(hardwarePrice);
 		priceInfo1.setMonthlyDiscountPrice(monthlyDiscountPrice);
 		priceInfo1.setMonthlyPrice(monthlyPrice);
@@ -5070,7 +5070,7 @@ public class CommonMethods {
 		return device;
 	}
 
-	public static Device getDevice1() {
+	public static Device getDevice_One() {
 		Device device = new Device();
 		MerchandisingPromotionsPackage mpp = new MerchandisingPromotionsPackage();
 		MerchandisingPromotionsWrapper mpw = new MerchandisingPromotionsWrapper();
@@ -5080,7 +5080,7 @@ public class CommonMethods {
 		return device;
 	}
 
-	public static Device getDevice2() {
+	public static Device getDevice_Two() {
 		Device device = new Device();
 		MerchandisingPromotionsPackage mpp = new MerchandisingPromotionsPackage();
 		MerchandisingPromotionsWrapper mpw = new MerchandisingPromotionsWrapper();
@@ -5100,7 +5100,7 @@ public class CommonMethods {
 		return device;
 	}
 
-	public static Device getDevice1HW() {
+	public static Device getDeviceHW_One() {
 		Device device = new Device();
 		MerchandisingPromotionsPackage mpp = new MerchandisingPromotionsPackage();
 		MerchandisingPromotionsWrapper mpw = new MerchandisingPromotionsWrapper();
@@ -5110,7 +5110,7 @@ public class CommonMethods {
 		return device;
 	}
 
-	public static Device getDevice2HW() {
+	public static Device getDeviceHW_Two() {
 		Device device = new Device();
 		MerchandisingPromotionsPackage mpp = new MerchandisingPromotionsPackage();
 		MerchandisingPromotionsWrapper mpw = new MerchandisingPromotionsWrapper();
@@ -5122,7 +5122,7 @@ public class CommonMethods {
 		return device;
 	}
 
-	public static Device getDevice2WithDetails() {
+	public static Device getDeviceWithDetails_Two() {
 		Device device = new Device();
 		MerchandisingPromotionsPackage mpp = new MerchandisingPromotionsPackage();
 		MerchandisingPromotionsWrapper mpw = new MerchandisingPromotionsWrapper();
@@ -5134,7 +5134,7 @@ public class CommonMethods {
 		return device;
 	}
 
-	public static Device getDevice1WithDetails() {
+	public static Device getDeviceWithDetails_One() {
 		Device device = new Device();
 		MerchandisingPromotionsPackage mpp = new MerchandisingPromotionsPackage();
 		MerchandisingPromotionsWrapper mpw = new MerchandisingPromotionsWrapper();
@@ -5400,7 +5400,7 @@ public class CommonMethods {
 		priceForBundleAndHardwareList.addAll(getOfferAppliedPrice());
 		return priceForBundleAndHardwareList;
 	}
-	
+
 	public static List<DeviceFinancingOption> getDeviceFinaceOptions() {
 		List<DeviceFinancingOption> financeOptions = new ArrayList<>();
 		DeviceFinancingOption finance = new DeviceFinancingOption();
@@ -5421,7 +5421,7 @@ public class CommonMethods {
 		financeOptions.add(finance);
 		return financeOptions;
 	}
-	
+
 	public static List<com.vf.uk.dal.device.entity.DeviceFinancingOption> getDeviceFinaceOptions1() {
 		List<com.vf.uk.dal.device.entity.DeviceFinancingOption> financeOptions = new ArrayList<>();
 		com.vf.uk.dal.device.entity.DeviceFinancingOption finance = new com.vf.uk.dal.device.entity.DeviceFinancingOption();
@@ -5442,7 +5442,7 @@ public class CommonMethods {
 		financeOptions.add(finance);
 		return financeOptions;
 	}
-	
+
 	public static List<com.vf.uk.dal.utility.entity.DeviceFinancingOption> getDeviceFinaceOptions2() {
 		List<com.vf.uk.dal.utility.entity.DeviceFinancingOption> financeOptions = new ArrayList<>();
 		com.vf.uk.dal.utility.entity.DeviceFinancingOption finance = new com.vf.uk.dal.utility.entity.DeviceFinancingOption();

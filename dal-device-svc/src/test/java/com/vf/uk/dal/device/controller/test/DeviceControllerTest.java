@@ -57,19 +57,19 @@ public class DeviceControllerTest {
 
 	@MockBean
 	DeviceTileCacheDAO cacheDao;
-	
+
 	@Autowired
 	DeviceMakeAndModelController deviceMakeAndModelController;
 
-	@Autowired 
+	@Autowired
 	DeviceController deviceController;
-	
+
 	@Autowired
 	DeviceDetailsController deviceDetailsController;
-	
+
 	@Autowired
 	CacheDeviceAndReviewController cacheDeviceAndReviewController;
-	
+
 	@MockBean
 	EurekaClient eureka;
 
@@ -84,10 +84,10 @@ public class DeviceControllerTest {
 
 	@MockBean
 	CacheDeviceServiceImpl deviceServiceCacheMock;
-	
+
 	@MockBean
 	DeviceMakeAndModelServiceImpl deviceServiceMakeAndModelMock;
-	
+
 	@MockBean
 	DeviceServiceImpl deviceServiceMock;
 
@@ -99,36 +99,38 @@ public class DeviceControllerTest {
 
 	@Autowired
 	AccessoryInsuranceController accessoryInsuranceController;
-	
+
 	@MockBean
 	AccessoryInsuranceService accessoryInsuranceService;
 
 	@Before
 	public void setupMockBehaviour() throws Exception {
 		aspect.beforeAdvice(null);
-		given(deviceServiceMakeAndModelMock.getListOfDeviceTile(Matchers.anyString(), Matchers.anyString(), Matchers.anyString(),
-				Matchers.anyString(), Matchers.anyDouble(), Matchers.anyString(), Matchers.anyString(),
-				Matchers.anyString())).willReturn(CommonMethods.getDeviceTile("apple", "iPhone-7", "DIVICE_PAYM"));
+		given(deviceServiceMakeAndModelMock.getListOfDeviceTile(Matchers.anyString(), Matchers.anyString(),
+				Matchers.anyString(), Matchers.anyString(), Matchers.anyDouble(), Matchers.anyString(),
+				Matchers.anyString(), Matchers.anyString()))
+						.willReturn(CommonMethods.getDeviceTile("apple", "iPhone-7", "DIVICE_PAYM"));
 		given(deviceServiceMock.getDeviceTileById(Matchers.anyString(), Matchers.anyString(), Matchers.anyString()))
 				.willReturn(CommonMethods.getDeviceTile("apple", "iPhone-7", "DEVICE_PAYM"));
-		given(deviceServiceCacheMock.insertCacheDeviceToDb()).willReturn(CommonMethods.
-				  getCacheDeviceTileResponse());
+		given(deviceServiceCacheMock.insertCacheDeviceToDb()).willReturn(CommonMethods.getCacheDeviceTileResponse());
 		given(response.getListOfGroupFromJson(Matchers.anyObject())).willReturn(CommonMethods.getGroup());
-		given(response.getCommercialProductFromJson(Matchers.anyObject())).willReturn(CommonMethods.getCommercialProductsListOfAccessories());
-		given(accessoryInsuranceService.getAccessoriesOfDevice(Matchers.anyString(), Matchers.anyString(), Matchers.anyString())).willReturn(CommonMethods.getAccessoriesTileGroup("093353"));
+		given(response.getCommercialProductFromJson(Matchers.anyObject()))
+				.willReturn(CommonMethods.getCommercialProductsListOfAccessories());
+		given(accessoryInsuranceService.getAccessoriesOfDevice(Matchers.anyString(), Matchers.anyString(),
+				Matchers.anyString())).willReturn(CommonMethods.getAccessoriesTileGroup("093353"));
 	}
 
 	@Test
 	public void getListOfDeviceTileNotNull() {
-		Assert.assertNotNull(deviceMakeAndModelController.getListOfDeviceTile("apple", "iPhone-7", "DIVICE_PAYM", "UPGRADE",
-				"W_HH_SIMONLY", "110154", "093353", "40"));
+		Assert.assertNotNull(deviceMakeAndModelController.getListOfDeviceTile("apple", "iPhone-7", "DIVICE_PAYM",
+				"UPGRADE", "W_HH_SIMONLY", "110154", "093353", "40"));
 	}
 
 	@Test
 	public void getListOfDeviceTileNullMake() {
 		try {
-			deviceMakeAndModelController.getListOfDeviceTile(null, "iPhone-7", "DIVICE_PAYM", "UPGRADE", "W_HH_SIMONLY", "110154",
-					"093353", "40");
+			deviceMakeAndModelController.getListOfDeviceTile(null, "iPhone-7", "DIVICE_PAYM", "UPGRADE", "W_HH_SIMONLY",
+					"110154", "093353", "40");
 		} catch (Exception e) {
 			Assert.assertEquals("Invalid input request received. Missing make in the filter criteria", e.getMessage());
 		}
@@ -137,8 +139,8 @@ public class DeviceControllerTest {
 	@Test
 	public void getListOfDeviceTileNullModel() {
 		try {
-			deviceMakeAndModelController.getListOfDeviceTile("apple", null, "DIVICE_PAYM", "UPGRADE", "W_HH_SIMONLY", "110154",
-					"093353", "40");
+			deviceMakeAndModelController.getListOfDeviceTile("apple", null, "DIVICE_PAYM", "UPGRADE", "W_HH_SIMONLY",
+					"110154", "093353", "40");
 		} catch (Exception e) {
 			Assert.assertEquals("Invalid input request received. Missing model in the filter criteria", e.getMessage());
 		}
@@ -147,8 +149,8 @@ public class DeviceControllerTest {
 	@Test
 	public void getListOfDeviceTileInavlidDeviceid() {
 		try {
-			deviceMakeAndModelController.getListOfDeviceTile("apple", "iPhone-7", "DIVICE_PAYM", "UPGRADE", "W_HH_SIMONLY",
-					"110154", "093353945", "40");
+			deviceMakeAndModelController.getListOfDeviceTile("apple", "iPhone-7", "DIVICE_PAYM", "UPGRADE",
+					"W_HH_SIMONLY", "110154", "093353945", "40");
 		} catch (Exception e) {
 			Assert.assertEquals("Invalid Device Id Sent In Request", e.getMessage());
 		}
@@ -157,8 +159,8 @@ public class DeviceControllerTest {
 	@Test
 	public void getListOfDeviceTileInavlidBundleid() {
 		try {
-			deviceMakeAndModelController.getListOfDeviceTile("apple", "iPhone-7", "DIVICE_PAYM", "UPGRADE", "W_HH_SIMONLY",
-					"11015445", "093353", "40");
+			deviceMakeAndModelController.getListOfDeviceTile("apple", "iPhone-7", "DIVICE_PAYM", "UPGRADE",
+					"W_HH_SIMONLY", "11015445", "093353", "40");
 		} catch (Exception e) {
 			Assert.assertEquals("Invalid Bundle Id Sent In Request", e.getMessage());
 		}
@@ -326,6 +328,7 @@ public class DeviceControllerTest {
 			}
 		}
 	}
+
 	@Test
 	public void NotnullTestForCacheDeviceTile() {
 		ServiceContext.urlParamContext.remove();
@@ -339,109 +342,109 @@ public class DeviceControllerTest {
 	}
 	// Accessory test cases START
 
-		@Test
-		public void notNullTestForAccessoriesOfDevice() {
-			try {
-				List<AccessoryTileGroup> accessoryDetails = new ArrayList<>();
-				accessoryDetails = accessoryInsuranceController.getAccessoriesOfDevice("093353", "Upgrade",
-						"W_HH_PAYM_OC_02");
-				Assert.assertNotNull(accessoryDetails);
-			} catch (Exception e) {
-
-			}
-		}
-
-		@Test
-		public void nullValueTestForGetAccessoriesOfDevice() {
+	@Test
+	public void notNullTestForAccessoriesOfDevice() {
+		try {
 			List<AccessoryTileGroup> accessoryDetails = new ArrayList<>();
-			try {
+			accessoryDetails = accessoryInsuranceController.getAccessoriesOfDevice("093353", "Upgrade",
+					"W_HH_PAYM_OC_02");
+			Assert.assertNotNull(accessoryDetails);
+		} catch (Exception e) {
 
-				accessoryDetails = accessoryInsuranceController.getAccessoriesOfDevice(null, null, null);
-			} catch (Exception e) {
-				try {
-
-					accessoryDetails = accessoryInsuranceController.getAccessoriesOfDevice("1234", null, null);
-				} catch (Exception ex) {
-				}
-			}
-			Assert.assertEquals(0, accessoryDetails.size());
 		}
-		// Insurance test cases Start
+	}
 
-		@Test
-		public void nullTestForGetInsuranceById() {
-			Insurances insurance = null;
-			try {
-				insurance = accessoryInsuranceController.getInsuranceById(null, null);
-			} catch (Exception e) {
+	@Test
+	public void nullValueTestForGetAccessoriesOfDevice() {
+		List<AccessoryTileGroup> accessoryDetails = new ArrayList<>();
+		try {
 
-			}
-			Assert.assertNull(insurance);
-		}
-
-		@Test
-		public void nullTestForGetInsuranceByInvalidDeviceId() {
-			Insurances insurance = null;
-			try {
-				insurance = accessoryInsuranceController.getInsuranceById("0933as5", null);
-			} catch (Exception e) {
-
-			}
-			Assert.assertNull(insurance);
-		}
-
-		@Test
-		public void notNullTestForGetInsuranceById() {
-
+			accessoryDetails = accessoryInsuranceController.getAccessoriesOfDevice(null, null, null);
+		} catch (Exception e) {
 			try {
 
-				accessoryInsuranceController.getInsuranceById("093353", null);
-				accessoryInsuranceController.getInsuranceById("93353", null);
-			} catch (Exception e) {
+				accessoryDetails = accessoryInsuranceController.getAccessoriesOfDevice("1234", null, null);
+			} catch (Exception ex) {
 			}
 		}
+		Assert.assertEquals(0, accessoryDetails.size());
+	}
+	// Insurance test cases Start
 
-		@Test
-		public void nullTestForDeviceDetails() {
-			try {
-				deviceDetailsController.getDeviceDetails(null, "abc", "abc");
-			} catch (Exception e) {
-			}
-			try {
-				deviceDetailsController.getDeviceDetails("093353", "abc", "abc");
-			} catch (Exception e) {
-			}
-			try {
-				deviceDetailsController.getDeviceDetails(null, null, null);
-			} catch (Exception e) {
+	@Test
+	public void nullTestForGetInsuranceById() {
+		Insurances insurance = null;
+		try {
+			insurance = accessoryInsuranceController.getInsuranceById(null, null);
+		} catch (Exception e) {
 
-			}
-			try {
-				deviceDetailsController.getDeviceDetails("093353", "abc", "abc");
-			} catch (Exception e) {
-
-			}
-			try {
-				deviceDetailsController.getDeviceDetails("093353", null, "abc");
-			} catch (Exception e) {
-
-			}
-			try {
-				deviceDetailsController.getDeviceDetails("093353", null, null);
-			} catch (Exception e) {
-
-			}
-			try {
-				deviceDetailsController.getDeviceDetails("093353as", null, "abc");
-			} catch (Exception e) {
-
-			}
-			try {
-				deviceDetailsController.getDeviceDetails(null, null, "abc");
-			} catch (Exception e) {
-
-			}
 		}
+		Assert.assertNull(insurance);
+	}
+
+	@Test
+	public void nullTestForGetInsuranceByInvalidDeviceId() {
+		Insurances insurance = null;
+		try {
+			insurance = accessoryInsuranceController.getInsuranceById("0933as5", null);
+		} catch (Exception e) {
+
+		}
+		Assert.assertNull(insurance);
+	}
+
+	@Test
+	public void notNullTestForGetInsuranceById() {
+
+		try {
+
+			accessoryInsuranceController.getInsuranceById("093353", null);
+			accessoryInsuranceController.getInsuranceById("93353", null);
+		} catch (Exception e) {
+		}
+	}
+
+	@Test
+	public void nullTestForDeviceDetails() {
+		try {
+			deviceDetailsController.getDeviceDetails(null, "abc", "abc");
+		} catch (Exception e) {
+		}
+		try {
+			deviceDetailsController.getDeviceDetails("093353", "abc", "abc");
+		} catch (Exception e) {
+		}
+		try {
+			deviceDetailsController.getDeviceDetails(null, null, null);
+		} catch (Exception e) {
+
+		}
+		try {
+			deviceDetailsController.getDeviceDetails("093353", "abc", "abc");
+		} catch (Exception e) {
+
+		}
+		try {
+			deviceDetailsController.getDeviceDetails("093353", null, "abc");
+		} catch (Exception e) {
+
+		}
+		try {
+			deviceDetailsController.getDeviceDetails("093353", null, null);
+		} catch (Exception e) {
+
+		}
+		try {
+			deviceDetailsController.getDeviceDetails("093353as", null, "abc");
+		} catch (Exception e) {
+
+		}
+		try {
+			deviceDetailsController.getDeviceDetails(null, null, "abc");
+		} catch (Exception e) {
+
+		}
+	}
 	/*
 	 * @Before public void setupMockBehaviour() throws Exception {
 	 * aspect.beforeAdvice(null); String jsonString = new
