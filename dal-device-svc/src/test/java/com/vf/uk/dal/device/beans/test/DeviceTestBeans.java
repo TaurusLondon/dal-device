@@ -33,15 +33,17 @@ import com.vf.uk.dal.device.utils.ResponseMappingHelper;
 
 @Configuration
 public class DeviceTestBeans {
-	//** Bean for the controller class is created here **//*
+	// ** Bean for the controller class is created here **//*
 	@Bean
 	public DeviceController getDeviceController() {
 		return new DeviceController();
 	}
+
 	@Bean
 	public DeviceEntityController getDeviceEntityController() {
 		return new DeviceEntityController();
 	}
+
 	@Bean
 	public AccessoryInsuranceController getAccessoryInsuranceController() {
 		return new AccessoryInsuranceController();
@@ -51,96 +53,109 @@ public class DeviceTestBeans {
 	public DeviceServiceImpl getDeviceServiceImpl() {
 		return new DeviceServiceImpl();
 	}
-	
+
 	@Bean
 	public DataSourceInitializer dataSourceInitializer() {
 		return new DataSourceInitializer();
 	}
-	
+
 	@Bean
-	public RegistryClient getRegistryClient(){
+	public RegistryClient getRegistryClient() {
 		return new RegistryClient();
 	}
-	
+
 	@Bean
 	public Environment getEnvironment() {
 		return new Environment();
 	}
-	
+
 	@Bean
 	public DeviceRecommendationService getDeviceRecommendationServiceImpl() {
 		return new DeviceRecommendationServiceImpl();
 	}
-	
+
 	@Bean
 	public DeviceDao getDeviceDaoImpl() {
 		return new DeviceDaoImpl();
 	}
-	
+
 	@Bean
 	public ConfigHelper getConfigHelper() {
 		return new ConfigHelper();
 	}
+
 	@Bean
-	public ResponseMappingHelper getResponseMappingHelper(){
+	public ResponseMappingHelper getResponseMappingHelper() {
 		return new ResponseMappingHelper();
 	}
+
 	@Bean
-	public ElasticSearchUtils getElasticSearchUtils(){
+	public ElasticSearchUtils getElasticSearchUtils() {
 		return new ElasticSearchUtils();
 	}
+
 	@Bean
-	public CatalogServiceAspect getCatalogServiceAspect(){
+	public CatalogServiceAspect getCatalogServiceAspect() {
 		return new CatalogServiceAspect();
 	}
-	
-	
+
 	@Bean
-	public DeviceTileCacheDAOImpl getDeviceTileCacheDAOImpl(){
+	public DeviceTileCacheDAOImpl getDeviceTileCacheDAOImpl() {
 		return new DeviceTileCacheDAOImpl();
 	}
+
 	@Bean
-	public DeviceESHelper getDeviceESHelper(){
+	public DeviceESHelper getDeviceESHelper() {
 		return new DeviceESHelper();
 	}
-	@Bean 
-	public DeviceConditionallHelper getDeviceConditionallHelper(){
+
+	@Bean
+	public DeviceConditionallHelper getDeviceConditionallHelper() {
 		return new DeviceConditionallHelper();
 	}
+
 	@Bean
-	public CacheDeviceServiceImpl getCacheDeviceServiceImpl(){
+	public CacheDeviceServiceImpl getCacheDeviceServiceImpl() {
 		return new CacheDeviceServiceImpl();
 	}
+
 	@Bean
-	public DeviceDetailsServiceImpl getDeviceDetailsServiceImpl(){
+	public DeviceDetailsServiceImpl getDeviceDetailsServiceImpl() {
 		return new DeviceDetailsServiceImpl();
 	}
+
 	@Bean
-	public DeviceEntityServiceImpl getDeviceEntityServiceImpl(){
+	public DeviceEntityServiceImpl getDeviceEntityServiceImpl() {
 		return new DeviceEntityServiceImpl();
 	}
+
 	@Bean
-	public DeviceMakeAndModelServiceImpl getDeviceMakeAndModelServiceImpl(){
+	public DeviceMakeAndModelServiceImpl getDeviceMakeAndModelServiceImpl() {
 		return new DeviceMakeAndModelServiceImpl();
 	}
+
 	@Bean
-	public DeviceServiceCommonUtility getDeviceServiceCommonUtility(){
+	public DeviceServiceCommonUtility getDeviceServiceCommonUtility() {
 		return new DeviceServiceCommonUtility();
 	}
+
 	@Bean
-	public AccessoryInsuranceServiceImpl getAccessoryInsuranceServiceImpl(){
+	public AccessoryInsuranceServiceImpl getAccessoryInsuranceServiceImpl() {
 		return new AccessoryInsuranceServiceImpl();
 	}
+
 	@Bean
-	public DeviceMakeAndModelController getDeviceMakeAndModelController(){
+	public DeviceMakeAndModelController getDeviceMakeAndModelController() {
 		return new DeviceMakeAndModelController();
 	}
+
 	@Bean
-	public DeviceDetailsController getDeviceDetailsController(){
+	public DeviceDetailsController getDeviceDetailsController() {
 		return new DeviceDetailsController();
 	}
+
 	@Bean
-	public CacheDeviceAndReviewController getCacheDeviceAndReviewController(){
+	public CacheDeviceAndReviewController getCacheDeviceAndReviewController() {
 		return new CacheDeviceAndReviewController();
 	}
 }
