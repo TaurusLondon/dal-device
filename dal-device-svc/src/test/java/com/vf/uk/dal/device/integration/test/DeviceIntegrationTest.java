@@ -94,10 +94,10 @@ import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
 @SpringBootTest(classes = DeviceTestBeans.class)
 
 public class DeviceIntegrationTest {
-	
+
 	@Autowired
 	DeviceESHelper deviceESHelper;
-	
+
 	@MockBean
 	DeviceDao deviceDAOMock;
 
@@ -136,7 +136,7 @@ public class DeviceIntegrationTest {
 
 	@Autowired
 	CacheDeviceService CacheDeviceService;
-	
+
 	@Autowired
 	DeviceServiceCommonUtility deviceServiceCommonUtility;
 
@@ -162,7 +162,7 @@ public class DeviceIntegrationTest {
 		given(response.getCommercialBundle(Matchers.anyObject()))
 				.willReturn(CommonMethods.getCommercialBundleFromCommercialBundleRepository());
 		given(response.getListOfMerchandisingPromotionFromJson(Matchers.anyObject()))
-				.willReturn(CommonMethods.getMerchandisingPromotion1());
+				.willReturn(CommonMethods.getMerchandisingPromotion_One());
 		String jsonString1 = new String(Utility.readFile("\\rest-mock\\CUSTOMER-V1.json"));
 		RecommendedProductListResponse obj1 = new ObjectMapper().readValue(jsonString1,
 				RecommendedProductListResponse.class);
@@ -240,7 +240,7 @@ public class DeviceIntegrationTest {
 	}
 
 	@Test
-	public void invalidInputTestForgetDeviceDetails1() throws Exception {
+	public void invalidInputTestForgetDeviceDetails_One() throws Exception {
 		DeviceDetails deviceDetails = new DeviceDetails();
 		try {
 			deviceDetails = deviceDetailsController.getDeviceDetails("1234", null, null);
@@ -258,7 +258,7 @@ public class DeviceIntegrationTest {
 	}
 
 	@Test
-	public void notNullTestForgetDeviceDetails1() {
+	public void notNullTestForgetDeviceDetails_One() {
 		DeviceDetails deviceDetails = new DeviceDetails();
 		given(restTemplate.getForObject(
 				"http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=093353",
@@ -515,7 +515,7 @@ public class DeviceIntegrationTest {
 	}
 
 	@Test
-	public void nullTestForGetDeviceList1() {
+	public void nullTestForGetDeviceList_One() {
 		FacetedDevice deviceLists = null;
 		try {
 			Mockito.when(deviceRecomServiceMock.getRecommendedDeviceList("journeyId", "093353", Mockito.anyObject()))
@@ -530,7 +530,7 @@ public class DeviceIntegrationTest {
 	}
 
 	@Test
-	public void nullTestForGetDeviceList2() {
+	public void nullTestForGetDeviceList_Two() {
 		FacetedDevice deviceLists = null;
 		try {
 			Mockito.when(deviceRecomServiceMock.getRecommendedDeviceList("journeyId", "093353", Mockito.anyObject()))
@@ -545,7 +545,7 @@ public class DeviceIntegrationTest {
 	}
 
 	@Test
-	public void nullTestForGetDeviceList3() {
+	public void nullTestForGetDeviceList_Three() {
 		FacetedDevice deviceLists = null;
 		try {
 			Mockito.when(deviceRecomServiceMock.getRecommendedDeviceList("journeyId", "093353", Mockito.anyObject()))
@@ -560,7 +560,7 @@ public class DeviceIntegrationTest {
 	}
 
 	@Test
-	public void nullTestForGetDeviceList4() {
+	public void nullTestForGetDeviceList_Four() {
 		FacetedDevice deviceLists = null;
 		try {
 			Mockito.when(deviceRecomServiceMock.getRecommendedDeviceList("journeyId", "093353", Mockito.anyObject()))
@@ -728,7 +728,7 @@ public class DeviceIntegrationTest {
 	}
 
 	@Test
-	public void nullTestForGetDeviceListForGroupTypeWithOutConditionalAcceptance1() {
+	public void nullTestForGetDeviceListForGroupTypeWithOutConditionalAcceptance_One() {
 		given(response.getListOfProductGroupModel(Matchers.anyObject()))
 				.willReturn(CommonMethods.getListOfProductGroupMode());
 		given(response.getFacetField(Matchers.anyObject())).willReturn(CommonMethods.getListOfFacetField());
@@ -736,7 +736,7 @@ public class DeviceIntegrationTest {
 		given(response.getListOfOfferAppliedPriceModel(Matchers.anyObject()))
 				.willReturn(CommonMethods.getOfferAppliedPriceModel());
 		given(this.response.getListOfMerchandisingPromotionModelFromJson(Matchers.anyObject()))
-				.willReturn(CommonMethods.getMerChandisingPromotion1());
+				.willReturn(CommonMethods.getMerChandisingPromotion_One());
 
 		FacetedDevice deviceLists = null;
 		try {
@@ -758,7 +758,7 @@ public class DeviceIntegrationTest {
 	}
 
 	@Test(expected = Exception.class)
-	public void nullTestForGetDeviceListForExcption1() {
+	public void nullTestForGetDeviceListForExcption_One() {
 		given(this.response.getListOfMerchandisingPromotionModelFromJson(Matchers.anyObject()))
 				.willReturn(CommonMethods.getMerChandisingPromotion());
 
@@ -768,7 +768,7 @@ public class DeviceIntegrationTest {
 	}
 
 	@Test(expected = Exception.class)
-	public void nullTestForGetDeviceListForExcption3() {
+	public void nullTestForGetDeviceListForExcption_Three() {
 		given(this.response.getListOfMerchandisingPromotionModelFromJson(Matchers.anyObject()))
 				.willReturn(CommonMethods.getMerChandisingPromotion());
 		deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYM", "Priority", 0, 9, "32 GB", "White",
@@ -777,7 +777,7 @@ public class DeviceIntegrationTest {
 	}
 
 	@Test(expected = Exception.class)
-	public void nullTestForGetDeviceListForExcption4() {
+	public void nullTestForGetDeviceListForExcption_Four() {
 		given(this.response.getListOfMerchandisingPromotionModelFromJson(Matchers.anyObject()))
 				.willReturn(CommonMethods.getMerChandisingPromotion());
 		deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYM", "Priority", 0, 9, "32 GB", "White",
@@ -838,7 +838,7 @@ public class DeviceIntegrationTest {
 		ServiceContext.setURLParamContext(new URLParamContext("", "", fcList, null));
 		given(deviceTileCache.insertCacheDeviceToDb()).willReturn(CommonMethods.getCacheDeviceTileResponse());
 		List<CommercialProduct> a = new ArrayList<>();
-		a.add(CommonMethods.getCommercialProduct5());
+		a.add(CommonMethods.getCommercialProduct_Five());
 		given(response.getCommercialProductFromJson(Matchers.anyObject())).willReturn(a);
 		List<CommercialBundle> listOfCommerCualBundle = new ArrayList<>();
 		listOfCommerCualBundle.add(CommonMethods.getCommercialBundle());
@@ -885,7 +885,7 @@ public class DeviceIntegrationTest {
 		given(deviceTileCache.insertCacheDeviceToDb()).willReturn(CommonMethods.getCacheDeviceTileResponse());
 		CommercialProduct com = CommonMethods.getCommercialProductForCacheDeviceTile();
 		com.setLeadPlanId(null);
-		CommercialProduct com1 = CommonMethods.getCommercialProductForCacheDeviceTile1();
+		CommercialProduct com1 = CommonMethods.getCommercialProductForCacheDeviceTile_One();
 		List<CommercialProduct> a = new ArrayList<>();
 		a.add(com);
 		a.add(com1);
@@ -941,7 +941,7 @@ public class DeviceIntegrationTest {
 		ServiceContext.setURLParamContext(new URLParamContext("", "", fcList, null));
 		given(deviceTileCache.insertCacheDeviceToDb()).willReturn(CommonMethods.getCacheDeviceTileResponse());
 		Collection<CommercialProduct> a = new ArrayList<>();
-		a.add(CommonMethods.getCommercialProduct5());
+		a.add(CommonMethods.getCommercialProduct_Five());
 		given(this.response.getListOfMerchandisingPromotionModelFromJson(Matchers.anyObject()))
 				.willReturn(CommonMethods.getModel());
 		ObjectMapper mapper = new ObjectMapper();
@@ -982,7 +982,7 @@ public class DeviceIntegrationTest {
 		ServiceContext.setURLParamContext(new URLParamContext("", "", fcList, null));
 		given(deviceTileCache.insertCacheDeviceToDb()).willReturn(CommonMethods.getCacheDeviceTileResponse());
 		List<CommercialProduct> a = new ArrayList<>();
-		a.add(CommonMethods.getCommercialProduct5());
+		a.add(CommonMethods.getCommercialProduct_Five());
 		given(response.getCommercialProductFromJson(Matchers.anyObject())).willReturn(a);
 		List<CommercialBundle> listOfCommerCualBundle = new ArrayList<>();
 		listOfCommerCualBundle.add(CommonMethods.getCommercialBundle());
@@ -1082,13 +1082,15 @@ public class DeviceIntegrationTest {
 	public void testForDb() {
 		CacheDeviceService.updateCacheDeviceToDb("12055", "457892");
 	}
+
 	@Test
 	public void testForIndexPrecalData() {
 		CacheDeviceService.indexPrecalData(CommonMethods.getDevicePreCalculatedDataFromSolr());
 	}
+
 	@Test
 	public void testForGetNonUpgradeLeadPlanIdForPaymCacheDevice() {
-		Map<String, List<PriceForBundleAndHardware>> nonLeadPlanIdPriceMap =new HashMap<>();
+		Map<String, List<PriceForBundleAndHardware>> nonLeadPlanIdPriceMap = new HashMap<>();
 		nonLeadPlanIdPriceMap.put("093353", CommonMethods.getPriceForBundleAndHardwareForCacheDeviceTile());
 		Map<String, CommercialBundle> commercialBundleMap = new HashMap<>();
 		commercialBundleMap.put("110154", CommonMethods.getCommercialBundle());
@@ -1096,15 +1098,17 @@ public class DeviceIntegrationTest {
 		CacheDeviceService.getNonUpgradeLeadPlanIdForPaymCacheDevice(nonLeadPlanIdPriceMap, new HashMap<>(),
 				commercialBundleMap, new ArrayList<>(), "093353", "Apple-Iphone");
 	}
+
 	@Test
 	public void testForGetUpgradeLeadPlanIdForCacheDevice() {
-		Map<String, List<PriceForBundleAndHardware>> nonLeadPlanIdPriceMap =new HashMap<>();
+		Map<String, List<PriceForBundleAndHardware>> nonLeadPlanIdPriceMap = new HashMap<>();
 		nonLeadPlanIdPriceMap.put("093353", CommonMethods.getPriceForBundleAndHardwareForCacheDeviceTile());
 		Map<String, CommercialBundle> commercialBundleMap = new HashMap<>();
 		commercialBundleMap.put("110154", CommonMethods.getCommercialBundle());
 		commercialBundleMap.put("110163", CommonMethods.getCommercialBundleForcacheDevice());
 		CacheDeviceService.getUpgradeLeadPlanIdForCacheDevice(nonLeadPlanIdPriceMap, commercialBundleMap, "093353");
 	}
+
 	@Test
 	public void testForGetDevicePrecaldataForPaymCacheDeviceTile() {
 		Set<String> listOfOfferCodes = new HashSet<>();
@@ -1112,18 +1116,19 @@ public class DeviceIntegrationTest {
 		listOfOfferCodes.add("W_HH_OC_02");
 		listOfOfferCodes.add("W_HH_OC_Paym_01");
 		listOfOfferCodes.add("W_HH_OC_Paym_02");
-		Map<String, List<PriceForBundleAndHardware>> nonLeadPlanIdPriceMap =new HashMap<>();
+		Map<String, List<PriceForBundleAndHardware>> nonLeadPlanIdPriceMap = new HashMap<>();
 		nonLeadPlanIdPriceMap.put("093353", CommonMethods.getPriceForBundleAndHardwareForCacheDeviceTile());
-		Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap =new HashMap<>();
+		Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap = new HashMap<>();
 		leadPlanIdPriceMap.put("093353", CommonMethods.getPriceForBundleAndHardwareForCacheDeviceTile().get(0));
 		Map<String, CommercialBundle> commercialBundleMap = new HashMap<>();
 		commercialBundleMap.put("110154", CommonMethods.getCommercialBundle());
 		commercialBundleMap.put("110163", CommonMethods.getCommercialBundleForcacheDevice());
-		Map<String, String> listOfLeadPlanId=new HashMap<>();
+		Map<String, String> listOfLeadPlanId = new HashMap<>();
 		listOfLeadPlanId.put("093353", "110163");
-		Map<String, List<String>> listOfCimpatiblePlanMap =new HashMap<>();
+		Map<String, List<String>> listOfCimpatiblePlanMap = new HashMap<>();
 		List<String> compatiblePlans = new ArrayList<>();
-		compatiblePlans.add("110154");compatiblePlans.add("110163");
+		compatiblePlans.add("110154");
+		compatiblePlans.add("110163");
 		listOfCimpatiblePlanMap.put("093353", compatiblePlans);
 		Map<String, List<BundleAndHardwareTuple>> bundleHardwareTroupleMap = new HashMap<>();
 		List<BundleAndHardwareTuple> listOfBundleHardwareTruple = new ArrayList<>();
@@ -1139,369 +1144,389 @@ public class DeviceIntegrationTest {
 		bundleHardwareTroupleMap.put("W_HH_OC_02", listOfBundleHardwareTruple);
 		bundleHardwareTroupleMap.put("W_HH_OC_Paym_01", listOfBundleHardwareTruple);
 		bundleHardwareTroupleMap.put("W_HH_OC_Paym_02", listOfBundleHardwareTruple);
-		List<String> l=new ArrayList<>();
+		List<String> l = new ArrayList<>();
 		l.add("093353");
-		Map<String, String> map= new HashMap<>();
+		Map<String, String> map = new HashMap<>();
 		map.put("093353", "Y");
-		List<DevicePreCalculatedData>d=new ArrayList<>();
-		Map<String, String> groupMap= new HashMap<>();
+		List<DevicePreCalculatedData> d = new ArrayList<>();
+		Map<String, String> groupMap = new HashMap<>();
 		groupMap.put("093353", "Apple-iphone&&2");
-		CacheDeviceService.getDevicePrecaldataForPaymCacheDeviceTile("DEVICE_PAYM",l, d, 
-				listOfOfferCodes, map, map,
-				groupMap, leadPlanIdPriceMap,
-				nonLeadPlanIdPriceMap,nonLeadPlanIdPriceMap, commercialBundleMap, 
-				listOfLeadPlanId, listOfCimpatiblePlanMap, 
-				CommonMethods.getPriceForBundleAndHardwareForCacheDeviceTile(), 
-				bundleHardwareTroupleMap, nonLeadPlanIdPriceMap, "093353");
+		CacheDeviceService.getDevicePrecaldataForPaymCacheDeviceTile("DEVICE_PAYM", l, d, listOfOfferCodes, map, map,
+				groupMap, leadPlanIdPriceMap, nonLeadPlanIdPriceMap, nonLeadPlanIdPriceMap, commercialBundleMap,
+				listOfLeadPlanId, listOfCimpatiblePlanMap,
+				CommonMethods.getPriceForBundleAndHardwareForCacheDeviceTile(), bundleHardwareTroupleMap,
+				nonLeadPlanIdPriceMap, "093353");
 	}
+
 	@Test
-	public void testForConvertBundleHeaderForDeviceToProductGroupForDeviceListingNullLeadPlanId()
-	{
-		Map<String, List<PriceForBundleAndHardware>> iLSPriceMap =new HashMap<>();
+	public void testForConvertBundleHeaderForDeviceToProductGroupForDeviceListingNullLeadPlanId() {
+		Map<String, List<PriceForBundleAndHardware>> iLSPriceMap = new HashMap<>();
 		iLSPriceMap.put("093353", CommonMethods.getOfferAppliedPrice());
-		DevicePreCalculatedData	productGroupForDeviceListing=CacheDeviceDaoUtils
-		.convertBundleHeaderForDeviceToProductGroupForDeviceListing("093353",null,"groupname"
-				,"groupId", CommonMethods.getPrice(),CommonMethods.getleadMemberMap(),iLSPriceMap,CommonMethods.getleadMemberMap(),null,Constants.STRING_DEVICE_PAYG);
+		DevicePreCalculatedData productGroupForDeviceListing = CacheDeviceDaoUtils
+				.convertBundleHeaderForDeviceToProductGroupForDeviceListing("093353", null, "groupname", "groupId",
+						CommonMethods.getPrice(), CommonMethods.getleadMemberMap(), iLSPriceMap,
+						CommonMethods.getleadMemberMap(), null, Constants.STRING_DEVICE_PAYG);
 
 		Assert.assertNotNull(productGroupForDeviceListing);
 	}
+
 	@Test
-	public void testForConvertBundleHeaderForDeviceToProductGroupForDeviceListing()
-	{
-		Map<String, List<PriceForBundleAndHardware>> iLSPriceMap =new HashMap<>();
+	public void testForConvertBundleHeaderForDeviceToProductGroupForDeviceListing() {
+		Map<String, List<PriceForBundleAndHardware>> iLSPriceMap = new HashMap<>();
 		iLSPriceMap.put("093353", CommonMethods.getOfferAppliedPrice());
-		DevicePreCalculatedData	productGroupForDeviceListing=CacheDeviceDaoUtils
-		.convertBundleHeaderForDeviceToProductGroupForDeviceListing("093353","leadPlanId","groupname"
-				,"groupId", CommonMethods.getPrice(), CommonMethods.getleadMemberMap(),iLSPriceMap,CommonMethods.getleadMemberMap(),"upgradeLeadPlanId",Constants.STRING_DEVICE_PAYM);
+		DevicePreCalculatedData productGroupForDeviceListing = CacheDeviceDaoUtils
+				.convertBundleHeaderForDeviceToProductGroupForDeviceListing("093353", "leadPlanId", "groupname",
+						"groupId", CommonMethods.getPrice(), CommonMethods.getleadMemberMap(), iLSPriceMap,
+						CommonMethods.getleadMemberMap(), "upgradeLeadPlanId", Constants.STRING_DEVICE_PAYM);
 
 		Assert.assertNotNull(productGroupForDeviceListing);
 	}
+
 	@Test
-	public void testForGetListOfOfferAppliedPriceDetails()
-	{
-		List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceDetails> listOfferAppliedPriceDetails=	CacheDeviceDaoUtils
-		.getListOfOfferAppliedPriceDetails(CommonMethods.getOfferAppliedPriceDetails());
+	public void testForGetListOfOfferAppliedPriceDetails() {
+		List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceDetails> listOfferAppliedPriceDetails = CacheDeviceDaoUtils
+				.getListOfOfferAppliedPriceDetails(CommonMethods.getOfferAppliedPriceDetails());
 
 		Assert.assertNotNull(listOfferAppliedPriceDetails);
 	}
+
 	@Test
-	public void testForGetPriceForSolr()
-	{
-		com.vf.uk.dal.device.datamodel.merchandisingpromotion.PriceInfo listOfferAppliedPriceDetails=	CacheDeviceDaoUtils
-		.getPriceForSolr(CommonMethods.getPriceinforForSorl());
+	public void testForGetPriceForSolr() {
+		com.vf.uk.dal.device.datamodel.merchandisingpromotion.PriceInfo listOfferAppliedPriceDetails = CacheDeviceDaoUtils
+				.getPriceForSolr(CommonMethods.getPriceinforForSorl());
 
 		Assert.assertNotNull(listOfferAppliedPriceDetails);
 	}
+
 	@Test
-	public void testForGetListOfSolrMedia()
-	{
-		List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.Media> listOfferAppliedPriceDetails=	
-				CacheDeviceDaoUtils
-		.getListOfSolrMedia(CommonMethods.getmediaForSorl());
+	public void testForGetListOfSolrMedia() {
+		List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.Media> listOfferAppliedPriceDetails = CacheDeviceDaoUtils
+				.getListOfSolrMedia(CommonMethods.getmediaForSorl());
 
 		Assert.assertNotNull(listOfferAppliedPriceDetails);
 	}
+
 	@Test
-	public void testForGetListOfIlsPriceWithoutOfferCode()
-	{
-		Map<String, Map<String, List<PriceForBundleAndHardware>>> ilsPriceForBundleAndHardwareMap= new HashMap<>();
-		Map<String, List<PriceForBundleAndHardware>> iLSPriceMap =new HashMap<>();
+	public void testForGetListOfIlsPriceWithoutOfferCode() {
+		Map<String, Map<String, List<PriceForBundleAndHardware>>> ilsPriceForBundleAndHardwareMap = new HashMap<>();
+		Map<String, List<PriceForBundleAndHardware>> iLSPriceMap = new HashMap<>();
 		iLSPriceMap.put("093353", CommonMethods.getOfferAppliedPrice());
 		ilsPriceForBundleAndHardwareMap.put("SecondLine", iLSPriceMap);
-				CacheDeviceDaoUtils
-		.getListOfIlsPriceWithoutOfferCode("093353", ilsPriceForBundleAndHardwareMap);
+		CacheDeviceDaoUtils.getListOfIlsPriceWithoutOfferCode("093353", ilsPriceForBundleAndHardwareMap);
 
-		//Assert.assertNotNull(listOfferAppliedPriceDetails);
-	}@Test
-	public void testForGetListOfOfferAppliedPrice()
-	{
-		Map<String, Map<String, Map<String, List<PriceForBundleAndHardware>>>> listOfeerCode= new HashMap<>();
-		Map<String, Map<String, List<PriceForBundleAndHardware>>> ilsPriceForBundleAndHardwareMap= new HashMap<>();
-		Map<String, List<PriceForBundleAndHardware>> iLSPriceMap =new HashMap<>();
+		// Assert.assertNotNull(listOfferAppliedPriceDetails);
+	}
+
+	@Test
+	public void testForGetListOfOfferAppliedPrice() {
+		Map<String, Map<String, Map<String, List<PriceForBundleAndHardware>>>> listOfeerCode = new HashMap<>();
+		Map<String, Map<String, List<PriceForBundleAndHardware>>> ilsPriceForBundleAndHardwareMap = new HashMap<>();
+		Map<String, List<PriceForBundleAndHardware>> iLSPriceMap = new HashMap<>();
 		iLSPriceMap.put("093353", CommonMethods.getOfferAppliedPrice());
 		ilsPriceForBundleAndHardwareMap.put("W_HH_Paym_02", iLSPriceMap);
 		listOfeerCode.put("SecondLine", ilsPriceForBundleAndHardwareMap);
-				CacheDeviceDaoUtils
-		.getListOfOfferAppliedPrice("093353", listOfeerCode);
+		CacheDeviceDaoUtils.getListOfOfferAppliedPrice("093353", listOfeerCode);
 
-		//Assert.assertNotNull(listOfferAppliedPriceDetails);
+		// Assert.assertNotNull(listOfferAppliedPriceDetails);
 	}
+
 	@Test
-	public void testForGetPriceInfoForSolr()
-	{
-		
-				CacheDeviceDaoUtils
-		.getPriceInfoForSolr(CommonMethods.getOfferAppliedPrice().get(0), new HashMap<>());
+	public void testForGetPriceInfoForSolr() {
+
+		CacheDeviceDaoUtils.getPriceInfoForSolr(CommonMethods.getOfferAppliedPrice().get(0), new HashMap<>());
 
 	}
+
 	@Test
-	public void testForGetMerchandising()
-	{
-		List<String> promoteAs= new ArrayList<>();
+	public void testForGetMerchandising() {
+		List<String> promoteAs = new ArrayList<>();
 		promoteAs.add("handset-promotion");
 		deviceESHelper.getMerchandising(promoteAs);
 	}
+
 	@Test
-	public void testForCalculateDiscount()
-	{
-		Iterator<PriceForBundleAndHardware> iterator=CommonMethods.getOfferAppliedPrice().iterator();
+	public void testForCalculateDiscount() {
+		Iterator<PriceForBundleAndHardware> iterator = CommonMethods.getOfferAppliedPrice().iterator();
 		iterator.next();
 		DeviceServiceImplUtility.calculateDiscount(2.0, iterator, CommonMethods.getOfferAppliedPrice().get(0));
 
 	}
+
 	@Test
 	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList() {
 		Map<String, GroupDetails> productGroupdetailsMap = new HashMap<>();
 		productGroupdetailsMap.put("093353", CommonMethods.getGroupDetails());
 		productGroupdetailsMap.put("092660", CommonMethods.getGroupDetails());
-		Map<String,String> groupNameWithProdId=new HashMap<String, String>();
+		Map<String, String> groupNameWithProdId = new HashMap<String, String>();
 		groupNameWithProdId.put("Apple", "10936");
-		groupNameWithProdId.put("Samsung","7630");
+		groupNameWithProdId.put("Samsung", "7630");
 		Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice = new HashMap<>();
 		listOfOfferAppliedPrice.put("093353", Arrays.asList(CommonMethods.getOfferAppliedPriceModel().get(1)));
 		listOfOfferAppliedPrice.put("092660", Arrays.asList(CommonMethods.getOfferAppliedPriceModel().get(0)));
-		Map<String,Boolean> isLeadMemberFromSolr = new HashMap<>();
+		Map<String, Boolean> isLeadMemberFromSolr = new HashMap<>();
 		isLeadMemberFromSolr.put("leadMember", true);
-		FacetedDevice deviceList = DeviceTilesDaoUtils.convertProductModelListToDeviceList(CommonMethods.getProductModel(),
-				CommonMethods.getListOfProducts(),CommonMethods.getProductGroupFacetModel1().getListOfFacetsFields(),
-				"DEVICE_PAYM",null,null,listOfOfferAppliedPrice,"W_HH_OC_02",
-				groupNameWithProdId ,null,null,
-				isLeadMemberFromSolr,listOfOfferAppliedPrice,"Upgrade",productGroupdetailsMap);
+		FacetedDevice deviceList = DeviceTilesDaoUtils.convertProductModelListToDeviceList(
+				CommonMethods.getProductModel(), CommonMethods.getListOfProducts(),
+				CommonMethods.getProductGroupFacetModel_One().getListOfFacetsFields(), "DEVICE_PAYM", null, null,
+				listOfOfferAppliedPrice, "W_HH_OC_02", groupNameWithProdId, null, null, isLeadMemberFromSolr,
+				listOfOfferAppliedPrice, "Upgrade", productGroupdetailsMap);
 		Assert.assertNotNull(deviceList);
 	}
+
 	@Test
-	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList1() {
+	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList_One() {
 		Map<String, GroupDetails> productGroupdetailsMap = new HashMap<>();
 		productGroupdetailsMap.put("093353", CommonMethods.getGroupDetails());
 		productGroupdetailsMap.put("092660", CommonMethods.getGroupDetails());
-		Map<String,String> groupNameWithProdId=new HashMap<String, String>();
+		Map<String, String> groupNameWithProdId = new HashMap<String, String>();
 		groupNameWithProdId.put("Apple", "10936");
-		groupNameWithProdId.put("Samsung","7630");
-		Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice = new HashMap<>();
-		listOfOfferAppliedPrice.put("093353", Arrays.asList(CommonMethods.getOfferAppliedPriceModel().get(1)));
-		listOfOfferAppliedPrice.put("092660", Arrays.asList(CommonMethods.getOfferAppliedPriceModel().get(0)));
-		Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice1 = new HashMap<>();
-		listOfOfferAppliedPrice1.put("093353", new ArrayList<>());
-		listOfOfferAppliedPrice1.put("092660", new ArrayList<>());
-		Map<String,Boolean> isLeadMemberFromSolr = new HashMap<>();
-		isLeadMemberFromSolr.put("leadMember", true);
-		FacetedDevice deviceList = DeviceTilesDaoUtils.convertProductModelListToDeviceList(CommonMethods.getProductModel(),
-				CommonMethods.getListOfProducts(),CommonMethods.getProductGroupFacetModel1().getListOfFacetsFields(),
-				"DEVICE_PAYM",null,null,listOfOfferAppliedPrice1,null,
-				groupNameWithProdId ,null,null,
-				isLeadMemberFromSolr,listOfOfferAppliedPrice,"Upgrade",productGroupdetailsMap);
-		Assert.assertNotNull(deviceList);
-	}
-	@Test
-	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList3() {
-		Map<String, GroupDetails> productGroupdetailsMap = new HashMap<>();
-		productGroupdetailsMap.put("093353", CommonMethods.getGroupDetails());
-		productGroupdetailsMap.put("092660", CommonMethods.getGroupDetails());
-		Map<String,String> groupNameWithProdId=new HashMap<String, String>();
-		groupNameWithProdId.put("Apple", "10936");
-		groupNameWithProdId.put("Samsung","7630");
-		Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice1 = new HashMap<>();
-		listOfOfferAppliedPrice1.put("093353", new ArrayList<>());
-		listOfOfferAppliedPrice1.put("092660", new ArrayList<>());
-		Map<String,Boolean> isLeadMemberFromSolr = new HashMap<>();
-		isLeadMemberFromSolr.put("leadMember", true);
-		FacetedDevice deviceList = DeviceTilesDaoUtils.convertProductModelListToDeviceList(CommonMethods.getProductModel(),
-				CommonMethods.getListOfProducts(),CommonMethods.getProductGroupFacetModel1().getListOfFacetsFields(),
-				"DEVICE_PAYM",null,null,listOfOfferAppliedPrice1,null,
-				groupNameWithProdId ,null,null,
-				isLeadMemberFromSolr,listOfOfferAppliedPrice1,null,productGroupdetailsMap);
-		Assert.assertNotNull(deviceList);
-	}
-	@Test
-	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList4() {
-		Map<String, GroupDetails> productGroupdetailsMap = new HashMap<>();
-		productGroupdetailsMap.put("093353", CommonMethods.getGroupDetails());
-		productGroupdetailsMap.put("092660", CommonMethods.getGroupDetails());
-		Map<String,String> groupNameWithProdId=new HashMap<String, String>();
-		groupNameWithProdId.put("Apple", "10936");
-		groupNameWithProdId.put("Samsung","7630");
+		groupNameWithProdId.put("Samsung", "7630");
 		Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice = new HashMap<>();
 		listOfOfferAppliedPrice.put("093353", Arrays.asList(CommonMethods.getOfferAppliedPriceModel().get(1)));
 		listOfOfferAppliedPrice.put("092660", Arrays.asList(CommonMethods.getOfferAppliedPriceModel().get(0)));
 		Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice1 = new HashMap<>();
 		listOfOfferAppliedPrice1.put("093353", new ArrayList<>());
 		listOfOfferAppliedPrice1.put("092660", new ArrayList<>());
-		Map<String,Boolean> isLeadMemberFromSolr = new HashMap<>();
+		Map<String, Boolean> isLeadMemberFromSolr = new HashMap<>();
 		isLeadMemberFromSolr.put("leadMember", true);
-		FacetedDevice deviceList = DeviceTilesDaoUtils.convertProductModelListToDeviceList(CommonMethods.getProductModel(),
-				CommonMethods.getListOfProducts(),CommonMethods.getProductGroupFacetModel1().getListOfFacetsFields(),
-				"DEVICE_PAYM",null,null,listOfOfferAppliedPrice1,"W_HH_OC_02",
-				groupNameWithProdId ,null,null,
-				isLeadMemberFromSolr,listOfOfferAppliedPrice,"Upgrade",productGroupdetailsMap);
+		FacetedDevice deviceList = DeviceTilesDaoUtils.convertProductModelListToDeviceList(
+				CommonMethods.getProductModel(), CommonMethods.getListOfProducts(),
+				CommonMethods.getProductGroupFacetModel_One().getListOfFacetsFields(), "DEVICE_PAYM", null, null,
+				listOfOfferAppliedPrice1, null, groupNameWithProdId, null, null, isLeadMemberFromSolr,
+				listOfOfferAppliedPrice, "Upgrade", productGroupdetailsMap);
 		Assert.assertNotNull(deviceList);
 	}
+
 	@Test
-	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList5() {
+	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList_Three() {
 		Map<String, GroupDetails> productGroupdetailsMap = new HashMap<>();
 		productGroupdetailsMap.put("093353", CommonMethods.getGroupDetails());
 		productGroupdetailsMap.put("092660", CommonMethods.getGroupDetails());
-		Map<String,String> groupNameWithProdId=new HashMap<String, String>();
+		Map<String, String> groupNameWithProdId = new HashMap<String, String>();
 		groupNameWithProdId.put("Apple", "10936");
-		groupNameWithProdId.put("Samsung","7630");
+		groupNameWithProdId.put("Samsung", "7630");
 		Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice1 = new HashMap<>();
 		listOfOfferAppliedPrice1.put("093353", new ArrayList<>());
 		listOfOfferAppliedPrice1.put("092660", new ArrayList<>());
-		Map<String,Boolean> isLeadMemberFromSolr = new HashMap<>();
+		Map<String, Boolean> isLeadMemberFromSolr = new HashMap<>();
 		isLeadMemberFromSolr.put("leadMember", true);
-		FacetedDevice deviceList = DeviceTilesDaoUtils.convertProductModelListToDeviceList(CommonMethods.getProductModel(),
-				CommonMethods.getListOfProducts(),CommonMethods.getProductGroupFacetModel1().getListOfFacetsFields(),
-				"DEVICE_PAYM",null,null,listOfOfferAppliedPrice1,"W_HH_OC_02",
-				groupNameWithProdId ,null,null,
-				isLeadMemberFromSolr,listOfOfferAppliedPrice1,"Upgrade",productGroupdetailsMap);
+		FacetedDevice deviceList = DeviceTilesDaoUtils.convertProductModelListToDeviceList(
+				CommonMethods.getProductModel(), CommonMethods.getListOfProducts(),
+				CommonMethods.getProductGroupFacetModel_One().getListOfFacetsFields(), "DEVICE_PAYM", null, null,
+				listOfOfferAppliedPrice1, null, groupNameWithProdId, null, null, isLeadMemberFromSolr,
+				listOfOfferAppliedPrice1, null, productGroupdetailsMap);
 		Assert.assertNotNull(deviceList);
 	}
+
+	@Test
+	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList_Four() {
+		Map<String, GroupDetails> productGroupdetailsMap = new HashMap<>();
+		productGroupdetailsMap.put("093353", CommonMethods.getGroupDetails());
+		productGroupdetailsMap.put("092660", CommonMethods.getGroupDetails());
+		Map<String, String> groupNameWithProdId = new HashMap<String, String>();
+		groupNameWithProdId.put("Apple", "10936");
+		groupNameWithProdId.put("Samsung", "7630");
+		Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice = new HashMap<>();
+		listOfOfferAppliedPrice.put("093353", Arrays.asList(CommonMethods.getOfferAppliedPriceModel().get(1)));
+		listOfOfferAppliedPrice.put("092660", Arrays.asList(CommonMethods.getOfferAppliedPriceModel().get(0)));
+		Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice1 = new HashMap<>();
+		listOfOfferAppliedPrice1.put("093353", new ArrayList<>());
+		listOfOfferAppliedPrice1.put("092660", new ArrayList<>());
+		Map<String, Boolean> isLeadMemberFromSolr = new HashMap<>();
+		isLeadMemberFromSolr.put("leadMember", true);
+		FacetedDevice deviceList = DeviceTilesDaoUtils.convertProductModelListToDeviceList(
+				CommonMethods.getProductModel(), CommonMethods.getListOfProducts(),
+				CommonMethods.getProductGroupFacetModel_One().getListOfFacetsFields(), "DEVICE_PAYM", null, null,
+				listOfOfferAppliedPrice1, "W_HH_OC_02", groupNameWithProdId, null, null, isLeadMemberFromSolr,
+				listOfOfferAppliedPrice, "Upgrade", productGroupdetailsMap);
+		Assert.assertNotNull(deviceList);
+	}
+
+	@Test
+	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList_Five() {
+		Map<String, GroupDetails> productGroupdetailsMap = new HashMap<>();
+		productGroupdetailsMap.put("093353", CommonMethods.getGroupDetails());
+		productGroupdetailsMap.put("092660", CommonMethods.getGroupDetails());
+		Map<String, String> groupNameWithProdId = new HashMap<String, String>();
+		groupNameWithProdId.put("Apple", "10936");
+		groupNameWithProdId.put("Samsung", "7630");
+		Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice1 = new HashMap<>();
+		listOfOfferAppliedPrice1.put("093353", new ArrayList<>());
+		listOfOfferAppliedPrice1.put("092660", new ArrayList<>());
+		Map<String, Boolean> isLeadMemberFromSolr = new HashMap<>();
+		isLeadMemberFromSolr.put("leadMember", true);
+		FacetedDevice deviceList = DeviceTilesDaoUtils.convertProductModelListToDeviceList(
+				CommonMethods.getProductModel(), CommonMethods.getListOfProducts(),
+				CommonMethods.getProductGroupFacetModel_One().getListOfFacetsFields(), "DEVICE_PAYM", null, null,
+				listOfOfferAppliedPrice1, "W_HH_OC_02", groupNameWithProdId, null, null, isLeadMemberFromSolr,
+				listOfOfferAppliedPrice1, "Upgrade", productGroupdetailsMap);
+		Assert.assertNotNull(deviceList);
+	}
+
 	@Test
 	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceListPayG() {
 		Map<String, GroupDetails> productGroupdetailsMap = new HashMap<>();
 		productGroupdetailsMap.put("093353", CommonMethods.getGroupDetails());
 		productGroupdetailsMap.put("092660", CommonMethods.getGroupDetails());
-		Map<String,String> groupNameWithProdId=new HashMap<String, String>();
+		Map<String, String> groupNameWithProdId = new HashMap<String, String>();
 		groupNameWithProdId.put("Apple", "10936");
-		groupNameWithProdId.put("Samsung","7630");
-		/*Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice1 = new HashMap<>();
-		listOfOfferAppliedPrice1.put("093353", new ArrayList<>());
-		listOfOfferAppliedPrice1.put("092660", new ArrayList<>());*/
-		Map<String,Boolean> isLeadMemberFromSolr = new HashMap<>();
+		groupNameWithProdId.put("Samsung", "7630");
+		/*
+		 * Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice1 =
+		 * new HashMap<>(); listOfOfferAppliedPrice1.put("093353", new
+		 * ArrayList<>()); listOfOfferAppliedPrice1.put("092660", new
+		 * ArrayList<>());
+		 */
+		Map<String, Boolean> isLeadMemberFromSolr = new HashMap<>();
 		isLeadMemberFromSolr.put("leadMember", true);
-		FacetedDevice deviceList = DeviceTilesDaoUtils.convertProductModelListToDeviceList(CommonMethods.getProductModel(),
-				CommonMethods.getListOfProducts(),CommonMethods.getProductGroupFacetModel1().getListOfFacetsFields(),
-				"DEVICE_PAYG",null,null,null,null,
-				groupNameWithProdId ,null,null,
-				isLeadMemberFromSolr,null,Constants.JOURNEY_TYPE_ACQUISITION,productGroupdetailsMap);
+		FacetedDevice deviceList = DeviceTilesDaoUtils.convertProductModelListToDeviceList(
+				CommonMethods.getProductModel(), CommonMethods.getListOfProducts(),
+				CommonMethods.getProductGroupFacetModel_One().getListOfFacetsFields(), "DEVICE_PAYG", null, null, null,
+				null, groupNameWithProdId, null, null, isLeadMemberFromSolr, null, Constants.JOURNEY_TYPE_ACQUISITION,
+				productGroupdetailsMap);
 		Assert.assertNotNull(deviceList);
 	}
+
 	@Test
-	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList2() {
+	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList_Two() {
 		Map<String, GroupDetails> productGroupdetailsMap = new HashMap<>();
 		productGroupdetailsMap.put("093353", CommonMethods.getGroupDetails());
 		productGroupdetailsMap.put("092660", CommonMethods.getGroupDetails());
-		Map<String,String> groupNameWithProdId=new HashMap<String, String>();
+		Map<String, String> groupNameWithProdId = new HashMap<String, String>();
 		groupNameWithProdId.put("Apple", "10936");
-		groupNameWithProdId.put("Samsung","7630");
+		groupNameWithProdId.put("Samsung", "7630");
 		Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice1 = new HashMap<>();
 		listOfOfferAppliedPrice1.put("093353", new ArrayList<>());
 		listOfOfferAppliedPrice1.put("092660", new ArrayList<>());
-		Map<String,Boolean> isLeadMemberFromSolr = new HashMap<>();
+		Map<String, Boolean> isLeadMemberFromSolr = new HashMap<>();
 		isLeadMemberFromSolr.put("leadMember", true);
-		FacetedDevice deviceList = DeviceTilesDaoUtils.convertProductModelListToDeviceList(CommonMethods.getProductModel(),
-				CommonMethods.getListOfProducts(),CommonMethods.getProductGroupFacetModel1().getListOfFacetsFields(),
-				"DEVICE_PAYM",null,null,listOfOfferAppliedPrice1,null,
-				groupNameWithProdId ,null,null,
-				isLeadMemberFromSolr,listOfOfferAppliedPrice1,"Upgrade",productGroupdetailsMap);
+		FacetedDevice deviceList = DeviceTilesDaoUtils.convertProductModelListToDeviceList(
+				CommonMethods.getProductModel(), CommonMethods.getListOfProducts(),
+				CommonMethods.getProductGroupFacetModel_One().getListOfFacetsFields(), "DEVICE_PAYM", null, null,
+				listOfOfferAppliedPrice1, null, groupNameWithProdId, null, null, isLeadMemberFromSolr,
+				listOfOfferAppliedPrice1, "Upgrade", productGroupdetailsMap);
 		Assert.assertNotNull(deviceList);
 	}
+
 	@Deprecated
 	@Test
 	public void NotNullTestForDateValidation() {
-		Date startDateTime= new Date("15/05/2017");
-		Date endDateTime= new Date("15/05/2071");
+		Date startDateTime = new Date("15/05/2017");
+		Date endDateTime = new Date("15/05/2071");
 		DeviceTilesDaoUtils.dateValidation(startDateTime, endDateTime, true);
 	}
+
 	@Test
 	public void NotNullTestForGetBundlePriceBasedOnDiscountDuration() {
-		DeviceTilesDaoUtils.getBundlePriceBasedOnDiscountDuration(CommonMethods.getPriceForBundleAndHardware().get(0).getBundlePrice(),
-				Constants.FULL_DURATION_DISCOUNT);
-		DeviceTilesDaoUtils.getBundlePriceBasedOnDiscountDuration(CommonMethods.getPriceForBundleAndHardware().get(0).getBundlePrice(),
-				Constants.LIMITED_TIME_DISCOUNT);
+		DeviceTilesDaoUtils.getBundlePriceBasedOnDiscountDuration(
+				CommonMethods.getPriceForBundleAndHardware().get(0).getBundlePrice(), Constants.FULL_DURATION_DISCOUNT);
+		DeviceTilesDaoUtils.getBundlePriceBasedOnDiscountDuration(
+				CommonMethods.getPriceForBundleAndHardware().get(0).getBundlePrice(), Constants.LIMITED_TIME_DISCOUNT);
 	}
+
 	@Test
 	public void NotNullTestForPopulateMerchandisingPromotions() {
-		PriceForBundleAndHardware bundlePrice=CommonMethods.getPriceForBundleAndHardware().get(0);
+		PriceForBundleAndHardware bundlePrice = CommonMethods.getPriceForBundleAndHardware().get(0);
 		bundlePrice.getBundlePrice().setMerchandisingPromotions(null);
 		DeviceTilesDaoUtils.populateMerchandisingPromotions(bundlePrice,
 				CommonMethods.getPriceForBundleAndHardware().get(0).getBundlePrice());
 	}
+
 	@Test
 	public void NotNullTestForGetBundleAndHardwarePriceFromSolrWithoutOfferCode() {
-		DeviceTilesDaoUtils.getBundleAndHardwarePriceFromSolrWithoutOfferCode(null, 
+		DeviceTilesDaoUtils.getBundleAndHardwarePriceFromSolrWithoutOfferCode(null,
 				CommonMethods.getBundleModelListForBundleListForDeviceList().get(0), "110154");
-		DeviceTilesDaoUtils.getBundleAndHardwarePriceFromSolrWithoutOfferCode(null, 
+		DeviceTilesDaoUtils.getBundleAndHardwarePriceFromSolrWithoutOfferCode(null,
 				CommonMethods.getBundleModelListForBundleListForDeviceList().get(1), "110154");
 	}
+
 	@Test
 	public void NotNullTestForgetDeviceIlsJourneyAwarePriceMap() {
-		Map<String, List<PriceForBundleAndHardware>> iLSPriceMap =new HashMap<>();
+		Map<String, List<PriceForBundleAndHardware>> iLSPriceMap = new HashMap<>();
 		iLSPriceMap.put("093353", CommonMethods.getOfferAppliedPrice());
 		DeviceUtils.getDeviceIlsJourneyAwarePriceMap(new HashMap<>(), CommonMethods.getOfferAppliedPrice().get(0));
 		DeviceUtils.getDeviceIlsJourneyAwarePriceMap(iLSPriceMap, CommonMethods.getOfferAppliedPrice().get(0));
 	}
+
 	@Test
-	public void testForGetEntireIlsJourneyAwareMap()
-	{
-		Map<String, Map<String, Map<String, List<PriceForBundleAndHardware>>>> map=new HashMap<>();
-		Map<String, Map<String, List<PriceForBundleAndHardware>>> ilsPriceForBundleAndHardwareMap= new HashMap<>();
-		Map<String, List<PriceForBundleAndHardware>> iLSPriceMap =new HashMap<>();
+	public void testForGetEntireIlsJourneyAwareMap() {
+		Map<String, Map<String, Map<String, List<PriceForBundleAndHardware>>>> map = new HashMap<>();
+		Map<String, Map<String, List<PriceForBundleAndHardware>>> ilsPriceForBundleAndHardwareMap = new HashMap<>();
+		Map<String, List<PriceForBundleAndHardware>> iLSPriceMap = new HashMap<>();
 		iLSPriceMap.put("093353", CommonMethods.getOfferAppliedPrice());
 		ilsPriceForBundleAndHardwareMap.put("SecondLine", iLSPriceMap);
-				DeviceUtils.getEntireIlsJourneyAwareMap(map, 
-						ilsPriceForBundleAndHardwareMap);
+		DeviceUtils.getEntireIlsJourneyAwareMap(map, ilsPriceForBundleAndHardwareMap);
 	}
+
 	@Test
-	public void testForGetMinimumPriceMap()
-	{
-		Map<String, List<PriceForBundleAndHardware>> iLSPriceMap =new HashMap<>();
+	public void testForGetMinimumPriceMap() {
+		Map<String, List<PriceForBundleAndHardware>> iLSPriceMap = new HashMap<>();
 		iLSPriceMap.put("Apple", CommonMethods.getOfferAppliedPrice());
-				DeviceUtils.getMinimumPriceMap(new HashMap<>(), iLSPriceMap);
+		DeviceUtils.getMinimumPriceMap(new HashMap<>(), iLSPriceMap);
 	}
+
 	@Test
-	public void testForGetmonthlyPriceFormPriceForPayG()
-	{
+	public void testForGetmonthlyPriceFormPriceForPayG() {
 		PriceForBundleAndHardware price = CommonMethods.getOfferAppliedPrice().get(0);
 		DeviceUtils.getmonthlyPriceFormPriceForPayG(price);
 		price.getHardwarePrice().getOneOffPrice().setGross("20");
 		price.getHardwarePrice().getOneOffDiscountPrice().setGross("20");
 		DeviceUtils.getmonthlyPriceFormPriceForPayG(price);
 	}
+
 	@Test
-	public void testForGetUpdateDeviceratingForCacheDevice()
-	{
-		Map<String, String> ratingsReviewMap =new HashMap<>();
+	public void testForGetUpdateDeviceratingForCacheDevice() {
+		Map<String, String> ratingsReviewMap = new HashMap<>();
 		ratingsReviewMap.put("sku93353", "3.275");
-		
+
 		DeviceUtils.updateDeviceratingForCacheDevice(ratingsReviewMap, CommonMethods.getDevicePreCal().get(0));
 	}
+
 	@Test
-	public void testForLeastMonthlyPriceForpayG()
-	{
+	public void testForLeastMonthlyPriceForpayG() {
 		DeviceUtils.leastMonthlyPriceForpayG(CommonMethods.getPriceForBundleAndHardwareListFromTupleList());
 	}
+
 	@Test
 	public void NotNullTestForDaoUtilsconvertCoherenceDeviceToDeviceDetails() {
-		DeviceDetails deviceDetails = DeviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceDetails(CommonMethods.getCommercialProduct(),
-				CommonMethods.getPriceForBundleAndHardware()
-				,CommonMethods.getListOfBundleAndHardwarePromotions());
+		DeviceDetails deviceDetails = DeviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceDetails(
+				CommonMethods.getCommercialProduct(), CommonMethods.getPriceForBundleAndHardware(),
+				CommonMethods.getListOfBundleAndHardwarePromotions());
 		Assert.assertNotNull(deviceDetails);
 	}
+
 	@Test
 	public void NotNullTestForSetPriceMerchandisingPromotion() {
-		AccessoriesAndInsurancedaoUtils.setPriceMerchandisingPromotion(CommonMethods.getForUtilityPriceForBundleAndHardware().get(0).getHardwarePrice());
+		AccessoriesAndInsurancedaoUtils.setPriceMerchandisingPromotion(
+				CommonMethods.getForUtilityPriceForBundleAndHardware().get(0).getHardwarePrice());
 	}
+
 	@Test
 	public void NotNullTestForConvertGroupProductToProductGroupDetails() {
 		ListOfDeviceDetailsDaoUtils.convertGroupProductToProductGroupDetails(CommonMethods.getProductGroupModel());
 	}
+
 	@Test
-	public void NotNullTestForGetAscendingOrderForBundlePrice1() {
-		ListOfDeviceDetailsDaoUtils l= new ListOfDeviceDetailsDaoUtils();
+	public void NotNullTestForGetAscendingOrderForBundlePrice_One() {
+		ListOfDeviceDetailsDaoUtils l = new ListOfDeviceDetailsDaoUtils();
 		l.getAscendingOrderForBundlePrice1(CommonMethods.getBundleHeaderList("SIMO"));
 	}
+
 	@Test
 	public void NotNullTestForgetAscendingOrderForBundleHeaderPrice() {
 		deviceServiceCommonUtility.getAscendingOrderForBundleHeaderPrice(CommonMethods.getBundleHeaderList("SIMO"));
 	}
+
 	@Test
 	public void NotNullTestForGetAscendingOrderForBundlePrice() {
 		deviceServiceCommonUtility.getAscendingOrderForBundlePrice(CommonMethods.getPriceForBundleAndHardwareSorting());
 	}
+
 	@Test
 	public void NotNullTestForGetAscendingOrderForOneoffPrice() {
 		deviceServiceCommonUtility.getAscendingOrderForOneoffPrice(CommonMethods.getPriceForBundleAndHardwareSorting());
 	}
+
 	@Test
 	public void NotNullTestForvalidateAllParameters() {
 		try {
@@ -1533,6 +1558,7 @@ public class DeviceIntegrationTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void NotNullTestForvalidateCreditLimitValue() {
 		Validator.validateCreditLimitValue("abcd");

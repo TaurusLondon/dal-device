@@ -36,41 +36,41 @@ public class DeviceRecommendationServiceTest {
 
 	@Autowired
 	DeviceRecommendationService deviceRecommendationService;
-	
+
 	@MockBean
 	RegistryClient registryClientMock;
-	
+
 	@MockBean
 	RestTemplate restTemplateMock;
-	
+
 	@MockBean
 	DeviceDao deviceDAOMock;
-	
+
 	@MockBean
 	DeviceTileCacheDAO cacheDao;
-	
+
 	@MockBean
 	FacetedDevice facetedDeviceMock;
-	
+
 	@MockBean
 	RecommendedProductListResponse recomProdListRespMock;
-	
+
 	@Before
 	public void setupMockBehaviour() throws Exception {
-        given(registryClientMock.getRestTemplate()).willReturn(restTemplateMock);
-	} 
+		given(registryClientMock.getRestTemplate()).willReturn(restTemplateMock);
+	}
 
 	@After
 	public void tearDown() throws Exception {
 	}
-	
 
 	@Test
 	public void testGetRecommendedDeviceListRequest() {
 		String msisdn = "447436899023";
 		String deviceId = "109381";
-		RecommendedProductListRequest req = deviceRecommendationService.getRecommendedDeviceListRequest(msisdn, deviceId);
-		String serialNum  = req.getSerialNumber();
+		RecommendedProductListRequest req = deviceRecommendationService.getRecommendedDeviceListRequest(msisdn,
+				deviceId);
+		String serialNum = req.getSerialNumber();
 		String prodId = null;
 		List<InstalledProduct> instProds = new ArrayList<>();
 		instProds = req.getInstalledProducts();
@@ -78,15 +78,15 @@ public class DeviceRecommendationServiceTest {
 			prodId = instProd.getId();
 		}
 		Assert.assertEquals(msisdn, serialNum);
-		Assert.assertEquals(deviceId, prodId);		
+		Assert.assertEquals(deviceId, prodId);
 	}
-	
-	
+
 	@Test
 	public void testGetRecommendedDeviceList() {
 		String msisdn = "447436899023";
 		String deviceId = "109381";
-		RecommendedProductListRequest req = deviceRecommendationService.getRecommendedDeviceListRequest(msisdn, deviceId);
+		RecommendedProductListRequest req = deviceRecommendationService.getRecommendedDeviceListRequest(msisdn,
+				deviceId);
 
 		FacetedDevice fd = new FacetedDevice();
 		fd.newFacet(null);
@@ -96,20 +96,18 @@ public class DeviceRecommendationServiceTest {
 		deviceList.add(d);
 		fd.setDevice(deviceList);
 		fd.setNoOfRecordsFound(1);
-		
+
 		RecommendedProductListResponse resp = new RecommendedProductListResponse();
 		List<RecommendedProduct> recList = new ArrayList<>();
 		RecommendedProduct rp = new RecommendedProduct();
 		rp.setId("109382");
 		recList.add(rp);
 		resp.setRecommendedProductList(recList);
-		
-		Mockito.when(CommonUtility.getRecommendedProductList(
-				req, registryClientMock)).thenReturn(resp);
+
+		Mockito.when(CommonUtility.getRecommendedProductList(req, registryClientMock)).thenReturn(resp);
 		fd = deviceRecommendationService.getRecommendedDeviceList(msisdn, deviceId, fd);
 
 		Assert.assertTrue(fd.getNoOfRecordsFound() > 0);
 	}
-
 
 }

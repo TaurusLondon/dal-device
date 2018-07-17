@@ -77,7 +77,7 @@ public class DeviceServiceImplTest {
 
 	@Autowired
 	DeviceServiceCommonUtility utility;
-	
+
 	@MockBean
 	DeviceDao deviceDAOMock;
 
@@ -92,7 +92,7 @@ public class DeviceServiceImplTest {
 
 	@Autowired
 	DeviceConditionallHelper conditionalHelper;
-	
+
 	@MockBean
 	RestTemplate restTemplate;
 
@@ -116,7 +116,7 @@ public class DeviceServiceImplTest {
 
 	@Autowired
 	DeviceDetailsServiceImpl deviceDetailsService;
-	
+
 	@Autowired
 	DeviceService deviceService;
 
@@ -150,32 +150,38 @@ public class DeviceServiceImplTest {
 		given(restTemplate.postForObject("http://PRICE-V1/price/product",
 				CommonMethods.bundleDeviceAndProductsList_For_GetAccessoriesOfDevice(), PriceForProduct.class))
 						.willReturn(CommonMethods.getPriceForProduct_For_GetAccessoriesForDevice());
-		given(response.getMerchandisingPromotion(Matchers.anyObject()))
-		.willReturn(CommonMethods.getMemPro());
+		given(response.getMerchandisingPromotion(Matchers.anyObject())).willReturn(CommonMethods.getMemPro());
 	}
+
 	@Test
 	public void getConditionalForDeviceList() {
 		String url = "http://CUSTOMER-V1/customer/subscription/msisdn:7741655542/sourcePackageSummary";
-		given(restTemplate.getForObject(url, SourcePackageSummary.class)).willReturn(CommonMethods.getSourcePackageSummary());
-		given(deviceRecomServiceMock.getRecommendedDeviceList(Matchers.anyString(), Matchers.anyString(), Matchers.anyObject())).willReturn(CommonMethods.getFacetedDeviceList("HANDSET", "Apple",
-				"iPhone-7", "DEVICE_PAYM", "", 1, 9, "wrtety"));
-		deviceService.getConditionalForDeviceList("7741655542", CommonMethods.getFacetedDeviceList("HANDSET", "Apple",
-				"iPhone-7", "DEVICE_PAYM", "", 1, 9, "wrtety"));
+		given(restTemplate.getForObject(url, SourcePackageSummary.class))
+				.willReturn(CommonMethods.getSourcePackageSummary());
+		given(deviceRecomServiceMock.getRecommendedDeviceList(Matchers.anyString(), Matchers.anyString(),
+				Matchers.anyObject()))
+						.willReturn(CommonMethods.getFacetedDeviceList("HANDSET", "Apple", "iPhone-7", "DEVICE_PAYM",
+								"", 1, 9, "wrtety"));
+		deviceService.getConditionalForDeviceList("7741655542",
+				CommonMethods.getFacetedDeviceList("HANDSET", "Apple", "iPhone-7", "DEVICE_PAYM", "", 1, 9, "wrtety"));
 	}
+
 	// accessory test cases start
 	@Test
 	public void getAccessoriesOfDevice() {
 		accessoryInsuranceService.getAccessoriesOfDevice("093353", "Acquisition", "abc");
 	}
-//deviceRecomServiceMock
+
+	// deviceRecomServiceMock
 	@Test
-	public void getdeviceRecomServiceMock(){
+	public void getdeviceRecomServiceMock() {
 		try {
-			deviceRecomServiceMock.getRecommendedDeviceList("9237", "093353",null);
+			deviceRecomServiceMock.getRecommendedDeviceList("9237", "093353", null);
 		} catch (Exception e) {
-		
+
 		}
 	}
+
 	@Test
 	public void getAccessoriesOfDeviceCPNull() {
 		try {
@@ -283,15 +289,17 @@ public class DeviceServiceImplTest {
 
 		}
 	}
+
 	@Test
 	public void getAccessoriesOfDeviceCPProductGroupInvalid() {
 		try {
-			given(response.getListOfGroupFromJson(Matchers.anyObject())).willReturn(CommonMethods.getGroup12());
+			given(response.getListOfGroupFromJson(Matchers.anyObject())).willReturn(CommonMethods.getGroup_Two());
 			accessoryInsuranceService.getAccessoriesOfDevice("093353", "Acquisition", "abc");
 		} catch (Exception e) {
 
 		}
 	}
+
 	@Test
 	public void getgetFinalAccessoryListInvalid() {
 		try {
@@ -302,6 +310,7 @@ public class DeviceServiceImplTest {
 
 		}
 	}
+
 	@Test
 	public void getgetFinalAccessoryListInvalid1() {
 		try {
@@ -313,17 +322,19 @@ public class DeviceServiceImplTest {
 
 		}
 	}
+
 	@Test
 	public void getgetListOfFilteredAccessories1() {
 		try {
 			given(response.getCommercialProductFromJson(Matchers.anyObject()))
-			.willReturn(CommonMethods.getCommercialProductsListOfAccessoriesWithEndDate());
+					.willReturn(CommonMethods.getCommercialProductsListOfAccessoriesWithEndDate());
 			List<String> finalAccessoryList = new ArrayList<>();
-			accessoryInsuranceService.getListOfFilteredAccessories("Acquisition",finalAccessoryList );
+			accessoryInsuranceService.getListOfFilteredAccessories("Acquisition", finalAccessoryList);
 		} catch (Exception e) {
 
 		}
 	}
+
 	@Test
 	public void TestsetMapForCommercialData() {
 		try {
@@ -334,8 +345,7 @@ public class DeviceServiceImplTest {
 
 		}
 	}
-	
-	
+
 	// insurance test cases start
 
 	@Test
@@ -345,6 +355,7 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TEstgetInsurance() {
 		try {
@@ -364,6 +375,7 @@ public class DeviceServiceImplTest {
 
 		}
 	}
+
 	@Test
 	public void TEstgetInsurancePGNull() {
 		try {
@@ -383,6 +395,7 @@ public class DeviceServiceImplTest {
 
 		}
 	}
+
 	@Test
 	public void TestgetInsuranceProductList() {
 		try {
@@ -400,6 +413,7 @@ public class DeviceServiceImplTest {
 
 		}
 	}
+
 	@Test
 	public void TestgetInsuranceProductList5() {
 		try {
@@ -418,6 +432,7 @@ public class DeviceServiceImplTest {
 
 		}
 	}
+
 	@Test
 	public void TestgetInsuranceProductList6() {
 		try {
@@ -436,6 +451,7 @@ public class DeviceServiceImplTest {
 
 		}
 	}
+
 	@Test
 	public void TestgetInsuranceProductList7() {
 		try {
@@ -453,6 +469,7 @@ public class DeviceServiceImplTest {
 
 		}
 	}
+
 	@Test
 	public void TestgetInsuranceProductList4() {
 		try {
@@ -469,7 +486,7 @@ public class DeviceServiceImplTest {
 
 		}
 	}
-	
+
 	@Test
 	public void TestgetInsuranceProductList1() {
 		try {
@@ -481,6 +498,7 @@ public class DeviceServiceImplTest {
 
 		}
 	}
+
 	@Test
 	public void TestvalidateInsuranceNullable() {
 		try {
@@ -489,18 +507,20 @@ public class DeviceServiceImplTest {
 
 		}
 	}
+
 	@Test
 	public void TestvalidateInsuranceNullable1() {
 		try {
 			Insurances insurance = new Insurances();
 			List<Insurance> insuranceList = new ArrayList<>();
-			insurance.setInsuranceList(insuranceList);;
+			insurance.setInsuranceList(insuranceList);
+			;
 			AccessoryInsuranceServiceImpl.validateInsuranceNullable(null, insurance);
 		} catch (Exception e) {
 
 		}
 	}
-	
+
 	@Test
 	public void TestgetInsuranceProductList2() {
 		try {
@@ -512,6 +532,7 @@ public class DeviceServiceImplTest {
 
 		}
 	}
+
 	@Test
 	public void TestgetInsuranceProductList3() {
 		try {
@@ -523,6 +544,7 @@ public class DeviceServiceImplTest {
 
 		}
 	}
+
 	@Test
 	public void getInsuranceByDeviceIdNull() {
 		try {
@@ -670,7 +692,7 @@ public class DeviceServiceImplTest {
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			obj = mapper.readValue(jsonString, PriceForBundleAndHardware[].class);
 		} catch (IOException e) {
-		
+
 		}
 		given(registry.getRestTemplate()).willReturn(restTemplate);
 		RequestForBundleAndHardware requestForBundleAndHardware = new RequestForBundleAndHardware();
@@ -680,15 +702,14 @@ public class DeviceServiceImplTest {
 		bundle.setHardwareId("093353");
 		bundleList.add(bundle);
 		requestForBundleAndHardware.setBundleAndHardwareList(bundleList);
-		
-		BundleAndHardwarePromotions[] obj1=null;
+
+		BundleAndHardwarePromotions[] obj1 = null;
 		try {
 			String jsonString1 = new String(Utility.readFile("\\BundleandhardwarePromotuions.json"));
-			obj1 = new ObjectMapper().readValue(jsonString1,
-					BundleAndHardwarePromotions[].class);
+			obj1 = new ObjectMapper().readValue(jsonString1, BundleAndHardwarePromotions[].class);
 		} catch (Exception e) {
-		
-		} 
+
+		}
 		List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
 		BundleAndHardwareTuple bundleAndHardwareTuple1 = new BundleAndHardwareTuple();
 		bundleAndHardwareTuple1.setBundleId("110154");
@@ -701,25 +722,26 @@ public class DeviceServiceImplTest {
 		// requestForBundleAndHardware.setPackageType("Upgrade");
 		given(restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
 				requestForBundleAndHardware, PriceForBundleAndHardware[].class)).willReturn(obj);
-		
-		
-			try {
-				deviceMakeAndModelServiceImpl.getListOfDeviceTile("apple", "iPhone-7", "DEVICE_PAYM", "093353", 40.0, "Upgrade", "W_HH_SIMONLY",
-						"110154");
-			} catch (Exception e) {
-			
-			}
-	
+
+		try {
+			deviceMakeAndModelServiceImpl.getListOfDeviceTile("apple", "iPhone-7", "DEVICE_PAYM", "093353", 40.0,
+					"Upgrade", "W_HH_SIMONLY", "110154");
+		} catch (Exception e) {
+
+		}
 
 	}
+
 	@Test
-	public void getDeviceTileByMakeAndModelForPAYG(){
-		deviceMakeAndModelServiceImpl.getDeviceTileByMakeAndModelForPAYG(CommonMethods.getCommercialProductsListOfMakeAndModel(),
-				CommonMethods.getGroupForVariant(), "apple", "iPhone-7", "DEVICE_PAYM");
+	public void getDeviceTileByMakeAndModelForPAYG() {
+		deviceMakeAndModelServiceImpl.getDeviceTileByMakeAndModelForPAYG(
+				CommonMethods.getCommercialProductsListOfMakeAndModel(), CommonMethods.getGroupForVariant(), "apple",
+				"iPhone-7", "DEVICE_PAYM");
 	}
+
 	@Test
-	public void getLeadBundleBasedOnAllPlans_Implementation(){
-		
+	public void getLeadBundleBasedOnAllPlans_Implementation() {
+
 		RequestForBundleAndHardware requestForBundleAndHardware = new RequestForBundleAndHardware();
 		List<BundleAndHardwareTuple> bundleList = new ArrayList<>();
 		BundleAndHardwareTuple bundle = new BundleAndHardwareTuple();
@@ -751,15 +773,16 @@ public class DeviceServiceImplTest {
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			obj = mapper.readValue(jsonString, PriceForBundleAndHardware[].class);
 		} catch (IOException e) {
-		
+
 		}
 		requestForBundleAndHardware.setBundleAndHardwareList(bundleList);
 		given(restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
 				requestForBundleAndHardware, PriceForBundleAndHardware[].class)).willReturn(obj);
-		
-		deviceMakeAndModelServiceImpl.getLeadBundleBasedOnAllPlans_Implementation((double) (40), CommonMethods.getCommercialProduct(), CommonMethods.getPriceForBundleAndHardware(), "Upgrade");
+
+		deviceMakeAndModelServiceImpl.getLeadBundleBasedOnAllPlans_Implementation((double) (40),
+				CommonMethods.getCommercialProduct(), CommonMethods.getPriceForBundleAndHardware(), "Upgrade");
 	}
-	
+
 	@Test
 	public void TestgetDeviceDetails_Implementation() {
 		try {
@@ -767,6 +790,7 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetDeviceDetails_ImplementationJTBlank() {
 		try {
@@ -774,6 +798,7 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetDeviceDetails_ImplementationInvalidCP() {
 		try {
@@ -793,6 +818,7 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetDeviceDetails_ImplementationInvalidCPIdNUll() {
 		try {
@@ -803,6 +829,7 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetDeviceDetails_ImplementationInvalidCPDPInvalid() {
 		try {
@@ -813,6 +840,7 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetDeviceDetails_ImplementationInvalidCPPCInvalid() {
 		try {
@@ -823,6 +851,7 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetDeviceDetails_ImplementationInvalidCPPCInvalid1() {
 		try {
@@ -833,6 +862,7 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetDeviceDetailsResponse() {
 		try {
@@ -841,6 +871,7 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetDeviceDetailsResponsePLNull() {
 		try {
@@ -850,6 +881,7 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetDeviceDetailsResponsePLEmpty() {
 		try {
@@ -860,6 +892,7 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetDeviceDetailsResponseJourney() {
 		try {
@@ -868,6 +901,7 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetDeviceDetailsResponseJourneyUG() {
 		try {
@@ -876,6 +910,7 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetDeviceDetailsResponseJourneyNull() {
 		try {
@@ -884,6 +919,7 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetDeviceDetailsResponseJourneyNull1() {
 		try {
@@ -892,6 +928,7 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetDeviceDetailsResponseJourneyNull11() {
 		try {
@@ -900,6 +937,7 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetDeviceDetailsResponseJourneyUGNull() {
 		try {
@@ -908,6 +946,7 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetJourneyAndOfferCodeValidationForPAYG() {
 		try {
@@ -915,6 +954,7 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetJourneyAndOfferCodeValidationForPAYG1() {
 		try {
@@ -922,6 +962,7 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetDeviceDetailsResponseJourneyUGNull1() {
 		try {
@@ -930,6 +971,7 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetDeviceDetailsResponseJourneyUG1() {
 		try {
@@ -940,56 +982,63 @@ public class DeviceServiceImplTest {
 	}
 
 	@Test
-	public void getDeviceSummery_Implementation(){
+	public void getDeviceSummery_Implementation() {
 		List<com.vf.uk.dal.device.entity.Member> member = new ArrayList<com.vf.uk.dal.device.entity.Member>();
 		com.vf.uk.dal.device.entity.Member productGroupMember = new com.vf.uk.dal.device.entity.Member();
 		productGroupMember.setPriority("1");
 		productGroupMember.setId("093353");
 		member.add(productGroupMember);
-		Map<String, CommercialProduct> commerProdMemMap=new HashMap<>();
+		Map<String, CommercialProduct> commerProdMemMap = new HashMap<>();
 		commerProdMemMap.put("093353", CommonMethods.getCommercialProduct());
-		 Map<String, CommercialBundle> commercialBundleMap=new HashMap<>();
-		 commercialBundleMap.put("110154", CommonMethods.getCommercialBundle());
-		 Map<String, Boolean> bundleIdMap=new HashMap<>();
-		 bundleIdMap.put("110154", true);
-		 Map<String, BundleAndHardwarePromotions> bundleAndHardwarePromotionsMap=new HashMap<>();
-		 bundleAndHardwarePromotionsMap.put("110154", CommonMethods.getListOfBundleAndHardwarePromotions().get(0));
-		 Map<String, String> leadPlanIdMap=new HashMap<>();
-		 leadPlanIdMap.put("110154", "093353");
-		 Map<String, PriceForBundleAndHardware> priceMapForParticularDevice=new HashMap<>(); 
-		 priceMapForParticularDevice.put("093353", CommonMethods.getPriceForBundleAndHardware().get(0));
-		 Map<String, Boolean> fromPricingMap=new HashMap<>();
-		 fromPricingMap.put("093353", true);
-		 Map<String, List<BundleAndHardwarePromotions>> promotionsMap=new HashMap<>();
-		 promotionsMap.put("093353", CommonMethods.getListOfBundleAndHardwarePromotions());
-		 Map<String, List<PriceForBundleAndHardware>> priceMap=new HashMap<>();
-		 priceMap.put("093353", CommonMethods.getPriceForBundleAndHardware());
-		 Map<String, CommercialBundle> commercialBundleMap1=new HashMap<>();
-		 commercialBundleMap1.put("183099", CommonMethods.getCommercialBundleForMAkeAndModel());
-		 List<String> listOfLeadPlanId=new ArrayList<>();
-		 BundleAndHardwareTuple bundleAndHardware=new BundleAndHardwareTuple();
-			bundleAndHardware.setBundleId("110154");
-			bundleAndHardware.setHardwareId("093353");
-			List<BundleAndHardwareTuple> bundleAndHardwareTupleList=new ArrayList<>();
-			bundleAndHardwareTupleList.add(bundleAndHardware);
+		Map<String, CommercialBundle> commercialBundleMap = new HashMap<>();
+		commercialBundleMap.put("110154", CommonMethods.getCommercialBundle());
+		Map<String, Boolean> bundleIdMap = new HashMap<>();
+		bundleIdMap.put("110154", true);
+		Map<String, BundleAndHardwarePromotions> bundleAndHardwarePromotionsMap = new HashMap<>();
+		bundleAndHardwarePromotionsMap.put("110154", CommonMethods.getListOfBundleAndHardwarePromotions().get(0));
+		Map<String, String> leadPlanIdMap = new HashMap<>();
+		leadPlanIdMap.put("110154", "093353");
+		Map<String, PriceForBundleAndHardware> priceMapForParticularDevice = new HashMap<>();
+		priceMapForParticularDevice.put("093353", CommonMethods.getPriceForBundleAndHardware().get(0));
+		Map<String, Boolean> fromPricingMap = new HashMap<>();
+		fromPricingMap.put("093353", true);
+		Map<String, List<BundleAndHardwarePromotions>> promotionsMap = new HashMap<>();
+		promotionsMap.put("093353", CommonMethods.getListOfBundleAndHardwarePromotions());
+		Map<String, List<PriceForBundleAndHardware>> priceMap = new HashMap<>();
+		priceMap.put("093353", CommonMethods.getPriceForBundleAndHardware());
+		Map<String, CommercialBundle> commercialBundleMap1 = new HashMap<>();
+		commercialBundleMap1.put("183099", CommonMethods.getCommercialBundleForMAkeAndModel());
+		List<String> listOfLeadPlanId = new ArrayList<>();
+		BundleAndHardwareTuple bundleAndHardware = new BundleAndHardwareTuple();
+		bundleAndHardware.setBundleId("110154");
+		bundleAndHardware.setHardwareId("093353");
+		List<BundleAndHardwareTuple> bundleAndHardwareTupleList = new ArrayList<>();
+		bundleAndHardwareTupleList.add(bundleAndHardware);
 		deviceMakeAndModelServiceImpl.getDeviceSummery_Implementation(member,
-				CommonMethods.getPriceForBundleAndHardware(), commerProdMemMap, 
-				true, "Upgrade", (double) (40),
-				commercialBundleMap, bundleIdMap, "110154", bundleAndHardwarePromotionsMap, 
-				leadPlanIdMap, "DEVICE_PAYM", priceMapForParticularDevice, fromPricingMap, "1");
-		deviceMakeAndModelServiceImpl.getPriceAndPromotionMap("Upgrade", commercialBundleMap1, leadPlanIdMap,listOfLeadPlanId, bundleAndHardwarePromotionsMap, priceMapForParticularDevice, promotionsMap, priceMap, "093353", true);
-		deviceMakeAndModelServiceImpl.getPriceAndPromotionMap("Upgrade", commercialBundleMap1, leadPlanIdMap,listOfLeadPlanId, bundleAndHardwarePromotionsMap, priceMapForParticularDevice, promotionsMap, priceMap, "093353", true);
-		
-		deviceMakeAndModelServiceImpl.getListOfLeadPlan("110154", bundleAndHardwareTupleList, bundleIdMap, fromPricingMap, leadPlanIdMap, listOfLeadPlanId, CommonMethods.getMemberList().get(0), CommonMethods.getCommercialProduct());
+				CommonMethods.getPriceForBundleAndHardware(), commerProdMemMap, true, "Upgrade", (double) (40),
+				commercialBundleMap, bundleIdMap, "110154", bundleAndHardwarePromotionsMap, leadPlanIdMap,
+				"DEVICE_PAYM", priceMapForParticularDevice, fromPricingMap, "1");
+		deviceMakeAndModelServiceImpl.getPriceAndPromotionMap("Upgrade", commercialBundleMap1, leadPlanIdMap,
+				listOfLeadPlanId, bundleAndHardwarePromotionsMap, priceMapForParticularDevice, promotionsMap, priceMap,
+				"093353", true);
+		deviceMakeAndModelServiceImpl.getPriceAndPromotionMap("Upgrade", commercialBundleMap1, leadPlanIdMap,
+				listOfLeadPlanId, bundleAndHardwarePromotionsMap, priceMapForParticularDevice, promotionsMap, priceMap,
+				"093353", true);
+
+		deviceMakeAndModelServiceImpl.getListOfLeadPlan("110154", bundleAndHardwareTupleList, bundleIdMap,
+				fromPricingMap, leadPlanIdMap, listOfLeadPlanId, CommonMethods.getMemberList().get(0),
+				CommonMethods.getCommercialProduct());
 	}
+
 	@Test
-	public void notNullisLeadPlanWithinCreditLimit_Implementation(){
+	public void notNullisLeadPlanWithinCreditLimit_Implementation() {
 		deviceMakeAndModelServiceImpl.isLeadPlanWithinCreditLimit_Implementation(CommonMethods.getCommercialProduct(),
 				(double) 40, CommonMethods.getPriceForBundleAndHardware(), "Upgrade");
 	}
+
 	@Test
-	public void notNullgetLowestMontlyPrice(){
-		BundleModelAndPrice modelPrice=new BundleModelAndPrice();
+	public void notNullgetLowestMontlyPrice() {
+		BundleModelAndPrice modelPrice = new BundleModelAndPrice();
 		modelPrice.setBundleModel(CommonMethods.getBundleModelListForBundleList().get(0));
 		BundlePrice bundlePrice = new BundlePrice();
 		bundlePrice.setBundleId("183099");
@@ -999,7 +1048,7 @@ public class DeviceServiceImplTest {
 		merchandisingPromotions.setTag("AllPhone.full.2017");
 		merchandisingPromotions.setDescription("description");
 		merchandisingPromotions.setMpType("limited_discount");
-		
+
 		bundlePrice.setMerchandisingPromotions(merchandisingPromotions);
 		Price monthlyDiscountPrice = new Price();
 		monthlyDiscountPrice.setGross("10.11");
@@ -1014,19 +1063,21 @@ public class DeviceServiceImplTest {
 		bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
 		bundlePrice.setMonthlyPrice(monthlyPrice);
 		modelPrice.setBundlePrice(bundlePrice);
-		conditionalHelper.getLowestMontlyPrice((float) 40, CommonMethods.getBundleModelListForBundleListForConditional(),
+		conditionalHelper.getLowestMontlyPrice((float) 40,
+				CommonMethods.getBundleModelListForBundleListForConditional(),
 				CommonMethods.getCompatibleBundleListJson(), modelPrice);
-		List<String> listOfProductsNew=new ArrayList<>();
+		List<String> listOfProductsNew = new ArrayList<>();
 		listOfProductsNew.add("093353");
 		given(response.getListOfProductModel(Matchers.anyObject())).willReturn(CommonMethods.getProductModel());
-		given(response.getListOfBundleModel(Matchers.anyObject())).willReturn(CommonMethods.getBundleModelListForBundleListForConditional());
-		given(deviceDAOMock.getBundleDetailsFromComplansListingAPI(Matchers.anyString(), Matchers.anyString())).willReturn(CommonMethods.getCompatibleBundleListJson());
+		given(response.getListOfBundleModel(Matchers.anyObject()))
+				.willReturn(CommonMethods.getBundleModelListForBundleListForConditional());
+		given(deviceDAOMock.getBundleDetailsFromComplansListingAPI(Matchers.anyString(), Matchers.anyString()))
+				.willReturn(CommonMethods.getCompatibleBundleListJson());
 		conditionalHelper.calculatePlan((float) 10, listOfProductsNew, CommonMethods.getProductModel());
 	}
-	
-	
+
 	@Test
-	public void resetDeviceId_Implementation(){
+	public void resetDeviceId_Implementation() {
 		List<DeviceSummary> deviceSummaryList = new ArrayList<DeviceSummary>();
 		DeviceSummary deviceSummary = new DeviceSummary();
 		deviceSummary.setDeviceId("093353");
@@ -1047,33 +1098,37 @@ public class DeviceServiceImplTest {
 		mediaLink.setValue("283");
 		deviceSummary.setMerchandisingMedia(merchandisingMedia);
 		deviceSummaryList.add(deviceSummary);
-		deviceMakeAndModelServiceImpl.resetDeviceId_Implementation(true, CommonMethods.getDeviceTile("Apple", "iPhone-7", "Device_PAYM").get(0), deviceSummaryList, "093353");
+		deviceMakeAndModelServiceImpl.resetDeviceId_Implementation(true,
+				CommonMethods.getDeviceTile("Apple", "iPhone-7", "Device_PAYM").get(0), deviceSummaryList, "093353");
 	}
+
 	@Test
 	public void TestsettingPriceAndPromotionsToListOfDevicesNull() {
 		try {
-			DeviceDetails dd = CommonMethods.getDevice1("093353");
+			DeviceDetails dd = CommonMethods.getDevice_One("093353");
 			List<DeviceDetails> ddList = new ArrayList<>();
 			ddList.add(dd);
 			deviceDetailsService.settingPriceAndPromotionsToListOfDevices(null, ddList);
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetReviewRatingList_Implementation() {
-			
-			given(deviceDAOMock.getBazaarVoice(Matchers.anyString())).willThrow(new ApplicationException(""));
-			try {
-				utility.getReviewRatingList_Implementation(Arrays.asList("093353"));
-			} catch (Exception e) {
-				
-			}
+
+		given(deviceDAOMock.getBazaarVoice(Matchers.anyString())).willThrow(new ApplicationException(""));
+		try {
+			utility.getReviewRatingList_Implementation(Arrays.asList("093353"));
+		} catch (Exception e) {
+
+		}
 		utility.getAscendingOrderForBundleHeaderPrice(CommonMethods.getBundleHeaderList("SIMO"));
 	}
+
 	@Test
 	public void TestsettingPriceAndPromotionsToListOfDevicesEmpty() {
 		try {
-			DeviceDetails dd = CommonMethods.getDevice1("093353");
+			DeviceDetails dd = CommonMethods.getDevice_One("093353");
 			List<DeviceDetails> ddList = new ArrayList<>();
 			ddList.add(dd);
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = new ArrayList<>();
@@ -1081,10 +1136,11 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestsettingPriceAndPromotionsToListOfDevices() {
 		try {
-			DeviceDetails dd = CommonMethods.getDevice1("093353");
+			DeviceDetails dd = CommonMethods.getDevice_One("093353");
 			List<DeviceDetails> ddList = new ArrayList<>();
 			ddList.add(dd);
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = new ArrayList<>();
@@ -1095,13 +1151,15 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestsettingPriceAndPromotionsToListOfDevices1() {
 		try {
-			DeviceDetails dd = CommonMethods.getDevice1("093353");
+			DeviceDetails dd = CommonMethods.getDevice_One("093353");
 			List<DeviceDetails> ddList = new ArrayList<>();
 			ddList.add(dd);
-			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = CommonMethods.getPriceForBundleAndHardware();
+			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = CommonMethods
+					.getPriceForBundleAndHardware();
 			PriceForBundleAndHardware priceForBundleAndHardware = new PriceForBundleAndHardware();
 			priceForBundleAndHardware.setBundlePrice(null);
 			listOfPriceForBundleAndHardware.add(priceForBundleAndHardware);
@@ -1109,15 +1167,16 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestsettingPriceAndPromotionsToListOfDevicesMPNull() {
 		try {
-			DeviceDetails dd = CommonMethods.getDevice1("093353");
+			DeviceDetails dd = CommonMethods.getDevice_One("093353");
 			List<DeviceDetails> ddList = new ArrayList<>();
 			ddList.add(dd);
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = new ArrayList<>();
 			PriceForBundleAndHardware priceForBundleAndHardware = CommonMethods.getUtilityPriceForBundleAndHardware();
-			HardwarePrice hp =priceForBundleAndHardware.getHardwarePrice();
+			HardwarePrice hp = priceForBundleAndHardware.getHardwarePrice();
 			hp.setMerchandisingPromotions(null);
 			priceForBundleAndHardware.setHardwarePrice(hp);
 			listOfPriceForBundleAndHardware.add(priceForBundleAndHardware);
@@ -1125,15 +1184,16 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestsettingPriceAndPromotionsToListOfDevicesMPNullForBundle() {
 		try {
-			DeviceDetails dd = CommonMethods.getDevice1("093353");
+			DeviceDetails dd = CommonMethods.getDevice_One("093353");
 			List<DeviceDetails> ddList = new ArrayList<>();
 			ddList.add(dd);
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = new ArrayList<>();
 			PriceForBundleAndHardware priceForBundleAndHardware = CommonMethods.getUtilityPriceForBundleAndHardware();
-			BundlePrice hp =priceForBundleAndHardware.getBundlePrice();
+			BundlePrice hp = priceForBundleAndHardware.getBundlePrice();
 			hp.setMerchandisingPromotions(null);
 			priceForBundleAndHardware.setBundlePrice(hp);
 			listOfPriceForBundleAndHardware.add(priceForBundleAndHardware);
@@ -1141,6 +1201,7 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestsettingPriceAndPromotionsToListOfDevicesMPTagNull() {
 		try {
@@ -1149,8 +1210,8 @@ public class DeviceServiceImplTest {
 			ddList.add(dd);
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = new ArrayList<>();
 			PriceForBundleAndHardware priceForBundleAndHardware = CommonMethods.getUtilityPriceForBundleAndHardware();
-			BundlePrice hp =priceForBundleAndHardware.getBundlePrice();
-			MerchandisingPromotion mp =hp.getMerchandisingPromotions();
+			BundlePrice hp = priceForBundleAndHardware.getBundlePrice();
+			MerchandisingPromotion mp = hp.getMerchandisingPromotions();
 			mp.setTag(null);
 			hp.setMerchandisingPromotions(mp);
 			priceForBundleAndHardware.setBundlePrice(hp);
@@ -1159,37 +1220,42 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestsettingPriceAndPromotionsToListOfDevices11() {
 		try {
 			DeviceDetails dd = CommonMethods.getDevice("093353");
 			List<DeviceDetails> ddList = new ArrayList<>();
 			ddList.add(dd);
-			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = CommonMethods.getPriceForBundleAndHardware();
+			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = CommonMethods
+					.getPriceForBundleAndHardware();
 			deviceDetailsService.settingPriceAndPromotionsToListOfDevices(listOfPriceForBundleAndHardware, ddList);
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestsettingPriceAndPromotionsToListOfDevices12() {
 		try {
-			DeviceDetails dd = CommonMethods.getDevice1("93353");
+			DeviceDetails dd = CommonMethods.getDevice_One("93353");
 			List<DeviceDetails> ddList = new ArrayList<>();
 			ddList.add(dd);
-			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = CommonMethods.getPriceForBundleAndHardware();
+			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = CommonMethods
+					.getPriceForBundleAndHardware();
 			deviceDetailsService.settingPriceAndPromotionsToListOfDevices(listOfPriceForBundleAndHardware, ddList);
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestsettingPriceAndPromotionsToListOfDevicesMPInvalidTag() {
 		try {
-			DeviceDetails dd = CommonMethods.getDevice1("093353");
+			DeviceDetails dd = CommonMethods.getDevice_One("093353");
 			List<DeviceDetails> ddList = new ArrayList<>();
 			ddList.add(dd);
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = new ArrayList<>();
 			PriceForBundleAndHardware priceForBundleAndHardware = CommonMethods.getUtilityPriceForBundleAndHardware();
-			BundlePrice hp =priceForBundleAndHardware.getBundlePrice();
+			BundlePrice hp = priceForBundleAndHardware.getBundlePrice();
 			MerchandisingPromotion mp = new MerchandisingPromotion();
 			mp.setDescription("abc");
 			mp.setDiscountId("093353");
@@ -1202,6 +1268,7 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetMediaListForDevice() {
 		try {
@@ -1210,6 +1277,7 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetMediaListForDeviceCP() {
 		try {
@@ -1219,22 +1287,24 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetMediaListForDeviceCPNull() {
 		try {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
-			PromoteAs pa=cp.getPromoteAs();
+			PromoteAs pa = cp.getPromoteAs();
 			pa.setPromotionName(null);
 			cp.setPromoteAs(pa);
 			deviceDetailsService.getMediaListForDevice(cp);
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetMediaListForDeviceCPNull1() {
 		try {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
-			PromoteAs pa=cp.getPromoteAs();
+			PromoteAs pa = cp.getPromoteAs();
 			List<String> promotionName = new ArrayList<>();
 			pa.setPromotionName(promotionName);
 			cp.setPromoteAs(pa);
@@ -1242,13 +1312,13 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetMediaListForDeviceCPNull2() {
 		try {
-			given(response.getMerchandisingPromotion(Matchers.anyObject()))
-			.willReturn(null);
+			given(response.getMerchandisingPromotion(Matchers.anyObject())).willReturn(null);
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
-			PromoteAs pa=cp.getPromoteAs();
+			PromoteAs pa = cp.getPromoteAs();
 			List<String> promotionName = new ArrayList<>();
 			promotionName.add("Abc");
 			pa.setPromotionName(promotionName);
@@ -1257,70 +1327,66 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetMediaListForDeviceCPNMP() {
 		try {
-			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mp =
-					CommonMethods.getMemPro();
+			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mp = CommonMethods.getMemPro();
 			mp.setType("conditional_full_discount");
-			given(response.getMerchandisingPromotion(Matchers.anyObject()))
-			.willReturn(mp);
+			given(response.getMerchandisingPromotion(Matchers.anyObject())).willReturn(mp);
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
-			PromoteAs pa=cp.getPromoteAs();
+			PromoteAs pa = cp.getPromoteAs();
 			List<String> promotionName = new ArrayList<>();
 			promotionName.add("Abc");
-			pa.setPromotionName(promotionName); 
+			pa.setPromotionName(promotionName);
 			cp.setPromoteAs(pa);
 			deviceDetailsService.getMediaListForDevice(cp);
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetMediaListForDeviceCPNMPPN() {
 		try {
-			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mp =
-					CommonMethods.getMemPro();
+			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mp = CommonMethods.getMemPro();
 			mp.setType("conditional_full_discount");
-			given(response.getMerchandisingPromotion(Matchers.anyObject()))
-			.willReturn(mp);
+			given(response.getMerchandisingPromotion(Matchers.anyObject())).willReturn(mp);
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
-			PromoteAs pa=cp.getPromoteAs();
+			PromoteAs pa = cp.getPromoteAs();
 			List<String> promotionName = new ArrayList<>();
 			promotionName.add("handset.hardware.percentage");
-			pa.setPromotionName(promotionName); 
+			pa.setPromotionName(promotionName);
 			cp.setPromoteAs(pa);
 			deviceDetailsService.getMediaListForDevice(cp);
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetMediaListForDeviceCPNMPPN1() {
 		try {
-			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mp =
-					CommonMethods.getMemPro();
+			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mp = CommonMethods.getMemPro();
 			mp.setType("conditional_full_discount");
-			given(response.getMerchandisingPromotion(Matchers.anyObject()))
-			.willReturn(mp);
-			CommercialProduct cp = CommonMethods.getCommercialProductsListOfAccessoriesWithEndDate1();
-			PromoteAs pa=cp.getPromoteAs();
+			given(response.getMerchandisingPromotion(Matchers.anyObject())).willReturn(mp);
+			CommercialProduct cp = CommonMethods.getCommercialProductsListOfAccessoriesWithEndDate_One();
+			PromoteAs pa = cp.getPromoteAs();
 			List<String> promotionName = new ArrayList<>();
 			promotionName.add("handset.hardware.percentage");
-			pa.setPromotionName(promotionName); 
+			pa.setPromotionName(promotionName);
 			cp.setPromoteAs(pa);
 			deviceDetailsService.getMediaListForDevice(cp);
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetMediaListForDeviceCPNMP1() {
 		try {
-			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mp =
-					CommonMethods.getMemPro();
+			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mp = CommonMethods.getMemPro();
 			mp.setType("conditional_limited_discount");
-			given(response.getMerchandisingPromotion(Matchers.anyObject()))
-			.willReturn(mp);
+			given(response.getMerchandisingPromotion(Matchers.anyObject())).willReturn(mp);
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
-			PromoteAs pa=cp.getPromoteAs();
+			PromoteAs pa = cp.getPromoteAs();
 			List<String> promotionName = new ArrayList<>();
 			promotionName.add("Abc");
 			pa.setPromotionName(promotionName);
@@ -1329,16 +1395,15 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetMediaListForDeviceCPNMP2() {
 		try {
-			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mp =
-					CommonMethods.getMemPro();
+			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mp = CommonMethods.getMemPro();
 			mp.setType("limited_time");
-			given(response.getMerchandisingPromotion(Matchers.anyObject()))
-			.willReturn(mp);
+			given(response.getMerchandisingPromotion(Matchers.anyObject())).willReturn(mp);
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
-			PromoteAs pa=cp.getPromoteAs();
+			PromoteAs pa = cp.getPromoteAs();
 			List<String> promotionName = new ArrayList<>();
 			promotionName.add("Abc");
 			pa.setPromotionName(promotionName);
@@ -1347,15 +1412,18 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetListOfPriceForBundleAndHardware_Implementation() {
 		try {
 			Map<String, CommercialBundle> commerBundleIdMap = new HashMap<>();
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
-			deviceDetailsService.getListOfPriceForBundleAndHardware_Implementation(cp, commerBundleIdMap, "Acquisition");
+			deviceDetailsService.getListOfPriceForBundleAndHardware_Implementation(cp, commerBundleIdMap,
+					"Acquisition");
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetListOfPriceForBundleAndHardware_Implementation1() {
 		try {
@@ -1364,10 +1432,12 @@ public class DeviceServiceImplTest {
 			cb.setBundleID("088417");
 			commerBundleIdMap.put("088417", cb);
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
-			deviceDetailsService.getListOfPriceForBundleAndHardware_Implementation(cp, commerBundleIdMap, "Acquisition");
+			deviceDetailsService.getListOfPriceForBundleAndHardware_Implementation(cp, commerBundleIdMap,
+					"Acquisition");
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetListOfPriceForBundleAndHardware_Implementation1CpIdBlanck() {
 		try {
@@ -1381,6 +1451,7 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestgetListOfPriceForBundleAndHardware_Implementation1CpIdBnull() {
 		try {
@@ -1394,6 +1465,7 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestvalidateOfferValidForDevice_Implementation() {
 		try {
@@ -1403,22 +1475,24 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestvalidateOfferValidForDevice_Implementation1() {
 		try {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
-			PromoteAs pa=cp.getPromoteAs();
+			PromoteAs pa = cp.getPromoteAs();
 			pa.setPromotionName(null);
 			cp.setPromoteAs(pa);
 			deviceDetailsService.validateOfferValidForDevice_Implementation(cp, "Acquisition", "acb");
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestvalidateOfferValidForDevice_Implementation2() {
 		try {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
-			PromoteAs pa=cp.getPromoteAs();
+			PromoteAs pa = cp.getPromoteAs();
 			List<String> promotioname = new ArrayList<>();
 			pa.setPromotionName(promotioname);
 			cp.setPromoteAs(pa);
@@ -1426,16 +1500,15 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void TestvalidateOfferValidForDevice_Implementatio() {
 		try {
-			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mp =
-					CommonMethods.getMemPro();
+			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mp = CommonMethods.getMemPro();
 			mp.setType("conditional_full_discount");
-			given(response.getMerchandisingPromotion(Matchers.anyObject()))
-			.willReturn(CommonMethods.getMemPro());
+			given(response.getMerchandisingPromotion(Matchers.anyObject())).willReturn(CommonMethods.getMemPro());
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
-			PromoteAs pa=cp.getPromoteAs();
+			PromoteAs pa = cp.getPromoteAs();
 			List<String> promotioname = new ArrayList<>();
 			promotioname.add("limited_time");
 			pa.setPromotionName(promotioname);
@@ -1444,21 +1517,22 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
+
 	@Test
 	public void notNullGetPriceAndPromotionMap() {
 		Map<String, List<BundleAndHardwarePromotions>> promotionsMap = new HashMap<>();
 		promotionsMap.put("093353", CommonMethods.getListOfBundleAndHardwarePromotions());
-		Map<String, List<PriceForBundleAndHardware>> priceMap= new HashMap<>();
+		Map<String, List<PriceForBundleAndHardware>> priceMap = new HashMap<>();
 		priceMap.put("093353", CommonMethods.getOfferAppliedPrice());
 		try {
-			deviceMakeAndModelServiceImpl.getPriceAndPromotionMap("SecondLine", Collections.emptyMap(), Collections.emptyMap(), Collections.emptyList(),
-					new HashMap<>(), 
-					new HashMap<>(), promotionsMap, priceMap, "093353", false);
-			
+			deviceMakeAndModelServiceImpl.getPriceAndPromotionMap("SecondLine", Collections.emptyMap(),
+					Collections.emptyMap(), Collections.emptyList(), new HashMap<>(), new HashMap<>(), promotionsMap,
+					priceMap, "093353", false);
+
 		} catch (Exception e) {
 		}
 	}
-	
+
 	/*
 	 * @Before public void setupMockBehaviour() throws Exception {
 	 * aspect.beforeAdvice(null); String jsonString=new
