@@ -46,7 +46,6 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	@Autowired
 	DeviceDao deviceDao;
 
-
 	@Autowired
 	ResponseMappingHelper response;
 
@@ -75,12 +74,13 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 		listOfAccessoryTileGroup = getAccessoriesOfDevice_Implementation(deviceId, journeyType, offerCode);
 		return listOfAccessoryTileGroup;
 	}
+
 	/**
 	 * 
 	 * @param deviceId
 	 * @param journeyType
 	 * @param offerCode
-	 * @return
+	 * @return List<AccessoryTileGroup>
 	 */
 	public List<AccessoryTileGroup> getAccessoriesOfDevice_Implementation(String deviceId, String journeyType,
 			String offerCode) {
@@ -153,25 +153,25 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 		List<String> listOfValidAccesoryIds = listOfFilteredAccessories.stream().filter(Objects::nonNull)
 				.map(CommercialProduct::getId).filter(Objects::nonNull).collect(Collectors.toList());
 
-		BundleDeviceAndProductsList bundleDeviceAndProductsList = setBundleDeviceAndProductsList(journeyType, deviceId, offerCode, listOfValidAccesoryIds);
+		BundleDeviceAndProductsList bundleDeviceAndProductsList = setBundleDeviceAndProductsList(journeyType, deviceId,
+				offerCode, listOfValidAccesoryIds);
 		PriceForProduct priceForProduct = null;
 		if (bundleDeviceAndProductsList != null) {
 			priceForProduct = CommonUtility.getAccessoryPriceDetails(bundleDeviceAndProductsList, registryclnt);
 		}
 
 		Map<String, PriceForAccessory> mapforPrice = new HashMap<>();
-		Map<String, CommercialProduct> mapforCommercialProduct = setMapForCommercialData(
-				listOfFilteredAccessories, listOfValidAccesoryIds, priceForProduct, mapforPrice);
+		Map<String, CommercialProduct> mapforCommercialProduct = setMapForCommercialData(listOfFilteredAccessories,
+				listOfValidAccesoryIds, priceForProduct, mapforPrice);
 
-		setListOfAccessoryTileGroup(listOfAccessoryTile, mapForGroupName, mapforPrice,
-				mapforCommercialProduct);
+		setListOfAccessoryTileGroup(listOfAccessoryTile, mapForGroupName, mapforPrice, mapforCommercialProduct);
 	}
 
 	/**
 	 * 
 	 * @param journeyType
 	 * @param finalAccessoryList
-	 * @return
+	 * @return List<CommercialProduct>
 	 */
 	public List<CommercialProduct> getListOfFilteredAccessories(String journeyType, List<String> finalAccessoryList) {
 		List<CommercialProduct> comercialProductList = deviceEs.getListOfCommercialProduct(finalAccessoryList);
@@ -180,13 +180,14 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 						&& CommonUtility.isProductJourneySpecific(commercialProductAccessories, journeyType))
 				.collect(Collectors.toList());
 	}
+
 	/**
 	 * 
 	 * @param deviceId
 	 * @param journeyType
 	 * @param offerCode
 	 * @param listOfValidAccesoryIds
-	 * @return
+	 * @return Insurances
 	 */
 	@Override
 	public Insurances getInsuranceByDeviceId(String deviceId, String journeyType) {
@@ -207,7 +208,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	 * @param deviceId
 	 * @param journeyType
 	 * @param cohProduct
-	 * @return
+	 * @return Insurances
 	 */
 	public Insurances getInsuranceResponse(String deviceId, String journeyType, CommercialProduct cohProduct) {
 		Insurances insurance;
@@ -225,7 +226,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	 * 
 	 * @param journeyType
 	 * @param cohProduct
-	 * @return
+	 * @return Insurances
 	 */
 	public Insurances getInsurance(String journeyType, CommercialProduct cohProduct) {
 		ProductGroups productGroups = cohProduct.getProductGroups();
@@ -249,12 +250,12 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 				List<String> insuranceProductList = getInsuranceProductList(listOfInsuranceMembers, productGroup);
 				List<CommercialProduct> listOfInsuranceProducts = deviceEs
 						.getListOfCommercialProduct(insuranceProductList);
-				insurance = getListOfFilteredInsurance(journeyType,
-						listOfInsuranceProducts);
+				insurance = getListOfFilteredInsurance(journeyType, listOfInsuranceProducts);
 			}
 		}
 		return insurance;
 	}
+
 	public static BundleDeviceAndProductsList setBundleDeviceAndProductsList(String deviceId, String journeyType,
 			String offerCode, List<String> listOfValidAccesoryIds) {
 		BundleDeviceAndProductsList bundleDeviceAndProductsList = new BundleDeviceAndProductsList();
@@ -269,7 +270,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	/**
 	 * 
 	 * @param listOfGroup
-	 * @return
+	 * @return List<Group>
 	 */
 	public static List<Group> getGroupBasedOnPriority(List<Group> listOfGroup) {
 		Collections.sort(listOfGroup, new SortedExtrasGroupPriorityList());
@@ -299,6 +300,11 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 
 	}
 
+	/**
+	 * 
+	 * @param productGroup
+	 * @return List<Member>
+	 */
 	public static List<Member> getListOfAccessoriesMembers(Group productGroup) {
 		List<Member> listOfAccesoriesMembers = new ArrayList<>();
 		if (productGroup != null
@@ -314,7 +320,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	/**
 	 * 
 	 * @param listOfDeviceGroupMember
-	 * @return
+	 * @return List<Member>
 	 */
 	public static List<Member> getAccessoryMembersBasedOnPriority_Implementation(List<Member> listOfDeviceGroupMember) {
 		Collections.sort(listOfDeviceGroupMember, new SortedAccessoryPriorityList());
@@ -405,7 +411,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	 * @param listOfValidAccesoryIds
 	 * @param priceForProduct
 	 * @param mapforPrice
-	 * @return
+	 * @return CommercialProduct
 	 */
 	public static Map<String, CommercialProduct> setMapForCommercialData(
 			List<CommercialProduct> listOfFilteredAccessories, List<String> listOfValidAccesoryIds,
@@ -467,6 +473,11 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 		}
 	}
 
+	/**
+	 * 
+	 * @param insurances
+	 * @return Insurances
+	 */
 	public static Insurances getFormattedPriceForGetCompatibleInsurances(Insurances insurances) {
 
 		if (insurances.getInsuranceList() != null && !insurances.getInsuranceList().isEmpty()) {
@@ -515,7 +526,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	 * 
 	 * @param journeyType
 	 * @param listOfInsuranceProducts
-	 * @return
+	 * @return Insurances
 	 */
 	public static Insurances getListOfFilteredInsurance(String journeyType,
 			List<CommercialProduct> listOfInsuranceProducts) {
@@ -534,7 +545,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	 * 
 	 * @param listOfInsuranceMembers
 	 * @param productGroup
-	 * @return
+	 * @return List<String>
 	 */
 	public static List<String> getInsuranceProductList(List<Member> listOfInsuranceMembers, Group productGroup) {
 		if (productGroup != null && productGroup.getGroupType() != null

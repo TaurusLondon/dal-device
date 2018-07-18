@@ -3,21 +3,21 @@ package com.vf.uk.dal.device.datamodel.productgroups;
 public class CacheProductGroupModel {
 
 	private String id;
-	
+
 	private String leadPlanId;
-	
+
 	private Float minimumCost;
-	
+
 	private String leadDeviceId;
-	
+
 	private Float rating;
-	
+
 	private String upgradeLeadDeviceId;
-	
+
 	private String nonUpgradeLeadDeviceId;
-	
+
 	private String upgradeLeadPlanId;
-	
+
 	private String nonUpgradeLeadPlanId;
 
 	public String getId() {

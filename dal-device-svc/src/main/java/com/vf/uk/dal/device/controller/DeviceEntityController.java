@@ -43,7 +43,7 @@ public class DeviceEntityController {
 	 * manoj.bera
 	 * 
 	 * @param ex
-	 * @return
+	 * @return ErrorResponse
 	 */
 	@ExceptionHandler(MissingServletRequestParameterException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)

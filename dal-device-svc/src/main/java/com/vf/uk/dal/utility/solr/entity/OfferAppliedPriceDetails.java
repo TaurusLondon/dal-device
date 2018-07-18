@@ -11,6 +11,7 @@ public class OfferAppliedPriceDetails {
 	private HardwarePrice hardwarePrice;
 	private String offerCode;
 	private String journeyType;
+
 	/**
 	 * 
 	 * 
@@ -19,6 +20,7 @@ public class OfferAppliedPriceDetails {
 	public String getDeviceId() {
 		return this.deviceId;
 	}
+
 	/**
 	 * 
 	 * @param deviceId
@@ -26,6 +28,7 @@ public class OfferAppliedPriceDetails {
 	public void setDeviceId(String deviceId) {
 		this.deviceId = deviceId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -33,6 +36,7 @@ public class OfferAppliedPriceDetails {
 	public BundlePrice getBundlePrice() {
 		return this.bundlePrice;
 	}
+
 	/**
 	 * 
 	 * @param bundlePrice
@@ -40,6 +44,7 @@ public class OfferAppliedPriceDetails {
 	public void setBundlePrice(BundlePrice bundlePrice) {
 		this.bundlePrice = bundlePrice;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -47,6 +52,7 @@ public class OfferAppliedPriceDetails {
 	public HardwarePrice getHardwarePrice() {
 		return this.hardwarePrice;
 	}
+
 	/**
 	 * 
 	 * @param hardwarePrice
@@ -54,6 +60,7 @@ public class OfferAppliedPriceDetails {
 	public void setHardwarePrice(HardwarePrice hardwarePrice) {
 		this.hardwarePrice = hardwarePrice;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -61,6 +68,7 @@ public class OfferAppliedPriceDetails {
 	public String getOfferCode() {
 		return this.offerCode;
 	}
+
 	/**
 	 * 
 	 * @param offerCode
@@ -68,6 +76,7 @@ public class OfferAppliedPriceDetails {
 	public void setOfferCode(String offerCode) {
 		this.offerCode = offerCode;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -75,6 +84,7 @@ public class OfferAppliedPriceDetails {
 	public String getJourneyType() {
 		return journeyType;
 	}
+
 	/**
 	 * 
 	 * @param journeyType
@@ -82,11 +92,13 @@ public class OfferAppliedPriceDetails {
 	public void setJourneyType(String journeyType) {
 		this.journeyType = journeyType;
 	}
+
 	/**
 	 * 
 	 */
 	public String toString() {
 		return "OfferAppliedPriceDetails [deviceId=" + this.deviceId + ", bundlePrice=" + this.bundlePrice
-				+ ", hardwarePrice=" + this.hardwarePrice + ", offerCode=" + this.offerCode + ",journeyType=" +this.journeyType + "]";
+				+ ", hardwarePrice=" + this.hardwarePrice + ", offerCode=" + this.offerCode + ",journeyType="
+				+ this.journeyType + "]";
 	}
 }

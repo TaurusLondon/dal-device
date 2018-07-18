@@ -7,71 +7,77 @@ import java.util.List;
  * HardwarePrice
  *
  */
-public class HardwarePrice
-{
-    private String hardwareId;
+public class HardwarePrice {
+	private String hardwareId;
 
-    private OneOffPrice oneOffPrice;
+	private OneOffPrice oneOffPrice;
 
-    private OneOffDiscountPrice oneOffDiscountPrice;
-    
-    private List<DeviceFinancingOption> financingOptions = null;
-    
-    /**
-     * 
-     * @return
-     */
-    public List<DeviceFinancingOption> getFinancingOptions() {
+	private OneOffDiscountPrice oneOffDiscountPrice;
+
+	private List<DeviceFinancingOption> financingOptions = null;
+
+	/**
+	 * 
+	 * @return
+	 */
+	public List<DeviceFinancingOption> getFinancingOptions() {
 		return financingOptions;
 	}
-    /**
-     * 
-     * @param financingOptions
-     */
+
+	/**
+	 * 
+	 * @param financingOptions
+	 */
 	public void setFinancingOptions(List<DeviceFinancingOption> financingOptions) {
 		this.financingOptions = financingOptions;
 	}
-    /**
-     * 
-     * @param hardwareId
-     */
-    public void setHardwareId(String hardwareId){
-        this.hardwareId = hardwareId;
-    }
-    /**
-     * 
-     * 
-     * @return
-     */
-    public String getHardwareId(){
-        return this.hardwareId;
-    }
-    /**
-     * 
-     * @param oneOffPrice
-     */
-    public void setOneOffPrice(OneOffPrice oneOffPrice){
-        this.oneOffPrice = oneOffPrice;
-    }
-    /**
-     * 
-     * @return
-     */
-    public OneOffPrice getOneOffPrice(){
-        return this.oneOffPrice;
-    }
-    /**
-     * 
-     * @param oneOffDiscountPrice
-     */
-    public void setOneOffDiscountPrice(OneOffDiscountPrice oneOffDiscountPrice){
-        this.oneOffDiscountPrice = oneOffDiscountPrice;
-    }
-    /**
-     * 
-     * @return
-     */
-    public OneOffDiscountPrice getOneOffDiscountPrice(){
-        return this.oneOffDiscountPrice;
-    }
+
+	/**
+	 * 
+	 * @param hardwareId
+	 */
+	public void setHardwareId(String hardwareId) {
+		this.hardwareId = hardwareId;
+	}
+
+	/**
+	 * 
+	 * 
+	 * @return
+	 */
+	public String getHardwareId() {
+		return this.hardwareId;
+	}
+
+	/**
+	 * 
+	 * @param oneOffPrice
+	 */
+	public void setOneOffPrice(OneOffPrice oneOffPrice) {
+		this.oneOffPrice = oneOffPrice;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public OneOffPrice getOneOffPrice() {
+		return this.oneOffPrice;
+	}
+
+	/**
+	 * 
+	 * @param oneOffDiscountPrice
+	 */
+	public void setOneOffDiscountPrice(OneOffDiscountPrice oneOffDiscountPrice) {
+		this.oneOffDiscountPrice = oneOffDiscountPrice;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public OneOffDiscountPrice getOneOffDiscountPrice() {
+		return this.oneOffDiscountPrice;
+	}
 }

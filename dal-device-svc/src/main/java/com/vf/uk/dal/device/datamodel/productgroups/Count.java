@@ -3,12 +3,12 @@ package com.vf.uk.dal.device.datamodel.productgroups;
 public class Count {
 
 	private String name;
-    
+
 	private long count;
-    
-    private FacetField facetField;
-    
-    private String asFilterQuery;
+
+	private FacetField facetField;
+
+	private String asFilterQuery;
 
 	public String getName() {
 		return name;
@@ -41,5 +41,5 @@ public class Count {
 	public void setAsFilterQuery(String asFilterQuery) {
 		this.asFilterQuery = asFilterQuery;
 	}
-    
+
 }

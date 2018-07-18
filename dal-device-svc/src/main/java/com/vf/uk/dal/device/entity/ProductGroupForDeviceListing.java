@@ -9,40 +9,42 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ProductGroupForDeviceListing {
 	@JsonProperty("groupId")
-	  private String groupId = null;
-	
+	private String groupId = null;
+
 	@JsonProperty("leadMemberid")
-	  private String leadMemberid = null;
+	private String leadMemberid = null;
 
-	 @JsonProperty("leadPlanid")
-	  private String leadPlanid = null;
+	@JsonProperty("leadPlanid")
+	private String leadPlanid = null;
 
-	  @JsonProperty("devicePlanId")
-	  private String devicePlanId = null;
+	@JsonProperty("devicePlanId")
+	private String devicePlanId = null;
 
-	  @JsonProperty("monthlyPrice")
-	  private String monthlyPrice = null;
-	  
-	  @JsonProperty("oneOffPrice")
-	  private String oneOffPrice = null;
-	  
-	  @JsonProperty("rating")
-	  private String rating = null;
-	  
-	  /**
-	   * 
-	   * @return
-	   */
-	  public String getRating() {
+	@JsonProperty("monthlyPrice")
+	private String monthlyPrice = null;
+
+	@JsonProperty("oneOffPrice")
+	private String oneOffPrice = null;
+
+	@JsonProperty("rating")
+	private String rating = null;
+
+	/**
+	 * 
+	 * @return
+	 */
+	public String getRating() {
 		return rating;
 	}
-	  /**
-	   * 
-	   * @param rating
-	   */
+
+	/**
+	 * 
+	 * @param rating
+	 */
 	public void setRating(String rating) {
 		this.rating = rating;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -50,6 +52,7 @@ public class ProductGroupForDeviceListing {
 	public String getGroupId() {
 		return groupId;
 	}
+
 	/**
 	 * 
 	 * @param groupId
@@ -57,6 +60,7 @@ public class ProductGroupForDeviceListing {
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -64,6 +68,7 @@ public class ProductGroupForDeviceListing {
 	public String getLeadMemberid() {
 		return leadMemberid;
 	}
+
 	/**
 	 * 
 	 * @param leadMemberid
@@ -71,6 +76,7 @@ public class ProductGroupForDeviceListing {
 	public void setLeadMemberid(String leadMemberid) {
 		this.leadMemberid = leadMemberid;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -78,6 +84,7 @@ public class ProductGroupForDeviceListing {
 	public String getLeadPlanid() {
 		return leadPlanid;
 	}
+
 	/**
 	 * 
 	 * @param leadPlanid
@@ -85,6 +92,7 @@ public class ProductGroupForDeviceListing {
 	public void setLeadPlanid(String leadPlanid) {
 		this.leadPlanid = leadPlanid;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -92,6 +100,7 @@ public class ProductGroupForDeviceListing {
 	public String getDevicePlanId() {
 		return devicePlanId;
 	}
+
 	/**
 	 * 
 	 * @param devicePlanId
@@ -99,6 +108,7 @@ public class ProductGroupForDeviceListing {
 	public void setDevicePlanId(String devicePlanId) {
 		this.devicePlanId = devicePlanId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -106,6 +116,7 @@ public class ProductGroupForDeviceListing {
 	public String getMonthlyPrice() {
 		return monthlyPrice;
 	}
+
 	/**
 	 * 
 	 * @param monthlyPrice
@@ -113,6 +124,7 @@ public class ProductGroupForDeviceListing {
 	public void setMonthlyPrice(String monthlyPrice) {
 		this.monthlyPrice = monthlyPrice;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -120,6 +132,7 @@ public class ProductGroupForDeviceListing {
 	public String getOneOffPrice() {
 		return oneOffPrice;
 	}
+
 	/**
 	 * 
 	 * @param oneOffPrice
@@ -127,6 +140,5 @@ public class ProductGroupForDeviceListing {
 	public void setOneOffPrice(String oneOffPrice) {
 		this.oneOffPrice = oneOffPrice;
 	}
-	
 
 }

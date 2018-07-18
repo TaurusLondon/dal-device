@@ -46,7 +46,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 	 * @param cohProduct
 	 * @param listOfPriceForBundleAndHardware
 	 * @param listOfOfferPacks
-	 * @return
+	 * @return DeviceDetails
 	 */
 	public static DeviceDetails convertCoherenceDeviceToDeviceDetails(CommercialProduct cohProduct,
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware,
@@ -199,9 +199,9 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 						specification = new Specification();
 						specification.setName(spec.getName());
 						specification.setValue(spec.getValue());
-						if (spec.getPriority()==null) {
+						if (spec.getPriority() == null) {
 							specification.setPriority(null);
-						}else{
+						} else {
 							specification.setPriority(spec.getPriority().intValue());
 						}
 						specification.setComparable(spec.isComparable());
@@ -378,7 +378,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 	 * @param groupType
 	 * @param isConditionalAcceptJourney
 	 * @param fromPricingMap
-	 * @return
+	 * @return DeviceSummary
 	 */
 	public static DeviceSummary convertCoherenceDeviceToDeviceTile(Long memberPriority,
 			CommercialProduct commercialProduct, CommercialBundle comBundle,
@@ -665,7 +665,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 	 * @param commercialProduct
 	 * @param priceforBundleAndHardware
 	 * @param groupType
-	 * @return
+	 * @return DeviceSummary
 	 */
 	public static DeviceSummary convertCoherenceDeviceToDeviceTile_PAYG(Long memberPriority,
 			CommercialProduct commercialProduct, PriceForBundleAndHardware priceforBundleAndHardware, String groupType,

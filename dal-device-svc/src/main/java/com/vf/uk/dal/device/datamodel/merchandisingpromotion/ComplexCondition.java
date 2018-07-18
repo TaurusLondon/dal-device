@@ -1,51 +1,40 @@
 package com.vf.uk.dal.device.datamodel.merchandisingpromotion;
 
-
 public class ComplexCondition {
-	
-		
-	
-    private String key;
-	
+
+	private String key;
+
 	private String operator;
-	
+
 	private String value;
-	
-	
-    public ComplexCondition() {
+
+	public ComplexCondition() {
 		super();
 	}
-
 
 	public String getKey() {
 		return key;
 	}
 
-
 	public void setKey(String key) {
 		this.key = key;
 	}
-
 
 	public String getOperator() {
 		return operator;
 	}
 
-
 	public void setOperator(String operator) {
 		this.operator = operator;
 	}
-
 
 	public String getValue() {
 		return value;
 	}
 
-
 	public void setValue(String value) {
 		this.value = value;
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -56,7 +45,6 @@ public class ComplexCondition {
 		result = prime * result + ((value == null) ? 0 : value.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -85,13 +73,9 @@ public class ComplexCondition {
 		return true;
 	}
 
-
 	@Override
 	public String toString() {
 		return "ComplexCondition [key=" + key + ", operator=" + operator + ", value=" + value + "]";
 	}
 
-	
-
-    
 }

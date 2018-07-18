@@ -1,6 +1,5 @@
 package com.vf.uk.dal.device.svc;
 
-
 import java.util.List;
 import java.util.Map;
 
@@ -13,28 +12,29 @@ import com.vf.uk.dal.device.entity.FacetedDevice;
 import com.vf.uk.dal.utility.entity.BundleDetails;
 
 /**
- Device Service Should consists of all the service methods which will be invoked
- from the Controller
+ * Device Service Should consists of all the service methods which will be
+ * invoked from the Controller
  **/
 
 public interface DeviceService {
-	
+
 	/**
 	 * 
 	 * @param id
 	 * @param offerCode
 	 * @param journeyType
-	 * @return
+	 * @return List<DeviceTile>
 	 */
-	public List<DeviceTile> getDeviceTileById(String id, String offerCode,String journeyType);
+	public List<DeviceTile> getDeviceTileById(String id, String offerCode, String journeyType);
 	/**
 	 * 
 	 * @param groupType
 	 * @param groupName
 	 * @return
 	 */
-	//public List<ProductGroup> getProductGroupByGroupTypeGroupName(String groupType,String groupName);
-	
+	// public List<ProductGroup> getProductGroupByGroupTypeGroupName(String
+	// groupType,String groupName);
+
 	/**
 	 * 
 	 * @param productClass
@@ -53,20 +53,24 @@ public interface DeviceService {
 	 * @param offerCode
 	 * @param msisdn
 	 * @param includeRecommendations
-	 * @return
+	 * @return FacetedDevice
 	 */
-	public FacetedDevice getDeviceList(String productClass,String listOfMake,String model,String groupType,String sortCriteria,
-			int pageNumber,int pageSize,String capacity,String colour,String operatingSystem,String mustHaveFeatures,String journeyType,
-			Float creditLimit,String offerCode, String msisdn, boolean includeRecommendations);
+	public FacetedDevice getDeviceList(String productClass, String listOfMake, String model, String groupType,
+			String sortCriteria, int pageNumber, int pageSize, String capacity, String colour, String operatingSystem,
+			String mustHaveFeatures, String journeyType, Float creditLimit, String offerCode, String msisdn,
+			boolean includeRecommendations);
+
 	/**
 	 * 
 	 * @param deviceId
 	 * @param bundleId
 	 * @param allowedRecurringPriceLimit
 	 * @param plansLimit
-	 * @return
+	 * @return BundleDetails
 	 */
-	public BundleDetails getBundlesOfDeviceId(String deviceId, String bundleId, String allowedRecurringPriceLimit, String plansLimit);
+	public BundleDetails getBundlesOfDeviceId(String deviceId, String bundleId, String allowedRecurringPriceLimit,
+			String plansLimit);
+
 	/**
 	 * 
 	 * @param journeyType
@@ -78,14 +82,15 @@ public interface DeviceService {
 	public void getGroupNameWithListOfProduct(String journeyType, List<String> listOfProductVariants,
 			Map<String, String> groupNameWithProdId, ProductGroupModel productGroupModel,
 			List<String> listOfProductsNew);
+
 	/**
 	 * 
 	 * @param msisdn
 	 * @param facetedDevice
-	 * @return
+	 * @return FacetedDevice
 	 */
 	public FacetedDevice getConditionalForDeviceList(String msisdn, FacetedDevice facetedDevice);
-	
+
 	/**
 	 * 
 	 * @param creditLimit

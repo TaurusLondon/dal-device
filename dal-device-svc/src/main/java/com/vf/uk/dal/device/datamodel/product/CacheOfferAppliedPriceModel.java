@@ -37,9 +37,9 @@ public class CacheOfferAppliedPriceModel {
 	private Float oneOffDiscountedNetPrice;
 
 	private Float oneOffDiscountedVatPrice;
-	
+
 	private String journeyType;
-	
+
 	private List<DeviceFinancingOption> financingOptions = null;
 
 	public List<DeviceFinancingOption> getFinancingOptions() {

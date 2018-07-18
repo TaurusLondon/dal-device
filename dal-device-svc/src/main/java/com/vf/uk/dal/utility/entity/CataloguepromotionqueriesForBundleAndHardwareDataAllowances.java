@@ -42,50 +42,55 @@ public class CataloguepromotionqueriesForBundleAndHardwareDataAllowances {
 	private List<String> packageType = new ArrayList<>();
 
 	private List<String> footNotes = new ArrayList<>();
-	
+
 	/** The promotion media. */
 	@JsonProperty("promotionMedia")
 	private String promotionMedia = null;
-	
+
 	/**
-	   * Promotion media.
-	   *
-	   * @param promotionMedia the promotion media
-	   * @return the cataloguepromotionqueries for bundle and hardware entertainment packs
-	   */
-	  public CataloguepromotionqueriesForBundleAndHardwareDataAllowances promotionMedia(String promotionMedia) {
-	    this.promotionMedia = promotionMedia;
-	    return this;
-	  }
-	  
-	   /**
-	    * Promotion media url for the merchandising promotion.
-	    *
-	    * @return promotionMedia
-	    */
-	  public String getPromotionMedia() {
-	    return promotionMedia;
-	  }
-	  
-	   /**
-	   * Sets the promotion media.
-	   *
-	   * @param promotionMedia the new promotion media
-	   */
-	  public void setPromotionMedia(String promotionMedia) {
-	    this.promotionMedia = promotionMedia;
-	  }
-/**
- * 
- * @return
- */
+	 * Promotion media.
+	 *
+	 * @param promotionMedia
+	 *            the promotion media
+	 * @return the cataloguepromotionqueries for bundle and hardware
+	 *         entertainment packs
+	 */
+	public CataloguepromotionqueriesForBundleAndHardwareDataAllowances promotionMedia(String promotionMedia) {
+		this.promotionMedia = promotionMedia;
+		return this;
+	}
+
+	/**
+	 * Promotion media url for the merchandising promotion.
+	 *
+	 * @return promotionMedia
+	 */
+	public String getPromotionMedia() {
+		return promotionMedia;
+	}
+
+	/**
+	 * Sets the promotion media.
+	 *
+	 * @param promotionMedia
+	 *            the new promotion media
+	 */
+	public void setPromotionMedia(String promotionMedia) {
+		this.promotionMedia = promotionMedia;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
 	public List<String> getFootNotes() {
 		return footNotes;
 	}
-/**
- * 
- * @param footNotes
- */
+
+	/**
+	 * 
+	 * @param footNotes
+	 */
 	public void setFootNotes(List<String> footNotes) {
 		this.footNotes = footNotes;
 	}
@@ -320,10 +325,13 @@ public class CataloguepromotionqueriesForBundleAndHardwareDataAllowances {
 				&& Objects.equals(this.label, cataloguepromotionqueriesForBundleAndHardwareDataAllowances.label)
 				&& Objects.equals(this.type, cataloguepromotionqueriesForBundleAndHardwareDataAllowances.type)
 				&& Objects.equals(this.priority, cataloguepromotionqueriesForBundleAndHardwareDataAllowances.priority)
-				&& Objects.equals(this.description,cataloguepromotionqueriesForBundleAndHardwareDataAllowances.description)
+				&& Objects.equals(this.description,
+						cataloguepromotionqueriesForBundleAndHardwareDataAllowances.description)
 				&& Objects.equals(this.freeData, cataloguepromotionqueriesForBundleAndHardwareDataAllowances.freeData)
-				&& Objects.equals(this.packageType,	cataloguepromotionqueriesForBundleAndHardwareDataAllowances.packageType)
-				&& Objects.equals(this.promotionMedia, cataloguepromotionqueriesForBundleAndHardwareDataAllowances.promotionMedia);
+				&& Objects.equals(this.packageType,
+						cataloguepromotionqueriesForBundleAndHardwareDataAllowances.packageType)
+				&& Objects.equals(this.promotionMedia,
+						cataloguepromotionqueriesForBundleAndHardwareDataAllowances.promotionMedia);
 	}
 
 	/*
@@ -333,7 +341,7 @@ public class CataloguepromotionqueriesForBundleAndHardwareDataAllowances {
 	 */
 	@Override
 	public int hashCode() {
-		return Objects.hash(tag, label, type, priority, description, freeData, packageType,promotionMedia);
+		return Objects.hash(tag, label, type, priority, description, freeData, packageType, promotionMedia);
 	}
 
 	/*

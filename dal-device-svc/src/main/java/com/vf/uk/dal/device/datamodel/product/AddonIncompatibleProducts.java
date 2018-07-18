@@ -1,17 +1,15 @@
 package com.vf.uk.dal.device.datamodel.product;
 
-
 public class AddonIncompatibleProducts {
-	
-	
+
 	private String incompatibleProductId;
-	
-    private String ruleScope;
-	
-    private String startDate;
-	
-    private String endDate;
-	
+
+	private String ruleScope;
+
+	private String startDate;
+
+	private String endDate;
+
 	/**
 	 * public constructor
 	 */
@@ -19,46 +17,37 @@ public class AddonIncompatibleProducts {
 		super();
 	}
 
-
 	public String getIncompatibleProductId() {
 		return incompatibleProductId;
 	}
-
 
 	public void setIncompatibleProductId(String incompatibleProductId) {
 		this.incompatibleProductId = incompatibleProductId;
 	}
 
-
 	public String getRuleScope() {
 		return ruleScope;
 	}
-
 
 	public void setRuleScope(String ruleScope) {
 		this.ruleScope = ruleScope;
 	}
 
-
 	public String getStartDate() {
 		return startDate;
 	}
-
 
 	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
 
-
 	public String getEndDate() {
 		return endDate;
 	}
 
-
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -70,7 +59,6 @@ public class AddonIncompatibleProducts {
 		result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -104,14 +92,10 @@ public class AddonIncompatibleProducts {
 		return true;
 	}
 
-
 	@Override
 	public String toString() {
 		return "AddonIncompatibleProducts [incompatibleProductId=" + incompatibleProductId + ", ruleScope=" + ruleScope
 				+ ", startDate=" + startDate + ", endDate=" + endDate + "]";
 	}
 
-
-	    
-	
 }

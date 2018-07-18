@@ -1,7 +1,7 @@
 package com.vf.uk.dal.device.datamodel.product;
 
 public class BazaarVoice {
-	
+
 	private String skuId;
 
 	private String jsonsource;

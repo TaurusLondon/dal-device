@@ -1,31 +1,34 @@
 package com.vf.uk.dal.utility.entity;
+
 /**
  * 
  * StockInfo
  *
  */
-public class StockInfo   {
+public class StockInfo {
 
-	  private String skuId = null;
+	private String skuId = null;
 
-	  private String sourceId = null;
+	private String sourceId = null;
 
-	  private Integer quantity = null;
+	private Integer quantity = null;
 
-	  private String status = null;
+	private String status = null;
 
-	  private String availableBy = null;
+	private String availableBy = null;
 
-	  public String getSkuId() {
+	public String getSkuId() {
 		return skuId;
 	}
-	  /**
-	   * 
-	   * @param skuId
-	   */
+
+	/**
+	 * 
+	 * @param skuId
+	 */
 	public void setSkuId(String skuId) {
 		this.skuId = skuId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -33,6 +36,7 @@ public class StockInfo   {
 	public String getSourceId() {
 		return sourceId;
 	}
+
 	/**
 	 * 
 	 * @param sourceId
@@ -40,6 +44,7 @@ public class StockInfo   {
 	public void setSourceId(String sourceId) {
 		this.sourceId = sourceId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -47,6 +52,7 @@ public class StockInfo   {
 	public Integer getQuantity() {
 		return quantity;
 	}
+
 	/**
 	 * 
 	 * @param quantity
@@ -54,6 +60,7 @@ public class StockInfo   {
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -61,6 +68,7 @@ public class StockInfo   {
 	public String getStatus() {
 		return status;
 	}
+
 	/**
 	 * 
 	 * @param status
@@ -68,6 +76,7 @@ public class StockInfo   {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -75,6 +84,7 @@ public class StockInfo   {
 	public String getAvailableBy() {
 		return availableBy;
 	}
+
 	/**
 	 * 
 	 * @param availableBy
@@ -83,7 +93,4 @@ public class StockInfo   {
 		this.availableBy = availableBy;
 	}
 
-
-	   
-	}
-
+}

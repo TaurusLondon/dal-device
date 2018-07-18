@@ -5,38 +5,34 @@
 // Generated on: 2017.01.02 at 10:51:22 AM IST 
 //
 
-
 package com.vf.uk.dal.device.datamodel.bundle;
 
-
 public class TerminationFee {
-  
-    private Float charge;
-	 
-    private String proratePlan;
 
-	 
-   
-    public TerminationFee() {
+	private Float charge;
+
+	private String proratePlan;
+
+	public TerminationFee() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	public Float getCharge() {
-        return charge;
-    }
+		return charge;
+	}
 
-    public void setCharge(Float value) {
-        this.charge = value;
-    }
+	public void setCharge(Float value) {
+		this.charge = value;
+	}
 
-    public String getProratePlan() {
-        return proratePlan;
-    }
+	public String getProratePlan() {
+		return proratePlan;
+	}
 
-    public void setProratePlan(String value) {
-        this.proratePlan = value;
-    }
+	public void setProratePlan(String value) {
+		this.proratePlan = value;
+	}
 
 	@Override
 	public int hashCode() {

@@ -11,14 +11,14 @@ public class ProductGroupModel {
 
 	@JsonProperty("productId")
 	private String leadSkuId;
-	
+
 	private String name;
-	
+
 	@JsonProperty("imageURLsFullFront")
 	private String imageUrl;
-	
+
 	private float minimumRecurringPrice;
-	
+
 	private float minimumUpfrontCost;
 
 	private float rating;
@@ -60,9 +60,9 @@ public class ProductGroupModel {
 	private String upgradeLeadPlanId;
 
 	private String nonUpgradeLeadPlanId;
-	
+
 	private Date createDate;
-	
+
 	private Date modifiedDate;
 
 	public String getId() {
@@ -289,5 +289,4 @@ public class ProductGroupModel {
 		this.modifiedDate = modifiedDate;
 	}
 
-	
 }

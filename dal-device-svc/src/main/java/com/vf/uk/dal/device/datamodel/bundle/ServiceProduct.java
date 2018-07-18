@@ -5,44 +5,47 @@
 // Generated on: 2017.01.02 at 10:51:22 AM IST 
 //
 
-
 package com.vf.uk.dal.device.datamodel.bundle;
 
 import java.util.List;
 
-
 public class ServiceProduct {
-	
-	
-    private String id;
-	
-    private Boolean bundled;
-	
-    private List<LineRental> lineRentals;
-	
-	
+
+	private String id;
+
+	private Boolean bundled;
+
+	private List<LineRental> lineRentals;
+
 	public ServiceProduct() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
 	public String getId() {
 		return id;
 	}
+
 	public void setId(String id) {
 		this.id = id;
 	}
+
 	public Boolean getBundled() {
 		return bundled;
 	}
+
 	public void setBundled(Boolean bundled) {
 		this.bundled = bundled;
 	}
+
 	public List<LineRental> getLineRentals() {
 		return lineRentals;
 	}
+
 	public void setLineRentals(List<LineRental> lineRentals) {
 		this.lineRentals = lineRentals;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -52,6 +55,7 @@ public class ServiceProduct {
 		result = prime * result + ((lineRentals == null) ? 0 : lineRentals.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -78,12 +82,10 @@ public class ServiceProduct {
 			return false;
 		return true;
 	}
+
 	@Override
 	public String toString() {
 		return "ServiceProduct [id=" + id + ", bundled=" + bundled + ", lineRentals=" + lineRentals + "]";
 	}
-    
 
-
-    
 }

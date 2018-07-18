@@ -1,39 +1,41 @@
 package com.vf.uk.dal.utility.solr.entity;
+
 /**
  * 
  * MerchandisingControl
  *
  */
-public class MerchandisingControl
-{
-    private String isDisplayableECare;
+public class MerchandisingControl {
+	private String isDisplayableECare;
 
-    private String isSellableECare;
+	private String isSellableECare;
 
-    private String isDisplayableAcq;
+	private String isDisplayableAcq;
 
-    private String isSellableRet;
+	private String isSellableRet;
 
-    private String isDisplayableRet;
+	private String isDisplayableRet;
 
-    private String isSellableAcq;
+	private String isSellableAcq;
 
-    private String isDisplayableSavedBasket;
+	private String isDisplayableSavedBasket;
 
-    private String order;
+	private String order;
 
-    private String preorderable;
+	private String preorderable;
 
-    private String availableFrom;
+	private String availableFrom;
 
-    private String backorderable;
-    /**
-     * 
-     * @return
-     */
+	private String backorderable;
+
+	/**
+	 * 
+	 * @return
+	 */
 	public String getIsDisplayableECare() {
 		return isDisplayableECare;
 	}
+
 	/**
 	 * 
 	 * @param isDisplayableECare
@@ -41,6 +43,7 @@ public class MerchandisingControl
 	public void setIsDisplayableECare(String isDisplayableECare) {
 		this.isDisplayableECare = isDisplayableECare;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -48,6 +51,7 @@ public class MerchandisingControl
 	public String getIsSellableECare() {
 		return isSellableECare;
 	}
+
 	/**
 	 * 
 	 * @param isSellableECare
@@ -55,6 +59,7 @@ public class MerchandisingControl
 	public void setIsSellableECare(String isSellableECare) {
 		this.isSellableECare = isSellableECare;
 	}
+
 	/**
 	 * /**
 	 * 
@@ -63,6 +68,7 @@ public class MerchandisingControl
 	public String getIsDisplayableAcq() {
 		return isDisplayableAcq;
 	}
+
 	/**
 	 * 
 	 * @param isDisplayableAcq
@@ -70,6 +76,7 @@ public class MerchandisingControl
 	public void setIsDisplayableAcq(String isDisplayableAcq) {
 		this.isDisplayableAcq = isDisplayableAcq;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -77,6 +84,7 @@ public class MerchandisingControl
 	public String getIsSellableRet() {
 		return isSellableRet;
 	}
+
 	/**
 	 * 
 	 * @param isSellableRet
@@ -84,6 +92,7 @@ public class MerchandisingControl
 	public void setIsSellableRet(String isSellableRet) {
 		this.isSellableRet = isSellableRet;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -91,6 +100,7 @@ public class MerchandisingControl
 	public String getIsDisplayableRet() {
 		return isDisplayableRet;
 	}
+
 	/**
 	 * 
 	 * @param isDisplayableRet
@@ -98,6 +108,7 @@ public class MerchandisingControl
 	public void setIsDisplayableRet(String isDisplayableRet) {
 		this.isDisplayableRet = isDisplayableRet;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -105,6 +116,7 @@ public class MerchandisingControl
 	public String getIsSellableAcq() {
 		return isSellableAcq;
 	}
+
 	/**
 	 * 
 	 * @param isSellableAcq
@@ -112,6 +124,7 @@ public class MerchandisingControl
 	public void setIsSellableAcq(String isSellableAcq) {
 		this.isSellableAcq = isSellableAcq;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -119,6 +132,7 @@ public class MerchandisingControl
 	public String getIsDisplayableSavedBasket() {
 		return isDisplayableSavedBasket;
 	}
+
 	/**
 	 * 
 	 * @param isDisplayableSavedBasket
@@ -126,6 +140,7 @@ public class MerchandisingControl
 	public void setIsDisplayableSavedBasket(String isDisplayableSavedBasket) {
 		this.isDisplayableSavedBasket = isDisplayableSavedBasket;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -133,6 +148,7 @@ public class MerchandisingControl
 	public String getOrder() {
 		return order;
 	}
+
 	/**
 	 * 
 	 * @param order
@@ -140,6 +156,7 @@ public class MerchandisingControl
 	public void setOrder(String order) {
 		this.order = order;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -147,6 +164,7 @@ public class MerchandisingControl
 	public String getPreorderable() {
 		return preorderable;
 	}
+
 	/**
 	 * 
 	 * @param preorderable
@@ -154,6 +172,7 @@ public class MerchandisingControl
 	public void setPreorderable(String preorderable) {
 		this.preorderable = preorderable;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -161,6 +180,7 @@ public class MerchandisingControl
 	public String getAvailableFrom() {
 		return availableFrom;
 	}
+
 	/**
 	 * 
 	 * @param availableFrom
@@ -168,6 +188,7 @@ public class MerchandisingControl
 	public void setAvailableFrom(String availableFrom) {
 		this.availableFrom = availableFrom;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -175,6 +196,7 @@ public class MerchandisingControl
 	public String getBackorderable() {
 		return backorderable;
 	}
+
 	/**
 	 * 
 	 * @param backorderable
@@ -183,5 +205,4 @@ public class MerchandisingControl
 		this.backorderable = backorderable;
 	}
 
-    
 }

@@ -49,8 +49,9 @@ public class BundleHeader {
 	/** The global roaming flag. */
 	private Boolean globalRoamingFlag = null;
 
-	/** The Secure Net */ 
-	private Boolean secureNetFlag=null;
+	/** The Secure Net */
+	private Boolean secureNetFlag = null;
+
 	/**
 	 * 
 	 * @param secureNetFlag
@@ -60,6 +61,7 @@ public class BundleHeader {
 		this.secureNetFlag = secureNetFlag;
 		return this;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -67,10 +69,11 @@ public class BundleHeader {
 	public Boolean getSecureNetFlag() {
 		return secureNetFlag;
 	}
-/**
- * 
- * @param secureNetFlag
- */
+
+	/**
+	 * 
+	 * @param secureNetFlag
+	 */
 	public void setSecureNetFlag(Boolean secureNetFlag) {
 		this.secureNetFlag = secureNetFlag;
 	}

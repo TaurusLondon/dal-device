@@ -57,7 +57,7 @@ public class DeviceController {
 	 * manoj.bera
 	 * 
 	 * @param ex
-	 * @return
+	 * @return ErrorResponse
 	 */
 	@ExceptionHandler(MissingServletRequestParameterException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -117,7 +117,7 @@ public class DeviceController {
 	 * @param includeRecommendations
 	 * @param offerCode
 	 * @param creditLimit
-	 * @return
+	 * @return FacetedDevice
 	 */
 	@ApiOperation(value = "Get the list of devices based on the filter criteria, like productGroup brand Name. Pagination, sorting, filteration also defined", notes = "The service gets the details of the device list from Solr based on the filter criteria in the response.", response = FacetedDevice.class, tags = {
 			"DeviceTile", })
@@ -179,7 +179,7 @@ public class DeviceController {
 	 * @param deviceId
 	 * @param bundleId
 	 * @param allowedRecurringPriceLimit
-	 * @return
+	 * @return BundleDetails
 	 */
 	@ApiOperation(value = "The service gets the details of the device specially price, equipment, specification, features, merchandising, etc in the response.", notes = "The service gets the details of the bundleDetails from API based on the bundleId, deviceId in the response.", response = BundleDetails.class, tags = {
 			"KeepDeviceChangePlan" })

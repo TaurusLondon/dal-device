@@ -5,48 +5,44 @@
 // Generated on: 2017.01.02 at 10:51:22 AM IST 
 //
 
-
 package com.vf.uk.dal.device.datamodel.product;
 
-
 public class Duration {
-	
-	
-    private String uom;
-	
-    private String starts;
-	
-    private String value;
 
+	private String uom;
 
-    public Duration() {
+	private String starts;
+
+	private String value;
+
+	public Duration() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	public String getUOM() {
-        return uom;
-    }
+		return uom;
+	}
 
-    public void setUOM(String value) {
-        this.uom = value;
-    }
+	public void setUOM(String value) {
+		this.uom = value;
+	}
 
-    public String getStarts() {
-        return starts;
-    }
+	public String getStarts() {
+		return starts;
+	}
 
-    public void setStarts(String value) {
-        this.starts = value;
-    }
+	public void setStarts(String value) {
+		this.starts = value;
+	}
 
-    public String getValue() {
-        return value;
-    }
+	public String getValue() {
+		return value;
+	}
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+	public void setValue(String value) {
+		this.value = value;
+	}
 
 	@Override
 	public int hashCode() {
@@ -89,6 +85,5 @@ public class Duration {
 	public String toString() {
 		return "Duration [uom=" + uom + ", starts=" + starts + ", value=" + value + "]";
 	}
-    
 
 }

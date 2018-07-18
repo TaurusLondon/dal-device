@@ -10,125 +10,129 @@ import io.swagger.annotations.ApiModelProperty;
 
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * NewFacet
  */
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
 
-public class NewFacet   {
-  @JsonProperty("facetName")
-  private String facetName = null;
+public class NewFacet {
+	@JsonProperty("facetName")
+	private String facetName = null;
 
-  @JsonProperty("facetList")
-  private List<FacetWithCount> facetList = null;
-/**
- * 
- * @param facetName
- * @return
- */
-  public NewFacet facetName(String facetName) {
-    this.facetName = facetName;
-    return this;
-  }
+	@JsonProperty("facetList")
+	private List<FacetWithCount> facetList = null;
 
-   /**
-   * Facet Name like colour,os,capacity
-   * @return facetName
-  **/
-  @ApiModelProperty(value = "Facet Name like colour,os,capacity")
+	/**
+	 * 
+	 * @param facetName
+	 * @return
+	 */
+	public NewFacet facetName(String facetName) {
+		this.facetName = facetName;
+		return this;
+	}
 
+	/**
+	 * Facet Name like colour,os,capacity
+	 * 
+	 * @return facetName
+	 **/
+	@ApiModelProperty(value = "Facet Name like colour,os,capacity")
 
-  public String getFacetName() {
-    return facetName;
-  }
-/**
- * 
- * @param facetName
- */
-  public void setFacetName(String facetName) {
-    this.facetName = facetName;
-  }
-/**
- * 
- * @param facetList
- * @return
- */
-  public NewFacet facetList(List<FacetWithCount> facetList) {
-    this.facetList = facetList;
-    return this;
-  }
-/**
- * 
- * @param facetListItem
- * @return
- */
-  public NewFacet addFacetListItem(FacetWithCount facetListItem) {
-    if (this.facetList == null) {
-      this.facetList = new ArrayList<>();
-    }
-    this.facetList.add(facetListItem);
-    return this;
-  }
+	public String getFacetName() {
+		return facetName;
+	}
 
-   /**
-   * List of facets with count
-   * @return facetList
-  **/
-  @ApiModelProperty(value = "List of facets with count")
+	/**
+	 * 
+	 * @param facetName
+	 */
+	public void setFacetName(String facetName) {
+		this.facetName = facetName;
+	}
 
-  @Valid
+	/**
+	 * 
+	 * @param facetList
+	 * @return
+	 */
+	public NewFacet facetList(List<FacetWithCount> facetList) {
+		this.facetList = facetList;
+		return this;
+	}
 
-  public List<FacetWithCount> getFacetList() {
-    return facetList;
-  }
-/**
- * 
- * @param facetList
- */
-  public void setFacetList(List<FacetWithCount> facetList) {
-    this.facetList = facetList;
-  }
+	/**
+	 * 
+	 * @param facetListItem
+	 * @return
+	 */
+	public NewFacet addFacetListItem(FacetWithCount facetListItem) {
+		if (this.facetList == null) {
+			this.facetList = new ArrayList<>();
+		}
+		this.facetList.add(facetListItem);
+		return this;
+	}
 
+	/**
+	 * List of facets with count
+	 * 
+	 * @return facetList
+	 **/
+	@ApiModelProperty(value = "List of facets with count")
 
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    NewFacet newFacet = (NewFacet) o;
-    return Objects.equals(this.facetName, newFacet.facetName) &&
-        Objects.equals(this.facetList, newFacet.facetList);
-  }
+	@Valid
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(facetName, facetList);
-  }
+	public List<FacetWithCount> getFacetList() {
+		return facetList;
+	}
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class NewFacet {\n");
-    
-    sb.append("    facetName: ").append(toIndentedString(facetName)).append("\n");
-    sb.append("    facetList: ").append(toIndentedString(facetList)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
+	/**
+	 * 
+	 * @param facetList
+	 */
+	public void setFacetList(List<FacetWithCount> facetList) {
+		this.facetList = facetList;
+	}
 
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
+	@Override
+	public boolean equals(java.lang.Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		NewFacet newFacet = (NewFacet) o;
+		return Objects.equals(this.facetName, newFacet.facetName) && Objects.equals(this.facetList, newFacet.facetList);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(facetName, facetList);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("class NewFacet {\n");
+
+		sb.append("    facetName: ").append(toIndentedString(facetName)).append("\n");
+		sb.append("    facetList: ").append(toIndentedString(facetList)).append("\n");
+		sb.append("}");
+		return sb.toString();
+	}
+
+	/**
+	 * Convert the given object to string with each line indented by 4 spaces
+	 * (except the first line).
+	 */
+	private String toIndentedString(java.lang.Object o) {
+		if (o == null) {
+			return "null";
+		}
+		return o.toString().replace("\n", "\n    ");
+	}
 }
-

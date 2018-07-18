@@ -6,274 +6,196 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-
 public class MerchandisingPromotion {
 
-	
 	private String tag;
-	
+
 	private String label;
-	
+
 	private String description;
-	
+
 	private String type;
-	
+
 	private String platform;
-	
+
 	private String promotionMedia;
-	
+
 	private Long priority;
-	
+
 	private IncompatibleMPs incompatibleMPs;
-	
+
 	private String actionOnRemove;
-	
-	@JsonFormat(pattern="dd/MM/yyyy HH:mm:ss")
+
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	private Timestamp startDateTime;
-	
-	@JsonFormat(pattern="dd/MM/yyyy HH:mm:ss")
+
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	private Timestamp endDateTime;
-	
+
 	private boolean confirmRequired;
-	
+
 	private String version;
-	
-	
+
 	@JsonProperty("condition1")
 	private Condition condition;
-	
+
 	private List<MerchandisingProduct> products;
-	
+
 	private boolean belowTheLine;
-	
+
 	private String priceEstablishedLabel;
-	
+
 	private String footNoteKey;
 
-	
-	
 	public MerchandisingPromotion() {
 		super();
 	}
-	
-	
 
 	public String getTag() {
 		return tag;
 	}
 
-
-
 	public void setTag(String tag) {
 		this.tag = tag;
 	}
-
-
 
 	public String getLabel() {
 		return label;
 	}
 
-
-
 	public void setLabel(String label) {
 		this.label = label;
 	}
-
-
 
 	public String getDescription() {
 		return description;
 	}
 
-
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-
 
 	public String getType() {
 		return type;
 	}
 
-
-
 	public void setType(String type) {
 		this.type = type;
 	}
-
-
 
 	public String getPlatform() {
 		return platform;
 	}
 
-
-
 	public void setPlatform(String platform) {
 		this.platform = platform;
 	}
-
-
 
 	public String getPromotionMedia() {
 		return promotionMedia;
 	}
 
-
-
 	public void setPromotionMedia(String promotionMedia) {
 		this.promotionMedia = promotionMedia;
 	}
-
-
 
 	public Long getPriority() {
 		return priority;
 	}
 
-
-
 	public void setPriority(Long priority) {
 		this.priority = priority;
 	}
-
-
 
 	public IncompatibleMPs getIncompatibleMPs() {
 		return incompatibleMPs;
 	}
 
-
-
 	public void setIncompatibleMPs(IncompatibleMPs incompatibleMPs) {
 		this.incompatibleMPs = incompatibleMPs;
 	}
-
-
 
 	public String getActionOnRemove() {
 		return actionOnRemove;
 	}
 
-
-
 	public void setActionOnRemove(String actionOnRemove) {
 		this.actionOnRemove = actionOnRemove;
 	}
-
-
 
 	public Timestamp getStartDateTime() {
 		return startDateTime;
 	}
 
-
-
 	public void setStartDateTime(Timestamp startDateTime) {
 		this.startDateTime = startDateTime;
 	}
-
-
 
 	public Timestamp getEndDateTime() {
 		return endDateTime;
 	}
 
-
-
 	public void setEndDateTime(Timestamp endDateTime) {
 		this.endDateTime = endDateTime;
 	}
-
-
 
 	public boolean isConfirmRequired() {
 		return confirmRequired;
 	}
 
-
-
 	public void setConfirmRequired(boolean confirmRequired) {
 		this.confirmRequired = confirmRequired;
 	}
-
-
 
 	public String getVersion() {
 		return version;
 	}
 
-
-
 	public void setVersion(String version) {
 		this.version = version;
 	}
 
-
-	//@JsonGetter{"condition"}
+	// @JsonGetter{"condition"}
 	public Condition getCondition() {
 		return condition;
 	}
 
-
-	//@JsonSetter("condition1")
+	// @JsonSetter("condition1")
 	public void setCondition(Condition condition) {
 		this.condition = condition;
 	}
-
-
 
 	public List<MerchandisingProduct> getProducts() {
 		return products;
 	}
 
-
-
 	public void setProducts(List<MerchandisingProduct> products) {
 		this.products = products;
 	}
-
-
 
 	public boolean isBelowTheLine() {
 		return belowTheLine;
 	}
 
-
-
 	public void setBelowTheLine(boolean belowTheLine) {
 		this.belowTheLine = belowTheLine;
 	}
-	
-	
-
 
 	public String getPriceEstablishedLabel() {
 		return priceEstablishedLabel;
 	}
 
-
-
 	public void setPriceEstablishedLabel(String priceEstablishedLabel) {
 		this.priceEstablishedLabel = priceEstablishedLabel;
 	}
-
-
 
 	public String getFootNoteKey() {
 		return footNoteKey;
 	}
 
-
-
 	public void setFootNoteKey(String footNoteKey) {
 		this.footNoteKey = footNoteKey;
 	}
-
-
 
 	@Override
 	public int hashCode() {
@@ -299,8 +221,6 @@ public class MerchandisingPromotion {
 		result = prime * result + ((version == null) ? 0 : version.hashCode());
 		return result;
 	}
-
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -398,8 +318,6 @@ public class MerchandisingPromotion {
 		return true;
 	}
 
-	
-
 	@Override
 	public String toString() {
 		return "MerchandisingPromotion [tag=" + tag + ", label=" + label + ", description=" + description + ", type="
@@ -410,18 +328,14 @@ public class MerchandisingPromotion {
 				+ ", priceEstablishedLabel=" + priceEstablishedLabel + ", footNoteKey=" + footNoteKey + "]";
 	}
 
-
-
-	
 	public String getId() {
 		// TODO Auto-generated method stub
 		return tag;
 	}
 
-	/*@Override
-	public int getImplVersion() {
-		// TODO Auto-generated method stub
-		return VERSION;
-	}*/
+	/*
+	 * @Override public int getImplVersion() { // TODO Auto-generated method
+	 * stub return VERSION; }
+	 */
 
 }

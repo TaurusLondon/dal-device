@@ -44,49 +44,62 @@ import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForHardwareSash;
 import com.vf.uk.dal.utility.entity.PriceForProduct;
 import com.vf.uk.dal.utility.entity.RecommendedProductListRequest;
 import com.vf.uk.dal.utility.entity.RecommendedProductListResponse;
+
 /**
  * 
  * common methods used across the services.
  *
  */
 
-public  class CommonUtility {
+public class CommonUtility {
 	/**
 	 * Generates JWT token for security
 	 * 
-	 * **/
-	/*public static String generateJWT() 
-	{
-		return ServiceContext.getJWTToken();
-	}*/
+	 **/
+	/*
+	 * public static String generateJWT() { return ServiceContext.getJWTToken();
+	 * }
+	 */
 	/**
 	 * Round off price to two decimal points
+	 * 
 	 * @return DecimalFormat
 	 */
-		
-	public static DecimalFormat getDecimalFormat(){
+
+	public static DecimalFormat getDecimalFormat() {
 		return new DecimalFormat("#0.00");
 	}
+
 	/**
 	 * Date to String conversion.
+	 * 
 	 * @param date
 	 * @param strDateFormat
 	 * @return dateToStr
 	 */
-	
+
 	public static String getDateToString(Date date, String strDateFormat) {
-		String formatdate=null;
-		if(date!=null)
-		{
+		String formatdate = null;
+		if (date != null) {
 			SimpleDateFormat format = new SimpleDateFormat(strDateFormat);
-			formatdate=format.format(date);
+			formatdate = format.format(date);
 		}
 		return formatdate;
 	}
-	
-	public static List<PriceForBundleAndHardware> getPriceDetails(List<BundleAndHardwareTuple> bundleAndHardwareTupleList,String offerCode,RegistryClient registryClient,String journeyType) {
-		RestTemplate restTemplate =registryClient.getRestTemplate();
-		RequestForBundleAndHardware requestForBundleAndHardware=new RequestForBundleAndHardware();
+
+	/**
+	 * 
+	 * @param bundleAndHardwareTupleList
+	 * @param offerCode
+	 * @param registryClient
+	 * @param journeyType
+	 * @return List<PriceForBundleAndHardware>
+	 */
+	public static List<PriceForBundleAndHardware> getPriceDetails(
+			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, RegistryClient registryClient,
+			String journeyType) {
+		RestTemplate restTemplate = registryClient.getRestTemplate();
+		RequestForBundleAndHardware requestForBundleAndHardware = new RequestForBundleAndHardware();
 		requestForBundleAndHardware.setBundleAndHardwareList(bundleAndHardwareTupleList);
 		requestForBundleAndHardware.setOfferCode(offerCode);
 		requestForBundleAndHardware.setPackageType(journeyType);
@@ -97,29 +110,49 @@ public  class CommonUtility {
 					requestForBundleAndHardware, PriceForBundleAndHardware[].class);
 			LogHelper.info(CommonUtility.class, "End --> Calling  Price.calculateForBundleAndHardware");
 		} catch (Exception e) {
-			LogHelper.error(CommonUtility.class, "PRICE API of PriceForBundleAndHardware Exception---------------"+e);
+			LogHelper.error(CommonUtility.class, "PRICE API of PriceForBundleAndHardware Exception---------------" + e);
 			throw new ApplicationException(ExceptionMessages.PRICING_API_EXCEPTION);
 		}
- 		ObjectMapper mapper = new ObjectMapper();
-		return mapper.convertValue(client, new TypeReference<List<PriceForBundleAndHardware>>(){});
+		ObjectMapper mapper = new ObjectMapper();
+		return mapper.convertValue(client, new TypeReference<List<PriceForBundleAndHardware>>() {
+		});
 	}
-	
-	public static RecommendedProductListResponse getRecommendedProductList(RecommendedProductListRequest recomProductList,RegistryClient registryClient) {
-		RestTemplate restTemplate =registryClient.getRestTemplate();
-		return restTemplate.postForObject("http://CUSTOMER-V1/customer/getRecommendedProductList/",recomProductList,RecommendedProductListResponse.class);
+
+	/**
+	 * 
+	 * @param recomProductList
+	 * @param registryClient
+	 * @return RecommendedProductListResponse
+	 */
+	public static RecommendedProductListResponse getRecommendedProductList(
+			RecommendedProductListRequest recomProductList, RegistryClient registryClient) {
+		RestTemplate restTemplate = registryClient.getRestTemplate();
+		return restTemplate.postForObject("http://CUSTOMER-V1/customer/getRecommendedProductList/", recomProductList,
+				RecommendedProductListResponse.class);
 	}
-	
-	public static BundleDetailsForAppSrv getPriceDetailsForCompatibaleBundle(String deviceId,String journeyType,RegistryClient registryClient) {
+
+	/**
+	 * 
+	 * @param deviceId
+	 * @param journeyType
+	 * @param registryClient
+	 * @return BundleDetailsForAppSrv
+	 */
+	public static BundleDetailsForAppSrv getPriceDetailsForCompatibaleBundle(String deviceId, String journeyType,
+			RegistryClient registryClient) {
 		try {
 			LogHelper.info(CommonUtility.class, "Start --> Calling  Bundle.getCoupledBundleList");
-			RestTemplate restTemplate =registryClient.getRestTemplate();
-			return restTemplate.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=" +deviceId+"&journeyType="+journeyType, BundleDetailsForAppSrv.class );
+			RestTemplate restTemplate = registryClient.getRestTemplate();
+			return restTemplate
+					.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId="
+							+ deviceId + "&journeyType=" + journeyType, BundleDetailsForAppSrv.class);
 		} catch (Exception e) {
-			LogHelper.error(CommonUtility.class, ""+e);
+			LogHelper.error(CommonUtility.class, "" + e);
 			throw new ApplicationException(ExceptionMessages.COUPLEBUNDLELIST_API_EXCEPTION);
-			//return null;
+			// return null;
 		}
 	}
+
 	/**
 	 * Gets the bundle details from complans listing API.
 	 *
@@ -137,31 +170,42 @@ public  class CommonUtility {
 		if (sortCriteria != null && StringUtils.isNotBlank(sortCriteria)) {
 			URL += "/?sort=" + sortCriteria;
 		}
-		BundleDetails client=new BundleDetails();
-		try{
-		 client = restTemplate.getForObject(URL, BundleDetails.class);
-		 LogHelper.info(CommonUtility.class, "End -->  calling  Bundle.GetCompatibleListAPI");
-		} 
-		catch(Exception e){
-			LogHelper.error(CommonUtility.class, "getBundleDetailsFromGetCompatibleListAPI API Exception---------------"+e);
+		BundleDetails client = new BundleDetails();
+		try {
+			client = restTemplate.getForObject(URL, BundleDetails.class);
+			LogHelper.info(CommonUtility.class, "End -->  calling  Bundle.GetCompatibleListAPI");
+		} catch (Exception e) {
+			LogHelper.error(CommonUtility.class,
+					"getBundleDetailsFromGetCompatibleListAPI API Exception---------------" + e);
 			throw new ApplicationException(ExceptionMessages.BUNDLECOMPATIBLELIST_API_EXCEPTION);
-	}
+		}
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.convertValue(client, new TypeReference<BundleDetails>() {
 		});
 	}
-	public static JSONObject getJSONFromString(String strTobeConverted) {		
-    	   JSONParser parser = new JSONParser();
-    	   JSONObject jsonObject= null;
-             try {
-            	 jsonObject = (JSONObject) parser.parse(strTobeConverted);
-			} catch (org.json.simple.parser.ParseException exception) {				
-				LogHelper.error(CommonUtility.class, "Error while parsing string to JSONObject "+exception);
-				throw new ApplicationException(ExceptionMessages.ERROR_STRING_TO_JSONOBJECT);
-			}
+
+	/**
+	 * 
+	 * @param strTobeConverted
+	 * @return JSONObject
+	 */
+	public static JSONObject getJSONFromString(String strTobeConverted) {
+		JSONParser parser = new JSONParser();
+		JSONObject jsonObject = null;
+		try {
+			jsonObject = (JSONObject) parser.parse(strTobeConverted);
+		} catch (org.json.simple.parser.ParseException exception) {
+			LogHelper.error(CommonUtility.class, "Error while parsing string to JSONObject " + exception);
+			throw new ApplicationException(ExceptionMessages.ERROR_STRING_TO_JSONOBJECT);
+		}
 		return jsonObject;
 	}
-	
+
+	/**
+	 * 
+	 * @param source
+	 * @return trimLeadingZeros
+	 */
 	public static String trimLeadingZeros(String source) {
 		int length = source.length();
 
@@ -178,87 +222,125 @@ public  class CommonUtility {
 			return source;
 		return source.substring(i);
 	}
-	
-	public static String appendPrefixString(String deviceId)
-	{
-		StringBuilder target= new StringBuilder(Constants.PREFIX_SKU);
-		String leadingZero=deviceId.substring(0, 1);
+
+	/**
+	 * 
+	 * @param deviceId
+	 * @return
+	 */
+	public static String appendPrefixString(String deviceId) {
+		StringBuilder target = new StringBuilder(Constants.PREFIX_SKU);
+		String leadingZero = deviceId.substring(0, 1);
 		if (leadingZero.equals(Constants.zero)) {
 			target.append(deviceId.substring(1, deviceId.length()));
-		}else{
+		} else {
 			target.append(deviceId);
 		}
 		return target.toString();
 	}
-	public static PriceForProduct getAccessoryPriceDetails(BundleDeviceAndProductsList bundleDeviceAndProductsList,RegistryClient registryClient) {
-		RestTemplate restTemplate =registryClient.getRestTemplate();
+
+	/**
+	 * 
+	 * @param bundleDeviceAndProductsList
+	 * @param registryClient
+	 * @return PriceForProduct
+	 */
+	public static PriceForProduct getAccessoryPriceDetails(BundleDeviceAndProductsList bundleDeviceAndProductsList,
+			RegistryClient registryClient) {
+		RestTemplate restTemplate = registryClient.getRestTemplate();
 		PriceForProduct client;
-		try{
+		try {
 			LogHelper.info(CommonUtility.class, "Start -->  calling  Price.product");
-		 client=restTemplate.postForObject("http://PRICE-V1/price/product" ,bundleDeviceAndProductsList,PriceForProduct.class);
-		 LogHelper.info(CommonUtility.class, "End -->  calling  Price.product");
-		}catch(Exception e){
-			LogHelper.error(CommonUtility.class, "getAccessoryPriceDetails API Exception---------------"+e);
+			client = restTemplate.postForObject("http://PRICE-V1/price/product", bundleDeviceAndProductsList,
+					PriceForProduct.class);
+			LogHelper.info(CommonUtility.class, "End -->  calling  Price.product");
+		} catch (Exception e) {
+			LogHelper.error(CommonUtility.class, "getAccessoryPriceDetails API Exception---------------" + e);
 			throw new ApplicationException(ExceptionMessages.PRICING_API_EXCEPTION);
 		}
- 		ObjectMapper mapper = new ObjectMapper();
-		return mapper.convertValue(client, new TypeReference<PriceForProduct>(){});
-		
+		ObjectMapper mapper = new ObjectMapper();
+		return mapper.convertValue(client, new TypeReference<PriceForProduct>() {
+		});
+
 	}
-	public static List<PriceForBundleAndHardware> getPriceDetailsUsingBundleHarwareTrouple(List<BundleAndHardwareTuple> bundleAndHardwareTupleList,String offerCode,String journeyType,RegistryClient registryClient) {
-		List<PriceForBundleAndHardware> priceList=null;
+
+	/**
+	 * 
+	 * @param bundleAndHardwareTupleList
+	 * @param offerCode
+	 * @param journeyType
+	 * @param registryClient
+	 * @return List<PriceForBundleAndHardware>
+	 */
+	public static List<PriceForBundleAndHardware> getPriceDetailsUsingBundleHarwareTrouple(
+			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType,
+			RegistryClient registryClient) {
+		List<PriceForBundleAndHardware> priceList = null;
 		try {
-			RestTemplate restTemplate =registryClient.getRestTemplate();
-			RequestForBundleAndHardware requestForBundleAndHardware=new RequestForBundleAndHardware();
+			RestTemplate restTemplate = registryClient.getRestTemplate();
+			RequestForBundleAndHardware requestForBundleAndHardware = new RequestForBundleAndHardware();
 			requestForBundleAndHardware.setBundleAndHardwareList(bundleAndHardwareTupleList);
 			requestForBundleAndHardware.setOfferCode(offerCode);
 			requestForBundleAndHardware.setPackageType(journeyType);
 			LogHelper.info(CommonUtility.class, "Start --> Calling  Price.calculateForBundleAndHardware");
-			PriceForBundleAndHardware[] client=restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware" ,requestForBundleAndHardware,PriceForBundleAndHardware[].class);
+			PriceForBundleAndHardware[] client = restTemplate.postForObject(
+					"http://PRICE-V1/price/calculateForBundleAndHardware", requestForBundleAndHardware,
+					PriceForBundleAndHardware[].class);
 			LogHelper.info(CommonUtility.class, "End --> Calling  Price.calculateForBundleAndHardware");
 			ObjectMapper mapper = new ObjectMapper();
-			priceList= mapper.convertValue(client, new TypeReference<List<PriceForBundleAndHardware>>(){});
+			priceList = mapper.convertValue(client, new TypeReference<List<PriceForBundleAndHardware>>() {
+			});
 		} catch (Exception e) {
-			LogHelper.error(CommonUtility.class, ""+e);
+			LogHelper.error(CommonUtility.class, "" + e);
 			throw new ApplicationException(ExceptionMessages.PRICING_API_EXCEPTION);
 		}
 		return priceList;
 	}
-	
+
 	/**
 	 * Returns bundle Id from customer subscription.
+	 * 
 	 * @param subscriptionId
 	 * @param subscriptionType
 	 * @param registryClient
-	 * @return
+	 * @return SubscriptionBundleId
 	 */
-	 public static String getSubscriptionBundleId(String subscriptionId, String subscriptionType, RegistryClient registryClient) {
-		
+	public static String getSubscriptionBundleId(String subscriptionId, String subscriptionType,
+			RegistryClient registryClient) {
+
 		String bundleId = null;
 
 		try {
-			String url = "http://CUSTOMER-V1/customer/subscription/" + subscriptionType + ":" + subscriptionId + "/sourcePackageSummary";
+			String url = "http://CUSTOMER-V1/customer/subscription/" + subscriptionType + ":" + subscriptionId
+					+ "/sourcePackageSummary";
 			RestTemplate restTemplate = registryClient.getRestTemplate();
 			SourcePackageSummary sourcePackageSummary = restTemplate.getForObject(url, SourcePackageSummary.class);
-			
-			if (null != sourcePackageSummary && null != sourcePackageSummary.getPromotionId()){
+
+			if (null != sourcePackageSummary && null != sourcePackageSummary.getPromotionId()) {
 				bundleId = sourcePackageSummary.getPromotionId();
-			
+
 				if (StringUtils.isBlank(bundleId))
-					LogHelper.info(CommonUtility.class, "No bundleId retrived from getSubscriptionAPI for the given MSISDN");
+					LogHelper.info(CommonUtility.class,
+							"No bundleId retrived from getSubscriptionAPI for the given MSISDN");
+			} else {
+				LogHelper.info(CommonUtility.class,
+						"Unable to get Subscriptions from GetSubscriptionbyMSISDN servcie for subscriptionId"
+								+ subscriptionId);
 			}
-			 else {
-				LogHelper.info(CommonUtility.class, "Unable to get Subscriptions from GetSubscriptionbyMSISDN servcie for subscriptionId" + subscriptionId);
-			}
-		
-		}catch(Exception e){
-			LogHelper.error(CommonUtility.class, "getBundleId API failed to get bundle from customer subscription : "+e);
+
+		} catch (Exception e) {
+			LogHelper.error(CommonUtility.class,
+					"getBundleId API failed to get bundle from customer subscription : " + e);
 		}
 		return bundleId;
 
 	}
-	
-	
+
+	/**
+	 * 
+	 * @param price
+	 * @return getpriceFormat
+	 */
 	public static String getpriceFormat(Float price) {
 		String formatedPrice = null;
 		String decimalFormat = "#.00";
@@ -273,28 +355,30 @@ public  class CommonUtility {
 		}
 		return formatedPrice;
 	}
+
 	/**
 	 * Date validation
+	 * 
 	 * @author manoj.bera
 	 * @param startDateTime
 	 * @param endDateTime
-	 * @return flag 
+	 * @return flag
 	 */
 	public static Boolean dateValidationForOffers(String startDateTime, String endDateTime, String strDateFormat) {
-		
+
 		boolean flag = false;
 		SimpleDateFormat dateFormat = new SimpleDateFormat(strDateFormat);
 		Date currentDate = new Date();
-		
-		String currentDateStr = dateFormat.format(currentDate);		
-		
+
+		String currentDateStr = dateFormat.format(currentDate);
+
 		try {
 			currentDate = dateFormat.parse(currentDateStr);
-			
+
 		} catch (ParseException | DateTimeParseException e) {
 			LogHelper.error(CommonUtility.class, "ParseException : " + e);
-		}	
-		
+		}
+
 		Date startDate = null;
 		Date endDate = null;
 
@@ -303,23 +387,23 @@ public  class CommonUtility {
 				startDate = dateFormat.parse(startDateTime);
 				LogHelper.info(CommonUtility.class, "::::: StartDate " + startDate + " :::::");
 			}
-			
+
 		} catch (ParseException | DateTimeParseException e) {
 			LogHelper.error(CommonUtility.class, " ParseException: " + e);
-		}	
-		
-		try{
+		}
+
+		try {
 			if (endDateTime != null) {
 				endDate = dateFormat.parse(endDateTime);
 				LogHelper.info(CommonUtility.class, "::::: EndDate " + endDate + " :::::");
 			}
-		}catch (ParseException | DateTimeParseException e) {
+		} catch (ParseException | DateTimeParseException e) {
 			LogHelper.error(CommonUtility.class, "ParseException: " + e);
 		}
 
 		if (startDate != null && endDate != null && ((currentDate.after(startDate) || currentDate.equals(startDate))
-				&& (currentDate.before(endDate) || currentDate.equals(endDate)))) {			
-				flag = true;			
+				&& (currentDate.before(endDate) || currentDate.equals(endDate)))) {
+			flag = true;
 		}
 		if (startDate == null && endDate != null && currentDate.before(endDate)) {
 			flag = true;
@@ -333,46 +417,50 @@ public  class CommonUtility {
 
 		return flag;
 	}
+
+	/**
+	 * 
+	 * @param commercialProduct
+	 * @return isProductExpired
+	 */
 	public static boolean isProductNotExpired(CommercialProduct commercialProduct) {
 		boolean isProductExpired = false;
 		String startDateTime = null;
 		String endDateTime = null;
 		if (commercialProduct.getProductAvailability().getStart() != null) {
-			startDateTime = getDateToString(commercialProduct
-					.getProductAvailability().getStart(),
+			startDateTime = getDateToString(commercialProduct.getProductAvailability().getStart(),
 					Constants.DATE_FORMAT_COHERENCE);
 		}
 		if (commercialProduct.getProductAvailability().getEnd() != null) {
-			endDateTime = getDateToString(commercialProduct
-					.getProductAvailability().getEnd(),
+			endDateTime = getDateToString(commercialProduct.getProductAvailability().getEnd(),
 					Constants.DATE_FORMAT_COHERENCE);
 		}
 		if (!commercialProduct.getProductAvailability().isSalesExpired()) {
-			
-			isProductExpired = dateValidationForOffers(startDateTime,
-					endDateTime, Constants.DATE_FORMAT_COHERENCE);
+
+			isProductExpired = dateValidationForOffers(startDateTime, endDateTime, Constants.DATE_FORMAT_COHERENCE);
 
 		}
 		return isProductExpired;
 
 	}
 
-	public static boolean isProductJourneySpecific(
-			CommercialProduct commercialProduct, String journeyType) {
+	/**
+	 * 
+	 * @param commercialProduct
+	 * @param journeyType
+	 * @return isProductJourneySpecific
+	 */
+	public static boolean isProductJourneySpecific(CommercialProduct commercialProduct, String journeyType) {
 		boolean isProductJourneySpecific = false;
-		if (StringUtils.isNotBlank(journeyType)
-				&& Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)) {
-			if (commercialProduct.getProductControl() != null
-					&& commercialProduct.getProductControl().isIsSellableRet()
-					&& commercialProduct.getProductControl()
-							.isIsDisplayableRet()) {
+		if (StringUtils.isNotBlank(journeyType) && Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)) {
+			if (commercialProduct.getProductControl() != null && commercialProduct.getProductControl().isIsSellableRet()
+					&& commercialProduct.getProductControl().isIsDisplayableRet()) {
 
 				isProductJourneySpecific = true;
 			}
 		} else {
 			if (commercialProduct.getProductControl() != null
-					&& commercialProduct.getProductControl()
-							.isIsDisplayableAcq()
+					&& commercialProduct.getProductControl().isIsDisplayableAcq()
 					&& commercialProduct.getProductControl().isIsSellableAcq()) {
 
 				isProductJourneySpecific = true;
@@ -382,6 +470,7 @@ public  class CommonUtility {
 		return isProductJourneySpecific;
 
 	}
+
 	/**
 	 * Gets the promotions for bundle and hardware.
 	 *
@@ -393,25 +482,29 @@ public  class CommonUtility {
 	 * @author manoj.bera
 	 * @SPRINT 6.4
 	 */
-	public static List<BundleAndHardwarePromotions> getPromotionsForBundleAndHardWarePromotions(List<BundleAndHardwareTuple> bundleHardwareTupleList ,String journeyType, RegistryClient registryClient)
-	{
+	public static List<BundleAndHardwarePromotions> getPromotionsForBundleAndHardWarePromotions(
+			List<BundleAndHardwareTuple> bundleHardwareTupleList, String journeyType, RegistryClient registryClient) {
 		RestTemplate restTemplate = registryClient.getRestTemplate();
-		BundleAndHardwareRequest request =new BundleAndHardwareRequest();
+		BundleAndHardwareRequest request = new BundleAndHardwareRequest();
 		request.setBundleAndHardwareList(bundleHardwareTupleList);
 		request.setJourneyType(journeyType);
 		BundleAndHardwarePromotions[] response = null;
 		try {
-			LogHelper.info(CommonUtility.class,"http://PROMOTION-V1/promotion/queries/ForBundleAndHardware------POST URL\n"+"PayLoad\n Start calling");
-			response = restTemplate.postForObject("http://PROMOTION-V1/promotion/queries/ForBundleAndHardware",
-					request, BundleAndHardwarePromotions[].class);
+			LogHelper.info(CommonUtility.class,
+					"http://PROMOTION-V1/promotion/queries/ForBundleAndHardware------POST URL\n"
+							+ "PayLoad\n Start calling");
+			response = restTemplate.postForObject("http://PROMOTION-V1/promotion/queries/ForBundleAndHardware", request,
+					BundleAndHardwarePromotions[].class);
 		} catch (RestClientException e) {
 			// Stanley - Added error logging
-			LogHelper.error(CommonUtility.class, e+"");
+			LogHelper.error(CommonUtility.class, e + "");
 			throw new ApplicationException(ExceptionMessages.PROMOTION_API_EXCEPTION);
 		}
 		ObjectMapper mapper = new ObjectMapper();
-		return mapper.convertValue(response,new TypeReference<List<BundleAndHardwarePromotions>>() {});
+		return mapper.convertValue(response, new TypeReference<List<BundleAndHardwarePromotions>>() {
+		});
 	}
+
 	/**
 	 * 
 	 * @param entertainmentPacks
@@ -419,7 +512,7 @@ public  class CommonUtility {
 	 * @param planCouplingPromotions
 	 * @param sash
 	 * @param secureNet
-	 * @return
+	 * @return List<MediaLink>
 	 * @author manoj.bera
 	 * @SPRINT 6.4
 	 */
@@ -431,12 +524,12 @@ public  class CommonUtility {
 			List<CataloguepromotionqueriesForBundleAndHardwareSecureNet> secureNet,
 			List<CataloguepromotionqueriesForHardwareSash> sashBannerForHardware,
 			List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtras,
-			 List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccessories,
-			 List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtrasForPlans,
-			 List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccForPlans,
-			 List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtrasForHardwares,
-			 List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccForHardwares,
-			 List<CataloguepromotionqueriesForBundleAndHardwareSash> sashBundleConditional) {
+			List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccessories,
+			List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtrasForPlans,
+			List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccForPlans,
+			List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtrasForHardwares,
+			List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccForHardwares,
+			List<CataloguepromotionqueriesForBundleAndHardwareSash> sashBundleConditional) {
 		List<MediaLink> mediaList = new ArrayList<>();
 		if (sashBundleConditional != null && !sashBundleConditional.isEmpty()) {
 			for (CataloguepromotionqueriesForBundleAndHardwareSash sashPromotion : sashBundleConditional) {
@@ -473,10 +566,8 @@ public  class CommonUtility {
 			}
 		}
 		if (freeAccForHardwares != null && !freeAccForHardwares.isEmpty()) {
-			for (CataloguepromotionqueriesForBundleAndHardwareAccessory freeAccForHardware : freeAccForHardwares) 
-			{
-				if (StringUtils.isNotBlank(freeAccForHardware.getLabel()))
-				{
+			for (CataloguepromotionqueriesForBundleAndHardwareAccessory freeAccForHardware : freeAccForHardwares) {
+				if (StringUtils.isNotBlank(freeAccForHardware.getLabel())) {
 					MediaLink mediaOfferLink = new MediaLink();
 					mediaOfferLink.setId(freeAccForHardware.getType() + "." + Constants.STRING_OFFERS_LABEL);
 					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
@@ -486,8 +577,7 @@ public  class CommonUtility {
 					}
 					mediaList.add(mediaOfferLink);
 				}
-				if (StringUtils.isNotBlank(freeAccForHardware.getDescription())) 
-				{
+				if (StringUtils.isNotBlank(freeAccForHardware.getDescription())) {
 					MediaLink mediaOfferLink = new MediaLink();
 					mediaOfferLink.setId(freeAccForHardware.getType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
 					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
@@ -510,10 +600,8 @@ public  class CommonUtility {
 			}
 		}
 		if (freeExtrasForHardwares != null && !freeExtrasForHardwares.isEmpty()) {
-			for (CataloguepromotionqueriesForBundleAndHardwareExtras freeExtrasForHardware : freeExtrasForHardwares) 
-			{
-				if (StringUtils.isNotBlank(freeExtrasForHardware.getLabel()))
-				{
+			for (CataloguepromotionqueriesForBundleAndHardwareExtras freeExtrasForHardware : freeExtrasForHardwares) {
+				if (StringUtils.isNotBlank(freeExtrasForHardware.getLabel())) {
 					MediaLink mediaOfferLink = new MediaLink();
 					mediaOfferLink.setId(freeExtrasForHardware.getType() + "." + Constants.STRING_OFFERS_LABEL);
 					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
@@ -547,7 +635,7 @@ public  class CommonUtility {
 		}
 		if (freeAccForPlans != null && !freeAccForPlans.isEmpty()) {
 			for (CataloguepromotionqueriesForBundleAndHardwareAccessory freeAccForPlan : freeAccForPlans) {
-				if (StringUtils.isNotBlank(freeAccForPlan.getLabel())){
+				if (StringUtils.isNotBlank(freeAccForPlan.getLabel())) {
 					MediaLink mediaOfferLink = new MediaLink();
 					mediaOfferLink.setId(freeAccForPlan.getType() + "." + Constants.STRING_OFFERS_LABEL);
 					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
@@ -581,7 +669,7 @@ public  class CommonUtility {
 		}
 		if (freeExtrasForPlans != null && !freeExtrasForPlans.isEmpty()) {
 			for (CataloguepromotionqueriesForBundleAndHardwareExtras freeExtrasForPlan : freeExtrasForPlans) {
-				if (StringUtils.isNotBlank(freeExtrasForPlan.getLabel())){
+				if (StringUtils.isNotBlank(freeExtrasForPlan.getLabel())) {
 					MediaLink mediaOfferLink = new MediaLink();
 					mediaOfferLink.setId(freeExtrasForPlan.getType() + "." + Constants.STRING_OFFERS_LABEL);
 					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
@@ -615,7 +703,7 @@ public  class CommonUtility {
 		}
 		if (freeAccessories != null && !freeAccessories.isEmpty()) {
 			for (CataloguepromotionqueriesForBundleAndHardwareAccessory freeAccessory : freeAccessories) {
-				if (StringUtils.isNotBlank(freeAccessory.getLabel())){
+				if (StringUtils.isNotBlank(freeAccessory.getLabel())) {
 					MediaLink mediaOfferLink = new MediaLink();
 					mediaOfferLink.setId(freeAccessory.getType() + "." + Constants.STRING_OFFERS_LABEL);
 					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
@@ -649,7 +737,7 @@ public  class CommonUtility {
 		}
 		if (freeExtras != null && !freeExtras.isEmpty()) {
 			for (CataloguepromotionqueriesForBundleAndHardwareExtras freeExtra : freeExtras) {
-				if (StringUtils.isNotBlank(freeExtra.getLabel())){
+				if (StringUtils.isNotBlank(freeExtra.getLabel())) {
 					MediaLink mediaOfferLink = new MediaLink();
 					mediaOfferLink.setId(freeExtra.getType() + "." + Constants.STRING_OFFERS_LABEL);
 					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
@@ -751,7 +839,7 @@ public  class CommonUtility {
 		}
 		if (dataAllowances != null && !dataAllowances.isEmpty()) {
 			for (CataloguepromotionqueriesForBundleAndHardwareDataAllowances dataAllowance : dataAllowances) {
-				if (StringUtils.isNotBlank(dataAllowance.getLabel())){
+				if (StringUtils.isNotBlank(dataAllowance.getLabel())) {
 					MediaLink mediaOfferLink = new MediaLink();
 					mediaOfferLink.setId(dataAllowance.getType() + "." + Constants.STRING_OFFERS_LABEL);
 					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
@@ -851,7 +939,7 @@ public  class CommonUtility {
 				}
 			}
 		}
-		
+
 		if (secureNet != null && !secureNet.isEmpty()) {
 			for (CataloguepromotionqueriesForBundleAndHardwareSecureNet secureNetPromotion : secureNet) {
 				if (StringUtils.isNotBlank(secureNetPromotion.getLabel())) {
@@ -886,16 +974,17 @@ public  class CommonUtility {
 				}
 			}
 		}
-		
+
 		return mediaList;
 	}
+
 	/**
 	 * 
 	 * @param availableFromDate
 	 * @param strDateFormat
-	 * @return
+	 * @return dateValidationForProduct
 	 */
-	public static Boolean dateValidationForProduct(String availableFromDate,String strDateFormat) {
+	public static Boolean dateValidationForProduct(String availableFromDate, String strDateFormat) {
 		boolean flag = false;
 		SimpleDateFormat dateFormat = new SimpleDateFormat(strDateFormat);
 		Date currentDate = new Date();
@@ -916,22 +1005,21 @@ public  class CommonUtility {
 		}
 		return flag;
 	}
+
 	/**
 	 * 
 	 * @param price
 	 * @param commercialBundleMap
 	 * @param productLinesList
 	 * @param journeyType
-	 * @return
+	 * @return isValidJourneySpecificBundle
 	 */
 	public static boolean isValidJourneySpecificBundle(PriceForBundleAndHardware price,
-			Map<String,CommercialBundle> commercialBundleMap,List<String> productLinesList,String journeyType)
-	{
-		boolean flag =false;
-		String bundleId=price.getBundlePrice().getBundleId();
-		if(commercialBundleMap.containsKey(bundleId))
-		{
-			CommercialBundle commercialBundle= commercialBundleMap.get(bundleId);
+			Map<String, CommercialBundle> commercialBundleMap, List<String> productLinesList, String journeyType) {
+		boolean flag = false;
+		String bundleId = price.getBundlePrice().getBundleId();
+		if (commercialBundleMap.containsKey(bundleId)) {
+			CommercialBundle commercialBundle = commercialBundleMap.get(bundleId);
 			String startDateTime = null;
 			String endDateTime = null;
 			if (commercialBundle.getAvailability().getStart() != null) {
@@ -942,19 +1030,22 @@ public  class CommonUtility {
 				endDateTime = getDateToString(commercialBundle.getAvailability().getEnd(),
 						Constants.DATE_FORMAT_COHERENCE);
 			}
-			//boolean isCompatible=commercialBundle.getProductLines().containsAll(productLinesList);
-			boolean isCompatible=commercialBundle.getProductLines().stream().anyMatch(productLinesList.get(0)::equalsIgnoreCase)?true:commercialBundle.getProductLines().stream().anyMatch(productLinesList.get(1)::equalsIgnoreCase)?true:false;
-			if(DeviceServiceImplUtility.isNonUpgrade(journeyType) && isCompatible && dateValidationForOffers(startDateTime,
-					endDateTime, Constants.DATE_FORMAT_COHERENCE) && !commercialBundle.getAvailability().getSalesExpired() && 
-					DeviceServiceImplUtility.isNonUpgradeCommercialBundle(commercialBundle))
-			{
-				flag =true;
-			}
-			else if(DeviceServiceImplUtility.isUpgrade(journeyType)&& isCompatible && dateValidationForOffers(startDateTime,
-					endDateTime, Constants.DATE_FORMAT_COHERENCE) && !commercialBundle.getAvailability().getSalesExpired() && 
-					DeviceServiceImplUtility.isUpgradeFromCommercialBundle(commercialBundle))
-			{
-				flag =true;
+			// boolean
+			// isCompatible=commercialBundle.getProductLines().containsAll(productLinesList);
+			boolean isCompatible = commercialBundle.getProductLines().stream()
+					.anyMatch(productLinesList.get(0)::equalsIgnoreCase) ? true
+							: commercialBundle.getProductLines().stream()
+									.anyMatch(productLinesList.get(1)::equalsIgnoreCase) ? true : false;
+			if (DeviceServiceImplUtility.isNonUpgrade(journeyType) && isCompatible
+					&& dateValidationForOffers(startDateTime, endDateTime, Constants.DATE_FORMAT_COHERENCE)
+					&& !commercialBundle.getAvailability().getSalesExpired()
+					&& DeviceServiceImplUtility.isNonUpgradeCommercialBundle(commercialBundle)) {
+				flag = true;
+			} else if (DeviceServiceImplUtility.isUpgrade(journeyType) && isCompatible
+					&& dateValidationForOffers(startDateTime, endDateTime, Constants.DATE_FORMAT_COHERENCE)
+					&& !commercialBundle.getAvailability().getSalesExpired()
+					&& DeviceServiceImplUtility.isUpgradeFromCommercialBundle(commercialBundle)) {
+				flag = true;
 			}
 		}
 		return flag;

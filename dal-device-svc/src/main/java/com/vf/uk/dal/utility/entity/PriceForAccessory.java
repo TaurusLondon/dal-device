@@ -1,19 +1,22 @@
 package com.vf.uk.dal.utility.entity;
+
 /**
  * 
  * PriceForAccessory
  *
  */
 public class PriceForAccessory {
-	
-	 private HardwarePrice hardwarePrice = null;
-	 /**
-	  * 
-	  * @return
-	  */
+
+	private HardwarePrice hardwarePrice = null;
+
+	/**
+	 * 
+	 * @return
+	 */
 	public HardwarePrice getHardwarePrice() {
 		return hardwarePrice;
 	}
+
 	/**
 	 * 
 	 * @param hardwarePrice

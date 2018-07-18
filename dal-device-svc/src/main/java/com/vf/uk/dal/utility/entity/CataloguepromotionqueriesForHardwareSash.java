@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
- 
 /**
  * CataloguepromotionqueriesForHardwareSash.
  */
@@ -58,7 +57,8 @@ public class CataloguepromotionqueriesForHardwareSash {
 	/**
 	 * Sets the foot notes.
 	 *
-	 * @param footNotes the new foot notes
+	 * @param footNotes
+	 *            the new foot notes
 	 */
 	public void setFootNotes(List<String> footNotes) {
 		this.footNotes = footNotes;

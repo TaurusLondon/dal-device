@@ -80,7 +80,7 @@ public interface DeviceDao {
 	 * @param offerCode
 	 * @param packageType
 	 * @param version
-	 * @return
+	 * @return PriceForBundleAndHardwareListFromTupleListAsync
 	 */
 	public CompletableFuture<List<PriceForBundleAndHardware>> getPriceForBundleAndHardwareListFromTupleListAsync(
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String packageType,
@@ -91,7 +91,7 @@ public interface DeviceDao {
 	 * @param bundleHardwareTupleList
 	 * @param journeyType
 	 * @param version
-	 * @return
+	 * @return BundleAndHardwarePromotionsListFromBundleListAsync
 	 */
 	public CompletableFuture<List<BundleAndHardwarePromotions>> getBundleAndHardwarePromotionsListFromBundleListAsync(
 			List<BundleAndHardwareTuple> bundleHardwareTupleList, String journeyType, String version);
@@ -99,7 +99,7 @@ public interface DeviceDao {
 	/**
 	 * 
 	 * @param searchRequest
-	 * @return
+	 * @return ResponseFromDataSource
 	 */
 	public SearchResponse getResponseFromDataSource(SearchRequest searchRequest);
 

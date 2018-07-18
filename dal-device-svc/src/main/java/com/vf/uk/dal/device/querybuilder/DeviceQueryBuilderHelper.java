@@ -36,7 +36,7 @@ public class DeviceQueryBuilderHelper {
 	 * @author manoj.bera
 	 * @param make
 	 * @param model
-	 * @return
+	 * @return SearchRequest
 	 */
 	public static SearchRequest searchQueryForMakeAndModel(String make, String model) {
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
@@ -63,7 +63,7 @@ public class DeviceQueryBuilderHelper {
 	/**
 	 * @author manoj.bera
 	 * @param groupType
-	 * @return
+	 * @return SearchRequest
 	 */
 	public static SearchRequest searchQueryForProductGroup(String groupType) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
@@ -90,7 +90,7 @@ public class DeviceQueryBuilderHelper {
 	 * @author manoj.bera
 	 * @param groupName
 	 * @param groupType
-	 * @return
+	 * @return SearchRequest
 	 */
 	public static SearchRequest searchQueryForProductGroupWithGroupName(String groupName, String groupType) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
@@ -117,7 +117,7 @@ public class DeviceQueryBuilderHelper {
 	/**
 	 * @author manoj.bera
 	 * @param Id
-	 * @return
+	 * @return SearchRequest
 	 */
 	public static SearchRequest searchQueryForCommercialProductAndCommercialBundle(String Id, String type) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
@@ -181,7 +181,7 @@ public class DeviceQueryBuilderHelper {
 	/**
 	 * @author manoj.bera
 	 * @param listOfDeviceIds
-	 * @return
+	 * @return SearchRequest
 	 */
 	public static SearchRequest searchQueryForProductGroupByIds(List<String> listOfDeviceIds) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
@@ -211,7 +211,7 @@ public class DeviceQueryBuilderHelper {
 	/**
 	 * @author manoj.bera
 	 * @param groupType
-	 * @return
+	 * @return SearchRequest
 	 */
 	public static SearchRequest searchQueryForProductGroupByGroupType(String groupType) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
@@ -238,7 +238,7 @@ public class DeviceQueryBuilderHelper {
 	/**
 	 * @author manoj.bera
 	 * @param promotionAsTags
-	 * @return
+	 * @return SearchRequest
 	 */
 	public static SearchRequest searchQueryForMerchandisingByTagName(List<String> promotionAsTags) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
@@ -267,7 +267,7 @@ public class DeviceQueryBuilderHelper {
 	/**
 	 * @author manoj.bera
 	 * @param promotionAsTags
-	 * @return
+	 * @return SearchRequest
 	 */
 	public static SearchRequest searchQueryForMerchandisingBySingleTagName(String promotionAsTag) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
@@ -293,7 +293,7 @@ public class DeviceQueryBuilderHelper {
 	/**
 	 * @author manoj.bera
 	 * @param listOfDeviceIds
-	 * @return
+	 * @return SearchRequest
 	 */
 	public static SearchRequest searchQueryForMerchandisingPromotionModel(List<String> journeyType, String groupName) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
@@ -316,6 +316,21 @@ public class DeviceQueryBuilderHelper {
 		return searchRequest;
 	}
 
+	/**
+	 * 
+	 * @param groupType
+	 * @param make
+	 * @param capacity
+	 * @param colour
+	 * @param operatingSystem
+	 * @param mustHaveFeatures
+	 * @param sortBy
+	 * @param sortOption
+	 * @param pageNumber
+	 * @param pageSize
+	 * @param journeyType
+	 * @return SearchRequest
+	 */
 	public static SearchRequest searchQueryForProductGroupModel(String groupType, String make, String capacity,
 			String colour, String operatingSystem, String mustHaveFeatures, String sortBy, String sortOption,
 			Integer pageNumber, Integer pageSize, String journeyType) {
@@ -351,38 +366,52 @@ public class DeviceQueryBuilderHelper {
 		return searchRequest;
 	}
 
+	/**
+	 * 
+	 * @param make
+	 * @param capacity
+	 * @param colour
+	 * @param operatingSystem
+	 * @param mustHaveFeatures
+	 * @return BoolQueryBuilder
+	 */
 	private static BoolQueryBuilder getFilterCriteria(String make, String capacity, String colour,
 			String operatingSystem, String mustHaveFeatures) {
 		BoolQueryBuilder qb = QueryBuilders.boolQuery();
 		if (StringUtils.isNotBlank(make)) {
 			String[] makeArray = make.replace("\"", "").split(",");
-				qb.must(QueryBuilders.termsQuery(Constants.STRING_EQUIPMENT_MAKE_COLON + Constants.STRING_KEY_WORD,
-						Arrays.asList(makeArray)));
+			qb.must(QueryBuilders.termsQuery(Constants.STRING_EQUIPMENT_MAKE_COLON + Constants.STRING_KEY_WORD,
+					Arrays.asList(makeArray)));
 		}
 		if (capacity != null && !"\"\"".equals(capacity)) {
 			String[] capa = capacity.replace("\"", "").split(",");
-				qb.must(QueryBuilders.termsQuery(Constants.STRING_CAPACITY_COLON + Constants.STRING_KEY_WORD,
-						Arrays.asList(capa)));
+			qb.must(QueryBuilders.termsQuery(Constants.STRING_CAPACITY_COLON + Constants.STRING_KEY_WORD,
+					Arrays.asList(capa)));
 		}
 		if (colour != null && !"\"\"".equals(colour)) {
 			String[] color = colour.replace("\"", "").split(",");
-				qb.must(QueryBuilders.termsQuery(Constants.STRING_COLOUR_COLON + Constants.STRING_KEY_WORD,
-						Arrays.asList(color)));
+			qb.must(QueryBuilders.termsQuery(Constants.STRING_COLOUR_COLON + Constants.STRING_KEY_WORD,
+					Arrays.asList(color)));
 		}
 		if (operatingSystem != null && !"\"\"".equals(operatingSystem)) {
 			String[] os = operatingSystem.replace("\"", "").split(",");
-				qb.must(QueryBuilders.termsQuery(Constants.STRING_OPERATING_SYSTEM + Constants.STRING_KEY_WORD,
-						Arrays.asList(os)));
+			qb.must(QueryBuilders.termsQuery(Constants.STRING_OPERATING_SYSTEM + Constants.STRING_KEY_WORD,
+					Arrays.asList(os)));
 		}
 		if (mustHaveFeatures != null && !"\"\"".equals(mustHaveFeatures)) {
 			String[] mhf = mustHaveFeatures.replace("\"", "").split(",");
-				qb.must(QueryBuilders.termsQuery(
-						Constants.STRING_MUST_HAVE_FEATURES_WITH_COLON + Constants.STRING_KEY_WORD,
-						Arrays.asList(mhf)));
+			qb.must(QueryBuilders.termsQuery(Constants.STRING_MUST_HAVE_FEATURES_WITH_COLON + Constants.STRING_KEY_WORD,
+					Arrays.asList(mhf)));
 		}
 		return qb;
 	}
 
+	/**
+	 * 
+	 * @param groupType
+	 * @param journeyType
+	 * @return SearchRequest
+	 */
 	public static SearchRequest searchQueryForFacetCount(String groupType, String journeyType) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
@@ -431,7 +460,7 @@ public class DeviceQueryBuilderHelper {
 	/**
 	 * @author manoj.bera
 	 * @param deviceIds
-	 * @return
+	 * @return SearchRequest
 	 */
 	public static SearchRequest searchQueryForProductModel(List<String> deviceIds) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
@@ -458,7 +487,7 @@ public class DeviceQueryBuilderHelper {
 	/**
 	 * @author manoj.bera
 	 * @param bundleIds
-	 * @return
+	 * @return SearchRequest
 	 */
 	public static SearchRequest searchQueryForBundleModel(List<String> bundleIds) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
@@ -487,7 +516,7 @@ public class DeviceQueryBuilderHelper {
 	 * @param deviceIds
 	 * @param journeyType
 	 * @param offerCode
-	 * @return
+	 * @return SearchRequest
 	 */
 	public static SearchRequest searchQueryForOfferAppliedPriceModel(List<String> deviceIds, String journeyType,
 			String offerCode) {
@@ -517,7 +546,7 @@ public class DeviceQueryBuilderHelper {
 	 * 
 	 * @param displayNames
 	 * @param groupType
-	 * @return
+	 * @return SearchRequest
 	 */
 	public static SearchRequest searchQueryForProductGroupModelForDeliverMethod(Set<String> displayNames,
 			String groupType) {
@@ -541,6 +570,12 @@ public class DeviceQueryBuilderHelper {
 		return searchRequest;
 	}
 
+	/**
+	 * 
+	 * @param idsOrNames
+	 * @param type
+	 * @return SearchRequest
+	 */
 	public static SearchRequest searchQueryForListOfCommercialBundle(List<String> idsOrNames, String type) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
@@ -569,6 +604,12 @@ public class DeviceQueryBuilderHelper {
 		return searchRequest;
 	}
 
+	/**
+	 * 
+	 * @param Id
+	 * @param type
+	 * @return SearchRequest
+	 */
 	public static SearchRequest searchQueryForCommercialBundle(String Id, String type) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());

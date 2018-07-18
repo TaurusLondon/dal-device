@@ -47,29 +47,29 @@ import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
 import com.vf.uk.dal.utility.solr.entity.OfferAppliedPriceDetails;
 
 @Component
-public class CacheDeviceServiceImpl implements CacheDeviceService{
+public class CacheDeviceServiceImpl implements CacheDeviceService {
 
 	@Autowired
 	RegistryClient registryclnt;
-	
-	
+
 	@Autowired
 	DeviceESHelper deviceEs;
-	
+
 	@Autowired
 	DeviceTileCacheDAO deviceTileCacheDAO;
-	
+
 	@Autowired
 	DeviceDao deviceDao;
-	
+
 	@Autowired
 	DeviceServiceCommonUtility deviceServiceCommonUtility;
-	
+
 	ObjectMapper mapper = new ObjectMapper();
+
 	/**
 	 * 
 	 * @param groupType
-	 * @return
+	 * @return List<DevicePreCalculatedData>
 	 */
 	public List<DevicePreCalculatedData> getDeviceListFromPricing(String groupType) {
 		List<String> deviceIds = new ArrayList<>();
@@ -160,13 +160,14 @@ public class CacheDeviceServiceImpl implements CacheDeviceService{
 							null, Constants.JOURNEY_TYPE_SECONDLINE, registryclnt);
 
 			Map<String, Map<String, List<PriceForBundleAndHardware>>> mapOfIlsPriceWithoutOfferCode = new HashMap<>();
-			mapOfIlsPriceWithoutOfferCode.put(Constants.JOURNEY_TYPE_UPGRADE,
-					CacheDeviceDaoUtils.getILSPriceWithoutOfferCode(listOfPriceForBundleAndHardwareWithoutOfferCodeForUpgrade));
-			mapOfIlsPriceWithoutOfferCode.put(Constants.JOURNEY_TYPE_SECONDLINE,
-					CacheDeviceDaoUtils.getILSPriceWithoutOfferCode(listOfPriceForBundleAndHardwareWithoutOfferCodeForSecondLine));
+			mapOfIlsPriceWithoutOfferCode.put(Constants.JOURNEY_TYPE_UPGRADE, CacheDeviceDaoUtils
+					.getILSPriceWithoutOfferCode(listOfPriceForBundleAndHardwareWithoutOfferCodeForUpgrade));
+			mapOfIlsPriceWithoutOfferCode.put(Constants.JOURNEY_TYPE_SECONDLINE, CacheDeviceDaoUtils
+					.getILSPriceWithoutOfferCode(listOfPriceForBundleAndHardwareWithoutOfferCodeForSecondLine));
 
 			// Ratings population logic
-			Map<String, String> ratingsReviewMap = deviceServiceCommonUtility.getDeviceReviewRating_Implementation(deviceIds);
+			Map<String, String> ratingsReviewMap = deviceServiceCommonUtility
+					.getDeviceReviewRating_Implementation(deviceIds);
 			listOfProductGroupRepository.forEach(
 					deviceDataRating -> DeviceUtils.updateDevicePrecaldataBasedOnIlsPriceAndRating(minimumPriceMap,
 							ilsOfferPriceWithJourneyAware, mapOfIlsPriceWithoutOfferCode, ratingsReviewMap,
@@ -253,10 +254,10 @@ public class CacheDeviceServiceImpl implements CacheDeviceService{
 				String bundleId = listOfLeadPlanId.get(deviceId);
 				CommercialBundle coommercialbundle = commercialBundleMap.containsKey(bundleId)
 						? commercialBundleMap.get(bundleId) : null;
-				if (DeviceServiceImplUtility.isSellable(Constants.JOURNEY_TYPE_ACQUISITION,coommercialbundle)) {
+				if (DeviceServiceImplUtility.isSellable(Constants.JOURNEY_TYPE_ACQUISITION, coommercialbundle)) {
 					nonUpgradeLeadPlanId = bundleId;
 				}
-				if (DeviceServiceImplUtility.isSellable(Constants.JOURNEY_TYPE_UPGRADE,coommercialbundle)) {
+				if (DeviceServiceImplUtility.isSellable(Constants.JOURNEY_TYPE_UPGRADE, coommercialbundle)) {
 					upgradeLeadPlanId = bundleId;
 				}
 			}
@@ -283,8 +284,9 @@ public class CacheDeviceServiceImpl implements CacheDeviceService{
 					List<PriceForBundleAndHardware> listOfPrice = nonLeadPlanIdPriceMap.get(deviceId);
 					bundleHeaderForDevice = deviceServiceCommonUtility.identifyLowestPriceOfPlanForDevice(listOfPrice,
 							commercialBundleMap, Constants.JOURNEY_TYPE_ACQUISITION);
-					PriceForBundleAndHardware upgradeCompatiblePlan = deviceServiceCommonUtility.identifyLowestPriceOfPlanForDevice(
-							listOfPrice, commercialBundleMap, Constants.JOURNEY_TYPE_UPGRADE);
+					PriceForBundleAndHardware upgradeCompatiblePlan = deviceServiceCommonUtility
+							.identifyLowestPriceOfPlanForDevice(listOfPrice, commercialBundleMap,
+									Constants.JOURNEY_TYPE_UPGRADE);
 					if (upgradeCompatiblePlan != null) {
 						upgradeLeadPlanId = upgradeCompatiblePlan.getBundlePrice().getBundleId();
 					}
@@ -300,9 +302,10 @@ public class CacheDeviceServiceImpl implements CacheDeviceService{
 				DeviceUtils.getIlsPriceMap(listOfOfferCodes, commercialBundleMap, listOfCimpatiblePlanMap,
 						bundleHardwareTroupleMap, deviceId);
 			}
-			productGroupForDeviceListing = CacheDeviceDaoUtils.convertBundleHeaderForDeviceToProductGroupForDeviceListing(deviceId,
-					nonUpgradeLeadPlanId, groupname, groupId, listOfPriceForBundleAndHardware, leadMemberMap,
-					iLSPriceMap, leadMemberMapForUpgrade, upgradeLeadPlanId, groupType);
+			productGroupForDeviceListing = CacheDeviceDaoUtils
+					.convertBundleHeaderForDeviceToProductGroupForDeviceListing(deviceId, nonUpgradeLeadPlanId,
+							groupname, groupId, listOfPriceForBundleAndHardware, leadMemberMap, iLSPriceMap,
+							leadMemberMapForUpgrade, upgradeLeadPlanId, groupType);
 			if (productGroupForDeviceListing != null) {
 				deviceIds.add(productGroupForDeviceListing.getDeviceId());
 				listOfProductGroupRepository.add(productGroupForDeviceListing);
@@ -319,15 +322,15 @@ public class CacheDeviceServiceImpl implements CacheDeviceService{
 	 * @param nonLeadPlanIdPriceMap
 	 * @param commercialBundleMap
 	 * @param deviceId
-	 * @return
+	 * @return upgradeLeadPlanId
 	 */
 	@Override
 	public String getUpgradeLeadPlanIdForCacheDevice(Map<String, List<PriceForBundleAndHardware>> nonLeadPlanIdPriceMap,
 			Map<String, CommercialBundle> commercialBundleMap, String deviceId) {
 		String upgradeLeadPlanId = null;
 		List<PriceForBundleAndHardware> listOfPrice = nonLeadPlanIdPriceMap.get(deviceId);
-		PriceForBundleAndHardware upgradeCompatiblePlan = deviceServiceCommonUtility.identifyLowestPriceOfPlanForDevice(listOfPrice,
-				commercialBundleMap, Constants.JOURNEY_TYPE_UPGRADE);
+		PriceForBundleAndHardware upgradeCompatiblePlan = deviceServiceCommonUtility
+				.identifyLowestPriceOfPlanForDevice(listOfPrice, commercialBundleMap, Constants.JOURNEY_TYPE_UPGRADE);
 		if (upgradeCompatiblePlan != null) {
 			upgradeLeadPlanId = upgradeCompatiblePlan.getBundlePrice().getBundleId();
 		}
@@ -343,7 +346,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService{
 	 * @param deviceId
 	 * @param groupname
 	 * @param nonUpgradeLeadPlanId
-	 * @return
+	 * @return nonUpgradeLeadPlanId
 	 */
 	@Override
 	public String getNonUpgradeLeadPlanIdForPaymCacheDevice(
@@ -354,8 +357,8 @@ public class CacheDeviceServiceImpl implements CacheDeviceService{
 		String nonUpgradeLeadPlanId = null;
 		PriceForBundleAndHardware bundleHeaderForDevice;
 		List<PriceForBundleAndHardware> listOfPrice = nonLeadPlanIdPriceMap.get(deviceId);
-		bundleHeaderForDevice = deviceServiceCommonUtility.identifyLowestPriceOfPlanForDevice(listOfPrice, commercialBundleMap,
-				Constants.JOURNEY_TYPE_ACQUISITION);
+		bundleHeaderForDevice = deviceServiceCommonUtility.identifyLowestPriceOfPlanForDevice(listOfPrice,
+				commercialBundleMap, Constants.JOURNEY_TYPE_ACQUISITION);
 		if (bundleHeaderForDevice != null) {
 			nonUpgradeLeadPlanId = DeviceUtils.getGroupNamePriceMap(groupNamePriceMap, listOfPriceForBundleAndHardware,
 					bundleHeaderForDevice, groupname);
@@ -435,8 +438,8 @@ public class CacheDeviceServiceImpl implements CacheDeviceService{
 
 		leadMemberId = deviceServiceCommonUtility.getMemeberBasedOnRules_Implementation(listOfDeviceGroupMember,
 				Constants.JOURNEY_TYPE_ACQUISITION);
-		leadMemberIdForUpgrade = deviceServiceCommonUtility.getMemeberBasedOnRules_Implementation(listOfDeviceGroupMember,
-				Constants.JOURNEY_TYPE_UPGRADE);
+		leadMemberIdForUpgrade = deviceServiceCommonUtility
+				.getMemeberBasedOnRules_Implementation(listOfDeviceGroupMember, Constants.JOURNEY_TYPE_UPGRADE);
 
 		if (leadMemberId != null) {
 			leadMemberMap.put(leadMemberId, Constants.IS_LEAD_MEMEBER_YES);
@@ -471,6 +474,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService{
 
 		});
 	}
+
 	/**
 	 * 
 	 * @param listOfCommercialProducts
@@ -478,7 +482,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService{
 	 * @param make
 	 * @param model
 	 * @param groupType=PAYG
-	 * @return
+	 * @return listOfProductGroupRepository
 	 */
 	public List<DevicePreCalculatedData> getDeviceListFromPricingForPayG(String groupType) {
 		List<String> deviceIds = new ArrayList<>();
@@ -541,7 +545,8 @@ public class CacheDeviceServiceImpl implements CacheDeviceService{
 					DeviceUtils.getMinimumPriceMapForPayG(minimumPriceMap, groupNamePriceMap);
 				}
 			}
-			Map<String, String> ratingsReviewMap = deviceServiceCommonUtility.getDeviceReviewRating_Implementation(deviceIds);
+			Map<String, String> ratingsReviewMap = deviceServiceCommonUtility
+					.getDeviceReviewRating_Implementation(deviceIds);
 			listOfProductGroupRepository.forEach(deviceDataRating -> {
 				if (minimumPriceMap.containsKey(deviceDataRating.getProductGroupName())) {
 					deviceDataRating.setMinimumCost(minimumPriceMap.get(deviceDataRating.getProductGroupName()));
@@ -578,6 +583,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService{
 			leadMemberMap.put(leadMemberId, Constants.IS_LEAD_MEMEBER_YES);
 		}
 	}
+
 	/**
 	 * 
 	 * @param preCalcDataList
@@ -619,12 +625,12 @@ public class CacheDeviceServiceImpl implements CacheDeviceService{
 					productModel.setOneOffDiscountedVatPrice(
 							deviceListObject.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice().getVat());
 				}
-                if(deviceListObject.getPriceInfo() != null
-						&& deviceListObject.getPriceInfo().getHardwarePrice() != null)
-                {
-                	List<DeviceFinancingOption> deviceFinancingOption = deviceListObject.getPriceInfo().getHardwarePrice().getFinancingOptions();
+				if (deviceListObject.getPriceInfo() != null
+						&& deviceListObject.getPriceInfo().getHardwarePrice() != null) {
+					List<DeviceFinancingOption> deviceFinancingOption = deviceListObject.getPriceInfo()
+							.getHardwarePrice().getFinancingOptions();
 					List<com.vf.uk.dal.device.datamodel.product.DeviceFinancingOption> financeOptions = null;
-				
+
 					if (deviceFinancingOption != null && !deviceFinancingOption.isEmpty()) {
 						financeOptions = new ArrayList<>();
 						for (DeviceFinancingOption financsOption : deviceFinancingOption) {
@@ -649,7 +655,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService{
 						}
 					}
 					productModel.setFinancingOptions(financeOptions);
-                }
+				}
 				if (deviceListObject.getPriceInfo() != null && deviceListObject.getPriceInfo().getBundlePrice() != null
 						&& deviceListObject.getPriceInfo().getBundlePrice().getMonthlyPrice() != null) {
 					productModel.setBundleMonthlyPriceGross(
@@ -787,9 +793,10 @@ public class CacheDeviceServiceImpl implements CacheDeviceService{
 										offerPrice.setOneOffDiscountedVatPrice(oneOffDiscountPrice.getVat());
 
 									}
-									List<DeviceFinancingOption> deviceFinancingOption = deviceListObject.getPriceInfo().getHardwarePrice().getFinancingOptions();
+									List<DeviceFinancingOption> deviceFinancingOption = deviceListObject.getPriceInfo()
+											.getHardwarePrice().getFinancingOptions();
 									List<com.vf.uk.dal.device.datamodel.product.DeviceFinancingOption> financeOptions = null;
-								
+
 									if (deviceFinancingOption != null && !deviceFinancingOption.isEmpty()) {
 										financeOptions = new ArrayList<>();
 										for (DeviceFinancingOption financsOption : deviceFinancingOption) {
@@ -830,11 +837,12 @@ public class CacheDeviceServiceImpl implements CacheDeviceService{
 			LogHelper.error(this, "::::::Exception From es ::::::" + e);
 		}
 	}
+
 	/**
 	 * Handles requests from controller and connects to DAO.
 	 * 
 	 * @param groupType
-	 * 
+	 * @return CompletableFuture
 	 */
 	@Override
 	@Async
@@ -897,7 +905,6 @@ public class CacheDeviceServiceImpl implements CacheDeviceService{
 		return CompletableFuture.completedFuture(i);
 	}
 
-
 	@Override
 	public CacheDeviceTileResponse insertCacheDeviceToDb() {
 		return deviceTileCacheDAO.insertCacheDeviceToDb();
@@ -913,11 +920,12 @@ public class CacheDeviceServiceImpl implements CacheDeviceService{
 
 		return deviceTileCacheDAO.getCacheDeviceJobStatus(jobId);
 	}
+
 	/**
 	 * Returns Device review details
 	 * 
 	 * @param deviceId
-	 * @return
+	 * @return DeviceReviewDetails
 	 */
 	@Override
 	public JSONObject getDeviceReviewDetails(String deviceId) {

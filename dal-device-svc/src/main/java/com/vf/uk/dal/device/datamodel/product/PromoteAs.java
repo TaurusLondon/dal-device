@@ -5,19 +5,13 @@
 // Generated on: 2017.01.02 at 03:25:52 PM IST 
 //
 
-
 package com.vf.uk.dal.device.datamodel.product;
 
 import java.util.List;
 
+public class PromoteAs {
 
-public class PromoteAs { 
-	
-  
-    private List<String> promotionName;
-
-	
-	
+	private List<String> promotionName;
 
 	public List<String> getPromotionName() {
 		return promotionName;
@@ -57,7 +51,4 @@ public class PromoteAs {
 		return "PromoteAs [promotionName=" + promotionName + "]";
 	}
 
-	
-    
-    
 }

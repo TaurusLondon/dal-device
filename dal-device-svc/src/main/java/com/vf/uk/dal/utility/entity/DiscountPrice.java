@@ -1,6 +1,5 @@
 package com.vf.uk.dal.utility.entity;
 
-
 /**
  * Discount Price
  */
@@ -8,31 +7,35 @@ public class DiscountPrice {
 
 	private Double value;
 	private String type;
-/**
- * 
- * @return
- */
+
+	/**
+	 * 
+	 * @return
+	 */
 	public Double getValue() {
 		return value;
 	}
-/**
- * 
- * @param value
- */
+
+	/**
+	 * 
+	 * @param value
+	 */
 	public void setValue(Double value) {
 		this.value = value;
 	}
-/**
- * 
- * @return
- */
+
+	/**
+	 * 
+	 * @return
+	 */
 	public String getType() {
 		return type;
 	}
-/**
- * 
- * @param type
- */
+
+	/**
+	 * 
+	 * @param type
+	 */
 	public void setType(String type) {
 		this.type = type;
 	}

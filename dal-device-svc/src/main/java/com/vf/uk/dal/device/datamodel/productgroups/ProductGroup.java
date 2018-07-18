@@ -2,29 +2,21 @@ package com.vf.uk.dal.device.datamodel.productgroups;
 
 import java.util.List;
 
-
 public class ProductGroup {
-	
-	
-	
-	private List<Group> listOfProductGroups;
 
+	private List<Group> listOfProductGroups;
 
 	public ProductGroup() {
 		super();
 	}
 
-
 	public List<Group> getListOfProductGroups() {
 		return listOfProductGroups;
 	}
 
-
 	public void setListOfProductGroups(List<Group> listOfProductGroups) {
 		this.listOfProductGroups = listOfProductGroups;
 	}
-	
-
 
 	@Override
 	public int hashCode() {
@@ -33,7 +25,6 @@ public class ProductGroup {
 		result = prime * result + ((listOfProductGroups == null) ? 0 : listOfProductGroups.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -52,10 +43,9 @@ public class ProductGroup {
 		return true;
 	}
 
-
 	@Override
 	public String toString() {
 		return "ProductGroup [listOfProductGroups=" + listOfProductGroups + "]";
 	}
-	
+
 }

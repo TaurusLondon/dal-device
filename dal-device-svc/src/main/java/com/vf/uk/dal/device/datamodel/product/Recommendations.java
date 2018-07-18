@@ -1,38 +1,26 @@
 package com.vf.uk.dal.device.datamodel.product;
 
-
 public class Recommendations {
-	
-	
-    private String type;
 
-    private String name;
-	
-     
-     
+	private String type;
+
+	private String name;
+
 	public String getType() {
 		return type;
 	}
-
-
 
 	public void setType(String type) {
 		this.type = type;
 	}
 
-
-
 	public String getName() {
 		return name;
 	}
 
-
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
-
 
 	@Override
 	public int hashCode() {
@@ -42,8 +30,6 @@ public class Recommendations {
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
 	}
-
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -67,14 +53,9 @@ public class Recommendations {
 		return true;
 	}
 
-
-
 	@Override
 	public String toString() {
 		return "Recommendations [type=" + type + ", name=" + name + "]";
 	}
-	
-     
-     
 
 }

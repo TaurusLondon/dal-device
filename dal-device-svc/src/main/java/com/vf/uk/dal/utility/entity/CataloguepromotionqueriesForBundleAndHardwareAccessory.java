@@ -20,7 +20,7 @@ import java.util.Objects;
  * CataloguepromotionqueriesForBundleAndHardwareAccessory.
  */
 public class CataloguepromotionqueriesForBundleAndHardwareAccessory {
-	
+
 	/** The tag. */
 	private String tag = null;
 
@@ -35,47 +35,47 @@ public class CataloguepromotionqueriesForBundleAndHardwareAccessory {
 
 	/** The description. */
 	private String description = null;
-	
+
 	/** The package type. */
 	private List<String> packageType = new ArrayList<>();
-	
+
 	private List<String> footNotes = new ArrayList<>();
-	
+
 	/** The promotion media. */
-	  private String promotionMedia = null;
-	  
-	  
-	  
-	  /**
-	   * Promotion media.
-	   *
-	   * @param promotionMedia the promotion media
-	   * @return the cataloguepromotionqueries for bundle and hardware entertainment packs
-	   */
-	  public CataloguepromotionqueriesForBundleAndHardwareAccessory promotionMedia(String promotionMedia) {
-	    this.promotionMedia = promotionMedia;
-	    return this;
-	  }
-	  
-	   /**
-	    * Promotion media url for the merchandising promotion.
-	    *
-	    * @return promotionMedia
-	    */
-	  public String getPromotionMedia() {
-	    return promotionMedia;
-	  }
-	  
-	   /**
-	   * Sets the promotion media.
-	   *
-	   * @param promotionMedia the new promotion media
-	   */
-	  public void setPromotionMedia(String promotionMedia) {
-	    this.promotionMedia = promotionMedia;
-	  }
-	  
-	
+	private String promotionMedia = null;
+
+	/**
+	 * Promotion media.
+	 *
+	 * @param promotionMedia
+	 *            the promotion media
+	 * @return the cataloguepromotionqueries for bundle and hardware
+	 *         entertainment packs
+	 */
+	public CataloguepromotionqueriesForBundleAndHardwareAccessory promotionMedia(String promotionMedia) {
+		this.promotionMedia = promotionMedia;
+		return this;
+	}
+
+	/**
+	 * Promotion media url for the merchandising promotion.
+	 *
+	 * @return promotionMedia
+	 */
+	public String getPromotionMedia() {
+		return promotionMedia;
+	}
+
+	/**
+	 * Sets the promotion media.
+	 *
+	 * @param promotionMedia
+	 *            the new promotion media
+	 */
+	public void setPromotionMedia(String promotionMedia) {
+		this.promotionMedia = promotionMedia;
+	}
+
 	/**
 	 * 
 	 * @return
@@ -83,10 +83,11 @@ public class CataloguepromotionqueriesForBundleAndHardwareAccessory {
 	public List<String> getFootNotes() {
 		return footNotes;
 	}
-/**
- * 
- * @param footNotes
- */
+
+	/**
+	 * 
+	 * @param footNotes
+	 */
 	public void setFootNotes(List<String> footNotes) {
 		this.footNotes = footNotes;
 	}
@@ -103,16 +104,18 @@ public class CataloguepromotionqueriesForBundleAndHardwareAccessory {
 	/**
 	 * Sets the package type.
 	 *
-	 * @param packageType the new package type
+	 * @param packageType
+	 *            the new package type
 	 */
 	public void setPackageType(List<String> packageType) {
 		this.packageType = packageType;
 	}
-	
+
 	/**
 	 * Tag.
 	 *
-	 * @param tag the tag
+	 * @param tag
+	 *            the tag
 	 * @return the cataloguepromotionqueries for bundle and hardware accessory
 	 */
 	public CataloguepromotionqueriesForBundleAndHardwareAccessory tag(String tag) {
@@ -132,7 +135,8 @@ public class CataloguepromotionqueriesForBundleAndHardwareAccessory {
 	/**
 	 * Sets the tag.
 	 *
-	 * @param tag the new tag
+	 * @param tag
+	 *            the new tag
 	 */
 	public void setTag(String tag) {
 		this.tag = tag;
@@ -141,7 +145,8 @@ public class CataloguepromotionqueriesForBundleAndHardwareAccessory {
 	/**
 	 * Label.
 	 *
-	 * @param label the label
+	 * @param label
+	 *            the label
 	 * @return the cataloguepromotionqueries for bundle and hardware accessory
 	 */
 	public CataloguepromotionqueriesForBundleAndHardwareAccessory label(String label) {
@@ -161,7 +166,8 @@ public class CataloguepromotionqueriesForBundleAndHardwareAccessory {
 	/**
 	 * Sets the label.
 	 *
-	 * @param label the new label
+	 * @param label
+	 *            the new label
 	 */
 	public void setLabel(String label) {
 		this.label = label;
@@ -170,7 +176,8 @@ public class CataloguepromotionqueriesForBundleAndHardwareAccessory {
 	/**
 	 * Type.
 	 *
-	 * @param type the type
+	 * @param type
+	 *            the type
 	 * @return the cataloguepromotionqueries for bundle and hardware accessory
 	 */
 	public CataloguepromotionqueriesForBundleAndHardwareAccessory type(String type) {
@@ -190,7 +197,8 @@ public class CataloguepromotionqueriesForBundleAndHardwareAccessory {
 	/**
 	 * Sets the type.
 	 *
-	 * @param type the new type
+	 * @param type
+	 *            the new type
 	 */
 	public void setType(String type) {
 		this.type = type;
@@ -199,7 +207,8 @@ public class CataloguepromotionqueriesForBundleAndHardwareAccessory {
 	/**
 	 * Priority.
 	 *
-	 * @param priority the priority
+	 * @param priority
+	 *            the priority
 	 * @return the cataloguepromotionqueries for bundle and hardware accessory
 	 */
 	public CataloguepromotionqueriesForBundleAndHardwareAccessory priority(String priority) {
@@ -219,18 +228,18 @@ public class CataloguepromotionqueriesForBundleAndHardwareAccessory {
 	/**
 	 * Sets the priority.
 	 *
-	 * @param priority the new priority
+	 * @param priority
+	 *            the new priority
 	 */
 	public void setPriority(String priority) {
 		this.priority = priority;
 	}
 
-	
-
 	/**
 	 * Description.
 	 *
-	 * @param description the description
+	 * @param description
+	 *            the description
 	 * @return the cataloguepromotionqueries for bundle and hardware accessory
 	 */
 	public CataloguepromotionqueriesForBundleAndHardwareAccessory description(String description) {
@@ -250,13 +259,16 @@ public class CataloguepromotionqueriesForBundleAndHardwareAccessory {
 	/**
 	 * Sets the description.
 	 *
-	 * @param description the new description
+	 * @param description
+	 *            the new description
 	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -274,18 +286,23 @@ public class CataloguepromotionqueriesForBundleAndHardwareAccessory {
 				&& Objects.equals(this.priority, cataloguepromotionqueriesForBundleAndHardwareAccessory.priority)
 				&& Objects.equals(this.description, cataloguepromotionqueriesForBundleAndHardwareAccessory.description)
 				&& Objects.equals(this.packageType, cataloguepromotionqueriesForBundleAndHardwareAccessory.packageType)
-				&& Objects.equals(this.promotionMedia, cataloguepromotionqueriesForBundleAndHardwareAccessory.promotionMedia);
+				&& Objects.equals(this.promotionMedia,
+						cataloguepromotionqueriesForBundleAndHardwareAccessory.promotionMedia);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
 	public int hashCode() {
-		return Objects.hash(tag, label, type, priority, description, packageType,promotionMedia);
+		return Objects.hash(tag, label, type, priority, description, packageType, promotionMedia);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -308,7 +325,8 @@ public class CataloguepromotionqueriesForBundleAndHardwareAccessory {
 	 * Convert the given object to string with each line indented by 4 spaces
 	 * (except the first line).
 	 *
-	 * @param o the o
+	 * @param o
+	 *            the o
 	 * @return the string
 	 */
 	private String toIndentedString(java.lang.Object o) {

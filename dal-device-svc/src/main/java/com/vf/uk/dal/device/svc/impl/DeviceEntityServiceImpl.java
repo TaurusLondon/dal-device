@@ -32,6 +32,7 @@ public class DeviceEntityServiceImpl implements DeviceEntityService {
 
 	@Autowired
 	DeviceESHelper deviceEs;
+
 	/**
 	 * Method to prepare the list from the request construct and build the query
 	 * and finally return the List of Commercial Products.
@@ -53,7 +54,7 @@ public class DeviceEntityServiceImpl implements DeviceEntityService {
 	/**
 	 * 
 	 * @param deviceIds
-	 * @return
+	 * @return ProductGroupModelMap
 	 */
 	@Override
 	public ProductGroupModelMap getMapOfProductModelForGetDeliveryMethod(String deviceIds) {
@@ -80,17 +81,18 @@ public class DeviceEntityServiceImpl implements DeviceEntityService {
 
 	/**
 	 * @param groupType
-	 * @return
+	 * @return listOfGroup
 	 */
 	@Override
 	public List<Group> getProductGroupByType(String groupType) {
-		List<Group> listOfGroup= deviceEs.getProductGroupByType(groupType);
+		List<Group> listOfGroup = deviceEs.getProductGroupByType(groupType);
 		if (CollectionUtils.isEmpty(listOfGroup)) {
 			LogHelper.error(this, ExceptionMessages.NULL_VALUE_GROUP_TYPE + " : " + groupType);
 			throw new ApplicationException(ExceptionMessages.NULL_VALUE_GROUP_TYPE);
 		}
 		return listOfGroup;
 	}
+
 	/**
 	 * 
 	 * @param result
@@ -116,6 +118,7 @@ public class DeviceEntityServiceImpl implements DeviceEntityService {
 			});
 		});
 	}
+
 	/**
 	 * 
 	 * @param productModels

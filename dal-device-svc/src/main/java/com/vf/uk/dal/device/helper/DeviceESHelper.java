@@ -33,26 +33,27 @@ public class DeviceESHelper {
 
 	@Autowired
 	ResponseMappingHelper response;
-	
+
 	/**
 	 * 
 	 * @param displayName
 	 * @param groupType
-	 * @return
+	 * @return ListOfProductGroupModel
 	 */
-	public  List<ProductGroupModel> getListOfProductGroupModel(Set<String> displayName, String groupType) {
+	public List<ProductGroupModel> getListOfProductGroupModel(Set<String> displayName, String groupType) {
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper
 				.searchQueryForProductGroupModelForDeliverMethod(displayName, groupType);
 		SearchResponse bundleResponse = deviceDao.getResponseFromDataSource(queryContextMap);
 		LogHelper.info(this, "converting elasticsearch response into standard json object response");
 		return response.getListOfProductGroupModel(bundleResponse);
 	}
+
 	/**
 	 * @author manoj.bera
 	 * @param deviceIds
 	 * @param journeyType
 	 * @param offerCode
-	 * @return
+	 * @return ListOfOfferAppliedPriceModel
 	 */
 	public List<OfferAppliedPriceModel> getListOfOfferAppliedPriceModel(List<String> deviceIds, String journeyType,
 			String offerCode) {
@@ -63,11 +64,12 @@ public class DeviceESHelper {
 		return response.getListOfOfferAppliedPriceModel(bundleModelResponse);
 
 	}
+
 	/**
 	 * 
 	 * @param groupType
 	 * @param journeyType
-	 * @return
+	 * @return ProductGroupFacetModel
 	 */
 	public List<FacetField> getProductGroupFacetModel(String groupType, String journeyType) {
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper.searchQueryForFacetCount(groupType, journeyType);
@@ -79,7 +81,7 @@ public class DeviceESHelper {
 	/**
 	 * 
 	 * @param deviceIds
-	 * @return
+	 * @return ListOfProductModel
 	 */
 	public List<ProductModel> getListOfProductModel(List<String> deviceIds) {
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper.searchQueryForProductModel(deviceIds);
@@ -88,6 +90,7 @@ public class DeviceESHelper {
 		return response.getListOfProductModel(productModelResponse);
 
 	}
+
 	/**
 	 * 
 	 * @author manoj.bera
@@ -102,7 +105,7 @@ public class DeviceESHelper {
 	 * @param pageNumber
 	 * @param pageSize
 	 * @param journeyType
-	 * @return
+	 * @return ProductGroupFacetModel
 	 */
 	public ProductGroupFacetModel getProductGroupFacetModel(String groupType, String make, String capacity,
 			String colour, String operatingSystem, String mustHaveFeatures, String sortBy, String sortOption,
@@ -120,11 +123,12 @@ public class DeviceESHelper {
 
 		return productGroupFacetModel;
 	}
+
 	/**
 	 * 
 	 * @param journeyType
 	 * @param groupType
-	 * @return
+	 * @return ListOfMerchandisingPromotionModel
 	 */
 	public List<MerchandisingPromotionModel> getListOfMerchandisingPromotionModel(String groupType,
 			String journeyType) {
@@ -135,10 +139,11 @@ public class DeviceESHelper {
 		LogHelper.info(this, "converting elasticsearch response into standard json object response");
 		return response.getListOfMerchandisingPromotionModelFromJson(bundleResponse);
 	}
+
 	/**
 	 * @author manoj.bera
 	 * @param tag
-	 * @return
+	 * @return MerchandisingPromotion
 	 */
 	public com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion getMerchandisingPromotion(
 			String tag) {
@@ -151,7 +156,7 @@ public class DeviceESHelper {
 	/**
 	 * @author manoj.bera
 	 * @param bundleId
-	 * @return
+	 * @return CommercialBundle
 	 */
 	public CommercialBundle getCommercialBundle(String bundleId) {
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper.searchQueryForCommercialBundle(bundleId,
@@ -164,7 +169,7 @@ public class DeviceESHelper {
 	/**
 	 * @author manoj.bera
 	 * @param bundleIds
-	 * @return
+	 * @return ListOfCommercialBundle
 	 */
 	public List<CommercialBundle> getListOfCommercialBundle(List<String> bundleIds) {
 
@@ -178,7 +183,7 @@ public class DeviceESHelper {
 	/**
 	 * @author manoj.bera
 	 * @param deviceIds
-	 * @return
+	 * @return ListOfCommercialProduct
 	 */
 	public List<CommercialProduct> getListOfCommercialProduct(List<String> deviceIds) {
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper
@@ -191,7 +196,7 @@ public class DeviceESHelper {
 	/**
 	 * @author manoj.bera
 	 * @param deviceId
-	 * @return
+	 * @return CommercialProduct
 	 */
 	public CommercialProduct getCommercialProduct(String deviceId) {
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper
@@ -205,7 +210,7 @@ public class DeviceESHelper {
 	 * @author manoj.bera@
 	 * @param make
 	 * @param model
-	 * @return
+	 * @return ListOfCommercialProduct
 	 */
 	public List<CommercialProduct> getListOfCommercialProductByMakeAndModel(String make, String model) {
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper.searchQueryForMakeAndModel(make, model);
@@ -218,7 +223,7 @@ public class DeviceESHelper {
 	 * 
 	 * @param groupName
 	 * @param groupType
-	 * @return
+	 * @return ProductGroup
 	 */
 	public Group getProductGroupByTypeAndGroupName(String groupName, String groupType) {
 		SearchRequest queryContextMapForProductGroup = DeviceQueryBuilderHelper
@@ -231,7 +236,7 @@ public class DeviceESHelper {
 	/**
 	 * 
 	 * @param listOfDeviceGroupName
-	 * @return
+	 * @return ProductGroupByListOfGroupName
 	 */
 	public List<Group> getProductGroupByListOfGroupName(List<String> listOfDeviceGroupName) {
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper.searchQueryForProductGroupByIds(listOfDeviceGroupName);
@@ -239,10 +244,11 @@ public class DeviceESHelper {
 		LogHelper.info(this, "converting elasticsearch response into standard json object response");
 		return response.getListOfGroupFromJson(bundleResponse);
 	}
+
 	/**
 	 * 
 	 * @param groupType
-	 * @return
+	 * @return List<Group>
 	 */
 	public List<Group> getProductGroupByType(String groupType) {
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper.searchQueryForProductGroup(groupType);
@@ -250,24 +256,25 @@ public class DeviceESHelper {
 		LogHelper.info(this, "converting elasticsearch response into standard json object response");
 		return response.getListOfGroupFromJson(groupResponse);
 	}
+
 	/**
 	 * 
 	 * @param bundleIds
-	 * @return
+	 * @return ListOfBundleModel
 	 */
-	public List<BundleModel> getListOfBundleModel(List<String> bundleIds) 
-	{
-		SearchRequest queryContextMap = DeviceQueryBuilderHelper.searchQueryForBundleModel(bundleIds);;
+	public List<BundleModel> getListOfBundleModel(List<String> bundleIds) {
+		SearchRequest queryContextMap = DeviceQueryBuilderHelper.searchQueryForBundleModel(bundleIds);
+		;
 		SearchResponse bundleModelResponse = deviceDao.getResponseFromDataSource(queryContextMap);
 		LogHelper.info(this, "converting elasticsearch response into standard json object response");
 		return response.getListOfBundleModel(bundleModelResponse);
-		
+
 	}
-	
+
 	/**
 	 * 
 	 * @param promotionAsTags
-	 * @return
+	 * @return MerchandisingPromotion
 	 */
 	public List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion> getMerchandising(
 			List<String> promotionAsTags) {

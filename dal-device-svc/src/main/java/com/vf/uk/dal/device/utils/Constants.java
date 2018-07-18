@@ -2,7 +2,7 @@ package com.vf.uk.dal.device.utils;
 
 /**
  * Constant values
- * */
+ */
 public class Constants {
 	public static final String STRING_DATA_AlLOWANCE = "DATA";
 	public static final String STRING_TEXT_ALLOWANCE = "TEXT";
@@ -167,7 +167,7 @@ public class Constants {
 	public static final String OFFERCODE_PAYM = "PAYM";
 	public static final String STRING_PRODUCTGROUP_OPERATOR = "~";
 	/**
-	 * @author manoj.bera 
+	 * @author manoj.bera
 	 * @Sprint 6.4 Constants Start
 	 */
 	public static final String STRING_MEDIA_PRICEESTABLISH = "priceEstablishedLabel";
@@ -177,19 +177,19 @@ public class Constants {
 	public static final String DATE_FORMAT = "yyyy-MM-dd";
 	public static final String STRING_MEDIA_PROMOTION = "promotionMedia";
 	/**
-	 * @author manoj.bera 
+	 * @author manoj.bera
 	 * @Sprint 6.4 Constants End
 	 */
-	
+
 	public static final String JOURNEY_TYPE_ACQUISITION = "Acquisition";
 	/**
-	 * @author manoj.bera 
+	 * @author manoj.bera
 	 * @Sprint 6.5 Constants Start
 	 */
-	
-	public static final String STRING_MBB_SELLABLE="MBB Sellable";
+
+	public static final String STRING_MBB_SELLABLE = "MBB Sellable";
 	/**
-	 * @author manoj.bera 
+	 * @author manoj.bera
 	 * @Sprint 6.5 Constants Start
 	 */
 	/**
@@ -200,134 +200,132 @@ public class Constants {
 	/**
 	 * Sprint-6.6 End
 	 */
-	
-	/**
-	 * @author suranjit_kashyap 
-	 * @Sprint 6.6 Constants Start
-	 */
-	public static final String STRING_PAGESIZE="pageSize";
-	public static final String STRING_PAGENUMBER="pageNumber";
-	public static final String STRING_DATA_DEVICE_PAYM="DATA_DEVICE_PAYM";
-	public static final String STRING_DATA_DEVICE_PAYG="DATA_DEVICE_PAYG";
-	
+
 	/**
 	 * @author suranjit_kashyap
 	 * @Sprint 6.6 Constants Start
 	 */
-	
-	
+	public static final String STRING_PAGESIZE = "pageSize";
+	public static final String STRING_PAGENUMBER = "pageNumber";
+	public static final String STRING_DATA_DEVICE_PAYM = "DATA_DEVICE_PAYM";
+	public static final String STRING_DATA_DEVICE_PAYG = "DATA_DEVICE_PAYG";
+
 	/**
-	 * @author krishna.reddy
-	 * Sprint 7.2
+	 * @author suranjit_kashyap
+	 * @Sprint 6.6 Constants Start
 	 */
-	
+
 	/**
-	 * @author manoj.bera
-	 * Sprint 8.3
+	 * @author krishna.reddy Sprint 7.2
 	 */
-	public static final String PAYG_DEVICE="Mobile Phones";
-	
-	
+
+	/**
+	 * @author manoj.bera Sprint 8.3
+	 */
+	public static final String PAYG_DEVICE = "Mobile Phones";
+
 	public static final int DEFAULT_PORT = -1;
-	
+
 	public static final String HTTPS_SCHEME = "https";
 
 	public static final String STRING_PARAMS = "params";
-	
+
 	public static final String STRING_QUERY = "query";
-	
+
 	public static final String STRING_HITS = "hits";
-	
-	public static final String DEFAULT_ENDPOINT_FOR_VODAFONE5_INDEX= "/vodafone5/models/";
-	
-	public static final String ELASTIC_SEARCH_ENDPOINT="ELASTIC_SEARCH_INDEX";
-	
+
+	public static final String DEFAULT_ENDPOINT_FOR_VODAFONE5_INDEX = "/vodafone5/models/";
+
+	public static final String ELASTIC_SEARCH_ENDPOINT = "ELASTIC_SEARCH_INDEX";
+
 	public static final String STRING_SOURCE = "_source";
-	
+
 	public static final String STRING_MAKE = "equipment.make";
-	
+
 	public static final String STRING_MODEL = "equipment.model";
-	
-	public static final String STRING_GROUP_TYPE="groupType";
-	
-	public static final String STRING_GROUP_NAME="name";
-	
-	public static final String STRING_ID="id";
-	
-	public static final String SEARCH_FOR_VODAFONE5_INDEX="_search";
-	
-	public static final String STRING_KEY_WORD=".keyword";
-	
-	public static final String STRING_Tag="tag";
-	
-	public static final String ELASTIC_SEARCH_INDEX_START_FROM="ELASTIC_SEARCH_INDEX_START_FROM";
-	
-	public static final int DEFAULT_ELASTIC_SEARCH_START_INDEX=0;
-	
-	public static final int DEFAULT_ELASTIC_SEARCH_INDEX_SIZE=1000;
-	
-	public static final String ELASTIC_SEARCH_INDEX_SIZE="ELASTIC_SEARCH_INDEX_SIZE";
-	
-	/*public static final String BAZAAR_VOICE_PART1= "bazaarvoice.urlPart1";
-	
-	public static final String BAZAAR_VOICE_PART2= "bazaarvoice.urlPart2";*/
-	
+
+	public static final String STRING_GROUP_TYPE = "groupType";
+
+	public static final String STRING_GROUP_NAME = "name";
+
+	public static final String STRING_ID = "id";
+
+	public static final String SEARCH_FOR_VODAFONE5_INDEX = "_search";
+
+	public static final String STRING_KEY_WORD = ".keyword";
+
+	public static final String STRING_Tag = "tag";
+
+	public static final String ELASTIC_SEARCH_INDEX_START_FROM = "ELASTIC_SEARCH_INDEX_START_FROM";
+
+	public static final int DEFAULT_ELASTIC_SEARCH_START_INDEX = 0;
+
+	public static final int DEFAULT_ELASTIC_SEARCH_INDEX_SIZE = 1000;
+
+	public static final String ELASTIC_SEARCH_INDEX_SIZE = "ELASTIC_SEARCH_INDEX_SIZE";
+
+	/*
+	 * public static final String BAZAAR_VOICE_PART1= "bazaarvoice.urlPart1";
+	 * 
+	 * public static final String BAZAAR_VOICE_PART2= "bazaarvoice.urlPart2";
+	 */
+
 	// Regular Expression to identify list of ProductIds with comma separated.
 	public static final String NUMER_REG_EXP = "[0-9]{6}";
-	
-	public static final String DEFAULT_ENDPOINT_FOR_NORMALIZED_INDEX= "vodafone5";
-	
-	public static final String DEFAULT_ENDPOINT_FOR_DENORMALIZED_INDEX= "vodafone";
-	
-	public static final String ELASTIC_SEARCH_ENDPOINT_NORMALISED_DATA="ELASTIC_SEARCH_NORMALIZED_DATA_INDEX";
-	
-	public static final String ELASTIC_SEARCH_ENDPOINT_DENORMALISED_DATA="ELASTIC_SEARCH_DENORMALIZED_DATA_INDEX";
-	
-	public static final String STRING_PRODUCT_LINE="productLine";
-	
-	public static final String STRING_PACKAGE_TYPE="packageType";
-	
-	public static final String STRING_TYPE="type";
-	
-	public static final String STRING_UPGRADED_LEAD_DEVICE_ID="upgradeLeadDeviceId";
-	
-	public static final String STRING_NON_UPGRADED_LEAD_DEVICE_ID="nonUpgradeLeadDeviceId";
-	
+
+	public static final String DEFAULT_ENDPOINT_FOR_NORMALIZED_INDEX = "vodafone5";
+
+	public static final String DEFAULT_ENDPOINT_FOR_DENORMALIZED_INDEX = "vodafone";
+
+	public static final String ELASTIC_SEARCH_ENDPOINT_NORMALISED_DATA = "ELASTIC_SEARCH_NORMALIZED_DATA_INDEX";
+
+	public static final String ELASTIC_SEARCH_ENDPOINT_DENORMALISED_DATA = "ELASTIC_SEARCH_DENORMALIZED_DATA_INDEX";
+
+	public static final String STRING_PRODUCT_LINE = "productLine";
+
+	public static final String STRING_PACKAGE_TYPE = "packageType";
+
+	public static final String STRING_TYPE = "type";
+
+	public static final String STRING_UPGRADED_LEAD_DEVICE_ID = "upgradeLeadDeviceId";
+
+	public static final String STRING_NON_UPGRADED_LEAD_DEVICE_ID = "nonUpgradeLeadDeviceId";
+
 	public static final String STRING_PRODUCT_ID = "productId";
-	
+
 	public static final String STRING_BUNDLE_ID = "bundleId";
-	
+
 	public static final String STRING_OFFER_CODE = "offerCode";
-	
+
 	public static final String STRING_JOURNEY_TYPE = "journeyType";
-	
+
 	public static final String STRING_COLOUR_FOR_FACET = "colour";
-	
+
 	public static final String STRING_PRODUCT = "product";
-	
+
 	public static final String STRING_BUNDLE = "bundle";
-	
+
 	public static final String STRING_OFFER = "offer";
-	
-	public static final String COMPATIBLE_DELIVERY="Compatible Delivery";
-	
-	public static final String STRING_DISPLAY_NAME="displayName";
-	
-	public static final ThreadLocal<String> CATALOG_VERSION=new ThreadLocal<>();
-	
-	public static final String  ELASTIC_SEARCH_ALIAS="ELASTIC_SEARCH_ALIAS";
-	public static final String  DEFAULT_ELASTIC_SEARCH_ALIAS ="vodafoneindex";
-	
-	public static final String REQUEST_HEADER_ACCEPT_DATETIME="Accept-DateTime";
-	
-	public static final String STRING_ALL_TYPE="__type";
-	
-	public static final String STRING_RAW="raw_";
-	
+
+	public static final String COMPATIBLE_DELIVERY = "Compatible Delivery";
+
+	public static final String STRING_DISPLAY_NAME = "displayName";
+
+	public static final ThreadLocal<String> CATALOG_VERSION = new ThreadLocal<>();
+
+	public static final String ELASTIC_SEARCH_ALIAS = "ELASTIC_SEARCH_ALIAS";
+	public static final String DEFAULT_ELASTIC_SEARCH_ALIAS = "vodafoneindex";
+
+	public static final String REQUEST_HEADER_ACCEPT_DATETIME = "Accept-DateTime";
+
+	public static final String STRING_ALL_TYPE = "__type";
+
+	public static final String STRING_RAW = "raw_";
+
 	public static final String STRING_OPT = "opt_";
-	
-	public static final String STRING_PROMOTION="promotion";
-	
+
+	public static final String STRING_PROMOTION = "promotion";
+
 	public static final String GROUP_TYPE = "groupType";
 	public static final String DEVICE_ID_IS_EMPTY = "Device Id is Empty";
 	public static final String DEVICE_ID = "deviceId";
@@ -336,5 +334,5 @@ public class Constants {
 	public static final String numberExp = "[0-9]{6}";
 	public static final String creditLimitExp = "[0-9]*";
 	public static final String zero = "0";
-	
+
 }
