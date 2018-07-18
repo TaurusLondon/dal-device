@@ -13,11 +13,12 @@ public class BundleDeviceAndAccessoryList {
 	private String bundleId = null;
 
 	private List<String> accessoryList = null;
-/**
- * 
- * @param deviceId
- * @return
- */
+
+	/**
+	 * 
+	 * @param deviceId
+	 * @return
+	 */
 	public BundleDeviceAndAccessoryList deviceId(String deviceId) {
 		this.deviceId = deviceId;
 		return this;
@@ -31,18 +32,20 @@ public class BundleDeviceAndAccessoryList {
 	public String getDeviceId() {
 		return deviceId;
 	}
-/**
- * 
- * @param deviceId
- */
+
+	/**
+	 * 
+	 * @param deviceId
+	 */
 	public void setDeviceId(String deviceId) {
 		this.deviceId = deviceId;
 	}
-/**
- * 
- * @param bundleId
- * @return
- */
+
+	/**
+	 * 
+	 * @param bundleId
+	 * @return
+	 */
 	public BundleDeviceAndAccessoryList bundleId(String bundleId) {
 		this.bundleId = bundleId;
 		return this;
@@ -56,24 +59,27 @@ public class BundleDeviceAndAccessoryList {
 	public String getBundleId() {
 		return bundleId;
 	}
-/**
- * 
- * @param bundleId
- */
+
+	/**
+	 * 
+	 * @param bundleId
+	 */
 	public void setBundleId(String bundleId) {
 		this.bundleId = bundleId;
 	}
-/**
- * 
- * @return
- */
+
+	/**
+	 * 
+	 * @return
+	 */
 	public List<String> getAccessoryList() {
 		return accessoryList;
 	}
-/**
- * 
- * @param accessoryList
- */
+
+	/**
+	 * 
+	 * @param accessoryList
+	 */
 	public void setAccessoryList(List<String> accessoryList) {
 		this.accessoryList = accessoryList;
 	}

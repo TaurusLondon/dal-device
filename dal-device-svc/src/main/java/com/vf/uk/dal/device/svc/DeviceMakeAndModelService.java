@@ -20,10 +20,11 @@ public interface DeviceMakeAndModelService {
 	 * @param journeyType
 	 * @param offerCode
 	 * @param bundleId
-	 * @return
+	 * @return List<DeviceTile>
 	 */
-	public List<DeviceTile> getListOfDeviceTile(String make,String model,String groupType, String deviceId, Double creditLimit, String journeyType, String offerCode, String bundleId);
-	
+	public List<DeviceTile> getListOfDeviceTile(String make, String model, String groupType, String deviceId,
+			Double creditLimit, String journeyType, String offerCode, String bundleId);
+
 	/**
 	 * 
 	 * @param journeyType

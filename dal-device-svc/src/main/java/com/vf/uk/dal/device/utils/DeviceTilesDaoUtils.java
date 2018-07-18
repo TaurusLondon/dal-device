@@ -61,7 +61,7 @@ public class DeviceTilesDaoUtils {
 	 * @param deviceId
 	 * @param isConditionalAcceptJourney
 	 * @param comBundle
-	 * @return
+	 * @return PriceForBundleAndHardware
 	 */
 	public static PriceForBundleAndHardware getBundleAndHardwarePrice(
 			PriceForBundleAndHardware priceForBundleAndHardware, String deviceId, boolean isConditionalAcceptJourney,
@@ -94,7 +94,7 @@ public class DeviceTilesDaoUtils {
 	/**
 	 * @author manoj.bera
 	 * @param priceForBundleAndHardware1
-	 * @return
+	 * @return PriceForBundleAndHardware
 	 */
 	public static PriceForBundleAndHardware getCalculatedPrice(PriceForBundleAndHardware priceForBundleAndHardware1) {
 		if (priceForBundleAndHardware1.getHardwarePrice() != null
@@ -167,7 +167,7 @@ public class DeviceTilesDaoUtils {
 	/**
 	 * 
 	 * @param listOfDeviceGroupMember
-	 * @return
+	 * @return listOfDeviceGroupMember
 	 */
 	public List<com.vf.uk.dal.device.entity.Member> getAscendingOrderForMembers(
 			List<com.vf.uk.dal.device.entity.Member> listOfDeviceGroupMember) {
@@ -199,7 +199,7 @@ public class DeviceTilesDaoUtils {
 	 * Sort plans in ascending order based on monthly price.
 	 * 
 	 * @param plans
-	 * @return
+	 * @return List<PriceForBundleAndHardware>
 	 */
 	public static List<PriceForBundleAndHardware> sortPlansBasedOnMonthlyPrice(List<PriceForBundleAndHardware> plans) {
 		Collections.sort(plans, new Comparator<PriceForBundleAndHardware>() {
@@ -232,7 +232,7 @@ public class DeviceTilesDaoUtils {
 	 * 
 	 * @param bundlePrice
 	 * @param discountType
-	 * @return
+	 * @return monthlyPrice
 	 */
 	public static Double getBundlePriceBasedOnDiscountDuration(com.vf.uk.dal.device.entity.BundlePrice bundlePrice,
 			String discountType) {
@@ -274,9 +274,6 @@ public class DeviceTilesDaoUtils {
 		return null;
 	}
 
-
-	
-		
 	/**
 	 * @author manoj.bera
 	 * @param listOfProductModel
@@ -285,7 +282,7 @@ public class DeviceTilesDaoUtils {
 	 * @param groupType
 	 * @param ls
 	 * @param bundleModelMap
-	 * @return
+	 * @return FacetedDevice
 	 */
 	public static FacetedDevice convertProductModelListToDeviceList(List<ProductModel> listOfProductModel,
 			List<String> listOfProducts, List<FacetField> facetFieldList, String groupType, List<CommercialProduct> ls,
@@ -1278,7 +1275,8 @@ public class DeviceTilesDaoUtils {
 				}
 			}
 		} else {
-			LogHelper.info(DeviceTilesDaoUtils.class, "Products not provided while converting ProductModelListToDeviceList.");
+			LogHelper.info(DeviceTilesDaoUtils.class,
+					"Products not provided while converting ProductModelListToDeviceList.");
 		}
 		facetedDevice.setDevice(deviceList);
 		facetedDevice.setNoOfRecordsFound(count);
@@ -1348,29 +1346,30 @@ public class DeviceTilesDaoUtils {
 		}
 
 	}
+
 	/**
 	 * 
 	 * @param deviceFinancingOption
-	 * @return
+	 * @return List <DeviceFinancingOption>
 	 */
-	public static List<com.vf.uk.dal.device.entity.DeviceFinancingOption> getDeviceFinaceOptions (List<DeviceFinancingOption> deviceFinancingOption){
+	public static List<com.vf.uk.dal.device.entity.DeviceFinancingOption> getDeviceFinaceOptions(
+			List<DeviceFinancingOption> deviceFinancingOption) {
 		List<com.vf.uk.dal.device.entity.DeviceFinancingOption> financeOptions = null;
-		if(deviceFinancingOption!=null && !deviceFinancingOption.isEmpty())
-		{
+		if (deviceFinancingOption != null && !deviceFinancingOption.isEmpty()) {
 			financeOptions = new ArrayList<>();
-				for(DeviceFinancingOption financsOption: deviceFinancingOption){
-				com.vf.uk.dal.device.entity.DeviceFinancingOption finance= new com.vf.uk.dal.device.entity.DeviceFinancingOption();
+			for (DeviceFinancingOption financsOption : deviceFinancingOption) {
+				com.vf.uk.dal.device.entity.DeviceFinancingOption finance = new com.vf.uk.dal.device.entity.DeviceFinancingOption();
 				finance.setApr(financsOption.getApr());
 				finance.setDeviceFinancingId(financsOption.getDeviceFinancingId());
 				finance.setFinanceProvider(financsOption.getFinanceProvider());
 				finance.setFinanceTerm(financsOption.getFinanceTerm());
-				com.vf.uk.dal.device.datamodel.product.Price monthly= financsOption.getMonthlyPrice();
+				com.vf.uk.dal.device.datamodel.product.Price monthly = financsOption.getMonthlyPrice();
 				com.vf.uk.dal.device.entity.Price deviceMonthlyPrice = new com.vf.uk.dal.device.entity.Price();
 				deviceMonthlyPrice.setGross(monthly.getGross());
 				deviceMonthlyPrice.setNet(monthly.getNet());
 				deviceMonthlyPrice.setVat(monthly.getVat());
 				finance.setMonthlyPrice(deviceMonthlyPrice);
-				com.vf.uk.dal.device.datamodel.product.Price totalInterest= financsOption.getTotalPriceWithInterest();
+				com.vf.uk.dal.device.datamodel.product.Price totalInterest = financsOption.getTotalPriceWithInterest();
 				com.vf.uk.dal.device.entity.Price totalPriceWithInterest = new com.vf.uk.dal.device.entity.Price();
 				totalPriceWithInterest.setGross(totalInterest.getGross());
 				totalPriceWithInterest.setNet(totalInterest.getNet());
@@ -1386,7 +1385,7 @@ public class DeviceTilesDaoUtils {
 	 * 
 	 * @param productModel
 	 * @param bundleModel
-	 * @return
+	 * @return PriceForBundleAndHardware
 	 */
 	public static PriceForBundleAndHardware getBundleAndHardwarePriceFromSolrUtils(List<OfferAppliedPriceModel> offers,
 			String leadPlanId) {
@@ -1479,6 +1478,13 @@ public class DeviceTilesDaoUtils {
 
 	}
 
+	/**
+	 * 
+	 * @param productModel
+	 * @param bundleModel
+	 * @param leadPlanId
+	 * @return PriceForBundleAndHardware
+	 */
 	public static PriceForBundleAndHardware getBundleAndHardwarePriceFromSolrWithoutOfferCode(ProductModel productModel,
 			BundleModel bundleModel, String leadPlanId) {
 		PriceForBundleAndHardware priceForBundleAndHardware = new PriceForBundleAndHardware();
@@ -1622,7 +1628,7 @@ public class DeviceTilesDaoUtils {
 	 * @param freeAccForPlans
 	 * @param freeExtrasForHardwares
 	 * @param freeAccForHardwares
-	 * @return
+	 * @return MerchandisingPromotionsPackage
 	 */
 	public static MerchandisingPromotionsPackage assembleMerchandisingPromotion(BundleAndHardwarePromotions promotions,
 			List<CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks> entertainmentPacks,

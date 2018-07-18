@@ -45,8 +45,8 @@ public class Validator {
 	 * @return
 	 */
 	public static boolean validateGetListOfDeviceTile(Map<String, String> queryParams) {
-		List<String> validParams = Arrays.asList("make", "model", Constants.GROUP_TYPE, "creditLimit", "journeyType", "deviceId",
-				Constants.OFFER_CODE, "bundleId", "sort", "pageSize", "pageNumber");
+		List<String> validParams = Arrays.asList("make", "model", Constants.GROUP_TYPE, "creditLimit", "journeyType",
+				"deviceId", Constants.OFFER_CODE, "bundleId", "sort", "pageSize", "pageNumber");
 
 		return validateParams(queryParams, validParams);
 	}
@@ -168,10 +168,11 @@ public class Validator {
 	 * @param creditLimit
 	 * @return
 	 */
-	/*public static boolean validateCreditLimit(String creditLimit) {
-		int creditLimitParam = Integer.parseInt(creditLimit);
-		return creditLimitParam < 0 ? false : true;
-	}*/
+	/*
+	 * public static boolean validateCreditLimit(String creditLimit) { int
+	 * creditLimitParam = Integer.parseInt(creditLimit); return creditLimitParam
+	 * < 0 ? false : true; }
+	 */
 
 	/**
 	 * 
@@ -214,9 +215,10 @@ public class Validator {
 			if (!creditLimit.matches(Constants.creditLimitExp)) {
 				throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
 			}
-			/*if (!Validator.validateCreditLimit(creditLimit)) {
-				throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
-			} */else {
+			/*
+			 * if (!Validator.validateCreditLimit(creditLimit)) { throw new
+			 * ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT); }
+			 */else {
 				try {
 					creditLimitparam = Float.parseFloat(creditLimit);
 				} catch (NumberFormatException ex) {
@@ -329,7 +331,7 @@ public class Validator {
 	 * @param deviceId
 	 * @param creditLimit
 	 * @param creditLimitParam
-	 * @return
+	 * @return creditLimitParam
 	 */
 	public static Double validateCreditLimitAndIds(String make, String model, String bundleId, String deviceId,
 			String creditLimit) {

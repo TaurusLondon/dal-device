@@ -17,27 +17,27 @@ import com.vf.uk.dal.common.logger.LogHelper;
 public class BazaarVoiceCache {
 
 	@Value("${bazaarvoice.urlPart1}")
-	private String urlPart1 ;
-	
+	private String urlPart1;
+
 	@Value("${bazaarvoice.urlPart2}")
-	private String urlPart2 ;
-	
-    @Cacheable(value = "bazaarVoiceCache", key = "#deviceId")
-    public String getBazaarVoiceReviews(String deviceId) {
-    	LogHelper.info(this,new Date()+" Retrieving from BazaarVoice : " + deviceId);
-        String jsonObject = null;
-        URL connection;
+	private String urlPart2;
+
+	@Cacheable(value = "bazaarVoiceCache", key = "#deviceId")
+	public String getBazaarVoiceReviews(String deviceId) {
+		LogHelper.info(this, new Date() + " Retrieving from BazaarVoice : " + deviceId);
+		String jsonObject = null;
+		URL connection;
 		URLConnection urlConn;
 		try {
-			connection = new URL(urlPart1+deviceId+urlPart2);
+			connection = new URL(urlPart1 + deviceId + urlPart2);
 			urlConn = connection.openConnection();
-				try (BufferedReader buffer = new BufferedReader(new InputStreamReader(urlConn.getInputStream()))) {
-					jsonObject = buffer.lines().collect(Collectors.joining("\n"));
-				}
-				
+			try (BufferedReader buffer = new BufferedReader(new InputStreamReader(urlConn.getInputStream()))) {
+				jsonObject = buffer.lines().collect(Collectors.joining("\n"));
+			}
+
 		} catch (Exception e) {
-			LogHelper.info(this,"Error Retrieving from BazaarVoice : " + e);
+			LogHelper.info(this, "Error Retrieving from BazaarVoice : " + e);
 		}
 		return jsonObject;
-    }
+	}
 }

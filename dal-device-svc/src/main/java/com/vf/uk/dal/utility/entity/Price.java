@@ -3,134 +3,141 @@ package com.vf.uk.dal.utility.entity;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Price
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-04-14T09:23:00.845Z")
 
-public class Price   {
-  @JsonProperty("gross")
-  private String gross = null;
+public class Price {
+	@JsonProperty("gross")
+	private String gross = null;
 
-  @JsonProperty("net")
-  private String net = null;
+	@JsonProperty("net")
+	private String net = null;
 
-  @JsonProperty("vat")
-  private String vat = null;
-  /**
-   * 
-   * @param gross
-   * @return
-   */
-  public Price gross(String gross) {
-    this.gross = gross;
-    return this;
-  }
+	@JsonProperty("vat")
+	private String vat = null;
 
-   /**
-   * Gross value of the item
-   * @return gross
-  **/
-  public String getGross() {
-    return gross;
-  }
-  /**
-   * 
-   * @param gross
-   */
-  public void setGross(String gross) {
-    this.gross = gross;
-  }
-  /**
-   * 
-   * @param net
-   * @return
-   */
-  public Price net(String net) {
-    this.net = net;
-    return this;
-  }
+	/**
+	 * 
+	 * @param gross
+	 * @return
+	 */
+	public Price gross(String gross) {
+		this.gross = gross;
+		return this;
+	}
 
-   /**
-   * Net value of the item
-   * @return net
-  **/
-  public String getNet() {
-    return net;
-  }
-  /**
-   * 
-   * @param net
-   */
-  public void setNet(String net) {
-    this.net = net;
-  }
-  /**
-   * 
-   * @param vat
-   * @return
-   */
-  public Price vat(String vat) {
-    this.vat = vat;
-    return this;
-  }
+	/**
+	 * Gross value of the item
+	 * 
+	 * @return gross
+	 **/
+	public String getGross() {
+		return gross;
+	}
 
-   /**
-   * VAT component of the item price
-   * @return vat
-  **/
-  public String getVat() {
-    return vat;
-  }
-  /**
-   * 
-   * @param vat
-   */
-  public void setVat(String vat) {
-    this.vat = vat;
-  }
+	/**
+	 * 
+	 * @param gross
+	 */
+	public void setGross(String gross) {
+		this.gross = gross;
+	}
 
+	/**
+	 * 
+	 * @param net
+	 * @return
+	 */
+	public Price net(String net) {
+		this.net = net;
+		return this;
+	}
 
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    Price price = (Price) o;
-    return Objects.equals(this.gross, price.gross) &&
-        Objects.equals(this.net, price.net) &&
-        Objects.equals(this.vat, price.vat);
-  }
+	/**
+	 * Net value of the item
+	 * 
+	 * @return net
+	 **/
+	public String getNet() {
+		return net;
+	}
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(gross, net, vat);
-  }
+	/**
+	 * 
+	 * @param net
+	 */
+	public void setNet(String net) {
+		this.net = net;
+	}
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class Price {\n");
-    
-    sb.append("    gross: ").append(toIndentedString(gross)).append("\n");
-    sb.append("    net: ").append(toIndentedString(net)).append("\n");
-    sb.append("    vat: ").append(toIndentedString(vat)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
+	/**
+	 * 
+	 * @param vat
+	 * @return
+	 */
+	public Price vat(String vat) {
+		this.vat = vat;
+		return this;
+	}
 
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
+	/**
+	 * VAT component of the item price
+	 * 
+	 * @return vat
+	 **/
+	public String getVat() {
+		return vat;
+	}
+
+	/**
+	 * 
+	 * @param vat
+	 */
+	public void setVat(String vat) {
+		this.vat = vat;
+	}
+
+	@Override
+	public boolean equals(java.lang.Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		Price price = (Price) o;
+		return Objects.equals(this.gross, price.gross) && Objects.equals(this.net, price.net)
+				&& Objects.equals(this.vat, price.vat);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(gross, net, vat);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("class Price {\n");
+
+		sb.append("    gross: ").append(toIndentedString(gross)).append("\n");
+		sb.append("    net: ").append(toIndentedString(net)).append("\n");
+		sb.append("    vat: ").append(toIndentedString(vat)).append("\n");
+		sb.append("}");
+		return sb.toString();
+	}
+
+	/**
+	 * Convert the given object to string with each line indented by 4 spaces
+	 * (except the first line).
+	 */
+	private String toIndentedString(java.lang.Object o) {
+		if (o == null) {
+			return "null";
+		}
+		return o.toString().replace("\n", "\n    ");
+	}
 }
-

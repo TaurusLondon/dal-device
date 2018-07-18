@@ -10,7 +10,6 @@
  * Do not edit the class manually.
  */
 
-
 package com.vf.uk.dal.utility.entity;
 
 import java.util.ArrayList;
@@ -24,340 +23,359 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 
 public class Discounts {
-  
-  private String productLineId = null;
 
-  
-  private String action = null;
+	private String productLineId = null;
 
-  
-  private String skuId = null;
+	private String action = null;
 
-  
-  private String tag = null;
+	private String skuId = null;
 
-  
-  private String label = null;
+	private String tag = null;
 
-  
-  private String tenure = null;
+	private String label = null;
 
-  
-  private String duration = null;
+	private String tenure = null;
 
-  
-  private String confirmedRequired = null;
+	private String duration = null;
 
-  
-  private List<MediaLink> merchandisingMedia = new ArrayList<MediaLink>();
-  
-  
-  @JsonIgnore
-  private DiscountPrice discountPrice=null;
-/**
- * 
- * @return
- */
-public DiscountPrice getDiscountPrice() {
-	return discountPrice;
+	private String confirmedRequired = null;
+
+	private List<MediaLink> merchandisingMedia = new ArrayList<MediaLink>();
+
+	@JsonIgnore
+	private DiscountPrice discountPrice = null;
+
+	/**
+	 * 
+	 * @return
+	 */
+	public DiscountPrice getDiscountPrice() {
+		return discountPrice;
+	}
+
+	/**
+	 * 
+	 * @param discountPrice
+	 */
+	public void setDiscountPrice(DiscountPrice discountPrice) {
+		this.discountPrice = discountPrice;
+	}
+
+	/**
+	 * 
+	 * @param productLineId
+	 * @return
+	 */
+	public Discounts productLineId(String productLineId) {
+		this.productLineId = productLineId;
+		return this;
+	}
+
+	/**
+	 * line id of the discount in the package
+	 * 
+	 * @return productLineId
+	 **/
+
+	public String getProductLineId() {
+		return productLineId;
+	}
+
+	/**
+	 * 
+	 * @param productLineId
+	 */
+	public void setProductLineId(String productLineId) {
+		this.productLineId = productLineId;
+	}
+
+	/**
+	 * 
+	 * @param action
+	 * @return
+	 */
+	public Discounts action(String action) {
+		this.action = action;
+		return this;
+	}
+
+	/**
+	 * Expected list is ADD/REMOVE/MODIFY
+	 * 
+	 * @return action
+	 **/
+
+	public String getAction() {
+		return action;
+	}
+
+	/**
+	 * 
+	 * @param action
+	 */
+	public void setAction(String action) {
+		this.action = action;
+	}
+
+	/**
+	 * 
+	 * @param skuId
+	 * @return
+	 */
+	public Discounts skuId(String skuId) {
+		this.skuId = skuId;
+		return this;
+	}
+
+	/**
+	 * Id of the discount as given in the product catalogue
+	 * 
+	 * @return skuId
+	 **/
+
+	public String getSkuId() {
+		return skuId;
+	}
+
+	/**
+	 * 
+	 * @param skuId
+	 */
+	public void setSkuId(String skuId) {
+		this.skuId = skuId;
+	}
+
+	/**
+	 * 
+	 * @param tag
+	 * @return
+	 */
+	public Discounts tag(String tag) {
+		this.tag = tag;
+		return this;
+	}
+
+	/**
+	 * Name of the discount as provided in the product catalogue
+	 * 
+	 * @return tag
+	 **/
+
+	public String getTag() {
+		return tag;
+	}
+
+	/**
+	 * 
+	 * @param tag
+	 */
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+
+	/**
+	 * 
+	 * @param label
+	 * @return
+	 */
+	public Discounts label(String label) {
+		this.label = label;
+		return this;
+	}
+
+	/**
+	 * Label of the discount as provided in the product catalogue
+	 * 
+	 * @return label
+	 **/
+
+	public String getLabel() {
+		return label;
+	}
+
+	/**
+	 * 
+	 * @param label
+	 */
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	/**
+	 * 
+	 * @param tenure
+	 * @return
+	 */
+	public Discounts tenure(String tenure) {
+		this.tenure = tenure;
+		return this;
+	}
+
+	/**
+	 * Tenure of the discount as provided in the product catalogue (can possibly
+	 * take the values - PARTIAL or FULL)
+	 * 
+	 * @return tenure
+	 **/
+
+	public String getTenure() {
+		return tenure;
+	}
+
+	/**
+	 * 
+	 * @param tenure
+	 */
+	public void setTenure(String tenure) {
+		this.tenure = tenure;
+	}
+
+	/**
+	 * 
+	 * @param duration
+	 * @return
+	 */
+	public Discounts duration(String duration) {
+		this.duration = duration;
+		return this;
+	}
+
+	/**
+	 * Duration from the start of the subscription for which the discount would
+	 * be applicable
+	 * 
+	 * @return duration
+	 **/
+
+	public String getDuration() {
+		return duration;
+	}
+
+	/**
+	 * 
+	 * @param duration
+	 */
+	public void setDuration(String duration) {
+		this.duration = duration;
+	}
+
+	/**
+	 * 
+	 * @param confirmedRequired
+	 * @return
+	 */
+	public Discounts confirmedRequired(String confirmedRequired) {
+		this.confirmedRequired = confirmedRequired;
+		return this;
+	}
+
+	/**
+	 * Flag to indicate whether user consent should be taken before applying the
+	 * discount
+	 * 
+	 * @return confirmedRequired
+	 **/
+
+	public String getConfirmedRequired() {
+		return confirmedRequired;
+	}
+
+	/**
+	 * 
+	 * @param confirmedRequired
+	 */
+	public void setConfirmedRequired(String confirmedRequired) {
+		this.confirmedRequired = confirmedRequired;
+	}
+
+	/**
+	 * 
+	 * @param merchandisingMedia
+	 * @return
+	 */
+	public Discounts merchandisingMedia(List<MediaLink> merchandisingMedia) {
+		this.merchandisingMedia = merchandisingMedia;
+		return this;
+	}
+
+	/**
+	 * 
+	 * @param merchandisingMediaItem
+	 * @return
+	 */
+	public Discounts addMerchandisingMediaItem(MediaLink merchandisingMediaItem) {
+		this.merchandisingMedia.add(merchandisingMediaItem);
+		return this;
+	}
+
+	/**
+	 * Get merchandisingMedia
+	 * 
+	 * @return merchandisingMedia
+	 **/
+
+	public List<MediaLink> getMerchandisingMedia() {
+		return merchandisingMedia;
+	}
+
+	/**
+	 * 
+	 * @param merchandisingMedia
+	 */
+	public void setMerchandisingMedia(List<MediaLink> merchandisingMedia) {
+		this.merchandisingMedia = merchandisingMedia;
+	}
+
+	@Override
+	public boolean equals(java.lang.Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		Discounts discount = (Discounts) o;
+		return Objects.equals(this.productLineId, discount.productLineId)
+				&& Objects.equals(this.action, discount.action) && Objects.equals(this.skuId, discount.skuId)
+				&& Objects.equals(this.tag, discount.tag) && Objects.equals(this.label, discount.label)
+				&& Objects.equals(this.tenure, discount.tenure) && Objects.equals(this.duration, discount.duration)
+				&& Objects.equals(this.confirmedRequired, discount.confirmedRequired)
+				&& Objects.equals(this.merchandisingMedia, discount.merchandisingMedia);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(productLineId, action, skuId, tag, label, tenure, duration, confirmedRequired,
+				merchandisingMedia);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("class Discount {\n");
+
+		sb.append("    productLineId: ").append(toIndentedString(productLineId)).append("\n");
+		sb.append("    action: ").append(toIndentedString(action)).append("\n");
+		sb.append("    skuId: ").append(toIndentedString(skuId)).append("\n");
+		sb.append("    tag: ").append(toIndentedString(tag)).append("\n");
+		sb.append("    label: ").append(toIndentedString(label)).append("\n");
+		sb.append("    tenure: ").append(toIndentedString(tenure)).append("\n");
+		sb.append("    duration: ").append(toIndentedString(duration)).append("\n");
+		sb.append("    confirmedRequired: ").append(toIndentedString(confirmedRequired)).append("\n");
+		sb.append("    merchandisingMedia: ").append(toIndentedString(merchandisingMedia)).append("\n");
+		sb.append("}");
+		return sb.toString();
+	}
+
+	/**
+	 * Convert the given object to string with each line indented by 4 spaces
+	 * (except the first line).
+	 */
+	private String toIndentedString(java.lang.Object o) {
+		if (o == null) {
+			return "null";
+		}
+		return o.toString().replace("\n", "\n    ");
+	}
+
 }
-/**
- * 
- * @param discountPrice
- */
-public void setDiscountPrice(DiscountPrice discountPrice) {
-	this.discountPrice = discountPrice;
-}
-/**
- * 
- * @param productLineId
- * @return
- */
-public Discounts productLineId(String productLineId) {
-    this.productLineId = productLineId;
-    return this;
-  }
-
-   /**
-   * line id of the discount in the package
-   * @return productLineId
-  **/
-  
-  public String getProductLineId() {
-    return productLineId;
-  }
-/**
- * 
- * @param productLineId
- */
-  public void setProductLineId(String productLineId) {
-    this.productLineId = productLineId;
-  }
-  /**
-   * 
-   * @param action
-   * @return
-   */
-  public Discounts action(String action) {
-    this.action = action;
-    return this;
-  }
-
-   /**
-   * Expected list is ADD/REMOVE/MODIFY
-   * @return action
-  **/
-  
-  public String getAction() {
-    return action;
-  }
-  /**
-   * 
-   * @param action
-   */
-  public void setAction(String action) {
-    this.action = action;
-  }
-  /**
-   * 
-   * @param skuId
-   * @return
-   */
-  public Discounts skuId(String skuId) {
-    this.skuId = skuId;
-    return this;
-  }
-
-   /**
-   * Id of the discount as given in the product catalogue
-   * @return skuId
-  **/
-  
-  public String getSkuId() {
-    return skuId;
-  }
-  /**
-   * 
-   * @param skuId
-   */
-  public void setSkuId(String skuId) {
-    this.skuId = skuId;
-  }
-  /**
-   * 
-   * @param tag
-   * @return
-   */
-  public Discounts tag(String tag) {
-    this.tag = tag;
-    return this;
-  }
-
-   /**
-   * Name of the discount as provided in the product catalogue
-   * @return tag
-  **/
-  
-  public String getTag() {
-    return tag;
-  }
-  /**
-   * 
-   * @param tag
-   */
-  public void setTag(String tag) {
-    this.tag = tag;
-  }
-  /**
-   * 
-   * @param label
-   * @return
-   */
-  public Discounts label(String label) {
-    this.label = label;
-    return this;
-  }
-
-   /**
-   * Label of the discount as provided in the product catalogue
-   * @return label
-  **/
-  
-  public String getLabel() {
-    return label;
-  }
-  /**
-   * 
-   * @param label
-   */
-  public void setLabel(String label) {
-    this.label = label;
-  }
-  /**
-   * 
-   * @param tenure
-   * @return
-   */
-  public Discounts tenure(String tenure) {
-    this.tenure = tenure;
-    return this;
-  }
-
-   /**
-   * Tenure of the discount as provided in the product catalogue (can possibly take the values - PARTIAL or FULL)
-   * @return tenure
-  **/
-  
-  public String getTenure() {
-    return tenure;
-  }
-  /**
-   * 
-   * @param tenure
-   */
-  public void setTenure(String tenure) {
-    this.tenure = tenure;
-  }
-  /**
-   * 
-   * @param duration
-   * @return
-   */
-  public Discounts duration(String duration) {
-    this.duration = duration;
-    return this;
-  }
-
-   /**
-   * Duration from the start of the subscription for which the discount would be applicable
-   * @return duration
-  **/
-  
-  public String getDuration() {
-    return duration;
-  }
-  /**
-   * 
-   * @param duration
-   */
-  public void setDuration(String duration) {
-    this.duration = duration;
-  }
-  /**
-   * 
-   * @param confirmedRequired
-   * @return
-   */
-  public Discounts confirmedRequired(String confirmedRequired) {
-    this.confirmedRequired = confirmedRequired;
-    return this;
-  }
-
-   /**
-   * Flag to indicate whether user consent should be taken before applying the discount
-   * @return confirmedRequired
-  **/
-  
-  public String getConfirmedRequired() {
-    return confirmedRequired;
-  }
-  /**
-   * 
-   * @param confirmedRequired
-   */
-  public void setConfirmedRequired(String confirmedRequired) {
-    this.confirmedRequired = confirmedRequired;
-  }
-  /**
-   * 
-   * @param merchandisingMedia
-   * @return
-   */
-  public Discounts merchandisingMedia(List<MediaLink> merchandisingMedia) {
-    this.merchandisingMedia = merchandisingMedia;
-    return this;
-  }
-  /**
-   * 
-   * @param merchandisingMediaItem
-   * @return
-   */
-  public Discounts addMerchandisingMediaItem(MediaLink merchandisingMediaItem) {
-    this.merchandisingMedia.add(merchandisingMediaItem);
-    return this;
-  }
-
-   /**
-   * Get merchandisingMedia
-   * @return merchandisingMedia
-  **/
-  
-  public List<MediaLink> getMerchandisingMedia() {
-    return merchandisingMedia;
-  }
-  /**
-   * 
-   * @param merchandisingMedia
-   */
-  public void setMerchandisingMedia(List<MediaLink> merchandisingMedia) {
-    this.merchandisingMedia = merchandisingMedia;
-  }
-
-
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    Discounts discount = (Discounts) o;
-    return Objects.equals(this.productLineId, discount.productLineId) &&
-        Objects.equals(this.action, discount.action) &&
-        Objects.equals(this.skuId, discount.skuId) &&
-        Objects.equals(this.tag, discount.tag) &&
-        Objects.equals(this.label, discount.label) &&
-        Objects.equals(this.tenure, discount.tenure) &&
-        Objects.equals(this.duration, discount.duration) &&
-        Objects.equals(this.confirmedRequired, discount.confirmedRequired) &&
-        Objects.equals(this.merchandisingMedia, discount.merchandisingMedia);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(productLineId, action, skuId, tag, label, tenure, duration, confirmedRequired, merchandisingMedia);
-  }
-
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class Discount {\n");
-    
-    sb.append("    productLineId: ").append(toIndentedString(productLineId)).append("\n");
-    sb.append("    action: ").append(toIndentedString(action)).append("\n");
-    sb.append("    skuId: ").append(toIndentedString(skuId)).append("\n");
-    sb.append("    tag: ").append(toIndentedString(tag)).append("\n");
-    sb.append("    label: ").append(toIndentedString(label)).append("\n");
-    sb.append("    tenure: ").append(toIndentedString(tenure)).append("\n");
-    sb.append("    duration: ").append(toIndentedString(duration)).append("\n");
-    sb.append("    confirmedRequired: ").append(toIndentedString(confirmedRequired)).append("\n");
-    sb.append("    merchandisingMedia: ").append(toIndentedString(merchandisingMedia)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
-  
-}
-

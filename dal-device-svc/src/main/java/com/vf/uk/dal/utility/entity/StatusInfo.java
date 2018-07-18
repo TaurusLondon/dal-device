@@ -11,6 +11,7 @@ public class StatusInfo {
 	private String status = null;
 
 	private List<String> errorCodes = new ArrayList<String>();
+
 	/**
 	 * 
 	 * @param status
@@ -29,6 +30,7 @@ public class StatusInfo {
 	public String getStatus() {
 		return status;
 	}
+
 	/**
 	 * 
 	 * @param status
@@ -36,6 +38,7 @@ public class StatusInfo {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
 	/**
 	 * 
 	 * @param errorCodes
@@ -45,6 +48,7 @@ public class StatusInfo {
 		this.errorCodes = errorCodes;
 		return this;
 	}
+
 	/**
 	 * 
 	 * @param errorCodesItem
@@ -63,6 +67,7 @@ public class StatusInfo {
 	public List<String> getErrorCodes() {
 		return errorCodes;
 	}
+
 	/**
 	 * 
 	 * @param errorCodes

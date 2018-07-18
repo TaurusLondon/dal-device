@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>com.vf.uk.dal</groupId> 
 	<artifactId>dal-device-svc</artifactId>
-	<version>10.1.2</version>
+	<version>10.1.3</version>
 	<packaging>jar</packaging>
 	<build>
 		<plugins>
@@ -73,12 +73,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
-		<!-- <dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-		</dependency> -->
 
 		<!-- https://mvnrepository.com/artifact/commons-collections/commons-collections -->
 		<dependency>

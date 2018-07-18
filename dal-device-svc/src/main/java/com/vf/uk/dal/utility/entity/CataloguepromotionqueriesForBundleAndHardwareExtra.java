@@ -11,87 +11,99 @@ public class CataloguepromotionqueriesForBundleAndHardwareExtra {
 
 	@JsonProperty("tag")
 	private String tag = null;
-/**
- * 
- * @return
- */
+
+	/**
+	 * 
+	 * @return
+	 */
 	public String getTag() {
 		return tag;
 	}
-/**
- * 
- * @param tag
- */
+
+	/**
+	 * 
+	 * @param tag
+	 */
 	public void setTag(String tag) {
 		this.tag = tag;
 	}
-/**
- * 
- * @return
- */
+
+	/**
+	 * 
+	 * @return
+	 */
 	public String getLabel() {
 		return label;
 	}
-/**
- * 
- * @param label
- */
+
+	/**
+	 * 
+	 * @param label
+	 */
 	public void setLabel(String label) {
 		this.label = label;
 	}
-/**
- * 
- * @return
- */
+
+	/**
+	 * 
+	 * @return
+	 */
 	public String getType() {
 		return type;
 	}
-/**
- * 
- * @param type
- */
+
+	/**
+	 * 
+	 * @param type
+	 */
 	public void setType(String type) {
 		this.type = type;
 	}
-/**
- * 
- * @return
- */
+
+	/**
+	 * 
+	 * @return
+	 */
 	public String getPriority() {
 		return priority;
 	}
-/**
- * 
- * @param priority
- */
+
+	/**
+	 * 
+	 * @param priority
+	 */
 	public void setPriority(String priority) {
 		this.priority = priority;
 	}
-/**
- * 
- * @return
- */
+
+	/**
+	 * 
+	 * @return
+	 */
 	public String getDescription() {
 		return description;
 	}
-/**
- * 
- * @param description
- */
+
+	/**
+	 * 
+	 * @param description
+	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
-/**
- * 
- * @return
- */
+
+	/**
+	 * 
+	 * @return
+	 */
 	public String getPromotionMedia() {
 		return promotionMedia;
 	}
-/**
- * 
- * @param promotionMedia
- */
+
+	/**
+	 * 
+	 * @param promotionMedia
+	 */
 	public void setPromotionMedia(String promotionMedia) {
 		this.promotionMedia = promotionMedia;
 	}

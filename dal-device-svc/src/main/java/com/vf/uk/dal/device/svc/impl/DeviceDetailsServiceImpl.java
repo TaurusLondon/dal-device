@@ -39,7 +39,7 @@ import com.vf.uk.dal.utility.entity.BundleHeader;
 import com.vf.uk.dal.utility.entity.CoupleRelation;
 
 @Component
-public class DeviceDetailsServiceImpl implements DeviceDetailsService{
+public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 
 	@Autowired
 	DeviceDao deviceDao;
@@ -49,14 +49,16 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService{
 
 	@Autowired
 	RegistryClient registryclnt;
-	
+
 	@Autowired
 	DeviceServiceCommonUtility deviceServiceCommonUtility;
-	
+
 	/**
 	 * Handles requests from controller and connects to DAO.
 	 * 
 	 * @param id
+	 * @param journeyType
+	 * @param offerCode
 	 * @return DeviceDetails
 	 */
 	@Override
@@ -65,12 +67,13 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService{
 		deviceDetails = getDeviceDetails_Implementation(deviceId, journeyType, offerCode);
 		return deviceDetails;
 	}
+
 	/**
 	 * 
 	 * @param deviceId
 	 * @param journeyTypeInput
 	 * @param offerCode
-	 * @return
+	 * @return DeviceDetails
 	 */
 	public DeviceDetails getDeviceDetails_Implementation(String deviceId, String journeyTypeInput, String offerCode) {
 		LogHelper.info(this, "Start -->  calling  CommercialProductRepository.get");
@@ -96,7 +99,7 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService{
 	 * @param journeyType
 	 * @param commercialProduct
 	 * @param deviceDetails
-	 * @return
+	 * @return DeviceDetails
 	 */
 	public DeviceDetails getDeviceDetailsResponse(String deviceId, String offerCode, String journeyType,
 			CommercialProduct commercialProduct) {
@@ -138,12 +141,13 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService{
 		}
 		return deviceDetails;
 	}
+
 	/**
 	 * 
 	 * @param commercialProduct
 	 * @param commerBundleIdMap
 	 * @param journeyType
-	 * @return
+	 * @return List<BundleAndHardwareTuple>
 	 */
 	public List<BundleAndHardwareTuple> getListOfPriceForBundleAndHardware_Implementation(
 			CommercialProduct commercialProduct, Map<String, CommercialBundle> commerBundleIdMap, String journeyType) {
@@ -174,12 +178,13 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService{
 		return bundleAndHardwareTupleList;
 
 	}
+
 	/**
 	 * 
 	 * @param commercialProduct
 	 * @param journeyType
 	 * @param offerCode
-	 * @return
+	 * @return validOffer
 	 */
 	public boolean validateOfferValidForDevice_Implementation(CommercialProduct commercialProduct, String journeyType,
 			String offerCode) {
@@ -217,7 +222,15 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService{
 		validOffer = offerCodes.contains(offerCode) ? true : false;
 		return validOffer;
 	}
-	//serviceImpl
+
+	// serviceImpl
+	/**
+	 * 
+	 * @param listOfDeviceIds
+	 * @param offerCode
+	 * @param journeyType
+	 * @return List<DeviceDetails>
+	 */
 	public List<DeviceDetails> getDeviceDetailsList(List<String> listOfDeviceIds, String offerCode,
 			String journeyType) {
 
@@ -344,6 +357,13 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService{
 
 		return listOfDevices;
 	}
+
+	/**
+	 * 
+	 * @param deviceId
+	 * @param journeyType
+	 * @return leadPlanId
+	 */
 	public String getLeadPlanIdForDeviceId(String deviceId, String journeyType) {
 		String leadPlanId = null;
 		BundleDetailsForAppSrv bundleDetailsForDevice;
@@ -401,6 +421,12 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService{
 		return leadPlanId;
 
 	}
+
+	/**
+	 * 
+	 * @param commercialBundle
+	 * @return listOfMediaLink
+	 */
 	public List<MediaLink> mediaListForBundle(CommercialBundle commercialBundle) {
 		List<MediaLink> listOfMediaLink = new ArrayList<>();
 		if (commercialBundle.getPromoteAs() != null && commercialBundle.getPromoteAs().getPromotionName() != null
@@ -425,6 +451,12 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService{
 		}
 		return listOfMediaLink;
 	}
+
+	/**
+	 * 
+	 * @param merchandisingPromotion
+	 * @return listOfMediaLink
+	 */
 	public List<MediaLink> listOfMediaLinkBasedOnMerchandising(MerchandisingPromotion merchandisingPromotion) {
 		MediaLink mediaLinkForDescription;
 		MediaLink mediaLinkForLabel;
@@ -453,6 +485,11 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService{
 		return listOfMediaLink;
 	}
 
+	/**
+	 * 
+	 * @param commercialProduct
+	 * @return listOfMediaLink
+	 */
 	public List<MediaLink> getMediaListForDevice(CommercialProduct commercialProduct) {
 		List<MediaLink> listOfMediaLink = new ArrayList<>();
 		if (commercialProduct.getPromoteAs() != null && commercialProduct.getPromoteAs().getPromotionName() != null
@@ -543,6 +580,13 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService{
 			}
 		}
 	}
+
+	/**
+	 * @param deviceId
+	 * @param offerCode
+	 * @param journeyType
+	 * @return listOfDevices
+	 */
 	@Override
 	public List<DeviceDetails> getListOfDeviceDetails(String deviceId, String offerCode, String journeyType) {
 		List<DeviceDetails> listOfDevices;
@@ -563,6 +607,5 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService{
 		}
 		return listOfDevices;
 	}
-
 
 }

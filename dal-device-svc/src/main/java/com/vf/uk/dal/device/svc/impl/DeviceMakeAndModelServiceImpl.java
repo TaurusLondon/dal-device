@@ -42,7 +42,7 @@ import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 
 @Component
 public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService {
-	
+
 	@Autowired
 	DeviceDao deviceDao;
 
@@ -51,10 +51,20 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 
 	@Autowired
 	RegistryClient registryclnt;
-	
+
 	@Autowired
 	DeviceServiceCommonUtility deviceServiceCommonUtility;
 
+	/**
+	 * @param make
+	 * @param model
+	 * @param groupType
+	 * @param creditLimit
+	 * @param journeyType
+	 * @param offerCode
+	 * @param bundleId
+	 * @return deviceTileList
+	 */
 	@Override
 	public List<DeviceTile> getListOfDeviceTile(String make, String model, String groupType, String deviceId,
 			Double creditLimit, String journeyType, String offerCode, String bundleId) {
@@ -65,13 +75,14 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 
 		return deviceTileList;
 	}
+
 	/**
 	 * @param make
 	 * @param model
 	 * @param groupType
 	 * @param journeyType
 	 * @param journeyTypeLocal
-	 * @return
+	 * @return listOfDeviceTile
 	 */
 
 	/**
@@ -96,7 +107,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 		if (DeviceServiceImplUtility.validateGroupType(groupType)) {
 			LogHelper.info(this, "Start -->  calling  CommericalProduct.getByMakeAndModel");
 			listOfCommercialProducts = deviceEs.getListOfCommercialProductByMakeAndModel(make, model);
-			  LogHelper.info(this, "End -->  After calling  CommericalProduct.getByMakeAndModel");
+			LogHelper.info(this, "End -->  After calling  CommericalProduct.getByMakeAndModel");
 
 		} else {
 			LogHelper.error(this, Constants.NO_DATA_FOUND_FOR_GROUP_TYPE + groupType);
@@ -104,8 +115,8 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 		}
 		List<Group> listOfProductGroup = deviceEs.getProductGroupByType(groupType);
 		if (groupType.equals(Constants.STRING_DEVICE_PAYG)) {
-			listOfDeviceTile = getDeviceTileByMakeAndModelForPAYG(listOfCommercialProducts,
-					listOfProductGroup, make, model, groupType);
+			listOfDeviceTile = getDeviceTileByMakeAndModelForPAYG(listOfCommercialProducts, listOfProductGroup, make,
+					model, groupType);
 		} else if (!groupType.equals(Constants.STRING_DEVICE_PAYG)) {
 			List<CommercialProduct> commercialProductsMatchedMemList = new ArrayList<>();
 			Map<String, CommercialProduct> commerProdMemMap = new HashMap<>();
@@ -119,8 +130,8 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 				getCommercialBundleMap(make, model, journeyType, listOfCommercialProducts, commerProdMemMap,
 						commerBundleIdMap);
 				if (listOfProductGroup != null && !listOfProductGroup.isEmpty()) {
-					groupName = getMembersForGroup(bundleId, journeyType, listOfDeviceGroupMember,
-							listOfProductGroup, commercialProductsMatchedMemList, commerProdMemMap, commerBundleIdMap,
+					groupName = getMembersForGroup(bundleId, journeyType, listOfDeviceGroupMember, listOfProductGroup,
+							commercialProductsMatchedMemList, commerProdMemMap, commerBundleIdMap,
 							bundleAndHardwareTupleList, bundleIdMap, fromPricingMap, leadPlanIdMap, listofLeadPlan);
 				}
 			}
@@ -128,8 +139,8 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			if (commercialProductsMatchedMemList != null && !commercialProductsMatchedMemList.isEmpty()) {
 
 				if (listOfDeviceGroupMember != null && !listOfDeviceGroupMember.isEmpty()) {
-					String leadMemberId =deviceServiceCommonUtility. getMemeberBasedOnRules_Implementation(listOfDeviceGroupMember,
-							journeyType);
+					String leadMemberId = deviceServiceCommonUtility
+							.getMemeberBasedOnRules_Implementation(listOfDeviceGroupMember, journeyType);
 					if (leadMemberId != null) {
 						deviceTile.setDeviceId(leadMemberId);
 						deviceTile.setRating(deviceServiceCommonUtility.getDeviceTileRating(leadMemberId));
@@ -158,9 +169,9 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 					}
 
 					if (listOfPriceForBundleAndHardware != null && !listOfPriceForBundleAndHardware.isEmpty()) {
-						getBundleAndHardwarePromotions(journeyType, commerBundleIdMap, fromPricingMap,
-								leadPlanIdMap, listofLeadPlan, listOfPriceForBundleAndHardware,
-								listOfBundleAndHardPromo, bundleAndHardwarePromotionsMap, priceMapForParticularDevice);
+						getBundleAndHardwarePromotions(journeyType, commerBundleIdMap, fromPricingMap, leadPlanIdMap,
+								listofLeadPlan, listOfPriceForBundleAndHardware, listOfBundleAndHardPromo,
+								bundleAndHardwarePromotionsMap, priceMapForParticularDevice);
 					}
 					Map<String, CommercialBundle> commercialBundleMap = new HashMap<>();
 					if (!listofLeadPlan.isEmpty()) {
@@ -177,7 +188,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 							listOfDeviceGroupMember, listOfPriceForBundleAndHardware, commerProdMemMap,
 							isConditionalAcceptJourney, journeyType, creditLimit, commercialBundleMap, bundleIdMap,
 							bundleId, bundleAndHardwarePromotionsMap, leadPlanIdMap, groupType,
-							priceMapForParticularDevice, fromPricingMap,Constants.CATALOG_VERSION.get());
+							priceMapForParticularDevice, fromPricingMap, Constants.CATALOG_VERSION.get());
 					List<DeviceSummary> listOfDeviceSummary;
 					try {
 						listOfDeviceSummary = future1.get();
@@ -185,8 +196,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 						LogHelper.error(this, "Exception occured while executing thread pool :" + e);
 						throw new ApplicationException(ExceptionMessages.ERROR_IN_FUTURE_TASK);
 					}
-					resetDeviceId_Implementation(isConditionalAcceptJourney, deviceTile, listOfDeviceSummary,
-							deviceId);
+					resetDeviceId_Implementation(isConditionalAcceptJourney, deviceTile, listOfDeviceSummary, deviceId);
 					if (isConditionalAcceptJourney) {
 						if (null != deviceTile.getDeviceId()) {
 							deviceTile.setDeviceSummary(listOfDeviceSummary);
@@ -213,6 +223,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 		return listOfDeviceTile;
 
 	}
+
 	/**
 	 * @param journeyType
 	 * @param commerBundleIdMap
@@ -284,8 +295,9 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 		if (flag) {
 			List<PriceForBundleAndHardware> listOfpriceForBundleANdHardware = priceMap.containsKey(hardwareID)
 					? priceMap.get(hardwareID) : null;
-			PriceForBundleAndHardware priceForBundleAndHardware = deviceServiceCommonUtility.identifyLowestPriceOfPlanForDevice(
-					listOfpriceForBundleANdHardware, commerBundleIdMap, journeyType);
+			PriceForBundleAndHardware priceForBundleAndHardware = deviceServiceCommonUtility
+					.identifyLowestPriceOfPlanForDevice(listOfpriceForBundleANdHardware, commerBundleIdMap,
+							journeyType);
 			if (priceForBundleAndHardware != null) {
 				priceMapForParticularDevice.put(priceForBundleAndHardware.getHardwarePrice().getHardwareId(),
 						priceForBundleAndHardware);
@@ -320,8 +332,6 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 		}
 	}
 
-	
-
 	/**
 	 * @param bundleId
 	 * @param bundleAndHardwareTupleList
@@ -352,7 +362,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 	 * @param make
 	 * @param model
 	 * @param groupType
-	 * @return
+	 * @return List<DeviceTile>
 	 */
 	public List<DeviceTile> getDeviceTileByMakeAndModelForPAYG(List<CommercialProduct> listOfCommercialProducts,
 			List<Group> listOfProductGroup, String make, String model, String groupType) {
@@ -423,7 +433,8 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			Map<String, CommercialProduct> commerProdMemMapPAYG,
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleListPAYG) {
 		if (listOfDeviceGroupMember != null && !listOfDeviceGroupMember.isEmpty()) {
-			String leadMemberId = deviceServiceCommonUtility.getMemeberBasedOnRules_Implementation(listOfDeviceGroupMember, null);
+			String leadMemberId = deviceServiceCommonUtility
+					.getMemeberBasedOnRules_Implementation(listOfDeviceGroupMember, null);
 			if (leadMemberId != null) {
 				deviceTile.setDeviceId(leadMemberId);
 				deviceTile.setRating(deviceServiceCommonUtility.getDeviceTileRating(leadMemberId));
@@ -455,7 +466,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			deviceTile.setGroupType(groupType);
 			CompletableFuture<List<DeviceSummary>> future1 = getDeviceSummery_Implementation_PAYG(
 					listOfDeviceGroupMember, commerProdMemMapPAYG, groupType, priceMapForParticularDevice,
-					bundleAndHardwarePromotionsMap,Constants.CATALOG_VERSION.get());
+					bundleAndHardwarePromotionsMap, Constants.CATALOG_VERSION.get());
 			List<DeviceSummary> listOfDeviceSummary;
 			try {
 				listOfDeviceSummary = future1.get();
@@ -505,7 +516,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 	 * @param groupType
 	 * @param priceMapForParticularDevice
 	 * @param fromPricingMap
-	 * @return
+	 * @return CompletableFuture<List<DeviceSummary>>
 	 */
 	public CompletableFuture<List<DeviceSummary>> getDeviceSummery_Implementation(
 			List<com.vf.uk.dal.device.entity.Member> listOfDeviceGroupMember,
@@ -514,7 +525,8 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			Double creditLimit, Map<String, CommercialBundle> commercialBundleMap, Map<String, Boolean> bundleIdMap,
 			String bundleId, Map<String, BundleAndHardwarePromotions> bundleAndHardwarePromotionsMap,
 			Map<String, String> leadPlanIdMap, String groupType,
-			Map<String, PriceForBundleAndHardware> priceMapForParticularDevice, Map<String, Boolean> fromPricingMap,String version) {
+			Map<String, PriceForBundleAndHardware> priceMapForParticularDevice, Map<String, Boolean> fromPricingMap,
+			String version) {
 		return CompletableFuture.supplyAsync(new Supplier<List<DeviceSummary>>() {
 
 			List<DeviceSummary> listOfDeviceSummaryLocal = new ArrayList<>();
@@ -641,13 +653,13 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 	 * @param commerProdMemMap
 	 * @param groupType=PAYG
 	 * @param priceMapForParticularDevice
-	 * @return
+	 * @return CompletableFuture<List<DeviceSummary>>
 	 */
 	public CompletableFuture<List<DeviceSummary>> getDeviceSummery_Implementation_PAYG(
 			List<com.vf.uk.dal.device.entity.Member> listOfDeviceGroupMember,
 			Map<String, CommercialProduct> commerProdMemMap, String groupType,
 			Map<String, PriceForBundleAndHardware> priceMapForParticularDevice,
-			Map<String, BundleAndHardwarePromotions> promotions,String version) {
+			Map<String, BundleAndHardwarePromotions> promotions, String version) {
 		return CompletableFuture.supplyAsync(new Supplier<List<DeviceSummary>>() {
 
 			List<DeviceSummary> listOfDeviceSummaryLocal = new ArrayList<>();
@@ -678,8 +690,6 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 		});
 
 	}
-
-	
 
 	/**
 	 * Check if lead plan associated with commercial product is within credit
@@ -720,7 +730,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 	 * @param creditDetails
 	 * @param commercialProduct
 	 * @param commercialBundleRepository
-	 * @return
+	 * @return CommercialBundle
 	 */
 	public CommercialBundle getLeadBundleBasedOnAllPlans_Implementation(Double creditLimit,
 			CommercialProduct commercialProduct, List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware,
@@ -745,7 +755,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 				priceForBundleAndHardwares = CommonUtility.getPriceDetails(bundleAndHardwareTupleList, null,
 						registryclnt, journeyType);
 			}
-			if (priceForBundleAndHardwares!=null &&CollectionUtils.isNotEmpty(priceForBundleAndHardwares)) {
+			if (priceForBundleAndHardwares != null && CollectionUtils.isNotEmpty(priceForBundleAndHardwares)) {
 				Iterator<PriceForBundleAndHardware> iterator = priceForBundleAndHardwares.iterator();
 				while (iterator.hasNext()) {
 
@@ -786,7 +796,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 	 * @param fromPricingMap
 	 * @param leadPlanIdMap
 	 * @param listofLeadPlan
-	 * @return
+	 * @return groupName
 	 */
 	public String getMembersForGroup(String bundleId, String journeyType,
 			List<com.vf.uk.dal.device.entity.Member> listOfDeviceGroupMember, List<Group> listOfProductGroup,
@@ -812,15 +822,14 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 							getListOfLeadPlan(bundleId, bundleAndHardwareTupleList, bundleIdMap, fromPricingMap,
 									leadPlanIdMap, listofLeadPlan, member, commercialProduct);
 						} else {
-							List<String> listOfCompatiblePlanIds = commercialProduct.getListOfCompatiblePlanIds() == null
-									? Collections.emptyList():
-										commercialProduct.getListOfCompatiblePlanIds();
+							List<String> listOfCompatiblePlanIds = commercialProduct
+									.getListOfCompatiblePlanIds() == null ? Collections.emptyList()
+											: commercialProduct.getListOfCompatiblePlanIds();
 							bundleIdMap.put(commercialProduct.getId(), false);
 							if (StringUtils.isNotBlank(commercialProduct.getLeadPlanId())
 									&& isJourneySpecificLeadPlan(commerBundleIdMap, commercialProduct.getLeadPlanId(),
 											journeyType)
-									&& listOfCompatiblePlanIds
-											.contains(commercialProduct.getLeadPlanId())) {
+									&& listOfCompatiblePlanIds.contains(commercialProduct.getLeadPlanId())) {
 								DeviceServiceImplUtility.getPricingMap(bundleAndHardwareTupleList, fromPricingMap,
 										leadPlanIdMap, listofLeadPlan, commercialProduct);
 							} else {

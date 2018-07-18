@@ -19,34 +19,38 @@ public interface CacheDeviceService {
 	 * 
 	 * @param groupType
 	 * @param jobId
-	 * @return
+	 * @return CompletableFuture
 	 */
-	//@Transactional(rollbackFor = {Exception.class})
-	public CompletableFuture<Integer> cacheDeviceTile(String groupType,String jobId , String version) ;
-	
+	// @Transactional(rollbackFor = {Exception.class})
+	public CompletableFuture<Integer> cacheDeviceTile(String groupType, String jobId, String version);
+
 	/**
 	 * 
 	 * @param deviceId
-	 * @return
+	 * @return DeviceReviewDetails
 	 */
 	public JSONObject getDeviceReviewDetails(String deviceId);
+
 	/**
 	 * 
 	 * @return
 	 */
 	public CacheDeviceTileResponse insertCacheDeviceToDb();
+
 	/**
 	 * 
 	 * @param jobId
 	 * @param jobStatus
 	 */
 	void updateCacheDeviceToDb(String jobId, String jobStatus);
+
 	/**
 	 * 
 	 * @param jobId
-	 * @return
+	 * @return CacheDeviceTileResponse
 	 */
 	public CacheDeviceTileResponse getCacheDeviceJobStatus(String jobId);
+
 	/**
 	 * 
 	 * @param listOfOfferCodesForUpgrade
@@ -57,12 +61,14 @@ public interface CacheDeviceService {
 	public void getIlsPriceWithOfferCodeAndJourney(List<String> listOfOfferCodesForUpgrade,
 			List<String> listOfSecondLineOfferCode, Map<String, List<BundleAndHardwareTuple>> bundleHardwareTroupleMap,
 			Map<String, Map<String, List<PriceForBundleAndHardware>>> ilsPriceForJourneyAwareOfferCodeMap);
+
 	/**
 	 * 
 	 * @param preCalcDataList
 	 */
 	public void indexPrecalData(
 			List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.DevicePreCalculatedData> preCalcDataList);
+
 	/**
 	 * 
 	 * @param nonLeadPlanIdPriceMap
@@ -71,22 +77,24 @@ public interface CacheDeviceService {
 	 * @param listOfPriceForBundleAndHardware
 	 * @param deviceId
 	 * @param groupname
-	 * @return
+	 * @return NonUpgradeLeadPlanIdForPaymCacheDevice
 	 */
 	public String getNonUpgradeLeadPlanIdForPaymCacheDevice(
 			Map<String, List<PriceForBundleAndHardware>> nonLeadPlanIdPriceMap,
 			Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap,
 			Map<String, CommercialBundle> commercialBundleMap,
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware, String deviceId, String groupname);
+
 	/**
 	 * 
 	 * @param nonLeadPlanIdPriceMap
 	 * @param commercialBundleMap
 	 * @param deviceId
-	 * @return
+	 * @return UpgradeLeadPlanIdForCacheDevice
 	 */
 	public String getUpgradeLeadPlanIdForCacheDevice(Map<String, List<PriceForBundleAndHardware>> nonLeadPlanIdPriceMap,
 			Map<String, CommercialBundle> commercialBundleMap, String deviceId);
+
 	/**
 	 * 
 	 * @param groupType

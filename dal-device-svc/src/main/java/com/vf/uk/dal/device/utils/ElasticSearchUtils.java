@@ -28,7 +28,7 @@ public class ElasticSearchUtils {
 	 * @author manoj.bera
 	 * @param response
 	 * @param classType
-	 * @return
+	 * @return getListOfObject
 	 */
 	public <T> List<T> getListOfObject(SearchResponse response, Class<T> classType) {
 		List<T> res = new ArrayList<>();
@@ -47,7 +47,7 @@ public class ElasticSearchUtils {
 	 * @param searchHitList
 	 * @param result
 	 * @param classType
-	 * @return
+	 * @return List<CompletableFuture>
 	 */
 	private <U> CompletableFuture<List<U>> getCompatibleFutureObject(List<SearchHit> searchHitList, List<U> result,
 			Class<U> classType) {
@@ -87,6 +87,11 @@ public class ElasticSearchUtils {
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param response
+	 * @return List<FacetField>
+	 */
 	public List<FacetField> getListOfObjectForAggrs(SearchResponse response) {
 		List<FacetField> res = new ArrayList<>();
 		try {

@@ -10,7 +10,7 @@ public interface DeviceDetailsService {
 	 * @param deviceId
 	 * @param journeyType
 	 * @param offerCode
-	 * @return
+	 * @return DeviceDetails
 	 */
 	public DeviceDetails getDeviceDetails(String deviceId, String journeyType, String offerCode);
 
@@ -19,7 +19,7 @@ public interface DeviceDetailsService {
 	 * @param deviceId
 	 * @param offerCode
 	 * @param journeyType
-	 * @return
+	 * @return List<DeviceDetails>
 	 */
 	public List<DeviceDetails> getListOfDeviceDetails(String deviceId, String offerCode, String journeyType);
 }
