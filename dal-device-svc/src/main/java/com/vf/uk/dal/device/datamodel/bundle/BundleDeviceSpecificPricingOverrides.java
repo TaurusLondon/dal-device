@@ -5,7 +5,6 @@
 // Generated on: 2017.01.02 at 03:25:52 PM IST 
 //
 
-
 package com.vf.uk.dal.device.datamodel.bundle;
 
 /*import javax.xml.bind.annotation.XmlAccessType;
@@ -13,13 +12,12 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-*/ 
+*/
 
 public class BundleDeviceSpecificPricingOverrides {
 
-    private BundlePriceOverride bundlePriceOverride;
+	private BundlePriceOverride bundlePriceOverride;
 
-	
 	public BundleDeviceSpecificPricingOverrides() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -62,7 +60,5 @@ public class BundleDeviceSpecificPricingOverrides {
 	public String toString() {
 		return "BundleDeviceSpecificPricingOverrides [bundlePriceOverride=" + bundlePriceOverride + "]";
 	}
-
-    
 
 }

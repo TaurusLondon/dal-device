@@ -5,59 +5,54 @@
 // Generated on: 2017.01.02 at 05:45:04 PM IST 
 //
 
-
 package com.vf.uk.dal.device.datamodel.product;
 
-
 public class Delivery {
-	
-	
-    private String classification;
-	
+
+	private String classification;
+
 	private String partner;
-	
-    private String soaDeliveryMethod;
-	
-    private boolean weekend;
-    
-	
-    public Delivery() {
+
+	private String soaDeliveryMethod;
+
+	private boolean weekend;
+
+	public Delivery() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	public String getClassification() {
-        return classification;
-    }
+		return classification;
+	}
 
-    public void setClassification(String value) {
-        this.classification = value;
-    }
+	public void setClassification(String value) {
+		this.classification = value;
+	}
 
+	public String getPartner() {
+		return partner;
+	}
 
-    public String getPartner() {
-        return partner;
-    }
+	public void setPartner(String value) {
+		this.partner = value;
+	}
 
-    public void setPartner(String value) {
-        this.partner = value;
-    }
+	public String getSoaDeliveryMethod() {
+		return soaDeliveryMethod;
+	}
 
-    public String getSoaDeliveryMethod() {
-        return soaDeliveryMethod;
-    }
+	public void setSoaDeliveryMethod(String value) {
+		this.soaDeliveryMethod = value;
+	}
 
-    public void setSoaDeliveryMethod(String value) {
-        this.soaDeliveryMethod = value;
-    }
+	public boolean isWeekend() {
+		return weekend;
+	}
 
-    public boolean isWeekend() {
-        return weekend;
-    }
-
-    public void setWeekend(boolean value) {
-        this.weekend = value;
-    }
+	public void setWeekend(boolean value) {
+		this.weekend = value;
+	}
 
 	@Override
 	public int hashCode() {

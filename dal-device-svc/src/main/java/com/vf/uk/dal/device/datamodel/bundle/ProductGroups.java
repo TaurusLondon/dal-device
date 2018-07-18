@@ -5,17 +5,13 @@
 // Generated on: 2017.01.02 at 03:25:52 PM IST 
 //
 
-
 package com.vf.uk.dal.device.datamodel.bundle;
 
 import java.util.List;
 
-
-
 public class ProductGroups {
 
-	
-    private List<ProductGroup> productGroup;
+	private List<ProductGroup> productGroup;
 
 	public List<ProductGroup> getProductGroup() {
 		return productGroup;
@@ -25,7 +21,6 @@ public class ProductGroups {
 		this.productGroup = productGroup;
 	}
 
-	
 	public ProductGroups() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -60,8 +55,5 @@ public class ProductGroups {
 	public String toString() {
 		return "ProductGroups [productGroup=" + productGroup + "]";
 	}
-
-
-    
 
 }

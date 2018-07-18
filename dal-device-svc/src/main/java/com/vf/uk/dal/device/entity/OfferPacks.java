@@ -8,9 +8,10 @@ import java.util.List;
  *
  */
 public class OfferPacks {
-	
+
 	private String bundleId;
 	private List<MediaLink> mediaLinkList;
+
 	/**
 	 * 
 	 * @return
@@ -18,13 +19,15 @@ public class OfferPacks {
 	public String getBundleId() {
 		return bundleId;
 	}
-/**
- * 
- * @param bundleId
- */
+
+	/**
+	 * 
+	 * @param bundleId
+	 */
 	public void setBundleId(String bundleId) {
 		this.bundleId = bundleId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -32,6 +35,7 @@ public class OfferPacks {
 	public List<MediaLink> getMediaLinkList() {
 		return mediaLinkList;
 	}
+
 	/**
 	 * 
 	 * @param mediaLinkList

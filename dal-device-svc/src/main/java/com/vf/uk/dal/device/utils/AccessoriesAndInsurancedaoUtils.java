@@ -27,7 +27,7 @@ public class AccessoriesAndInsurancedaoUtils {
 	 * 
 	 * @param commercialProduct
 	 * @param priceForAccessory
-	 * @return
+	 * @return Accessory
 	 */
 	public static Accessory convertCoherenceAccesoryToAccessory(CommercialProduct commercialProduct,
 			PriceForAccessory priceForAccessory) {
@@ -132,7 +132,7 @@ public class AccessoriesAndInsurancedaoUtils {
 	/**
 	 * 
 	 * @param hardwarePrice
-	 * @return
+	 * @return List<MediaLink>
 	 */
 	public static List<MediaLink> setPriceMerchandisingPromotion(
 			com.vf.uk.dal.utility.entity.HardwarePrice hardwarePrice) {
@@ -171,7 +171,7 @@ public class AccessoriesAndInsurancedaoUtils {
 	/**
 	 * @author manoj.bera
 	 * @param priceForAccessory
-	 * @return
+	 * @return PriceForAccessory
 	 */
 	public static PriceForAccessory getPriceForAccessory(PriceForAccessory priceForAccessory) {
 		if (priceForAccessory != null && priceForAccessory.getHardwarePrice() != null
@@ -196,11 +196,11 @@ public class AccessoriesAndInsurancedaoUtils {
 				&& priceForAccessory.getHardwarePrice().getOneOffPrice().getGross() != null
 				&& priceForAccessory.getHardwarePrice().getOneOffDiscountPrice().getGross() != null;
 	}
-	
+
 	/**
 	 * 
 	 * @param insuranceProductList
-	 * @return
+	 * @return Insurances
 	 */
 	public static Insurances convertCommercialProductToInsurance(List<CommercialProduct> insuranceProductList) {
 		List<Double> minPrice = new ArrayList<>();

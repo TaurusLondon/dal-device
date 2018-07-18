@@ -10,7 +10,6 @@
  * Do not edit the class manually.
  */
 
-
 package com.vf.uk.dal.utility.entity;
 
 import java.util.ArrayList;
@@ -24,293 +23,289 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2017-09-27T07:05:02.425Z")
 public class MerchandisingPromotion {
-  @JsonProperty("tag")
-  private String tag = null;
+	@JsonProperty("tag")
+	private String tag = null;
 
-  @JsonProperty("label")
-  private String label = null;
+	@JsonProperty("label")
+	private String label = null;
 
-  @JsonProperty("description")
-  private String description = null;
+	@JsonProperty("description")
+	private String description = null;
 
-  @JsonProperty("discountId")
-  private String discountId = null;
+	@JsonProperty("discountId")
+	private String discountId = null;
 
-  @JsonProperty("mpType")
-  private String mpType = null;
-  
-  private String priceEstablishedLabel = null;
-  
-  @JsonProperty("priority")
-  private Integer priority = null;
-  
-  /** The promotion media. */
-  @JsonProperty("promotionMedia")
-  private String promotionMedia = null;
-  
-  /** The package type. */
+	@JsonProperty("mpType")
+	private String mpType = null;
+
+	private String priceEstablishedLabel = null;
+
+	@JsonProperty("priority")
+	private Integer priority = null;
+
+	/** The promotion media. */
+	@JsonProperty("promotionMedia")
+	private String promotionMedia = null;
+
+	/** The package type. */
 	@JsonProperty("packageType")
 	private List<String> packageType = new ArrayList<>();
 
 	/** The package type. */
 	@JsonProperty("footNotes")
 	private List<String> footNotes = new ArrayList<>();
-	
-  public List<String> getPackageType() {
+
+	public List<String> getPackageType() {
 		return packageType;
 	}
-
-
-
 
 	public void setPackageType(List<String> packageType) {
 		this.packageType = packageType;
 	}
 
-
-
-
 	public List<String> getFootNotes() {
 		return footNotes;
 	}
-
-
-
 
 	public void setFootNotes(List<String> footNotes) {
 		this.footNotes = footNotes;
 	}
 
+	/**
+	 * 
+	 * @param tag
+	 * @return
+	 */
+	public MerchandisingPromotion promotionMedia(String promotionMedia) {
+		this.tag = promotionMedia;
+		return this;
+	}
 
+	/**
+	 * @return the promotionMedia
+	 */
+	public String getPromotionMedia() {
+		return promotionMedia;
+	}
 
+	/**
+	 * @param promotionMedia
+	 *            the promotionMedia to set
+	 */
+	public void setPromotionMedia(String promotionMedia) {
+		this.promotionMedia = promotionMedia;
+	}
 
-/**
-   * 
-   * @param tag
-   * @return
-   */
-  public MerchandisingPromotion promotionMedia(String promotionMedia) {
-      this.tag = promotionMedia;
-      return this;
-    }
+	public Integer getPriority() {
+		return priority;
+	}
 
-     
-    
+	/**
+	 * 
+	 * @param priority
+	 */
+	public void setPriority(Integer priority) {
+		this.priority = priority;
+	}
 
-  /**
- * @return the promotionMedia
- */
-public String getPromotionMedia() {
-	return promotionMedia;
+	/**
+	 * 
+	 * @param tag
+	 * @return
+	 */
+	public MerchandisingPromotion tag(String tag) {
+		this.tag = tag;
+		return this;
+	}
+
+	/**
+	 * Tag value of the merchandising promotion
+	 * 
+	 * @return tag
+	 **/
+	public String getTag() {
+		return tag;
+	}
+
+	/**
+	 * 
+	 * @param tag
+	 */
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+
+	/**
+	 * 
+	 * @param label
+	 * @return
+	 */
+	public MerchandisingPromotion label(String label) {
+		this.label = label;
+		return this;
+	}
+
+	/**
+	 * Label value of the merchandising promotion
+	 * 
+	 * @return label
+	 **/
+	public String getLabel() {
+		return label;
+	}
+
+	/**
+	 * 
+	 * @param label
+	 */
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	/**
+	 * 
+	 * @param description
+	 * @return
+	 */
+	public MerchandisingPromotion description(String description) {
+		this.description = description;
+		return this;
+	}
+
+	/**
+	 * Label value of the merchandising promotion
+	 * 
+	 * @return description
+	 **/
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * 
+	 * @param description
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	/**
+	 * 
+	 * @param discountId
+	 * @return
+	 */
+	public MerchandisingPromotion discountId(String discountId) {
+		this.discountId = discountId;
+		return this;
+	}
+
+	/**
+	 * Discount skud Id, if applicable
+	 * 
+	 * @return discountId
+	 **/
+	public String getDiscountId() {
+		return discountId;
+	}
+
+	/**
+	 * 
+	 * @param discountId
+	 */
+	public void setDiscountId(String discountId) {
+		this.discountId = discountId;
+	}
+
+	/**
+	 * 
+	 * @param mpType
+	 * @return
+	 */
+	public MerchandisingPromotion mpType(String mpType) {
+		this.mpType = mpType;
+		return this;
+	}
+
+	/**
+	 * Discount type, the Possible values are full_duration, limited_tinme,
+	 * Hardware_dicount
+	 * 
+	 * @return mpType
+	 **/
+	public String getMpType() {
+		return mpType;
+	}
+
+	/**
+	 * 
+	 * @param mpType
+	 */
+	public void setMpType(String mpType) {
+		this.mpType = mpType;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public String getPriceEstablishedLabel() {
+		return priceEstablishedLabel;
+	}
+
+	/**
+	 * 
+	 * @param priceEstablishedLabel
+	 */
+	public void setPriceEstablishedLabel(String priceEstablishedLabel) {
+		this.priceEstablishedLabel = priceEstablishedLabel;
+	}
+
+	@Override
+	public boolean equals(java.lang.Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		MerchandisingPromotion merchandisingPromotion = (MerchandisingPromotion) o;
+		return Objects.equals(this.tag, merchandisingPromotion.tag)
+				&& Objects.equals(this.label, merchandisingPromotion.label)
+				&& Objects.equals(this.description, merchandisingPromotion.description)
+				&& Objects.equals(this.discountId, merchandisingPromotion.discountId)
+				&& Objects.equals(this.mpType, merchandisingPromotion.mpType)
+				&& Objects.equals(this.priority, merchandisingPromotion.priority);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(tag, label, description, discountId, mpType, priority);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("class MerchandisingPromotion {\n");
+
+		sb.append("    tag: ").append(toIndentedString(tag)).append("\n");
+		sb.append("    label: ").append(toIndentedString(label)).append("\n");
+		sb.append("    description: ").append(toIndentedString(description)).append("\n");
+		sb.append("    discountId: ").append(toIndentedString(discountId)).append("\n");
+		sb.append("    mpType: ").append(toIndentedString(mpType)).append("\n");
+		sb.append("    priority: ").append(toIndentedString(priority)).append("\n");
+		sb.append("}");
+		return sb.toString();
+	}
+
+	/**
+	 * Convert the given object to string with each line indented by 4 spaces
+	 * (except the first line).
+	 */
+	private String toIndentedString(java.lang.Object o) {
+		if (o == null) {
+			return "null";
+		}
+		return o.toString().replace("\n", "\n    ");
+	}
+
 }
-
-
-
-
-/**
- * @param promotionMedia the promotionMedia to set
- */
-public void setPromotionMedia(String promotionMedia) {
-	this.promotionMedia = promotionMedia;
-}
-
-
-
-
-public Integer getPriority() {
-	return priority;
-}
-  /**
-   * 
-   * @param priority
-   */
-public void setPriority(Integer priority) {
-	this.priority = priority;
-}
-/**
- * 
- * @param tag
- * @return
- */
-public MerchandisingPromotion tag(String tag) {
-    this.tag = tag;
-    return this;
-  }
-
-   /**
-   * Tag value of the merchandising promotion
-   * @return tag
-  **/
-  public String getTag() {
-    return tag;
-  }
-  /**
-   * 
-   * @param tag
-   */
-  public void setTag(String tag) {
-    this.tag = tag;
-  }
-  /**
-   * 
-   * @param label
-   * @return
-   */
-  public MerchandisingPromotion label(String label) {
-    this.label = label;
-    return this;
-  }
-
-   /**
-   * Label value of the merchandising promotion
-   * @return label
-  **/
-  public String getLabel() {
-    return label;
-  }
-  /**
-   * 
-   * @param label
-   */
-  public void setLabel(String label) {
-    this.label = label;
-  }
-  /**
-   * 
-   * @param description
-   * @return
-   */
-  public MerchandisingPromotion description(String description) {
-    this.description = description;
-    return this;
-  }
-
-   /**
-   * Label value of the merchandising promotion
-   * @return description
-  **/
-  public String getDescription() {
-    return description;
-  }
-  /**
-   * 
-   * @param description
-   */
-  public void setDescription(String description) {
-    this.description = description;
-  }
-  /**
-   * 
-   * @param discountId
-   * @return
-   */
-  public MerchandisingPromotion discountId(String discountId) {
-    this.discountId = discountId;
-    return this;
-  }
-
-   /**
-   * Discount skud Id, if applicable
-   * @return discountId
-  **/
-  public String getDiscountId() {
-    return discountId;
-  }
-  /**
-   * 
-   * @param discountId
-   */
-  public void setDiscountId(String discountId) {
-    this.discountId = discountId;
-  }
-  /**
-   * 
-   * @param mpType
-   * @return
-   */
-  public MerchandisingPromotion mpType(String mpType) {
-    this.mpType = mpType;
-    return this;
-  }
-
-   /**
-   * Discount type, the Possible values are full_duration, limited_tinme, Hardware_dicount
-   * @return mpType
-  **/
-  public String getMpType() {
-    return mpType;
-  }
-  /**
-   * 
-   * @param mpType
-   */
-  public void setMpType(String mpType) {
-    this.mpType = mpType;
-  }
-
-  /**
-   * 
-   * @return
-   */
-  public String getPriceEstablishedLabel() {
-	return priceEstablishedLabel;
-  }
-  /**
-   * 
-   * @param priceEstablishedLabel
-   */
-public void setPriceEstablishedLabel(String priceEstablishedLabel) {
-	this.priceEstablishedLabel = priceEstablishedLabel;
-}
-
-@Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    MerchandisingPromotion merchandisingPromotion = (MerchandisingPromotion) o;
-    return Objects.equals(this.tag, merchandisingPromotion.tag) &&
-        Objects.equals(this.label, merchandisingPromotion.label) &&
-        Objects.equals(this.description, merchandisingPromotion.description) &&
-        Objects.equals(this.discountId, merchandisingPromotion.discountId) &&
-        Objects.equals(this.mpType, merchandisingPromotion.mpType)&&
-    	Objects.equals(this.priority, merchandisingPromotion.priority);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(tag, label, description, discountId, mpType, priority);
-  }
-
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class MerchandisingPromotion {\n");
-    
-    sb.append("    tag: ").append(toIndentedString(tag)).append("\n");
-    sb.append("    label: ").append(toIndentedString(label)).append("\n");
-    sb.append("    description: ").append(toIndentedString(description)).append("\n");
-    sb.append("    discountId: ").append(toIndentedString(discountId)).append("\n");
-    sb.append("    mpType: ").append(toIndentedString(mpType)).append("\n");
-    sb.append("    priority: ").append(toIndentedString(priority)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
-  
-}
-

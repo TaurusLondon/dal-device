@@ -4,40 +4,41 @@ import com.vf.uk.dal.device.datamodel.bundle.BundleModel;
 import com.vf.uk.dal.device.entity.BundlePrice;
 
 public class BundleModelAndPrice {
-	
+
 	private BundleModel bundleModel;
-	
+
 	private BundlePrice bundlePrice;
-/**
- * 
- * @return
- */
+
+	/**
+	 * 
+	 * @return
+	 */
 	public BundleModel getBundleModel() {
 		return bundleModel;
 	}
-/**
- * 
- * @param bundleModel
- */
+
+	/**
+	 * 
+	 * @param bundleModel
+	 */
 	public void setBundleModel(BundleModel bundleModel) {
 		this.bundleModel = bundleModel;
 	}
-/**
- * 
- * @return
- */
+
+	/**
+	 * 
+	 * @return
+	 */
 	public BundlePrice getBundlePrice() {
 		return bundlePrice;
 	}
-/**
- * 
- * @param bundlePrice
- */
+
+	/**
+	 * 
+	 * @param bundlePrice
+	 */
 	public void setBundlePrice(BundlePrice bundlePrice) {
 		this.bundlePrice = bundlePrice;
 	}
-
-	
-	
 
 }

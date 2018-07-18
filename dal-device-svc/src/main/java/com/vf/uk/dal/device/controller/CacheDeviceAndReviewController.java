@@ -38,7 +38,7 @@ import io.swagger.annotations.ApiResponses;
 @RequestMapping(value = "")
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public class CacheDeviceAndReviewController {
-	
+
 	@Autowired
 	CacheDeviceService cacheDeviceService;
 
@@ -48,7 +48,7 @@ public class CacheDeviceAndReviewController {
 	 * manoj.bera
 	 * 
 	 * @param ex
-	 * @return
+	 * @return ErrorResponse
 	 */
 	@ExceptionHandler(MissingServletRequestParameterException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -59,10 +59,11 @@ public class CacheDeviceAndReviewController {
 				"Missing mandatory parameter " + ex.getParameterName());
 
 	}
+
 	/**
 	 * Saves the details of the devices into database
 	 * 
-	 * @return
+	 * @return cacheDeviceTile
 	 */
 	@ApiOperation(value = "Cache the Device Tile Details in Solr.", notes = "Cache the Device Tile Details in Solr.", response = CacheDeviceTileResponse.class, tags = {
 			"DeviceTile", })
@@ -94,10 +95,11 @@ public class CacheDeviceAndReviewController {
 		} else
 			throw new ApplicationException(ExceptionMessages.NULL_OR_EMPTY_GROUP_TYPE);
 	}
+
 	/**
 	 * 
 	 * @param jobId
-	 * @return
+	 * @return getCacheDeviceJobStatus
 	 */
 	@ApiOperation(value = "Get the Cache Device Tile job status.", notes = "Get the Cache Device Tile job status.", response = CacheDeviceTileResponse.class, tags = {
 			"DeviceTile", })
@@ -115,12 +117,12 @@ public class CacheDeviceAndReviewController {
 		return cacheDeviceService.getCacheDeviceJobStatus(jobId);
 
 	}
-	
+
 	/**
 	 * Returns review details for the given deviceId
 	 * 
 	 * @param deviceId
-	 * @return
+	 * @return getDeviceReviewDetails
 	 */
 	@ApiOperation(value = "Get the reviews for a specific device Id. Response is coming from Bazar Voice(third party) API.", notes = "The service gets the reviews of a particular device variant", tags = {
 			"Review", })
@@ -138,6 +140,7 @@ public class CacheDeviceAndReviewController {
 		LogHelper.info(this, "Start -->  calling  getDeviceReviewDetails");
 		return cacheDeviceService.getDeviceReviewDetails(deviceId);
 	}
+
 	/**
 	 * 
 	 * Checks the filterValue coming from ServiceContext based on incoming

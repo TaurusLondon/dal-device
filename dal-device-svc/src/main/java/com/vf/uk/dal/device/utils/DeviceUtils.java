@@ -43,7 +43,7 @@ public class DeviceUtils {
 	 * @param bundleId
 	 * @param plansLimit
 	 * @param bndlDtlsWithoutFullDuration
-	 * @return
+	 * @return BundleDetails
 	 */
 	public static BundleDetails getSimilarPlanList(BundleDetails bndlDtls, String allowedRecurringPriceLimit,
 			String bundleId, String plansLimit, BundleDetails bndlDtlsWithoutFullDuration) {
@@ -128,7 +128,7 @@ public class DeviceUtils {
 	/**
 	 * 
 	 * @param allowblPlanLstMore
-	 * @return
+	 * @return List<BundleHeader>
 	 */
 	public static List<BundleHeader> sortedPalnsUnderDataLimit(List<BundleHeader> allowblPlanLstMore) {
 		Collections.sort(allowblPlanLstMore, (BundleHeader bh1, BundleHeader bh2) -> {
@@ -143,7 +143,7 @@ public class DeviceUtils {
 	 * 
 	 * @param allowblPlanLst
 	 * @param selectedPlanAlwnce
-	 * @return
+	 * @return List<BundleHeader>
 	 */
 	public static List<BundleHeader> removeObjectMoreDataLimit(List<BundleHeader> allowblPlanLst,
 			Double selectedPlanAlwnce) {
@@ -211,7 +211,7 @@ public class DeviceUtils {
 	 * 
 	 * @param bundleHeader
 	 * @param allowanceType
-	 * @return
+	 * @return getBundleAllowance
 	 */
 	public static Double getBundleAllowance(BundleHeader bundleHeader, String allowanceType) {
 		for (BundleAllowance allowance : bundleHeader.getAllowance()) {
@@ -299,7 +299,7 @@ public class DeviceUtils {
 	/**
 	 * 
 	 * @param listOfPriceForBundleAndHardware
-	 * @return
+	 * @return List<PriceForBundleAndHardware>
 	 */
 	public static List<PriceForBundleAndHardware> sortedPriceForBundleAndHardware(
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware) {
@@ -328,7 +328,7 @@ public class DeviceUtils {
 	 * \
 	 * 
 	 * @param listOfPriceForBundleAndHardware
-	 * @return
+	 * @return leastMonthlyPriceForpayG
 	 */
 	public static String leastMonthlyPriceForpayG(List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware) {
 		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareAfterSorted = sortedPriceForBundleAndHardwareForPayG(
@@ -339,7 +339,7 @@ public class DeviceUtils {
 	/**
 	 * 
 	 * @param listOfPriceForBundleAndHardware
-	 * @return
+	 * @return List<PriceForBundleAndHardware>
 	 */
 	public static List<PriceForBundleAndHardware> sortedPriceForBundleAndHardwareForPayG(
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware) {
@@ -374,7 +374,7 @@ public class DeviceUtils {
 	 * 
 	 * @param objectsToOrder
 	 * @param orderedObjects
-	 * @return
+	 * @return List<ProductModel>
 	 */
 	public List<ProductModel> sortListForProductModel(List<ProductModel> objectsToOrder, List<String> orderedObjects) {
 		HashMap<String, Integer> indexMap = new HashMap<>();
@@ -407,7 +407,7 @@ public class DeviceUtils {
 	/**
 	 * 
 	 * @param bundleDetails
-	 * @return
+	 * @return BundleDetails
 	 */
 	public static BundleDetails removeWithoutFullDurtnPlans(BundleDetails bundleDetails) {
 		BundleDetails bundleDetailsWithFullDuration = new BundleDetails();
@@ -509,7 +509,7 @@ public class DeviceUtils {
 	public static void getLeadPlanMap(Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap,
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareForLeadPlanIds) {
 		listOfPriceForBundleAndHardwareForLeadPlanIds.forEach(priceForBundleAndHardware -> {
-			
+
 			if (priceForBundleAndHardware != null && priceForBundleAndHardware.getHardwarePrice() != null) {
 				leadPlanIdPriceMap.put(priceForBundleAndHardware.getHardwarePrice().getHardwareId(),
 						priceForBundleAndHardware);
@@ -543,7 +543,7 @@ public class DeviceUtils {
 	 * 
 	 * @param groupNamePriceMap
 	 * @param listOfPriceForBundleAndHardware
-	 * @return
+	 * @return nonUpgradeLeadPlanId
 	 */
 	public static String getGroupNamePriceMap(Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap,
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware,
@@ -652,7 +652,7 @@ public class DeviceUtils {
 	 * @param listOfOfferCodesForUpgrade
 	 * @param listOfSecondLineOfferCode
 	 * @param entry
-	 * @return
+	 * @return jouneyType
 	 */
 	public static String getJourneybasedOnOfferCode(List<String> listOfOfferCodesForUpgrade,
 			List<String> listOfSecondLineOfferCode, Entry<String, List<BundleAndHardwareTuple>> entry) {
@@ -748,14 +748,15 @@ public class DeviceUtils {
 	 */
 	public static void getMinimumPriceMap(Map<String, String> minimumPriceMap,
 			Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap) {
-			String minimumPrice = null;
-			for (Entry<String, List<PriceForBundleAndHardware>> entry : groupNamePriceMap.entrySet()) {
-				if (entry.getValue() != null && !entry.getValue().isEmpty()) {
-					minimumPrice = DeviceUtils.leastMonthlyPrice(entry.getValue());
-				}
-				minimumPriceMap.put(entry.getKey(), minimumPrice);
+		String minimumPrice = null;
+		for (Entry<String, List<PriceForBundleAndHardware>> entry : groupNamePriceMap.entrySet()) {
+			if (entry.getValue() != null && !entry.getValue().isEmpty()) {
+				minimumPrice = DeviceUtils.leastMonthlyPrice(entry.getValue());
 			}
+			minimumPriceMap.put(entry.getKey(), minimumPrice);
+		}
 	}
+
 	/**
 	 * 
 	 * @param minimumPriceMap
@@ -764,13 +765,13 @@ public class DeviceUtils {
 	 */
 	public static void getMinimumPriceMapForPayG(Map<String, String> minimumPriceMap,
 			Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap) {
-			String minimumPrice = null;
-			for (Entry<String, List<PriceForBundleAndHardware>> entry : groupNamePriceMap.entrySet()) {
-				if (entry.getValue() != null && !entry.getValue().isEmpty()) {
-					minimumPrice = DeviceUtils.leastMonthlyPriceForpayG(entry.getValue());
-				}
-				minimumPriceMap.put(entry.getKey(), minimumPrice);
+		String minimumPrice = null;
+		for (Entry<String, List<PriceForBundleAndHardware>> entry : groupNamePriceMap.entrySet()) {
+			if (entry.getValue() != null && !entry.getValue().isEmpty()) {
+				minimumPrice = DeviceUtils.leastMonthlyPriceForpayG(entry.getValue());
 			}
+			minimumPriceMap.put(entry.getKey(), minimumPrice);
+		}
 	}
 
 	/**
@@ -787,8 +788,8 @@ public class DeviceUtils {
 			Map<String, Map<String, List<PriceForBundleAndHardware>>> mapOfIlsPriceWithoutOfferCode,
 			Map<String, String> ratingsReviewMap, DevicePreCalculatedData deviceDataRating) {
 		com.vf.uk.dal.utility.solr.entity.PriceInfo priceInfo = deviceDataRating.getPriceInfo();
-		Map<String, Object> offeredPriceMediaMap = CacheDeviceDaoUtils.getListOfOfferAppliedPrice(deviceDataRating.getDeviceId(),
-				ilsOfferPriceWithJourneyAware);
+		Map<String, Object> offeredPriceMediaMap = CacheDeviceDaoUtils
+				.getListOfOfferAppliedPrice(deviceDataRating.getDeviceId(), ilsOfferPriceWithJourneyAware);
 		List<OfferAppliedPriceDetails> iLSPrice = (List<OfferAppliedPriceDetails>) offeredPriceMediaMap
 				.get("offeredPrice");
 		List<com.vf.uk.dal.utility.solr.entity.Media> listOfOfferdMedia = (List<com.vf.uk.dal.utility.solr.entity.Media>) offeredPriceMediaMap

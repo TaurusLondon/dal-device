@@ -37,7 +37,7 @@ public class DeviceMakeAndModelController {
 	 * manoj.bera
 	 * 
 	 * @param ex
-	 * @return
+	 * @return ErrorResponse
 	 */
 	@ExceptionHandler(MissingServletRequestParameterException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -59,7 +59,7 @@ public class DeviceMakeAndModelController {
 	 * @param bundleId
 	 * @param deviceId
 	 * @param creditLimit
-	 * @return
+	 * @return ListOfDeviceTile
 	 */
 	@ApiOperation(value = "Get the list of device tiles based on the filter criteria. Pagination also defined", notes = "The service gets the details of the device tiles from coherence based on the filter criteria in the response.", response = DeviceTile.class, responseContainer = "List", tags = {
 			"DeviceTile", })

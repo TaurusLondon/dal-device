@@ -5,37 +5,36 @@
 // Generated on: 2017.01.02 at 10:51:22 AM IST 
 //
 
-
 package com.vf.uk.dal.device.datamodel.bundle;
 
 import java.util.List;
 
-
-
 public class BundleComposition {
-	
-	
-	
-    private List<Relationship> relationship;
-    
-    private String primaryProduct;
-	
-	
+
+	private List<Relationship> relationship;
+
+	private String primaryProduct;
+
 	public BundleComposition() {
 		super();
 	}
+
 	public List<Relationship> getRelationship() {
 		return relationship;
 	}
+
 	public void setRelationship(List<Relationship> relationship) {
 		this.relationship = relationship;
 	}
+
 	public String getPrimaryProduct() {
 		return primaryProduct;
 	}
+
 	public void setPrimaryProduct(String primaryProduct) {
 		this.primaryProduct = primaryProduct;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -44,6 +43,7 @@ public class BundleComposition {
 		result = prime * result + ((relationship == null) ? 0 : relationship.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -65,11 +65,10 @@ public class BundleComposition {
 			return false;
 		return true;
 	}
+
 	@Override
 	public String toString() {
 		return "BundleComposition [relationship=" + relationship + ", primaryProduct=" + primaryProduct + "]";
 	}
-
-
 
 }

@@ -1,45 +1,51 @@
 package com.vf.uk.dal.device.datamodel.merchandisingpromotion;
 
-
 public class DiscountMP {
-	
-    protected String type;
 
-    protected float value;
+	protected String type;
 
-    protected float qualifyingRecurringCost;
+	protected float value;
 
-    protected Long priority;
-	
-	
-	
+	protected float qualifyingRecurringCost;
+
+	protected Long priority;
+
 	public DiscountMP() {
 		super();
 	}
+
 	public String getType() {
 		return type;
 	}
+
 	public void setType(String type) {
 		this.type = type;
 	}
+
 	public float getValue() {
 		return value;
 	}
+
 	public void setValue(float value) {
 		this.value = value;
 	}
+
 	public float getQualifyingRecurringCost() {
 		return qualifyingRecurringCost;
 	}
+
 	public void setQualifyingRecurringCost(float qualifyingRecurringCost) {
 		this.qualifyingRecurringCost = qualifyingRecurringCost;
 	}
+
 	public Long getPriority() {
 		return priority;
 	}
+
 	public void setPriority(Long priority) {
 		this.priority = priority;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -50,6 +56,7 @@ public class DiscountMP {
 		result = prime * result + Float.floatToIntBits(value);
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -75,12 +82,11 @@ public class DiscountMP {
 			return false;
 		return true;
 	}
+
 	@Override
 	public String toString() {
 		return "Discount [type=" + type + ", value=" + value + ", qualifyingRecurringCost=" + qualifyingRecurringCost
 				+ ", priority=" + priority + "]";
 	}
-    
-    
 
 }

@@ -9,36 +9,41 @@ import java.sql.Date;
  */
 public class Availability {
 
-	
-	
-    private Date start;
-    private Date end;
-    private Boolean salesExpired;
-    
-    /**
-     * Availability Constructor
-     */
+	private Date start;
+	private Date end;
+	private Boolean salesExpired;
+
+	/**
+	 * Availability Constructor
+	 */
 	public Availability() {
 		super();
 	}
+
 	public Date getStart() {
 		return start;
 	}
+
 	public void setStart(Date start) {
 		this.start = start;
 	}
+
 	public Date getEnd() {
 		return end;
 	}
+
 	public void setEnd(Date end) {
 		this.end = end;
 	}
+
 	public Boolean getSalesExpired() {
 		return salesExpired;
 	}
+
 	public void setSalesExpired(Boolean salesExpired) {
 		this.salesExpired = salesExpired;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -48,6 +53,7 @@ public class Availability {
 		result = prime * result + ((start == null) ? 0 : start.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -74,11 +80,10 @@ public class Availability {
 			return false;
 		return true;
 	}
+
 	@Override
 	public String toString() {
 		return "Availability [start=" + start + ", end=" + end + ", salesExpired=" + salesExpired + "]";
 	}
-
-    
 
 }

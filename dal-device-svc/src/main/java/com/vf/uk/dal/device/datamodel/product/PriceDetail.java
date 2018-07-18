@@ -5,110 +5,106 @@
 // Generated on: 2017.01.02 at 10:51:22 AM IST 
 //
 
-
 package com.vf.uk.dal.device.datamodel.product;
 
 import java.sql.Date;
 
-
 public class PriceDetail {
 
-	
-    private String priceType;
-	
-    private boolean isInvoiceChargeable;
-	
-    private Double priceNet;
-	
-    private Double priceGross;
+	private String priceType;
 
-    private Double priceVAT;
-	
-    private Double vatCode;
-	
-    private Date priceStartDate;
-	
-    private Date priceEndDate;
-	
-    private String recurrence;
+	private boolean isInvoiceChargeable;
 
-	
-    public PriceDetail() {
+	private Double priceNet;
+
+	private Double priceGross;
+
+	private Double priceVAT;
+
+	private Double vatCode;
+
+	private Date priceStartDate;
+
+	private Date priceEndDate;
+
+	private String recurrence;
+
+	public PriceDetail() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	public String getPriceType() {
-        return priceType;
-    }
+		return priceType;
+	}
 
-    public void setPriceType(String value) {
-        this.priceType = value;
-    }
+	public void setPriceType(String value) {
+		this.priceType = value;
+	}
 
-    public boolean isIsInvoiceChargeable() {
-        return isInvoiceChargeable;
-    }
+	public boolean isIsInvoiceChargeable() {
+		return isInvoiceChargeable;
+	}
 
-    public void setIsInvoiceChargeable(boolean value) {
-        this.isInvoiceChargeable = value;
-    }
+	public void setIsInvoiceChargeable(boolean value) {
+		this.isInvoiceChargeable = value;
+	}
 
-    public Double getPriceNet() {
-        return priceNet;
-    }
+	public Double getPriceNet() {
+		return priceNet;
+	}
 
-    public void setPriceNet(Double value) {
-        this.priceNet = value;
-    }
+	public void setPriceNet(Double value) {
+		this.priceNet = value;
+	}
 
-    public Double getPriceGross() {
-        return priceGross;
-    }
+	public Double getPriceGross() {
+		return priceGross;
+	}
 
-    public void setPriceGross(Double value) {
-        this.priceGross = value;
-    }
+	public void setPriceGross(Double value) {
+		this.priceGross = value;
+	}
 
-    public Double getPriceVAT() {
-        return priceVAT;
-    }
+	public Double getPriceVAT() {
+		return priceVAT;
+	}
 
-    public void setPriceVAT(Double value) {
-        this.priceVAT = value;
-    }
+	public void setPriceVAT(Double value) {
+		this.priceVAT = value;
+	}
 
-    public Double getVatCode() {
-        return vatCode;
-    }
+	public Double getVatCode() {
+		return vatCode;
+	}
 
-    public void setVatCode(Double value) {
-        this.vatCode = value;
-    }
+	public void setVatCode(Double value) {
+		this.vatCode = value;
+	}
 
-    public Date getPriceStartDate() {
-        return priceStartDate;
-    }
+	public Date getPriceStartDate() {
+		return priceStartDate;
+	}
 
-    public void setPriceStartDate(Date value) {
-        this.priceStartDate = value;
-    }
+	public void setPriceStartDate(Date value) {
+		this.priceStartDate = value;
+	}
 
-    public Date getPriceEndDate() {
-        return priceEndDate;
-    }
+	public Date getPriceEndDate() {
+		return priceEndDate;
+	}
 
-    public void setPriceEndDate(Date value) {
-        this.priceEndDate = value;
-    }
+	public void setPriceEndDate(Date value) {
+		this.priceEndDate = value;
+	}
 
-    public String getRecurrence() {
-        return recurrence;
-    }
+	public String getRecurrence() {
+		return recurrence;
+	}
 
-    public void setRecurrence(String value) {
-        this.recurrence = value;
-    }
+	public void setRecurrence(String value) {
+		this.recurrence = value;
+	}
 
 	@Override
 	public int hashCode() {

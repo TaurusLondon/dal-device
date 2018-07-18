@@ -11,7 +11,7 @@ import io.swagger.annotations.ApiModelProperty;
  */
 
 public class Specification {
-	
+
 	@JsonProperty("name")
 	private String name = null;
 
@@ -152,7 +152,6 @@ public class Specification {
 	public boolean isComparable() {
 		return comparable;
 	}
-
 
 	public void setComparable(boolean comparable) {
 		this.comparable = comparable;

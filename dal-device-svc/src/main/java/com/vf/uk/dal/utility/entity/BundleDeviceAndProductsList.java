@@ -11,252 +11,264 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-11-17T11:31:50.578Z")
 
-public class BundleDeviceAndProductsList   {
-  @JsonProperty("offerCode")
-  private String offerCode = null;
+public class BundleDeviceAndProductsList {
+	@JsonProperty("offerCode")
+	private String offerCode = null;
 
-  @JsonProperty("packageType")
-  private String packageType = null;
+	@JsonProperty("packageType")
+	private String packageType = null;
 
-  @JsonProperty("deviceId")
-  private String deviceId = null;
+	@JsonProperty("deviceId")
+	private String deviceId = null;
 
-  @JsonProperty("bundleId")
-  private String bundleId = null;
+	@JsonProperty("bundleId")
+	private String bundleId = null;
 
-  @JsonProperty("accessoryList")
-  private List<String> accessoryList = null;
+	@JsonProperty("accessoryList")
+	private List<String> accessoryList = null;
 
-  @JsonProperty("extraList")
-  private List<String> extraList = null;
-/**
- * 
- * @param offerCode
- * @return
- */
-  public BundleDeviceAndProductsList offerCode(String offerCode) {
-    this.offerCode = offerCode;
-    return this;
-  }
+	@JsonProperty("extraList")
+	private List<String> extraList = null;
 
-   /**
-   * offercode will be proived as part of journey
-   * @return offerCode
-  **/
+	/**
+	 * 
+	 * @param offerCode
+	 * @return
+	 */
+	public BundleDeviceAndProductsList offerCode(String offerCode) {
+		this.offerCode = offerCode;
+		return this;
+	}
 
+	/**
+	 * offercode will be proived as part of journey
+	 * 
+	 * @return offerCode
+	 **/
 
-  public String getOfferCode() {
-    return offerCode;
-  }
-/**
- * 
- * @param offerCode
- */
-  public void setOfferCode(String offerCode) {
-    this.offerCode = offerCode;
-  }
-/**
- * 
- * @param packageType
- * @return
- */
-  public BundleDeviceAndProductsList packageType(String packageType) {
-    this.packageType = packageType;
-    return this;
-  }
+	public String getOfferCode() {
+		return offerCode;
+	}
 
-   /**
-   * Journey type will be proived as part of journey and its mandatory filed
-   * @return packageType
-  **/
+	/**
+	 * 
+	 * @param offerCode
+	 */
+	public void setOfferCode(String offerCode) {
+		this.offerCode = offerCode;
+	}
 
+	/**
+	 * 
+	 * @param packageType
+	 * @return
+	 */
+	public BundleDeviceAndProductsList packageType(String packageType) {
+		this.packageType = packageType;
+		return this;
+	}
 
-  public String getPackageType() {
-    return packageType;
-  }
-/**
- * 
- * @param packageType
- */
-  public void setPackageType(String packageType) {
-    this.packageType = packageType;
-  }
-/**
- * 
- * @param deviceId
- * @return
- */
-  public BundleDeviceAndProductsList deviceId(String deviceId) {
-    this.deviceId = deviceId;
-    return this;
-  }
+	/**
+	 * Journey type will be proived as part of journey and its mandatory filed
+	 * 
+	 * @return packageType
+	 **/
 
-   /**
-   * Unique Device id as available from the product catalogue
-   * @return deviceId
-  **/
+	public String getPackageType() {
+		return packageType;
+	}
 
+	/**
+	 * 
+	 * @param packageType
+	 */
+	public void setPackageType(String packageType) {
+		this.packageType = packageType;
+	}
 
-  public String getDeviceId() {
-    return deviceId;
-  }
-/**
- * 
- * @param deviceId
- */
-  public void setDeviceId(String deviceId) {
-    this.deviceId = deviceId;
-  }
-/**
- * 
- * @param bundleId
- * @return
- */
-  public BundleDeviceAndProductsList bundleId(String bundleId) {
-    this.bundleId = bundleId;
-    return this;
-  }
+	/**
+	 * 
+	 * @param deviceId
+	 * @return
+	 */
+	public BundleDeviceAndProductsList deviceId(String deviceId) {
+		this.deviceId = deviceId;
+		return this;
+	}
 
-   /**
-   * Unique Bundle id as available from the product catalogue
-   * @return bundleId
-  **/
+	/**
+	 * Unique Device id as available from the product catalogue
+	 * 
+	 * @return deviceId
+	 **/
 
+	public String getDeviceId() {
+		return deviceId;
+	}
 
-  public String getBundleId() {
-    return bundleId;
-  }
-/**
- * 
- * @param bundleId
- */
-  public void setBundleId(String bundleId) {
-    this.bundleId = bundleId;
-  }
-/**
- * 
- * @param accessoryList
- * @return
- */
-  public BundleDeviceAndProductsList accessoryList(List<String> accessoryList) {
-    this.accessoryList = accessoryList;
-    return this;
-  }
-/**
- * 
- * @param accessoryListItem
- * @return
- */
-  public BundleDeviceAndProductsList addAccessoryListItem(String accessoryListItem) {
-    if (this.accessoryList == null) {
-      this.accessoryList = new ArrayList<String>();
-    }
-    this.accessoryList.add(accessoryListItem);
-    return this;
-  }
+	/**
+	 * 
+	 * @param deviceId
+	 */
+	public void setDeviceId(String deviceId) {
+		this.deviceId = deviceId;
+	}
 
-   /**
-   * Unique Accessory id as available from the product catalogue
-   * @return accessoryList
-  **/
+	/**
+	 * 
+	 * @param bundleId
+	 * @return
+	 */
+	public BundleDeviceAndProductsList bundleId(String bundleId) {
+		this.bundleId = bundleId;
+		return this;
+	}
 
+	/**
+	 * Unique Bundle id as available from the product catalogue
+	 * 
+	 * @return bundleId
+	 **/
 
-  public List<String> getAccessoryList() {
-    return accessoryList;
-  }
-/**
- * 
- * @param accessoryList
- */
-  public void setAccessoryList(List<String> accessoryList) {
-    this.accessoryList = accessoryList;
-  }
-/**
- * 
- * @param extraList
- * @return
- */
-  public BundleDeviceAndProductsList extraList(List<String> extraList) {
-    this.extraList = extraList;
-    return this;
-  }
-/**
- * 
- * @param extraListItem
- * @return
- */
-  public BundleDeviceAndProductsList addExtraListItem(String extraListItem) {
-    if (this.extraList == null) {
-      this.extraList = new ArrayList<String>();
-    }
-    this.extraList.add(extraListItem);
-    return this;
-  }
+	public String getBundleId() {
+		return bundleId;
+	}
 
-   /**
-   * Unique Extra id as available from the product catalogue
-   * @return extraList
-  **/
+	/**
+	 * 
+	 * @param bundleId
+	 */
+	public void setBundleId(String bundleId) {
+		this.bundleId = bundleId;
+	}
 
+	/**
+	 * 
+	 * @param accessoryList
+	 * @return
+	 */
+	public BundleDeviceAndProductsList accessoryList(List<String> accessoryList) {
+		this.accessoryList = accessoryList;
+		return this;
+	}
 
-  public List<String> getExtraList() {
-    return extraList;
-  }
-/**
- * 
- * @param extraList
- */
-  public void setExtraList(List<String> extraList) {
-    this.extraList = extraList;
-  }
+	/**
+	 * 
+	 * @param accessoryListItem
+	 * @return
+	 */
+	public BundleDeviceAndProductsList addAccessoryListItem(String accessoryListItem) {
+		if (this.accessoryList == null) {
+			this.accessoryList = new ArrayList<String>();
+		}
+		this.accessoryList.add(accessoryListItem);
+		return this;
+	}
 
+	/**
+	 * Unique Accessory id as available from the product catalogue
+	 * 
+	 * @return accessoryList
+	 **/
 
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    BundleDeviceAndProductsList bundleDeviceAndProductsList = (BundleDeviceAndProductsList) o;
-    return Objects.equals(this.offerCode, bundleDeviceAndProductsList.offerCode) &&
-        Objects.equals(this.packageType, bundleDeviceAndProductsList.packageType) &&
-        Objects.equals(this.deviceId, bundleDeviceAndProductsList.deviceId) &&
-        Objects.equals(this.bundleId, bundleDeviceAndProductsList.bundleId) &&
-        Objects.equals(this.accessoryList, bundleDeviceAndProductsList.accessoryList) &&
-        Objects.equals(this.extraList, bundleDeviceAndProductsList.extraList);
-  }
+	public List<String> getAccessoryList() {
+		return accessoryList;
+	}
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(offerCode, packageType, deviceId, bundleId, accessoryList, extraList);
-  }
+	/**
+	 * 
+	 * @param accessoryList
+	 */
+	public void setAccessoryList(List<String> accessoryList) {
+		this.accessoryList = accessoryList;
+	}
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class BundleDeviceAndProductsList {\n");
-    
-    sb.append("    offerCode: ").append(toIndentedString(offerCode)).append("\n");
-    sb.append("    packageType: ").append(toIndentedString(packageType)).append("\n");
-    sb.append("    deviceId: ").append(toIndentedString(deviceId)).append("\n");
-    sb.append("    bundleId: ").append(toIndentedString(bundleId)).append("\n");
-    sb.append("    accessoryList: ").append(toIndentedString(accessoryList)).append("\n");
-    sb.append("    extraList: ").append(toIndentedString(extraList)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
+	/**
+	 * 
+	 * @param extraList
+	 * @return
+	 */
+	public BundleDeviceAndProductsList extraList(List<String> extraList) {
+		this.extraList = extraList;
+		return this;
+	}
 
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
+	/**
+	 * 
+	 * @param extraListItem
+	 * @return
+	 */
+	public BundleDeviceAndProductsList addExtraListItem(String extraListItem) {
+		if (this.extraList == null) {
+			this.extraList = new ArrayList<String>();
+		}
+		this.extraList.add(extraListItem);
+		return this;
+	}
+
+	/**
+	 * Unique Extra id as available from the product catalogue
+	 * 
+	 * @return extraList
+	 **/
+
+	public List<String> getExtraList() {
+		return extraList;
+	}
+
+	/**
+	 * 
+	 * @param extraList
+	 */
+	public void setExtraList(List<String> extraList) {
+		this.extraList = extraList;
+	}
+
+	@Override
+	public boolean equals(java.lang.Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		BundleDeviceAndProductsList bundleDeviceAndProductsList = (BundleDeviceAndProductsList) o;
+		return Objects.equals(this.offerCode, bundleDeviceAndProductsList.offerCode)
+				&& Objects.equals(this.packageType, bundleDeviceAndProductsList.packageType)
+				&& Objects.equals(this.deviceId, bundleDeviceAndProductsList.deviceId)
+				&& Objects.equals(this.bundleId, bundleDeviceAndProductsList.bundleId)
+				&& Objects.equals(this.accessoryList, bundleDeviceAndProductsList.accessoryList)
+				&& Objects.equals(this.extraList, bundleDeviceAndProductsList.extraList);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(offerCode, packageType, deviceId, bundleId, accessoryList, extraList);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("class BundleDeviceAndProductsList {\n");
+
+		sb.append("    offerCode: ").append(toIndentedString(offerCode)).append("\n");
+		sb.append("    packageType: ").append(toIndentedString(packageType)).append("\n");
+		sb.append("    deviceId: ").append(toIndentedString(deviceId)).append("\n");
+		sb.append("    bundleId: ").append(toIndentedString(bundleId)).append("\n");
+		sb.append("    accessoryList: ").append(toIndentedString(accessoryList)).append("\n");
+		sb.append("    extraList: ").append(toIndentedString(extraList)).append("\n");
+		sb.append("}");
+		return sb.toString();
+	}
+
+	/**
+	 * Convert the given object to string with each line indented by 4 spaces
+	 * (except the first line).
+	 */
+	private String toIndentedString(java.lang.Object o) {
+		if (o == null) {
+			return "null";
+		}
+		return o.toString().replace("\n", "\n    ");
+	}
 }
-

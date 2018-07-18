@@ -2,50 +2,47 @@ package com.vf.uk.dal.device.datamodel.bundle;
 
 import java.util.List;
 
-
 /**
  * 
  * CommercialBundle
  *
  */
 public class CommercialBundle {
-	
-	
+
 	private String id;
-	
+
 	private String name;
-	
+
 	private String desc;
-	
+
 	private String paymentType;
-	
+
 	private Availability availability;
-	
+
 	private Commitment commitment;
-	
+
 	private List<String> productLines;
-	
+
 	private List<DevicePrice> deviceSpecificPricing;
-	
+
 	private List<ServiceProduct> serviceProducts;
-	
+
 	private List<Allowance> allowances;
-	
+
 	private Float recurringCharge;
-	
+
 	private String displayName;
-	
+
 	private List<ImageURL> listOfimageURLs;
-	
+
 	private List<Group> specificationGroups;
 
 	private BundleControl bundleControl;
-	
-	
+
 	private PromoteAs promoteAs;
-	
+
 	private String displayGroup;
-	
+
 	/**
 	 * CommercialBundle Constructor
 	 */
@@ -53,11 +50,10 @@ public class CommercialBundle {
 		super();
 	}
 
-
-	
 	public String getId() {
 		return this.id;
 	}
+
 	public void setBundleID(String id) {
 		this.id = id;
 	}
@@ -142,7 +138,6 @@ public class CommercialBundle {
 		this.recurringCharge = recurringCharge;
 	}
 
-
 	public String getDisplayName() {
 		return displayName;
 	}
@@ -151,53 +146,37 @@ public class CommercialBundle {
 		this.displayName = displayName;
 	}
 
-	/*public String getContentDesc() {
-		return contentDesc;
-	}
-
-	public void setContentDesc(String contentDesc) {
-		this.contentDesc = contentDesc;
-	}
-
-	public String getFullDetails() {
-		return fullDetails;
-	}
-
-	public void setFullDetails(String fullDetails) {
-		this.fullDetails = fullDetails;
-	}
-
-	public String getDescMobile() {
-		return descMobile;
-	}
-
-	public void setDescMobile(String descMobile) {
-		this.descMobile = descMobile;
-	}
-
-	public String getFullDetailsMobile() {
-		return fullDetailsMobile;
-	}
-
-	public void setFullDetailsMobile(String fullDetailsMobile) {
-		this.fullDetailsMobile = fullDetailsMobile;
-	}
-
-	public String getContentVersion() {
-		return contentVersion;
-	}
-
-	public void setContentVersion(String contentVersion) {
-		this.contentVersion = contentVersion;
-	}
-
-	public List<MediaURL> getListOfmediaURLs() {
-		return listOfmediaURLs;
-	}
-
-	public void setListOfmediaURLs(List<MediaURL> listOfmediaURLs) {
-		this.listOfmediaURLs = listOfmediaURLs;
-	}*/
+	/*
+	 * public String getContentDesc() { return contentDesc; }
+	 * 
+	 * public void setContentDesc(String contentDesc) { this.contentDesc =
+	 * contentDesc; }
+	 * 
+	 * public String getFullDetails() { return fullDetails; }
+	 * 
+	 * public void setFullDetails(String fullDetails) { this.fullDetails =
+	 * fullDetails; }
+	 * 
+	 * public String getDescMobile() { return descMobile; }
+	 * 
+	 * public void setDescMobile(String descMobile) { this.descMobile =
+	 * descMobile; }
+	 * 
+	 * public String getFullDetailsMobile() { return fullDetailsMobile; }
+	 * 
+	 * public void setFullDetailsMobile(String fullDetailsMobile) {
+	 * this.fullDetailsMobile = fullDetailsMobile; }
+	 * 
+	 * public String getContentVersion() { return contentVersion; }
+	 * 
+	 * public void setContentVersion(String contentVersion) {
+	 * this.contentVersion = contentVersion; }
+	 * 
+	 * public List<MediaURL> getListOfmediaURLs() { return listOfmediaURLs; }
+	 * 
+	 * public void setListOfmediaURLs(List<MediaURL> listOfmediaURLs) {
+	 * this.listOfmediaURLs = listOfmediaURLs; }
+	 */
 	public List<ImageURL> getListOfimageURLs() {
 		return listOfimageURLs;
 	}
@@ -230,16 +209,13 @@ public class CommercialBundle {
 		this.promoteAs = promoteAs;
 	}
 
-
-		public String getDisplayGroup() {
+	public String getDisplayGroup() {
 		return displayGroup;
 	}
 
 	public void setDisplayGroup(String displayGroup) {
 		this.displayGroup = displayGroup;
 	}
-
-
 
 	@Override
 	public String toString() {

@@ -1,45 +1,42 @@
 
 package com.vf.uk.dal.device.datamodel.product;
 
-
 public class BoxPrice {
 
-	
-    private Double priceNet;
-	
-    private Double priceGross;
+	private Double priceNet;
 
-    private Double priceVAT;
+	private Double priceGross;
 
-	
-    public BoxPrice() {
+	private Double priceVAT;
+
+	public BoxPrice() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	public Double getPriceNet() {
-        return priceNet;
-    }
+		return priceNet;
+	}
 
-    public void setPriceNet(Double value) {
-        this.priceNet = value;
-    }
+	public void setPriceNet(Double value) {
+		this.priceNet = value;
+	}
 
-    public Double getPriceGross() {
-        return priceGross;
-    }
+	public Double getPriceGross() {
+		return priceGross;
+	}
 
-    public void setPriceGross(Double value) {
-        this.priceGross = value;
-    }
+	public void setPriceGross(Double value) {
+		this.priceGross = value;
+	}
 
-    public Double getPriceVAT() {
-        return priceVAT;
-    }
+	public Double getPriceVAT() {
+		return priceVAT;
+	}
 
-    public void setPriceVAT(Double value) {
-        this.priceVAT = value;
-    }
+	public void setPriceVAT(Double value) {
+		this.priceVAT = value;
+	}
 
 	@Override
 	public int hashCode() {
@@ -82,5 +79,5 @@ public class BoxPrice {
 	public String toString() {
 		return "BoxPrice [priceNet=" + priceNet + ", priceGross=" + priceGross + ", priceVAT=" + priceVAT + "]";
 	}
-    
+
 }

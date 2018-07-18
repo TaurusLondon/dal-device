@@ -5,71 +5,68 @@
 // Generated on: 2017.01.02 at 03:25:52 PM IST 
 //
 
-
 package com.vf.uk.dal.device.datamodel.product;
 
-
 public class ProductPriceOverride {
-	
-	
-    private float priceNet;
-	
-    private float priceGross;
-	
-    private float priceVAT;
 
-    public ProductPriceOverride() {
+	private float priceNet;
+
+	private float priceGross;
+
+	private float priceVAT;
+
+	public ProductPriceOverride() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	/**
-     * Gets the value of the priceNet property.
-     * 
-     */
-    public float getPriceNet() {
-        return priceNet;
-    }
+	 * Gets the value of the priceNet property.
+	 * 
+	 */
+	public float getPriceNet() {
+		return priceNet;
+	}
 
-    /**
-     * Sets the value of the priceNet property.
-     * 
-     */
-    public void setPriceNet(float value) {
-        this.priceNet = value;
-    }
+	/**
+	 * Sets the value of the priceNet property.
+	 * 
+	 */
+	public void setPriceNet(float value) {
+		this.priceNet = value;
+	}
 
-    /**
-     * Gets the value of the priceGross property.
-     * 
-     */
-    public float getPriceGross() {
-        return priceGross;
-    }
+	/**
+	 * Gets the value of the priceGross property.
+	 * 
+	 */
+	public float getPriceGross() {
+		return priceGross;
+	}
 
-    /**
-     * Sets the value of the priceGross property.
-     * 
-     */
-    public void setPriceGross(float value) {
-        this.priceGross = value;
-    }
+	/**
+	 * Sets the value of the priceGross property.
+	 * 
+	 */
+	public void setPriceGross(float value) {
+		this.priceGross = value;
+	}
 
-    /**
-     * Gets the value of the priceVAT property.
-     * 
-     */
-    public float getPriceVAT() {
-        return priceVAT;
-    }
+	/**
+	 * Gets the value of the priceVAT property.
+	 * 
+	 */
+	public float getPriceVAT() {
+		return priceVAT;
+	}
 
-    /**
-     * Sets the value of the priceVAT property.
-     * 
-     */
-    public void setPriceVAT(float value) {
-        this.priceVAT = value;
-    }
+	/**
+	 * Sets the value of the priceVAT property.
+	 * 
+	 */
+	public void setPriceVAT(float value) {
+		this.priceVAT = value;
+	}
 
 	@Override
 	public int hashCode() {

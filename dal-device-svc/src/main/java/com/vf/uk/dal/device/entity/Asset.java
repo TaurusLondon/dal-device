@@ -2,6 +2,7 @@ package com.vf.uk.dal.device.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * 
  * Asset
@@ -137,6 +138,7 @@ public class Asset {
 	public String getAssetIntegrationId() {
 		return assetIntegrationId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -144,6 +146,7 @@ public class Asset {
 	public void setAssetIntegrationId(String assetIntegrationId) {
 		this.assetIntegrationId = assetIntegrationId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -151,6 +154,7 @@ public class Asset {
 	public String getMsisdnId() {
 		return msisdnId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -158,6 +162,7 @@ public class Asset {
 	public void setMsisdnId(String msisdnId) {
 		this.msisdnId = msisdnId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -165,6 +170,7 @@ public class Asset {
 	public String getProductDescription() {
 		return productDescription;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -172,6 +178,7 @@ public class Asset {
 	public void setProductDescription(String productDescription) {
 		this.productDescription = productDescription;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -179,6 +186,7 @@ public class Asset {
 	public String getProductId() {
 		return productId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -186,6 +194,7 @@ public class Asset {
 	public void setProductId(String productId) {
 		this.productId = productId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -193,6 +202,7 @@ public class Asset {
 	public String getPrivateRootInstalledProductId() {
 		return privateRootInstalledProductId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -200,6 +210,7 @@ public class Asset {
 	public void setPrivateRootInstalledProductId(String privateRootInstalledProductId) {
 		this.privateRootInstalledProductId = privateRootInstalledProductId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -207,6 +218,7 @@ public class Asset {
 	public String getPrivateParentInstalledProductId() {
 		return privateParentInstalledProductId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -214,6 +226,7 @@ public class Asset {
 	public void setPrivateParentInstalledProductId(String privateParentInstalledProductId) {
 		this.privateParentInstalledProductId = privateParentInstalledProductId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -221,6 +234,7 @@ public class Asset {
 	public String getCustomerPartyAccountName() {
 		return customerPartyAccountName;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -228,6 +242,7 @@ public class Asset {
 	public void setCustomerPartyAccountName(String customerPartyAccountName) {
 		this.customerPartyAccountName = customerPartyAccountName;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -235,6 +250,7 @@ public class Asset {
 	public String getServiceAccountId() {
 		return serviceAccountId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -242,6 +258,7 @@ public class Asset {
 	public void setServiceAccountId(String serviceAccountId) {
 		this.serviceAccountId = serviceAccountId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -250,6 +267,7 @@ public class Asset {
 		this.owningAccountLocationName = owningAccountLocationName;
 		return this;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -257,6 +275,7 @@ public class Asset {
 	public String getOwningAccountLocationName() {
 		return owningAccountLocationName;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -264,6 +283,7 @@ public class Asset {
 	public void setOwningAccountLocationName(String owningAccountLocationName) {
 		this.owningAccountLocationName = owningAccountLocationName;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -271,6 +291,7 @@ public class Asset {
 	public String getOwningAccountFullName() {
 		return owningAccountFullName;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -278,6 +299,7 @@ public class Asset {
 	public void setOwningAccountFullName(String owningAccountFullName) {
 		this.owningAccountFullName = owningAccountFullName;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -285,6 +307,7 @@ public class Asset {
 	public String getOwningAccountId() {
 		return owningAccountId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -292,6 +315,7 @@ public class Asset {
 	public void setOwningAccountId(String owningAccountId) {
 		this.owningAccountId = owningAccountId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -299,6 +323,7 @@ public class Asset {
 	public String getOwningContactFirstName() {
 		return owningContactFirstName;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -306,6 +331,7 @@ public class Asset {
 	public void setOwningContactFirstName(String owningContactFirstName) {
 		this.owningContactFirstName = owningContactFirstName;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -313,6 +339,7 @@ public class Asset {
 	public String getOwningContactFamilyName() {
 		return owningContactFamilyName;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -320,6 +347,7 @@ public class Asset {
 	public void setOwningContactFamilyName(String owningContactFamilyName) {
 		this.owningContactFamilyName = owningContactFamilyName;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -327,6 +355,7 @@ public class Asset {
 	public String getOwningAccountContactId() {
 		return owningAccountContactId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -334,6 +363,7 @@ public class Asset {
 	public void setOwningAccountContactId(String owningAccountContactId) {
 		this.owningAccountContactId = owningAccountContactId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -341,6 +371,7 @@ public class Asset {
 	public String getBillingAccountFullName() {
 		return billingAccountFullName;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -348,6 +379,7 @@ public class Asset {
 	public void setBillingAccountFullName(String billingAccountFullName) {
 		this.billingAccountFullName = billingAccountFullName;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -355,6 +387,7 @@ public class Asset {
 	public String getBillingAccountId() {
 		return billingAccountId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -362,6 +395,7 @@ public class Asset {
 	public void setBillingAccountId(String billingAccountId) {
 		this.billingAccountId = billingAccountId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -369,6 +403,7 @@ public class Asset {
 	public String getBillingProfileId() {
 		return billingProfileId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -376,6 +411,7 @@ public class Asset {
 	public void setBillingProfileId(String billingProfileId) {
 		this.billingProfileId = billingProfileId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -383,6 +419,7 @@ public class Asset {
 	public String getBillingProfileType() {
 		return billingProfileType;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -390,6 +427,7 @@ public class Asset {
 	public void setBillingProfileType(String billingProfileType) {
 		this.billingProfileType = billingProfileType;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -397,6 +435,7 @@ public class Asset {
 	public String getInstallationDate() {
 		return installationDate;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -404,6 +443,7 @@ public class Asset {
 	public void setInstallationDate(String installationDate) {
 		this.installationDate = installationDate;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -411,6 +451,7 @@ public class Asset {
 	public String getStartDate() {
 		return startDate;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -418,6 +459,7 @@ public class Asset {
 	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -425,6 +467,7 @@ public class Asset {
 	public String getEndDate() {
 		return endDate;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -432,6 +475,7 @@ public class Asset {
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -439,6 +483,7 @@ public class Asset {
 	public String getPrimaryContactId() {
 		return primaryContactId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -446,6 +491,7 @@ public class Asset {
 	public void setPrimaryContactId(String primaryContactId) {
 		this.primaryContactId = primaryContactId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -454,8 +500,10 @@ public class Asset {
 		/**
 		 * 
 		 * @return
-		 */	return associatedEmployee;
+		 */
+		return associatedEmployee;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -463,6 +511,7 @@ public class Asset {
 	public void setAssociatedEmployee(String associatedEmployee) {
 		this.associatedEmployee = associatedEmployee;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -470,6 +519,7 @@ public class Asset {
 	public Double getTrackingQuantity() {
 		return trackingQuantity;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -477,6 +527,7 @@ public class Asset {
 	public void setTrackingQuantity(Double trackingQuantity) {
 		this.trackingQuantity = trackingQuantity;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -484,6 +535,7 @@ public class Asset {
 	public String getRegistrationDate() {
 		return registrationDate;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -491,6 +543,7 @@ public class Asset {
 	public void setRegistrationDate(String registrationDate) {
 		this.registrationDate = registrationDate;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -498,6 +551,7 @@ public class Asset {
 	public String getSerialNumber() {
 		return serialNumber;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -505,6 +559,7 @@ public class Asset {
 	public void setSerialNumber(String serialNumber) {
 		this.serialNumber = serialNumber;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -512,6 +567,7 @@ public class Asset {
 	public String getStatus() {
 		return status;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -519,6 +575,7 @@ public class Asset {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -526,6 +583,7 @@ public class Asset {
 	public String getStatusEffectiveDate() {
 		return statusEffectiveDate;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -533,6 +591,7 @@ public class Asset {
 	public void setStatusEffectiveDate(String statusEffectiveDate) {
 		this.statusEffectiveDate = statusEffectiveDate;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -540,6 +599,7 @@ public class Asset {
 	public String getPromotionId() {
 		return promotionId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -547,6 +607,7 @@ public class Asset {
 	public void setPromotionId(String promotionId) {
 		this.promotionId = promotionId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -554,6 +615,7 @@ public class Asset {
 	public String getPublicInstalledProductId() {
 		return publicInstalledProductId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -561,6 +623,7 @@ public class Asset {
 	public void setPublicInstalledProductId(String publicInstalledProductId) {
 		this.publicInstalledProductId = publicInstalledProductId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -568,6 +631,7 @@ public class Asset {
 	public String getHeaderChildAssetId() {
 		return headerChildAssetId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -575,6 +639,7 @@ public class Asset {
 	public void setHeaderChildAssetId(String headerChildAssetId) {
 		this.headerChildAssetId = headerChildAssetId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -582,6 +647,7 @@ public class Asset {
 	public String getAgreementId() {
 		return agreementId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -589,6 +655,7 @@ public class Asset {
 	public void setAgreementId(String agreementId) {
 		this.agreementId = agreementId;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -596,6 +663,7 @@ public class Asset {
 	public String getAlternateTrackingNumber() {
 		return alternateTrackingNumber;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -603,6 +671,7 @@ public class Asset {
 	public void setAlternateTrackingNumber(String alternateTrackingNumber) {
 		this.alternateTrackingNumber = alternateTrackingNumber;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -610,6 +679,7 @@ public class Asset {
 	public String getInventoryLocationReference() {
 		return inventoryLocationReference;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -617,6 +687,7 @@ public class Asset {
 	public void setInventoryLocationReference(String inventoryLocationReference) {
 		this.inventoryLocationReference = inventoryLocationReference;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -624,6 +695,7 @@ public class Asset {
 	public String getSalesOrderRef() {
 		return salesOrderRef;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -631,6 +703,7 @@ public class Asset {
 	public void setSalesOrderRef(String salesOrderRef) {
 		this.salesOrderRef = salesOrderRef;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -638,6 +711,7 @@ public class Asset {
 	public Double getPrice() {
 		return price;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -645,6 +719,7 @@ public class Asset {
 	public void setPrice(Double price) {
 		this.price = price;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -652,6 +727,7 @@ public class Asset {
 	public String getPriceType() {
 		return priceType;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -659,6 +735,7 @@ public class Asset {
 	public void setPriceType(String priceType) {
 		this.priceType = priceType;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -666,6 +743,7 @@ public class Asset {
 	public String getPriceCategory() {
 		return priceCategory;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -673,6 +751,7 @@ public class Asset {
 	public void setPriceCategory(String priceCategory) {
 		this.priceCategory = priceCategory;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -680,6 +759,7 @@ public class Asset {
 	public String getManufacturedDate() {
 		return manufacturedDate;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -687,6 +767,7 @@ public class Asset {
 	public void setManufacturedDate(String manufacturedDate) {
 		this.manufacturedDate = manufacturedDate;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -694,6 +775,7 @@ public class Asset {
 	public String getInstalledProductName() {
 		return installedProductName;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -701,6 +783,7 @@ public class Asset {
 	public void setInstalledProductName(String installedProductName) {
 		this.installedProductName = installedProductName;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -708,6 +791,7 @@ public class Asset {
 	public Double getProductCost() {
 		return productCost;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -715,6 +799,7 @@ public class Asset {
 	public void setProductCost(Double productCost) {
 		this.productCost = productCost;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -722,6 +807,7 @@ public class Asset {
 	public String getUomCode() {
 		return uomCode;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -729,6 +815,7 @@ public class Asset {
 	public void setUomCode(String uomCode) {
 		this.uomCode = uomCode;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -737,6 +824,7 @@ public class Asset {
 		this.attributes = attributes;
 		return this;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -744,6 +832,7 @@ public class Asset {
 	public List<Attributes> getAttributes() {
 		return attributes;
 	}
+
 	/**
 	 * 
 	 * @return

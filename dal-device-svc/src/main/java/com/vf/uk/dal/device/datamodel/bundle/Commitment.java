@@ -5,33 +5,35 @@
 // Generated on: 2017.01.02 at 10:51:22 AM IST 
 //
 
-
 package com.vf.uk.dal.device.datamodel.bundle;
-
 
 public class Commitment {
 
-    private String period;
-	
-    private Boolean penalty;
-	
-	
+	private String period;
+
+	private Boolean penalty;
+
 	public Commitment() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
 	public String getPeriod() {
 		return period;
 	}
+
 	public void setPeriod(String period) {
 		this.period = period;
 	}
+
 	public Boolean getPenalty() {
 		return penalty;
 	}
+
 	public void setPenalty(Boolean penalty) {
 		this.penalty = penalty;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -40,6 +42,7 @@ public class Commitment {
 		result = prime * result + ((period == null) ? 0 : period.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -61,11 +64,10 @@ public class Commitment {
 			return false;
 		return true;
 	}
+
 	@Override
 	public String toString() {
 		return "Commitment [period=" + period + ", penalty=" + penalty + "]";
 	}
-
-	
 
 }

@@ -7,177 +7,112 @@
 
 package com.vf.uk.dal.device.datamodel.bundle;
 
-
 public class BundleControl {
 
 	private boolean isDisplayableinLife;
-	
+
 	private boolean isSellableinLife;
-	
+
 	private boolean isDisplayableAcq;
-	
+
 	private boolean isSellableRet;
-	
+
 	private boolean isDisplayableRet;
-	
+
 	private boolean isSellableAcq;
-	
+
 	private boolean isDisplayableSavedBasket;
-	
+
 	private Long order;
-	
+
 	private boolean affiliateExport;
-	
+
 	private String compareWith;
-	
-	
+
 	public BundleControl() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-
-		
-
 	public boolean getIsDisplayableinLife() {
 		return isDisplayableinLife;
 	}
-
-
-
 
 	public void setDisplayableinLife(boolean isDisplayableinLife) {
 		this.isDisplayableinLife = isDisplayableinLife;
 	}
 
-
-
-
 	public boolean getIsSellableinLife() {
 		return isSellableinLife;
 	}
-
-
-
 
 	public void setSellableinLife(boolean isSellableinLife) {
 		this.isSellableinLife = isSellableinLife;
 	}
 
-
-
-
 	public boolean getIsDisplayableAcq() {
 		return isDisplayableAcq;
 	}
-
-
-
 
 	public void setDisplayableAcq(boolean isDisplayableAcq) {
 		this.isDisplayableAcq = isDisplayableAcq;
 	}
 
-
-
-
 	public boolean getIsSellableRet() {
 		return isSellableRet;
 	}
-
-
-
 
 	public void setSellableRet(boolean isSellableRet) {
 		this.isSellableRet = isSellableRet;
 	}
 
-
-
-
 	public boolean getIsDisplayableRet() {
 		return isDisplayableRet;
 	}
-
-
-
 
 	public void setDisplayableRet(boolean isDisplayableRet) {
 		this.isDisplayableRet = isDisplayableRet;
 	}
 
-
-
-
 	public boolean getIsSellableAcq() {
 		return isSellableAcq;
 	}
-
-
-
 
 	public void setSellableAcq(boolean isSellableAcq) {
 		this.isSellableAcq = isSellableAcq;
 	}
 
-
-
-
 	public boolean getIsDisplayableSavedBasket() {
 		return isDisplayableSavedBasket;
 	}
-
-
-
 
 	public void setDisplayableSavedBasket(boolean isDisplayableSavedBasket) {
 		this.isDisplayableSavedBasket = isDisplayableSavedBasket;
 	}
 
-
-
-
 	public Long getOrder() {
 		return order;
 	}
-
-
-
 
 	public void setOrder(Long order) {
 		this.order = order;
 	}
 
-
-
-
 	public boolean getIssAffiliateExport() {
 		return affiliateExport;
 	}
-
-
-
 
 	public void setAffiliateExport(boolean affiliateExport) {
 		this.affiliateExport = affiliateExport;
 	}
 
-
-
-
 	public String getCompareWith() {
 		return compareWith;
 	}
 
-
-
-
 	public void setCompareWith(String compareWith) {
 		this.compareWith = compareWith;
 	}
-
-	
-
 
 	@Override
 	public int hashCode() {
@@ -195,9 +130,6 @@ public class BundleControl {
 		result = prime * result + ((order == null) ? 0 : order.hashCode());
 		return result;
 	}
-
-
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -236,9 +168,6 @@ public class BundleControl {
 			return false;
 		return true;
 	}
-
-
-
 
 	@Override
 	public String toString() {

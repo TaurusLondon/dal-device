@@ -1,57 +1,63 @@
 
 package com.vf.uk.dal.device.datamodel.bundle;
 
-
-
 public class DevicePrice {
 
-	
-	
-    private String deviceId;
-	
-    private float priceNet;
-	
-    private float priceGross;
-	
+	private String deviceId;
+
+	private float priceNet;
+
+	private float priceGross;
+
 	private float priceVAT;
-	
-    private String productLine;
-	
-	
+
+	private String productLine;
+
 	public DevicePrice() {
 		super();
 
 	}
+
 	public String getDeviceId() {
 		return deviceId;
 	}
+
 	public void setDeviceId(String deviceId) {
 		this.deviceId = deviceId;
 	}
+
 	public float getPriceNet() {
 		return priceNet;
 	}
+
 	public void setPriceNet(float priceNet) {
 		this.priceNet = priceNet;
 	}
+
 	public float getPriceGross() {
 		return priceGross;
 	}
+
 	public void setPriceGross(float priceGross) {
 		this.priceGross = priceGross;
 	}
+
 	public float getPriceVAT() {
 		return priceVAT;
 	}
+
 	public void setPriceVAT(float priceVAT) {
 		this.priceVAT = priceVAT;
 	}
+
 	public String getProductLine() {
 		return productLine;
 	}
+
 	public void setProductLine(String productLine) {
 		this.productLine = productLine;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -63,6 +69,7 @@ public class DevicePrice {
 		result = prime * result + ((productLine == null) ? 0 : productLine.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -90,11 +97,11 @@ public class DevicePrice {
 			return false;
 		return true;
 	}
+
 	@Override
 	public String toString() {
 		return "DevicePrice [deviceId=" + deviceId + ", priceNet=" + priceNet + ", priceGross=" + priceGross
 				+ ", priceVAT=" + priceVAT + ", productLine=" + productLine + "]";
 	}
-
 
 }

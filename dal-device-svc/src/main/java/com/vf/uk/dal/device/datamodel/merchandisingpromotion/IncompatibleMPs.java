@@ -5,19 +5,14 @@
 // Generated on: 2017.01.02 at 03:25:52 PM IST 
 //
 
-
 package com.vf.uk.dal.device.datamodel.merchandisingpromotion;
 
 import java.util.List;
 
 public class IncompatibleMPs {
-	
-	
-	
-    private List<String> tag;
 
-	
-	
+	private List<String> tag;
+
 	public IncompatibleMPs() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -60,7 +55,5 @@ public class IncompatibleMPs {
 	public String toString() {
 		return "IncompatibleMPs [tag=" + tag + "]";
 	}
-    
-    
 
 }

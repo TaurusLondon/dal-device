@@ -3,181 +3,151 @@ package com.vf.uk.dal.device.datamodel.product;
 import java.util.List;
 
 public class Relationship {
-	
+
 	private String name;
-	
+
 	private String type;
-	
+
 	private String maxCardinality;
-	
+
 	private String minCardinality;
-	
+
 	private String defaultCardinality;
-	
+
 	private String level;
-	
+
 	private String id;
-	
+
 	private String parentRelationshipID;
-	
+
 	private String productID;
-	
+
 	private String productClass;
-	
+
 	private String productLine;
-	
+
 	private Long sequence;
-	
+
 	private String relationshipPath;
-	
+
 	private List<AddonIncompatibleProducts> incompatibleAddons;
-	
-	
+
 	public Relationship() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-
 	public String getName() {
 		return name;
 	}
-
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-
 	public String getType() {
 		return type;
 	}
-
 
 	public void setType(String type) {
 		this.type = type;
 	}
 
-
 	public String getMaxCardinality() {
 		return maxCardinality;
 	}
-
 
 	public void setMaxCardinality(String maxCardinality) {
 		this.maxCardinality = maxCardinality;
 	}
 
-
 	public String getMinCardinality() {
 		return minCardinality;
 	}
-
 
 	public void setMinCardinality(String minCardinality) {
 		this.minCardinality = minCardinality;
 	}
 
-
 	public String getDefaultCardinality() {
 		return defaultCardinality;
 	}
-
 
 	public void setDefaultCardinality(String defaultCardinality) {
 		this.defaultCardinality = defaultCardinality;
 	}
 
-
 	public String getLevel() {
 		return level;
 	}
-
 
 	public void setLevel(String level) {
 		this.level = level;
 	}
 
-
 	public String getId() {
 		return id;
 	}
-
 
 	public void setId(String id) {
 		this.id = id;
 	}
 
-
 	public String getParentRelationshipID() {
 		return parentRelationshipID;
 	}
-
 
 	public void setParentRelationshipID(String parentRelationshipID) {
 		this.parentRelationshipID = parentRelationshipID;
 	}
 
-
 	public String getProductID() {
 		return productID;
 	}
-
 
 	public void setProductID(String productID) {
 		this.productID = productID;
 	}
 
-
 	public String getProductClass() {
 		return productClass;
 	}
-
 
 	public void setProductClass(String productClass) {
 		this.productClass = productClass;
 	}
 
-
 	public String getProductLine() {
 		return productLine;
 	}
-
 
 	public void setProductLine(String productLine) {
 		this.productLine = productLine;
 	}
 
-
 	public Long getSequence() {
 		return sequence;
 	}
-
 
 	public void setSequence(Long sequence) {
 		this.sequence = sequence;
 	}
 
-
 	public String getRelationshipPath() {
 		return relationshipPath;
 	}
-
 
 	public void setRelationshipPath(String relationshipPath) {
 		this.relationshipPath = relationshipPath;
 	}
 
-
 	public List<AddonIncompatibleProducts> getIncompatibleAddons() {
 		return incompatibleAddons;
 	}
 
-
 	public void setIncompatibleAddons(List<AddonIncompatibleProducts> incompatibleAddons) {
 		this.incompatibleAddons = incompatibleAddons;
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -199,7 +169,6 @@ public class Relationship {
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -283,7 +252,6 @@ public class Relationship {
 		return true;
 	}
 
-
 	@Override
 	public String toString() {
 		return "Relationship [name=" + name + ", type=" + type + ", maxCardinality=" + maxCardinality
@@ -292,8 +260,5 @@ public class Relationship {
 				+ ", productClass=" + productClass + ", productLine=" + productLine + ", sequence=" + sequence
 				+ ", relationshipPath=" + relationshipPath + ", incompatibleAddons=" + incompatibleAddons + "]";
 	}
-	
-	
-
 
 }

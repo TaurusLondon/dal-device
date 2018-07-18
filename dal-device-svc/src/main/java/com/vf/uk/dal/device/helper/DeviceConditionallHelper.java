@@ -33,7 +33,7 @@ public class DeviceConditionallHelper {
 	 * @param creditLimit
 	 * @param listOfProductsNew
 	 * @param listOfProductModelNew
-	 * @return
+	 * @return BundleModelAndPrice
 	 */
 	public BundleModelAndPrice calculatePlan(Float creditLimit, List<String> listOfProductsNew,
 			List<ProductModel> listOfProductModelNew) {
@@ -119,7 +119,7 @@ public class DeviceConditionallHelper {
 	/**
 	 * 
 	 * @param bundlePrice
-	 * @return
+	 * @return checkPromotionAndGetPrice
 	 */
 	private Float checkPromotionAndGetPrice(BundlePrice bundlePrice) {
 		com.vf.uk.dal.device.entity.MerchandisingPromotion merchandisingPromotion = bundlePrice
@@ -149,7 +149,7 @@ public class DeviceConditionallHelper {
 	 * @param listOfBundleDetails
 	 * @param bundleDetails
 	 * @param bundleModelAndPrice
-	 * @return
+	 * @return BundleModelAndPrice
 	 */
 	public BundleModelAndPrice getLowestMontlyPrice(Float creditLimit, List<BundleModel> listOfBundleDetails,
 			BundleDetails bundleDetails, BundleModelAndPrice bundleModelAndPrice) {
@@ -202,7 +202,7 @@ public class DeviceConditionallHelper {
 	/**
 	 * 
 	 * @param listOfProductVariants
-	 * @return
+	 * @return LeadDeviceMap
 	 */
 	public Map<String, String> getLeadDeviceMap(List<String> listOfProductVariants) {
 		Map<String, String> deviceMap = new HashMap<>();

@@ -37,35 +37,41 @@ public interface DeviceTileCacheDAO {
 	 *             the application exception
 	 */
 	public CacheDeviceTileResponse getCacheDeviceJobStatus(String jobId) throws ApplicationException;
+
 	/**
 	 * 
 	 */
 	public void rollBackTransaction();
+
 	/**
 	 * 
 	 */
 	public void endTransaction();
+
 	/**
 	 * 
 	 */
 	public void beginTransaction();
+
 	/**
 	 * 
 	 * @param mediaList
 	 * @param deviceId
-	 * @return
+	 * @return DeviceMediaData
 	 */
-	public int saveDeviceMediaData(List<Media> mediaList, String deviceId) ;
+	public int saveDeviceMediaData(List<Media> mediaList, String deviceId);
+
 	/**
 	 * 
 	 * @param listProductGroupForDeviceListing
-	 * @return
+	 * @return DeviceListPreCalcData
 	 */
 	public int saveDeviceListPreCalcData(List<DevicePreCalculatedData> listProductGroupForDeviceListing);
+
 	/**
 	 * 
 	 * @param offerAppliedPricesList
-	 * @return
+	 * @return DeviceListILSCalcData
 	 */
 	public int saveDeviceListILSCalcData(List<OfferAppliedPriceDetails> offerAppliedPricesList);
 }

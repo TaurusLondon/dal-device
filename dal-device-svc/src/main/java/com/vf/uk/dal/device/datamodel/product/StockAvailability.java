@@ -4,76 +4,77 @@ import java.sql.Timestamp;
 
 public class StockAvailability {
 
-		private String skuId;
-		
-		private String sourceId;
+	private String skuId;
 
-		private int quantity;
+	private String sourceId;
 
-		private String status;
+	private int quantity;
 
-		private String availableBy;
+	private String status;
 
-		private Timestamp lastModified;
+	private String availableBy;
 
-		private int orderLimit;
+	private Timestamp lastModified;
 
-		public String getSkuId() {
-			return this.skuId;
-		}
+	private int orderLimit;
 
-		public void setSkuId(String skuId) {
-			this.skuId = skuId;
-		}
+	public String getSkuId() {
+		return this.skuId;
+	}
 
-		public String getSourceId() {
-			return this.sourceId;
-		}
+	public void setSkuId(String skuId) {
+		this.skuId = skuId;
+	}
 
-		public void setSourceId(String sourceId) {
-			this.sourceId = sourceId;
-		}
+	public String getSourceId() {
+		return this.sourceId;
+	}
 
-		public int getQuantity() {
-			return this.quantity;
-		}
+	public void setSourceId(String sourceId) {
+		this.sourceId = sourceId;
+	}
 
-		public void setQuantity(int quantity) {
-			this.quantity = quantity;
-		}
+	public int getQuantity() {
+		return this.quantity;
+	}
 
-		public String getStatus() {
-			return this.status;
-		}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
 
-		public void setStatus(String status) {
-			this.status = status;
-		}
+	public String getStatus() {
+		return this.status;
+	}
 
-		public String getAvailableBy() {
-			return this.availableBy;
-		}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
-		public void setAvailableBy(String availableBy) {
-			this.availableBy = availableBy;
-		}
+	public String getAvailableBy() {
+		return this.availableBy;
+	}
 
-		public Timestamp getLastModified() {
-			return this.lastModified;
-		}
+	public void setAvailableBy(String availableBy) {
+		this.availableBy = availableBy;
+	}
 
-		public void setLastModified(Timestamp lastModified) {
-			this.lastModified = lastModified;
-		}
+	public Timestamp getLastModified() {
+		return this.lastModified;
+	}
 
-		public int getOrderLimit() {
-			return this.orderLimit;
-		}
+	public void setLastModified(Timestamp lastModified) {
+		this.lastModified = lastModified;
+	}
 
-		public void setOrderLimit(int orderLimit) {
-			this.orderLimit = orderLimit;
-		}
-		public String getId() {
-			return this.skuId;
-		}
+	public int getOrderLimit() {
+		return this.orderLimit;
+	}
+
+	public void setOrderLimit(int orderLimit) {
+		this.orderLimit = orderLimit;
+	}
+
+	public String getId() {
+		return this.skuId;
+	}
 }

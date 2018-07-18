@@ -38,42 +38,42 @@ public class CataloguepromotionqueriesForBundleAndHardwareSecureNet {
 
 	/** The foot notes. */
 	private List<String> footNotes = new ArrayList<>();
-	
+
 	/** The promotion media. */
-	  @JsonProperty("promotionMedia")
-	  private String promotionMedia = null;
-	  
-	  
-	  
-	  /**
-	   * Promotion media.
-	   *
-	   * @param promotionMedia the promotion media
-	   * @return the cataloguepromotionqueries for bundle and hardware entertainment packs
-	   */
-	  public CataloguepromotionqueriesForBundleAndHardwareSecureNet promotionMedia(String promotionMedia) {
-	    this.promotionMedia = promotionMedia;
-	    return this;
-	  }
-	  
-	   /**
-	    * Promotion media url for the merchandising promotion.
-	    *
-	    * @return promotionMedia
-	    */
-	  public String getPromotionMedia() {
-	    return promotionMedia;
-	  }
-	  
-	   /**
-	   * Sets the promotion media.
-	   *
-	   * @param promotionMedia the new promotion media
-	   */
-	  public void setPromotionMedia(String promotionMedia) {
-	    this.promotionMedia = promotionMedia;
-	  }
-	  
+	@JsonProperty("promotionMedia")
+	private String promotionMedia = null;
+
+	/**
+	 * Promotion media.
+	 *
+	 * @param promotionMedia
+	 *            the promotion media
+	 * @return the cataloguepromotionqueries for bundle and hardware
+	 *         entertainment packs
+	 */
+	public CataloguepromotionqueriesForBundleAndHardwareSecureNet promotionMedia(String promotionMedia) {
+		this.promotionMedia = promotionMedia;
+		return this;
+	}
+
+	/**
+	 * Promotion media url for the merchandising promotion.
+	 *
+	 * @return promotionMedia
+	 */
+	public String getPromotionMedia() {
+		return promotionMedia;
+	}
+
+	/**
+	 * Sets the promotion media.
+	 *
+	 * @param promotionMedia
+	 *            the new promotion media
+	 */
+	public void setPromotionMedia(String promotionMedia) {
+		this.promotionMedia = promotionMedia;
+	}
 
 	/**
 	 * Gets the foot notes.
@@ -285,10 +285,14 @@ public class CataloguepromotionqueriesForBundleAndHardwareSecureNet {
 		return Objects.equals(this.tag, cataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks.tag)
 				&& Objects.equals(this.label, cataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks.label)
 				&& Objects.equals(this.type, cataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks.type)
-				&& Objects.equals(this.priority,cataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks.priority)
-				&& Objects.equals(this.description,cataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks.description)
-				&& Objects.equals(this.packageType,cataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks.packageType)
-				&& Objects.equals(this.promotionMedia, cataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks.promotionMedia);
+				&& Objects.equals(this.priority,
+						cataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks.priority)
+				&& Objects.equals(this.description,
+						cataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks.description)
+				&& Objects.equals(this.packageType,
+						cataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks.packageType)
+				&& Objects.equals(this.promotionMedia,
+						cataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks.promotionMedia);
 	}
 
 	/*
@@ -298,7 +302,7 @@ public class CataloguepromotionqueriesForBundleAndHardwareSecureNet {
 	 */
 	@Override
 	public int hashCode() {
-		return Objects.hash(tag, label, type, priority, description, packageType,promotionMedia);
+		return Objects.hash(tag, label, type, priority, description, packageType, promotionMedia);
 	}
 
 	/*

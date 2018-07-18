@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T10:55:14.550Z")
 
 public class MerchandisingPromotionsWrapper {
-	
+
 	/** The data promotion. */
 	@JsonProperty("dataPromotion")
 	private MerchandisingPromotion dataPromotion = null;
@@ -46,14 +46,15 @@ public class MerchandisingPromotionsWrapper {
 	/** The price promotion. */
 	@JsonProperty("pricePromotion")
 	private MerchandisingPromotion pricePromotion = null;
-	
+
 	@JsonProperty("conditionalSashBannerPromotion")
 	private MerchandisingPromotion conditionalSashBannerPromotion = null;
 
 	/**
 	 * Data promotion.
 	 *
-	 * @param dataPromotion the data promotion
+	 * @param dataPromotion
+	 *            the data promotion
 	 * @return the merchandising promotions wrapper
 	 */
 	public MerchandisingPromotionsWrapper dataPromotion(MerchandisingPromotion dataPromotion) {
@@ -73,7 +74,8 @@ public class MerchandisingPromotionsWrapper {
 	/**
 	 * Sets the data promotion.
 	 *
-	 * @param dataPromotion the new data promotion
+	 * @param dataPromotion
+	 *            the new data promotion
 	 */
 	public void setDataPromotion(MerchandisingPromotion dataPromotion) {
 		this.dataPromotion = dataPromotion;
@@ -82,7 +84,8 @@ public class MerchandisingPromotionsWrapper {
 	/**
 	 * Text promotion.
 	 *
-	 * @param textPromotion the text promotion
+	 * @param textPromotion
+	 *            the text promotion
 	 * @return the merchandising promotions wrapper
 	 */
 	public MerchandisingPromotionsWrapper textPromotion(MerchandisingPromotion textPromotion) {
@@ -103,7 +106,8 @@ public class MerchandisingPromotionsWrapper {
 	/**
 	 * Sets the text promotion.
 	 *
-	 * @param textPromotion the new text promotion
+	 * @param textPromotion
+	 *            the new text promotion
 	 */
 	public void setTextPromotion(MerchandisingPromotion textPromotion) {
 		this.textPromotion = textPromotion;
@@ -112,7 +116,8 @@ public class MerchandisingPromotionsWrapper {
 	/**
 	 * Talk time promotion.
 	 *
-	 * @param talkTimePromotion the talk time promotion
+	 * @param talkTimePromotion
+	 *            the talk time promotion
 	 * @return the merchandising promotions wrapper
 	 */
 	public MerchandisingPromotionsWrapper talkTimePromotion(MerchandisingPromotion talkTimePromotion) {
@@ -132,7 +137,8 @@ public class MerchandisingPromotionsWrapper {
 	/**
 	 * Sets the talk time promotion.
 	 *
-	 * @param talkTimePromotion the new talk time promotion
+	 * @param talkTimePromotion
+	 *            the new talk time promotion
 	 */
 	public void setTalkTimePromotion(MerchandisingPromotion talkTimePromotion) {
 		this.talkTimePromotion = talkTimePromotion;
@@ -141,7 +147,8 @@ public class MerchandisingPromotionsWrapper {
 	/**
 	 * Entertainment pack promotion.
 	 *
-	 * @param entertainmentPackPromotion the entertainment pack promotion
+	 * @param entertainmentPackPromotion
+	 *            the entertainment pack promotion
 	 * @return the merchandising promotions wrapper
 	 */
 	public MerchandisingPromotionsWrapper entertainmentPackPromotion(
@@ -163,7 +170,8 @@ public class MerchandisingPromotionsWrapper {
 	/**
 	 * Sets the entertainment pack promotion.
 	 *
-	 * @param entertainmentPackPromotion the new entertainment pack promotion
+	 * @param entertainmentPackPromotion
+	 *            the new entertainment pack promotion
 	 */
 	public void setEntertainmentPackPromotion(MerchandisingPromotion entertainmentPackPromotion) {
 		this.entertainmentPackPromotion = entertainmentPackPromotion;
@@ -172,7 +180,8 @@ public class MerchandisingPromotionsWrapper {
 	/**
 	 * Secure net promotion.
 	 *
-	 * @param secureNetPromotion the secure net promotion
+	 * @param secureNetPromotion
+	 *            the secure net promotion
 	 * @return the merchandising promotions wrapper
 	 */
 	public MerchandisingPromotionsWrapper secureNetPromotion(MerchandisingPromotion secureNetPromotion) {
@@ -192,7 +201,8 @@ public class MerchandisingPromotionsWrapper {
 	/**
 	 * Sets the secure net promotion.
 	 *
-	 * @param secureNetPromotion the new secure net promotion
+	 * @param secureNetPromotion
+	 *            the new secure net promotion
 	 */
 	public void setSecureNetPromotion(MerchandisingPromotion secureNetPromotion) {
 		this.secureNetPromotion = secureNetPromotion;
@@ -201,7 +211,8 @@ public class MerchandisingPromotionsWrapper {
 	/**
 	 * Sash banner promotion.
 	 *
-	 * @param sashBannerPromotion the sash banner promotion
+	 * @param sashBannerPromotion
+	 *            the sash banner promotion
 	 * @return the merchandising promotions wrapper
 	 */
 	public MerchandisingPromotionsWrapper sashBannerPromotion(MerchandisingPromotion sashBannerPromotion) {
@@ -221,7 +232,8 @@ public class MerchandisingPromotionsWrapper {
 	/**
 	 * Sets the sash banner promotion.
 	 *
-	 * @param sashBannerPromotion the new sash banner promotion
+	 * @param sashBannerPromotion
+	 *            the new sash banner promotion
 	 */
 	public void setSashBannerPromotion(MerchandisingPromotion sashBannerPromotion) {
 		this.sashBannerPromotion = sashBannerPromotion;
@@ -230,7 +242,8 @@ public class MerchandisingPromotionsWrapper {
 	/**
 	 * Free extra promotion.
 	 *
-	 * @param freeExtraPromotion the free extra promotion
+	 * @param freeExtraPromotion
+	 *            the free extra promotion
 	 * @return the merchandising promotions wrapper
 	 */
 	public MerchandisingPromotionsWrapper freeExtraPromotion(MerchandisingPromotion freeExtraPromotion) {
@@ -250,7 +263,8 @@ public class MerchandisingPromotionsWrapper {
 	/**
 	 * Sets the free extra promotion.
 	 *
-	 * @param freeExtraPromotion the new free extra promotion
+	 * @param freeExtraPromotion
+	 *            the new free extra promotion
 	 */
 	public void setFreeExtraPromotion(MerchandisingPromotion freeExtraPromotion) {
 		this.freeExtraPromotion = freeExtraPromotion;
@@ -259,7 +273,8 @@ public class MerchandisingPromotionsWrapper {
 	/**
 	 * Free accessory promotion.
 	 *
-	 * @param freeAccessoryPromotion the free accessory promotion
+	 * @param freeAccessoryPromotion
+	 *            the free accessory promotion
 	 * @return the merchandising promotions wrapper
 	 */
 	public MerchandisingPromotionsWrapper freeAccessoryPromotion(MerchandisingPromotion freeAccessoryPromotion) {
@@ -280,7 +295,8 @@ public class MerchandisingPromotionsWrapper {
 	/**
 	 * Sets the free accessory promotion.
 	 *
-	 * @param freeAccessoryPromotion the new free accessory promotion
+	 * @param freeAccessoryPromotion
+	 *            the new free accessory promotion
 	 */
 	public void setFreeAccessoryPromotion(MerchandisingPromotion freeAccessoryPromotion) {
 		this.freeAccessoryPromotion = freeAccessoryPromotion;
@@ -289,7 +305,8 @@ public class MerchandisingPromotionsWrapper {
 	/**
 	 * Price promotion.
 	 *
-	 * @param pricePromotion the price promotion
+	 * @param pricePromotion
+	 *            the price promotion
 	 * @return the merchandising promotions wrapper
 	 */
 	public MerchandisingPromotionsWrapper pricePromotion(MerchandisingPromotion pricePromotion) {
@@ -309,13 +326,12 @@ public class MerchandisingPromotionsWrapper {
 	/**
 	 * Sets the price promotion.
 	 *
-	 * @param pricePromotion the new price promotion
+	 * @param pricePromotion
+	 *            the new price promotion
 	 */
 	public void setPricePromotion(MerchandisingPromotion pricePromotion) {
 		this.pricePromotion = pricePromotion;
 	}
-	
-	
 
 	public MerchandisingPromotion getConditionalSashBannerPromotion() {
 		return conditionalSashBannerPromotion;
@@ -325,7 +341,9 @@ public class MerchandisingPromotionsWrapper {
 		this.conditionalSashBannerPromotion = conditionalSashBannerPromotion;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -349,7 +367,9 @@ public class MerchandisingPromotionsWrapper {
 				&& Objects.equals(this.pricePromotion, merchandisingPromotionsWrapper.pricePromotion);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -358,7 +378,9 @@ public class MerchandisingPromotionsWrapper {
 				secureNetPromotion, sashBannerPromotion, freeExtraPromotion, freeAccessoryPromotion, pricePromotion);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -383,7 +405,8 @@ public class MerchandisingPromotionsWrapper {
 	 * Convert the given object to string with each line indented by 4 spaces
 	 * (except the first line).
 	 *
-	 * @param o the o
+	 * @param o
+	 *            the o
 	 * @return the string
 	 */
 	private String toIndentedString(java.lang.Object o) {

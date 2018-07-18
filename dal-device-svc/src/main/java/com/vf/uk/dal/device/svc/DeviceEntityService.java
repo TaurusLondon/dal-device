@@ -19,19 +19,21 @@ public interface DeviceEntityService {
 	 * @return List of CommercialProducts
 	 */
 	public List<CommercialProduct> getCommercialProductDetails(String productIdOrName);
-	
+
 	/**
 	 * @param productId
 	 * @param productName
 	 * @return List of CommercialProducts
 	 */
 	public List<Group> getProductGroupByType(String groupType);
+
 	/**
 	 * 
 	 * @param deviceIds
-	 * @return
+	 * @return ProductGroupModelMap
 	 */
 	public ProductGroupModelMap getMapOfProductModelForGetDeliveryMethod(String deviceIds);
+
 	/**
 	 * 
 	 * @param result
@@ -40,6 +42,7 @@ public interface DeviceEntityService {
 	 */
 	public void getProductGroupModelBasedOnDelivery(Map<String, List<ProductGroupModel>> result,
 			Map<String, List<String>> productGroupmap, List<ProductGroupModel> productGroupModels);
+
 	/**
 	 * 
 	 * @param productModels

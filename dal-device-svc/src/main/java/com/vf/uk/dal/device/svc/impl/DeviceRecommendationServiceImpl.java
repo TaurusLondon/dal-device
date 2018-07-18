@@ -24,60 +24,57 @@ import com.vf.uk.dal.utility.entity.RecommendedProductListResponse;
 
 /**
  * Provides recommended devices for a logged in user.
+ * 
  * @author rajendra.swarna
  */
 @Component("deviceRecommendationService")
 public class DeviceRecommendationServiceImpl implements DeviceRecommendationService {
 
-
 	@Autowired
 	RegistryClient registryclnt;
-	
-	
 
 	/**
 	 * Returns recommended device list from chordiant.
+	 * 
 	 * @param journeyId
 	 * @param facetedDevice
-	 * @return 
+	 * @return FacetedDevice
 	 */
-	public FacetedDevice getRecommendedDeviceList(String msisdn, String deviceId,  FacetedDevice facetedDevice) {
-		
+	public FacetedDevice getRecommendedDeviceList(String msisdn, String deviceId, FacetedDevice facetedDevice) {
+
 		RecommendedProductListResponse recommendedProductListResponse = null;
 		FacetedDevice sortedFacetedDevice = new FacetedDevice();
 		try {
 			RecommendedProductListRequest recomProductListReq = this.getRecommendedDeviceListRequest(msisdn, deviceId);
 			recommendedProductListResponse = CommonUtility.getRecommendedProductList(recomProductListReq, registryclnt);
-			
+
 			if (recommendedProductListResponse != null) {
 				sortedFacetedDevice = sortList(facetedDevice, recommendedProductListResponse);
-			}
-			else {
+			} else {
 				LogHelper.error(this, "Unable to retrieve recommended device list from chordiant.");
 			}
-			
+
 		} catch (Exception e) {
 			LogHelper.error(this, "Failed to get recommended device list " + e);
-			sortedFacetedDevice. setMessage("RECOMMENDATIONS_NOT_AVAILABLE_GRPL_SERVICE_FAILURE");
+			sortedFacetedDevice.setMessage("RECOMMENDATIONS_NOT_AVAILABLE_GRPL_SERVICE_FAILURE");
 		}
 		return sortedFacetedDevice;
 	}
 
-	
-
 	/**
 	 * Returns request object for getRecommendedDeviceList
+	 * 
 	 * @param msisdn
 	 * @param deviceId
 	 * @return RecommendedProductListRequest
 	 */
 	public RecommendedProductListRequest getRecommendedDeviceListRequest(String msisdn, String deviceId) {
-		
+
 		RecommendedProductListRequest recomProdListReq = new RecommendedProductListRequest();
-		
+
 		recomProdListReq.setSerialNumber(msisdn);
 		recomProdListReq.setAccountCategory(Constants.ACCOUNT_CATEGORY_INDIVIDUAL);
-		
+
 		List<InstalledProduct> instProds = new ArrayList<>();
 		InstalledProduct instProd = new InstalledProduct();
 		instProd.setId(deviceId);
@@ -85,7 +82,7 @@ public class DeviceRecommendationServiceImpl implements DeviceRecommendationServ
 		instProd.setAmount("220000.00");
 		instProds.add(instProd);
 		recomProdListReq.setInstalledProducts(instProds);
-		
+
 		List<Preferences> prefs = new ArrayList<>();
 		Preferences handsetPref = new Preferences();
 		handsetPref.setName(Constants.PREFERENCE_NAME_HANDSET);
@@ -98,35 +95,39 @@ public class DeviceRecommendationServiceImpl implements DeviceRecommendationServ
 		upgradePref.setDataTypeCode(Constants.PREFERENCE_DATATYPE_CODE_GENERAL);
 		upgradePref.setValue("SIMOFLEX");
 		prefs.add(upgradePref);
-		
+
 		Preferences recommitPref = new Preferences();
 		recommitPref.setName(Constants.PREFERENCE_NAME_RECOMMIT);
 		recommitPref.setDataTypeCode(Constants.PREFERENCE_DATATYPE_CODE_GENERAL);
 		recommitPref.setValue("FALSE");
 		prefs.add(recommitPref);
-		
+
 		Preferences segmentPref = new Preferences();
 		segmentPref.setName(Constants.PREFERENCE_NAME_SEGMENT);
 		segmentPref.setDataTypeCode(Constants.PREFERENCE_DATATYPE_ELIGIBILITY_CRITERIA);
 		segmentPref.setValue("cbu");
 		prefs.add(segmentPref);
-		
+
 		recomProdListReq.setPreferences(prefs);
-		
+
 		List<String> recomPrdTypes;
 		recomPrdTypes = new ArrayList<>();
 		recomPrdTypes.add(Constants.PREFERENCE_NAME_HANDSET);
-		
+
 		recomProdListReq.setBasketItems(null);
 		recomProdListReq.setNoOfRecommendations("100");
-		
-		
+
 		recomProdListReq.setRecommendedProductTypes(recomPrdTypes);
 
 		return recomProdListReq;
 	}
 
-	
+	/**
+	 * @param objectsToOrder
+	 * @param orderedObjects
+	 * @return FacetedDevice
+	 * 
+	 */
 	public FacetedDevice sortList(FacetedDevice objectsToOrder, RecommendedProductListResponse orderedObjects) {
 		HashMap<String, Integer> indexMap = new HashMap<>();
 		int index = 0;
@@ -157,6 +158,4 @@ public class DeviceRecommendationServiceImpl implements DeviceRecommendationServ
 		return objectsToOrder;
 	}
 
-	
-
-}
+}

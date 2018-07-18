@@ -1,30 +1,32 @@
 package com.vf.uk.dal.device.datamodel.bundle;
 
-
 public class ImageURL {
-	
-	
-    private String imageName;
-	
-    private String imageURL;
-	
-	
+
+	private String imageName;
+
+	private String imageURL;
+
 	public ImageURL() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
 	public String getImageName() {
 		return imageName;
 	}
+
 	public void setImageName(String imageName) {
 		this.imageName = imageName;
 	}
+
 	public String getImageURL() {
 		return imageURL;
 	}
+
 	public void setImageURL(String imageURL) {
 		this.imageURL = imageURL;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -33,6 +35,7 @@ public class ImageURL {
 		result = prime * result + ((imageURL == null) ? 0 : imageURL.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -54,13 +57,10 @@ public class ImageURL {
 			return false;
 		return true;
 	}
+
 	@Override
 	public String toString() {
 		return "ImageURL [imageName=" + imageName + ", imageURL=" + imageURL + "]";
 	}
-    
-	
-       
-       
 
 }

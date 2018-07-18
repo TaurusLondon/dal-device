@@ -26,7 +26,7 @@ public class CacheDeviceDaoUtils {
 	/**
 	 * @author krishna.reddy @Sprint-6.6
 	 * @param ilsPricewithoutOfferCode
-	 * @return
+	 * @return mapOfDevicePrice
 	 */
 	public static Map<String, List<PriceForBundleAndHardware>> getILSPriceWithoutOfferCode(
 			List<PriceForBundleAndHardware> ilsPricewithoutOfferCode) {
@@ -55,7 +55,7 @@ public class CacheDeviceDaoUtils {
 	 * @param groupId
 	 * @param leadMemberId
 	 * @param leadPlanId
-	 * @return
+	 * @return DevicePreCalculatedData
 	 */
 	public static DevicePreCalculatedData convertBundleHeaderForDeviceToProductGroupForDeviceListing(String deviceId,
 			String leadPlanId, String groupname, String groupId,
@@ -103,7 +103,7 @@ public class CacheDeviceDaoUtils {
 	 * 
 	 * @param priceForBundleAndHardware
 	 * @param listOfPriceForBundleAndHardwareWithOfferCode
-	 * @return
+	 * @return PriceInfoForSolr
 	 */
 	public static Map<String, Object> getPriceInfoForSolr(PriceForBundleAndHardware priceForBundleAndHardware,
 			Map<String, List<PriceForBundleAndHardware>> listOfPriceForBundleAndHardwareWithOfferCode) {
@@ -369,7 +369,7 @@ public class CacheDeviceDaoUtils {
 	 * @author manoj.bera
 	 * @param deviceId
 	 * @param listOfPriceForBundleAndHardwareMap
-	 * @return
+	 * @return ListOfOfferAppliedPrice
 	 */
 	public static Map<String, Object> getListOfOfferAppliedPrice(String deviceId,
 			Map<String, Map<String, Map<String, List<PriceForBundleAndHardware>>>> ilsPriceForBundleAndHardwareMap) {
@@ -523,7 +523,9 @@ public class CacheDeviceDaoUtils {
 									deviceMonthlyPrice.setNet(monthly.getNet());
 									deviceMonthlyPrice.setVat(monthly.getVat());
 									finance.setMonthlyPrice(deviceMonthlyPrice);
-									com.vf.uk.dal.device.entity.Price totalInterest = financsOption.getTotalPriceWithInterest();									com.vf.uk.dal.utility.solr.entity.Price totalPriceWithInterest = new com.vf.uk.dal.utility.solr.entity.Price();
+									com.vf.uk.dal.device.entity.Price totalInterest = financsOption
+											.getTotalPriceWithInterest();
+									com.vf.uk.dal.utility.solr.entity.Price totalPriceWithInterest = new com.vf.uk.dal.utility.solr.entity.Price();
 									totalPriceWithInterest.setGross(totalInterest.getGross());
 									totalPriceWithInterest.setNet(totalInterest.getNet());
 									totalPriceWithInterest.setVat(totalInterest.getVat());
@@ -688,7 +690,7 @@ public class CacheDeviceDaoUtils {
 	 * @author krishna.reddy Sprint-6.6
 	 * @param deviceId
 	 * @param ilsPriceForBundleAndHardwareMap
-	 * @return
+	 * @return ListOfIlsPriceWithoutOfferCode
 	 */
 	public static Map<String, Object> getListOfIlsPriceWithoutOfferCode(String deviceId,
 			Map<String, Map<String, List<PriceForBundleAndHardware>>> ilsPriceForBundleAndHardwareMap) {
@@ -840,7 +842,8 @@ public class CacheDeviceDaoUtils {
 								deviceMonthlyPrice.setNet(monthly.getNet());
 								deviceMonthlyPrice.setVat(monthly.getVat());
 								finance.setMonthlyPrice(deviceMonthlyPrice);
-								com.vf.uk.dal.device.entity.Price totalInterest = financsOption.getTotalPriceWithInterest();
+								com.vf.uk.dal.device.entity.Price totalInterest = financsOption
+										.getTotalPriceWithInterest();
 								com.vf.uk.dal.utility.solr.entity.Price totalPriceWithInterest = new com.vf.uk.dal.utility.solr.entity.Price();
 								totalPriceWithInterest.setGross(totalInterest.getGross());
 								totalPriceWithInterest.setNet(totalInterest.getNet());
@@ -998,7 +1001,7 @@ public class CacheDeviceDaoUtils {
 	/**
 	 * 
 	 * @param preCalcPlanList
-	 * @return
+	 * @return DevicePreCalculatedData
 	 */
 	public static List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.DevicePreCalculatedData> convertDevicePreCalDataToSolrData(
 			List<DevicePreCalculatedData> preCalcPlanList) {
@@ -1042,7 +1045,7 @@ public class CacheDeviceDaoUtils {
 	/**
 	 * 
 	 * @param listOfMedia
-	 * @return
+	 * @return List<Media>
 	 */
 	public static List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.Media> getListOfSolrMedia(
 			List<Media> listOfMedia) {
@@ -1140,7 +1143,7 @@ public class CacheDeviceDaoUtils {
 			}
 
 			hardwarePrice.setOneOffDiscountPrice(oneOffDiscountPrice);
-			
+
 			List<com.vf.uk.dal.utility.solr.entity.DeviceFinancingOption> deviceFinancingOption = hardwarePrice1
 					.getFinancingOptions();
 			List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.DeviceFinancingOption> financeOptions = null;
@@ -1180,7 +1183,7 @@ public class CacheDeviceDaoUtils {
 	/**
 	 * 
 	 * @param offerAppliedPriceList
-	 * @return
+	 * @return List<OfferAppliedPriceDetails>
 	 */
 	public static List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceDetails> getListOfOfferAppliedPriceDetails(
 			List<OfferAppliedPriceDetails> offerAppliedPriceList) {

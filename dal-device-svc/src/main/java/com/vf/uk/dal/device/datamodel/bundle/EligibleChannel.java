@@ -1,13 +1,11 @@
 package com.vf.uk.dal.device.datamodel.bundle;
 
-
 public class EligibleChannel {
 
-	
 	private String channelName;
-	
+
 	private String startDate;
-	
+
 	private String endDate;
 
 	public EligibleChannel() {
