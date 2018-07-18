@@ -16,21 +16,24 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 
 /**
- *  
+ * 
  * Swagger configuration class for Device API
- * @author  
+ * 
+ * @author
  * 
  *
  */
 public class SwaggerConfiguration {
 	@Value("${info.build.version}")
 	private String versionNumber;
-	
+
 	@Value("${info.build.projectName}")
 	private String projectName;
 
 	/**
-	 * Generates documentation for all the services under com.vf.uk.dal.device.controller
+	 * Generates documentation for all the services under
+	 * com.vf.uk.dal.device.controller
+	 * 
 	 * @return
 	 */
 	@Bean
@@ -45,4 +48,3 @@ public class SwaggerConfiguration {
 				.version(versionNumber).build();
 	}
 }
-

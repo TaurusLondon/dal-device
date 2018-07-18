@@ -1,31 +1,32 @@
 package com.vf.uk.dal.device.datamodel.bundle;
 
-
-
 public class LineRental {
 
-	
 	private String lineRentalProductId;
-	
-    private Long lineRentalAmount;
-	
-	
+
+	private Long lineRentalAmount;
+
 	public LineRental() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
 	public String getLineRentalProductId() {
 		return lineRentalProductId;
 	}
+
 	public void setLineRentalProductId(String lineRentalProductId) {
 		this.lineRentalProductId = lineRentalProductId;
 	}
+
 	public Long getLineRentalAmount() {
 		return lineRentalAmount;
 	}
+
 	public void setLineRentalAmount(Long lineRentalAmount) {
 		this.lineRentalAmount = lineRentalAmount;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -34,6 +35,7 @@ public class LineRental {
 		result = prime * result + ((lineRentalProductId == null) ? 0 : lineRentalProductId.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -55,13 +57,11 @@ public class LineRental {
 			return false;
 		return true;
 	}
+
 	@Override
 	public String toString() {
 		return "LineRental [lineRentalProductId=" + lineRentalProductId + ", lineRentalAmount=" + lineRentalAmount
 				+ "]";
 	}
-    
-   
-    
-	
+
 }

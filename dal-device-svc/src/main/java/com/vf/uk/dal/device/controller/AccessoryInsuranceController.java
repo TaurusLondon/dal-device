@@ -65,7 +65,7 @@ public class AccessoryInsuranceController {
 	 * @param deviceId
 	 * @param journeyType
 	 * @param offerCode
-	 * @return
+	 * @return getAccessoriesOfDevice
 	 */
 	@ApiOperation(value = "Get compatible accessory details for the given device Id", notes = "The service gets the details of compatible accessory along with the necessary information in the response.", response = AccessoryTileGroup.class, responseContainer = "List", tags = {
 			"AccessoryTileGroup", })
@@ -94,7 +94,7 @@ public class AccessoryInsuranceController {
 	 * 
 	 * @param deviceId
 	 * @param journeyType
-	 * @return
+	 * @return getInsuranceById
 	 */
 	@ApiOperation(value = "Get the list of insurance", notes = "The service gets the details of insurance available with device.", response = Insurances.class, tags = {
 			"Insurances", })

@@ -5,38 +5,34 @@
 // Generated on: 2017.01.02 at 10:51:22 AM IST 
 //
 
-
 package com.vf.uk.dal.device.datamodel.product;
 
-
 public class Discount {
-	
-	
-    private Double amount;
-	
-    private String type;
 
-	
-    public Discount() {
+	private Double amount;
+
+	private String type;
+
+	public Discount() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	public Double getAmount() {
-        return amount;
-    }
+		return amount;
+	}
 
-    public void setAmount(Double value) {
-        this.amount = value;
-    }
-    
-    public String getType() {
-        return type;
-    }
+	public void setAmount(Double value) {
+		this.amount = value;
+	}
 
-    public void setType(String value) {
-        this.type = value;
-    }
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String value) {
+		this.type = value;
+	}
 
 	@Override
 	public int hashCode() {

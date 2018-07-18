@@ -5,20 +5,13 @@
 // Generated on: 2017.01.02 at 03:25:52 PM IST 
 //
 
-
 package com.vf.uk.dal.device.datamodel.bundle;
 
 import java.util.List;
 
-
-
-
 public class Misc {
 
-
-    private List<ItemAttribute> itemAttribute;
-	
-	
+	private List<ItemAttribute> itemAttribute;
 
 	public Misc() {
 		super();
@@ -62,9 +55,5 @@ public class Misc {
 	public String toString() {
 		return "Misc [itemAttribute=" + itemAttribute + "]";
 	}
-    
-    
-
-  
 
 }

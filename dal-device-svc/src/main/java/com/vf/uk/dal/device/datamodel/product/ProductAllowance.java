@@ -1,44 +1,41 @@
 package com.vf.uk.dal.device.datamodel.product;
 
-
 public class ProductAllowance {
-	
-	
-    private String type;
-	
-    private String uom;
-	
-    private String value;
 
-	
-    public ProductAllowance() {
+	private String type;
+
+	private String uom;
+
+	private String value;
+
+	public ProductAllowance() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	public String getType() {
-        return type;
-    }
+		return type;
+	}
 
-    public void setType(String value) {
-        this.type = value;
-    }
+	public void setType(String value) {
+		this.type = value;
+	}
 
-    public String getUOM() {
-        return uom;
-    }
+	public String getUOM() {
+		return uom;
+	}
 
-    public void setUOM(String value) {
-        this.uom = value;
-    }
+	public void setUOM(String value) {
+		this.uom = value;
+	}
 
-    public String getValue() {
-        return value;
-    }
+	public String getValue() {
+		return value;
+	}
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+	public void setValue(String value) {
+		this.value = value;
+	}
 
 	@Override
 	public int hashCode() {

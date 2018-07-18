@@ -5,9 +5,9 @@ import java.util.List;
 public class FacetField {
 
 	private String name;
-	
+
 	private List<Count> values;
-	
+
 	private int valueCount;
 
 	public String getName() {
@@ -33,5 +33,5 @@ public class FacetField {
 	public void setValueCount(int valueCount) {
 		this.valueCount = valueCount;
 	}
-	
+
 }

@@ -2,56 +2,63 @@ package com.vf.uk.dal.device.datamodel.merchandisingpromotion;
 
 import java.util.List;
 
-
 public class MerchandisingProduct {
-	
-	
-    private String promotionId;
-	
+
+	private String promotionId;
+
 	private String productLine;
-	
-    private String productPath;
-	
+
+	private String productPath;
+
 	private String action;
-	
-    private List<DiscountMP> discounts;
-    
-	
-	
+
+	private List<DiscountMP> discounts;
+
 	public MerchandisingProduct() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
 	public String getPromotionId() {
 		return promotionId;
 	}
+
 	public void setPromotionId(String promotionId) {
 		this.promotionId = promotionId;
 	}
+
 	public String getProductLine() {
 		return productLine;
 	}
+
 	public void setProductLine(String productLine) {
 		this.productLine = productLine;
 	}
+
 	public String getProductPath() {
 		return productPath;
 	}
+
 	public void setProductPath(String productPath) {
 		this.productPath = productPath;
 	}
+
 	public String getAction() {
 		return action;
 	}
+
 	public void setAction(String action) {
 		this.action = action;
 	}
+
 	public List<DiscountMP> getDiscounts() {
 		return discounts;
 	}
+
 	public void setDiscounts(List<DiscountMP> discounts) {
 		this.discounts = discounts;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -63,6 +70,7 @@ public class MerchandisingProduct {
 		result = prime * result + ((promotionId == null) ? 0 : promotionId.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -99,13 +107,11 @@ public class MerchandisingProduct {
 			return false;
 		return true;
 	}
+
 	@Override
 	public String toString() {
 		return "MerchandisingProduct [promotionId=" + promotionId + ", productLine=" + productLine + ", productPath="
 				+ productPath + ", action=" + action + ", discounts=" + discounts + "]";
 	}
-
-    
-    
 
 }

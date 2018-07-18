@@ -5,18 +5,14 @@
 // Generated on: 2017.01.02 at 03:25:52 PM IST 
 //
 
-
 package com.vf.uk.dal.device.datamodel.bundle;
 
 import java.util.List;
 
+public class PromoteAs {
 
-public class PromoteAs { 
-	
-  
-    private List<String> promotionName;
+	private List<String> promotionName;
 
-	
 	public PromoteAs() {
 		super();
 	}
@@ -59,7 +55,4 @@ public class PromoteAs {
 		return "PromoteAs [promotionName=" + promotionName + "]";
 	}
 
-	
-    
-    
 }

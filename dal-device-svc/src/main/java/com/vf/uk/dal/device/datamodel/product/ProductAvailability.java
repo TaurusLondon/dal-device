@@ -1,47 +1,42 @@
 package com.vf.uk.dal.device.datamodel.product;
 
-
 import java.sql.Date;
-
 
 public class ProductAvailability {
 
-    private Date start;
-	
-    private Date end;
-	
-    private boolean salesExpired;
+	private Date start;
 
-	
-    public ProductAvailability() {
+	private Date end;
+
+	private boolean salesExpired;
+
+	public ProductAvailability() {
 		super();
 	}
 
 	public Date getStart() {
-        return start;
-    }
+		return start;
+	}
 
-    public void setStart(Date value) {
-        this.start = value;
-    }
+	public void setStart(Date value) {
+		this.start = value;
+	}
 
+	public Date getEnd() {
+		return end;
+	}
 
-    public Date getEnd() {
-        return end;
-    }
+	public void setEnd(Date value) {
+		this.end = value;
+	}
 
-    public void setEnd(Date value) {
-        this.end = value;
-    }
+	public boolean isSalesExpired() {
+		return salesExpired;
+	}
 
-
-    public boolean isSalesExpired() {
-        return salesExpired;
-    }
-
-    public void setSalesExpired(boolean value) {
-        this.salesExpired = value;
-    }
+	public void setSalesExpired(boolean value) {
+		this.salesExpired = value;
+	}
 
 	@Override
 	public int hashCode() {

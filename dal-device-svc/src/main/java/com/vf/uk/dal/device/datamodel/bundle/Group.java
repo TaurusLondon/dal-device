@@ -2,49 +2,53 @@ package com.vf.uk.dal.device.datamodel.bundle;
 
 import java.util.List;
 
-
 public class Group {
-	
-	
-	
-    private String groupName;
-	
-    private Long priority;
-	
-    private boolean comparable;
-	
-    private List<Specification> specifications;
-	
-	
-	
+
+	private String groupName;
+
+	private Long priority;
+
+	private boolean comparable;
+
+	private List<Specification> specifications;
+
 	public Group() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
 	public String getGroupName() {
 		return groupName;
 	}
+
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;
 	}
+
 	public Long getPriority() {
 		return priority;
 	}
+
 	public void setPriority(Long priority) {
 		this.priority = priority;
 	}
+
 	public boolean isComparable() {
 		return comparable;
 	}
+
 	public void setComparable(boolean comparable) {
 		this.comparable = comparable;
 	}
+
 	public List<Specification> getSpecifications() {
 		return specifications;
 	}
+
 	public void setSpecifications(List<Specification> specifications) {
 		this.specifications = specifications;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -55,6 +59,7 @@ public class Group {
 		result = prime * result + ((specifications == null) ? 0 : specifications.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -83,12 +88,11 @@ public class Group {
 			return false;
 		return true;
 	}
+
 	@Override
 	public String toString() {
 		return "Group [groupName=" + groupName + ", priority=" + priority + ", comparable=" + comparable
 				+ ", specifications=" + specifications + "]";
 	}
-    
-   
 
 }

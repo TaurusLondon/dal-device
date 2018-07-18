@@ -17,7 +17,7 @@ import com.vf.uk.dal.device.utils.Constants;
 
 /**
  * 
- * This Aspect class to handle catalog Version 
+ * This Aspect class to handle catalog Version
  *
  */
 @Aspect
@@ -39,10 +39,10 @@ public class CatalogServiceAspect {
 			if (StringUtils.isNotBlank(versionFromHeader)) {
 				version = "dal-cat-" + versionFromHeader;
 				Constants.CATALOG_VERSION.set(version);
-			}else {
+			} else {
 				Constants.CATALOG_VERSION.set(null);
 			}
-			
+
 		}
 		if (!StringUtils.isNotBlank(version) && !StringUtils.isNotBlank(Constants.CATALOG_VERSION.get())) {
 			Constants.CATALOG_VERSION.set(

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-04-17T05:45:22.340Z")
 
-public class DeviceFinancingOption   {
+public class DeviceFinancingOption {
 
 	@JsonProperty("financeTerm")
 	private String financeTerm = null;
@@ -191,4 +191,3 @@ public class DeviceFinancingOption   {
 		return o.toString().replace("\n", "\n    ");
 	}
 }
-

@@ -41,48 +41,52 @@ import com.vf.uk.dal.utility.solr.entity.PriceInfo;
  *
  */
 @Component("deviceTileCacheDAO")
-public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO{
+public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 	@Autowired
 	DataSourceInitializer dataSourceInitializer;
-	
+
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 
 	@Autowired
 	DataSource datasource;
-/**
- * 
- * @return
- */
+
+	/**
+	 * 
+	 * @return
+	 */
 	public JdbcTemplate getJdbcTemplate() {
 		DataSource ds = dataSourceInitializer.getDataSource();
 		return new JdbcTemplate(ds);
 	}
-/**
- * 
- * @param tablename
- */
+
+	/**
+	 * 
+	 * @param tablename
+	 */
 	public void delete(String tablename) {
-		String sql = "DELETE FROM PRODUCT."+tablename;
-       getJdbcTemplate().update(sql);
+		String sql = "DELETE FROM PRODUCT." + tablename;
+		getJdbcTemplate().update(sql);
 
 	}
-/**
- * 
- * @param tablename
- * @return
- */
+
+	/**
+	 * 
+	 * @param tablename
+	 * @return count
+	 */
 	public int count(String tablename) {
-		String sql = "SELECT COUNT(*) FROM PRODUCT."+tablename;
+		String sql = "SELECT COUNT(*) FROM PRODUCT." + tablename;
 		int count;
-		count=getJdbcTemplate().queryForObject(sql, Integer.class);
+		count = getJdbcTemplate().queryForObject(sql, Integer.class);
 		return count;
 	}
-/**
- * 
- * @param listProductGroupForDeviceListing
- * @return
- */
+
+	/**
+	 * 
+	 * @param listProductGroupForDeviceListing
+	 * @return DeviceListPreCalcData
+	 */
 	@Override
 	public int saveDeviceListPreCalcData(List<DevicePreCalculatedData> listProductGroupForDeviceListing) {
 		int result = 0;
@@ -92,94 +96,94 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO{
 		if (count("DEVICE_LIST_PRE_CALC_DATA") > 0) {
 			delete("DEVICE_LIST_PRE_CALC_DATA");
 		}
-		String sql="INSERT INTO PRODUCT.DEVICE_LIST_PRE_CALC_DATA"
-			+"(DEVICE_ID,RATING,LEAD_PLAN_ID,PRODUCT_GROUP_NAME,PRODUCT_GROUP_ID,"
-			+ "BUNDLE_MNTHLY_PRICE_GROSS, BUNDLE_MNTHLY_PRICE_NET, BUNDLE_MNTHLY_PRICE_VAT,"
-			+ "BUNDLE_MNTHLY_DISC_PRICE_GROSS, BUNDLE_MNTHLY_DISC_PRICE_NET, BUNDLE_MNTHLY_DISC_PRICE_VAT,"
-			+ "HW_ONE_OFF_PRICE_GROSS, HW_ONE_OFF_PRICE_NET, HW_ONE_OFF_PRICE_VAT,"
-			+ "HW_ONE_OFF_DISC_PRICE_GROSS, HW_ONE_OFF_DISC_PRICE_NET, HW_ONE_OFF_DISC_PRICE_VAT, CREATE_UPDATE_TIME,"
-			+ "IS_LEAD_MEMBER, MINIMUM_COST,NON_UPGRADE_LEAD_DEVICE_ID,UPGRADE_LEAD_DEVICE_ID,NON_UPGRADE_LEAD_PLAN_ID,UPGRADE_LEAD_PLAN_ID)"
-			+" values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-			int i[] = getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
+		String sql = "INSERT INTO PRODUCT.DEVICE_LIST_PRE_CALC_DATA"
+				+ "(DEVICE_ID,RATING,LEAD_PLAN_ID,PRODUCT_GROUP_NAME,PRODUCT_GROUP_ID,"
+				+ "BUNDLE_MNTHLY_PRICE_GROSS, BUNDLE_MNTHLY_PRICE_NET, BUNDLE_MNTHLY_PRICE_VAT,"
+				+ "BUNDLE_MNTHLY_DISC_PRICE_GROSS, BUNDLE_MNTHLY_DISC_PRICE_NET, BUNDLE_MNTHLY_DISC_PRICE_VAT,"
+				+ "HW_ONE_OFF_PRICE_GROSS, HW_ONE_OFF_PRICE_NET, HW_ONE_OFF_PRICE_VAT,"
+				+ "HW_ONE_OFF_DISC_PRICE_GROSS, HW_ONE_OFF_DISC_PRICE_NET, HW_ONE_OFF_DISC_PRICE_VAT, CREATE_UPDATE_TIME,"
+				+ "IS_LEAD_MEMBER, MINIMUM_COST,NON_UPGRADE_LEAD_DEVICE_ID,UPGRADE_LEAD_DEVICE_ID,NON_UPGRADE_LEAD_PLAN_ID,UPGRADE_LEAD_PLAN_ID)"
+				+ " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		int i[] = getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
 
-				@Override
-				public void setValues(PreparedStatement ps, int i) throws SQLException {
-						DevicePreCalculatedData productGroupForDeviceListing = listProductGroupForDeviceListing.get(i);
-						PriceInfo priceInfo= productGroupForDeviceListing.getPriceInfo();
-						ps.setString(1, productGroupForDeviceListing.getDeviceId());
-						ps.setString(2, String.valueOf(productGroupForDeviceListing.getRating()));
-						ps.setString(3, productGroupForDeviceListing.getLeadPlanId());
-						ps.setString(4, productGroupForDeviceListing.getProductGroupName());
-						ps.setString(5, productGroupForDeviceListing.getProductGroupId());
-						if(priceInfo!=null && priceInfo.getBundlePrice()!=null && priceInfo.getBundlePrice().getMonthlyPrice()!=null && priceInfo.getBundlePrice().getMonthlyPrice().getGross()!=null)
-						{
-								ps.setString(6, priceInfo.getBundlePrice().getMonthlyPrice().getGross());
-								ps.setString(7, priceInfo.getBundlePrice().getMonthlyPrice().getNet());
-								ps.setString(8, priceInfo.getBundlePrice().getMonthlyPrice().getVat());
-							if(priceInfo.getBundlePrice().getMonthlyDiscountPrice()!=null)
-							{
-								ps.setString(9, priceInfo.getBundlePrice().getMonthlyDiscountPrice().getGross());
-								ps.setString(10, priceInfo.getBundlePrice().getMonthlyDiscountPrice().getNet());
-								ps.setString(11, priceInfo.getBundlePrice().getMonthlyDiscountPrice().getVat());
-							}
-						}else{
-							ps.setString(6, null);
-							ps.setString(7, null);
-							ps.setString(8, null);
-							ps.setString(9, null);
-							ps.setString(10, null);
-							ps.setString(11, null);
-						}
-						if(priceInfo!=null && priceInfo.getHardwarePrice()!=null)
-						{
-							if(priceInfo.getHardwarePrice().getOneOffPrice()!=null)
-							{
-								ps.setString(12, priceInfo.getHardwarePrice().getOneOffPrice().getGross());
-								ps.setString(13, priceInfo.getHardwarePrice().getOneOffPrice().getNet());
-								ps.setString(14, priceInfo.getHardwarePrice().getOneOffPrice().getVat());
-							}if(priceInfo.getHardwarePrice().getOneOffDiscountPrice()!=null)
-							{
-								ps.setString(15, priceInfo.getHardwarePrice().getOneOffDiscountPrice().getGross());
-								ps.setString(16, priceInfo.getHardwarePrice().getOneOffDiscountPrice().getNet());
-								ps.setString(17, priceInfo.getHardwarePrice().getOneOffDiscountPrice().getVat());
-							}
-						}else{
-							ps.setString(12, null);
-							ps.setString(13, null);
-							ps.setString(14, null);
-							ps.setString(15, null);
-							ps.setString(16, null);
-							ps.setString(17, null);
-						}
-						Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-						ps.setTimestamp(18,timestamp);
-						ps.setString(19, productGroupForDeviceListing.getIsLeadMember());
-						ps.setString(20, productGroupForDeviceListing.getMinimumCost());
-						ps.setString(21, productGroupForDeviceListing.getNonUpgradeLeadDeviceId());
-						ps.setString(22, productGroupForDeviceListing.getUpgradeLeadDeviceId());
-						ps.setString(23, productGroupForDeviceListing.getNonUpgradeLeadPlanId());
-						ps.setString(24, productGroupForDeviceListing.getUpgradeLeadPlanId());
+			@Override
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				DevicePreCalculatedData productGroupForDeviceListing = listProductGroupForDeviceListing.get(i);
+				PriceInfo priceInfo = productGroupForDeviceListing.getPriceInfo();
+				ps.setString(1, productGroupForDeviceListing.getDeviceId());
+				ps.setString(2, String.valueOf(productGroupForDeviceListing.getRating()));
+				ps.setString(3, productGroupForDeviceListing.getLeadPlanId());
+				ps.setString(4, productGroupForDeviceListing.getProductGroupName());
+				ps.setString(5, productGroupForDeviceListing.getProductGroupId());
+				if (priceInfo != null && priceInfo.getBundlePrice() != null
+						&& priceInfo.getBundlePrice().getMonthlyPrice() != null
+						&& priceInfo.getBundlePrice().getMonthlyPrice().getGross() != null) {
+					ps.setString(6, priceInfo.getBundlePrice().getMonthlyPrice().getGross());
+					ps.setString(7, priceInfo.getBundlePrice().getMonthlyPrice().getNet());
+					ps.setString(8, priceInfo.getBundlePrice().getMonthlyPrice().getVat());
+					if (priceInfo.getBundlePrice().getMonthlyDiscountPrice() != null) {
+						ps.setString(9, priceInfo.getBundlePrice().getMonthlyDiscountPrice().getGross());
+						ps.setString(10, priceInfo.getBundlePrice().getMonthlyDiscountPrice().getNet());
+						ps.setString(11, priceInfo.getBundlePrice().getMonthlyDiscountPrice().getVat());
+					}
+				} else {
+					ps.setString(6, null);
+					ps.setString(7, null);
+					ps.setString(8, null);
+					ps.setString(9, null);
+					ps.setString(10, null);
+					ps.setString(11, null);
 				}
-				
-				@Override
-				public int getBatchSize() {
-					return listProductGroupForDeviceListing.size();
+				if (priceInfo != null && priceInfo.getHardwarePrice() != null) {
+					if (priceInfo.getHardwarePrice().getOneOffPrice() != null) {
+						ps.setString(12, priceInfo.getHardwarePrice().getOneOffPrice().getGross());
+						ps.setString(13, priceInfo.getHardwarePrice().getOneOffPrice().getNet());
+						ps.setString(14, priceInfo.getHardwarePrice().getOneOffPrice().getVat());
+					}
+					if (priceInfo.getHardwarePrice().getOneOffDiscountPrice() != null) {
+						ps.setString(15, priceInfo.getHardwarePrice().getOneOffDiscountPrice().getGross());
+						ps.setString(16, priceInfo.getHardwarePrice().getOneOffDiscountPrice().getNet());
+						ps.setString(17, priceInfo.getHardwarePrice().getOneOffDiscountPrice().getVat());
+					}
+				} else {
+					ps.setString(12, null);
+					ps.setString(13, null);
+					ps.setString(14, null);
+					ps.setString(15, null);
+					ps.setString(16, null);
+					ps.setString(17, null);
 				}
-			});
-			
-			if (i.length > 0) {
-				result = 1;
+				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+				ps.setTimestamp(18, timestamp);
+				ps.setString(19, productGroupForDeviceListing.getIsLeadMember());
+				ps.setString(20, productGroupForDeviceListing.getMinimumCost());
+				ps.setString(21, productGroupForDeviceListing.getNonUpgradeLeadDeviceId());
+				ps.setString(22, productGroupForDeviceListing.getUpgradeLeadDeviceId());
+				ps.setString(23, productGroupForDeviceListing.getNonUpgradeLeadPlanId());
+				ps.setString(24, productGroupForDeviceListing.getUpgradeLeadPlanId());
 			}
+
+			@Override
+			public int getBatchSize() {
+				return listProductGroupForDeviceListing.size();
+			}
+		});
+
+		if (i.length > 0) {
+			result = 1;
+		}
 		return result;
 	}
+
 	/**
 	 * 
 	 * @param mediaList
 	 * @param deviceId
+	 * @return DeviceMediaData
 	 */
 	@Override
 	public int saveDeviceMediaData(List<Media> mediaList, String deviceId) {
-		int result=0;
+		int result = 0;
 		LogHelper.info(this, "Begin DEVICE_LIST_PRE_CALC_MEDIA ");
 		String sql = "INSERT INTO PRODUCT.DEVICE_LIST_PRE_CALC_MEDIA (DEVICE_ID,ID,VALUE,TYPE,DESCRIPTION,DISCOUNT_ID,PROMO_CATEGORY,OFFER_CODE) values (?,?,?,?,?,?,?,?)";
 		int i[] = getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
@@ -202,16 +206,17 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO{
 			}
 		});
 		LogHelper.info(this, "End DEVICE_LIST_PRE_CALC_MEDIA method");
-		
+
 		if (i.length > 0) {
 			result = 1;
 		}
 		return result;
 	}
+
 	/**
 	 * 
 	 * @param listProductGroupForDeviceListing
-	 * @return
+	 * @return DeviceListILSCalcData
 	 */
 	@Override
 	public int saveDeviceListILSCalcData(List<OfferAppliedPriceDetails> offerAppliedPricesList) {
@@ -220,8 +225,7 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO{
 			delete("DEVICE_OFFERAPPLIED_PRICE_DATA");
 		}
 		LogHelper.info(this, "Begin DEVICE_OFFERAPPLIED_PRICE_DATA ");
-		String sql = "INSERT INTO PRODUCT.DEVICE_OFFERAPPLIED_PRICE_DATA "
-				+ "(OFFER_CODE, DEVICE_ID,BUNDLE_ID, "
+		String sql = "INSERT INTO PRODUCT.DEVICE_OFFERAPPLIED_PRICE_DATA " + "(OFFER_CODE, DEVICE_ID,BUNDLE_ID, "
 				+ "BUNDLE_MNTHLY_PRICE_GROSS,BUNDLE_MNTHLY_PRICE_NET, BUNDLE_MNTHLY_PRICE_VAT, "
 				+ "BUNDLE_MNTHLY_DISC_PRICE_GROSS, BUNDLE_MNTHLY_DISC_PRICE_NET, BUNDLE_MNTHLY_DISC_PRICE_VAT, "
 				+ "HW_ONE_OFF_PRICE_GROSS, HW_ONE_OFF_PRICE_NET, HW_ONE_OFF_PRICE_VAT, "
@@ -231,96 +235,90 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO{
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
 				OfferAppliedPriceDetails offerAppliedPriceDetails = offerAppliedPricesList.get(i);
-				if(offerAppliedPriceDetails!=null)
-				{
-				ps.setString(1, offerAppliedPriceDetails.getOfferCode());
-				ps.setString(2, offerAppliedPriceDetails.getDeviceId());
-				BundlePrice bundlePrice=offerAppliedPriceDetails.getBundlePrice();
-				if(bundlePrice==null)
-				{
-					ps.setString(3, null);
-					ps.setString(4, null);
-					ps.setString(5, null);
-					ps.setString(6, null);
-					ps.setString(7, null);
-					ps.setString(8, null);
-					ps.setString(9, null);
-				}else{
-					ps.setString(3, bundlePrice.getBundleId());
-					MonthlyPrice monthlyPrice=bundlePrice.getMonthlyPrice();
-					if(monthlyPrice!=null && monthlyPrice.getGross()!=null)
-					{
-						ps.setString(4, monthlyPrice.getGross());
-						ps.setString(5, monthlyPrice.getNet());
-						ps.setString(6, monthlyPrice.getVat());
-					}else{
+				if (offerAppliedPriceDetails != null) {
+					ps.setString(1, offerAppliedPriceDetails.getOfferCode());
+					ps.setString(2, offerAppliedPriceDetails.getDeviceId());
+					BundlePrice bundlePrice = offerAppliedPriceDetails.getBundlePrice();
+					if (bundlePrice == null) {
+						ps.setString(3, null);
 						ps.setString(4, null);
 						ps.setString(5, null);
 						ps.setString(6, null);
-					}
-					MonthlyDiscountPrice monthlyDiscountPrice=bundlePrice.getMonthlyDiscountPrice();
-					if(monthlyDiscountPrice!=null && monthlyDiscountPrice.getGross()!=null)
-					{
-						ps.setString(7, monthlyDiscountPrice.getGross());
-						ps.setString(8, monthlyDiscountPrice.getNet());
-						ps.setString(9, monthlyDiscountPrice.getVat());
-					}else{
 						ps.setString(7, null);
 						ps.setString(8, null);
 						ps.setString(9, null);
+					} else {
+						ps.setString(3, bundlePrice.getBundleId());
+						MonthlyPrice monthlyPrice = bundlePrice.getMonthlyPrice();
+						if (monthlyPrice != null && monthlyPrice.getGross() != null) {
+							ps.setString(4, monthlyPrice.getGross());
+							ps.setString(5, monthlyPrice.getNet());
+							ps.setString(6, monthlyPrice.getVat());
+						} else {
+							ps.setString(4, null);
+							ps.setString(5, null);
+							ps.setString(6, null);
+						}
+						MonthlyDiscountPrice monthlyDiscountPrice = bundlePrice.getMonthlyDiscountPrice();
+						if (monthlyDiscountPrice != null && monthlyDiscountPrice.getGross() != null) {
+							ps.setString(7, monthlyDiscountPrice.getGross());
+							ps.setString(8, monthlyDiscountPrice.getNet());
+							ps.setString(9, monthlyDiscountPrice.getVat());
+						} else {
+							ps.setString(7, null);
+							ps.setString(8, null);
+							ps.setString(9, null);
+						}
 					}
-				}
-				HardwarePrice hardwarePrice=offerAppliedPriceDetails.getHardwarePrice();
-				if(hardwarePrice==null)
-				{
-					ps.setString(10, null);
-					ps.setString(11, null);
-					ps.setString(12, null);
-					ps.setString(13, null);
-					ps.setString(14, null);
-					ps.setString(15, null);
-				}else{
-					OneOffPrice oneOffPrice=hardwarePrice.getOneOffPrice();
-					if(oneOffPrice!=null && oneOffPrice.getGross()!=null)
-					{
-						ps.setString(10, oneOffPrice.getGross());
-						ps.setString(11, oneOffPrice.getNet());
-						ps.setString(12, oneOffPrice.getVat());
-					}else{
+					HardwarePrice hardwarePrice = offerAppliedPriceDetails.getHardwarePrice();
+					if (hardwarePrice == null) {
 						ps.setString(10, null);
 						ps.setString(11, null);
 						ps.setString(12, null);
-					}
-					OneOffDiscountPrice oneOffDiscountPrice=hardwarePrice.getOneOffDiscountPrice();
-					if(oneOffDiscountPrice!=null && oneOffDiscountPrice.getGross()!=null)
-					{
-						ps.setString(13, oneOffDiscountPrice.getGross());
-						ps.setString(14, oneOffDiscountPrice.getNet());
-						ps.setString(15, oneOffDiscountPrice.getVat());
-					}else{
 						ps.setString(13, null);
 						ps.setString(14, null);
 						ps.setString(15, null);
+					} else {
+						OneOffPrice oneOffPrice = hardwarePrice.getOneOffPrice();
+						if (oneOffPrice != null && oneOffPrice.getGross() != null) {
+							ps.setString(10, oneOffPrice.getGross());
+							ps.setString(11, oneOffPrice.getNet());
+							ps.setString(12, oneOffPrice.getVat());
+						} else {
+							ps.setString(10, null);
+							ps.setString(11, null);
+							ps.setString(12, null);
+						}
+						OneOffDiscountPrice oneOffDiscountPrice = hardwarePrice.getOneOffDiscountPrice();
+						if (oneOffDiscountPrice != null && oneOffDiscountPrice.getGross() != null) {
+							ps.setString(13, oneOffDiscountPrice.getGross());
+							ps.setString(14, oneOffDiscountPrice.getNet());
+							ps.setString(15, oneOffDiscountPrice.getVat());
+						} else {
+							ps.setString(13, null);
+							ps.setString(14, null);
+							ps.setString(15, null);
+						}
 					}
+					Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
+					ps.setTimestamp(16, timeStamp);
+					ps.setString(17, offerAppliedPriceDetails.getJourneyType());
 				}
-				Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
-				ps.setTimestamp(16, timeStamp);
-				ps.setString(17, offerAppliedPriceDetails.getJourneyType());
 			}
-		}
+
 			@Override
 			public int getBatchSize() {
 				return offerAppliedPricesList.size();
 			}
 		});
 		LogHelper.info(this, "End DEVICE_OFFERAPPLIED_PRICE_DATA method");
-		
+
 		if (i.length > 0) {
 			result = 1;
 		}
 		return result;
-		}
-	
+	}
+
 	Connection conn = null;
 
 	@Override
@@ -368,6 +366,7 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO{
 			}
 		}
 	}
+
 	/**
 	 * 
 	 */
@@ -437,6 +436,10 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO{
 
 	}
 
+	/**
+	 * @param jobId
+	 * @return CacheDeviceTileResponse
+	 */
 	@Override
 	public CacheDeviceTileResponse getCacheDeviceJobStatus(String jobId) throws ApplicationException {
 
@@ -446,7 +449,7 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO{
 			jdbcTemplate.setDataSource(datasource);
 			String query = "SELECT JOB_STATUS FROM DALMS_CACHE_SERVICES WHERE JOB_ID = ?";
 			Object[] params = new Object[] { jobId };
-			jobStatus = jdbcTemplate.queryForObject(query, String.class,params);
+			jobStatus = jdbcTemplate.queryForObject(query, String.class, params);
 			if (StringUtils.isEmpty(jobStatus) || StringUtils.isBlank(jobStatus)) {
 				throw new ApplicationException(ExceptionMessages.INVALID_JOB_ID);
 			} else {

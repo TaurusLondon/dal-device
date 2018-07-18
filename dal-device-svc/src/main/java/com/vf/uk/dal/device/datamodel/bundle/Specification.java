@@ -1,137 +1,113 @@
 package com.vf.uk.dal.device.datamodel.bundle;
 
-
 //import javax.xml.bind.annotation.XmlElement;
 
 public class Specification {
-	
-	 
-    private String name;
-	
-    private String value;
-	
-    private Long priority;
-	
-    private boolean comparable;
-	
-    private boolean isKey;
-	
-    private String valueType;
-	
+
+	private String name;
+
+	private String value;
+
+	private Long priority;
+
+	private boolean comparable;
+
+	private boolean isKey;
+
+	private String valueType;
+
 	private String valueUOM;
-	
+
 	private String footNote;
-	
+
 	private String description;
-	
+
 	private boolean hideInList;
-	
-	
+
 	public Specification() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-
 	public String getName() {
 		return name;
 	}
-
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-
 	public String getValue() {
 		return value;
 	}
-
 
 	public void setValue(String value) {
 		this.value = value;
 	}
 
-
 	public Long getPriority() {
 		return priority;
 	}
-
 
 	public void setPriority(Long priority) {
 		this.priority = priority;
 	}
 
-
 	public boolean isComparable() {
 		return comparable;
 	}
-
 
 	public void setComparable(boolean comparable) {
 		this.comparable = comparable;
 	}
 
-
 	public boolean isKey() {
 		return isKey;
 	}
-
 
 	public void setKey(boolean isKey) {
 		this.isKey = isKey;
 	}
 
-
 	public String getValueType() {
 		return valueType;
 	}
-
 
 	public void setValueType(String valueType) {
 		this.valueType = valueType;
 	}
 
-
 	public String getValueUOM() {
 		return valueUOM;
 	}
-
 
 	public void setValueUOM(String valueUOM) {
 		this.valueUOM = valueUOM;
 	}
 
-
 	public String getFootNote() {
 		return footNote;
 	}
-
 
 	public void setFootNote(String footNote) {
 		this.footNote = footNote;
 	}
 
-
 	public String getDescription() {
 		return description;
 	}
-
 
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-
 	public boolean isHideInList() {
 		return hideInList;
 	}
 
-
 	public void setHideInList(boolean hideInList) {
 		this.hideInList = hideInList;
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -149,7 +125,6 @@ public class Specification {
 		result = prime * result + ((valueUOM == null) ? 0 : valueUOM.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -204,7 +179,6 @@ public class Specification {
 		return true;
 	}
 
-
 	@Override
 	public String toString() {
 		return "Specification [name=" + name + ", value=" + value + ", priority=" + priority + ", comparable="
@@ -212,5 +186,4 @@ public class Specification {
 				+ ", footNote=" + footNote + ", description=" + description + ", hideInList=" + hideInList + "]";
 	}
 
-
-	}
+}

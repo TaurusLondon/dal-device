@@ -35,15 +35,17 @@ public class DeviceServiceCommonUtility {
 
 	@Autowired
 	DeviceDao deviceDao;
-	
+
 	@Autowired
 	DeviceESHelper deviceEs;
-	
+
 	@Autowired
 	RegistryClient registryclnt;
+
 	/**
 	 * @param deviceTile
 	 * @param leadMemberId
+	 * @return DeviceTileRating
 	 */
 	public String getDeviceTileRating(String leadMemberId) {
 		Map<String, String> rating = getDeviceReviewRating_Implementation(new ArrayList<>(Arrays.asList(leadMemberId)));
@@ -52,10 +54,11 @@ public class DeviceServiceCommonUtility {
 		LogHelper.info(this, "AvarageOverallRating for deviceId: " + leadMemberId + " Rating: " + avarageOverallRating);
 		return avarageOverallRating;
 	}
+
 	/**
 	 * 
 	 * @param listMemberIds
-	 * @return
+	 * @return DeviceReviewRating_Implementation
 	 */
 	public Map<String, String> getDeviceReviewRating_Implementation(List<String> listMemberIds) {
 
@@ -97,11 +100,11 @@ public class DeviceServiceCommonUtility {
 		}
 		return bvReviewAndRateMap;
 	}
-	
+
 	/**
 	 * 
 	 * @param listMemberIds
-	 * @return
+	 * @return List<BazaarVoice>
 	 */
 	public List<BazaarVoice> getReviewRatingList_Implementation(List<String> listMemberIds) {
 
@@ -118,6 +121,7 @@ public class DeviceServiceCommonUtility {
 			throw new ApplicationException(ExceptionMessages.BAZARVOICE_SERVICE_EXCEPTION);
 		}
 	}
+
 	/**
 	 * Identifies members based on the validation rules.
 	 * 
@@ -138,6 +142,7 @@ public class DeviceServiceCommonUtility {
 		}
 		return leadDeviceSkuId;
 	}
+
 	/**
 	 * validates the member based on the memberId.
 	 * 
@@ -166,10 +171,11 @@ public class DeviceServiceCommonUtility {
 
 		return memberFlag;
 	}
+
 	/**
 	 * @author manoj.bera
 	 * @param listOfPriceForBundleAndHardware
-	 * @return
+	 * @return PriceForBundleAndHardware
 	 */
 	public PriceForBundleAndHardware identifyLowestPriceOfPlanForDevice(
 			List<PriceForBundleAndHardware> listOfPriceForBundleHeaderLocal,
@@ -223,10 +229,11 @@ public class DeviceServiceCommonUtility {
 		}
 		return null;
 	}
+
 	/**
 	 * 
 	 * @param bundleHeaderForDeviceSorted
-	 * @return
+	 * @return List<PriceForBundleAndHardware>
 	 */
 	public List<PriceForBundleAndHardware> getAscendingOrderForOneoffPrice(
 			List<PriceForBundleAndHardware> bundleHeaderForDeviceSorted) {
@@ -274,7 +281,7 @@ public class DeviceServiceCommonUtility {
 	/**
 	 * 
 	 * @param listOfPriceForBundleAndHardware
-	 * @return
+	 * @return List<PriceForBundleAndHardware>
 	 */
 	public List<PriceForBundleAndHardware> getAscendingOrderForBundlePrice(
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware) {
@@ -316,6 +323,7 @@ public class DeviceServiceCommonUtility {
 		}
 
 	}
+
 	/**
 	 * @param commercialProduct
 	 * @param journeyType
@@ -333,8 +341,8 @@ public class DeviceServiceCommonUtility {
 		listOfBundles = bundleDetailsForDevice.getStandalonePlansList();
 		listOfCoupleRelationForMcs = bundleDetailsForDevice.getCouplePlansList();
 		listOfBundleHeaderForDevice.addAll(listOfBundles);
-		listOfCoupleRelationForMcs.forEach(coupleRelationMcs -> 
-			listOfBundleHeaderForDevice.addAll(coupleRelationMcs.getPlanList())
+		listOfCoupleRelationForMcs
+				.forEach(coupleRelationMcs -> listOfBundleHeaderForDevice.addAll(coupleRelationMcs.getPlanList())
 
 		);
 		Iterator<com.vf.uk.dal.utility.entity.BundleHeader> it = listOfBundleHeaderForDevice.iterator();
@@ -400,6 +408,7 @@ public class DeviceServiceCommonUtility {
 			LogHelper.info(this, "List Of Bundle and Hardware Tuple:Inside compatible " + bundleAndHardwareTupleList);
 		}
 	}
+
 	/**
 	 * @param gross
 	 * @param listOfEqualOneOffPriceForBundleHeader
@@ -410,8 +419,7 @@ public class DeviceServiceCommonUtility {
 			com.vf.uk.dal.utility.entity.BundleHeader bundleHeaderForDevice) {
 		if (bundleHeaderForDevice.getPriceInfo() != null
 				&& bundleHeaderForDevice.getPriceInfo().getHardwarePrice() != null
-				&& DeviceServiceImplUtility.getoneOffPrice(bundleHeaderForDevice)
-				&& gross != null) {
+				&& DeviceServiceImplUtility.getoneOffPrice(bundleHeaderForDevice) && gross != null) {
 			if ((bundleHeaderForDevice.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice().getGross() != null
 					|| bundleHeaderForDevice.getPriceInfo().getHardwarePrice().getOneOffPrice().getGross() != null)
 					&& (gross
@@ -427,7 +435,7 @@ public class DeviceServiceCommonUtility {
 	/**
 	 * 
 	 * @param bundleHeaderForDeviceSorted
-	 * @return
+	 * @return List<com.vf.uk.dal.utility.entity.BundleHeader>
 	 */
 	public List<com.vf.uk.dal.utility.entity.BundleHeader> getAscendingOrderForBundleHeaderOneoffPrice(
 			List<com.vf.uk.dal.utility.entity.BundleHeader> bundleHeaderForDeviceSorted) {
@@ -479,7 +487,7 @@ public class DeviceServiceCommonUtility {
 	/**
 	 * 
 	 * @param bundleHeaderForDeviceSorted
-	 * @return
+	 * @return List<com.vf.uk.dal.utility.entity.BundleHeader>
 	 */
 	public List<com.vf.uk.dal.utility.entity.BundleHeader> getAscendingOrderForBundleHeaderPrice(
 			List<com.vf.uk.dal.utility.entity.BundleHeader> bundleHeaderForDeviceSorted) {

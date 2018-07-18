@@ -1,31 +1,32 @@
 package com.vf.uk.dal.device.datamodel.bundle;
 
-
 public class ProductGroup {
 
-	
-	  
-    private String productGroupName;
-	 
-    private String groupRole;
-	
-	
+	private String productGroupName;
+
+	private String groupRole;
+
 	public ProductGroup() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
 	public String getProductGroupName() {
 		return productGroupName;
 	}
+
 	public void setProductGroupName(String productGroupName) {
 		this.productGroupName = productGroupName;
 	}
+
 	public String getProductGroupRole() {
 		return groupRole;
 	}
+
 	public void setProductGroupRole(String productGroupRole) {
 		this.groupRole = productGroupRole;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -34,6 +35,7 @@ public class ProductGroup {
 		result = prime * result + ((groupRole == null) ? 0 : groupRole.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -55,11 +57,10 @@ public class ProductGroup {
 			return false;
 		return true;
 	}
+
 	@Override
 	public String toString() {
 		return "ProductGroup [productGroupName=" + productGroupName + ", productGroupType=" + groupRole + "]";
 	}
-    
-	
 
 }

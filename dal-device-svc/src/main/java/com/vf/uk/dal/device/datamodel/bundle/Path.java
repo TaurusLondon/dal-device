@@ -5,66 +5,75 @@
 // Generated on: 2017.01.02 at 10:51:22 AM IST 
 //
 
-
 package com.vf.uk.dal.device.datamodel.bundle;
-
 
 public class Path {
 
-    private String promotionID;
-	
-    private String promotionProductLine;
-	
-    private String commitmentStart;
-	
-    private String duration;
-	
-    private Float penalty;
-	
-    private String proratePlan;
-	
-	
-	
+	private String promotionID;
+
+	private String promotionProductLine;
+
+	private String commitmentStart;
+
+	private String duration;
+
+	private Float penalty;
+
+	private String proratePlan;
+
 	public Path() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
 	public String getPromotionID() {
 		return promotionID;
 	}
+
 	public void setPromotionID(String promotionID) {
 		this.promotionID = promotionID;
 	}
+
 	public String getPromotionProductLine() {
 		return promotionProductLine;
 	}
+
 	public void setPromotionProductLine(String promotionProductLine) {
 		this.promotionProductLine = promotionProductLine;
 	}
+
 	public String getCommitmentStart() {
 		return commitmentStart;
 	}
+
 	public void setCommitmentStart(String commitmentStart) {
 		this.commitmentStart = commitmentStart;
 	}
+
 	public String getDuration() {
 		return duration;
 	}
+
 	public void setDuration(String duration) {
 		this.duration = duration;
 	}
+
 	public Float getPenalty() {
 		return penalty;
 	}
+
 	public void setPenalty(Float penalty) {
 		this.penalty = penalty;
 	}
+
 	public String getProratePlan() {
 		return proratePlan;
 	}
+
 	public void setProratePlan(String proratePlan) {
 		this.proratePlan = proratePlan;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -77,6 +86,7 @@ public class Path {
 		result = prime * result + ((proratePlan == null) ? 0 : proratePlan.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -118,13 +128,12 @@ public class Path {
 			return false;
 		return true;
 	}
+
 	@Override
 	public String toString() {
 		return "Path [promotionID=" + promotionID + ", promotionProductLine=" + promotionProductLine
 				+ ", commitmentStart=" + commitmentStart + ", duration=" + duration + ", penalty=" + penalty
 				+ ", proratePlan=" + proratePlan + "]";
 	}
-
-   
 
 }

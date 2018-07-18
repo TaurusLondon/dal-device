@@ -47,7 +47,7 @@ public class DeviceDetailsController {
 	 * manoj.bera
 	 * 
 	 * @param ex
-	 * @return
+	 * @return ErrorResponse
 	 */
 	@ExceptionHandler(MissingServletRequestParameterException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -64,7 +64,7 @@ public class DeviceDetailsController {
 	 * @param deviceId
 	 * @param journeyType
 	 * @param offerCode
-	 * @return
+	 * @return DeviceDetails
 	 */
 	@ApiOperation(value = "Get the device details for the given device Id", notes = "The service gets the details of the device specially price, equipment, specification, features, merchandising, etc in the response.", response = DeviceDetails.class, tags = {
 			"Device", })

@@ -17,16 +17,18 @@ import com.vf.uk.dal.device.datasource.conf.ElasticsearchRestCient;
 /**
  * DeviceApplication, will start the service as SpringBoot Application Added
  * Comments
+ * 
  * @author
  **/
 
 @Service
 @EnableTransactionManagement
-@EnableAsync 
+@EnableAsync
 @EnableCaching
 public class DeviceApplication {
 	@Autowired
 	ElasticsearchRestCient elasticsearchRestCient;
+
 	/**
 	 * 
 	 * @param args
@@ -34,10 +36,10 @@ public class DeviceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DeviceApplication.class, args);
 	}
-	
+
 	@Bean
 	/**
-	 * @author 
+	 * @author
 	 * @return
 	 */
 	public Executor asyncExecutor() {
@@ -49,7 +51,7 @@ public class DeviceApplication {
 		executor.initialize();
 		return executor;
 	}
-	
+
 	@Bean
 	public RestHighLevelClient getRestClientObject() {
 		return elasticsearchRestCient.getClient();

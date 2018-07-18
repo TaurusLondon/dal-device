@@ -2,7 +2,6 @@ package com.vf.uk.dal.device.datamodel.product;
 
 import java.util.List;
 
-
 public class CacheProductModel {
 
 	private String id;

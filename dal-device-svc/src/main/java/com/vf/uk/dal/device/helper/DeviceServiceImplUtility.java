@@ -111,7 +111,7 @@ public class DeviceServiceImplUtility {
 	/**
 	 * 
 	 * @param sortCriteria
-	 * @return
+	 * @return SortCriteria
 	 */
 	public static String getSortCriteria(String sortCriteria) {
 		String sortCriteriaLocal;
@@ -143,7 +143,7 @@ public class DeviceServiceImplUtility {
 	/**
 	 * 
 	 * @param variantsList
-	 * @return
+	 * @return ListOfEntityMembers
 	 */
 	public static List<com.vf.uk.dal.device.entity.Member> getListOfMembers(List<String> variantsList) {
 		com.vf.uk.dal.device.entity.Member member;
@@ -204,7 +204,7 @@ public class DeviceServiceImplUtility {
 	 * 
 	 * @param startDateTime
 	 * @param productModel2
-	 * @return
+	 * @return StartdateFromProductModel
 	 */
 	public static Date getStartdateFromProductModel(ProductModel productModel2) {
 		Date startDateTime = null;
@@ -222,7 +222,7 @@ public class DeviceServiceImplUtility {
 	 * 
 	 * @param endDateTime
 	 * @param productModel2
-	 * @return
+	 * @return EndDateFromProductModel
 	 */
 	public static Date getEndDateFromProductModel(ProductModel productModel2) {
 		Date endDateTime = null;
@@ -443,7 +443,7 @@ public class DeviceServiceImplUtility {
 
 	/**
 	 * @param journeyTypeInput
-	 * @return
+	 * @return JourneyForVariant
 	 */
 	public static String getJourneyForVariant(String journeyTypeInput) {
 		String journeyType;
@@ -490,7 +490,8 @@ public class DeviceServiceImplUtility {
 	 */
 	public static void calculateDiscount(Double creditLimit, Iterator<PriceForBundleAndHardware> iterator,
 			PriceForBundleAndHardware priceForBundleAndHardware) {
-		String discountType = DeviceTilesDaoUtils.isPartialOrFullTenureDiscount(priceForBundleAndHardware.getBundlePrice());
+		String discountType = DeviceTilesDaoUtils
+				.isPartialOrFullTenureDiscount(priceForBundleAndHardware.getBundlePrice());
 
 		if ((null != discountType && discountType.equals(Constants.FULL_DURATION_DISCOUNT))
 				&& null != priceForBundleAndHardware.getBundlePrice().getMonthlyDiscountPrice()
@@ -523,7 +524,8 @@ public class DeviceServiceImplUtility {
 			deviceSummary.setIsAffordable(false);
 		} else if (isConditionalAcceptJourney && null != deviceSummary.getPriceInfo()
 				&& null != deviceSummary.getPriceInfo().getBundlePrice()) {
-			String discountType = DeviceTilesDaoUtils.isPartialOrFullTenureDiscount(deviceSummary.getPriceInfo().getBundlePrice());
+			String discountType = DeviceTilesDaoUtils
+					.isPartialOrFullTenureDiscount(deviceSummary.getPriceInfo().getBundlePrice());
 			Double monthlyPrice = getBundlePriceBasedOnDiscountDuration_Implementation(deviceSummary, discountType);
 
 			if (null != monthlyPrice && monthlyPrice > creditLimit) {
@@ -614,7 +616,7 @@ public class DeviceServiceImplUtility {
 	 * @param model
 	 * @param journeyType
 	 * @param commerProdMemMap
-	 * @return
+	 * @return listofLeadBundleId
 	 */
 	public static Set<String> getlistofLeadBundleId(List<CommercialProduct> listOfCommercialProducts, String make,
 			String model, String journeyType, Map<String, CommercialProduct> commerProdMemMap) {
@@ -687,7 +689,7 @@ public class DeviceServiceImplUtility {
 	 * @param leadPlanFromCommercialProduct
 	 * @param compatiblePlans
 	 * @param deviceId
-	 * @return
+	 * @return BundleAndHardwareTuple
 	 */
 	public static Set<BundleAndHardwareTuple> getBundleHardwarePriceMap(String leadPlanFromCommercialProduct,
 			List<String> compatiblePlans, String deviceId) {
@@ -903,7 +905,7 @@ public class DeviceServiceImplUtility {
 	/**
 	 * 
 	 * @param bundleAndHardwareTupleList
-	 * @return
+	 * @return LeadPlanId
 	 */
 	public static String getLeadPlanId(List<BundleAndHardwareTuple> bundleAndHardwareTupleList) {
 		String leadPlanId = null;
@@ -919,7 +921,7 @@ public class DeviceServiceImplUtility {
 	 * @param deviceId
 	 * @param commercialProduct
 	 * @param commercialBundle
-	 * @return
+	 * @return List<BundleAndHardwareTuple>
 	 */
 	public static List<BundleAndHardwareTuple> getBundleAndHardwareTuple(String deviceId,
 			CommercialProduct commercialProduct, CommercialBundle commercialBundle) {
@@ -947,7 +949,7 @@ public class DeviceServiceImplUtility {
 	 * @param commercialProduct
 	 * @param listOfPriceForBundleAndHardware
 	 * @param bundleHardwareTupleList
-	 * @return
+	 * @return DeviceDetails
 	 */
 	public static DeviceDetails getDeviceDetailsFinal(String deviceId, RegistryClient registryclnt,
 			String journeyTypeLocal, CommercialProduct commercialProduct,
@@ -961,8 +963,8 @@ public class DeviceServiceImplUtility {
 		}
 		if ((isUpgrade(journeyTypeLocal) && isUpgradeFromCommercialProduct(commercialProduct))
 				|| (isNonUpgrade(journeyTypeLocal) && isNonUpgradeCommercialProduct(commercialProduct))) {
-			deviceDetails = DeviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceDetails(commercialProduct,
-					listOfPriceForBundleAndHardware, promotions);
+			deviceDetails = DeviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceDetails(
+					commercialProduct, listOfPriceForBundleAndHardware, promotions);
 		} else {
 			LogHelper.error(DeviceServiceImplUtility.class, "No data found for given journeyType :" + deviceId);
 			throw new ApplicationException(ExceptionMessages.NO_DATA_FOR_GIVEN_SEARCH_CRITERIA);

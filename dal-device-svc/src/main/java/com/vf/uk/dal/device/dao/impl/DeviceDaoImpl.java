@@ -62,7 +62,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	 * 
 	 * @param deviceId
 	 * @param sortCriteria
-	 * @return
+	 * @return BundleDetailsFromComplansListingAPI
 	 */
 	@Override
 	public BundleDetails getBundleDetailsFromComplansListingAPI(String deviceId, String sortCriteria) {
@@ -81,7 +81,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	 * Returns Device review details
 	 * 
 	 * @param deviceId
-	 * @return
+	 * @return DeviceReviewDetails
 	 * @throws org.json.simple.parser.ParseException
 	 */
 	@Override
@@ -93,7 +93,10 @@ public class DeviceDaoImpl implements DeviceDao {
 	}
 
 	/**
-	 * 
+	 * @param offerCode
+	 * @param journeyType
+	 * @param bundleAndHardwareTupleList
+	 * @return List<PriceForBundleAndHardware>
 	 */
 	@Override
 	public List<PriceForBundleAndHardware> getPriceForBundleAndHardware(
@@ -104,8 +107,6 @@ public class DeviceDaoImpl implements DeviceDao {
 				registryclnt, journeyType);
 		return listOfPriceForBundleAndHardware;
 	}
-
-	
 
 	/**
 	 * @author aditya.oli This method checks whether Bazaar Review Repository
@@ -156,6 +157,12 @@ public class DeviceDaoImpl implements DeviceDao {
 		return promotions;
 	}
 
+	/**
+	 * @param offerCode
+	 * @param journeyType
+	 * @param bundleAndHardwareTupleList
+	 * @return CompletableFuture<List<PriceForBundleAndHardware>>
+	 */
 	@Override
 	public CompletableFuture<List<PriceForBundleAndHardware>> getPriceForBundleAndHardwareListFromTupleListAsync(
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType,
@@ -169,6 +176,12 @@ public class DeviceDaoImpl implements DeviceDao {
 
 	}
 
+	/**
+	 * @param journeyType
+	 * @param version
+	 * @param bundleHardwareTupleList
+	 * @return BundleAndHardwarePromotionsListFromBundleListAsync
+	 */
 	@Override
 	public CompletableFuture<List<com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions>> getBundleAndHardwarePromotionsListFromBundleListAsync(
 			List<BundleAndHardwareTuple> bundleHardwareTupleList, String journeyType, String version) {
@@ -182,6 +195,10 @@ public class DeviceDaoImpl implements DeviceDao {
 
 	}
 
+	/**
+	 * @param searchRequest
+	 * @return SearchResponse
+	 */
 	@Override
 	public SearchResponse getResponseFromDataSource(SearchRequest searchRequest) {
 		LogHelper.info(this, "Start call time Elasticsearch" + System.currentTimeMillis());

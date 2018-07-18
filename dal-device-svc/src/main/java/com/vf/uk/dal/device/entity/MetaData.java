@@ -10,221 +10,232 @@ import javax.validation.Valid;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
+
 /**
  * MetaData
  */
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
 
-public class MetaData   {
-  @JsonProperty("seoCanonical")
-  private String seoCanonical = null;
+public class MetaData {
+	@JsonProperty("seoCanonical")
+	private String seoCanonical = null;
 
-  @JsonProperty("seoDescription")
-  private String seoDescription = null;
+	@JsonProperty("seoDescription")
+	private String seoDescription = null;
 
-  @JsonProperty("seoKeyWords")
-  private String seoKeyWords = null;
+	@JsonProperty("seoKeyWords")
+	private String seoKeyWords = null;
 
-  @JsonProperty("seoIndex")
-  private String seoIndex = null;
+	@JsonProperty("seoIndex")
+	private String seoIndex = null;
 
-  @JsonProperty("seoRobots")
-  private List<UUID> seoRobots = null;
-/**
- * 
- * @param seoCanonical
- * @return
- */
-  public MetaData seoCanonical(String seoCanonical) {
-    this.seoCanonical = seoCanonical;
-    return this;
-  }
+	@JsonProperty("seoRobots")
+	private List<UUID> seoRobots = null;
 
-   /**
-   * SEO Canonical
-   * @return seoCanonical
-  **/
-  @ApiModelProperty(value = "SEO Canonical")
+	/**
+	 * 
+	 * @param seoCanonical
+	 * @return
+	 */
+	public MetaData seoCanonical(String seoCanonical) {
+		this.seoCanonical = seoCanonical;
+		return this;
+	}
 
+	/**
+	 * SEO Canonical
+	 * 
+	 * @return seoCanonical
+	 **/
+	@ApiModelProperty(value = "SEO Canonical")
 
-  public String getSeoCanonical() {
-    return seoCanonical;
-  }
-/**
- * 
- * @param seoCanonical
- */
-  public void setSeoCanonical(String seoCanonical) {
-    this.seoCanonical = seoCanonical;
-  }
-/**
- * 
- * @param seoDescription
- * @return
- */
-  public MetaData seoDescription(String seoDescription) {
-    this.seoDescription = seoDescription;
-    return this;
-  }
+	public String getSeoCanonical() {
+		return seoCanonical;
+	}
 
-   /**
-   * SEO Description
-   * @return seoDescription
-  **/
-  @ApiModelProperty(value = "SEO Description")
+	/**
+	 * 
+	 * @param seoCanonical
+	 */
+	public void setSeoCanonical(String seoCanonical) {
+		this.seoCanonical = seoCanonical;
+	}
 
+	/**
+	 * 
+	 * @param seoDescription
+	 * @return
+	 */
+	public MetaData seoDescription(String seoDescription) {
+		this.seoDescription = seoDescription;
+		return this;
+	}
 
-  public String getSeoDescription() {
-    return seoDescription;
-  }
-/**
- * 
- * @param seoDescription
- */
-  public void setSeoDescription(String seoDescription) {
-    this.seoDescription = seoDescription;
-  }
-/**
- * 
- * @param seoKeyWords
- * @return
- */
-  public MetaData seoKeyWords(String seoKeyWords) {
-    this.seoKeyWords = seoKeyWords;
-    return this;
-  }
+	/**
+	 * SEO Description
+	 * 
+	 * @return seoDescription
+	 **/
+	@ApiModelProperty(value = "SEO Description")
 
-   /**
-   * SEO DKey words
-   * @return seoKeyWords
-  **/
-  @ApiModelProperty(value = "SEO DKey words")
+	public String getSeoDescription() {
+		return seoDescription;
+	}
 
+	/**
+	 * 
+	 * @param seoDescription
+	 */
+	public void setSeoDescription(String seoDescription) {
+		this.seoDescription = seoDescription;
+	}
 
-  public String getSeoKeyWords() {
-    return seoKeyWords;
-  }
-/**
- * 
- * @param seoKeyWords
- */
-  public void setSeoKeyWords(String seoKeyWords) {
-    this.seoKeyWords = seoKeyWords;
-  }
-/**
- * 
- * @param seoIndex
- * @return
- */
-  public MetaData seoIndex(String seoIndex) {
-    this.seoIndex = seoIndex;
-    return this;
-  }
+	/**
+	 * 
+	 * @param seoKeyWords
+	 * @return
+	 */
+	public MetaData seoKeyWords(String seoKeyWords) {
+		this.seoKeyWords = seoKeyWords;
+		return this;
+	}
 
-   /**
-   * SEO Index
-   * @return seoIndex
-  **/
-  @ApiModelProperty(value = "SEO Index")
+	/**
+	 * SEO DKey words
+	 * 
+	 * @return seoKeyWords
+	 **/
+	@ApiModelProperty(value = "SEO DKey words")
 
+	public String getSeoKeyWords() {
+		return seoKeyWords;
+	}
 
-  public String getSeoIndex() {
-    return seoIndex;
-  }
-/**
- * 
- * @param seoIndex
- */
-  public void setSeoIndex(String seoIndex) {
-    this.seoIndex = seoIndex;
-  }
-/**
- * 
- * @param seoRobots
- * @return
- */
-  public MetaData seoRobots(List<UUID> seoRobots) {
-    this.seoRobots = seoRobots;
-    return this;
-  }
-/**
- * 
- * @param seoRobotsItem
- * @return
- */
-  public MetaData addSeoRobotsItem(UUID seoRobotsItem) {
-    if (this.seoRobots == null) {
-      this.seoRobots = new ArrayList<>();
-    }
-    this.seoRobots.add(seoRobotsItem);
-    return this;
-  }
+	/**
+	 * 
+	 * @param seoKeyWords
+	 */
+	public void setSeoKeyWords(String seoKeyWords) {
+		this.seoKeyWords = seoKeyWords;
+	}
 
-   /**
-   * List of robots
-   * @return seoRobots
-  **/
-  @ApiModelProperty(value = "List of robots")
+	/**
+	 * 
+	 * @param seoIndex
+	 * @return
+	 */
+	public MetaData seoIndex(String seoIndex) {
+		this.seoIndex = seoIndex;
+		return this;
+	}
 
-  @Valid
+	/**
+	 * SEO Index
+	 * 
+	 * @return seoIndex
+	 **/
+	@ApiModelProperty(value = "SEO Index")
 
-  public List<UUID> getSeoRobots() {
-    return seoRobots;
-  }
-/**
- * 
- * @param seoRobots
- */
-  public void setSeoRobots(List<UUID> seoRobots) {
-    this.seoRobots = seoRobots;
-  }
+	public String getSeoIndex() {
+		return seoIndex;
+	}
 
+	/**
+	 * 
+	 * @param seoIndex
+	 */
+	public void setSeoIndex(String seoIndex) {
+		this.seoIndex = seoIndex;
+	}
 
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    MetaData metaData = (MetaData) o;
-    return Objects.equals(this.seoCanonical, metaData.seoCanonical) &&
-        Objects.equals(this.seoDescription, metaData.seoDescription) &&
-        Objects.equals(this.seoKeyWords, metaData.seoKeyWords) &&
-        Objects.equals(this.seoIndex, metaData.seoIndex) &&
-        Objects.equals(this.seoRobots, metaData.seoRobots);
-  }
+	/**
+	 * 
+	 * @param seoRobots
+	 * @return
+	 */
+	public MetaData seoRobots(List<UUID> seoRobots) {
+		this.seoRobots = seoRobots;
+		return this;
+	}
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(seoCanonical, seoDescription, seoKeyWords, seoIndex, seoRobots);
-  }
+	/**
+	 * 
+	 * @param seoRobotsItem
+	 * @return
+	 */
+	public MetaData addSeoRobotsItem(UUID seoRobotsItem) {
+		if (this.seoRobots == null) {
+			this.seoRobots = new ArrayList<>();
+		}
+		this.seoRobots.add(seoRobotsItem);
+		return this;
+	}
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class MetaData {\n");
-    
-    sb.append("    seoCanonical: ").append(toIndentedString(seoCanonical)).append("\n");
-    sb.append("    seoDescription: ").append(toIndentedString(seoDescription)).append("\n");
-    sb.append("    seoKeyWords: ").append(toIndentedString(seoKeyWords)).append("\n");
-    sb.append("    seoIndex: ").append(toIndentedString(seoIndex)).append("\n");
-    sb.append("    seoRobots: ").append(toIndentedString(seoRobots)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
+	/**
+	 * List of robots
+	 * 
+	 * @return seoRobots
+	 **/
+	@ApiModelProperty(value = "List of robots")
 
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
+	@Valid
+
+	public List<UUID> getSeoRobots() {
+		return seoRobots;
+	}
+
+	/**
+	 * 
+	 * @param seoRobots
+	 */
+	public void setSeoRobots(List<UUID> seoRobots) {
+		this.seoRobots = seoRobots;
+	}
+
+	@Override
+	public boolean equals(java.lang.Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		MetaData metaData = (MetaData) o;
+		return Objects.equals(this.seoCanonical, metaData.seoCanonical)
+				&& Objects.equals(this.seoDescription, metaData.seoDescription)
+				&& Objects.equals(this.seoKeyWords, metaData.seoKeyWords)
+				&& Objects.equals(this.seoIndex, metaData.seoIndex)
+				&& Objects.equals(this.seoRobots, metaData.seoRobots);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(seoCanonical, seoDescription, seoKeyWords, seoIndex, seoRobots);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("class MetaData {\n");
+
+		sb.append("    seoCanonical: ").append(toIndentedString(seoCanonical)).append("\n");
+		sb.append("    seoDescription: ").append(toIndentedString(seoDescription)).append("\n");
+		sb.append("    seoKeyWords: ").append(toIndentedString(seoKeyWords)).append("\n");
+		sb.append("    seoIndex: ").append(toIndentedString(seoIndex)).append("\n");
+		sb.append("    seoRobots: ").append(toIndentedString(seoRobots)).append("\n");
+		sb.append("}");
+		return sb.toString();
+	}
+
+	/**
+	 * Convert the given object to string with each line indented by 4 spaces
+	 * (except the first line).
+	 */
+	private String toIndentedString(java.lang.Object o) {
+		if (o == null) {
+			return "null";
+		}
+		return o.toString().replace("\n", "\n    ");
+	}
 }
-

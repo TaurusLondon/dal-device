@@ -5,64 +5,45 @@
 // Generated on: 2017.01.02 at 03:25:52 PM IST 
 //
 
-
 package com.vf.uk.dal.device.datamodel.merchandisingpromotion;
+
 import java.util.List;
 
-
-
 public class Condition {
-		
-	
-    private String productPath;
-	
+
+	private String productPath;
+
 	private String packageType;
-	
+
 	private List<ComplexCondition> complexConditions;
 
-	
-	
-    public Condition() {
+	public Condition() {
 		super();
 	}
-
-
 
 	public String getProductPath() {
 		return productPath;
 	}
 
-
-
 	public void setProductPath(String productPath) {
 		this.productPath = productPath;
 	}
-
-
 
 	public String getPackageType() {
 		return packageType;
 	}
 
-
-
 	public void setPackageType(String packageType) {
 		this.packageType = packageType;
 	}
-
-
 
 	public List<ComplexCondition> getComplexConditions() {
 		return complexConditions;
 	}
 
-
-
 	public void setComplexConditions(List<ComplexCondition> complexConditions) {
 		this.complexConditions = complexConditions;
 	}
-
-
 
 	@Override
 	public int hashCode() {
@@ -73,8 +54,6 @@ public class Condition {
 		result = prime * result + ((productPath == null) ? 0 : productPath.hashCode());
 		return result;
 	}
-
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -103,15 +82,10 @@ public class Condition {
 		return true;
 	}
 
-
-
 	@Override
 	public String toString() {
 		return "Condition [productPath=" + productPath + ", packageType=" + packageType + ", complexConditions="
 				+ complexConditions + "]";
 	}
 
-	
-	
-    
 }
