@@ -2,7 +2,6 @@ package com.vf.uk.dal.device.entity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import javax.validation.Valid;
 
@@ -52,6 +51,61 @@ public class Device {
 	/** The promotions package. */
 	@JsonProperty("promotionsPackage")
 	private MerchandisingPromotionsPackage promotionsPackage = null;
+
+	@JsonProperty("productGroupName")
+	private String productGroupName = null;
+
+	@JsonProperty("productGroupId")
+	private String productGroupId = null;
+	
+	@JsonProperty("size")
+	private List<String> size = null;
+
+	@JsonProperty("color")
+	private List<String> color = null;
+	
+	@JsonProperty("colorHex")
+	private List<String> colorHex = null;
+	
+	public String getProductGroupName() {
+		return productGroupName;
+	}
+
+	public void setProductGroupName(String productGroupName) {
+		this.productGroupName = productGroupName;
+	}
+
+	public String getProductGroupId() {
+		return productGroupId;
+	}
+
+	public void setProductGroupId(String productGroupId) {
+		this.productGroupId = productGroupId;
+	}
+
+	public List<String> getSize() {
+		return size;
+	}
+
+	public void setSize(List<String> size) {
+		this.size = size;
+	}
+
+	public List<String> getColor() {
+		return color;
+	}
+
+	public void setColor(List<String> color) {
+		this.color = color;
+	}
+
+	public List<String> getColorHex() {
+		return colorHex;
+	}
+
+	public void setColorHex(List<String> colorHex) {
+		this.colorHex = colorHex;
+	}
 
 	/**
 	 * Promotions package.
@@ -457,50 +511,137 @@ public class Device {
 		this.priceInfo = priceInfo;
 	}
 
-	@Override
-	public boolean equals(java.lang.Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-		Device device = (Device) o;
-		return Objects.equals(this.deviceId, device.deviceId) && Objects.equals(this.name, device.name)
-				&& Objects.equals(this.make, device.make) && Objects.equals(this.model, device.model)
-				&& Objects.equals(this.groupType, device.groupType) && Objects.equals(this.rating, device.rating)
-				&& Objects.equals(this.description, device.description)
-				&& Objects.equals(this.productClass, device.productClass)
-				&& Objects.equals(this.merchandisingControl, device.merchandisingControl)
-				&& Objects.equals(this.media, device.media) && Objects.equals(this.priceInfo, device.priceInfo)
-				&& Objects.equals(this.promotionsPackage, device.promotionsPackage);
-	}
+	
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(deviceId, name, make, model, groupType, rating, description, productClass,
-				merchandisingControl, media, priceInfo, promotionsPackage);
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((color == null) ? 0 : color.hashCode());
+		result = prime * result + ((colorHex == null) ? 0 : colorHex.hashCode());
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((deviceId == null) ? 0 : deviceId.hashCode());
+		result = prime * result + ((groupType == null) ? 0 : groupType.hashCode());
+		result = prime * result + ((make == null) ? 0 : make.hashCode());
+		result = prime * result + ((media == null) ? 0 : media.hashCode());
+		result = prime * result + ((merchandisingControl == null) ? 0 : merchandisingControl.hashCode());
+		result = prime * result + ((model == null) ? 0 : model.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((priceInfo == null) ? 0 : priceInfo.hashCode());
+		result = prime * result + ((productClass == null) ? 0 : productClass.hashCode());
+		result = prime * result + ((productGroupId == null) ? 0 : productGroupId.hashCode());
+		result = prime * result + ((productGroupName == null) ? 0 : productGroupName.hashCode());
+		result = prime * result + ((promotionsPackage == null) ? 0 : promotionsPackage.hashCode());
+		result = prime * result + ((rating == null) ? 0 : rating.hashCode());
+		result = prime * result + ((size == null) ? 0 : size.hashCode());
+		return result;
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("class Device {\n");
+		return "Device [deviceId=" + deviceId + ", name=" + name + ", make=" + make + ", model=" + model
+				+ ", groupType=" + groupType + ", rating=" + rating + ", description=" + description + ", productClass="
+				+ productClass + ", merchandisingControl=" + merchandisingControl + ", media=" + media + ", priceInfo="
+				+ priceInfo + ", promotionsPackage=" + promotionsPackage + ", productGroupName=" + productGroupName
+				+ ", productGroupId=" + productGroupId + ", size=" + size + ", color=" + color + ", colorHex="
+				+ colorHex + "]";
+	}
 
-		sb.append("    deviceId: ").append(toIndentedString(deviceId)).append("\n");
-		sb.append("    name: ").append(toIndentedString(name)).append("\n");
-		sb.append("    make: ").append(toIndentedString(make)).append("\n");
-		sb.append("    model: ").append(toIndentedString(model)).append("\n");
-		sb.append("    groupType: ").append(toIndentedString(groupType)).append("\n");
-		sb.append("    rating: ").append(toIndentedString(rating)).append("\n");
-		sb.append("    description: ").append(toIndentedString(description)).append("\n");
-		sb.append("    productClass: ").append(toIndentedString(productClass)).append("\n");
-		sb.append("    merchandisingControl: ").append(toIndentedString(merchandisingControl)).append("\n");
-		sb.append("    media: ").append(toIndentedString(media)).append("\n");
-		sb.append("    priceInfo: ").append(toIndentedString(priceInfo)).append("\n");
-		sb.append("    promotionsPackage: ").append(toIndentedString(promotionsPackage)).append("\n");
-		sb.append("}");
-		return sb.toString();
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Device other = (Device) obj;
+		if (color == null) {
+			if (other.color != null)
+				return false;
+		} else if (!color.equals(other.color))
+			return false;
+		if (colorHex == null) {
+			if (other.colorHex != null)
+				return false;
+		} else if (!colorHex.equals(other.colorHex))
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (deviceId == null) {
+			if (other.deviceId != null)
+				return false;
+		} else if (!deviceId.equals(other.deviceId))
+			return false;
+		if (groupType == null) {
+			if (other.groupType != null)
+				return false;
+		} else if (!groupType.equals(other.groupType))
+			return false;
+		if (make == null) {
+			if (other.make != null)
+				return false;
+		} else if (!make.equals(other.make))
+			return false;
+		if (media == null) {
+			if (other.media != null)
+				return false;
+		} else if (!media.equals(other.media))
+			return false;
+		if (merchandisingControl == null) {
+			if (other.merchandisingControl != null)
+				return false;
+		} else if (!merchandisingControl.equals(other.merchandisingControl))
+			return false;
+		if (model == null) {
+			if (other.model != null)
+				return false;
+		} else if (!model.equals(other.model))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (priceInfo == null) {
+			if (other.priceInfo != null)
+				return false;
+		} else if (!priceInfo.equals(other.priceInfo))
+			return false;
+		if (productClass == null) {
+			if (other.productClass != null)
+				return false;
+		} else if (!productClass.equals(other.productClass))
+			return false;
+		if (productGroupId == null) {
+			if (other.productGroupId != null)
+				return false;
+		} else if (!productGroupId.equals(other.productGroupId))
+			return false;
+		if (productGroupName == null) {
+			if (other.productGroupName != null)
+				return false;
+		} else if (!productGroupName.equals(other.productGroupName))
+			return false;
+		if (promotionsPackage == null) {
+			if (other.promotionsPackage != null)
+				return false;
+		} else if (!promotionsPackage.equals(other.promotionsPackage))
+			return false;
+		if (rating == null) {
+			if (other.rating != null)
+				return false;
+		} else if (!rating.equals(other.rating))
+			return false;
+		if (size == null) {
+			if (other.size != null)
+				return false;
+		} else if (!size.equals(other.size))
+			return false;
+		return true;
 	}
 
 	/**

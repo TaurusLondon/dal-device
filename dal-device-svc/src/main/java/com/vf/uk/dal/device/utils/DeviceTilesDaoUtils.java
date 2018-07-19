@@ -24,7 +24,6 @@ import com.vf.uk.dal.device.entity.Device;
 import com.vf.uk.dal.device.entity.Facet;
 import com.vf.uk.dal.device.entity.FacetWithCount;
 import com.vf.uk.dal.device.entity.FacetedDevice;
-import com.vf.uk.dal.device.entity.GroupDetails;
 import com.vf.uk.dal.device.entity.HardwarePrice;
 import com.vf.uk.dal.device.entity.Make;
 import com.vf.uk.dal.device.entity.MediaLink;
@@ -35,6 +34,7 @@ import com.vf.uk.dal.device.entity.MerchandisingPromotionsWrapper;
 import com.vf.uk.dal.device.entity.NewFacet;
 import com.vf.uk.dal.device.entity.Price;
 import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
+import com.vf.uk.dal.device.entity.ProductGroupDetailsForDeviceList;
 import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareAccessory;
 import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareDataAllowances;
@@ -290,9 +290,8 @@ public class DeviceTilesDaoUtils {
 			String offerCode1, Map<String, String> groupNameWithProdId, Map<String, BundlePrice> bundleModelAndPriceMap,
 			Map<String, BundleAndHardwarePromotions> promotionmap, Map<String, Boolean> isLeadMemberFromSolr,
 			Map<String, List<OfferAppliedPriceModel>> withoutOfferPriceMap, String journeyType,
-			Map<String, GroupDetails> productGroupdetailsMap) {
+			Map<String, ProductGroupDetailsForDeviceList> productGroupdetailsMap) {
 		String offerCode = offerCode1;
-		List<GroupDetails> listOfGroupDetails = new ArrayList<>();
 		List<Device> deviceList = new ArrayList<>();
 		FacetedDevice facetedDevice = new FacetedDevice();
 		MerchandisingPromotionsPackage merchandisingPromotionsPackage = null;
@@ -336,10 +335,15 @@ public class DeviceTilesDaoUtils {
 				if (listOfProducts.contains(productModel.getProductId())) {
 					if (productModel.getProductClass().equalsIgnoreCase(Constants.STRING_PRODUCT_MODEL)) {
 						String leadPlanId = null;
-						GroupDetails groupdeatils = productGroupdetailsMap.containsKey(productModel.getProductId())
+						deviceDetails = new Device();
+						ProductGroupDetailsForDeviceList groupdeatils = productGroupdetailsMap.containsKey(productModel.getProductId())
 								? productGroupdetailsMap.get(productModel.getProductId()) : null;
 						if (groupdeatils != null) {
-							listOfGroupDetails.add(groupdeatils);
+							deviceDetails.setColor(groupdeatils.getColor());
+							deviceDetails.setColorHex(groupdeatils.getColorHex());
+							deviceDetails.setSize(groupdeatils.getSize());
+							deviceDetails.setProductGroupName(groupdeatils.getGroupName());
+							deviceDetails.setProductGroupId(groupdeatils.getGroupId());
 						}
 						if (StringUtils.isNotBlank(journeyType)
 								&& StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_UPGRADE)) {
@@ -348,7 +352,6 @@ public class DeviceTilesDaoUtils {
 							leadPlanId = productModel.getNonUpgradeLeadPlanId();
 						}
 						merchandisingPromotionsPackage = new MerchandisingPromotionsPackage();
-						deviceDetails = new Device();
 						deviceDetails.setDeviceId(productModel.getProductId());
 						deviceDetails.setDescription(productModel.getPreDesc());
 						if (productModel.getProductGroupName() != null) {
@@ -1280,7 +1283,6 @@ public class DeviceTilesDaoUtils {
 		}
 		facetedDevice.setDevice(deviceList);
 		facetedDevice.setNoOfRecordsFound(count);
-		facetedDevice.setProductGroupDetails(listOfGroupDetails);
 		return facetedDevice;
 	}
 

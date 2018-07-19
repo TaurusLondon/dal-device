@@ -30,12 +30,12 @@ import com.vf.uk.dal.device.entity.Device;
 import com.vf.uk.dal.device.entity.DeviceDetails;
 import com.vf.uk.dal.device.entity.DeviceSummary;
 import com.vf.uk.dal.device.entity.DeviceTile;
-import com.vf.uk.dal.device.entity.GroupDetails;
 import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
+import com.vf.uk.dal.device.entity.ProductGroupDetailsForDeviceList;
 import com.vf.uk.dal.device.utils.CommonUtility;
 import com.vf.uk.dal.device.utils.Constants;
-import com.vf.uk.dal.device.utils.DeviceTilesDaoUtils;
 import com.vf.uk.dal.device.utils.DeviceDetailsMakeAndModelVaiantDaoUtils;
+import com.vf.uk.dal.device.utils.DeviceTilesDaoUtils;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 
@@ -130,12 +130,13 @@ public class DeviceServiceImplUtility {
 	 * @param deviceId
 	 */
 	public static void getProductGroupdetailsMap(ProductGroupModel productGroupModel,
-			Map<String, GroupDetails> productGroupdetailsMap, String deviceId) {
-		GroupDetails groupDetails = new GroupDetails();
+			Map<String, ProductGroupDetailsForDeviceList> productGroupdetailsMap, String deviceId) {
+		ProductGroupDetailsForDeviceList groupDetails = new ProductGroupDetailsForDeviceList();
 		groupDetails.setGroupName(productGroupModel.getName());
 		groupDetails.setGroupId(productGroupModel.getId());
 		groupDetails.setColor(productGroupModel.getColour());
 		groupDetails.size(productGroupModel.getCapacity());
+		groupDetails.setColorHex(productGroupModel.getHexCode());
 		productGroupdetailsMap.put(deviceId, groupDetails);
 
 	}

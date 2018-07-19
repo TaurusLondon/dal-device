@@ -32,8 +32,8 @@ import com.vf.uk.dal.device.entity.Device;
 import com.vf.uk.dal.device.entity.DeviceSummary;
 import com.vf.uk.dal.device.entity.DeviceTile;
 import com.vf.uk.dal.device.entity.FacetedDevice;
-import com.vf.uk.dal.device.entity.GroupDetails;
 import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
+import com.vf.uk.dal.device.entity.ProductGroupDetailsForDeviceList;
 import com.vf.uk.dal.device.helper.DeviceConditionallHelper;
 import com.vf.uk.dal.device.helper.DeviceESHelper;
 import com.vf.uk.dal.device.helper.DeviceServiceCommonUtility;
@@ -455,7 +455,7 @@ public class DeviceServiceImpl implements DeviceService {
 			String sortCriteria, int pageNumber, int pageSize, String capacity, String colour, String operatingSystem,
 			String mustHaveFeatures, String journeyType, String offerCode) {
 		FacetedDevice facetedDevice;
-		Map<String, GroupDetails> productGroupdetailsMap = new HashMap<>();
+		Map<String, ProductGroupDetailsForDeviceList> productGroupdetailsMap = new HashMap<>();
 		List<String> criteriaOfSort = DeviceServiceImplUtility.getSortCriteriaForList(sortCriteria);
 		String sortOption = criteriaOfSort.get(0);
 		String sortBy = criteriaOfSort.get(1);
@@ -732,7 +732,7 @@ public class DeviceServiceImpl implements DeviceService {
 	 * @param isLeadMemberFromSolr
 	 * @param productGroupModel
 	 */
-	public void getProductGropDetailsForDeviceList(String journeyType, Map<String, GroupDetails> productGroupdetailsMap,
+	public void getProductGropDetailsForDeviceList(String journeyType, Map<String, ProductGroupDetailsForDeviceList> productGroupdetailsMap,
 			List<String> listOfProducts, Map<String, String> groupNameWithProdId,
 			Map<String, Boolean> isLeadMemberFromSolr, ProductGroupModel productGroupModel) {
 		if (StringUtils.isNotBlank(productGroupModel.getNonUpgradeLeadDeviceId())

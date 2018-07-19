@@ -63,7 +63,6 @@ import com.vf.uk.dal.device.entity.DeviceTile;
 import com.vf.uk.dal.device.entity.Discount;
 import com.vf.uk.dal.device.entity.Facet;
 import com.vf.uk.dal.device.entity.FacetedDevice;
-import com.vf.uk.dal.device.entity.GroupDetails;
 import com.vf.uk.dal.device.entity.HardwarePrice;
 import com.vf.uk.dal.device.entity.Insurance;
 import com.vf.uk.dal.device.entity.Insurances;
@@ -78,6 +77,7 @@ import com.vf.uk.dal.device.entity.OfferPacks;
 import com.vf.uk.dal.device.entity.Price;
 import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
 import com.vf.uk.dal.device.entity.ProductGroup;
+import com.vf.uk.dal.device.entity.ProductGroupDetailsForDeviceList;
 import com.vf.uk.dal.device.entity.SourcePackageSummary;
 import com.vf.uk.dal.device.entity.Specification;
 import com.vf.uk.dal.device.entity.SpecificationGroup;
@@ -4568,18 +4568,22 @@ public class CommonMethods {
 		return productGroupModelList;
 	}
 
-	public static GroupDetails getGroupDetails() {
+	public static ProductGroupDetailsForDeviceList getGroupDetails() {
 		List<String> size = new ArrayList<>();
 		size.add("32 GB");
 		size.add("128 GB");
 		List<String> colour = new ArrayList<>();
 		colour.add("Black");
 		colour.add("White");
-		GroupDetails groupDetails = new GroupDetails();
+		List<String> colourHex = new ArrayList<>();
+		colourHex.add("#dcddde");
+		colourHex.add("#efc5bf");
+		ProductGroupDetailsForDeviceList groupDetails = new ProductGroupDetailsForDeviceList();
 		groupDetails.setGroupId("1");
 		groupDetails.setGroupName("Apple iPhone 7");
 		groupDetails.setColor(colour);
 		groupDetails.setSize(size);
+		groupDetails.setColorHex(colourHex);
 		return groupDetails;
 	}
 
