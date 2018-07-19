@@ -64,6 +64,16 @@ public class ProductGroupModel {
 	private Date createDate;
 
 	private Date modifiedDate;
+	
+	private List<String> hexCode;
+
+	public List<String> getHexCode() {
+		return hexCode;
+	}
+
+	public void setHexCode(List<String> hexCode) {
+		this.hexCode = hexCode;
+	}
 
 	public String getId() {
 		return id;

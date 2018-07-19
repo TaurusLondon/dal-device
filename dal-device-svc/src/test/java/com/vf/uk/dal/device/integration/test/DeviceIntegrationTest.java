@@ -56,9 +56,9 @@ import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
 import com.vf.uk.dal.device.entity.DeviceDetails;
 import com.vf.uk.dal.device.entity.FacetedDevice;
-import com.vf.uk.dal.device.entity.GroupDetails;
 import com.vf.uk.dal.device.entity.Insurances;
 import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
+import com.vf.uk.dal.device.entity.ProductGroupDetailsForDeviceList;
 import com.vf.uk.dal.device.entity.RequestForBundleAndHardware;
 import com.vf.uk.dal.device.entity.SourcePackageSummary;
 import com.vf.uk.dal.device.helper.DeviceESHelper;
@@ -1254,7 +1254,7 @@ public class DeviceIntegrationTest {
 
 	@Test
 	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList() {
-		Map<String, GroupDetails> productGroupdetailsMap = new HashMap<>();
+		Map<String, ProductGroupDetailsForDeviceList> productGroupdetailsMap = new HashMap<>();
 		productGroupdetailsMap.put("093353", CommonMethods.getGroupDetails());
 		productGroupdetailsMap.put("092660", CommonMethods.getGroupDetails());
 		Map<String, String> groupNameWithProdId = new HashMap<String, String>();
@@ -1275,7 +1275,7 @@ public class DeviceIntegrationTest {
 
 	@Test
 	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList_One() {
-		Map<String, GroupDetails> productGroupdetailsMap = new HashMap<>();
+		Map<String, ProductGroupDetailsForDeviceList> productGroupdetailsMap = new HashMap<>();
 		productGroupdetailsMap.put("093353", CommonMethods.getGroupDetails());
 		productGroupdetailsMap.put("092660", CommonMethods.getGroupDetails());
 		Map<String, String> groupNameWithProdId = new HashMap<String, String>();
@@ -1299,7 +1299,7 @@ public class DeviceIntegrationTest {
 
 	@Test
 	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList_Three() {
-		Map<String, GroupDetails> productGroupdetailsMap = new HashMap<>();
+		Map<String, ProductGroupDetailsForDeviceList> productGroupdetailsMap = new HashMap<>();
 		productGroupdetailsMap.put("093353", CommonMethods.getGroupDetails());
 		productGroupdetailsMap.put("092660", CommonMethods.getGroupDetails());
 		Map<String, String> groupNameWithProdId = new HashMap<String, String>();
@@ -1320,7 +1320,7 @@ public class DeviceIntegrationTest {
 
 	@Test
 	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList_Four() {
-		Map<String, GroupDetails> productGroupdetailsMap = new HashMap<>();
+		Map<String, ProductGroupDetailsForDeviceList> productGroupdetailsMap = new HashMap<>();
 		productGroupdetailsMap.put("093353", CommonMethods.getGroupDetails());
 		productGroupdetailsMap.put("092660", CommonMethods.getGroupDetails());
 		Map<String, String> groupNameWithProdId = new HashMap<String, String>();
@@ -1344,7 +1344,7 @@ public class DeviceIntegrationTest {
 
 	@Test
 	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList_Five() {
-		Map<String, GroupDetails> productGroupdetailsMap = new HashMap<>();
+		Map<String, ProductGroupDetailsForDeviceList> productGroupdetailsMap = new HashMap<>();
 		productGroupdetailsMap.put("093353", CommonMethods.getGroupDetails());
 		productGroupdetailsMap.put("092660", CommonMethods.getGroupDetails());
 		Map<String, String> groupNameWithProdId = new HashMap<String, String>();
@@ -1365,7 +1365,7 @@ public class DeviceIntegrationTest {
 
 	@Test
 	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceListPayG() {
-		Map<String, GroupDetails> productGroupdetailsMap = new HashMap<>();
+		Map<String, ProductGroupDetailsForDeviceList> productGroupdetailsMap = new HashMap<>();
 		productGroupdetailsMap.put("093353", CommonMethods.getGroupDetails());
 		productGroupdetailsMap.put("092660", CommonMethods.getGroupDetails());
 		Map<String, String> groupNameWithProdId = new HashMap<String, String>();
@@ -1389,7 +1389,7 @@ public class DeviceIntegrationTest {
 
 	@Test
 	public void NotNullTestForDaoUtilsconvertProductModelListToDeviceList_Two() {
-		Map<String, GroupDetails> productGroupdetailsMap = new HashMap<>();
+		Map<String, ProductGroupDetailsForDeviceList> productGroupdetailsMap = new HashMap<>();
 		productGroupdetailsMap.put("093353", CommonMethods.getGroupDetails());
 		productGroupdetailsMap.put("092660", CommonMethods.getGroupDetails());
 		Map<String, String> groupNameWithProdId = new HashMap<String, String>();
