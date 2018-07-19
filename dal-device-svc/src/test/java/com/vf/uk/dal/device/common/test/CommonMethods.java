@@ -2304,7 +2304,6 @@ public class CommonMethods {
 			Gson gson = new Gson();
 			cohbundle = gson.fromJson(jsonString, StockAvailability.class);
 		} catch (Exception e) {
-			System.out.println(e);
 		}
 		return cohbundle;
 	}

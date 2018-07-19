@@ -136,7 +136,8 @@
 			**/utils/SwaggerConfiguration.java,
 			**/conf/ElasticsearchRestCient.java,
 			**/DeviceApplication.java,
-			**/datamodel/**
+			**/datamodel/**,
+			**/entity
 		</sonar.coverage.exclusions>
 		<swaggerVersion>10.1.0</swaggerVersion>
 	</properties>
