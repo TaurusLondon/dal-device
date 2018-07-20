@@ -1,10 +1,7 @@
 package com.vf.uk.dal.device.datamodel.merchandisingpromotion;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**

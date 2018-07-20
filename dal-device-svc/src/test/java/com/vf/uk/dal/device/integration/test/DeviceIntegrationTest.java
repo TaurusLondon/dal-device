@@ -170,52 +170,6 @@ public class DeviceIntegrationTest {
 		given(restTemplate.postForObject("http://CUSTOMER-V1/customer/getRecommendedProductList/",
 				CommonMethods.getRecommendedDeviceListRequest("7741655541", "109381"),
 				RecommendedProductListResponse.class)).willReturn(obj1);
-		/*
-		 * given(this.deviceDAOMock.getListOfDeviceTile("Apple", "iPhone-7",
-		 * "DEVICE_PAYM", null, null, null, null, null))
-		 * .willReturn(CommonMethods.getDeviceTile("", "", ""));
-		 * given(this.deviceDAOMock.getListOfDeviceTile("Apple", "iPhone-7",
-		 * "DEVICE_PAYM", "091210", "ConditionalAccept", 60.00, "W_HH_SIMONLY",
-		 * null)).willReturn(CommonMethods.getDeviceTile("", "", ""));
-		 * given(this.deviceDAOMock.getListOfDeviceTile(null, "iPhone-7",
-		 * "DEVICE_PAYM", null, null, null, null, null)) .willReturn(null);
-		 */
-		/*
-		 * given(this.deviceDAOMock.getProductGroupByGroupTypeGroupName(
-		 * "DEVICE", "Apple iPhone 7"))
-		 * .willReturn(CommonMethods.getProductGroupByGroupTypeGroupName("",
-		 * "")); given(this.deviceDAOMock.getProductGroupByGroupTypeGroupName(
-		 * "ValidData", null)).willReturn(null);
-		 * given(this.deviceDAOMock.getProductGroupByGroupTypeGroupName(
-		 * "DEVgikyj", "Apple iPhone 7")).willReturn(null);
-		 */
-		/*
-		 * given(this.deviceDAOMock.getDeviceDetails("83921", "upgrade",
-		 * "34543")) .willReturn(CommonMethods.getDevice("83921"));
-		 * 
-		 * given(this.deviceDAOMock.getDeviceDetails("83921", "Upgrade",
-		 * "W_HH_PAYM_OC_02")) .willReturn(CommonMethods.getDevice("83921"));
-		 * given(this.deviceDAOMock.getDeviceDetails("83929", "upgrade",
-		 * "34543")).willReturn(null);
-		 * given(this.deviceDAOMock.getDeviceDetails(null, null,
-		 * null)).willReturn(null);
-		 */
-		/*
-		 * given(this.deviceDAOMock.getAccessoriesOfDevice("93353", "Upgrade",
-		 * "W_HH_PAYM_OC_02"))
-		 * .willReturn(CommonMethods.getAccessoriesTileGroup("93353"));
-		 * given(this.deviceDAOMock.getAccessoriesOfDevice("93354", null,
-		 * null)).willReturn(null);
-		 * given(this.deviceDAOMock.getAccessoriesOfDevice(null, null,
-		 * null)).willReturn(null);
-		 */
-		// given(this.deviceDAOMock.getDeviceList("HANDSET","Apple", "iPhone-7",
-		// "DEVICE_PAYM", "Priority", 0, 9,"32 GB","White","iOS","Great
-		// Camera")).willReturn(CommonMethods.getFacetedDevice("HANDSET","Apple",
-		// "iPhone-7", "DEVICE_PAYM", "", 0, 9,"123"));
-		// given(this.deviceDAOMock.getInsuranceById("93353")).willReturn(CommonMethods.getInsurances("93353"));
-		// given(this.deviceDAOMock.getStockAvailability("SIMO")).willReturn(CommonMethods.getStockInfo());
-		// given(this.deviceDAOMock.getStockAvailability("ValidData")).willReturn(CommonMethods.getListOfStockInfo());
 		given(this.deviceDAOMock.getBundleDetailsFromComplansListingAPI("093353", null))
 				.willReturn(CommonMethods.getCompatibleBundleListJson());
 
@@ -241,9 +195,8 @@ public class DeviceIntegrationTest {
 
 	@Test
 	public void invalidInputTestForgetDeviceDetails_One() throws Exception {
-		DeviceDetails deviceDetails = new DeviceDetails();
 		try {
-			deviceDetails = deviceDetailsController.getDeviceDetails("1234", null, null);
+			deviceDetailsController.getDeviceDetails("1234", null, null);
 		} catch (Exception e) {
 
 		}
@@ -271,8 +224,7 @@ public class DeviceIntegrationTest {
 	public void InvalidTestForgetDeviceDetailsWithJourneyTypePAYG() {
 
 		try {
-			DeviceDetails deviceDetails = new DeviceDetails();
-			deviceDetails = deviceDetailsController.getDeviceDetails("088417", "Upgrade", null);
+			deviceDetailsController.getDeviceDetails("088417", "Upgrade", null);
 		} catch (Exception e) {
 			Assert.assertEquals(
 					"com.vf.uk.dal.common.exception.ApplicationException: JourneyType is not compatible for given DeviceId",
@@ -283,8 +235,7 @@ public class DeviceIntegrationTest {
 	@Test
 	public void InvalidTestForgetDeviceDetailsWithOfferCodePAYG() {
 		try {
-			DeviceDetails deviceDetails = new DeviceDetails();
-			deviceDetails = deviceDetailsController.getDeviceDetails("088417", "abcd", "W_HH_OC_01");
+			deviceDetailsController.getDeviceDetails("088417", "abcd", "W_HH_OC_01");
 		} catch (Exception e) {
 		}
 	}
@@ -738,9 +689,8 @@ public class DeviceIntegrationTest {
 		given(this.response.getListOfMerchandisingPromotionModelFromJson(Matchers.anyObject()))
 				.willReturn(CommonMethods.getMerChandisingPromotion_One());
 
-		FacetedDevice deviceLists = null;
 		try {
-			deviceLists = deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYM", "Priority", 0, 9,
+			deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYM", "Priority", 0, 9,
 					"32 GB", "White", "iOS", "Great Camera", "Upgrade", null, "W_HH_PAYM_OC_01", "447582367723", true);
 		} catch (Exception e) {
 

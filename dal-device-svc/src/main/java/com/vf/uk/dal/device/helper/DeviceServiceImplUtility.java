@@ -135,7 +135,7 @@ public class DeviceServiceImplUtility {
 		groupDetails.setGroupName(productGroupModel.getName());
 		groupDetails.setGroupId(productGroupModel.getId());
 		groupDetails.setColor(productGroupModel.getColour());
-		groupDetails.size(productGroupModel.getCapacity());
+		groupDetails.setSize(productGroupModel.getCapacity());
 		groupDetails.setColorHex(productGroupModel.getHexCode());
 		productGroupdetailsMap.put(deviceId, groupDetails);
 

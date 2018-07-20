@@ -1086,7 +1086,7 @@ public class DeviceServiceImplTest {
 		deviceSummary.setDisplayDescription("5.5 inch");
 		deviceSummary.setDisplayName("display name");
 		deviceSummary.setDeviceId(String.valueOf(122));
-		deviceSummary.isAffordable(true);
+		deviceSummary.setIsAffordable(true);
 		deviceSummary.setLeadPlanId("Lead plan Id");
 		deviceSummary.setLeadPlanDisplayName("Yearly Plan");
 		deviceSummary.setMemory("64GB");

@@ -1,7 +1,5 @@
 package com.vf.uk.dal.utility.entity;
 
-import java.util.Objects;
-
 import lombok.Data;
 
 /**

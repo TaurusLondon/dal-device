@@ -334,7 +334,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		metaData.setSeoCanonical(cohProduct.getSeoCanonical());
 		metaData.setSeoDescription(cohProduct.getSeoDescription());
 		metaData.setSeoIndex(cohProduct.getSeoIndex());
-		metaData.seoKeyWords(cohProduct.getSeoKeywords());
+		metaData.setSeoKeyWords(cohProduct.getSeoKeywords());
 		deviceDetails.setMetaData(metaData);
 
 		return deviceDetails;
