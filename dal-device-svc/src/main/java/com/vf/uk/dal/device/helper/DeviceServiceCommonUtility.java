@@ -87,10 +87,10 @@ public class DeviceServiceCommonUtility {
 								}
 							}
 						} else {
-							bvReviewAndRateMap.put(bazaarVoice.getId(), "na");
+							bvReviewAndRateMap.put(bazaarVoice.getSkuId(), "na");
 						}
 					} else {
-						bvReviewAndRateMap.put(bazaarVoice.getId(), "na");
+						bvReviewAndRateMap.put(bazaarVoice.getSkuId(), "na");
 					}
 				}
 			}

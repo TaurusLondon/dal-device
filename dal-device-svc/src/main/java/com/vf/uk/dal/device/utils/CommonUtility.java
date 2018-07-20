@@ -453,15 +453,15 @@ public class CommonUtility {
 	public static boolean isProductJourneySpecific(CommercialProduct commercialProduct, String journeyType) {
 		boolean isProductJourneySpecific = false;
 		if (StringUtils.isNotBlank(journeyType) && Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)) {
-			if (commercialProduct.getProductControl() != null && commercialProduct.getProductControl().isIsSellableRet()
-					&& commercialProduct.getProductControl().isIsDisplayableRet()) {
+			if (commercialProduct.getProductControl() != null && commercialProduct.getProductControl().isSellableRet()
+					&& commercialProduct.getProductControl().isDisplayableRet()) {
 
 				isProductJourneySpecific = true;
 			}
 		} else {
 			if (commercialProduct.getProductControl() != null
-					&& commercialProduct.getProductControl().isIsDisplayableAcq()
-					&& commercialProduct.getProductControl().isIsSellableAcq()) {
+					&& commercialProduct.getProductControl().isDisplayableAcq()
+					&& commercialProduct.getProductControl().isSellableAcq()) {
 
 				isProductJourneySpecific = true;
 

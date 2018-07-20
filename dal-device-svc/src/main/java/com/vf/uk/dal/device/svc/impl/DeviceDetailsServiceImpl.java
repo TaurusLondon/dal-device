@@ -255,14 +255,14 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 
 				MerchandisingControl merchandisingControl = new MerchandisingControl();
 				merchandisingControl
-						.setIsDisplayableECare(commercialProduct.getProductControl().isIsDisplayableinLife());
-				merchandisingControl.setIsSellableECare(commercialProduct.getProductControl().isIsSellableinLife());
-				merchandisingControl.setIsDisplayableAcq(commercialProduct.getProductControl().isIsDisplayableAcq());
-				merchandisingControl.setIsSellableRet(commercialProduct.getProductControl().isIsSellableRet());
-				merchandisingControl.setIsDisplayableRet(commercialProduct.getProductControl().isIsDisplayableRet());
-				merchandisingControl.setIsSellableAcq(commercialProduct.getProductControl().isIsSellableAcq());
+						.setIsDisplayableECare(commercialProduct.getProductControl().isDisplayableinLife());
+				merchandisingControl.setIsSellableECare(commercialProduct.getProductControl().isSellableinLife());
+				merchandisingControl.setIsDisplayableAcq(commercialProduct.getProductControl().isDisplayableAcq());
+				merchandisingControl.setIsSellableRet(commercialProduct.getProductControl().isSellableRet());
+				merchandisingControl.setIsDisplayableRet(commercialProduct.getProductControl().isDisplayableRet());
+				merchandisingControl.setIsSellableAcq(commercialProduct.getProductControl().isSellableAcq());
 				merchandisingControl.setIsDisplayableSavedBasket(
-						commercialProduct.getProductControl().isIsDisplayableSavedBasket());
+						commercialProduct.getProductControl().isDisplayableSavedBasket());
 				merchandisingControl.setOrder(commercialProduct.getOrder().intValue());
 				merchandisingControl.setPreorderable(commercialProduct.getProductControl().isPreOrderable());
 				String dateFormat = Constants.DATE_FORMAT_COHERENCE;

@@ -18,7 +18,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import com.vf.uk.dal.common.registry.client.Utility;
 import com.vf.uk.dal.device.datamodel.bundle.Allowance;
 import com.vf.uk.dal.device.datamodel.bundle.Availability;
@@ -44,7 +43,6 @@ import com.vf.uk.dal.device.datamodel.product.ProductControl;
 import com.vf.uk.dal.device.datamodel.product.ProductGroups;
 import com.vf.uk.dal.device.datamodel.product.ProductModel;
 import com.vf.uk.dal.device.datamodel.product.PromoteAs;
-import com.vf.uk.dal.device.datamodel.product.StockAvailability;
 import com.vf.uk.dal.device.datamodel.productgroups.Count;
 import com.vf.uk.dal.device.datamodel.productgroups.FacetField;
 import com.vf.uk.dal.device.datamodel.productgroups.Group;
@@ -886,7 +884,7 @@ public class CommonMethods {
 		commercialProduct.setPreDesc("");
 		commercialProduct.setDisplayName("asbd");
 		PriceDetail priceDetail = new PriceDetail();
-		priceDetail.setIsInvoiceChargeable(true);
+		priceDetail.setInvoiceChargeable(true);
 		priceDetail.setPriceGross((double) 64);
 		priceDetail.setPriceNet((double) 54);
 		priceDetail.setPriceVAT((double) 24);
@@ -901,13 +899,13 @@ public class CommonMethods {
 		commercialProduct.setPromoteAs(promoteAs);
 
 		ProductControl productControl = new ProductControl();
-		productControl.setIsDisplayableinLife(true);
-		productControl.setIsSellableinLife(true);
-		productControl.setIsDisplayableAcq(true);
-		productControl.setIsSellableRet(true);
-		productControl.setIsDisplayableRet(true);
-		productControl.setIsSellableAcq(true);
-		productControl.setIsDisplayableSavedBasket(true);
+		productControl.setDisplayableinLife(true);
+		productControl.setSellableinLife(true);
+		productControl.setDisplayableAcq(true);
+		productControl.setSellableRet(true);
+		productControl.setDisplayableRet(true);
+		productControl.setSellableAcq(true);
+		productControl.setDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp = new Timestamp(Date.valueOf("2003-09-05").getTime());
@@ -990,7 +988,7 @@ public class CommonMethods {
 
 		Duration duration = new Duration();
 		duration.setStarts("Januray");
-		duration.setUOM("MB");
+		duration.setUom("MB");
 		duration.setValue("30");
 		commercialProduct.setDuration(duration);
 		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
@@ -1233,7 +1231,7 @@ public class CommonMethods {
 		commercialProduct.setPreDesc("");
 		commercialProduct.setDisplayName("asbd");
 		PriceDetail priceDetail = new PriceDetail();
-		priceDetail.setIsInvoiceChargeable(true);
+		priceDetail.setInvoiceChargeable(true);
 		priceDetail.setPriceGross((double) 64);
 		priceDetail.setPriceNet((double) 54);
 		priceDetail.setPriceVAT((double) 24);
@@ -1247,13 +1245,13 @@ public class CommonMethods {
 		commercialProduct.setPromoteAs(promoteAs);
 
 		ProductControl productControl = new ProductControl();
-		productControl.setIsDisplayableinLife(true);
-		productControl.setIsSellableinLife(true);
-		productControl.setIsDisplayableAcq(true);
-		productControl.setIsSellableRet(true);
-		productControl.setIsDisplayableRet(true);
-		productControl.setIsSellableAcq(true);
-		productControl.setIsDisplayableSavedBasket(true);
+		productControl.setDisplayableinLife(true);
+		productControl.setSellableinLife(true);
+		productControl.setDisplayableAcq(true);
+		productControl.setSellableRet(true);
+		productControl.setDisplayableRet(true);
+		productControl.setSellableAcq(true);
+		productControl.setDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp = new Timestamp(Date.valueOf("2003-09-05").getTime());
@@ -1337,7 +1335,7 @@ public class CommonMethods {
 
 		Duration duration = new Duration();
 		duration.setStarts("Januray");
-		duration.setUOM("MB");
+		duration.setUom("MB");
 		duration.setValue("30");
 		commercialProduct.setDuration(duration);
 		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
@@ -2238,18 +2236,6 @@ public class CommonMethods {
 		return bazaarList;
 	}
 
-	public static StockAvailability getStockAvailability_One() {
-		StockAvailability cohbundle = new StockAvailability();
-		String jsonString = "";
-		try {
-			jsonString = new String(Utility.readFile("\\rest-mock\\UTILITY-V1.json"));
-			Gson gson = new Gson();
-			cohbundle = gson.fromJson(jsonString, StockAvailability.class);
-		} catch (Exception e) {
-		}
-		return cohbundle;
-	}
-
 	public static Map<String, String> getleadMemberMap() {
 		Map<String, String> leadMemberMap = new HashMap<>();
 		leadMemberMap.put("093353", "Y");
@@ -2354,7 +2340,7 @@ public class CommonMethods {
 		;
 		commercialProduct.setProductClass(Constants.STRING_HANDSET);
 		PriceDetail priceDetail = new PriceDetail();
-		priceDetail.setIsInvoiceChargeable(true);
+		priceDetail.setInvoiceChargeable(true);
 		priceDetail.setPriceGross((double) 64);
 		priceDetail.setPriceNet((double) 54);
 		priceDetail.setPriceVAT((double) 24);
@@ -2369,13 +2355,13 @@ public class CommonMethods {
 		commercialProduct.setPromoteAs(promoteAs);
 
 		ProductControl productControl = new ProductControl();
-		productControl.setIsDisplayableinLife(true);
-		productControl.setIsSellableinLife(true);
-		productControl.setIsDisplayableAcq(true);
-		productControl.setIsSellableRet(true);
-		productControl.setIsDisplayableRet(true);
-		productControl.setIsSellableAcq(true);
-		productControl.setIsDisplayableSavedBasket(true);
+		productControl.setDisplayableinLife(true);
+		productControl.setSellableinLife(true);
+		productControl.setDisplayableAcq(true);
+		productControl.setSellableRet(true);
+		productControl.setDisplayableRet(true);
+		productControl.setSellableAcq(true);
+		productControl.setDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp = new Timestamp(Date.valueOf("2003-09-05").getTime());
@@ -2458,7 +2444,7 @@ public class CommonMethods {
 
 		Duration duration = new Duration();
 		duration.setStarts("Januray");
-		duration.setUOM("MB");
+		duration.setUom("MB");
 		duration.setValue("30");
 		commercialProduct.setDuration(duration);
 		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
@@ -2503,7 +2489,7 @@ public class CommonMethods {
 		;
 		commercialProduct.setProductClass(Constants.STRING_HANDSET);
 		PriceDetail priceDetail = new PriceDetail();
-		priceDetail.setIsInvoiceChargeable(true);
+		priceDetail.setInvoiceChargeable(true);
 		priceDetail.setPriceGross((double) 64);
 		priceDetail.setPriceNet((double) 54);
 		priceDetail.setPriceVAT((double) 24);
@@ -2518,13 +2504,13 @@ public class CommonMethods {
 		commercialProduct.setPromoteAs(promoteAs);
 
 		ProductControl productControl = new ProductControl();
-		productControl.setIsDisplayableinLife(true);
-		productControl.setIsSellableinLife(true);
-		productControl.setIsDisplayableAcq(true);
-		productControl.setIsSellableRet(true);
-		productControl.setIsDisplayableRet(true);
-		productControl.setIsSellableAcq(true);
-		productControl.setIsDisplayableSavedBasket(true);
+		productControl.setDisplayableinLife(true);
+		productControl.setSellableinLife(true);
+		productControl.setDisplayableAcq(true);
+		productControl.setSellableRet(true);
+		productControl.setDisplayableRet(true);
+		productControl.setSellableAcq(true);
+		productControl.setDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp = new Timestamp(Date.valueOf("2003-09-05").getTime());
@@ -2607,7 +2593,7 @@ public class CommonMethods {
 
 		Duration duration = new Duration();
 		duration.setStarts("Januray");
-		duration.setUOM("MB");
+		duration.setUom("MB");
 		duration.setValue("30");
 		commercialProduct.setDuration(duration);
 		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
@@ -2703,7 +2689,7 @@ public class CommonMethods {
 		commercialProduct.setPreDesc("");
 		commercialProduct.setDisplayName("asbd");
 		PriceDetail priceDetail = new PriceDetail();
-		priceDetail.setIsInvoiceChargeable(true);
+		priceDetail.setInvoiceChargeable(true);
 		priceDetail.setPriceGross((double) 64);
 		priceDetail.setPriceNet((double) 54);
 		priceDetail.setPriceVAT((double) 24);
@@ -2718,13 +2704,13 @@ public class CommonMethods {
 		commercialProduct.setPromoteAs(promoteAs);
 
 		ProductControl productControl = new ProductControl();
-		productControl.setIsDisplayableinLife(true);
-		productControl.setIsSellableinLife(true);
-		productControl.setIsDisplayableAcq(true);
-		productControl.setIsSellableRet(true);
-		productControl.setIsDisplayableRet(true);
-		productControl.setIsSellableAcq(true);
-		productControl.setIsDisplayableSavedBasket(true);
+		productControl.setDisplayableinLife(true);
+		productControl.setSellableinLife(true);
+		productControl.setDisplayableAcq(true);
+		productControl.setSellableRet(true);
+		productControl.setDisplayableRet(true);
+		productControl.setSellableAcq(true);
+		productControl.setDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp = new Timestamp(Date.valueOf("2003-09-05").getTime());
@@ -2807,7 +2793,7 @@ public class CommonMethods {
 
 		Duration duration = new Duration();
 		duration.setStarts("Januray");
-		duration.setUOM("MB");
+		duration.setUom("MB");
 		duration.setValue("30");
 		commercialProduct.setDuration(duration);
 		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
@@ -2913,7 +2899,7 @@ public class CommonMethods {
 		listOfCompatiblePlan.add("110156");
 		commercialProduct.setListOfCompatiblePlanIds(listOfCompatiblePlan);
 		PriceDetail priceDetail = new PriceDetail();
-		priceDetail.setIsInvoiceChargeable(true);
+		priceDetail.setInvoiceChargeable(true);
 		priceDetail.setPriceGross((double) 64);
 		priceDetail.setPriceNet((double) 54);
 		priceDetail.setPriceVAT((double) 24);
@@ -2928,13 +2914,13 @@ public class CommonMethods {
 		commercialProduct.setPromoteAs(promoteAs);
 
 		ProductControl productControl = new ProductControl();
-		productControl.setIsDisplayableinLife(true);
-		productControl.setIsSellableinLife(true);
-		productControl.setIsDisplayableAcq(true);
-		productControl.setIsSellableRet(true);
-		productControl.setIsDisplayableRet(true);
-		productControl.setIsSellableAcq(true);
-		productControl.setIsDisplayableSavedBasket(true);
+		productControl.setDisplayableinLife(true);
+		productControl.setSellableinLife(true);
+		productControl.setDisplayableAcq(true);
+		productControl.setSellableRet(true);
+		productControl.setDisplayableRet(true);
+		productControl.setSellableAcq(true);
+		productControl.setDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp = new Timestamp(Date.valueOf("2003-09-05").getTime());
@@ -3017,7 +3003,7 @@ public class CommonMethods {
 
 		Duration duration = new Duration();
 		duration.setStarts("Januray");
-		duration.setUOM("MB");
+		duration.setUom("MB");
 		duration.setValue("30");
 		commercialProduct.setDuration(duration);
 		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
@@ -3043,7 +3029,7 @@ public class CommonMethods {
 		listOfCompatiblePlan.add("110156");
 		commercialProduct.setListOfCompatiblePlanIds(listOfCompatiblePlan);
 		PriceDetail priceDetail = new PriceDetail();
-		priceDetail.setIsInvoiceChargeable(true);
+		priceDetail.setInvoiceChargeable(true);
 		priceDetail.setPriceGross((double) 64);
 		priceDetail.setPriceNet((double) 54);
 		priceDetail.setPriceVAT((double) 24);
@@ -3058,13 +3044,13 @@ public class CommonMethods {
 		commercialProduct.setPromoteAs(promoteAs);
 
 		ProductControl productControl = new ProductControl();
-		productControl.setIsDisplayableinLife(true);
-		productControl.setIsSellableinLife(true);
-		productControl.setIsDisplayableAcq(true);
-		productControl.setIsSellableRet(true);
-		productControl.setIsDisplayableRet(true);
-		productControl.setIsSellableAcq(true);
-		productControl.setIsDisplayableSavedBasket(true);
+		productControl.setDisplayableinLife(true);
+		productControl.setSellableinLife(true);
+		productControl.setDisplayableAcq(true);
+		productControl.setSellableRet(true);
+		productControl.setDisplayableRet(true);
+		productControl.setSellableAcq(true);
+		productControl.setDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp = new Timestamp(Date.valueOf("2003-09-05").getTime());
@@ -3147,7 +3133,7 @@ public class CommonMethods {
 
 		Duration duration = new Duration();
 		duration.setStarts("Januray");
-		duration.setUOM("MB");
+		duration.setUom("MB");
 		duration.setValue("30");
 		commercialProduct.setDuration(duration);
 		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
@@ -3168,7 +3154,7 @@ public class CommonMethods {
 		commercialProduct.setPreDesc("");
 		commercialProduct.setDisplayName("asbd");
 		PriceDetail priceDetail = new PriceDetail();
-		priceDetail.setIsInvoiceChargeable(true);
+		priceDetail.setInvoiceChargeable(true);
 		priceDetail.setPriceGross((double) 64);
 		priceDetail.setPriceNet((double) 54);
 		priceDetail.setPriceVAT((double) 24);
@@ -3183,13 +3169,13 @@ public class CommonMethods {
 		commercialProduct.setPromoteAs(promoteAs);
 		commercialProduct.setIsDeviceProduct(true);
 		ProductControl productControl = new ProductControl();
-		productControl.setIsDisplayableinLife(true);
-		productControl.setIsSellableinLife(true);
-		productControl.setIsDisplayableAcq(true);
-		productControl.setIsSellableRet(true);
-		productControl.setIsDisplayableRet(true);
-		productControl.setIsSellableAcq(true);
-		productControl.setIsDisplayableSavedBasket(true);
+		productControl.setDisplayableinLife(true);
+		productControl.setSellableinLife(true);
+		productControl.setDisplayableAcq(true);
+		productControl.setSellableRet(true);
+		productControl.setDisplayableRet(true);
+		productControl.setSellableAcq(true);
+		productControl.setDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp = new Timestamp(Date.valueOf("2003-09-05").getTime());
@@ -3279,7 +3265,7 @@ public class CommonMethods {
 
 		Duration duration = new Duration();
 		duration.setStarts("Januray");
-		duration.setUOM("MB");
+		duration.setUom("MB");
 		duration.setValue("30");
 		commercialProduct.setDuration(duration);
 		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();

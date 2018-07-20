@@ -271,7 +271,7 @@ public class AccessoriesAndInsurancedaoUtils {
 							specification.setName(spec.getName());
 							specification.setValue(spec.getValue());
 							specification.setPriority(spec.getPriority().intValue());
-							specification.setComparable(spec.isComparable());
+							specification.setComparable(spec.getComparable());
 							specification.setIsKey(spec.getIsKey());
 							specification.setValueType(spec.getValueType());
 							specification.setValueUOM(spec.getValueUOM());

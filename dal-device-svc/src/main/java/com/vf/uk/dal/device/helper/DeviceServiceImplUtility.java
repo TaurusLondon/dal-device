@@ -428,8 +428,8 @@ public class DeviceServiceImplUtility {
 	 * @return
 	 */
 	public static boolean isNonUpgradeCommercialProduct(CommercialProduct comProduct) {
-		return comProduct.getProductControl() != null && comProduct.getProductControl().isIsDisplayableAcq()
-				&& comProduct.getProductControl().isIsSellableAcq();
+		return comProduct.getProductControl() != null && comProduct.getProductControl().isDisplayableAcq()
+				&& comProduct.getProductControl().isSellableAcq();
 	}
 
 	/**
@@ -438,8 +438,8 @@ public class DeviceServiceImplUtility {
 	 * @return
 	 */
 	public static boolean isUpgradeFromCommercialProduct(CommercialProduct comProduct) {
-		return comProduct.getProductControl() != null && comProduct.getProductControl().isIsSellableRet()
-				&& comProduct.getProductControl().isIsDisplayableRet();
+		return comProduct.getProductControl() != null && comProduct.getProductControl().isSellableRet()
+				&& comProduct.getProductControl().isDisplayableRet();
 	}
 
 	/**
