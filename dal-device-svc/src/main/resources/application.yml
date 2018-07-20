@@ -47,19 +47,10 @@ endpoints:
    enabled: true
    
 management:
- health:  
-   solr:
-     enabled: false
  security:
    enabled: false
 
 icp:
-  env:
-    kafka:
-      host: kafka
-      port: 9092
-      logTopic: logs
- 
   config:
     jdbcUrl: jdbc:oracle:thin:@100.66.65.222:1521:oradb
     jdbcUserName: daluser

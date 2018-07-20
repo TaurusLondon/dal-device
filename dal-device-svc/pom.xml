@@ -7,7 +7,7 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.5.10.RELEASE</version>
 	</parent>
-	<groupId>com.vf.uk.dal</groupId> 
+	<groupId>com.vf.uk.dal</groupId>
 	<artifactId>dal-device-svc</artifactId>
 	<version>10.1.4</version>
 	<packaging>jar</packaging>
@@ -42,7 +42,7 @@
 			<groupId>com.vf.uk.dal</groupId>
 			<artifactId>dal-core</artifactId>
 			<version>9.6.3</version>
-			<exclusions> 
+			<exclusions>
 				<exclusion>
 					<artifactId>slf4j-api</artifactId>
 					<groupId>org.slf4j</groupId>
@@ -56,6 +56,11 @@
 					<groupId>org.slf4j</groupId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<!-- Coherence Jars -->
 		<!-- LoggingUtility uses slf4j-ext and json-simple jar -->
@@ -97,10 +102,10 @@
 			<version>6.0.1</version>
 		</dependency>
 		<dependency>
-    <groupId>org.elasticsearch.client</groupId>
-    <artifactId>elasticsearch-rest-high-level-client</artifactId>
-    <version>6.0.1</version>
-      </dependency>
+			<groupId>org.elasticsearch.client</groupId>
+			<artifactId>elasticsearch-rest-high-level-client</artifactId>
+			<version>6.0.1</version>
+		</dependency>
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
 			<artifactId>ehcache</artifactId>
