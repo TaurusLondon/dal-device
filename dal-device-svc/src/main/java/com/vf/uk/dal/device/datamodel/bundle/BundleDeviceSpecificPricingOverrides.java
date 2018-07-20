@@ -14,8 +14,4 @@ public class BundleDeviceSpecificPricingOverrides {
 
 	private BundlePriceOverride bundlePriceOverride;
 
-	public BundleDeviceSpecificPricingOverrides() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 }

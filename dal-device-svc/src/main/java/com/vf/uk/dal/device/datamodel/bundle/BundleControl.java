@@ -7,23 +7,26 @@
 
 package com.vf.uk.dal.device.datamodel.bundle;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Data;
 
 @Data
 public class BundleControl {
 
+	@JsonProperty("isDisplayableinLife")
 	private boolean isDisplayableinLife;
-
+	@JsonProperty("isSellableinLife")
 	private boolean isSellableinLife;
-
+	@JsonProperty("isDisplayableAcq")
 	private boolean isDisplayableAcq;
-
+	@JsonProperty("isSellableRet")
 	private boolean isSellableRet;
-
+	@JsonProperty("isDisplayableRet")
 	private boolean isDisplayableRet;
-
+	@JsonProperty("isSellableAcq")
 	private boolean isSellableAcq;
-
+	@JsonProperty("isDisplayableSavedBasket")
 	private boolean isDisplayableSavedBasket;
 
 	private Long order;
@@ -31,154 +34,4 @@ public class BundleControl {
 	private boolean affiliateExport;
 
 	private String compareWith;
-
-	public BundleControl() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	public boolean getIsDisplayableinLife() {
-		return isDisplayableinLife;
-	}
-
-	public void setDisplayableinLife(boolean isDisplayableinLife) {
-		this.isDisplayableinLife = isDisplayableinLife;
-	}
-
-	public boolean getIsSellableinLife() {
-		return isSellableinLife;
-	}
-
-	public void setSellableinLife(boolean isSellableinLife) {
-		this.isSellableinLife = isSellableinLife;
-	}
-
-	public boolean getIsDisplayableAcq() {
-		return isDisplayableAcq;
-	}
-
-	public void setDisplayableAcq(boolean isDisplayableAcq) {
-		this.isDisplayableAcq = isDisplayableAcq;
-	}
-
-	public boolean getIsSellableRet() {
-		return isSellableRet;
-	}
-
-	public void setSellableRet(boolean isSellableRet) {
-		this.isSellableRet = isSellableRet;
-	}
-
-	public boolean getIsDisplayableRet() {
-		return isDisplayableRet;
-	}
-
-	public void setDisplayableRet(boolean isDisplayableRet) {
-		this.isDisplayableRet = isDisplayableRet;
-	}
-
-	public boolean getIsSellableAcq() {
-		return isSellableAcq;
-	}
-
-	public void setSellableAcq(boolean isSellableAcq) {
-		this.isSellableAcq = isSellableAcq;
-	}
-
-	public boolean getIsDisplayableSavedBasket() {
-		return isDisplayableSavedBasket;
-	}
-
-	public void setDisplayableSavedBasket(boolean isDisplayableSavedBasket) {
-		this.isDisplayableSavedBasket = isDisplayableSavedBasket;
-	}
-
-	public Long getOrder() {
-		return order;
-	}
-
-	public void setOrder(Long order) {
-		this.order = order;
-	}
-
-	public boolean getIssAffiliateExport() {
-		return affiliateExport;
-	}
-
-	public void setAffiliateExport(boolean affiliateExport) {
-		this.affiliateExport = affiliateExport;
-	}
-
-	public String getCompareWith() {
-		return compareWith;
-	}
-
-	public void setCompareWith(String compareWith) {
-		this.compareWith = compareWith;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (affiliateExport ? 1231 : 1237);
-		result = prime * result + ((compareWith == null) ? 0 : compareWith.hashCode());
-		result = prime * result + (isDisplayableAcq ? 1231 : 1237);
-		result = prime * result + (isDisplayableRet ? 1231 : 1237);
-		result = prime * result + (isDisplayableSavedBasket ? 1231 : 1237);
-		result = prime * result + (isDisplayableinLife ? 1231 : 1237);
-		result = prime * result + (isSellableAcq ? 1231 : 1237);
-		result = prime * result + (isSellableRet ? 1231 : 1237);
-		result = prime * result + (isSellableinLife ? 1231 : 1237);
-		result = prime * result + ((order == null) ? 0 : order.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		BundleControl other = (BundleControl) obj;
-		if (affiliateExport != other.affiliateExport)
-			return false;
-		if (compareWith == null) {
-			if (other.compareWith != null)
-				return false;
-		} else if (!compareWith.equals(other.compareWith))
-			return false;
-		if (isDisplayableAcq != other.isDisplayableAcq)
-			return false;
-		if (isDisplayableRet != other.isDisplayableRet)
-			return false;
-		if (isDisplayableSavedBasket != other.isDisplayableSavedBasket)
-			return false;
-		if (isDisplayableinLife != other.isDisplayableinLife)
-			return false;
-		if (isSellableAcq != other.isSellableAcq)
-			return false;
-		if (isSellableRet != other.isSellableRet)
-			return false;
-		if (isSellableinLife != other.isSellableinLife)
-			return false;
-		if (order == null) {
-			if (other.order != null)
-				return false;
-		} else if (!order.equals(other.order))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "BundleControl [isDisplayableinLife=" + isDisplayableinLife + ", isSellableinLife=" + isSellableinLife
-				+ ", isDisplayableAcq=" + isDisplayableAcq + ", isSellableRet=" + isSellableRet + ", isDisplayableRet="
-				+ isDisplayableRet + ", isSellableAcq=" + isSellableAcq + ", isDisplayableSavedBasket="
-				+ isDisplayableSavedBasket + ", order=" + order + ", affiliateExport=" + affiliateExport
-				+ ", compareWith=" + compareWith + "]";
-	}
-
 }

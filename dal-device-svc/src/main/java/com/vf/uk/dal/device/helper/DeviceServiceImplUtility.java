@@ -670,8 +670,8 @@ public class DeviceServiceImplUtility {
 	 * @return
 	 */
 	public static boolean isNonUpgradeCommercialBundle(CommercialBundle commercialBundle) {
-		return commercialBundle.getBundleControl() != null && commercialBundle.getBundleControl().getIsSellableAcq()
-				&& commercialBundle.getBundleControl().getIsDisplayableAcq();
+		return commercialBundle.getBundleControl() != null && commercialBundle.getBundleControl().isSellableAcq()
+				&& commercialBundle.getBundleControl().isDisplayableAcq();
 	}
 
 	/**
@@ -680,8 +680,8 @@ public class DeviceServiceImplUtility {
 	 * @return
 	 */
 	public static boolean isUpgradeFromCommercialBundle(CommercialBundle commercialBundle) {
-		return commercialBundle.getBundleControl() != null && commercialBundle.getBundleControl().getIsSellableRet()
-				&& commercialBundle.getBundleControl().getIsDisplayableRet();
+		return commercialBundle.getBundleControl() != null && commercialBundle.getBundleControl().isSellableRet()
+				&& commercialBundle.getBundleControl().isDisplayableRet();
 	}
 
 	/**
