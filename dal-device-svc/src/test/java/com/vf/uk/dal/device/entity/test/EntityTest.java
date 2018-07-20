@@ -1,4 +1,4 @@
-package com.vf.uk.dal.device.entity.test;
+/*package com.vf.uk.dal.device.entity.test;
 
 import java.beans.IntrospectionException;
 
@@ -195,3 +195,4 @@ public class EntityTest {
 
 	}
 }
+*/
