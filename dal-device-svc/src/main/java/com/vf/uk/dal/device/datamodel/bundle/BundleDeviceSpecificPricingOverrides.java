@@ -7,13 +7,9 @@
 
 package com.vf.uk.dal.device.datamodel.bundle;
 
-/*import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-*/
+import lombok.Data;
 
+@Data
 public class BundleDeviceSpecificPricingOverrides {
 
 	private BundlePriceOverride bundlePriceOverride;
@@ -22,43 +18,4 @@ public class BundleDeviceSpecificPricingOverrides {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
-	public BundlePriceOverride getBundlePriceOverride() {
-		return bundlePriceOverride;
-	}
-
-	public void setBundlePriceOverride(BundlePriceOverride bundlePriceOverride) {
-		this.bundlePriceOverride = bundlePriceOverride;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((bundlePriceOverride == null) ? 0 : bundlePriceOverride.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		BundleDeviceSpecificPricingOverrides other = (BundleDeviceSpecificPricingOverrides) obj;
-		if (bundlePriceOverride == null) {
-			if (other.bundlePriceOverride != null)
-				return false;
-		} else if (!bundlePriceOverride.equals(other.bundlePriceOverride))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "BundleDeviceSpecificPricingOverrides [bundlePriceOverride=" + bundlePriceOverride + "]";
-	}
-
 }

@@ -9,6 +9,8 @@ package com.vf.uk.dal.device.datamodel.bundle;
 
 import java.util.List;
 
+import lombok.Data;
+@Data
 public class ServiceProduct {
 
 	private String id;
@@ -19,73 +21,5 @@ public class ServiceProduct {
 
 	public ServiceProduct() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public Boolean getBundled() {
-		return bundled;
-	}
-
-	public void setBundled(Boolean bundled) {
-		this.bundled = bundled;
-	}
-
-	public List<LineRental> getLineRentals() {
-		return lineRentals;
-	}
-
-	public void setLineRentals(List<LineRental> lineRentals) {
-		this.lineRentals = lineRentals;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((bundled == null) ? 0 : bundled.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((lineRentals == null) ? 0 : lineRentals.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ServiceProduct other = (ServiceProduct) obj;
-		if (bundled == null) {
-			if (other.bundled != null)
-				return false;
-		} else if (!bundled.equals(other.bundled))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (lineRentals == null) {
-			if (other.lineRentals != null)
-				return false;
-		} else if (!lineRentals.equals(other.lineRentals))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "ServiceProduct [id=" + id + ", bundled=" + bundled + ", lineRentals=" + lineRentals + "]";
-	}
-
 }

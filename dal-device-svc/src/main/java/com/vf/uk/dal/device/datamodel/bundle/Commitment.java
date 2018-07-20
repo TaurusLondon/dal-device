@@ -7,6 +7,9 @@
 
 package com.vf.uk.dal.device.datamodel.bundle;
 
+import lombok.Data;
+
+@Data
 public class Commitment {
 
 	private String period;
@@ -17,57 +20,4 @@ public class Commitment {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
-	public String getPeriod() {
-		return period;
-	}
-
-	public void setPeriod(String period) {
-		this.period = period;
-	}
-
-	public Boolean getPenalty() {
-		return penalty;
-	}
-
-	public void setPenalty(Boolean penalty) {
-		this.penalty = penalty;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((penalty == null) ? 0 : penalty.hashCode());
-		result = prime * result + ((period == null) ? 0 : period.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Commitment other = (Commitment) obj;
-		if (penalty == null) {
-			if (other.penalty != null)
-				return false;
-		} else if (!penalty.equals(other.penalty))
-			return false;
-		if (period == null) {
-			if (other.period != null)
-				return false;
-		} else if (!period.equals(other.period))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Commitment [period=" + period + ", penalty=" + penalty + "]";
-	}
-
 }

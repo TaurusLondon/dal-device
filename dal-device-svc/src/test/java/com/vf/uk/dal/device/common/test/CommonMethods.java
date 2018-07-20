@@ -1141,7 +1141,7 @@ public class CommonMethods {
 
 	public static CommercialBundle getCommercialBundle() {
 		CommercialBundle bundle = new CommercialBundle();
-		bundle.setBundleID("110154");
+		bundle.setId("110154");
 		bundle.setName("24mth BandO 500min 500MB Standard");
 		bundle.setDesc("CTR12 Standard bundle comes with 500 mins, unlimited texts and 500MB of UK data");
 		bundle.setPaymentType("postpaid");
@@ -1350,7 +1350,7 @@ public class CommonMethods {
 
 	public static CommercialBundle getCommercialBundle_One() {
 		CommercialBundle bundle = new CommercialBundle();
-		bundle.setBundleID("109154");
+		bundle.setId("109154");
 		bundle.setName("24mth BandO 500min 500MB Standard");
 		bundle.setDesc("CTR12 Standard bundle comes with 500 mins, unlimited texts and 500MB of UK data");
 		bundle.setPaymentType("postpaid");
@@ -1429,7 +1429,7 @@ public class CommonMethods {
 
 	public static CommercialBundle getCommercialBundle_Two() {
 		CommercialBundle bundle = new CommercialBundle();
-		bundle.setBundleID("109154");
+		bundle.setId("109154");
 		bundle.setName("24mth BandO 500min 500MB Standard");
 		bundle.setDesc("CTR12 Standard bundle comes with 500 mins, unlimited texts and 500MB of UK data");
 		bundle.setPaymentType("postpaid");
@@ -1507,7 +1507,7 @@ public class CommonMethods {
 
 	public static CommercialBundle getCommercialBundle_Three() {
 		CommercialBundle bundle = new CommercialBundle();
-		bundle.setBundleID("109154");
+		bundle.setId("109154");
 		bundle.setName("24mth BandO 500min 500MB Standard");
 		bundle.setDesc("CTR12 Standard bundle comes with 500 mins, unlimited texts and 500MB of UK data");
 		bundle.setPaymentType("postpaid");
@@ -4687,7 +4687,7 @@ public class CommonMethods {
 
 	public static CommercialBundle getCommercialBundleForcacheDevice() {
 		CommercialBundle bundle = new CommercialBundle();
-		bundle.setBundleID("110163");
+		bundle.setId("110163");
 		bundle.setName("24mth BandO 500min 500MB Standard");
 		bundle.setDesc("CTR12 Standard bundle comes with 500 mins, unlimited texts and 500MB of UK data");
 		bundle.setPaymentType("postpaid");
@@ -4773,7 +4773,7 @@ public class CommonMethods {
 
 	public static CommercialBundle getCommercialBundleForMAkeAndModel() {
 		CommercialBundle bundle = new CommercialBundle();
-		bundle.setBundleID("183099");
+		bundle.setId("183099");
 		bundle.setName("24mth BandO 500min 500MB Standard");
 		bundle.setDesc("CTR12 Standard bundle comes with 500 mins, unlimited texts and 500MB of UK data");
 		bundle.setPaymentType("postpaid");
