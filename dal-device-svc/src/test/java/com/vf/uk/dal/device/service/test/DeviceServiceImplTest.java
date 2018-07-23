@@ -25,7 +25,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.discovery.EurekaClient;
 import com.vf.uk.dal.common.configuration.ConfigHelper;
-import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.registry.client.RegistryClient;
 import com.vf.uk.dal.common.registry.client.Utility;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
@@ -62,6 +61,7 @@ import com.vf.uk.dal.device.svc.impl.AccessoryInsuranceServiceImpl;
 import com.vf.uk.dal.device.svc.impl.DeviceDetailsServiceImpl;
 import com.vf.uk.dal.device.svc.impl.DeviceMakeAndModelServiceImpl;
 import com.vf.uk.dal.device.utils.Constants;
+import com.vf.uk.dal.device.utils.DeviceDetailsMakeAndModelVaiantDaoUtils;
 import com.vf.uk.dal.device.utils.ResponseMappingHelper;
 import com.vf.uk.dal.device.validator.Validator;
 import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
@@ -451,7 +451,12 @@ public class DeviceServiceImplTest {
 
 		}
 	}
-
+	@Test
+	public void testassembleMechandisingPromotionsPackageGeneric(){
+		DeviceDetailsMakeAndModelVaiantDaoUtils.assembleMechandisingPromotionsPackageGeneric(CommonMethods.getListOfBundleAndHardwarePromotions().get(0),
+				CommonMethods.getPriceForBundleAndHardware().get(0));
+	}
+	
 	@Test
 	public void TestgetInsuranceProductList7() {
 		try {
@@ -1113,7 +1118,7 @@ public class DeviceServiceImplTest {
 		}
 	}
 
-	@Test
+	/*@Test
 	public void TestgetReviewRatingList_Implementation() {
 
 		given(deviceDAOMock.getBazaarVoice(Matchers.anyString())).willThrow(new ApplicationException(""));
@@ -1123,7 +1128,7 @@ public class DeviceServiceImplTest {
 
 		}
 		utility.getAscendingOrderForBundleHeaderPrice(CommonMethods.getBundleHeaderList("SIMO"));
-	}
+	}*/
 
 	@Test
 	public void TestsettingPriceAndPromotionsToListOfDevicesEmpty() {
