@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>com.vf.uk.dal</groupId>
 	<artifactId>dal-device-svc</artifactId>
-	<version>10.1.4</version>
+	<version>10.2.0</version>
 	<packaging>jar</packaging>
 	<build>
 		<plugins>
@@ -131,10 +131,6 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<sonar.coverage.exclusions>
 			**/dao/**,
-			**/utils/DeviceTileCacheDAO.java,
-			**/utils/CohAddressProvider.java,
-			**/utils/CoherenceConnectionProvider.java,
-			**/utils/SolrConnectionProvider.java,
 			**/utils/ResponseMappingHelper.java,
 			**/utils/ElasticSearchUtils.java,
 			**/utils/BazaarVoiceCache.java,

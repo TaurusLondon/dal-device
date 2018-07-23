@@ -1,7 +1,7 @@
 package com.vf.uk.dal.device.beans.test;
 
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import com.vf.uk.dal.common.beans.Environment;
 import com.vf.uk.dal.common.configuration.ConfigHelper;
@@ -31,131 +31,134 @@ import com.vf.uk.dal.device.svc.impl.DeviceServiceImpl;
 import com.vf.uk.dal.device.utils.ElasticSearchUtils;
 import com.vf.uk.dal.device.utils.ResponseMappingHelper;
 
-@TestConfiguration
-public class DeviceTestBeans {
+import net.sf.ehcache.CacheManager;
+
+@Configuration
+ public class DeviceTestBeans {
 	// ** Bean for the controller class is created here **//*
 	
-	public DeviceController getDeviceController() {
+	@Bean public DeviceController getDeviceController() {
 		return new DeviceController();
 	}
 
 	
-	public DeviceEntityController getDeviceEntityController() {
+	@Bean public DeviceEntityController getDeviceEntityController() {
 		return new DeviceEntityController();
 	}
 
 	
-	public AccessoryInsuranceController getAccessoryInsuranceController() {
+	@Bean public AccessoryInsuranceController getAccessoryInsuranceController() {
 		return new AccessoryInsuranceController();
 	}
 
 	
-	public DeviceServiceImpl getDeviceServiceImpl() {
+	@Bean public DeviceServiceImpl getDeviceServiceImpl() {
 		return new DeviceServiceImpl();
 	}
 
 	
-	public DataSourceInitializer dataSourceInitializer() {
+	@Bean public DataSourceInitializer dataSourceInitializer() {
 		return new DataSourceInitializer();
 	}
 
 	
-	public RegistryClient getRegistryClient() {
+	@Bean public RegistryClient getRegistryClient() {
 		return new RegistryClient();
 	}
 
 	
-	public Environment getEnvironment() {
+	@Bean public Environment getEnvironment() {
 		return new Environment();
 	}
 
 	
-	public DeviceRecommendationService getDeviceRecommendationServiceImpl() {
+	@Bean public DeviceRecommendationService getDeviceRecommendationServiceImpl() {
 		return new DeviceRecommendationServiceImpl();
 	}
 
 	
-	public DeviceDao getDeviceDaoImpl() {
+	@Bean public DeviceDao getDeviceDaoImpl() {
 		return new DeviceDaoImpl();
 	}
 
 	
-	public ConfigHelper getConfigHelper() {
+	@Bean public ConfigHelper getConfigHelper() {
 		return new ConfigHelper();
 	}
 
 	
-	public ResponseMappingHelper getResponseMappingHelper() {
+	@Bean public ResponseMappingHelper getResponseMappingHelper() {
 		return new ResponseMappingHelper();
 	}
 
 	
-	public ElasticSearchUtils getElasticSearchUtils() {
+	@Bean public ElasticSearchUtils getElasticSearchUtils() {
 		return new ElasticSearchUtils();
 	}
 
 	
-	public CatalogServiceAspect getCatalogServiceAspect() {
+	@Bean public CatalogServiceAspect getCatalogServiceAspect() {
 		return new CatalogServiceAspect();
 	}
 
 	
-	public DeviceTileCacheDAOImpl getDeviceTileCacheDAOImpl() {
+	@Bean public DeviceTileCacheDAOImpl getDeviceTileCacheDAOImpl() {
 		return new DeviceTileCacheDAOImpl();
 	}
 
 	
-	public DeviceESHelper getDeviceESHelper() {
+	@Bean public DeviceESHelper getDeviceESHelper() {
 		return new DeviceESHelper();
 	}
 
 	
-	public DeviceConditionallHelper getDeviceConditionallHelper() {
+	@Bean public DeviceConditionallHelper getDeviceConditionallHelper() {
 		return new DeviceConditionallHelper();
 	}
 
 	
-	public CacheDeviceServiceImpl getCacheDeviceServiceImpl() {
+	@Bean public CacheDeviceServiceImpl getCacheDeviceServiceImpl() {
 		return new CacheDeviceServiceImpl();
 	}
 
 	
-	public DeviceDetailsServiceImpl getDeviceDetailsServiceImpl() {
+	@Bean public DeviceDetailsServiceImpl getDeviceDetailsServiceImpl() {
 		return new DeviceDetailsServiceImpl();
 	}
 
 	
-	public DeviceEntityServiceImpl getDeviceEntityServiceImpl() {
+	@Bean public DeviceEntityServiceImpl getDeviceEntityServiceImpl() {
 		return new DeviceEntityServiceImpl();
 	}
 
 	
-	public DeviceMakeAndModelServiceImpl getDeviceMakeAndModelServiceImpl() {
+	@Bean public DeviceMakeAndModelServiceImpl getDeviceMakeAndModelServiceImpl() {
 		return new DeviceMakeAndModelServiceImpl();
 	}
 
 	
-	public DeviceServiceCommonUtility getDeviceServiceCommonUtility() {
+	@Bean public DeviceServiceCommonUtility getDeviceServiceCommonUtility() {
 		return new DeviceServiceCommonUtility();
 	}
 
 	
-	public AccessoryInsuranceServiceImpl getAccessoryInsuranceServiceImpl() {
+	@Bean public AccessoryInsuranceServiceImpl getAccessoryInsuranceServiceImpl() {
 		return new AccessoryInsuranceServiceImpl();
 	}
 
 	
-	public DeviceMakeAndModelController getDeviceMakeAndModelController() {
+	@Bean public DeviceMakeAndModelController getDeviceMakeAndModelController() {
 		return new DeviceMakeAndModelController();
 	}
 
 	
-	public DeviceDetailsController getDeviceDetailsController() {
+	@Bean public DeviceDetailsController getDeviceDetailsController() {
 		return new DeviceDetailsController();
 	}
 
 	
-	public CacheDeviceAndReviewController getCacheDeviceAndReviewController() {
+	@Bean public CacheDeviceAndReviewController getCacheDeviceAndReviewController() {
 		return new CacheDeviceAndReviewController();
 	}
+	
 }
