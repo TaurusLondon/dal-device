@@ -136,7 +136,10 @@
 			**/utils/BazaarVoiceCache.java,
 			**/utils/SwaggerConfiguration.java,
 			**/conf/ElasticsearchRestCient.java,
-			**/DeviceApplication.java
+			**/DeviceApplication.java,
+			**/datamodel/**,
+			**/device/entity/**,
+			**/utility/**
 		</sonar.coverage.exclusions>
 		<swaggerVersion>10.1.0</swaggerVersion>
 	</properties>
