@@ -9,50 +9,14 @@ package com.vf.uk.dal.device.datamodel.bundle;
 
 import java.util.List;
 
+import lombok.Data;
+@Data
 public class PromoteAs {
 
 	private List<String> promotionName;
 
 	public PromoteAs() {
 		super();
-	}
-
-	public List<String> getPromotionName() {
-		return promotionName;
-	}
-
-	public void setPromotionName(List<String> promotionName) {
-		this.promotionName = promotionName;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((promotionName == null) ? 0 : promotionName.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		PromoteAs other = (PromoteAs) obj;
-		if (promotionName == null) {
-			if (other.promotionName != null)
-				return false;
-		} else if (!promotionName.equals(other.promotionName))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "PromoteAs [promotionName=" + promotionName + "]";
 	}
 
 }

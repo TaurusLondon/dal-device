@@ -1086,7 +1086,7 @@ public class DeviceServiceImplTest {
 		deviceSummary.setDisplayDescription("5.5 inch");
 		deviceSummary.setDisplayName("display name");
 		deviceSummary.setDeviceId(String.valueOf(122));
-		deviceSummary.isAffordable(true);
+		deviceSummary.setIsAffordable(true);
 		deviceSummary.setLeadPlanId("Lead plan Id");
 		deviceSummary.setLeadPlanDisplayName("Yearly Plan");
 		deviceSummary.setMemory("64GB");
@@ -1429,7 +1429,7 @@ public class DeviceServiceImplTest {
 		try {
 			Map<String, CommercialBundle> commerBundleIdMap = new HashMap<>();
 			CommercialBundle cb = CommonMethods.getCommercialBundle();
-			cb.setBundleID("088417");
+			cb.setId("088417");
 			commerBundleIdMap.put("088417", cb);
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			deviceDetailsService.getListOfPriceForBundleAndHardware_Implementation(cp, commerBundleIdMap,
@@ -1443,7 +1443,7 @@ public class DeviceServiceImplTest {
 		try {
 			Map<String, CommercialBundle> commerBundleIdMap = new HashMap<>();
 			CommercialBundle cb = CommonMethods.getCommercialBundle();
-			cb.setBundleID("088417");
+			cb.setId("088417");
 			commerBundleIdMap.put("088417", cb);
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			cp.setLeadPlanId("");
@@ -1457,7 +1457,7 @@ public class DeviceServiceImplTest {
 		try {
 			Map<String, CommercialBundle> commerBundleIdMap = new HashMap<>();
 			CommercialBundle cb = CommonMethods.getCommercialBundle();
-			cb.setBundleID("088417");
+			cb.setId("088417");
 			commerBundleIdMap.put("088417", cb);
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			cp.setLeadPlanId(null);

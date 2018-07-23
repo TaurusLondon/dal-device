@@ -1,24 +1,12 @@
 package com.vf.uk.dal.device.datamodel.product;
 
+import lombok.Data;
+
+@Data
 public class Equipment {
 
-	protected String make;
+	private String make;
 
-	protected String model;
+	private String model;
 
-	public String getMake() {
-		return make;
-	}
-
-	public void setMake(String make) {
-		this.make = make;
-	}
-
-	public String getModel() {
-		return model;
-	}
-
-	public void setModel(String model) {
-		this.model = model;
-	}
 }

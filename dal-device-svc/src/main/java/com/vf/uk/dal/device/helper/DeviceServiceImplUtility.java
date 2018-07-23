@@ -135,7 +135,7 @@ public class DeviceServiceImplUtility {
 		groupDetails.setGroupName(productGroupModel.getName());
 		groupDetails.setGroupId(productGroupModel.getId());
 		groupDetails.setColor(productGroupModel.getColour());
-		groupDetails.size(productGroupModel.getCapacity());
+		groupDetails.setSize(productGroupModel.getCapacity());
 		groupDetails.setColorHex(productGroupModel.getHexCode());
 		productGroupdetailsMap.put(deviceId, groupDetails);
 
@@ -428,8 +428,8 @@ public class DeviceServiceImplUtility {
 	 * @return
 	 */
 	public static boolean isNonUpgradeCommercialProduct(CommercialProduct comProduct) {
-		return comProduct.getProductControl() != null && comProduct.getProductControl().isIsDisplayableAcq()
-				&& comProduct.getProductControl().isIsSellableAcq();
+		return comProduct.getProductControl() != null && comProduct.getProductControl().isDisplayableAcq()
+				&& comProduct.getProductControl().isSellableAcq();
 	}
 
 	/**
@@ -438,8 +438,8 @@ public class DeviceServiceImplUtility {
 	 * @return
 	 */
 	public static boolean isUpgradeFromCommercialProduct(CommercialProduct comProduct) {
-		return comProduct.getProductControl() != null && comProduct.getProductControl().isIsSellableRet()
-				&& comProduct.getProductControl().isIsDisplayableRet();
+		return comProduct.getProductControl() != null && comProduct.getProductControl().isSellableRet()
+				&& comProduct.getProductControl().isDisplayableRet();
 	}
 
 	/**
@@ -670,8 +670,8 @@ public class DeviceServiceImplUtility {
 	 * @return
 	 */
 	public static boolean isNonUpgradeCommercialBundle(CommercialBundle commercialBundle) {
-		return commercialBundle.getBundleControl() != null && commercialBundle.getBundleControl().getIsSellableAcq()
-				&& commercialBundle.getBundleControl().getIsDisplayableAcq();
+		return commercialBundle.getBundleControl() != null && commercialBundle.getBundleControl().isSellableAcq()
+				&& commercialBundle.getBundleControl().isDisplayableAcq();
 	}
 
 	/**
@@ -680,8 +680,8 @@ public class DeviceServiceImplUtility {
 	 * @return
 	 */
 	public static boolean isUpgradeFromCommercialBundle(CommercialBundle commercialBundle) {
-		return commercialBundle.getBundleControl() != null && commercialBundle.getBundleControl().getIsSellableRet()
-				&& commercialBundle.getBundleControl().getIsDisplayableRet();
+		return commercialBundle.getBundleControl() != null && commercialBundle.getBundleControl().isSellableRet()
+				&& commercialBundle.getBundleControl().isDisplayableRet();
 	}
 
 	/**

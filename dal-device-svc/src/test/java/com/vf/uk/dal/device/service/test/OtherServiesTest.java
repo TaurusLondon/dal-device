@@ -54,7 +54,6 @@ import com.vf.uk.dal.device.helper.DeviceServiceImplUtility;
 import com.vf.uk.dal.device.svc.DeviceService;
 import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.ResponseMappingHelper;
-import com.vf.uk.dal.utility.entity.BundleDetails;
 import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
 import com.vf.uk.dal.utility.entity.BundleModelAndPrice;
 import com.vf.uk.dal.utility.entity.CurrentJourney;
@@ -217,13 +216,12 @@ public class OtherServiesTest {
 
 	@Test
 	public void nuullTestForgetListOfDeviceDetailsWithoutLeadPlanId() {
-		List<DeviceDetails> deviceDetails;
 		given(response.getCommercialProduct(Matchers.anyObject())).willReturn(null);
 		given(response.getMerchandisingPromotion(Matchers.anyObject())).willReturn(null);
 		given(deviceDAOMock.getPriceForBundleAndHardware(Matchers.anyList(), Matchers.anyString(),
 				Matchers.anyString())).willReturn(Collections.emptyList());
 		try {
-			deviceDetails = deviceDetailsController
+			deviceDetailsController
 					.getListOfDeviceDetails(CommonMethods.getQueryParamsMapForDeviceDetails("093353,090572"));
 		} catch (ApplicationException e) {
 			Assert.assertEquals("Invalid Device Id Sent In Request", e.getMessage());
@@ -262,11 +260,9 @@ public class OtherServiesTest {
 		keepDeviceChangePlanRequest.setAllowedRecurringPriceLimit("60");
 		keepDeviceChangePlanRequest.setPlansLimit("3");
 		try {
-			BundleDetails bundleDetails = deviceController.getKeepDeviceChangePlan(keepDeviceChangePlanRequest);
+			deviceController.getKeepDeviceChangePlan(keepDeviceChangePlanRequest);
 		} catch (Exception e) {
 		}
-		// Assert.assertNotNull(bundleDetails);
-
 	}
 
 	@Test
@@ -437,13 +433,10 @@ public class OtherServiesTest {
 		keepDeviceChangePlanRequest.setBundleId("110151");
 		keepDeviceChangePlanRequest.setAllowedRecurringPriceLimit("73");
 		keepDeviceChangePlanRequest.setPlansLimit("3");
-		BundleDetails bundleDetails;
 		try {
-			bundleDetails = deviceController.getKeepDeviceChangePlan(keepDeviceChangePlanRequest);
+			 deviceController.getKeepDeviceChangePlan(keepDeviceChangePlanRequest);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 		}
-		// Assert.assertNotNull(bundleDetails);
 
 	}
 
@@ -502,13 +495,10 @@ public class OtherServiesTest {
 		keepDeviceChangePlanRequest.setBundleId("110091");
 		keepDeviceChangePlanRequest.setAllowedRecurringPriceLimit("33");
 		keepDeviceChangePlanRequest.setPlansLimit("3");
-		BundleDetails bundleDetails;
 		try {
-			bundleDetails = deviceController.getKeepDeviceChangePlan(keepDeviceChangePlanRequest);
+			deviceController.getKeepDeviceChangePlan(keepDeviceChangePlanRequest);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 		}
-		// Assert.assertNotNull(bundleDetails);
 
 	}
 
@@ -1297,39 +1287,39 @@ public class OtherServiesTest {
 			cp.setProductControl(null);
 			DeviceServiceImplUtility.isNonUpgradeCommercialProduct(cp);
 			ProductControl pc = new ProductControl();
-			pc.setIsDisplayableAcq(false);
-			pc.setIsSellableAcq(false);
+			pc.setDisplayableAcq(false);
+			pc.setSellableAcq(false);
 			cp.setProductControl(pc);
 			DeviceServiceImplUtility.isNonUpgradeCommercialProduct(cp);
-			pc.setIsDisplayableAcq(true);
-			pc.setIsSellableAcq(false);
+			pc.setDisplayableAcq(true);
+			pc.setSellableAcq(false);
 			cp.setProductControl(pc);
 			DeviceServiceImplUtility.isNonUpgradeCommercialProduct(cp);
-			pc.setIsDisplayableAcq(true);
-			pc.setIsSellableAcq(true);
+			pc.setDisplayableAcq(true);
+			pc.setSellableAcq(true);
 			cp.setProductControl(pc);
 			DeviceServiceImplUtility.isNonUpgradeCommercialProduct(cp);
-			pc.setIsDisplayableAcq(false);
-			pc.setIsSellableAcq(true);
+			pc.setDisplayableAcq(false);
+			pc.setSellableAcq(true);
 			cp.setProductControl(pc);
 			DeviceServiceImplUtility.isNonUpgradeCommercialProduct(cp);
 
 			cp.setProductControl(null);
 			DeviceServiceImplUtility.isUpgradeFromCommercialProduct(cp);
-			pc.setIsDisplayableRet(false);
-			pc.setIsSellableRet(false);
+			pc.setDisplayableRet(false);
+			pc.setSellableRet(false);
 			cp.setProductControl(pc);
 			DeviceServiceImplUtility.isUpgradeFromCommercialProduct(cp);
-			pc.setIsDisplayableRet(true);
-			pc.setIsSellableRet(false);
+			pc.setDisplayableRet(true);
+			pc.setSellableRet(false);
 			cp.setProductControl(pc);
 			DeviceServiceImplUtility.isUpgradeFromCommercialProduct(cp);
-			pc.setIsDisplayableRet(true);
-			pc.setIsSellableRet(true);
+			pc.setDisplayableRet(true);
+			pc.setSellableRet(true);
 			cp.setProductControl(pc);
 			DeviceServiceImplUtility.isUpgradeFromCommercialProduct(cp);
-			pc.setIsDisplayableRet(false);
-			pc.setIsSellableRet(true);
+			pc.setDisplayableRet(false);
+			pc.setSellableRet(true);
 			cp.setProductControl(pc);
 			DeviceServiceImplUtility.isUpgradeFromCommercialProduct(cp);
 		} catch (Exception e) {

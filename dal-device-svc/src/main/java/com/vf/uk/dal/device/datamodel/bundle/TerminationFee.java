@@ -7,6 +7,9 @@
 
 package com.vf.uk.dal.device.datamodel.bundle;
 
+import lombok.Data;
+
+@Data
 public class TerminationFee {
 
 	private Float charge;
@@ -15,59 +18,5 @@ public class TerminationFee {
 
 	public TerminationFee() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
-
-	public Float getCharge() {
-		return charge;
-	}
-
-	public void setCharge(Float value) {
-		this.charge = value;
-	}
-
-	public String getProratePlan() {
-		return proratePlan;
-	}
-
-	public void setProratePlan(String value) {
-		this.proratePlan = value;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((charge == null) ? 0 : charge.hashCode());
-		result = prime * result + ((proratePlan == null) ? 0 : proratePlan.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		TerminationFee other = (TerminationFee) obj;
-		if (charge == null) {
-			if (other.charge != null)
-				return false;
-		} else if (!charge.equals(other.charge))
-			return false;
-		if (proratePlan == null) {
-			if (other.proratePlan != null)
-				return false;
-		} else if (!proratePlan.equals(other.proratePlan))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "TerminationFee [charge=" + charge + ", proratePlan=" + proratePlan + "]";
-	}
-
 }

@@ -89,7 +89,7 @@ public class DeviceRecommendationServiceTest {
 				deviceId);
 
 		FacetedDevice fd = new FacetedDevice();
-		fd.newFacet(null);
+		fd.setNewFacet(null);
 		Device d = new Device();
 		d.setDeviceId("109382");
 		List<Device> deviceList = new ArrayList<>();

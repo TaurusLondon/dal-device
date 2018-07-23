@@ -9,6 +9,8 @@ package com.vf.uk.dal.device.datamodel.merchandisingpromotion;
 
 import java.util.List;
 
+import lombok.Data;
+@Data
 public class Condition {
 
 	private String productPath;
@@ -16,76 +18,5 @@ public class Condition {
 	private String packageType;
 
 	private List<ComplexCondition> complexConditions;
-
-	public Condition() {
-		super();
-	}
-
-	public String getProductPath() {
-		return productPath;
-	}
-
-	public void setProductPath(String productPath) {
-		this.productPath = productPath;
-	}
-
-	public String getPackageType() {
-		return packageType;
-	}
-
-	public void setPackageType(String packageType) {
-		this.packageType = packageType;
-	}
-
-	public List<ComplexCondition> getComplexConditions() {
-		return complexConditions;
-	}
-
-	public void setComplexConditions(List<ComplexCondition> complexConditions) {
-		this.complexConditions = complexConditions;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((complexConditions == null) ? 0 : complexConditions.hashCode());
-		result = prime * result + ((packageType == null) ? 0 : packageType.hashCode());
-		result = prime * result + ((productPath == null) ? 0 : productPath.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Condition other = (Condition) obj;
-		if (complexConditions == null) {
-			if (other.complexConditions != null)
-				return false;
-		} else if (!complexConditions.equals(other.complexConditions))
-			return false;
-		if (packageType == null) {
-			if (other.packageType != null)
-				return false;
-		} else if (!packageType.equals(other.packageType))
-			return false;
-		if (productPath == null) {
-			if (other.productPath != null)
-				return false;
-		} else if (!productPath.equals(other.productPath))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Condition [productPath=" + productPath + ", packageType=" + packageType + ", complexConditions="
-				+ complexConditions + "]";
-	}
 
 }

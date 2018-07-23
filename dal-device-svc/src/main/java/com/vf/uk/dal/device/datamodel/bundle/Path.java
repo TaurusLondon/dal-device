@@ -7,6 +7,9 @@
 
 package com.vf.uk.dal.device.datamodel.bundle;
 
+import lombok.Data;
+
+@Data
 public class Path {
 
 	private String promotionID;
@@ -23,117 +26,5 @@ public class Path {
 
 	public Path() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
-
-	public String getPromotionID() {
-		return promotionID;
-	}
-
-	public void setPromotionID(String promotionID) {
-		this.promotionID = promotionID;
-	}
-
-	public String getPromotionProductLine() {
-		return promotionProductLine;
-	}
-
-	public void setPromotionProductLine(String promotionProductLine) {
-		this.promotionProductLine = promotionProductLine;
-	}
-
-	public String getCommitmentStart() {
-		return commitmentStart;
-	}
-
-	public void setCommitmentStart(String commitmentStart) {
-		this.commitmentStart = commitmentStart;
-	}
-
-	public String getDuration() {
-		return duration;
-	}
-
-	public void setDuration(String duration) {
-		this.duration = duration;
-	}
-
-	public Float getPenalty() {
-		return penalty;
-	}
-
-	public void setPenalty(Float penalty) {
-		this.penalty = penalty;
-	}
-
-	public String getProratePlan() {
-		return proratePlan;
-	}
-
-	public void setProratePlan(String proratePlan) {
-		this.proratePlan = proratePlan;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((commitmentStart == null) ? 0 : commitmentStart.hashCode());
-		result = prime * result + ((duration == null) ? 0 : duration.hashCode());
-		result = prime * result + ((penalty == null) ? 0 : penalty.hashCode());
-		result = prime * result + ((promotionID == null) ? 0 : promotionID.hashCode());
-		result = prime * result + ((promotionProductLine == null) ? 0 : promotionProductLine.hashCode());
-		result = prime * result + ((proratePlan == null) ? 0 : proratePlan.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Path other = (Path) obj;
-		if (commitmentStart == null) {
-			if (other.commitmentStart != null)
-				return false;
-		} else if (!commitmentStart.equals(other.commitmentStart))
-			return false;
-		if (duration == null) {
-			if (other.duration != null)
-				return false;
-		} else if (!duration.equals(other.duration))
-			return false;
-		if (penalty == null) {
-			if (other.penalty != null)
-				return false;
-		} else if (!penalty.equals(other.penalty))
-			return false;
-		if (promotionID == null) {
-			if (other.promotionID != null)
-				return false;
-		} else if (!promotionID.equals(other.promotionID))
-			return false;
-		if (promotionProductLine == null) {
-			if (other.promotionProductLine != null)
-				return false;
-		} else if (!promotionProductLine.equals(other.promotionProductLine))
-			return false;
-		if (proratePlan == null) {
-			if (other.proratePlan != null)
-				return false;
-		} else if (!proratePlan.equals(other.proratePlan))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Path [promotionID=" + promotionID + ", promotionProductLine=" + promotionProductLine
-				+ ", commitmentStart=" + commitmentStart + ", duration=" + duration + ", penalty=" + penalty
-				+ ", proratePlan=" + proratePlan + "]";
-	}
-
 }

@@ -68,13 +68,13 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		deviceDetails.setProductLines(productLines);
 
 		MerchandisingControl merchandisingControl = new MerchandisingControl();
-		merchandisingControl.setIsDisplayableECare(cohProduct.getProductControl().isIsDisplayableinLife());
-		merchandisingControl.setIsSellableECare(cohProduct.getProductControl().isIsSellableinLife());
-		merchandisingControl.setIsDisplayableAcq(cohProduct.getProductControl().isIsDisplayableAcq());
-		merchandisingControl.setIsSellableRet(cohProduct.getProductControl().isIsSellableRet());
-		merchandisingControl.setIsDisplayableRet(cohProduct.getProductControl().isIsDisplayableRet());
-		merchandisingControl.setIsSellableAcq(cohProduct.getProductControl().isIsSellableAcq());
-		merchandisingControl.setIsDisplayableSavedBasket(cohProduct.getProductControl().isIsDisplayableSavedBasket());
+		merchandisingControl.setIsDisplayableECare(cohProduct.getProductControl().isDisplayableinLife());
+		merchandisingControl.setIsSellableECare(cohProduct.getProductControl().isSellableinLife());
+		merchandisingControl.setIsDisplayableAcq(cohProduct.getProductControl().isDisplayableAcq());
+		merchandisingControl.setIsSellableRet(cohProduct.getProductControl().isSellableRet());
+		merchandisingControl.setIsDisplayableRet(cohProduct.getProductControl().isDisplayableRet());
+		merchandisingControl.setIsSellableAcq(cohProduct.getProductControl().isSellableAcq());
+		merchandisingControl.setIsDisplayableSavedBasket(cohProduct.getProductControl().isDisplayableSavedBasket());
 		merchandisingControl.setOrder(cohProduct.getOrder().intValue());
 		merchandisingControl.setPreorderable(cohProduct.getProductControl().isPreOrderable());
 		String dateFormat = Constants.DATE_FORMAT_COHERENCE;
@@ -204,13 +204,13 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 						} else {
 							specification.setPriority(spec.getPriority().intValue());
 						}
-						specification.setComparable(spec.isComparable());
+						specification.setComparable(spec.getComparable());
 						specification.setIsKey(spec.getIsKey());
 						specification.setValueType(spec.getValueType());
 						specification.setValueUOM(spec.getValueUOM());
 						specification.setDescription(spec.getDescription());
 						specification.setFootNote(spec.getFootNote());
-						specification.setHideInList(spec.isHideInList());
+						specification.setHideInList(spec.getHideInList());
 						listOfSpecification.add(specification);
 					}
 					specificationGroups.setSpecifications(listOfSpecification);
@@ -334,7 +334,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		metaData.setSeoCanonical(cohProduct.getSeoCanonical());
 		metaData.setSeoDescription(cohProduct.getSeoDescription());
 		metaData.setSeoIndex(cohProduct.getSeoIndex());
-		metaData.seoKeyWords(cohProduct.getSeoKeywords());
+		metaData.setSeoKeyWords(cohProduct.getSeoKeywords());
 		deviceDetails.setMetaData(metaData);
 
 		return deviceDetails;

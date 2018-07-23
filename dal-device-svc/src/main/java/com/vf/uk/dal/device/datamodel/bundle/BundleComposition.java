@@ -9,66 +9,12 @@ package com.vf.uk.dal.device.datamodel.bundle;
 
 import java.util.List;
 
+import lombok.Data;
+
+@Data
 public class BundleComposition {
 
 	private List<Relationship> relationship;
 
 	private String primaryProduct;
-
-	public BundleComposition() {
-		super();
-	}
-
-	public List<Relationship> getRelationship() {
-		return relationship;
-	}
-
-	public void setRelationship(List<Relationship> relationship) {
-		this.relationship = relationship;
-	}
-
-	public String getPrimaryProduct() {
-		return primaryProduct;
-	}
-
-	public void setPrimaryProduct(String primaryProduct) {
-		this.primaryProduct = primaryProduct;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((primaryProduct == null) ? 0 : primaryProduct.hashCode());
-		result = prime * result + ((relationship == null) ? 0 : relationship.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		BundleComposition other = (BundleComposition) obj;
-		if (primaryProduct == null) {
-			if (other.primaryProduct != null)
-				return false;
-		} else if (!primaryProduct.equals(other.primaryProduct))
-			return false;
-		if (relationship == null) {
-			if (other.relationship != null)
-				return false;
-		} else if (!relationship.equals(other.relationship))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "BundleComposition [relationship=" + relationship + ", primaryProduct=" + primaryProduct + "]";
-	}
-
 }

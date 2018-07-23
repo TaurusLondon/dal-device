@@ -18,7 +18,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import com.vf.uk.dal.common.registry.client.Utility;
 import com.vf.uk.dal.device.datamodel.bundle.Allowance;
 import com.vf.uk.dal.device.datamodel.bundle.Availability;
@@ -44,7 +43,6 @@ import com.vf.uk.dal.device.datamodel.product.ProductControl;
 import com.vf.uk.dal.device.datamodel.product.ProductGroups;
 import com.vf.uk.dal.device.datamodel.product.ProductModel;
 import com.vf.uk.dal.device.datamodel.product.PromoteAs;
-import com.vf.uk.dal.device.datamodel.product.StockAvailability;
 import com.vf.uk.dal.device.datamodel.productgroups.Count;
 import com.vf.uk.dal.device.datamodel.productgroups.FacetField;
 import com.vf.uk.dal.device.datamodel.productgroups.Group;
@@ -104,7 +102,6 @@ import com.vf.uk.dal.utility.entity.PriceForAccessory;
 import com.vf.uk.dal.utility.entity.PriceForExtra;
 import com.vf.uk.dal.utility.entity.PriceForProduct;
 import com.vf.uk.dal.utility.entity.RecommendedProductListRequest;
-import com.vf.uk.dal.utility.entity.StockInfo;
 import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
 import com.vf.uk.dal.utility.solr.entity.Media;
 import com.vf.uk.dal.utility.solr.entity.OfferAppliedPriceDetails;
@@ -652,7 +649,7 @@ public class CommonMethods {
 		return deviceListingList;
 	}
 
-	public static List<StockInfo> getStockInfo() {
+	/*public static List<StockInfo> getStockInfo() {
 		StockInfo info = new StockInfo();
 		info.setAvailableBy("Available");
 		info.setQuantity(2);
@@ -662,7 +659,7 @@ public class CommonMethods {
 		List<StockInfo> infoList = new ArrayList<>();
 		infoList.add(info);
 		return infoList;
-	}
+	}*/
 
 	public static List<DeviceTile> getDeviceTile(String make, String model, String groupType) {
 
@@ -887,7 +884,7 @@ public class CommonMethods {
 		commercialProduct.setPreDesc("");
 		commercialProduct.setDisplayName("asbd");
 		PriceDetail priceDetail = new PriceDetail();
-		priceDetail.setIsInvoiceChargeable(true);
+		priceDetail.setInvoiceChargeable(true);
 		priceDetail.setPriceGross((double) 64);
 		priceDetail.setPriceNet((double) 54);
 		priceDetail.setPriceVAT((double) 24);
@@ -902,13 +899,13 @@ public class CommonMethods {
 		commercialProduct.setPromoteAs(promoteAs);
 
 		ProductControl productControl = new ProductControl();
-		productControl.setIsDisplayableinLife(true);
-		productControl.setIsSellableinLife(true);
-		productControl.setIsDisplayableAcq(true);
-		productControl.setIsSellableRet(true);
-		productControl.setIsDisplayableRet(true);
-		productControl.setIsSellableAcq(true);
-		productControl.setIsDisplayableSavedBasket(true);
+		productControl.setDisplayableinLife(true);
+		productControl.setSellableinLife(true);
+		productControl.setDisplayableAcq(true);
+		productControl.setSellableRet(true);
+		productControl.setDisplayableRet(true);
+		productControl.setSellableAcq(true);
+		productControl.setDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp = new Timestamp(Date.valueOf("2003-09-05").getTime());
@@ -991,7 +988,7 @@ public class CommonMethods {
 
 		Duration duration = new Duration();
 		duration.setStarts("Januray");
-		duration.setUOM("MB");
+		duration.setUom("MB");
 		duration.setValue("30");
 		commercialProduct.setDuration(duration);
 		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
@@ -1142,7 +1139,7 @@ public class CommonMethods {
 
 	public static CommercialBundle getCommercialBundle() {
 		CommercialBundle bundle = new CommercialBundle();
-		bundle.setBundleID("110154");
+		bundle.setId("110154");
 		bundle.setName("24mth BandO 500min 500MB Standard");
 		bundle.setDesc("CTR12 Standard bundle comes with 500 mins, unlimited texts and 500MB of UK data");
 		bundle.setPaymentType("postpaid");
@@ -1234,7 +1231,7 @@ public class CommonMethods {
 		commercialProduct.setPreDesc("");
 		commercialProduct.setDisplayName("asbd");
 		PriceDetail priceDetail = new PriceDetail();
-		priceDetail.setIsInvoiceChargeable(true);
+		priceDetail.setInvoiceChargeable(true);
 		priceDetail.setPriceGross((double) 64);
 		priceDetail.setPriceNet((double) 54);
 		priceDetail.setPriceVAT((double) 24);
@@ -1248,13 +1245,13 @@ public class CommonMethods {
 		commercialProduct.setPromoteAs(promoteAs);
 
 		ProductControl productControl = new ProductControl();
-		productControl.setIsDisplayableinLife(true);
-		productControl.setIsSellableinLife(true);
-		productControl.setIsDisplayableAcq(true);
-		productControl.setIsSellableRet(true);
-		productControl.setIsDisplayableRet(true);
-		productControl.setIsSellableAcq(true);
-		productControl.setIsDisplayableSavedBasket(true);
+		productControl.setDisplayableinLife(true);
+		productControl.setSellableinLife(true);
+		productControl.setDisplayableAcq(true);
+		productControl.setSellableRet(true);
+		productControl.setDisplayableRet(true);
+		productControl.setSellableAcq(true);
+		productControl.setDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp = new Timestamp(Date.valueOf("2003-09-05").getTime());
@@ -1338,7 +1335,7 @@ public class CommonMethods {
 
 		Duration duration = new Duration();
 		duration.setStarts("Januray");
-		duration.setUOM("MB");
+		duration.setUom("MB");
 		duration.setValue("30");
 		commercialProduct.setDuration(duration);
 		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
@@ -1351,7 +1348,7 @@ public class CommonMethods {
 
 	public static CommercialBundle getCommercialBundle_One() {
 		CommercialBundle bundle = new CommercialBundle();
-		bundle.setBundleID("109154");
+		bundle.setId("109154");
 		bundle.setName("24mth BandO 500min 500MB Standard");
 		bundle.setDesc("CTR12 Standard bundle comes with 500 mins, unlimited texts and 500MB of UK data");
 		bundle.setPaymentType("postpaid");
@@ -1430,7 +1427,7 @@ public class CommonMethods {
 
 	public static CommercialBundle getCommercialBundle_Two() {
 		CommercialBundle bundle = new CommercialBundle();
-		bundle.setBundleID("109154");
+		bundle.setId("109154");
 		bundle.setName("24mth BandO 500min 500MB Standard");
 		bundle.setDesc("CTR12 Standard bundle comes with 500 mins, unlimited texts and 500MB of UK data");
 		bundle.setPaymentType("postpaid");
@@ -1476,7 +1473,6 @@ public class CommonMethods {
 		mediaURL.setMediaURL("http://media");
 		List<MediaURL> listOfMediaUrl = new ArrayList<MediaURL>();
 		listOfMediaUrl.add(mediaURL);
-		// bundle.setListOfmediaURLs(listOfMediaUrl);
 
 		bundle.setRecurringCharge(21.3f);
 
@@ -1509,7 +1505,7 @@ public class CommonMethods {
 
 	public static CommercialBundle getCommercialBundle_Three() {
 		CommercialBundle bundle = new CommercialBundle();
-		bundle.setBundleID("109154");
+		bundle.setId("109154");
 		bundle.setName("24mth BandO 500min 500MB Standard");
 		bundle.setDesc("CTR12 Standard bundle comes with 500 mins, unlimited texts and 500MB of UK data");
 		bundle.setPaymentType("postpaid");
@@ -1776,8 +1772,6 @@ public class CommonMethods {
 			String sortCriteria, int pageNumber, int pageSize, String journeyId) {
 		FacetedDevice facetedDevice = new FacetedDevice();
 		facetedDevice.setDevice(getDevice(productClass, make, model, groupType, sortCriteria, pageNumber, pageSize));
-		// facetedDevice.setFacet(getFacet());
-
 		return facetedDevice;
 	}
 
@@ -1842,65 +1836,12 @@ public class CommonMethods {
 		}
 	}
 
-	public static List<StockInfo> getListOfStockInfo() {
-		List<StockInfo> listOfStockInfo = new ArrayList<>();
-		StockInfo stockInfo;
-
-		stockInfo = new StockInfo();
-		stockInfo.setAvailableBy("AvailableBy");
-		stockInfo.setQuantity(1);
-		stockInfo.setSkuId("12345");
-		stockInfo.setSourceId("741852");
-		stockInfo.setStatus("On");
-		listOfStockInfo.add(stockInfo);
-
-		stockInfo = new StockInfo();
-		stockInfo.setAvailableBy("AvailableBy");
-		stockInfo.setQuantity(1);
-		stockInfo.setSkuId("68522");
-		stockInfo.setSourceId("5456464");
-		stockInfo.setStatus("On");
-		listOfStockInfo.add(stockInfo);
-
-		stockInfo = new StockInfo();
-		stockInfo.setAvailableBy("AvailableBy");
-		stockInfo.setQuantity(1);
-		stockInfo.setSkuId("857894");
-		stockInfo.setSourceId("98494156");
-		stockInfo.setStatus("On");
-		listOfStockInfo.add(stockInfo);
-
-		stockInfo = new StockInfo();
-		stockInfo.setAvailableBy("AvailableBy");
-		stockInfo.setQuantity(1);
-		stockInfo.setSkuId("9684216");
-		stockInfo.setSourceId("231354");
-		stockInfo.setStatus("On");
-		listOfStockInfo.add(stockInfo);
-
-		stockInfo = new StockInfo();
-		stockInfo.setAvailableBy("AvailableBy");
-		stockInfo.setQuantity(1);
-		stockInfo.setSkuId("96849");
-		stockInfo.setSourceId("63415489");
-		stockInfo.setStatus("On");
-		listOfStockInfo.add(stockInfo);
-
-		stockInfo = new StockInfo();
-		stockInfo.setAvailableBy("AvailableBy");
-		stockInfo.setQuantity(1);
-		stockInfo.setSkuId("5849821");
-		stockInfo.setSourceId("6849654");
-		stockInfo.setStatus("On");
-		listOfStockInfo.add(stockInfo);
-
-		return listOfStockInfo;
-	}
 
 	public static BundleDetails getCompatibleBundleListJson() {
 		BundleDetails bundleDetails = new BundleDetails();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			bundleDetails = mapper.readValue(Utility.readFile("\\TEST-MOCK\\BUNDLESV1_compatibleList.json"),
 					BundleDetails.class);
 			return bundleDetails;
@@ -1915,6 +1856,7 @@ public class CommonMethods {
 		BundleDetails bundleDetails = new BundleDetails();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			bundleDetails = mapper.readValue(Utility.readFile("\\TEST-MOCK\\BUNDLESV1_compatibleList3.json"),
 					BundleDetails.class);
 			return bundleDetails;
@@ -1929,6 +1871,7 @@ public class CommonMethods {
 		BundleDetails bundleDetails = new BundleDetails();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			bundleDetails = mapper.readValue(Utility.readFile("\\TEST-MOCK\\\\BUNDLESV2_compatibleList.json"),
 					BundleDetails.class);
 			return bundleDetails;
@@ -1943,6 +1886,7 @@ public class CommonMethods {
 		BundleDetails bundleDetails = new BundleDetails();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			bundleDetails = mapper.readValue(Utility.readFile("\\TEST-MOCK\\BUNDLESV3_compatibleList.json"),
 					BundleDetails.class);
 			return bundleDetails;
@@ -2012,6 +1956,7 @@ public class CommonMethods {
 		BundleDetails bundleDetails = new BundleDetails();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			bundleDetails = mapper.readValue(Utility.readFile("\\TEST-MOCK\\BUNDLESV1_compatibleList1.json"),
 					BundleDetails.class);
 			return bundleDetails;
@@ -2296,18 +2241,6 @@ public class CommonMethods {
 		return bazaarList;
 	}
 
-	public static StockAvailability getStockAvailability_One() {
-		StockAvailability cohbundle = new StockAvailability();
-		String jsonString = "";
-		try {
-			jsonString = new String(Utility.readFile("\\rest-mock\\UTILITY-V1.json"));
-			Gson gson = new Gson();
-			cohbundle = gson.fromJson(jsonString, StockAvailability.class);
-		} catch (Exception e) {
-		}
-		return cohbundle;
-	}
-
 	public static Map<String, String> getleadMemberMap() {
 		Map<String, String> leadMemberMap = new HashMap<>();
 		leadMemberMap.put("093353", "Y");
@@ -2412,7 +2345,7 @@ public class CommonMethods {
 		;
 		commercialProduct.setProductClass(Constants.STRING_HANDSET);
 		PriceDetail priceDetail = new PriceDetail();
-		priceDetail.setIsInvoiceChargeable(true);
+		priceDetail.setInvoiceChargeable(true);
 		priceDetail.setPriceGross((double) 64);
 		priceDetail.setPriceNet((double) 54);
 		priceDetail.setPriceVAT((double) 24);
@@ -2427,13 +2360,13 @@ public class CommonMethods {
 		commercialProduct.setPromoteAs(promoteAs);
 
 		ProductControl productControl = new ProductControl();
-		productControl.setIsDisplayableinLife(true);
-		productControl.setIsSellableinLife(true);
-		productControl.setIsDisplayableAcq(true);
-		productControl.setIsSellableRet(true);
-		productControl.setIsDisplayableRet(true);
-		productControl.setIsSellableAcq(true);
-		productControl.setIsDisplayableSavedBasket(true);
+		productControl.setDisplayableinLife(true);
+		productControl.setSellableinLife(true);
+		productControl.setDisplayableAcq(true);
+		productControl.setSellableRet(true);
+		productControl.setDisplayableRet(true);
+		productControl.setSellableAcq(true);
+		productControl.setDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp = new Timestamp(Date.valueOf("2003-09-05").getTime());
@@ -2516,7 +2449,7 @@ public class CommonMethods {
 
 		Duration duration = new Duration();
 		duration.setStarts("Januray");
-		duration.setUOM("MB");
+		duration.setUom("MB");
 		duration.setValue("30");
 		commercialProduct.setDuration(duration);
 		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
@@ -2561,7 +2494,7 @@ public class CommonMethods {
 		;
 		commercialProduct.setProductClass(Constants.STRING_HANDSET);
 		PriceDetail priceDetail = new PriceDetail();
-		priceDetail.setIsInvoiceChargeable(true);
+		priceDetail.setInvoiceChargeable(true);
 		priceDetail.setPriceGross((double) 64);
 		priceDetail.setPriceNet((double) 54);
 		priceDetail.setPriceVAT((double) 24);
@@ -2576,13 +2509,13 @@ public class CommonMethods {
 		commercialProduct.setPromoteAs(promoteAs);
 
 		ProductControl productControl = new ProductControl();
-		productControl.setIsDisplayableinLife(true);
-		productControl.setIsSellableinLife(true);
-		productControl.setIsDisplayableAcq(true);
-		productControl.setIsSellableRet(true);
-		productControl.setIsDisplayableRet(true);
-		productControl.setIsSellableAcq(true);
-		productControl.setIsDisplayableSavedBasket(true);
+		productControl.setDisplayableinLife(true);
+		productControl.setSellableinLife(true);
+		productControl.setDisplayableAcq(true);
+		productControl.setSellableRet(true);
+		productControl.setDisplayableRet(true);
+		productControl.setSellableAcq(true);
+		productControl.setDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp = new Timestamp(Date.valueOf("2003-09-05").getTime());
@@ -2665,7 +2598,7 @@ public class CommonMethods {
 
 		Duration duration = new Duration();
 		duration.setStarts("Januray");
-		duration.setUOM("MB");
+		duration.setUom("MB");
 		duration.setValue("30");
 		commercialProduct.setDuration(duration);
 		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
@@ -2761,7 +2694,7 @@ public class CommonMethods {
 		commercialProduct.setPreDesc("");
 		commercialProduct.setDisplayName("asbd");
 		PriceDetail priceDetail = new PriceDetail();
-		priceDetail.setIsInvoiceChargeable(true);
+		priceDetail.setInvoiceChargeable(true);
 		priceDetail.setPriceGross((double) 64);
 		priceDetail.setPriceNet((double) 54);
 		priceDetail.setPriceVAT((double) 24);
@@ -2776,13 +2709,13 @@ public class CommonMethods {
 		commercialProduct.setPromoteAs(promoteAs);
 
 		ProductControl productControl = new ProductControl();
-		productControl.setIsDisplayableinLife(true);
-		productControl.setIsSellableinLife(true);
-		productControl.setIsDisplayableAcq(true);
-		productControl.setIsSellableRet(true);
-		productControl.setIsDisplayableRet(true);
-		productControl.setIsSellableAcq(true);
-		productControl.setIsDisplayableSavedBasket(true);
+		productControl.setDisplayableinLife(true);
+		productControl.setSellableinLife(true);
+		productControl.setDisplayableAcq(true);
+		productControl.setSellableRet(true);
+		productControl.setDisplayableRet(true);
+		productControl.setSellableAcq(true);
+		productControl.setDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp = new Timestamp(Date.valueOf("2003-09-05").getTime());
@@ -2865,7 +2798,7 @@ public class CommonMethods {
 
 		Duration duration = new Duration();
 		duration.setStarts("Januray");
-		duration.setUOM("MB");
+		duration.setUom("MB");
 		duration.setValue("30");
 		commercialProduct.setDuration(duration);
 		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
@@ -2971,7 +2904,7 @@ public class CommonMethods {
 		listOfCompatiblePlan.add("110156");
 		commercialProduct.setListOfCompatiblePlanIds(listOfCompatiblePlan);
 		PriceDetail priceDetail = new PriceDetail();
-		priceDetail.setIsInvoiceChargeable(true);
+		priceDetail.setInvoiceChargeable(true);
 		priceDetail.setPriceGross((double) 64);
 		priceDetail.setPriceNet((double) 54);
 		priceDetail.setPriceVAT((double) 24);
@@ -2986,13 +2919,13 @@ public class CommonMethods {
 		commercialProduct.setPromoteAs(promoteAs);
 
 		ProductControl productControl = new ProductControl();
-		productControl.setIsDisplayableinLife(true);
-		productControl.setIsSellableinLife(true);
-		productControl.setIsDisplayableAcq(true);
-		productControl.setIsSellableRet(true);
-		productControl.setIsDisplayableRet(true);
-		productControl.setIsSellableAcq(true);
-		productControl.setIsDisplayableSavedBasket(true);
+		productControl.setDisplayableinLife(true);
+		productControl.setSellableinLife(true);
+		productControl.setDisplayableAcq(true);
+		productControl.setSellableRet(true);
+		productControl.setDisplayableRet(true);
+		productControl.setSellableAcq(true);
+		productControl.setDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp = new Timestamp(Date.valueOf("2003-09-05").getTime());
@@ -3075,7 +3008,7 @@ public class CommonMethods {
 
 		Duration duration = new Duration();
 		duration.setStarts("Januray");
-		duration.setUOM("MB");
+		duration.setUom("MB");
 		duration.setValue("30");
 		commercialProduct.setDuration(duration);
 		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
@@ -3101,7 +3034,7 @@ public class CommonMethods {
 		listOfCompatiblePlan.add("110156");
 		commercialProduct.setListOfCompatiblePlanIds(listOfCompatiblePlan);
 		PriceDetail priceDetail = new PriceDetail();
-		priceDetail.setIsInvoiceChargeable(true);
+		priceDetail.setInvoiceChargeable(true);
 		priceDetail.setPriceGross((double) 64);
 		priceDetail.setPriceNet((double) 54);
 		priceDetail.setPriceVAT((double) 24);
@@ -3116,13 +3049,13 @@ public class CommonMethods {
 		commercialProduct.setPromoteAs(promoteAs);
 
 		ProductControl productControl = new ProductControl();
-		productControl.setIsDisplayableinLife(true);
-		productControl.setIsSellableinLife(true);
-		productControl.setIsDisplayableAcq(true);
-		productControl.setIsSellableRet(true);
-		productControl.setIsDisplayableRet(true);
-		productControl.setIsSellableAcq(true);
-		productControl.setIsDisplayableSavedBasket(true);
+		productControl.setDisplayableinLife(true);
+		productControl.setSellableinLife(true);
+		productControl.setDisplayableAcq(true);
+		productControl.setSellableRet(true);
+		productControl.setDisplayableRet(true);
+		productControl.setSellableAcq(true);
+		productControl.setDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp = new Timestamp(Date.valueOf("2003-09-05").getTime());
@@ -3205,7 +3138,7 @@ public class CommonMethods {
 
 		Duration duration = new Duration();
 		duration.setStarts("Januray");
-		duration.setUOM("MB");
+		duration.setUom("MB");
 		duration.setValue("30");
 		commercialProduct.setDuration(duration);
 		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
@@ -3226,7 +3159,7 @@ public class CommonMethods {
 		commercialProduct.setPreDesc("");
 		commercialProduct.setDisplayName("asbd");
 		PriceDetail priceDetail = new PriceDetail();
-		priceDetail.setIsInvoiceChargeable(true);
+		priceDetail.setInvoiceChargeable(true);
 		priceDetail.setPriceGross((double) 64);
 		priceDetail.setPriceNet((double) 54);
 		priceDetail.setPriceVAT((double) 24);
@@ -3241,13 +3174,13 @@ public class CommonMethods {
 		commercialProduct.setPromoteAs(promoteAs);
 		commercialProduct.setIsDeviceProduct(true);
 		ProductControl productControl = new ProductControl();
-		productControl.setIsDisplayableinLife(true);
-		productControl.setIsSellableinLife(true);
-		productControl.setIsDisplayableAcq(true);
-		productControl.setIsSellableRet(true);
-		productControl.setIsDisplayableRet(true);
-		productControl.setIsSellableAcq(true);
-		productControl.setIsDisplayableSavedBasket(true);
+		productControl.setDisplayableinLife(true);
+		productControl.setSellableinLife(true);
+		productControl.setDisplayableAcq(true);
+		productControl.setSellableRet(true);
+		productControl.setDisplayableRet(true);
+		productControl.setSellableAcq(true);
+		productControl.setDisplayableSavedBasket(true);
 		productControl.setOrder((long) 754);
 		productControl.setPreOrderable(true);
 		timeStamp = new Timestamp(Date.valueOf("2003-09-05").getTime());
@@ -3337,7 +3270,7 @@ public class CommonMethods {
 
 		Duration duration = new Duration();
 		duration.setStarts("Januray");
-		duration.setUOM("MB");
+		duration.setUom("MB");
 		duration.setValue("30");
 		commercialProduct.setDuration(duration);
 		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
@@ -3493,6 +3426,7 @@ public class CommonMethods {
 		try {
 
 			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			String bundle = new String(Utility.readFile("\\TEST-MOCK\\BundleandhardwarePromotuions.json"));
 			BundleAndHardwarePromotions[] bundleList = mapper.readValue(bundle, BundleAndHardwarePromotions[].class);
@@ -3500,13 +3434,10 @@ public class CommonMethods {
 			return mapper.convertValue(bundleList, new TypeReference<List<BundleAndHardwarePromotions>>() {
 			});
 		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -3579,9 +3510,6 @@ public class CommonMethods {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			// mapper = new
-			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
-			// true);
 			String commercialProduct = new String(
 					Utility.readFile("\\TEST-MOCK\\CommercialProductListOfMakeAndModel.json"));
 			CommercialProduct[] commercialProductList = mapper.readValue(commercialProduct, CommercialProduct[].class);
@@ -3614,13 +3542,10 @@ public class CommonMethods {
 			return mapper.convertValue(groupList, new TypeReference<List<Group>>() {
 			});
 		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -3634,9 +3559,6 @@ public class CommonMethods {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			// mapper = new
-			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
-			// true);
 			String commercialProduct = new String(
 					Utility.readFile("\\TEST-MOCK\\Coherence_CommercialProductRepo_CommercialProductByDeviceId"));
 			CommercialProduct commercialProductList = mapper.readValue(commercialProduct, CommercialProduct.class);
@@ -3644,13 +3566,13 @@ public class CommonMethods {
 			return mapper.convertValue(commercialProductList, new TypeReference<CommercialProduct>() {
 			});
 		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return null;
@@ -3667,7 +3589,7 @@ public class CommonMethods {
 			product = mapper.readValue(productModel, BazaarVoice.class);
 			product.setJsonsource(productModel);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
@@ -3682,9 +3604,6 @@ public class CommonMethods {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			// mapper = new
-			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
-			// true);
 			String bundleModel = new String(
 					Utility.readFile("\\TEST-MOCK\\Coherence_CommercialBundleRepo_CommercialBundle"));
 			CommercialBundle bundleModelList = mapper.readValue(bundleModel, CommercialBundle.class);
@@ -3692,13 +3611,11 @@ public class CommonMethods {
 			return mapper.convertValue(bundleModelList, new TypeReference<CommercialBundle>() {
 			});
 		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return null;
@@ -3712,9 +3629,6 @@ public class CommonMethods {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			// mapper = new
-			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
-			// true);
 			String merchPromotion = new String(
 					Utility.readFile("\\TEST-MOCK\\merchandisingPromotion_hardware_discount.json"));
 			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion merchPromo = mapper.readValue(
@@ -3724,13 +3638,10 @@ public class CommonMethods {
 					new TypeReference<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion>() {
 					});
 		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -3744,22 +3655,16 @@ public class CommonMethods {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			// mapper = new
-			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
-			// true);
 			String commercialProduct = new String(Utility.readFile("\\TEST-MOCK\\CommercialProduct_093353.json"));
 			CommercialProduct commercialProductList = mapper.readValue(commercialProduct, CommercialProduct.class);
 
 			return mapper.convertValue(commercialProductList, new TypeReference<CommercialProduct>() {
 			});
 		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -3777,13 +3682,13 @@ public class CommonMethods {
 			return mapper.convertValue(groupList, new TypeReference<List<Group>>() {
 			});
 		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return null;
@@ -3795,22 +3700,20 @@ public class CommonMethods {
 		try {
 
 			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			String bundle = new String(
 					Utility.readFile("\\TEST-MOCK\\priceForProduct_For_GetAccessoriesForDevice.json"));
-			PriceForProduct bundleList = new ObjectMapper().readValue(bundle, PriceForProduct.class);
+			PriceForProduct bundleList = mapper.readValue(bundle, PriceForProduct.class);
 
 			return mapper.convertValue(bundleList, new TypeReference<PriceForProduct>() {
 			});
 
 		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return navigation;
@@ -3822,23 +3725,24 @@ public class CommonMethods {
 		try {
 
 			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			String bundle = new String(
 					Utility.readFile("\\TEST-MOCK\\bundleDeviceAndProductsList_For_GetAccessoriesOfDevice.json"));
-			BundleDeviceAndProductsList bundleList = new ObjectMapper().readValue(bundle,
+			BundleDeviceAndProductsList bundleList = mapper.readValue(bundle,
 					BundleDeviceAndProductsList.class);
 
 			return mapper.convertValue(bundleList, new TypeReference<BundleDeviceAndProductsList>() {
 			});
 
 		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return navigation;
@@ -3852,9 +3756,6 @@ public class CommonMethods {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			// mapper = new
-			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
-			// true);
 			String commercialProduct = new String(
 					Utility.readFile("\\TEST-MOCK\\CommercialProductListOfAccessory.json"));
 			CommercialProduct[] commercialProductList = mapper.readValue(commercialProduct, CommercialProduct[].class);
@@ -3882,9 +3783,6 @@ public class CommonMethods {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			// mapper = new
-			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
-			// true);
 			String commercialProduct = new String(
 					Utility.readFile("\\TEST-MOCK\\CommercialProductOfAccessorywithEndDate.json"));
 			CommercialProduct[] commercialProductList = mapper.readValue(commercialProduct, CommercialProduct[].class);
@@ -3925,9 +3823,6 @@ public class CommonMethods {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			// mapper = new
-			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
-			// true);
 			String productGroupModel = new String(
 					Utility.readFile("\\TEST-MOCK\\listOfProductGroupModel_For_DevicePAYM_apple.json"));
 			ProductGroupModel[] productGroupModelList = mapper.readValue(productGroupModel, ProductGroupModel[].class);
@@ -3935,13 +3830,13 @@ public class CommonMethods {
 			return mapper.convertValue(productGroupModelList, new TypeReference<List<ProductGroupModel>>() {
 			});
 		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return null;
@@ -3955,9 +3850,6 @@ public class CommonMethods {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			// mapper = new
-			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
-			// true);
 			String commercialProduct = new String(
 					Utility.readFile("\\TEST-MOCK\\CommercialProductWithoutLeadPlan.json"));
 			CommercialProduct commercialProductList = mapper.readValue(commercialProduct, CommercialProduct.class);
@@ -3965,13 +3857,13 @@ public class CommonMethods {
 			return mapper.convertValue(commercialProductList, new TypeReference<CommercialProduct>() {
 			});
 		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return null;
@@ -3983,9 +3875,6 @@ public class CommonMethods {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			// mapper = new
-			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
-			// true);
 			String bundleDetailsForAppSrv = new String(Utility.readFile("\\TEST-MOCK\\ByCoupledBundleList.json"));
 			BundleDetailsForAppSrv bundleDetails = mapper.readValue(bundleDetailsForAppSrv,
 					BundleDetailsForAppSrv.class);
@@ -3993,13 +3882,13 @@ public class CommonMethods {
 			return mapper.convertValue(bundleDetails, new TypeReference<BundleDetailsForAppSrv>() {
 			});
 		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return null;
@@ -4013,9 +3902,6 @@ public class CommonMethods {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			// mapper = new
-			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
-			// true);
 			String price = new String(Utility.readFile("\\TEST-MOCK\\PriceForBundleAndHardware.json"));
 			PriceForBundleAndHardware[] priceList = mapper.readValue(price, PriceForBundleAndHardware[].class);
 
@@ -4102,22 +3988,19 @@ public class CommonMethods {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			// mapper = new
-			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
-			// true);
 			String commercialProduct = new String(Utility.readFile("\\TEST-MOCK\\CommercialProduct_088417_PAYG.json"));
 			CommercialProduct commercialProductList = mapper.readValue(commercialProduct, CommercialProduct.class);
 
 			return mapper.convertValue(commercialProductList, new TypeReference<CommercialProduct>() {
 			});
 		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return null;
@@ -4131,9 +4014,6 @@ public class CommonMethods {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			// mapper = new
-			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
-			// true);
 			String commercialProduct = new String(
 					Utility.readFile("\\TEST-MOCK\\CommercialProductOfAccessorywithEndDate.json"));
 			CommercialProduct commercialProductList = mapper.readValue(commercialProduct, CommercialProduct.class);
@@ -4141,13 +4021,13 @@ public class CommonMethods {
 			return mapper.convertValue(commercialProductList, new TypeReference<CommercialProduct>() {
 			});
 		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return null;
@@ -4156,13 +4036,10 @@ public class CommonMethods {
 	public static List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion> getMerchandisingPromotion_One() {
 		List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion> merchandisingPromotionsList = new ArrayList<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion>();
 		com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion merchandisingPromotions = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion();
-		// MerchandisingPromotion merchandisingPromotions1 = new
-		// MerchandisingPromotion();
 		merchandisingPromotions.setLabel("20% off with any handset");
 		merchandisingPromotions.setTag("AllPhone.full.2017");
 		merchandisingPromotions.setDescription("description");
 		merchandisingPromotions.setBelowTheLine(true);
-		// merchandisingPromotions.setEndDateTime(TimeStamp.valueOf("12/09/2019"));
 		merchandisingPromotions.setPriority(Long.valueOf(1));
 		merchandisingPromotions.setLabel("Label");
 		merchandisingPromotions.setVersion("Version");
@@ -4178,9 +4055,6 @@ public class CommonMethods {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			// mapper = new
-			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
-			// true);
 			String price = new String(Utility.readFile("\\TEST-MOCK\\API_Price_calculateForBundleAndHardware"));
 			PriceForBundleAndHardware[] priceList = mapper.readValue(price, PriceForBundleAndHardware[].class);
 
@@ -4221,7 +4095,6 @@ public class CommonMethods {
 		com.vf.uk.dal.utility.entity.MerchandisingPromotion merchandisingPromotions = new com.vf.uk.dal.utility.entity.MerchandisingPromotion();
 
 		merchandisingPromotions.setPromotionMedia("promotion media");
-		// bundlePrice.setMerchandisingPromotions(merchandisingPromotions);
 		com.vf.uk.dal.device.entity.Price monthlyDiscountPrice = new com.vf.uk.dal.device.entity.Price();
 		monthlyDiscountPrice.setGross("10.11");
 		monthlyDiscountPrice.setNet("11.23");
@@ -4360,7 +4233,6 @@ public class CommonMethods {
 				.setDescription("merchandisingPromotions.merchandisingPromotion.label");
 		cataloguepromotionqueriesForBundleAndHardware.setLabel("merchandisingPromotions.merchandisingPromotion.label");
 		cataloguepromotionqueriesForBundleAndHardware.setPriority("60");
-		// cataloguepromotionqueriesForBundleAndHardware.setPromotionMedia("merchandisingPromotions.merchandisingPromotion.label");
 		cataloguepromotionqueriesForBundleAndHardware.setTag("merchandisingPromotions.merchandisingPromotion.label");
 		cataloguepromotionqueriesForBundleAndHardware.setType("Text");
 		cataloguepromotionqueriesForBundleAndHardwareExtras.add(cataloguepromotionqueriesForBundleAndHardware);
@@ -4379,7 +4251,6 @@ public class CommonMethods {
 				.setDescription("merchandisingPromotions.merchandisingPromotion.label");
 		cataloguepromotionqueriesForHardwareSash1.setLabel("merchandisingPromotions.merchandisingPromotion.label");
 		cataloguepromotionqueriesForHardwareSash1.setPriority("60");
-		// cataloguepromotionqueriesForBundleAndHardware.setPromotionMedia("merchandisingPromotions.merchandisingPromotion.label");
 		cataloguepromotionqueriesForHardwareSash1.setTag("merchandisingPromotions.merchandisingPromotion.label");
 		cataloguepromotionqueriesForHardwareSash1.setType("Text");
 		cataloguepromotionqueriesForHardwareSash.add(cataloguepromotionqueriesForHardwareSash1);
@@ -4393,9 +4264,6 @@ public class CommonMethods {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			// mapper = new
-			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
-			// true);
 			String promotion = new String(Utility.readFile("\\TEST-MOCK\\API_BundlePromotions_ListOfBundlePromotions"));
 			BundleAndHardwarePromotions[] promotionList = mapper.readValue(promotion,
 					BundleAndHardwarePromotions[].class);
@@ -4474,9 +4342,10 @@ public class CommonMethods {
 		try {
 
 			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			String bundle = new String(Utility.readFile("\\TEST-MOCK\\PriceForProductForAccessory.json"));
-			PriceForProduct bundleList = new ObjectMapper().readValue(bundle, PriceForProduct.class);
+			PriceForProduct bundleList = mapper.readValue(bundle, PriceForProduct.class);
 
 			return mapper.convertValue(bundleList, new TypeReference<PriceForProduct>() {
 			});
@@ -4594,9 +4463,6 @@ public class CommonMethods {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			// mapper = new
-			// ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
-			// true);
 			String commercialProduct = new String(Utility.readFile("\\TEST-MOCK\\CommercialProductForVariant.json"));
 			CommercialProduct[] commercialProductList = mapper.readValue(commercialProduct, CommercialProduct[].class);
 
@@ -4804,7 +4670,7 @@ public class CommonMethods {
 
 	public static CommercialBundle getCommercialBundleForcacheDevice() {
 		CommercialBundle bundle = new CommercialBundle();
-		bundle.setBundleID("110163");
+		bundle.setId("110163");
 		bundle.setName("24mth BandO 500min 500MB Standard");
 		bundle.setDesc("CTR12 Standard bundle comes with 500 mins, unlimited texts and 500MB of UK data");
 		bundle.setPaymentType("postpaid");
@@ -4890,7 +4756,7 @@ public class CommonMethods {
 
 	public static CommercialBundle getCommercialBundleForMAkeAndModel() {
 		CommercialBundle bundle = new CommercialBundle();
-		bundle.setBundleID("183099");
+		bundle.setId("183099");
 		bundle.setName("24mth BandO 500min 500MB Standard");
 		bundle.setDesc("CTR12 Standard bundle comes with 500 mins, unlimited texts and 500MB of UK data");
 		bundle.setPaymentType("postpaid");
@@ -4941,7 +4807,6 @@ public class CommonMethods {
 		mediaURL.setMediaURL("http://media");
 		List<MediaURL> listOfMediaUrl = new ArrayList<MediaURL>();
 		listOfMediaUrl.add(mediaURL);
-		// bundle.setListOfmediaURLs(listOfMediaUrl);
 
 		bundle.setRecurringCharge(21.3f);
 
@@ -5151,9 +5016,6 @@ public class CommonMethods {
 
 	public static com.vf.uk.dal.device.entity.MerchandisingPromotion getMP() {
 		com.vf.uk.dal.device.entity.MerchandisingPromotion merchandisingPromotions = new com.vf.uk.dal.device.entity.MerchandisingPromotion();
-		// com.vf.uk.dal.utility.entity.MerchandisingPromotion
-		// merchandisingPromotions1=new
-		// com.vf.uk.dal.utility.entity.MerchandisingPromotion();
 		merchandisingPromotions.setDiscountId("107531");
 		merchandisingPromotions.setLabel("20% off with any handset");
 		merchandisingPromotions.setTag("AllPhone.full.2017");

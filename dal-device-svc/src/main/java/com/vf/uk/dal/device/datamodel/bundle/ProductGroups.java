@@ -9,51 +9,9 @@ package com.vf.uk.dal.device.datamodel.bundle;
 
 import java.util.List;
 
+import lombok.Data;
+@Data
 public class ProductGroups {
 
 	private List<ProductGroup> productGroup;
-
-	public List<ProductGroup> getProductGroup() {
-		return productGroup;
-	}
-
-	public void setProductGroup(List<ProductGroup> productGroup) {
-		this.productGroup = productGroup;
-	}
-
-	public ProductGroups() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((productGroup == null) ? 0 : productGroup.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ProductGroups other = (ProductGroups) obj;
-		if (productGroup == null) {
-			if (other.productGroup != null)
-				return false;
-		} else if (!productGroup.equals(other.productGroup))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "ProductGroups [productGroup=" + productGroup + "]";
-	}
-
 }
