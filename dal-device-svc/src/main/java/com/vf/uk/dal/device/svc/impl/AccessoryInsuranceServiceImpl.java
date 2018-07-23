@@ -156,9 +156,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 		BundleDeviceAndProductsList bundleDeviceAndProductsList = setBundleDeviceAndProductsList(journeyType, deviceId,
 				offerCode, listOfValidAccesoryIds);
 		PriceForProduct priceForProduct = null;
-		if (bundleDeviceAndProductsList != null) {
-			priceForProduct = CommonUtility.getAccessoryPriceDetails(bundleDeviceAndProductsList, registryclnt);
-		}
+		priceForProduct = CommonUtility.getAccessoryPriceDetails(bundleDeviceAndProductsList, registryclnt);
 
 		Map<String, PriceForAccessory> mapforPrice = new HashMap<>();
 		Map<String, CommercialProduct> mapforCommercialProduct = setMapForCommercialData(listOfFilteredAccessories,
