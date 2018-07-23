@@ -1,7 +1,6 @@
 package com.vf.uk.dal.device.beans.test;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import com.vf.uk.dal.common.beans.Environment;
 import com.vf.uk.dal.common.configuration.ConfigHelper;
@@ -31,9 +30,6 @@ import com.vf.uk.dal.device.svc.impl.DeviceServiceImpl;
 import com.vf.uk.dal.device.utils.ElasticSearchUtils;
 import com.vf.uk.dal.device.utils.ResponseMappingHelper;
 
-import net.sf.ehcache.CacheManager;
-
-@Configuration
  public class DeviceTestBeans {
 	// ** Bean for the controller class is created here **//*
 	
