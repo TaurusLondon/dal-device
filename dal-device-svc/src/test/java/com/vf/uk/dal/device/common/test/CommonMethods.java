@@ -3747,6 +3747,34 @@ public class CommonMethods {
 		}
 		return navigation;
 	}
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static BundleDeviceAndProductsList bundleDeviceAndProductsList_For_GetAccessoriesOfDeviceIntegration() {
+		BundleDeviceAndProductsList navigation = new BundleDeviceAndProductsList();
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			String bundle = new String(
+					Utility.readFile("\\TEST-MOCK\\bundleDeviceAndProductsList_For_GetAccessoriesOfDevice_Integration.json"));
+			BundleDeviceAndProductsList bundleList = mapper.readValue(bundle,
+					BundleDeviceAndProductsList.class);
+
+			return mapper.convertValue(bundleList, new TypeReference<BundleDeviceAndProductsList>() {
+			});
+
+		} catch (JsonParseException e) {
+			
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			
+			e.printStackTrace();
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+		return navigation;
+	}
 
 	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static List<CommercialProduct> getCommercialProductsListOfAccessories() {
