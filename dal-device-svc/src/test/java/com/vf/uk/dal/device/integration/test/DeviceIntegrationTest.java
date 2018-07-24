@@ -50,7 +50,7 @@ import com.vf.uk.dal.utility.entity.RecommendedProductListResponse;
  */
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT,classes = {DeviceApplication.class,DeviceDetailsController.class})
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT,classes = {DeviceApplication.class,DeviceDetailsController.class})
 public class DeviceIntegrationTest {
 	private MockMvc mockMvc;
 
@@ -146,6 +146,38 @@ public class DeviceIntegrationTest {
 		status().is(200));
 	}
 	@Test
+	public void NotNullTestForAccessory()  throws JsonProcessingException, Exception  {
+		given(response.getCommercialProduct(Matchers.anyObject()))
+		.willReturn(CommonMethods.getCommercialProductByDeviceIdForAccessory());
+		given(restTemplate.postForObject("http://PRICE-V1/price/product",
+				CommonMethods.bundleDeviceAndProductsList_For_GetAccessoriesOfDeviceIntegration(), PriceForProduct.class))
+						.willReturn(CommonMethods.getPriceForProduct_For_GetAccessoriesForDevice());
+		mockMvc.perform(get("/accessory/queries/byDeviceId/?deviceId=093353").accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(
+		status().is(200));
+	}
+	@Test
+	public void NullTestForAccessory()  throws JsonProcessingException, Exception  {
+		
+		mockMvc.perform(get("/accessory/queries/byDeviceId/?deviceId=093353").accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(
+		status().is(404));
+	}
+	@Test
+	public void NotNullTestForInsurance()  throws JsonProcessingException, Exception  {
+		given(response.getCommercialProduct(Matchers.anyObject()))
+		.willReturn(CommonMethods.getCommercialProductForInsurance());
+		mockMvc.perform(get("/insurance/queries/byDeviceId/?deviceId=093353").accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(
+		status().is(200));
+	}
+	@Test
+	public void NullTestForInsurance()  throws JsonProcessingException, Exception  {
+		mockMvc.perform(get("/insurance/queries/byDeviceId/?deviceId=093353").accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(
+		status().is(404));
+	}
+	@Test
 	public void NullTestForgetDeviceTileMakeAndModel()  throws JsonProcessingException, Exception  {
 		given(response.getCommercialProductFromJson(Matchers.anyObject()))
 		.willReturn(CommonMethods.getCommercialProductsListOfMakeAndModel());
@@ -158,24 +190,6 @@ public class DeviceIntegrationTest {
 		mockMvc.perform(get("/deviceTile/queries/byDeviceVariant/?deviceId=093353").accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON));
 	}
-	@Test
-	public void NotNullTestForAccessory()  throws JsonProcessingException, Exception  {
-		given(response.getCommercialProduct(Matchers.anyObject()))
-		.willReturn(CommonMethods.getCommercialProductByDeviceIdForAccessory());
-		given(restTemplate.postForObject("http://PRICE-V1/price/product",
-				CommonMethods.bundleDeviceAndProductsList_For_GetAccessoriesOfDeviceIntegration(), PriceForProduct.class))
-						.willReturn(CommonMethods.getPriceForProduct_For_GetAccessoriesForDevice());
-		mockMvc.perform(get("/accessory/queries/byDeviceId/?deviceId=093353").accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON)).andExpect(
-		status().is(200));
-	}
-	@Test
-	public void NotNullTestForInsurance()  throws JsonProcessingException, Exception  {
-		given(response.getCommercialProduct(Matchers.anyObject()))
-		.willReturn(CommonMethods.getCommercialProductForInsurance());
-		mockMvc.perform(get("/insurance/queries/byDeviceId/?deviceId=093353").accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON)).andExpect(
-		status().is(200));
-	}
+	
 }
 
