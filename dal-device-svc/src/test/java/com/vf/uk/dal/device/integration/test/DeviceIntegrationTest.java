@@ -160,9 +160,14 @@ public class DeviceIntegrationTest {
 	}
 	@Test
 	public void NullTestForAccessory()  throws JsonProcessingException, Exception  {
+		given(response.getCommercialProduct(Matchers.anyObject()))
+		.willReturn(CommonMethods.getCommercialProductByDeviceIdForAccessory());
+		given(restTemplate.postForObject("http://PRICE-V1/price/product",
+				CommonMethods.bundleDeviceAndProductsList_For_GetAccessoriesOfDeviceIntegration(), PriceForProduct.class))
+						.willReturn(CommonMethods.getPriceForProduct_For_GetAccessoriesForDevice());
 		mockMvc.perform(get("/accessory/queries/byDeviceId/?deviceId=093353").accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(
-		status().is(404));
+		status().is(200));
 	}
 	@Test
 	public void NullTestForInsurance()  throws JsonProcessingException, Exception  {
