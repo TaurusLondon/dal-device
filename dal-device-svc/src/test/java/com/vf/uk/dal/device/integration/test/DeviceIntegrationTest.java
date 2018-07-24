@@ -5,6 +5,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+import java.util.Arrays;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,6 +42,7 @@ import com.vf.uk.dal.device.svc.DeviceService;
 import com.vf.uk.dal.device.utils.ResponseMappingHelper;
 import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
 import com.vf.uk.dal.utility.entity.CurrentJourney;
+import com.vf.uk.dal.utility.entity.PriceForProduct;
 import com.vf.uk.dal.utility.entity.RecommendedProductListResponse;
 /**
  * In order to run the controller class a bean of the ProductController is
@@ -142,11 +145,31 @@ public class DeviceIntegrationTest {
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(
 		status().is(200));
 	}
-	/*@Test
-	public void notNullTestForgetDeviceTileMakeAndModel()  throws JsonProcessingException, Exception  {
-		mockMvc.perform(get("/deviceTile/queries/byMakeModel/?groupType=DEVICE_PAYM&make=apple&model=iPhone-7").accept(MediaType.APPLICATION_JSON)
+	@Test
+	public void NullTestForgetDeviceTileMakeAndModel()  throws JsonProcessingException, Exception  {
+		given(response.getCommercialProductFromJson(Matchers.anyObject()))
+		.willReturn(CommonMethods.getCommercialProductsListOfMakeAndModel());
+		mockMvc.perform(get("/deviceTile/queries/byMakeModel/?groupType=DEVICE_PAYM&make=apple&model=iPhone-7&journeyType=Upgrade").accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(
-		status().is(200));
-	}*/
+		status().is(404));
+	}
+	@Test
+	public void NullTestForgetDeviceTileById()  throws JsonProcessingException, Exception  {
+		mockMvc.perform(get("/deviceTile/queries/byDeviceVariant/?deviceId=093353").accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(
+		status().is(500));
+	}
+	@Test
+	public void NullTestForAccessory()  throws JsonProcessingException, Exception  {
+		mockMvc.perform(get("/accessory/queries/byDeviceId/?deviceId=093353").accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(
+		status().is(404));
+	}
+	@Test
+	public void NullTestForInsurance()  throws JsonProcessingException, Exception  {
+		mockMvc.perform(get("/insurance/queries/byDeviceId/?deviceId=093353").accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(
+		status().is(404));
+	}
 }
 
