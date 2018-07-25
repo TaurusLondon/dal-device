@@ -206,20 +206,18 @@ public class DeviceControllerTest {
 		try {
 			deviceEntityController.getProductGroupModel("093353,092660");
 		} catch (Exception e1) {
+			Assert.assertEquals("Received Null Values for the given device id", e1.getMessage());
 		}
 		try {
 			deviceEntityController.getProductGroupModel(null);
 		} catch (Exception e) {
+			Assert.assertEquals("Invalid query parameters", e.getMessage());
 		}
 		try {
-			/*
-			 * given(response.getListOfProductModel(Matchers.anyObject())).
-			 * willReturn(CommonMethods.getProductModel());
-			 * given(response.getListOfProductGroupModel(Matchers.anyObject())).
-			 * willReturn(new ArrayList<>());
-			 */
+			
 			deviceEntityController.getProductGroupModel("093353,092660");
 		} catch (Exception e) {
+			Assert.assertEquals("Received Null Values for the given device id", e.getMessage());
 		}
 	}
 
@@ -229,26 +227,32 @@ public class DeviceControllerTest {
 		try {
 			deviceEntityController.handleMissingParams(me);
 		} catch (Exception e) {
+			Assert.assertEquals("Received Null Values for the given device id", e.getMessage());
 		}
 		try {
 			deviceController.handleMissingParams(me);
 		} catch (Exception e) {
+			Assert.assertEquals("Received Null Values for the given device id", e.getMessage());
 		}
 		try {
 			accessoryInsuranceController.handleMissingParams(me);
 		} catch (Exception e) {
+			Assert.assertEquals("Received Null Values for the given device id", e.getMessage());
 		}
 		try {
 			cacheDeviceAndReviewController.handleMissingParams(me);
 		} catch (Exception e) {
+			Assert.assertEquals("Received Null Values for the given device id", e.getMessage());
 		}
 		try {
 			deviceDetailsController.handleMissingParams(me);
 		} catch (Exception e) {
+			Assert.assertEquals("Received Null Values for the given device id", e.getMessage());
 		}
 		try {
 			deviceMakeAndModelController.handleMissingParams(me);
 		} catch (Exception e) {
+			Assert.assertEquals("Received Null Values for the given device id", e.getMessage());
 		}
 	}
 
@@ -261,11 +265,13 @@ public class DeviceControllerTest {
 			deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple", "iPhone-7", "White",
 					"iOS 9", "32 GB", null, "Great Camera", null, "invalid", null, "W_HH_OC_02");
 		} catch (Exception e) {
+			Assert.assertEquals("Invalid include recommendation value passed", e.getMessage());
 		}
 		try {
 			deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple", "iPhone-7", "White",
 					"iOS 9", "32 GB", null, "Great Camera", null, "true", null, "W_HH_OC_02");
 		} catch (Exception ex) {
+			Assert.assertEquals("Please enter valid credit limit.", ex.getMessage());
 		}
 		try {
 			ServiceContext.urlParamContext.remove();
@@ -274,6 +280,7 @@ public class DeviceControllerTest {
 			deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple", "iPhone-7", "White",
 					"iOS 9", "32 GB", null, "Great Camera", null, "true", null, "W_HH_OC_02");
 		} catch (Exception ex1) {
+			Assert.assertEquals("Page Number Value cannot be negative", ex1.getMessage());
 		}
 		try {
 			ServiceContext.urlParamContext.remove();
@@ -282,30 +289,31 @@ public class DeviceControllerTest {
 			deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple", "iPhone-7", "White",
 					"iOS 9", "32 GB", "123456", "Great Camera", null, "true", null, "W_HH_OC_02");
 		} catch (Exception ex2) {
+			Assert.assertEquals("Invalid MSISDN passed in the request", ex2.getMessage());
 		}
 		try {
 			deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple", "iPhone-7", "White",
 					"iOS 9", "32 GB", "1234567890", "Great Camera", null, "true", null, "");
 		} catch (Exception ex3) {
-
+			Assert.assertEquals("Please enter valid credit limit.", ex3.getMessage());
 		}
 		try {
 			deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple", "iPhone-7", "White",
 					"iOS 9", "32 GB", "1234567890", "Great Camera", null, "true", null, "40");
 		} catch (Exception ex3) {
-
+			Assert.assertEquals("Please enter valid credit limit.", ex3.getMessage());
 		}
 		try {
 			deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple", "iPhone-7", "White",
 					"iOS 9", "32 GB", "1234567890", "Great Camera", null, "true", null, "-40");
 		} catch (Exception ex3) {
-
+			Assert.assertEquals("Please enter valid credit limit.", ex3.getMessage());
 		}
 		try {
 			deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple", "iPhone-7", "White",
 					"iOS 9", "32 GB", "1234567890", "Great Camera", null, "true", null, "abcd");
 		} catch (Exception ex3) {
-
+			Assert.assertEquals("Please enter valid credit limit.", ex3.getMessage());
 		}
 	}
 
@@ -325,6 +333,7 @@ public class DeviceControllerTest {
 				ServiceContext.setURLParamContext(new URLParamContext("", "", fcList, null));
 				cacheDeviceAndReviewController.cacheDeviceTile();
 			} catch (Exception ex) {
+				Assert.assertEquals("Invalid Group Type sent in the request", ex.getMessage());
 			}
 		}
 	}
@@ -338,6 +347,7 @@ public class DeviceControllerTest {
 		try {
 			cacheDeviceAndReviewController.cacheDeviceTile();
 		} catch (Exception e) {
+			Assert.assertEquals("Invalid Group Type sent in the request", e.getMessage());
 		}
 	}
 	// Accessory test cases START
@@ -350,6 +360,7 @@ public class DeviceControllerTest {
 					"W_HH_PAYM_OC_02");
 			Assert.assertNotNull(accessoryDetails);
 		} catch (Exception e) {
+			Assert.assertEquals("Invalid Group Type sent in the request", e.getMessage());
 
 		}
 	}
@@ -365,6 +376,7 @@ public class DeviceControllerTest {
 
 				accessoryDetails = accessoryInsuranceController.getAccessoriesOfDevice("1234", null, null);
 			} catch (Exception ex) {
+				Assert.assertEquals("Invalid Device Id Sent In Request", ex.getMessage());
 			}
 		}
 		Assert.assertEquals(0, accessoryDetails.size());
@@ -401,6 +413,7 @@ public class DeviceControllerTest {
 			accessoryInsuranceController.getInsuranceById("093353", null);
 			accessoryInsuranceController.getInsuranceById("93353", null);
 		} catch (Exception e) {
+			Assert.assertEquals("Invalid Device Id Sent In Request", e.getMessage());
 		}
 	}
 
@@ -409,40 +422,42 @@ public class DeviceControllerTest {
 		try {
 			deviceDetailsController.getDeviceDetails(null, "abc", "abc");
 		} catch (Exception e) {
+			Assert.assertEquals("Invalid input request received. Missing Device Id", e.getMessage());
 		}
 		try {
 			deviceDetailsController.getDeviceDetails("093353", "abc", "abc");
 		} catch (Exception e) {
+			Assert.assertEquals("Received Null Values for the given device id", e.getMessage());
 		}
 		try {
 			deviceDetailsController.getDeviceDetails(null, null, null);
 		} catch (Exception e) {
-
+			Assert.assertEquals("Invalid input request received. Missing Device Id", e.getMessage());
 		}
 		try {
 			deviceDetailsController.getDeviceDetails("093353", "abc", "abc");
 		} catch (Exception e) {
-
+			Assert.assertEquals("Received Null Values for the given device id", e.getMessage());
 		}
 		try {
 			deviceDetailsController.getDeviceDetails("093353", null, "abc");
 		} catch (Exception e) {
-
+			Assert.assertEquals("Received Null Values for the given device id", e.getMessage());
 		}
 		try {
 			deviceDetailsController.getDeviceDetails("093353", null, null);
 		} catch (Exception e) {
-
+			Assert.assertEquals("Received Null Values for the given device id", e.getMessage());
 		}
 		try {
 			deviceDetailsController.getDeviceDetails("093353as", null, "abc");
 		} catch (Exception e) {
-
+			Assert.assertEquals("Invalid Device Id Sent In Request", e.getMessage());
 		}
 		try {
 			deviceDetailsController.getDeviceDetails(null, null, "abc");
 		} catch (Exception e) {
-
+			Assert.assertEquals("Invalid input request received. Missing Device Id", e.getMessage());
 		}
 	}
 	
