@@ -26,6 +26,7 @@ import com.vf.uk.dal.device.datamodel.productgroups.Group;
 import com.vf.uk.dal.device.datamodel.productgroups.Member;
 import com.vf.uk.dal.device.datamodel.productgroups.ProductGroupModel;
 import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
+import com.vf.uk.dal.device.entity.Colour;
 import com.vf.uk.dal.device.entity.Device;
 import com.vf.uk.dal.device.entity.DeviceDetails;
 import com.vf.uk.dal.device.entity.DeviceSummary;
@@ -132,11 +133,23 @@ public class DeviceServiceImplUtility {
 	public static void getProductGroupdetailsMap(ProductGroupModel productGroupModel,
 			Map<String, ProductGroupDetailsForDeviceList> productGroupdetailsMap, String deviceId) {
 		ProductGroupDetailsForDeviceList groupDetails = new ProductGroupDetailsForDeviceList();
+		List<String> colourHex=productGroupModel.getHexCode();
+		List<Colour> colours=new ArrayList<>();
+		if (CollectionUtils.isNotEmpty(colourHex)) {
+			colourHex.forEach(colour -> {
+				String[] colorHex = colour.split("\\|");
+				if (colorHex.length==2) {
+					Colour color = new Colour();
+					color.setColorName(colorHex[0]);
+					color.setColorHex(colorHex[1]);
+					colours.add(color);
+				}
+			});
+		}
 		groupDetails.setGroupName(productGroupModel.getName());
 		groupDetails.setGroupId(productGroupModel.getId());
-		groupDetails.setColor(productGroupModel.getColour());
+		groupDetails.setColor(colours);
 		groupDetails.setSize(productGroupModel.getCapacity());
-		groupDetails.setColorHex(productGroupModel.getHexCode());
 		productGroupdetailsMap.put(deviceId, groupDetails);
 
 	}

@@ -340,7 +340,6 @@ public class DeviceTilesDaoUtils {
 								? productGroupdetailsMap.get(productModel.getProductId()) : null;
 						if (groupdeatils != null) {
 							deviceDetails.setColor(groupdeatils.getColor());
-							deviceDetails.setColorHex(groupdeatils.getColorHex());
 							deviceDetails.setSize(groupdeatils.getSize());
 							deviceDetails.setProductGroupName(groupdeatils.getGroupName());
 							deviceDetails.setProductGroupId(groupdeatils.getGroupId());
