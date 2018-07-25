@@ -9,7 +9,6 @@ import com.vf.uk.dal.device.datamodel.productgroups.ProductGroupModel;
 import com.vf.uk.dal.device.entity.BundlePrice;
 import com.vf.uk.dal.device.entity.DeviceTile;
 import com.vf.uk.dal.device.entity.FacetedDevice;
-import com.vf.uk.dal.utility.entity.BundleDetails;
 
 /**
  * Device Service Should consists of all the service methods which will be
@@ -60,16 +59,7 @@ public interface DeviceService {
 			String mustHaveFeatures, String journeyType, Float creditLimit, String offerCode, String msisdn,
 			boolean includeRecommendations);
 
-	/**
-	 * 
-	 * @param deviceId
-	 * @param bundleId
-	 * @param allowedRecurringPriceLimit
-	 * @param plansLimit
-	 * @return BundleDetails
-	 */
-	public BundleDetails getBundlesOfDeviceId(String deviceId, String bundleId, String allowedRecurringPriceLimit,
-			String plansLimit);
+	
 
 	/**
 	 * 
