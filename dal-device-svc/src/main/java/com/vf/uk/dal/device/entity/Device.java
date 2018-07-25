@@ -59,10 +59,6 @@ public class Device {
 	private List<String> size = null;
 
 	@JsonProperty("color")
-	private List<String> color = null;
-	
-	@JsonProperty("colorHex")
-	private List<String> colorHex = null;
-	
+	private List<Colour> color = null;
 
 }

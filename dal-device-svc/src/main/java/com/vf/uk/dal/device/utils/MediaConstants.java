@@ -6,6 +6,7 @@ package com.vf.uk.dal.device.utils;
 
 public class MediaConstants {
 
+	private MediaConstants(){};
 	public static final String STRING_FOR_IMAGE_THUMBS_FRONT = "imagesURLs.thumbs.front";
 	public static final String STRING_FOR_IMAGE_THUMBS_LEFT = "imagesURLs.thumbs.left";
 	public static final String STRING_FOR_IMAGE_THUMBS_RIGHT = "imagesURLs.thumbs.right";

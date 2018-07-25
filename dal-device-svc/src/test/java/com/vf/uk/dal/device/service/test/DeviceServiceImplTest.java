@@ -149,7 +149,6 @@ public class DeviceServiceImplTest {
 		given(response.getCommercialProductFromJson(Matchers.anyObject()))
 				.willReturn(CommonMethods.getCommercialProductsListOfAccessories());
 		given(response.getCommercialBundle(Matchers.anyObject())).willReturn(CommonMethods.getCommercialBundle());
-		String jsonString = new String(Utility.readFile("\\rest-mock\\COMMON-V1.json"));
 		given(registry.getRestTemplate()).willReturn(restTemplate);
 		given(restTemplate.postForObject("http://PRICE-V1/price/product",
 				CommonMethods.bundleDeviceAndProductsList_For_GetAccessoriesOfDevice(), PriceForProduct.class))
