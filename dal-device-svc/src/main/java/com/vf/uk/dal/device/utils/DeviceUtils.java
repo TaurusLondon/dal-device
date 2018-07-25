@@ -26,21 +26,6 @@ import com.vf.uk.dal.utility.solr.entity.OfferAppliedPriceDetails;
  *
  */
 public class DeviceUtils {
-	static Double selectedPlanAlwnce = null;
-
-	/**
-	 * 
-	 * @param bndlDtls
-	 * @param allowedRecurringPriceLimit
-	 * @param bundleId
-	 * @param plansLimit
-	 * @param bndlDtlsWithoutFullDuration
-	 * @return BundleDetails
-	 */
-	
-
-	
-
 	/**
 	 * 
 	 * @param value
