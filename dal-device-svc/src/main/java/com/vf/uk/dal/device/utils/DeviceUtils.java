@@ -6,13 +6,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
 import com.vf.uk.dal.common.configuration.ConfigHelper;
-import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
@@ -20,11 +19,8 @@ import com.vf.uk.dal.device.datamodel.product.ProductModel;
 import com.vf.uk.dal.device.datamodel.productgroups.Group;
 import com.vf.uk.dal.device.datamodel.productgroups.Member;
 import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
-import com.vf.uk.dal.device.entity.BundlePrice;
-import com.vf.uk.dal.device.entity.MerchandisingPromotion;
 import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
 import com.vf.uk.dal.utility.entity.BundleAllowance;
-import com.vf.uk.dal.utility.entity.BundleDetails;
 import com.vf.uk.dal.utility.entity.BundleHeader;
 import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
 import com.vf.uk.dal.utility.solr.entity.OfferAppliedPriceDetails;
@@ -45,71 +41,7 @@ public class DeviceUtils {
 	 * @param bndlDtlsWithoutFullDuration
 	 * @return BundleDetails
 	 */
-	public static BundleDetails getSimilarPlanList(BundleDetails bndlDtls, String allowedRecurringPriceLimit,
-			String bundleId, String plansLimit, BundleDetails bndlDtlsWithoutFullDuration) {
-		BundleDetails bundleDeatils = new BundleDetails();
-		List<BundleHeader> similarplan = new ArrayList<>();
-		List<BundleHeader> allowblPlanLst = new ArrayList<>();
-		List<BundleHeader> sameMonthlyPricePlanList = new ArrayList<>();
-
-		// Listing all plans into descending order which are less than
-		// allowedRecurringPriceLimit.
-		for (BundleHeader bundleHeader : bndlDtlsWithoutFullDuration.getPlanList()) {
-			if (StringUtils.equalsIgnoreCase(bundleId, bundleHeader.getSkuId())) {
-				selectedPlanAlwnce = getBundleAllowance(bundleHeader, Constants.STRING_DATA_AlLOWANCE);
-			}
-		}
-		for (BundleHeader bundleHeader : bndlDtls.getPlanList()) {
-			if (compareMntlyPrcAlwableLmt(bundleHeader, allowedRecurringPriceLimit) <= 0) {
-				allowblPlanLst.add(bundleHeader);
-			}
-		}
-
-		if (selectedPlanAlwnce != null) {
-			if (!allowblPlanLst.isEmpty()) {
-				if (allowblPlanLst.size() > 1) {
-					allowblPlanLst = sortedPlanUnderAllowedLimit(allowblPlanLst);
-					String highestMonthlyPrice = getmonthlyPriceForBndl(allowblPlanLst.get(0));
-					for (BundleHeader bundleHeader : allowblPlanLst) {
-						String bundleMonthlyPrice = getmonthlyPriceForBndl(bundleHeader);
-						if (bundleMonthlyPrice != null && bundleMonthlyPrice.equalsIgnoreCase(highestMonthlyPrice)) {
-							sameMonthlyPricePlanList.add(bundleHeader);
-						}
-					}
-					if (!sameMonthlyPricePlanList.isEmpty() && sameMonthlyPricePlanList.size() == 1) {
-						similarplan.add(allowblPlanLst.get(0));
-					} else if (!sameMonthlyPricePlanList.isEmpty() && sameMonthlyPricePlanList.size() > 1) {
-						List<BundleHeader> allowblPlanLstMore = sortedPalnsUnderDataLimit(sameMonthlyPricePlanList);
-						allowblPlanLstMore = removeObjectMoreDataLimit(allowblPlanLstMore, selectedPlanAlwnce);
-						if (allowblPlanLstMore.isEmpty()) {
-							LogHelper.error(DeviceUtils.class, ExceptionMessages.STRING_NO_SIMILAR_PLAN);
-							throw new ApplicationException(ExceptionMessages.STRING_NO_SIMILAR_PLAN);
-						} else {
-
-							for (int i = 0; i < Integer.parseInt(plansLimit); i++) {
-								if (allowblPlanLstMore.size() > i) {
-									similarplan.add(allowblPlanLstMore.get(i));
-								} else {
-									break;
-								}
-							}
-						}
-					}
-				} else {
-					similarplan.add(allowblPlanLst.get(0));
-				}
-			} else {
-				LogHelper.error(DeviceUtils.class, ExceptionMessages.STRING_NO_SIMILAR_PLAN);
-				throw new ApplicationException(ExceptionMessages.STRING_NO_SIMILAR_PLAN);
-			}
-		} else {
-			LogHelper.error(DeviceUtils.class, ExceptionMessages.STRING_NO_SIMILAR_PLAN);
-			throw new ApplicationException(ExceptionMessages.INVALID_BUNDLE_ID);
-		}
-		selectedPlanAlwnce = null;
-		bundleDeatils.setPlanList(similarplan);
-		return bundleDeatils;
-	}
+	
 
 	/**
 	 * 
@@ -404,36 +336,7 @@ public class DeviceUtils {
 		return objectsToOrder;
 	}
 
-	/**
-	 * 
-	 * @param bundleDetails
-	 * @return BundleDetails
-	 */
-	public static BundleDetails removeWithoutFullDurtnPlans(BundleDetails bundleDetails) {
-		BundleDetails bundleDetailsWithFullDuration = new BundleDetails();
-		List<BundleHeader> bundleHeaderlist = new ArrayList<>();
-		Iterator<BundleHeader> it = bundleDetails.getPlanList().iterator();
-
-		while (it.hasNext()) {
-			boolean flag = false;
-			BundleHeader bundleHeader = it.next();
-			BundlePrice bundlePrice = bundleHeader.getPriceInfo().getBundlePrice();
-			if (bundlePrice != null) {
-				MerchandisingPromotion merchandisingPromotion = bundlePrice.getMerchandisingPromotions();
-				if (merchandisingPromotion != null && StringUtils.containsIgnoreCase(Constants.FULL_DURATION,
-						merchandisingPromotion.getMpType())) {
-					flag = true;
-				} else {
-					flag = true;
-				}
-			}
-			if (flag) {
-				bundleHeaderlist.add(bundleHeader);
-			}
-		}
-		bundleDetailsWithFullDuration.setPlanList(bundleHeaderlist);
-		return bundleDetailsWithFullDuration;
-	}
+	
 
 	/**
 	 * 

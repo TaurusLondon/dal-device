@@ -49,7 +49,6 @@ import com.vf.uk.dal.device.utils.ExceptionMessages;
 import com.vf.uk.dal.device.utils.ResponseMappingHelper;
 import com.vf.uk.dal.device.validator.Validator;
 import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
-import com.vf.uk.dal.utility.entity.BundleDetails;
 import com.vf.uk.dal.utility.entity.BundleModelAndPrice;
 
 /**
@@ -243,42 +242,7 @@ public class DeviceServiceImpl implements DeviceService {
 		}
 	}
 
-	/**
-	 * KeepDeviceChangetoSimilarPlan
-	 * 
-	 * @param deviceId
-	 * @param bundleId
-	 * @param allowedRecurringPriceLimit
-	 * @return BundleDetails
-	 */
-	@Override
-	public BundleDetails getBundlesOfDeviceId(String deviceId, String bundleId, String allowedRecurringPriceLimit,
-			String plansLimit) {
-		BundleDetails bundleDetails = null;
-		BundleDetails similarPlan = null;
-		BundleDetails bundleDetailsWithFullDuration = null;
-		BundleDetails bundleDetailsWithoutFullDuration = new BundleDetails();
-		bundleDetails = deviceDao.getBundleDetailsFromComplansListingAPI(deviceId, null);
-
-		if (bundleDetails != null) {
-			LogHelper.info(DeviceUtils.class, "bundle Details Without Full Duration " + bundleDetails);
-			bundleDetailsWithoutFullDuration.setPlanList(bundleDetails.getPlanList());
-			bundleDetailsWithFullDuration = DeviceUtils.removeWithoutFullDurtnPlans(bundleDetails);
-			LogHelper.info(DeviceUtils.class, "bundle Details Full Duration " + bundleDetails);
-		} else {
-			LogHelper.error(DeviceUtils.class, ExceptionMessages.NULL_COMPATIBLE_PLANS_FOR_DEVICE_ID);
-			throw new ApplicationException(ExceptionMessages.NULL_COMPATIBLE_PLANS_FOR_DEVICE_ID);
-		}
-		if (!bundleDetailsWithFullDuration.getPlanList().isEmpty()) {
-			similarPlan = DeviceUtils.getSimilarPlanList(bundleDetailsWithFullDuration, allowedRecurringPriceLimit,
-					bundleId, plansLimit, bundleDetailsWithoutFullDuration);
-		} else {
-			LogHelper.error(DeviceUtils.class, ExceptionMessages.NULL_COMPATIBLE_PLANS_FOR_DEVICE_ID);
-			throw new ApplicationException(ExceptionMessages.NULL_COMPATIBLE_PLANS_FOR_DEVICE_ID);
-		}
-
-		return similarPlan;
-	}
+	
 
 	/**
 	 * @param id
