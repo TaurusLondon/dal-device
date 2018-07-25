@@ -650,17 +650,13 @@ public class CommonMethods {
 		return deviceListingList;
 	}
 
-	/*public static List<StockInfo> getStockInfo() {
-		StockInfo info = new StockInfo();
-		info.setAvailableBy("Available");
-		info.setQuantity(2);
-		info.setSkuId("109272");
-		info.setSourceId("110154");
-		info.setStatus("Progress");
-		List<StockInfo> infoList = new ArrayList<>();
-		infoList.add(info);
-		return infoList;
-	}*/
+	/*
+	 * public static List<StockInfo> getStockInfo() { StockInfo info = new
+	 * StockInfo(); info.setAvailableBy("Available"); info.setQuantity(2);
+	 * info.setSkuId("109272"); info.setSourceId("110154");
+	 * info.setStatus("Progress"); List<StockInfo> infoList = new ArrayList<>();
+	 * infoList.add(info); return infoList; }
+	 */
 
 	public static List<DeviceTile> getDeviceTile(String make, String model, String groupType) {
 
@@ -1836,7 +1832,6 @@ public class CommonMethods {
 			return null;
 		}
 	}
-
 
 	public static BundleDetails getCompatibleBundleListJson() {
 		BundleDetails bundleDetails = new BundleDetails();
@@ -3567,13 +3562,13 @@ public class CommonMethods {
 			return mapper.convertValue(commercialProductList, new TypeReference<CommercialProduct>() {
 			});
 		} catch (JsonParseException e) {
-			
+
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			
+
 			e.printStackTrace();
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 		}
 		return null;
@@ -3590,7 +3585,7 @@ public class CommonMethods {
 			product = mapper.readValue(productModel, BazaarVoice.class);
 			product.setJsonsource(productModel);
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 		}
 
@@ -3616,7 +3611,7 @@ public class CommonMethods {
 		} catch (JsonMappingException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 		}
 		return null;
@@ -3683,13 +3678,13 @@ public class CommonMethods {
 			return mapper.convertValue(groupList, new TypeReference<List<Group>>() {
 			});
 		} catch (JsonParseException e) {
-			
+
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			
+
 			e.printStackTrace();
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 		}
 		return null;
@@ -3730,24 +3725,24 @@ public class CommonMethods {
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			String bundle = new String(
 					Utility.readFile("\\TEST-MOCK\\bundleDeviceAndProductsList_For_GetAccessoriesOfDevice.json"));
-			BundleDeviceAndProductsList bundleList = mapper.readValue(bundle,
-					BundleDeviceAndProductsList.class);
+			BundleDeviceAndProductsList bundleList = mapper.readValue(bundle, BundleDeviceAndProductsList.class);
 
 			return mapper.convertValue(bundleList, new TypeReference<BundleDeviceAndProductsList>() {
 			});
 
 		} catch (JsonParseException e) {
-			
+
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			
+
 			e.printStackTrace();
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 		}
 		return navigation;
 	}
+
 	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static BundleDeviceAndProductsList bundleDeviceAndProductsList_For_GetAccessoriesOfDeviceIntegration() {
 		BundleDeviceAndProductsList navigation = new BundleDeviceAndProductsList();
@@ -3756,22 +3751,21 @@ public class CommonMethods {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-			String bundle = new String(
-					Utility.readFile("\\TEST-MOCK\\bundleDeviceAndProductsList_For_GetAccessoriesOfDevice_Integration.json"));
-			BundleDeviceAndProductsList bundleList = mapper.readValue(bundle,
-					BundleDeviceAndProductsList.class);
+			String bundle = new String(Utility
+					.readFile("\\TEST-MOCK\\bundleDeviceAndProductsList_For_GetAccessoriesOfDevice_Integration.json"));
+			BundleDeviceAndProductsList bundleList = mapper.readValue(bundle, BundleDeviceAndProductsList.class);
 
 			return mapper.convertValue(bundleList, new TypeReference<BundleDeviceAndProductsList>() {
 			});
 
 		} catch (JsonParseException e) {
-			
+
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			
+
 			e.printStackTrace();
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 		}
 		return navigation;
@@ -3859,13 +3853,13 @@ public class CommonMethods {
 			return mapper.convertValue(productGroupModelList, new TypeReference<List<ProductGroupModel>>() {
 			});
 		} catch (JsonParseException e) {
-			
+
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			
+
 			e.printStackTrace();
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 		}
 		return null;
@@ -3886,13 +3880,13 @@ public class CommonMethods {
 			return mapper.convertValue(commercialProductList, new TypeReference<CommercialProduct>() {
 			});
 		} catch (JsonParseException e) {
-			
+
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			
+
 			e.printStackTrace();
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 		}
 		return null;
@@ -3911,13 +3905,13 @@ public class CommonMethods {
 			return mapper.convertValue(bundleDetails, new TypeReference<BundleDetailsForAppSrv>() {
 			});
 		} catch (JsonParseException e) {
-			
+
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			
+
 			e.printStackTrace();
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 		}
 		return null;
@@ -4023,13 +4017,13 @@ public class CommonMethods {
 			return mapper.convertValue(commercialProductList, new TypeReference<CommercialProduct>() {
 			});
 		} catch (JsonParseException e) {
-			
+
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			
+
 			e.printStackTrace();
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 		}
 		return null;
@@ -4050,13 +4044,13 @@ public class CommonMethods {
 			return mapper.convertValue(commercialProductList, new TypeReference<CommercialProduct>() {
 			});
 		} catch (JsonParseException e) {
-			
+
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			
+
 			e.printStackTrace();
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 		}
 		return null;
@@ -4396,6 +4390,8 @@ public class CommonMethods {
 		group1.setId("092660");
 		group1.setLeadDeviceId(null);
 		group1.setListOfVariants(Arrays.asList("092660|1"));
+		group.setHexCode(getColourHes());
+		group1.setHexCode(getColourHes());
 		groupList.add(group);
 		groupList.add(group1);
 		return groupList;
@@ -4412,9 +4408,21 @@ public class CommonMethods {
 		group1.setId("092660");
 		group1.setLeadDeviceId(null);
 		group1.setListOfVariants(Collections.emptyList());
+		group.setHexCode(getColourHes());
+		group1.setHexCode(getColourHes());
 		groupList.add(group);
 		groupList.add(group1);
 		return groupList;
+	}
+
+	public static List<String> getColourHes() {
+		List<String> hex = new ArrayList<>();
+		hex.add("Black|#212327");
+		hex.add("Jet Black|#000000");
+		hex.add("Silver|#dcddde");
+		hex.add("PRODUCT(RED) Special Edition|#aa2831");
+		hex.add("Rose Gold|#efc5bf");
+		return hex;
 	}
 
 	public static List<FacetField> getListOfFacetField() {
@@ -4452,7 +4460,7 @@ public class CommonMethods {
 		productGroupModel.setName("CompatibleDeliveryMethods_CnC_PremiumDelivery");
 		productGroupModel.setPriority(1);
 		productGroupModel.setType("Compatible Delivery");
-
+		productGroupModel.setHexCode(getColourHes());
 		ProductGroupModel productGroupMode = new ProductGroupModel();
 		productGroupMode.setId("productGroup_2");
 		productGroupMode.setImageUrl("http://image.png");
@@ -4460,6 +4468,7 @@ public class CommonMethods {
 		productGroupMode.setName("CompatibleDeliveryMethods_CnC_Delivery");
 		productGroupMode.setPriority(1);
 		productGroupMode.setType("Compatible Delivery");
+		productGroupMode.setHexCode(getColourHes());
 		productGroupModelList.add(productGroupMode);
 		productGroupModelList.add(productGroupModel);
 		return productGroupModelList;
@@ -4470,10 +4479,10 @@ public class CommonMethods {
 		size.add("32 GB");
 		size.add("128 GB");
 		List<Colour> colour = new ArrayList<>();
-		Colour c1= new Colour();
+		Colour c1 = new Colour();
 		c1.setColorName("Black");
 		c1.setColorHex("#dcddde");
-		Colour c2= new Colour();
+		Colour c2 = new Colour();
 		c2.setColorName("White");
 		c2.setColorHex("#efc5bf");
 		colour.add(c1);
