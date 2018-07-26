@@ -63,6 +63,7 @@ import com.vf.uk.dal.device.svc.DeviceService;
 import com.vf.uk.dal.device.svc.impl.AccessoryInsuranceServiceImpl;
 import com.vf.uk.dal.device.svc.impl.DeviceDetailsServiceImpl;
 import com.vf.uk.dal.device.svc.impl.DeviceMakeAndModelServiceImpl;
+import com.vf.uk.dal.device.utils.CommonUtility;
 import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.DeviceDetailsMakeAndModelVaiantDaoUtils;
 import com.vf.uk.dal.device.utils.DeviceUtils;
@@ -1674,5 +1675,13 @@ public class DeviceServiceImplTest {
 		commerProdMemMapPAYG.put("123", CommonMethods.getCommercialProduct());
 		 deviceMakeAndModelServiceImpl.getMemberByRules("DEVICE_PAYG", CommonMethods.getDeviceTile("apple", "iphone 7", "groupType"),
 				 CommonMethods.getDeviceTilee(), "PAYG", CommonMethods.getMemberListPojo(), commerProdMemMapPAYG, CommonMethods.getBundleAndHardwareTuple());
+	}
+	@Test
+	public void testgetBundleDetailsFromComplansListingAPI(){
+		CommonUtility.getBundleDetailsFromComplansListingAPI("093353","-sort", registry);
+	}
+	@Test
+	public void testappendPrefixString(){
+		CommonUtility.appendPrefixString("093353");
 	}
 }
