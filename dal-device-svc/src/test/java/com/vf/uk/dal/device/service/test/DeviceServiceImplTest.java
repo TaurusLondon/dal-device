@@ -57,6 +57,7 @@ import com.vf.uk.dal.device.entity.RequestForBundleAndHardware;
 import com.vf.uk.dal.device.entity.SourcePackageSummary;
 import com.vf.uk.dal.device.helper.DeviceConditionallHelper;
 import com.vf.uk.dal.device.helper.DeviceServiceCommonUtility;
+import com.vf.uk.dal.device.helper.DeviceServiceImplUtility;
 import com.vf.uk.dal.device.svc.DeviceRecommendationService;
 import com.vf.uk.dal.device.svc.DeviceService;
 import com.vf.uk.dal.device.svc.impl.AccessoryInsuranceServiceImpl;
@@ -71,6 +72,8 @@ import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 import com.vf.uk.dal.utility.entity.BundleAndHardwareRequest;
 import com.vf.uk.dal.utility.entity.BundleModelAndPrice;
 import com.vf.uk.dal.utility.entity.PriceForProduct;
+import com.vf.uk.dal.utility.solr.entity.PriceInfo;
+
 import org.junit.Assert;
 
 
@@ -1561,5 +1564,17 @@ public class DeviceServiceImplTest {
 		Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap=new HashMap<>();
 		groupNamePriceMap.put("093353", CommonMethods.getPriceForBundleAndHardwareListFromTupleList());
 		DeviceUtils.getMinimumPriceMapForPayG(minimumPriceMap, groupNamePriceMap);
+	}
+	@Test
+	public void testgetDiscountTypeAndComparePrice_Implementation(){
+		com.vf.uk.dal.device.entity.BundlePrice bundlePrice = new com.vf.uk.dal.device.entity.BundlePrice();
+		bundlePrice.setBundleId("110154");
+		
+		com.vf.uk.dal.device.entity.Price monthlyPrice = new com.vf.uk.dal.device.entity.Price();
+		monthlyPrice.setGross("10.3");
+		monthlyPrice.setNet("12.4");
+		monthlyPrice.setVat("11");
+		bundlePrice.setMonthlyPrice(monthlyPrice);
+		Assert.assertNotNull(DeviceServiceImplUtility.getDiscountTypeAndComparePrice_Implementation(112.23,bundlePrice));
 	}
 }
