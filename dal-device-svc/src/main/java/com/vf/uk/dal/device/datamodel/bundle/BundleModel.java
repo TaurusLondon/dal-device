@@ -304,7 +304,7 @@ public class BundleModel {
 
 	@JsonProperty("allowance")
 	private List<String> allowanceList = new ArrayList<>();
-
+	@JsonProperty("planCoupleId")
 	private String planCoupleId;
 	@JsonProperty("planCoupleFlag")
 	private String planCoupleFlag;
@@ -345,21 +345,12 @@ public class BundleModel {
 	@JsonProperty("miscKeyValue")
 	private List<String> miscKeyValue;
 
-	// @JsonFormat(pattern="EEE MMM dd HH:mm:ss z yyyy")
+	@JsonProperty("createDate")
 	private Date createDate;
 
-	// @JsonFormat(pattern="EEE MMM dd HH:mm:ss z yyyy")
+	@JsonProperty("modifiedDate")
 	private Date modifiedDate;
 
 	@JsonProperty("seoRobots")
 	private List<String> seoRobots;
-
-	/**
-	 * 
-	 */
-	public BundleModel() {
-		/*
-		 * 
-		 */
-	}
 }

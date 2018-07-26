@@ -1127,7 +1127,7 @@ public class DeviceTilesDaoUtils {
 						}
 						if (StringUtils.isNotBlank(productModel.getImageURLsThumbsFront())) {
 							MediaLink mediaThumbsFrontLink = new MediaLink();
-							mediaThumbsFrontLink.setId(MediaConstants.STRING_FOR_IMAGE_THUMBS_FRONT);
+							mediaThumbsFrontLink.setId(MediaConstants.stringForImageThumbsFront);
 							mediaThumbsFrontLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
 							mediaThumbsFrontLink.setValue(productModel.getImageURLsThumbsFront());
 							mediaList.add(mediaThumbsFrontLink);
