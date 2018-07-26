@@ -1577,4 +1577,19 @@ public class DeviceServiceImplTest {
 		bundlePrice.setMonthlyPrice(monthlyPrice);
 		Assert.assertNotNull(DeviceServiceImplUtility.getDiscountTypeAndComparePrice_Implementation(112.23,bundlePrice));
 	}
+	@Test
+	public void testisPlanAffordable_Implementation(){
+		DeviceSummary deviceSummary = new DeviceSummary();
+		deviceSummary.setColourHex("D10000000");
+		deviceSummary.setColourName("Grey");
+		deviceSummary.setDisplayDescription("5.5 inch");
+		deviceSummary.setDisplayName("display name");
+		deviceSummary.setDeviceId(String.valueOf(122));
+		deviceSummary.setLeadPlanId("Lead plan Id");
+		deviceSummary.setLeadPlanDisplayName("Yearly Plan");
+		deviceSummary.setMemory("64GB");
+		deviceSummary.setPreOrderable(false);
+		DeviceServiceImplUtility.isPlanAffordable_Implementation(deviceSummary, CommonMethods.getCommercialBundle(),
+				222.3, true);
+	}
 }
