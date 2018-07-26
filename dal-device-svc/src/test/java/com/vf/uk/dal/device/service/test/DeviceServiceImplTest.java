@@ -1537,6 +1537,10 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
-	 
+	@Test
+	public void testconvertCoherenceDeviceToDeviceTile_PAYG(){
+		Assert.assertNotNull(DeviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceTile_PAYG(Long.valueOf(1), CommonMethods.getCommercialProduct(),
+				CommonMethods.getPriceForBundleAndHardware().get(0), "DEVICE_PAYG", CommonMethods.getListOfBundleAndHardwarePromotions().get(0))); 
+	} 
 	
 }
