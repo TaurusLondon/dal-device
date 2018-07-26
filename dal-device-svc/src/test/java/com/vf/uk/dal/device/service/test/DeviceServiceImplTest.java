@@ -8,9 +8,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -73,9 +76,6 @@ import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 import com.vf.uk.dal.utility.entity.BundleAndHardwareRequest;
 import com.vf.uk.dal.utility.entity.BundleModelAndPrice;
 import com.vf.uk.dal.utility.entity.PriceForProduct;
-import com.vf.uk.dal.utility.solr.entity.PriceInfo;
-
-import org.junit.Assert;
 
 
 @RunWith(SpringRunner.class)
@@ -1682,6 +1682,25 @@ public class DeviceServiceImplTest {
 	}
 	@Test
 	public void testappendPrefixString(){
-		CommonUtility.appendPrefixString("093353");
+		Assert.assertNotNull(CommonUtility.appendPrefixString("093353"));
+	}
+	@Test
+	public void testsortedPriceForBundleAndHardware(){
+		Assert.assertNotNull(DeviceUtils.sortedPriceForBundleAndHardware(CommonMethods.getPriceForBundleAndHardware()));
+	}
+	@Test
+	public void testsortedPriceForBundleAndHardwareForPayG(){
+		Assert.assertNotNull(DeviceUtils.sortedPriceForBundleAndHardwareForPayG(CommonMethods.getPriceForBundleAndHardware()));
+	}
+	//getIlsBundleHardwarePriceMap
+	@Test
+	public void testgetIlsBundleHardwarePriceMap(){
+		Set<String> setOffer=new HashSet<>();
+		setOffer.add("093353");
+		Map<String, List<BundleAndHardwareTuple>> bundleHardwareTroupleMap=new HashMap<>();
+		bundleHardwareTroupleMap.put("093353", CommonMethods.getBundleAndHardwareTuple());
+		
+		DeviceUtils.getIlsBundleHardwarePriceMap(setOffer, bundleHardwareTroupleMap,
+				"093353", "110154", Arrays.asList("promoteAs"));
 	}
 }

@@ -201,27 +201,6 @@ public class CommonUtility {
 		return jsonObject;
 	}
 
-	/**
-	 * 
-	 * @param source
-	 * @return trimLeadingZeros
-	 */
-	public static String trimLeadingZeros(String source) {
-		int length = source.length();
-
-		if (length < 2)
-			return source;
-
-		int i;
-		for (i = 0; i < length - 1; i++) {
-			char c = source.charAt(i);
-			if (c != '0')
-				break;
-		}
-		if (i == 0)
-			return source;
-		return source.substring(i);
-	}
 
 	/**
 	 * 
