@@ -64,6 +64,7 @@ import com.vf.uk.dal.device.svc.impl.DeviceDetailsServiceImpl;
 import com.vf.uk.dal.device.svc.impl.DeviceMakeAndModelServiceImpl;
 import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.DeviceDetailsMakeAndModelVaiantDaoUtils;
+import com.vf.uk.dal.device.utils.DeviceUtils;
 import com.vf.uk.dal.device.utils.ResponseMappingHelper;
 import com.vf.uk.dal.device.validator.Validator;
 import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
@@ -1537,6 +1538,28 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
-	 
-	
+	@Test
+	public void testconvertCoherenceDeviceToDeviceTile_PAYG(){
+		Assert.assertNotNull(DeviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceTile_PAYG(Long.valueOf(1), CommonMethods.getCommercialProduct(),
+				CommonMethods.getPriceForBundleAndHardware().get(0), "DEVICE_PAYG", CommonMethods.getListOfBundleAndHardwarePromotions().get(0))); 
+	} 
+	@Test 
+	public void testconvertCoherenceDeviceToDeviceTile()
+	{
+		Assert.assertNotNull(DeviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceTile(null,
+				CommonMethods.getCommercialProduct(), CommonMethods.getCommercialBundle(), CommonMethods.getUtilityPriceForBundleAndHardware(), CommonMethods.getListOfBundleAndHardwarePromotions(),
+				"DEVICE_PAYG", true, null));
+	}
+	@Test
+	public void testgetDoubleFrmString(){
+		Assert.assertNotNull(DeviceUtils.getDoubleFrmString("2.5"));
+	}
+	@Test
+	public void testgetMinimumPriceMapForPayG(){
+		Map<String, String> minimumPriceMap=new HashMap<>();
+		minimumPriceMap.put("093353", "12.8");
+		Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap=new HashMap<>();
+		groupNamePriceMap.put("093353", CommonMethods.getPriceForBundleAndHardwareListFromTupleList());
+		DeviceUtils.getMinimumPriceMapForPayG(minimumPriceMap, groupNamePriceMap);
+	}
 }

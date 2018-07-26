@@ -1,17 +1,19 @@
 package com.vf.uk.dal.device.datamodel.merchandisingpromotion;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Data;
 
 @Data
 public class DiscountMP {
-
-	protected String type;
-
-	protected float value;
-
-	protected float qualifyingRecurringCost;
-
-	protected Long priority;
+	@JsonProperty("type")
+	private String type;
+	@JsonProperty("value")
+	private float value;
+	@JsonProperty("qualifyingRecurringCost")
+	private float qualifyingRecurringCost;
+	@JsonProperty("priority")
+	private Long priority;
 
 	
 }
