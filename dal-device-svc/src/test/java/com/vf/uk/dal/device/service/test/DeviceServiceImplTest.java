@@ -780,10 +780,11 @@ public class DeviceServiceImplTest {
 
 		}
 		requestForBundleAndHardware.setBundleAndHardwareList(bundleList);
+		requestForBundleAndHardware.setPackageType("Upgrade");
 		given(restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
 				requestForBundleAndHardware, PriceForBundleAndHardware[].class)).willReturn(obj);
 
-		Assert.assertNull(deviceMakeAndModelServiceImpl.getLeadBundleBasedOnAllPlans_Implementation((double) (40),
+		Assert.assertNotNull(deviceMakeAndModelServiceImpl.getLeadBundleBasedOnAllPlans_Implementation((double) (40),
 				CommonMethods.getCommercialProduct(), CommonMethods.getPriceForBundleAndHardware(), "Upgrade"));
 	}
 
@@ -1536,6 +1537,6 @@ public class DeviceServiceImplTest {
 		} catch (Exception e) {
 		}
 	}
-
+	 
 	
 }
