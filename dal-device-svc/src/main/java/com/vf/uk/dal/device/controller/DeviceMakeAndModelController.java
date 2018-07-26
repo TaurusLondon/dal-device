@@ -24,6 +24,11 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+/**
+ * This is DeviceMakeAndModelController which takes input as make and model 
+ * @author manoj.bera
+ *
+ */
 @RestController
 @RequestMapping(value = "")
 @EnableAspectJAutoProxy(proxyTargetClass = true)
