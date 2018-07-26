@@ -1680,4 +1680,8 @@ public class DeviceServiceImplTest {
 	public void testgetBundleDetailsFromComplansListingAPI(){
 		CommonUtility.getBundleDetailsFromComplansListingAPI("093353","-sort", registry);
 	}
+	@Test
+	public void testappendPrefixString(){
+		CommonUtility.appendPrefixString("093353");
+	}
 }
