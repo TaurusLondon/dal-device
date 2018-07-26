@@ -3,6 +3,8 @@ package com.vf.uk.dal.utility.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Data;
 
 /**
@@ -10,7 +12,10 @@ import lombok.Data;
  */
 @Data
 public class StatusInfo {
+	
+	@JsonProperty("status")
 	private String status = null;
 
+	@JsonProperty("errorCodes")
 	private List<String> errorCodes = new ArrayList<String>();
 }

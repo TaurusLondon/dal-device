@@ -3,6 +3,8 @@ package com.vf.uk.dal.utility.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Data;
 
 /**
@@ -12,7 +14,9 @@ import lombok.Data;
 @Data
 public class RecommendedProductListResponse {
 
+	@JsonProperty("recommendedProductList")
 	private List<RecommendedProduct> recommendedProductList = new ArrayList<RecommendedProduct>();
 
+	@JsonProperty("statusInfo")
 	private StatusInfo statusInfo = null;
 }
