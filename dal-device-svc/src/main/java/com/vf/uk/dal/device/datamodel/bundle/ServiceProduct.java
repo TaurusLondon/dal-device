@@ -9,14 +9,20 @@ package com.vf.uk.dal.device.datamodel.bundle;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Data;
+
 @Data
 public class ServiceProduct {
 
+	@JsonProperty("id")
 	private String id;
 
+	@JsonProperty("bundled")
 	private Boolean bundled;
 
+	@JsonProperty("lineRentals")
 	private List<LineRental> lineRentals;
 
 	public ServiceProduct() {

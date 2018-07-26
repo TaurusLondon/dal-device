@@ -7,21 +7,29 @@
 
 package com.vf.uk.dal.device.datamodel.bundle;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Data;
 
 @Data
 public class Path {
 
+	@JsonProperty("promotionID")
 	private String promotionID;
 
+	@JsonProperty("promotionProductLine")
 	private String promotionProductLine;
 
+	@JsonProperty("commitmentStart")
 	private String commitmentStart;
 
+	@JsonProperty("duration")
 	private String duration;
 
+	@JsonProperty("penalty")
 	private Float penalty;
 
+	@JsonProperty("proratePlan")
 	private String proratePlan;
 
 	public Path() {
