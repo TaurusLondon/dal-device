@@ -6,19 +6,25 @@ import lombok.Data;
 
 @Data
 public class Allowance {
+	@JsonProperty("type")
 	private String type;
-
+	
+	@JsonProperty("value")
 	private String value;
-
+	
+	@JsonProperty("uom")
 	private String uom;
 
 	@JsonProperty("displayUOM")
 	private String displayUom;
 
+	@JsonProperty("tilUOM")
 	private String tilUOM;
 
+	@JsonProperty("productId")
 	private String productId;
 
+	@JsonProperty("conversionFactor")
 	private Long conversionFactor;
 
 }
