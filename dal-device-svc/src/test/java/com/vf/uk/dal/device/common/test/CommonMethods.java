@@ -53,6 +53,7 @@ import com.vf.uk.dal.device.entity.Accessory;
 import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.BundlePrice;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
+import com.vf.uk.dal.device.entity.Colour;
 import com.vf.uk.dal.device.entity.Device;
 import com.vf.uk.dal.device.entity.DeviceDetails;
 import com.vf.uk.dal.device.entity.DeviceList;
@@ -250,20 +251,6 @@ public class CommonMethods {
 
 	}
 
-	public static List<CommercialProduct> getListofdataPayGCoherence() {
-		List<CommercialProduct> ls = new ArrayList<>();
-
-		CommercialProduct commercialProduct = new CommercialProduct();
-		PriceDetail priceDetail = new PriceDetail();
-		priceDetail.setPriceGross(new Double(10));
-		priceDetail.setPriceNet(new Double(10));
-		priceDetail.setPriceVAT(new Double(10));
-		commercialProduct.setPriceDetail(priceDetail);
-		commercialProduct.setId("088417");
-		ls.add(commercialProduct);
-
-		return ls;
-	}
 
 	public static List<ProductModel> getProductModel() {
 		List<ProductModel> productModelList = new ArrayList<>();
@@ -595,72 +582,11 @@ public class CommonMethods {
 		return deviceLists;
 	}
 
-	public static List<DeviceList> getDeviceList(String productClass, String make, String model, String groupType,
-			String sortCriteria, int pageNumber, int pageSize) {
-		List<DeviceList> deviceLists = new ArrayList<>();
-		DeviceList deviceList = new DeviceList();
-		deviceList.setDescription("Description");
-		deviceList.setDeviceId("93353");
-		List<MediaLink> merchandisingMedia = new ArrayList<MediaLink>();
-		MediaLink mediaLink = new MediaLink();
-		mediaLink.setId("1022");
-		mediaLink.setType("JPEG");
-		mediaLink.setValue("283");
-		merchandisingMedia.add(mediaLink);
-		deviceList.setMedia(merchandisingMedia);
-		MerchandisingControl merchandisingControl = new MerchandisingControl();
-		merchandisingControl.setAvailableFrom("Available From");
-		merchandisingControl.setBackorderable(true);
-		merchandisingControl.setIsDisplayableAcq(true);
-		merchandisingControl.setIsDisplayableECare(false);
-		merchandisingControl.setIsDisplayableRet(true);
-		merchandisingControl.setIsDisplayableSavedBasket(true);
-		merchandisingControl.setIsSellableAcq(true);
-		merchandisingControl.setIsSellableECare(false);
-		merchandisingControl.setIsSellableRet(true);
-		merchandisingControl.setOrder(2);
-		merchandisingControl.setPreorderable(true);
-		deviceList.setMerchandisingControl(merchandisingControl);
+	
 
-		deviceList.setPriceInfo(getPriceForBundleAndHardware().get(0));
-		deviceList.setProductClass("ProductClass");
-		deviceList.setRating(4);
-		deviceLists.add(deviceList);
-		return deviceLists;
-	}
+	
 
-	public static List<DevicePreCalculatedData> getDevicePreCalculatedData() {
-		DevicePreCalculatedData deviceListing = new DevicePreCalculatedData();
-		List<DevicePreCalculatedData> deviceListingList = new ArrayList<DevicePreCalculatedData>();
-		deviceListing.setDeviceId("093353");
-		;
-		deviceListing.setLeadPlanId("110154");
-		deviceListing.setProductGroupId("productGroupId");
-		deviceListing.setProductGroupName("productGroupName");
-		deviceListing.setRating(Float.valueOf("2.0"));
-		List<Media> listmedia = new ArrayList<>();
-		Media media = new Media();
-		media.setId("imagesURLs.full.right");
-		media.setValue("www.vodafone.co.uk/cs/groups/public/documents/images/imageurls.full.right.png");
-		media.setType("URL");
-		listmedia.add(media);
-		deviceListing.setMedia(listmedia);
-		deviceListingList.add(deviceListing);
-		return deviceListingList;
-	}
-
-	/*public static List<StockInfo> getStockInfo() {
-		StockInfo info = new StockInfo();
-		info.setAvailableBy("Available");
-		info.setQuantity(2);
-		info.setSkuId("109272");
-		info.setSourceId("110154");
-		info.setStatus("Progress");
-		List<StockInfo> infoList = new ArrayList<>();
-		infoList.add(info);
-		return infoList;
-	}*/
-
+	
 	public static List<DeviceTile> getDeviceTile(String make, String model, String groupType) {
 
 		List<DeviceTile> deviceTileList = null;
@@ -746,133 +672,6 @@ public class CommonMethods {
 		deviceTile.setDeviceId(String.valueOf(93353));
 		deviceTileList.add(deviceTile);
 		return deviceTileList;
-	}
-
-	public static List<ProductGroup> getProductGroupByGroupTypeGroupName(String groupType, String groupName) {
-		List<ProductGroup> productgroupList = new ArrayList<ProductGroup>();
-		ProductGroup productGroup = null;
-		productGroup = new ProductGroup();
-		productGroup.setGroupPriority("1");
-		productGroup.setGroupType("DEVICE");
-		productGroup.setGroupName("Apple iPhone 6s");
-		List<com.vf.uk.dal.device.entity.Member> member = new ArrayList<com.vf.uk.dal.device.entity.Member>();
-		com.vf.uk.dal.device.entity.Member productGroupMember = new com.vf.uk.dal.device.entity.Member();
-		productGroupMember.setPriority("1");
-		productGroupMember.setId("83833");
-		member.add(productGroupMember);
-		productgroupList.add(productGroup);
-		return productgroupList;
-	}
-
-	public static List<DeviceTile> getDeviceTileById(String id) {
-		List<DeviceTile> deviceTileList = null;
-		deviceTileList = new ArrayList<DeviceTile>();
-
-		DeviceTile deviceTile = null;
-		deviceTile = new DeviceTile();
-
-		deviceTile.setGroupName("Apple iPhone 6s");
-		deviceTile.setGroupType("DEVICE");
-		deviceTile.setDeviceId(id);
-		List<DeviceSummary> deviceSummaryList = new ArrayList<DeviceSummary>();
-		DeviceSummary deviceSummary = new DeviceSummary();
-		deviceSummary.setColourHex("D10000000");
-		deviceSummary.setColourName("Grey");
-		deviceSummary.setDisplayDescription("5.5 inch");
-		deviceSummary.setDisplayName("display name");
-		deviceSummary.setDeviceId(String.valueOf(93427));
-		deviceSummary.setLeadPlanId("Lead plan Id");
-		deviceSummary.setLeadPlanDisplayName("Yearly Plan");
-		deviceSummary.setMemory("64GB");
-		List<MediaLink> merchandisingMedia = new ArrayList<MediaLink>();
-		MediaLink mediaLink = new MediaLink();
-		mediaLink.setId("1022");
-		mediaLink.setType("JPEG");
-		mediaLink.setValue("283");
-		deviceSummary.setMerchandisingMedia(merchandisingMedia);
-		Price Mothlyprice = new Price();
-		Mothlyprice.setGross("7367");
-		Mothlyprice.setNet("78565");
-		Mothlyprice.setVat("74567");
-		Price oneOffprice = new Price();
-		oneOffprice.setGross("674");
-		oneOffprice.setNet("2536");
-		oneOffprice.setVat("1385");
-		PriceForBundleAndHardware priceInfo = new PriceForBundleAndHardware();
-
-		BundlePrice bundlePrice = new BundlePrice();
-		bundlePrice.setBundleId("183099");
-		MerchandisingPromotion merchandisingPromotions = new MerchandisingPromotion();
-
-		bundlePrice.setMerchandisingPromotions(merchandisingPromotions);
-		Price monthlyDiscountPrice = new Price();
-		monthlyDiscountPrice.setGross("10.11");
-		monthlyDiscountPrice.setNet("11.23");
-		monthlyDiscountPrice.setVat("14.56");
-
-		Price oneOffDiscountPrice = new Price();
-		monthlyDiscountPrice.setGross("9.11");
-		monthlyDiscountPrice.setNet("91.23");
-		monthlyDiscountPrice.setVat("10.56");
-
-		Price monthlyPrice = new Price();
-		monthlyDiscountPrice.setGross("13.64");
-		monthlyDiscountPrice.setNet("12.5");
-		monthlyDiscountPrice.setVat("8.56");
-
-		Price oneOffPrice = new Price();
-		monthlyDiscountPrice.setGross("5.11");
-		monthlyDiscountPrice.setNet("9.23");
-		monthlyDiscountPrice.setVat("22.56");
-		bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
-		priceInfo.setBundlePrice(bundlePrice);
-		HardwarePrice hardwarePrice = new HardwarePrice();
-		hardwarePrice.setHardwareId("Hardware Id");
-		hardwarePrice.setMerchandisingPromotions(merchandisingPromotions);
-		hardwarePrice.setOneOffDiscountPrice(oneOffDiscountPrice);
-		hardwarePrice.setOneOffPrice(oneOffPrice);
-
-		priceInfo.setHardwarePrice(hardwarePrice);
-		priceInfo.setMonthlyDiscountPrice(monthlyDiscountPrice);
-		priceInfo.setMonthlyPrice(monthlyPrice);
-		priceInfo.setOneOffDiscountPrice(monthlyDiscountPrice);
-		priceInfo.setOneOffPrice(oneOffPrice);
-
-		List<StepPricingInfo> stepPricesList = new ArrayList<StepPricingInfo>();
-		StepPricingInfo stePrices = new StepPricingInfo();
-
-		List<UUID> discountSkuIdsList = new ArrayList<UUID>();
-		UUID uuid = new UUID((long) 74, (long) 53);
-		UUID uuid1 = new UUID((long) 43, (long) 21);
-		discountSkuIdsList.add(uuid);
-		discountSkuIdsList.add(uuid1);
-		// stePrices.setDiscountsApplicable(discountSkuIdsList);
-		com.vf.uk.dal.device.entity.Duration duration = new com.vf.uk.dal.device.entity.Duration();
-		duration.setUom("UOM");
-		duration.setValue("124");
-		stePrices.setDuration(duration);
-		stePrices.setMonthlyPrice(monthlyPrice);
-		stePrices.setOneOffPrice(oneOffPrice);
-		stePrices.setSequence("Sequence");
-		priceInfo.setStepPrices(stepPricesList);
-		deviceSummary.setPriceInfo(priceInfo);
-		deviceSummary.setPriority("Medium");
-		deviceSummaryList.add(deviceSummary);
-		deviceTile.setDeviceSummary(deviceSummaryList);
-		deviceTileList.add(deviceTile);
-		return deviceTileList;
-	}
-
-	public static List<CommercialProduct> getCommercialProductWithNullLeadPlanID() {
-		List<CommercialProduct> list = new ArrayList<>();
-		CommercialProduct commercialProduct = getCommercialProduct();
-		commercialProduct.setLeadPlanId(null);
-		list.add(commercialProduct);
-		list.add(getCommercialProduct_One());
-		list.add(getCommercialProduct_Two());
-		list.add(getCommercialProduct_Three());
-		list.add(getCommercialProduct_Five());
-		return list;
 	}
 
 	public static CommercialProduct getCommercialProduct() {
@@ -1223,364 +1022,6 @@ public class CommonMethods {
 		return bundle;
 	}
 
-	public static CommercialProduct getCommercialProduct_One() {
-		CommercialProduct commercialProduct = new CommercialProduct();
-
-		commercialProduct.setProductClass("pClass");
-		commercialProduct.setId("93353");
-		commercialProduct.setPreDesc("");
-		commercialProduct.setDisplayName("asbd");
-		PriceDetail priceDetail = new PriceDetail();
-		priceDetail.setInvoiceChargeable(true);
-		priceDetail.setPriceGross((double) 64);
-		priceDetail.setPriceNet((double) 54);
-		priceDetail.setPriceVAT((double) 24);
-		commercialProduct.setPriceDetail(priceDetail);
-		commercialProduct.setOrder((long) 64);
-		PromoteAs promoteAs = new PromoteAs();
-		List<String> promotionName = new ArrayList<String>();
-		promotionName.add("qwerty");
-		promotionName.add("asdfg");
-		promoteAs.setPromotionName(promotionName);
-		commercialProduct.setPromoteAs(promoteAs);
-
-		ProductControl productControl = new ProductControl();
-		productControl.setDisplayableinLife(true);
-		productControl.setSellableinLife(true);
-		productControl.setDisplayableAcq(true);
-		productControl.setSellableRet(true);
-		productControl.setDisplayableRet(true);
-		productControl.setSellableAcq(true);
-		productControl.setDisplayableSavedBasket(true);
-		productControl.setOrder((long) 754);
-		productControl.setPreOrderable(true);
-		timeStamp = new Timestamp(Date.valueOf("2003-09-05").getTime());
-		productControl.setAvailableFrom(timeStamp);
-		productControl.setBackOrderable(true);
-
-		commercialProduct.setProductControl(productControl);
-		Equipment equipment = new Equipment();
-		equipment.setMake("SetMake");
-		equipment.setModel("SetModel");
-		commercialProduct.setEquipment(equipment);
-		ProductAvailability productAvailability = new ProductAvailability();
-		productAvailability.setEnd(null);
-		productAvailability.setSalesExpired(false);
-		productAvailability.setStart(null);
-		commercialProduct.setProductAvailability(productAvailability);
-		List<com.vf.uk.dal.device.datamodel.product.Group> specificationGroupsList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Group>();
-		com.vf.uk.dal.device.datamodel.product.Group gr = new com.vf.uk.dal.device.datamodel.product.Group();
-		com.vf.uk.dal.device.datamodel.product.Group group = new com.vf.uk.dal.device.datamodel.product.Group();
-		group.setComparable(true);
-		group.setGroupName("Capacity");
-		group.setPriority((long) 1);
-
-		gr.setComparable(true);
-		gr.setGroupName("Colour");
-		gr.setPriority((long) 1);
-		List<com.vf.uk.dal.device.datamodel.product.Specification> specificationList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Specification>();
-		com.vf.uk.dal.device.datamodel.product.Specification specification = new com.vf.uk.dal.device.datamodel.product.Specification();
-		com.vf.uk.dal.device.datamodel.product.Specification specification1 = new com.vf.uk.dal.device.datamodel.product.Specification();
-		com.vf.uk.dal.device.datamodel.product.Specification specification2 = new com.vf.uk.dal.device.datamodel.product.Specification();
-		specification.setComparable(true);
-		specification.setIsKey(true);
-		specification.setName("Colour");
-		specification.setPriority((long) 1);
-		specification.setValue("Red");
-		specification.setValueType("");
-		specification.setValueUOM("");
-
-		specification1.setComparable(true);
-		specification1.setIsKey(true);
-		specification1.setName("Capacity");
-		specification1.setPriority((long) 1);
-		specification1.setValue("60");
-		specification1.setValueType("");
-		specification1.setValueUOM("GB");
-
-		specification2.setComparable(true);
-		specification2.setIsKey(true);
-		specification2.setName("HexValue");
-		specification2.setPriority((long) 1);
-		specification2.setValue("#E5000");
-		specification2.setValueType("");
-		specification2.setValueUOM("");
-
-		specificationList.add(specification1);
-		specificationList.add(specification2);
-		specificationList.add(specification);
-		gr.setSpecifications(specificationList);
-		group.setSpecifications(specificationList);
-		specificationGroupsList.add(gr);
-		specificationGroupsList.add(group);
-		commercialProduct.setSpecificationGroups(specificationGroupsList);
-
-		List<MediaURL> mediaUrlList = new ArrayList<MediaURL>();
-		MediaURL mediaUrl = new MediaURL();
-		mediaUrl.setMediaName("MEdiaName");
-		mediaUrl.setMediaURL("URL");
-		MediaURL mediaUrl1 = new MediaURL();
-		mediaUrl.setMediaName("MEdiaName1");
-		mediaUrl.setMediaURL("URL2");
-		mediaUrlList.add(mediaUrl);
-		mediaUrlList.add(mediaUrl1);
-		commercialProduct.setListOfmediaURLs(mediaUrlList);
-
-		List<com.vf.uk.dal.device.datamodel.product.ImageURL> listOfimageURLs = new ArrayList<com.vf.uk.dal.device.datamodel.product.ImageURL>();
-		com.vf.uk.dal.device.datamodel.product.ImageURL imageURL = new com.vf.uk.dal.device.datamodel.product.ImageURL();
-		imageURL.setImageName("images.left");
-		imageURL.setImageURL("URL");
-		listOfimageURLs.add(imageURL);
-		commercialProduct.setListOfimageURLs(listOfimageURLs);
-
-		Duration duration = new Duration();
-		duration.setStarts("Januray");
-		duration.setUom("MB");
-		duration.setValue("30");
-		commercialProduct.setDuration(duration);
-		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
-		discount.setType("Percentage");
-		discount.setAmount(10.20);
-		commercialProduct.setDiscount(discount);
-		commercialProduct.setDuration(duration);
-		return commercialProduct;
-	}
-
-	public static CommercialBundle getCommercialBundle_One() {
-		CommercialBundle bundle = new CommercialBundle();
-		bundle.setId("109154");
-		bundle.setName("24mth BandO 500min 500MB Standard");
-		bundle.setDesc("CTR12 Standard bundle comes with 500 mins, unlimited texts and 500MB of UK data");
-		bundle.setPaymentType("postpaid");
-		bundle.setDisplayName("Red Bundle");
-		Commitment commitment = new Commitment();
-		commitment.setPeriod("24 Months");
-		bundle.setCommitment(commitment);
-		Allowance allowances = new Allowance();
-		Allowance roamingAllowances = new Allowance();
-		List<Allowance> listOfAllowances = new ArrayList<Allowance>();
-		allowances.setType("DATA");
-		allowances.setUom("MB");
-		allowances.setValue("500.00");
-		listOfAllowances.add(allowances);
-
-		List<ServiceProduct> listOfServiceProducts = new ArrayList<ServiceProduct>();
-		ServiceProduct serviceProducts = new ServiceProduct();
-		serviceProducts.setBundled(true);
-		serviceProducts.setId("109154");
-		listOfServiceProducts.add(serviceProducts);
-		LineRental lineRentals = new LineRental();
-		lineRentals.setLineRentalAmount((long) 200);
-		lineRentals.setLineRentalProductId("122");
-		List<LineRental> listOfLineRentals = new ArrayList<LineRental>();
-		listOfLineRentals.add(lineRentals);
-		serviceProducts.setLineRentals(listOfLineRentals);
-		bundle.setServiceProducts(listOfServiceProducts);
-		roamingAllowances.setType("UK Text");
-		roamingAllowances.setUom("MONTHS");
-		roamingAllowances.setValue("2000.00");
-		listOfAllowances.add(roamingAllowances);
-		bundle.setAllowances(listOfAllowances);
-
-		ImageURL imageURL = new ImageURL();
-		imageURL.setImageName("Left_Thumb");
-		imageURL.setImageURL("http://Url");
-		List<ImageURL> listOfImageUrl = new ArrayList<ImageURL>();
-		listOfImageUrl.add(imageURL);
-		bundle.setListOfimageURLs(listOfImageUrl);
-
-		MediaURL mediaURL = new MediaURL();
-		mediaURL.setMediaName("Right_Front");
-		mediaURL.setMediaURL("http://media");
-		List<MediaURL> listOfMediaUrl = new ArrayList<MediaURL>();
-		listOfMediaUrl.add(mediaURL);
-		// bundle.setListOfmediaURLs(listOfMediaUrl);
-
-		bundle.setRecurringCharge(21.3f);
-
-		List<DevicePrice> listOfDevicePrice = new ArrayList<DevicePrice>();
-		DevicePrice devicePrice = new DevicePrice();
-		devicePrice.setDeviceId("93353");
-		devicePrice.setPriceGross((float) 14.09);
-		devicePrice.setPriceNet((float) 13.4);
-		devicePrice.setPriceVAT((float) 12);
-		devicePrice.setProductLine("Product Line");
-		listOfDevicePrice.add(devicePrice);
-		bundle.setDeviceSpecificPricing(listOfDevicePrice);
-		List<String> productLines = new ArrayList<String>();
-		productLines.add("Mobile Phone Service Sellable");
-		productLines.add("asdfg");
-		productLines.add("oiut");
-		bundle.setProductLines(productLines);
-
-		Availability availability = new Availability();
-		availability.setEnd(null);
-		availability.setSalesExpired(false);
-		availability.setStart(null);
-		bundle.setAvailability(availability);
-		BundleControl bundleControl = new BundleControl();
-		bundleControl.setDisplayableAcq(true);
-		bundleControl.setSellableAcq(true);
-		bundle.setBundleControl(bundleControl);
-		return bundle;
-	}
-
-	public static CommercialBundle getCommercialBundle_Two() {
-		CommercialBundle bundle = new CommercialBundle();
-		bundle.setId("109154");
-		bundle.setName("24mth BandO 500min 500MB Standard");
-		bundle.setDesc("CTR12 Standard bundle comes with 500 mins, unlimited texts and 500MB of UK data");
-		bundle.setPaymentType("postpaid");
-		bundle.setDisplayName("Red Bundle");
-		Commitment commitment = new Commitment();
-		commitment.setPeriod("24 Months");
-		bundle.setCommitment(commitment);
-		Allowance allowances = new Allowance();
-		Allowance roamingAllowances = new Allowance();
-		List<Allowance> listOfAllowances = new ArrayList<Allowance>();
-		allowances.setType("DATA");
-		allowances.setUom("MB");
-		allowances.setValue("500.00");
-		listOfAllowances.add(allowances);
-
-		List<ServiceProduct> listOfServiceProducts = new ArrayList<ServiceProduct>();
-		ServiceProduct serviceProducts = new ServiceProduct();
-		serviceProducts.setBundled(true);
-		serviceProducts.setId("109154");
-		listOfServiceProducts.add(serviceProducts);
-		LineRental lineRentals = new LineRental();
-		lineRentals.setLineRentalAmount((long) 200);
-		lineRentals.setLineRentalProductId("122");
-		List<LineRental> listOfLineRentals = new ArrayList<LineRental>();
-		listOfLineRentals.add(lineRentals);
-		serviceProducts.setLineRentals(listOfLineRentals);
-		bundle.setServiceProducts(listOfServiceProducts);
-		roamingAllowances.setType("UK Text");
-		roamingAllowances.setUom("MONTHS");
-		roamingAllowances.setValue("2000.00");
-		listOfAllowances.add(roamingAllowances);
-		bundle.setAllowances(listOfAllowances);
-
-		ImageURL imageURL = new ImageURL();
-		imageURL.setImageName("Left_Thumb");
-		imageURL.setImageURL("http://Url");
-		List<ImageURL> listOfImageUrl = new ArrayList<ImageURL>();
-		listOfImageUrl.add(imageURL);
-		bundle.setListOfimageURLs(listOfImageUrl);
-
-		MediaURL mediaURL = new MediaURL();
-		mediaURL.setMediaName("Right_Front");
-		mediaURL.setMediaURL("http://media");
-		List<MediaURL> listOfMediaUrl = new ArrayList<MediaURL>();
-		listOfMediaUrl.add(mediaURL);
-
-		bundle.setRecurringCharge(21.3f);
-
-		List<DevicePrice> listOfDevicePrice = new ArrayList<DevicePrice>();
-		DevicePrice devicePrice = new DevicePrice();
-		devicePrice.setDeviceId("93353");
-		devicePrice.setPriceGross((float) 14.09);
-		devicePrice.setPriceNet((float) 13.4);
-		devicePrice.setPriceVAT((float) 12);
-		devicePrice.setProductLine("Product Line");
-		listOfDevicePrice.add(devicePrice);
-		bundle.setDeviceSpecificPricing(listOfDevicePrice);
-		List<String> productLines = new ArrayList<String>();
-		productLines.add("Mobile Phone Service Sellable");
-		productLines.add("asdfg");
-		productLines.add("oiut");
-		bundle.setProductLines(productLines);
-
-		Availability availability = new Availability();
-		availability.setEnd((Date.valueOf("2019-03-30")));
-		availability.setSalesExpired(false);
-		availability.setStart(null);
-		bundle.setAvailability(availability);
-		BundleControl bundleControl = new BundleControl();
-		bundleControl.setDisplayableAcq(true);
-		bundleControl.setSellableAcq(true);
-		bundle.setBundleControl(bundleControl);
-		return bundle;
-	}
-
-	public static CommercialBundle getCommercialBundle_Three() {
-		CommercialBundle bundle = new CommercialBundle();
-		bundle.setId("109154");
-		bundle.setName("24mth BandO 500min 500MB Standard");
-		bundle.setDesc("CTR12 Standard bundle comes with 500 mins, unlimited texts and 500MB of UK data");
-		bundle.setPaymentType("postpaid");
-		bundle.setDisplayName("Red Bundle");
-		Commitment commitment = new Commitment();
-		commitment.setPeriod("24 Months");
-		bundle.setCommitment(commitment);
-		Allowance allowances = new Allowance();
-		Allowance roamingAllowances = new Allowance();
-		List<Allowance> listOfAllowances = new ArrayList<Allowance>();
-		allowances.setType("DATA");
-		allowances.setUom("MB");
-		allowances.setValue("500.00");
-		listOfAllowances.add(allowances);
-
-		List<ServiceProduct> listOfServiceProducts = new ArrayList<ServiceProduct>();
-		ServiceProduct serviceProducts = new ServiceProduct();
-		serviceProducts.setBundled(true);
-		serviceProducts.setId("109154");
-		listOfServiceProducts.add(serviceProducts);
-		LineRental lineRentals = new LineRental();
-		lineRentals.setLineRentalAmount((long) 200);
-		lineRentals.setLineRentalProductId("122");
-		List<LineRental> listOfLineRentals = new ArrayList<LineRental>();
-		listOfLineRentals.add(lineRentals);
-		serviceProducts.setLineRentals(listOfLineRentals);
-		bundle.setServiceProducts(listOfServiceProducts);
-		roamingAllowances.setType("UK Text");
-		roamingAllowances.setUom("MONTHS");
-		roamingAllowances.setValue("2000.00");
-		listOfAllowances.add(roamingAllowances);
-		bundle.setAllowances(listOfAllowances);
-
-		ImageURL imageURL = new ImageURL();
-		imageURL.setImageName("Left_Thumb");
-		imageURL.setImageURL("http://Url");
-		List<ImageURL> listOfImageUrl = new ArrayList<ImageURL>();
-		listOfImageUrl.add(imageURL);
-		bundle.setListOfimageURLs(listOfImageUrl);
-
-		MediaURL mediaURL = new MediaURL();
-		mediaURL.setMediaName("Right_Front");
-		mediaURL.setMediaURL("http://media");
-		List<MediaURL> listOfMediaUrl = new ArrayList<MediaURL>();
-		listOfMediaUrl.add(mediaURL);
-		// bundle.setListOfmediaURLs(listOfMediaUrl);
-
-		bundle.setRecurringCharge(21.3f);
-
-		List<DevicePrice> listOfDevicePrice = new ArrayList<DevicePrice>();
-		DevicePrice devicePrice = new DevicePrice();
-		devicePrice.setDeviceId("93353");
-		devicePrice.setPriceGross((float) 14.09);
-		devicePrice.setPriceNet((float) 13.4);
-		devicePrice.setPriceVAT((float) 12);
-		devicePrice.setProductLine("Product Line");
-		listOfDevicePrice.add(devicePrice);
-		bundle.setDeviceSpecificPricing(listOfDevicePrice);
-		List<String> productLines = new ArrayList<String>();
-		productLines.add("Mobile Phone Service Sellable");
-		productLines.add("asdfg");
-		productLines.add("oiut");
-		bundle.setProductLines(productLines);
-
-		Availability availability = new Availability();
-		availability.setEnd(null);
-		availability.setSalesExpired(false);
-		availability.setStart((Date.valueOf("2017-03-05")));
-		bundle.setAvailability(availability);
-		BundleControl bundleControl = new BundleControl();
-		bundleControl.setDisplayableAcq(true);
-		bundleControl.setSellableAcq(true);
-		bundle.setBundleControl(bundleControl);
-		return bundle;
-	}
 
 	public static List<AccessoryTileGroup> getAccessoriesTileGroup(String deviceId) {
 		List<AccessoryTileGroup> tileGroup = new ArrayList<>();
@@ -1699,82 +1140,6 @@ public class CommonMethods {
 		return productGroupModelList;
 	}
 
-	public static List<OfferPacks> getListOfOfferPacks() {
-		OfferPacks offerPacks = new OfferPacks();
-		List<OfferPacks> listOfOfferPacks = new ArrayList<OfferPacks>();
-		offerPacks.setBundleId("109154");
-		List<MediaLink> listOfMediaLink = new ArrayList<MediaLink>();
-		MediaLink mediaLink = new MediaLink();
-		mediaLink.setId("SIMO.ENTERTAINMENT.2017");
-		mediaLink.setType("TEXT");
-		mediaLink.setValue("URL");
-		listOfMediaLink.add(mediaLink);
-		offerPacks.setMediaLinkList(listOfMediaLink);
-		listOfOfferPacks.add(offerPacks);
-		return listOfOfferPacks;
-
-	}
-
-	public static List<Device> getDevice(String productClass, String make, String model, String groupType,
-			String sortCriteria, int pageNumber, int pageSize) {
-		List<Device> deviceLists = new ArrayList<>();
-
-		List<MediaLink> merchandisingMedia = new ArrayList<MediaLink>();
-		MediaLink mediaLink = new MediaLink();
-		mediaLink.setId("1022");
-		mediaLink.setType("JPEG");
-		mediaLink.setValue("283");
-		merchandisingMedia.add(mediaLink);
-
-		MerchandisingControl merchandisingControl = new MerchandisingControl();
-		merchandisingControl.setAvailableFrom("Available From");
-		merchandisingControl.setBackorderable(true);
-		merchandisingControl.setIsDisplayableAcq(true);
-		merchandisingControl.setIsDisplayableECare(false);
-		merchandisingControl.setIsDisplayableRet(true);
-		merchandisingControl.setIsDisplayableSavedBasket(true);
-		merchandisingControl.setIsSellableAcq(true);
-		merchandisingControl.setIsSellableECare(false);
-		merchandisingControl.setIsSellableRet(true);
-		merchandisingControl.setOrder(2);
-		merchandisingControl.setPreorderable(true);
-
-		Device deviceList = new Device();
-		deviceList.setDeviceId("93353");
-		deviceList.setMake("Apple");
-		deviceList.setModel("iphone7");
-		deviceList.setGroupType("DEVICE_PAYM");
-		deviceList.setRating("4");
-		deviceList.setDescription("Description");
-		deviceList.setProductClass("HANDSET");
-		deviceList.setMerchandisingControl(merchandisingControl);
-		deviceList.setMedia(merchandisingMedia);
-		deviceList.setPriceInfo(getPriceForBundleAndHardware().get(0));
-
-		deviceLists.add(deviceList);
-		return deviceLists;
-	}
-
-	public static Facet getFacet() {
-		List<Make> makes = new ArrayList<>();
-		Make make = new Make();
-		make.setName("Apple");
-		make.setCount(1);
-		makes.add(make);
-		Facet facet = new Facet();
-		facet.setEquipmentMake("equipmentMake");
-		facet.setMakeList(makes);
-
-		return facet;
-	}
-
-	public static FacetedDevice getFacetedDevice(String productClass, String make, String model, String groupType,
-			String sortCriteria, int pageNumber, int pageSize, String journeyId) {
-		FacetedDevice facetedDevice = new FacetedDevice();
-		facetedDevice.setDevice(getDevice(productClass, make, model, groupType, sortCriteria, pageNumber, pageSize));
-		return facetedDevice;
-	}
-
 	public static FacetedDevice getFacetedDeviceList(String productClass, String make, String model, String groupType,
 			String sortCriteria, int pageNumber, int pageSize, String journeyId) {
 		FacetedDevice facetedDevice = new FacetedDevice();
@@ -1794,48 +1159,7 @@ public class CommonMethods {
 		return listOfProducts;
 	}
 
-	public static Insurances getInsurances(String deviceId) {
-		if (deviceId.equals("93353")) {
-			Insurances insurances = new Insurances();
-			List<Specification> specifications = new ArrayList<>();
-			Specification specification = new Specification();
-			specification.setComparable(false);
-			specification.setDescription("description");
-			specification.setFootNote("footNote");
-			specification.setIsKey(false);
-			specification.setName("name");
-			specification.setPriority(0);
-			specification.setValue("value");
-			specification.setValueType("valueType");
-			specification.setValueUOM("GB");
-			specifications.add(specification);
-
-			List<SpecificationGroup> specsGroup = new ArrayList<>();
-			SpecificationGroup specificationGroup = new SpecificationGroup();
-			specificationGroup.setComparable(false);
-			specificationGroup.setGroupName("groupName");
-			specificationGroup.setPriority(0);
-			specificationGroup.setSpecifications(specifications);
-			specsGroup.add(specificationGroup);
-			Price price = new Price();
-			price.setGross("10.11");
-			price.setNet("11.23");
-			price.setVat("14.56");
-			List<Insurance> insuranceList = new ArrayList<>();
-			Insurance insurance = new Insurance();
-			insurance.setId("93353");
-			insurance.setName("name");
-			insurance.setPrice(price);
-			insurance.setSpecsGroup(specsGroup);
-			insuranceList.add(insurance);
-			insurances.setInsuranceList(insuranceList);
-			insurances.setMinCost("5");
-			return insurances;
-		} else {
-			return null;
-		}
-	}
-
+	
 
 	public static BundleDetails getCompatibleBundleListJson() {
 		BundleDetails bundleDetails = new BundleDetails();
@@ -1967,86 +1291,6 @@ public class CommonMethods {
 		return bundleDetails;
 	}
 
-	public static List<Device> getDevice1(String productClass, String make, String model, String groupType,
-			String sortCriteria, int pageNumber, int pageSize) {
-		List<Device> deviceLists = new ArrayList<>();
-
-		List<MediaLink> merchandisingMedia = new ArrayList<MediaLink>();
-		MediaLink mediaLink = new MediaLink();
-		mediaLink.setId("1022");
-		mediaLink.setType("JPEG");
-		mediaLink.setValue("283");
-		merchandisingMedia.add(mediaLink);
-
-		MerchandisingControl merchandisingControl = new MerchandisingControl();
-		merchandisingControl.setAvailableFrom("Available From");
-		merchandisingControl.setBackorderable(true);
-		merchandisingControl.setIsDisplayableAcq(true);
-		merchandisingControl.setIsDisplayableECare(false);
-		merchandisingControl.setIsDisplayableRet(true);
-		merchandisingControl.setIsDisplayableSavedBasket(true);
-		merchandisingControl.setIsSellableAcq(true);
-		merchandisingControl.setIsSellableECare(false);
-		merchandisingControl.setIsSellableRet(true);
-		merchandisingControl.setOrder(2);
-		merchandisingControl.setPreorderable(true);
-
-		Device deviceList = new Device();
-		deviceList.setDeviceId("088274");
-		deviceList.setMake("Apple");
-		deviceList.setModel("iphone7");
-		deviceList.setGroupType("DEVICE_PAYM");
-		deviceList.setRating("4");
-		deviceList.setDescription("Description");
-		deviceList.setProductClass("HANDSET");
-		deviceList.setMerchandisingControl(merchandisingControl);
-		deviceList.setMedia(merchandisingMedia);
-		deviceList.setPriceInfo(getPriceForBundleAndHardware().get(0));
-
-		List<MediaLink> merchandisingMedia1 = new ArrayList<MediaLink>();
-		MediaLink mediaLink1 = new MediaLink();
-		mediaLink1.setId("1022");
-		mediaLink1.setType("JPEG");
-		mediaLink1.setValue("283");
-		merchandisingMedia1.add(mediaLink1);
-
-		MerchandisingControl merchandisingControl1 = new MerchandisingControl();
-		merchandisingControl1.setAvailableFrom("Available From");
-		merchandisingControl1.setBackorderable(true);
-		merchandisingControl1.setIsDisplayableAcq(true);
-		merchandisingControl1.setIsDisplayableECare(false);
-		merchandisingControl1.setIsDisplayableRet(true);
-		merchandisingControl1.setIsDisplayableSavedBasket(true);
-		merchandisingControl1.setIsSellableAcq(true);
-		merchandisingControl1.setIsSellableECare(false);
-		merchandisingControl1.setIsSellableRet(true);
-		merchandisingControl1.setOrder(2);
-		merchandisingControl1.setPreorderable(true);
-
-		Device deviceList1 = new Device();
-		deviceList1.setDeviceId("091232");
-		deviceList1.setMake("Apple");
-		deviceList1.setModel("iphone7");
-		deviceList1.setGroupType("DEVICE_PAYM");
-		deviceList1.setRating("4");
-		deviceList1.setDescription("Description");
-		deviceList1.setProductClass("HANDSET");
-		deviceList1.setMerchandisingControl(merchandisingControl);
-		deviceList1.setMedia(merchandisingMedia);
-		deviceList1.setPriceInfo(getPriceForBundleAndHardware().get(0));
-		deviceLists.add(deviceList);
-		deviceLists.add(deviceList1);
-		return deviceLists;
-	}
-
-	public static FacetedDevice getFacetedDeviceForSorting(String productClass, String make, String model,
-			String groupType, String sortCriteria, int pageNumber, int pageSize, String journeyId) {
-		FacetedDevice facetedDevice = new FacetedDevice();
-		facetedDevice.setDevice(getDevice1(productClass, make, model, groupType, sortCriteria, pageNumber, pageSize));
-		// facetedDevice.setFacet(getFacet());
-
-		return facetedDevice;
-	}
 
 	public static List<BundleHeader> getBundleHeaderList(String bundleClass) {
 		if (bundleClass.equals("SIMO")) {
@@ -2156,58 +1400,9 @@ public class CommonMethods {
 		}
 	}
 
-	// Utkarsh - getting queryParams Map
-	public static Map<String, String> getQueryParamsMap(String... arguments) {
-		Map<String, String> queryparams = new HashMap<String, String>();
-		if (arguments == null)
-			return queryparams;
-		if (arguments.length == 3) {
-			queryparams.put("make", arguments[0]);
-			queryparams.put("model", arguments[1]);
-			queryparams.put("groupType", arguments[2]);
-		} else if (arguments.length == 10) {
-			queryparams.put("make", arguments[0]);
-			queryparams.put("model", arguments[1]);
-			queryparams.put("groupType", arguments[2]);
-			queryparams.put("productClass", arguments[3]);
-			queryparams.put("capacity", arguments[4]);
-			queryparams.put("colour", arguments[5]);
-			queryparams.put("operatingSystem", arguments[6]);
-			queryparams.put("mustHaveFeatures", arguments[7]);
-			// queryparams.put("journeyId", arguments[8]);
-			queryparams.put("journeyType", arguments[8]);
-			queryparams.put("offerCode", arguments[9]);
-		} else if (arguments.length == 1) {
-			queryparams.put("deviceId", arguments[0]);
-		}
-		return queryparams;
-	}
+	
 
-	public static Map<String, String> getInvalidQueryParamsMap(String... arguments) {
-		Map<String, String> queryparams = new HashMap<String, String>();
-		if (arguments == null)
-			return queryparams;
-		if (arguments.length == 3) {
-			queryparams.put("productClass", arguments[0]);
-			queryparams.put("capacity", arguments[1]);
-			queryparams.put("colour", arguments[2]);
-		} else if (arguments.length == 10) {
-			queryparams.put("deviceId", arguments[0]);
-			queryparams.put("model", arguments[1]);
-			queryparams.put("groupType", arguments[2]);
-			queryparams.put("productClass", arguments[3]);
-			queryparams.put("capacity", arguments[4]);
-			queryparams.put("colour", arguments[5]);
-			queryparams.put("operatingSystem", arguments[6]);
-			queryparams.put("mustHaveFeatures", arguments[7]);
-			// queryparams.put("journeyId", arguments[8]);
-			queryparams.put("journeyType", arguments[8]);
-			queryparams.put("offerCode", arguments[9]);
-		} else if (arguments.length == 1) {
-			queryparams.put("operatingSystem", arguments[0]);
-		}
-		return queryparams;
-	}
+	
 
 	public static com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion getMemPro() {
 		com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mem = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion();
@@ -2333,133 +1528,6 @@ public class CommonMethods {
 		return queryparams;
 	}
 
-	public static CommercialProduct getCommercialProduct_Two() {
-		CommercialProduct commercialProduct = new CommercialProduct();
-
-		// commercialProduct.setProductClass("pClass");
-		commercialProduct.setLeadPlanId("110154");
-		commercialProduct.setId("093353");
-		commercialProduct.setPreDesc("");
-		commercialProduct.setDisplayName("asbd");
-		commercialProduct.setIsDeviceProduct(true);
-		;
-		commercialProduct.setProductClass(Constants.STRING_HANDSET);
-		PriceDetail priceDetail = new PriceDetail();
-		priceDetail.setInvoiceChargeable(true);
-		priceDetail.setPriceGross((double) 64);
-		priceDetail.setPriceNet((double) 54);
-		priceDetail.setPriceVAT((double) 24);
-		commercialProduct.setPriceDetail(priceDetail);
-		commercialProduct.setOrder((long) 12345);
-
-		PromoteAs promoteAs = new PromoteAs();
-		List<String> promotionName = new ArrayList<String>();
-		promotionName.add("qwerty");
-		promotionName.add("asdfg");
-		promoteAs.setPromotionName(promotionName);
-		commercialProduct.setPromoteAs(promoteAs);
-
-		ProductControl productControl = new ProductControl();
-		productControl.setDisplayableinLife(true);
-		productControl.setSellableinLife(true);
-		productControl.setDisplayableAcq(true);
-		productControl.setSellableRet(true);
-		productControl.setDisplayableRet(true);
-		productControl.setSellableAcq(true);
-		productControl.setDisplayableSavedBasket(true);
-		productControl.setOrder((long) 754);
-		productControl.setPreOrderable(true);
-		timeStamp = new Timestamp(Date.valueOf("2003-09-05").getTime());
-		productControl.setAvailableFrom(timeStamp);
-		productControl.setBackOrderable(true);
-
-		commercialProduct.setProductControl(productControl);
-		Equipment equipment = new Equipment();
-		equipment.setMake("SetMake");
-		equipment.setModel("SetModel");
-		commercialProduct.setEquipment(equipment);
-		ProductAvailability productAvailability = new ProductAvailability();
-		productAvailability.setEnd(null);
-		productAvailability.setSalesExpired(false);
-		productAvailability.setStart(null);
-		commercialProduct.setProductAvailability(productAvailability);
-		List<com.vf.uk.dal.device.datamodel.product.Group> specificationGroupsList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Group>();
-		com.vf.uk.dal.device.datamodel.product.Group gr = new com.vf.uk.dal.device.datamodel.product.Group();
-		com.vf.uk.dal.device.datamodel.product.Group group = new com.vf.uk.dal.device.datamodel.product.Group();
-		group.setComparable(true);
-		group.setGroupName("Capacity");
-		group.setPriority((long) 1);
-
-		gr.setComparable(true);
-		gr.setGroupName("Colour");
-		gr.setPriority((long) 1);
-		List<com.vf.uk.dal.device.datamodel.product.Specification> specificationList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Specification>();
-		com.vf.uk.dal.device.datamodel.product.Specification specification = new com.vf.uk.dal.device.datamodel.product.Specification();
-		com.vf.uk.dal.device.datamodel.product.Specification specification1 = new com.vf.uk.dal.device.datamodel.product.Specification();
-		com.vf.uk.dal.device.datamodel.product.Specification specification2 = new com.vf.uk.dal.device.datamodel.product.Specification();
-		specification.setComparable(true);
-		specification.setIsKey(true);
-		specification.setName("Colour");
-		specification.setPriority((long) 1);
-		specification.setValue("Red");
-		specification.setValueType("");
-		specification.setValueUOM("");
-		specification1.setComparable(true);
-		specification1.setIsKey(true);
-		specification1.setName("Capacity");
-		specification1.setPriority((long) 1);
-		specification1.setValue("60");
-		specification1.setValueType("");
-		specification1.setValueUOM("GB");
-
-		specification2.setComparable(true);
-		specification2.setIsKey(true);
-		specification2.setName("HexValue");
-		specification2.setPriority((long) 1);
-		specification2.setValue("#E5000");
-		specification2.setValueType("");
-		specification2.setValueUOM("");
-
-		specificationList.add(specification1);
-		specificationList.add(specification2);
-		specificationList.add(specification);
-		gr.setSpecifications(specificationList);
-
-		specificationGroupsList.add(gr);
-		specificationGroupsList.add(group);
-		commercialProduct.setSpecificationGroups(specificationGroupsList);
-
-		List<MediaURL> mediaUrlList = new ArrayList<MediaURL>();
-		MediaURL mediaUrl = new MediaURL();
-		mediaUrl.setMediaName("MEdiaName");
-		mediaUrl.setMediaURL("URL");
-		MediaURL mediaUrl1 = new MediaURL();
-		mediaUrl.setMediaName("MEdiaName1");
-		mediaUrl.setMediaURL("URL2");
-		mediaUrlList.add(mediaUrl);
-		mediaUrlList.add(mediaUrl1);
-		commercialProduct.setListOfmediaURLs(mediaUrlList);
-
-		List<com.vf.uk.dal.device.datamodel.product.ImageURL> listOfimageURLs = new ArrayList<com.vf.uk.dal.device.datamodel.product.ImageURL>();
-		com.vf.uk.dal.device.datamodel.product.ImageURL imageURL = new com.vf.uk.dal.device.datamodel.product.ImageURL();
-		imageURL.setImageName("images.left");
-		imageURL.setImageURL("URL");
-		listOfimageURLs.add(imageURL);
-		commercialProduct.setListOfimageURLs(listOfimageURLs);
-
-		Duration duration = new Duration();
-		duration.setStarts("Januray");
-		duration.setUom("MB");
-		duration.setValue("30");
-		commercialProduct.setDuration(duration);
-		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
-		discount.setType("Percentage");
-		discount.setAmount(10.20);
-		commercialProduct.setDiscount(discount);
-		commercialProduct.setDuration(duration);
-		commercialProduct.setProductClass("Handset");
-		return commercialProduct;
-	}
 
 	public static com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion getMerchPromotion() {
 		com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mem = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion();
@@ -2482,204 +1550,7 @@ public class CommonMethods {
 		return mem;
 	}
 
-	public static CommercialProduct getCommercialProduct_Three() {
-		CommercialProduct commercialProduct = new CommercialProduct();
-
-		// commercialProduct.setProductClass("pClass");
-		commercialProduct.setLeadPlanId(null);
-		commercialProduct.setId("093311");
-		commercialProduct.setPreDesc("");
-		commercialProduct.setDisplayName("asbd");
-		commercialProduct.setIsDeviceProduct(true);
-		;
-		commercialProduct.setProductClass(Constants.STRING_HANDSET);
-		PriceDetail priceDetail = new PriceDetail();
-		priceDetail.setInvoiceChargeable(true);
-		priceDetail.setPriceGross((double) 64);
-		priceDetail.setPriceNet((double) 54);
-		priceDetail.setPriceVAT((double) 24);
-		commercialProduct.setPriceDetail(priceDetail);
-		commercialProduct.setOrder((long) 12345);
-
-		PromoteAs promoteAs = new PromoteAs();
-		List<String> promotionName = new ArrayList<String>();
-		promotionName.add("qwerty");
-		promotionName.add("asdfg");
-		promoteAs.setPromotionName(promotionName);
-		commercialProduct.setPromoteAs(promoteAs);
-
-		ProductControl productControl = new ProductControl();
-		productControl.setDisplayableinLife(true);
-		productControl.setSellableinLife(true);
-		productControl.setDisplayableAcq(true);
-		productControl.setSellableRet(true);
-		productControl.setDisplayableRet(true);
-		productControl.setSellableAcq(true);
-		productControl.setDisplayableSavedBasket(true);
-		productControl.setOrder((long) 754);
-		productControl.setPreOrderable(true);
-		timeStamp = new Timestamp(Date.valueOf("2003-09-05").getTime());
-		productControl.setAvailableFrom(timeStamp);
-		productControl.setBackOrderable(true);
-
-		commercialProduct.setProductControl(productControl);
-		Equipment equipment = new Equipment();
-		equipment.setMake("SetMake");
-		equipment.setModel("SetModel");
-		commercialProduct.setEquipment(equipment);
-		ProductAvailability productAvailability = new ProductAvailability();
-		productAvailability.setEnd(null);
-		productAvailability.setSalesExpired(false);
-		productAvailability.setStart(null);
-		commercialProduct.setProductAvailability(productAvailability);
-		List<com.vf.uk.dal.device.datamodel.product.Group> specificationGroupsList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Group>();
-		com.vf.uk.dal.device.datamodel.product.Group gr = new com.vf.uk.dal.device.datamodel.product.Group();
-		com.vf.uk.dal.device.datamodel.product.Group group = new com.vf.uk.dal.device.datamodel.product.Group();
-		group.setComparable(true);
-		group.setGroupName("Capacity");
-		group.setPriority((long) 1);
-
-		gr.setComparable(true);
-		gr.setGroupName("Colour");
-		gr.setPriority((long) 1);
-		List<com.vf.uk.dal.device.datamodel.product.Specification> specificationList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Specification>();
-		com.vf.uk.dal.device.datamodel.product.Specification specification = new com.vf.uk.dal.device.datamodel.product.Specification();
-		com.vf.uk.dal.device.datamodel.product.Specification specification1 = new com.vf.uk.dal.device.datamodel.product.Specification();
-		com.vf.uk.dal.device.datamodel.product.Specification specification2 = new com.vf.uk.dal.device.datamodel.product.Specification();
-		specification.setComparable(true);
-		specification.setIsKey(true);
-		specification.setName("Colour");
-		specification.setPriority((long) 1);
-		specification.setValue("Red");
-		specification.setValueType("");
-		specification.setValueUOM("");
-		specification1.setComparable(true);
-		specification1.setIsKey(true);
-		specification1.setName("Capacity");
-		specification1.setPriority((long) 1);
-		specification1.setValue("60");
-		specification1.setValueType("");
-		specification1.setValueUOM("GB");
-
-		specification2.setComparable(true);
-		specification2.setIsKey(true);
-		specification2.setName("HexValue");
-		specification2.setPriority((long) 1);
-		specification2.setValue("#E5000");
-		specification2.setValueType("");
-		specification2.setValueUOM("");
-
-		specificationList.add(specification1);
-		specificationList.add(specification2);
-		specificationList.add(specification);
-		gr.setSpecifications(specificationList);
-
-		specificationGroupsList.add(gr);
-		specificationGroupsList.add(group);
-		commercialProduct.setSpecificationGroups(specificationGroupsList);
-
-		List<MediaURL> mediaUrlList = new ArrayList<MediaURL>();
-		MediaURL mediaUrl = new MediaURL();
-		mediaUrl.setMediaName("MEdiaName");
-		mediaUrl.setMediaURL("URL");
-		MediaURL mediaUrl1 = new MediaURL();
-		mediaUrl.setMediaName("MEdiaName1");
-		mediaUrl.setMediaURL("URL2");
-		mediaUrlList.add(mediaUrl);
-		mediaUrlList.add(mediaUrl1);
-		commercialProduct.setListOfmediaURLs(mediaUrlList);
-
-		List<com.vf.uk.dal.device.datamodel.product.ImageURL> listOfimageURLs = new ArrayList<com.vf.uk.dal.device.datamodel.product.ImageURL>();
-		com.vf.uk.dal.device.datamodel.product.ImageURL imageURL = new com.vf.uk.dal.device.datamodel.product.ImageURL();
-		imageURL.setImageName("images.left");
-		imageURL.setImageURL("URL");
-		listOfimageURLs.add(imageURL);
-		commercialProduct.setListOfimageURLs(listOfimageURLs);
-
-		Duration duration = new Duration();
-		duration.setStarts("Januray");
-		duration.setUom("MB");
-		duration.setValue("30");
-		commercialProduct.setDuration(duration);
-		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
-		discount.setType("Percentage");
-		discount.setAmount(10.20);
-		commercialProduct.setDiscount(discount);
-		commercialProduct.setDuration(duration);
-		commercialProduct.setProductClass("Handset");
-		return commercialProduct;
-	}
-
-	public static List<PriceForBundleAndHardware> getPriceForBundleAndHardware_One() {
-		List<PriceForBundleAndHardware> priceForBundleAndHardwareList = new ArrayList<PriceForBundleAndHardware>();
-
-		PriceForBundleAndHardware priceInfo = new PriceForBundleAndHardware();
-
-		BundlePrice bundlePrice = new BundlePrice();
-		bundlePrice.setBundleId("183099");
-		// List<MerchandisingPromotion> merchandisingPromotionsList = new
-		// ArrayList<MerchandisingPromotion>();
-		MerchandisingPromotion merchandisingPromotions = new MerchandisingPromotion();
-		// MerchandisingPromotion merchandisingPromotions1 = new
-		// MerchandisingPromotion();
-		merchandisingPromotions.setDiscountId("107531");
-		merchandisingPromotions.setLabel("20% off with any handset");
-		merchandisingPromotions.setTag("AllPhone.full.2017");
-
-		bundlePrice.setMerchandisingPromotions(merchandisingPromotions);
-		Price monthlyDiscountPrice = new Price();
-		monthlyDiscountPrice.setGross("10.11");
-		monthlyDiscountPrice.setNet("11.23");
-		monthlyDiscountPrice.setVat("14.56");
-
-		Price oneOffDiscountPrice = new Price();
-		oneOffDiscountPrice.setGross("9.11");
-		oneOffDiscountPrice.setNet("91.23");
-		oneOffDiscountPrice.setVat("10.56");
-
-		Price monthlyPrice = new Price();
-		monthlyPrice.setGross("13.64");
-		monthlyPrice.setNet("12.5");
-		monthlyPrice.setVat("8.56");
-
-		Price oneOffPrice = new Price();
-		oneOffPrice.setGross("5.11");
-		oneOffPrice.setNet("9.23");
-		oneOffPrice.setVat("22.56");
-		bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
-		bundlePrice.setMonthlyPrice(monthlyPrice);
-		priceInfo.setBundlePrice(bundlePrice);
-		HardwarePrice hardwarePrice = new HardwarePrice();
-		hardwarePrice.setHardwareId("93353");
-		hardwarePrice.setMerchandisingPromotions(merchandisingPromotions);
-		hardwarePrice.setOneOffDiscountPrice(oneOffDiscountPrice);
-		hardwarePrice.setOneOffPrice(oneOffPrice);
-
-		priceInfo.setHardwarePrice(hardwarePrice);
-		priceInfo.setMonthlyDiscountPrice(monthlyDiscountPrice);
-		priceInfo.setMonthlyPrice(monthlyPrice);
-		priceInfo.setOneOffDiscountPrice(monthlyDiscountPrice);
-		priceInfo.setOneOffPrice(oneOffPrice);
-		List<StepPricingInfo> stepPricesList = new ArrayList<StepPricingInfo>();
-		StepPricingInfo stePrices = new StepPricingInfo();
-
-		List<Discount> discountList = new ArrayList<Discount>();
-		Discount discount = new Discount();
-		discount.setSkuId("093311");
-		discount.setTag("AllPhone.limit.2017");
-		discountList.add(discount);
-		// stePrices.setDiscountsApplicable(discountList);
-		com.vf.uk.dal.device.entity.Duration duration = new com.vf.uk.dal.device.entity.Duration();
-		duration.setUom("UOM");
-		duration.setValue("124");
-		stePrices.setDuration(duration);
-		stePrices.setMonthlyPrice(monthlyPrice);
-		stePrices.setOneOffPrice(oneOffPrice);
-		stePrices.setSequence("Sequence");
-		priceInfo.setStepPrices(stepPricesList);
-		priceForBundleAndHardwareList.add(priceInfo);
-		return priceForBundleAndHardwareList;
-	}
+	
 
 	public static CommercialProduct getCommercialProduct_Five() {
 		CommercialProduct commercialProduct = new CommercialProduct();
@@ -3290,72 +2161,6 @@ public class CommonMethods {
 		return commercialProduct;
 	}
 
-	public static com.vf.uk.dal.device.datamodel.productgroups.Group getGropuFromProductGroups() {
-		com.vf.uk.dal.device.datamodel.productgroups.Group gr = new com.vf.uk.dal.device.datamodel.productgroups.Group();
-		List<com.vf.uk.dal.device.datamodel.productgroups.Member> listOfM1 = new ArrayList<>();
-		com.vf.uk.dal.device.datamodel.productgroups.Member m1 = new com.vf.uk.dal.device.datamodel.productgroups.Member();
-		m1.setId("093353");
-		m1.setPriority((long) 2);
-		com.vf.uk.dal.device.datamodel.productgroups.Member m2 = new com.vf.uk.dal.device.datamodel.productgroups.Member();
-		m2.setId("093354");
-		m2.setPriority((long) 2);
-		listOfM1.add(m1);
-		listOfM1.add(m2);
-		gr.setGroupType("Compatible Insurance");
-		gr.setMembers(listOfM1);
-		return gr;
-	}
-
-	public static PriceForProduct GetPriceforproduct() {
-		PriceForProduct priceForProduct = new PriceForProduct();
-
-		List<PriceForExtra> priceForExtras = new ArrayList<>();
-		PriceForExtra priceForExtra = new PriceForExtra();
-		ExtraPrice extraPrice = new ExtraPrice();
-		extraPrice.setExtraId("1234");
-		com.vf.uk.dal.utility.entity.Price price = new com.vf.uk.dal.utility.entity.Price();
-		price.setGross("56.56");
-		price.setNet("234.4");
-		price.setVat("23.56");
-
-		// List<com.vf.uk.dal.utility.entity.MerchandisingPromotion>
-		// merchandisingPromotionList = new ArrayList<>();
-		com.vf.uk.dal.utility.entity.MerchandisingPromotion merchandisingPromotion = new com.vf.uk.dal.utility.entity.MerchandisingPromotion();
-		merchandisingPromotion.setDescription("dfgdfg");
-		merchandisingPromotion.setDiscountId("sdf");
-		merchandisingPromotion.setLabel("werr");
-		merchandisingPromotion.setMpType("werr");
-		merchandisingPromotion.setTag("ert");
-		// merchandisingPromotionList.add(merchandisingPromotion);
-
-		extraPrice.setMerchandisingPromotions(merchandisingPromotion);
-		extraPrice.setMonthlyDiscountPrice(price);
-		extraPrice.setMonthlyDiscountPrice(price);
-		extraPrice.setMonthlyPrice(price);
-		extraPrice.setOneOffDiscountPrice(price);
-		extraPrice.setOneOffPrice(price);
-
-		priceForExtra.setExtraPrice(extraPrice);
-
-		List<PriceForAccessory> priceForAccessoryes = new ArrayList<>();
-		PriceForAccessory priceForAccessory = new PriceForAccessory();
-		com.vf.uk.dal.utility.entity.HardwarePrice hardwarePrice = new com.vf.uk.dal.utility.entity.HardwarePrice();
-
-		hardwarePrice.setHardwareId("93353");
-		hardwarePrice.setMerchandisingPromotions(merchandisingPromotion);
-		hardwarePrice.setOneOffDiscountPrice(price);
-		hardwarePrice.setOneOffPrice(price);
-
-		priceForAccessory.setHardwarePrice(hardwarePrice);
-
-		priceForExtras.add(priceForExtra);
-		priceForAccessoryes.add(priceForAccessory);
-		priceForProduct.setPriceForExtras(priceForExtras);
-		priceForProduct.setPriceForAccessoryes(priceForAccessoryes);
-
-		return priceForProduct;
-	}
-
 	public static List<MerchandisingPromotionModel> getMerChandisingPromotion() {
 		List<MerchandisingPromotionModel> merchandisingPromotionModelList = new ArrayList<>();
 		MerchandisingPromotionModel merchandisingPromotionModel = new MerchandisingPromotionModel();
@@ -3443,31 +2248,7 @@ public class CommonMethods {
 		return null;
 	}
 
-	public static PriceForAccessory getPriceForAccessory() {
-		PriceForAccessory priceForAccessory = new PriceForAccessory();
-		com.vf.uk.dal.utility.entity.HardwarePrice hardwarePrice = new com.vf.uk.dal.utility.entity.HardwarePrice();
-		com.vf.uk.dal.utility.entity.Price price = new com.vf.uk.dal.utility.entity.Price();
-		price.setGross("25.0");
-		price.setNet("16.0");
-		price.setVat("9.0");
-		com.vf.uk.dal.utility.entity.Price price1 = new com.vf.uk.dal.utility.entity.Price();
-		price1.setGross("25.0");
-		price1.setNet("16.0");
-		price1.setVat("9.0");
-		com.vf.uk.dal.utility.entity.MerchandisingPromotion merchandisingPromotion = new com.vf.uk.dal.utility.entity.MerchandisingPromotion();
-		merchandisingPromotion.setTag("tag");
-		merchandisingPromotion.setDescription("description");
-		merchandisingPromotion.setDiscountId("discountId");
-		merchandisingPromotion.setLabel("label");
-		merchandisingPromotion.setMpType("mpType");
-		merchandisingPromotion.setPriceEstablishedLabel("priceEstablishedLabel");
-		hardwarePrice.setHardwareId("093353");
-		hardwarePrice.setMerchandisingPromotions(merchandisingPromotion);
-		hardwarePrice.setOneOffPrice(price);
-		hardwarePrice.setOneOffDiscountPrice(price1);
-		priceForAccessory.setHardwarePrice(hardwarePrice);
-		return priceForAccessory;
-	}
+	
 
 	/**
 	 * @author manoj.bera
@@ -3551,32 +2332,6 @@ public class CommonMethods {
 		return null;
 	}
 
-	@JsonIgnoreProperties(ignoreUnknown = true)
-	public static CommercialProduct getCommercialProductByDeviceId() {
-
-		try {
-
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			String commercialProduct = new String(
-					Utility.readFile("\\TEST-MOCK\\Coherence_CommercialProductRepo_CommercialProductByDeviceId"));
-			CommercialProduct commercialProductList = mapper.readValue(commercialProduct, CommercialProduct.class);
-
-			return mapper.convertValue(commercialProductList, new TypeReference<CommercialProduct>() {
-			});
-		} catch (JsonParseException e) {
-			
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			
-			e.printStackTrace();
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-		}
-		return null;
-	}
 
 	public static BazaarVoice getBazaarVoice() {
 		ObjectMapper mapper = new ObjectMapper();
@@ -3589,7 +2344,7 @@ public class CommonMethods {
 			product = mapper.readValue(productModel, BazaarVoice.class);
 			product.setJsonsource(productModel);
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 		}
 
@@ -3615,37 +2370,13 @@ public class CommonMethods {
 		} catch (JsonMappingException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	@JsonIgnoreProperties(ignoreUnknown = true)
-	public static com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion getMerchandisingPromotion() {
-
-		try {
-
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			String merchPromotion = new String(
-					Utility.readFile("\\TEST-MOCK\\merchandisingPromotion_hardware_discount.json"));
-			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion merchPromo = mapper.readValue(
-					merchPromotion, com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion.class);
-
-			return mapper.convertValue(merchPromo,
-					new TypeReference<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion>() {
-					});
-		} catch (JsonParseException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+	
 
 	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static CommercialProduct getCommercialProductByDeviceId_093353() {
@@ -3682,13 +2413,13 @@ public class CommonMethods {
 			return mapper.convertValue(groupList, new TypeReference<List<Group>>() {
 			});
 		} catch (JsonParseException e) {
-			
+
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			
+
 			e.printStackTrace();
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 		}
 		return null;
@@ -3729,24 +2460,24 @@ public class CommonMethods {
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			String bundle = new String(
 					Utility.readFile("\\TEST-MOCK\\bundleDeviceAndProductsList_For_GetAccessoriesOfDevice.json"));
-			BundleDeviceAndProductsList bundleList = mapper.readValue(bundle,
-					BundleDeviceAndProductsList.class);
+			BundleDeviceAndProductsList bundleList = mapper.readValue(bundle, BundleDeviceAndProductsList.class);
 
 			return mapper.convertValue(bundleList, new TypeReference<BundleDeviceAndProductsList>() {
 			});
 
 		} catch (JsonParseException e) {
-			
+
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			
+
 			e.printStackTrace();
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 		}
 		return navigation;
 	}
+
 	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static BundleDeviceAndProductsList bundleDeviceAndProductsList_For_GetAccessoriesOfDeviceIntegration() {
 		BundleDeviceAndProductsList navigation = new BundleDeviceAndProductsList();
@@ -3755,22 +2486,21 @@ public class CommonMethods {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-			String bundle = new String(
-					Utility.readFile("\\TEST-MOCK\\bundleDeviceAndProductsList_For_GetAccessoriesOfDevice_Integration.json"));
-			BundleDeviceAndProductsList bundleList = mapper.readValue(bundle,
-					BundleDeviceAndProductsList.class);
+			String bundle = new String(Utility
+					.readFile("\\TEST-MOCK\\bundleDeviceAndProductsList_For_GetAccessoriesOfDevice_Integration.json"));
+			BundleDeviceAndProductsList bundleList = mapper.readValue(bundle, BundleDeviceAndProductsList.class);
 
 			return mapper.convertValue(bundleList, new TypeReference<BundleDeviceAndProductsList>() {
 			});
 
 		} catch (JsonParseException e) {
-			
+
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			
+
 			e.printStackTrace();
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 		}
 		return navigation;
@@ -3858,44 +2588,19 @@ public class CommonMethods {
 			return mapper.convertValue(productGroupModelList, new TypeReference<List<ProductGroupModel>>() {
 			});
 		} catch (JsonParseException e) {
-			
+
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			
+
 			e.printStackTrace();
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	@JsonIgnoreProperties(ignoreUnknown = true)
-	public static CommercialProduct getCommercialProductWithoutLeadPlan() {
-
-		try {
-
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			String commercialProduct = new String(
-					Utility.readFile("\\TEST-MOCK\\CommercialProductWithoutLeadPlan.json"));
-			CommercialProduct commercialProductList = mapper.readValue(commercialProduct, CommercialProduct.class);
-
-			return mapper.convertValue(commercialProductList, new TypeReference<CommercialProduct>() {
-			});
-		} catch (JsonParseException e) {
-			
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			
-			e.printStackTrace();
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-		}
-		return null;
-	}
+	
 
 	public static BundleDetailsForAppSrv getCoupledBundleListForDevice() {
 		try {
@@ -3910,13 +2615,13 @@ public class CommonMethods {
 			return mapper.convertValue(bundleDetails, new TypeReference<BundleDetailsForAppSrv>() {
 			});
 		} catch (JsonParseException e) {
-			
+
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			
+
 			e.printStackTrace();
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 		}
 		return null;
@@ -4022,13 +2727,13 @@ public class CommonMethods {
 			return mapper.convertValue(commercialProductList, new TypeReference<CommercialProduct>() {
 			});
 		} catch (JsonParseException e) {
-			
+
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			
+
 			e.printStackTrace();
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 		}
 		return null;
@@ -4049,13 +2754,13 @@ public class CommonMethods {
 			return mapper.convertValue(commercialProductList, new TypeReference<CommercialProduct>() {
 			});
 		} catch (JsonParseException e) {
-			
+
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			
+
 			e.printStackTrace();
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 		}
 		return null;
@@ -4117,173 +2822,8 @@ public class CommonMethods {
 		bundlePrice.setMonthlyPrice(monthlyPrice);
 		return bundlePrice;
 	}
-
-	public static com.vf.uk.dal.device.entity.BundlePrice getBundlePriceForUtility() {
-		com.vf.uk.dal.device.entity.BundlePrice bundlePrice = new com.vf.uk.dal.device.entity.BundlePrice();
-		com.vf.uk.dal.utility.entity.MerchandisingPromotion merchandisingPromotions = new com.vf.uk.dal.utility.entity.MerchandisingPromotion();
-
-		merchandisingPromotions.setPromotionMedia("promotion media");
-		com.vf.uk.dal.device.entity.Price monthlyDiscountPrice = new com.vf.uk.dal.device.entity.Price();
-		monthlyDiscountPrice.setGross("10.11");
-		monthlyDiscountPrice.setNet("11.23");
-		monthlyDiscountPrice.setVat("14.56");
-
-		com.vf.uk.dal.device.entity.Price monthlyPrice = new com.vf.uk.dal.device.entity.Price();
-		monthlyDiscountPrice.setGross("13.64");
-		monthlyDiscountPrice.setNet("12.5");
-		monthlyDiscountPrice.setVat("8.56");
-
-		bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
-		bundlePrice.setBundleId("183099");
-		bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
-		bundlePrice.setMonthlyPrice(monthlyPrice);
-		return bundlePrice;
-	}
-
-	public static List<CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks> getBundleAndHardwareEntertainmentPacks() {
-		List<CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks> bundleAndHardwareEntertainmentPAcksList = new ArrayList<>();
-		CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks bundleAndHardwareEnter = new CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks();
-		bundleAndHardwareEnter.setDescription("merchandisingPromotions.merchandisingPromotion.label");
-		bundleAndHardwareEnter.setLabel("merchandisingPromotions.merchandisingPromotion.label");
-		bundleAndHardwareEnter.setPriority("50");
-		bundleAndHardwareEnter.setPromotionMedia("Non_Pricing_Discount");
-		bundleAndHardwareEnter.setTag("Text");
-		bundleAndHardwareEnter.setType("TEXT");
-		bundleAndHardwareEntertainmentPAcksList.add(bundleAndHardwareEnter);
-		return bundleAndHardwareEntertainmentPAcksList;
-	}
-
-	/**
-	 * Gets the bundle and hardware allowance.
-	 *
-	 * @return the bundle and hardware allowance
-	 */
-	public static List<CataloguepromotionqueriesForBundleAndHardwareDataAllowances> getBundleAndHardwareAllowance() {
-		List<CataloguepromotionqueriesForBundleAndHardwareDataAllowances> bundleAndHardwareAllowanceList = new ArrayList<>();
-		CataloguepromotionqueriesForBundleAndHardwareDataAllowances bundleAndHardwareAllowance = new CataloguepromotionqueriesForBundleAndHardwareDataAllowances();
-		bundleAndHardwareAllowance.setDescription("merchandisingPromotions.merchandisingPromotion.label");
-		CataloguepromotionqueriesForBundleAndHardwareFreeData freeData = new CataloguepromotionqueriesForBundleAndHardwareFreeData();
-		freeData.setUom("123");
-		freeData.setValue("345");
-		bundleAndHardwareAllowance.setFreeData(freeData);
-		bundleAndHardwareAllowance.setLabel("");
-		bundleAndHardwareAllowance.setPriority("30");
-		bundleAndHardwareAllowance.setTag("Non_Pricing_Discount");
-		bundleAndHardwareAllowance.setType("TEXT");
-		bundleAndHardwareAllowanceList.add(bundleAndHardwareAllowance);
-		return bundleAndHardwareAllowanceList;
-	}
-
-	/**
-	 * Gets the bundle and hardware coupling promotions.
-	 *
-	 * @return the bundle and hardware coupling promotions
-	 */
-	public static List<CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions> getBundleAndHardwareCouplingPromotions() {
-		List<CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions> bundleAndHardwarePromotionsList = new ArrayList<>();
-		CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions bundleHArdwarePromotion = new CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions();
-		bundleHArdwarePromotion.setDescription("merchandisingPromotions.merchandisingPromotion.label");
-		bundleHArdwarePromotion.setLabel("merchandisingPromotions.merchandisingPromotion.label");
-		bundleHArdwarePromotion.setPlancoupleId("merchandisingPromotions.merchandisingPromotion.label");
-		bundleHArdwarePromotion.setPriority("30");
-		bundleHArdwarePromotion.setTag("Non_Pricing_Discount");
-		bundleHArdwarePromotion.setType("TEXT");
-		bundleAndHardwarePromotionsList.add(bundleHArdwarePromotion);
-		return bundleAndHardwarePromotionsList;
-	}
-
-	/**
-	 * Gets the cataloguepromotionqueries for bundle and hardware sash.
-	 *
-	 * @return the cataloguepromotionqueries for bundle and hardware sash
-	 */
-	public static List<CataloguepromotionqueriesForBundleAndHardwareSash> getCataloguepromotionqueriesForBundleAndHardwareSash() {
-		List<CataloguepromotionqueriesForBundleAndHardwareSash> cataloguepromotionqueriesForBundleAndHardwareSash = new ArrayList<>();
-		CataloguepromotionqueriesForBundleAndHardwareSash cataloguepromotionqueriesForBundleAndHardware = new CataloguepromotionqueriesForBundleAndHardwareSash();
-		cataloguepromotionqueriesForBundleAndHardware
-				.setDescription("merchandisingPromotions.merchandisingPromotion.label");
-		cataloguepromotionqueriesForBundleAndHardware.setLabel("merchandisingPromotions.merchandisingPromotion.label");
-		cataloguepromotionqueriesForBundleAndHardware.setPriority("60");
-		cataloguepromotionqueriesForBundleAndHardware
-				.setPromotionMedia("merchandisingPromotions.merchandisingPromotion.label");
-		cataloguepromotionqueriesForBundleAndHardware.setTag("merchandisingPromotions.merchandisingPromotion.label");
-		cataloguepromotionqueriesForBundleAndHardware.setType("Text");
-		cataloguepromotionqueriesForBundleAndHardwareSash.add(cataloguepromotionqueriesForBundleAndHardware);
-		return cataloguepromotionqueriesForBundleAndHardwareSash;
-	}
-
-	/**
-	 * Gets the cataloguepromotionqueries for bundle and hardware secure net.
-	 *
-	 * @return the cataloguepromotionqueries for bundle and hardware secure net
-	 */
-	public static List<CataloguepromotionqueriesForBundleAndHardwareSecureNet> getCataloguepromotionqueriesForBundleAndHardwareSecureNet() {
-		List<CataloguepromotionqueriesForBundleAndHardwareSecureNet> cataloguepromotionqueriesForBundleAndHardwareSecureNet = new ArrayList<>();
-		CataloguepromotionqueriesForBundleAndHardwareSecureNet cataloguepromotionqueriesForBundleAndHardware = new CataloguepromotionqueriesForBundleAndHardwareSecureNet();
-		cataloguepromotionqueriesForBundleAndHardware
-				.setDescription("merchandisingPromotions.merchandisingPromotion.label");
-		cataloguepromotionqueriesForBundleAndHardware.setLabel("merchandisingPromotions.merchandisingPromotion.label");
-		cataloguepromotionqueriesForBundleAndHardware.setPriority("80");
-		cataloguepromotionqueriesForBundleAndHardware.setTag("merchandisingPromotions.merchandisingPromotion.label");
-		cataloguepromotionqueriesForBundleAndHardware.setType("Text");
-		cataloguepromotionqueriesForBundleAndHardwareSecureNet.add(cataloguepromotionqueriesForBundleAndHardware);
-		return cataloguepromotionqueriesForBundleAndHardwareSecureNet;
-	}
-
-	/**
-	 * Gets the cataloguepromotionqueries for bundle and hardware accessory.
-	 *
-	 * @return the cataloguepromotionqueries for bundle and hardware accessory
-	 */
-	public static List<CataloguepromotionqueriesForBundleAndHardwareAccessory> getCataloguepromotionqueriesForBundleAndHardwareAccessory() {
-		List<CataloguepromotionqueriesForBundleAndHardwareAccessory> cataloguepromotionqueriesForBundleAndHardwareAccessory = new ArrayList<>();
-		CataloguepromotionqueriesForBundleAndHardwareAccessory cataloguepromotionqueriesForBundleAndHardware = new CataloguepromotionqueriesForBundleAndHardwareAccessory();
-		cataloguepromotionqueriesForBundleAndHardware
-				.setDescription("merchandisingPromotions.merchandisingPromotion.label");
-		cataloguepromotionqueriesForBundleAndHardware.setLabel("merchandisingPromotions.merchandisingPromotion.label");
-		cataloguepromotionqueriesForBundleAndHardware.setPriority("60");
-		// cataloguepromotionqueriesForBundleAndHardware.setPromotionMedia("merchandisingPromotions.merchandisingPromotion.label");
-		cataloguepromotionqueriesForBundleAndHardware.setTag("merchandisingPromotions.merchandisingPromotion.label");
-		cataloguepromotionqueriesForBundleAndHardware.setType("Text");
-		cataloguepromotionqueriesForBundleAndHardwareAccessory.add(cataloguepromotionqueriesForBundleAndHardware);
-		return cataloguepromotionqueriesForBundleAndHardwareAccessory;
-	}
-
-	/**
-	 * Gets the cataloguepromotionqueries for bundle and hardware extras.
-	 *
-	 * @return the cataloguepromotionqueries for bundle and hardware extras
-	 */
-	public static List<CataloguepromotionqueriesForBundleAndHardwareExtras> getCataloguepromotionqueriesForBundleAndHardwareExtras() {
-		List<CataloguepromotionqueriesForBundleAndHardwareExtras> cataloguepromotionqueriesForBundleAndHardwareExtras = new ArrayList<>();
-		CataloguepromotionqueriesForBundleAndHardwareExtras cataloguepromotionqueriesForBundleAndHardware = new CataloguepromotionqueriesForBundleAndHardwareExtras();
-		cataloguepromotionqueriesForBundleAndHardware
-				.setDescription("merchandisingPromotions.merchandisingPromotion.label");
-		cataloguepromotionqueriesForBundleAndHardware.setLabel("merchandisingPromotions.merchandisingPromotion.label");
-		cataloguepromotionqueriesForBundleAndHardware.setPriority("60");
-		cataloguepromotionqueriesForBundleAndHardware.setTag("merchandisingPromotions.merchandisingPromotion.label");
-		cataloguepromotionqueriesForBundleAndHardware.setType("Text");
-		cataloguepromotionqueriesForBundleAndHardwareExtras.add(cataloguepromotionqueriesForBundleAndHardware);
-		return cataloguepromotionqueriesForBundleAndHardwareExtras;
-	}
-
-	/**
-	 * Gets the cataloguepromotionqueries for hardware sash.
-	 *
-	 * @return the cataloguepromotionqueries for hardware sash
-	 */
-	public static List<CataloguepromotionqueriesForHardwareSash> getCataloguepromotionqueriesForHardwareSash() {
-		List<CataloguepromotionqueriesForHardwareSash> cataloguepromotionqueriesForHardwareSash = new ArrayList<>();
-		CataloguepromotionqueriesForHardwareSash cataloguepromotionqueriesForHardwareSash1 = new CataloguepromotionqueriesForHardwareSash();
-		cataloguepromotionqueriesForHardwareSash1
-				.setDescription("merchandisingPromotions.merchandisingPromotion.label");
-		cataloguepromotionqueriesForHardwareSash1.setLabel("merchandisingPromotions.merchandisingPromotion.label");
-		cataloguepromotionqueriesForHardwareSash1.setPriority("60");
-		cataloguepromotionqueriesForHardwareSash1.setTag("merchandisingPromotions.merchandisingPromotion.label");
-		cataloguepromotionqueriesForHardwareSash1.setType("Text");
-		cataloguepromotionqueriesForHardwareSash.add(cataloguepromotionqueriesForHardwareSash1);
-		return cataloguepromotionqueriesForHardwareSash;
-	}
+	
+	
 
 	public static CompletableFuture<List<com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions>> getBundleAndHardwarePromotionsListFromBundleListAsync() {
 		CompletableFuture<List<com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions>> future = new CompletableFuture<>();
@@ -4395,6 +2935,8 @@ public class CommonMethods {
 		group1.setId("092660");
 		group1.setLeadDeviceId(null);
 		group1.setListOfVariants(Arrays.asList("092660|1"));
+		group.setHexCode(getColourHes());
+		group1.setHexCode(getColourHes());
 		groupList.add(group);
 		groupList.add(group1);
 		return groupList;
@@ -4411,9 +2953,21 @@ public class CommonMethods {
 		group1.setId("092660");
 		group1.setLeadDeviceId(null);
 		group1.setListOfVariants(Collections.emptyList());
+		group.setHexCode(getColourHes());
+		group1.setHexCode(getColourHes());
 		groupList.add(group);
 		groupList.add(group1);
 		return groupList;
+	}
+
+	public static List<String> getColourHes() {
+		List<String> hex = new ArrayList<>();
+		hex.add("Black|#212327");
+		hex.add("Jet Black|#000000");
+		hex.add("Silver|#dcddde");
+		hex.add("PRODUCT(RED) Special Edition|#aa2831");
+		hex.add("Rose Gold|#efc5bf");
+		return hex;
 	}
 
 	public static List<FacetField> getListOfFacetField() {
@@ -4451,7 +3005,7 @@ public class CommonMethods {
 		productGroupModel.setName("CompatibleDeliveryMethods_CnC_PremiumDelivery");
 		productGroupModel.setPriority(1);
 		productGroupModel.setType("Compatible Delivery");
-
+		productGroupModel.setHexCode(getColourHes());
 		ProductGroupModel productGroupMode = new ProductGroupModel();
 		productGroupMode.setId("productGroup_2");
 		productGroupMode.setImageUrl("http://image.png");
@@ -4459,6 +3013,7 @@ public class CommonMethods {
 		productGroupMode.setName("CompatibleDeliveryMethods_CnC_Delivery");
 		productGroupMode.setPriority(1);
 		productGroupMode.setType("Compatible Delivery");
+		productGroupMode.setHexCode(getColourHes());
 		productGroupModelList.add(productGroupMode);
 		productGroupModelList.add(productGroupModel);
 		return productGroupModelList;
@@ -4468,18 +3023,20 @@ public class CommonMethods {
 		List<String> size = new ArrayList<>();
 		size.add("32 GB");
 		size.add("128 GB");
-		List<String> colour = new ArrayList<>();
-		colour.add("Black");
-		colour.add("White");
-		List<String> colourHex = new ArrayList<>();
-		colourHex.add("#dcddde");
-		colourHex.add("#efc5bf");
+		List<Colour> colour = new ArrayList<>();
+		Colour c1 = new Colour();
+		c1.setColorName("Black");
+		c1.setColorHex("#dcddde");
+		Colour c2 = new Colour();
+		c2.setColorName("White");
+		c2.setColorHex("#efc5bf");
+		colour.add(c1);
+		colour.add(c2);
 		ProductGroupDetailsForDeviceList groupDetails = new ProductGroupDetailsForDeviceList();
 		groupDetails.setGroupId("1");
 		groupDetails.setGroupName("Apple iPhone 7");
 		groupDetails.setColor(colour);
 		groupDetails.setSize(size);
-		groupDetails.setColorHex(colourHex);
 		return groupDetails;
 	}
 

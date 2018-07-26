@@ -22,9 +22,6 @@ public class ProductGroupDetailsForDeviceList {
 	private List<String> size = null;
 
 	@JsonProperty("color")
-	private List<String> color = null;
-	
-	@JsonProperty("hexCode")
-	private List<String> colorHex = null;
+	private List<Colour> color = null;
 
 }

@@ -10,7 +10,6 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,12 +22,10 @@ import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.common.urlparams.PaginationCriteria;
 import com.vf.uk.dal.device.entity.DeviceTile;
 import com.vf.uk.dal.device.entity.FacetedDevice;
-import com.vf.uk.dal.device.entity.KeepDeviceChangePlanRequest;
 import com.vf.uk.dal.device.svc.DeviceService;
 import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 import com.vf.uk.dal.device.validator.Validator;
-import com.vf.uk.dal.utility.entity.BundleDetails;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -172,66 +169,5 @@ public class DeviceController {
 				pageSizeParam, capacity, color, operatingSystem, mustHaveFeatures, journeyType, creditLimitparam,
 				offerCode, msisdn, includeRecommendationsParam);
 		return facetedDevice;
-	}
-
-	/**
-	 * 
-	 * @param deviceId
-	 * @param bundleId
-	 * @param allowedRecurringPriceLimit
-	 * @return BundleDetails
-	 */
-	@ApiOperation(value = "The service gets the details of the device specially price, equipment, specification, features, merchandising, etc in the response.", notes = "The service gets the details of the bundleDetails from API based on the bundleId, deviceId in the response.", response = BundleDetails.class, tags = {
-			"KeepDeviceChangePlan" })
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = BundleDetails.class),
-			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
-	@RequestMapping(value = "/plan/action/keepDeviceChangePlan", method = RequestMethod.POST, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
-	public BundleDetails getKeepDeviceChangePlan(@RequestBody KeepDeviceChangePlanRequest keepDeviceChangePlanRequest) {
-		BundleDetails bundleDetails;
-		if (keepDeviceChangePlanRequest == null) {
-			LogHelper.error(this, "AllowedRecurringPriceLimit is null");
-			throw new ApplicationException(ExceptionMessages.INVALID_REQUEST_PARAMETER);
-		}
-		String deviceId = keepDeviceChangePlanRequest.getDeviceId();
-		String bundleId = keepDeviceChangePlanRequest.getBundleId();
-		String allowedRecurringPriceLimit = keepDeviceChangePlanRequest.getAllowedRecurringPriceLimit();
-		String plansLimit = keepDeviceChangePlanRequest.getPlansLimit();
-		if (StringUtils.isBlank(deviceId) && StringUtils.isBlank(bundleId)
-				&& StringUtils.isBlank(allowedRecurringPriceLimit) && StringUtils.isBlank(plansLimit)) {
-			LogHelper.error(this, "All Input Parameter is null");
-			throw new ApplicationException(ExceptionMessages.INVALID_REQUEST_PARAMETER);
-		}
-		Validator.validateDeviceId(deviceId);
-		if (StringUtils.isBlank(bundleId)) {
-			LogHelper.error(this, "BundleId is null");
-			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_BUNDLEID);
-		} else if (StringUtils.isNotBlank(bundleId) && (!bundleId.matches("[0-9]{6}") || bundleId.matches("[0]*"))) {
-			LogHelper.error(this, "BundleId is Invalid");
-			throw new ApplicationException(ExceptionMessages.INVALID_BUNDLE_ID);
-		} else if (StringUtils.isBlank(allowedRecurringPriceLimit)) {
-			LogHelper.error(this, "AllowedRecurringPriceLimit is null");
-			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_ALLOWED_RECURRING_PRICE_LIMIT);
-		} else if (StringUtils.isNotBlank(allowedRecurringPriceLimit)
-				&& (!allowedRecurringPriceLimit.matches(".*[0-9].*") || allowedRecurringPriceLimit.matches("[0]*"))) {
-			LogHelper.error(this, "AllowedRecurringPriceLimit is Invalid");
-			throw new ApplicationException(ExceptionMessages.INVALID_ALLOWED_RECURRING_PRICE_LIMIT);
-		} else if (StringUtils.isBlank(plansLimit)) {
-			LogHelper.error(this, "Limit is null");
-			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_PLANS_LIMIT);
-		} else if (StringUtils.isNotBlank(plansLimit) && (!plansLimit.matches("[0-9]") || plansLimit.matches("[0]*"))) {
-			LogHelper.error(this, "Limit is Invalid");
-			throw new ApplicationException(ExceptionMessages.INVALID_PLANS_LIMIT);
-		} else {
-			LogHelper.info(this, "Get the bundle details of a particular device id");
-			LogHelper.info(this, "Start -->  calling  getBundleOfDeviceId");
-			bundleDetails = deviceService.getBundlesOfDeviceId(deviceId, bundleId, allowedRecurringPriceLimit,
-					plansLimit);
-			LogHelper.info(this, "End -->  calling  getBundleOfDeviceId");
-		}
-
-		return bundleDetails;
 	}
 }
