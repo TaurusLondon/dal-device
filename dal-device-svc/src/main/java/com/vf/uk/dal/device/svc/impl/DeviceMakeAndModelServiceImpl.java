@@ -428,7 +428,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 	 * @param commerProdMemMapPAYG
 	 * @param bundleAndHardwareTupleListPAYG
 	 */
-	private void getMemberByRules(String groupType, List<DeviceTile> listOfDeviceTile, DeviceTile deviceTile,
+	public void getMemberByRules(String groupType, List<DeviceTile> listOfDeviceTile, DeviceTile deviceTile,
 			String groupName, List<com.vf.uk.dal.device.entity.Member> listOfDeviceGroupMember,
 			Map<String, CommercialProduct> commerProdMemMapPAYG,
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleListPAYG) {
