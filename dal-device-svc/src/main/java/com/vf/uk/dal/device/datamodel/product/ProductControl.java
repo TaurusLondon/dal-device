@@ -24,11 +24,18 @@ public class ProductControl {
 	@JsonProperty("isDisplayableSavedBasket")
 	private boolean isDisplayableSavedBasket;
 
+	@JsonProperty("order")
 	private Long order;
+	@JsonProperty("preOrderable")
 	private boolean preOrderable;
+	@JsonProperty("availableFrom")
 	private Timestamp availableFrom;
+	@JsonProperty("backOrderable")
 	private boolean backOrderable;
+	@JsonProperty("affiliateExport")
 	private boolean affiliateExport;
+	@JsonProperty("compareWith")
 	private String compareWith;
+	@JsonProperty("backOrderMessage")
 	private String backOrderMessage;
 }

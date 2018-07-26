@@ -3,6 +3,8 @@ package com.vf.uk.dal.utility.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Data;
 
 /**
@@ -12,48 +14,60 @@ import lombok.Data;
 public class BundleHeader {
 
 	/** The sku id. */
+	@JsonProperty("skuId")
 	private String skuId = null;
 
 	/** The name. */
+	@JsonProperty("name")
 	private String name = null;
 
 	/** The description. */
+	@JsonProperty("description")
 	private String description = null;
 
 	/** The bundle name. */
+	@JsonProperty("bundleName")
 	private String bundleName = null;
 
 	/** The bundle description. */
+	@JsonProperty("bundleDescription")
 	private String bundleDescription = null;
 
 	/** The bundle class. */
+	@JsonProperty("bundleClass")
 	private String bundleClass = null;
 
 	/** The product class. */
+	@JsonProperty("productClass")
 	private String productClass = null;
 
 	/** The payment type. */
+	@JsonProperty("paymentType")
 	private String paymentType = null;
 
 	/** The bundle type. */
+	@JsonProperty("bundleType")
 	private String bundleType = null;
 
 	/** The plan couple id. */
+	@JsonProperty("planCoupleId")
 	private String planCoupleId = null;
 
 	/** The plan couple flag. */
+	@JsonProperty("planCoupleFlag")
 	private Boolean planCoupleFlag = null;
 
 	/** The plan couple lable. */
+	@JsonProperty("planCoupleLable")
 	private String planCoupleLable = null;
 
 	/** The global roaming flag. */
+	@JsonProperty("globalRoamingFlag")
 	private Boolean globalRoamingFlag = null;
 
 	/** The Secure Net */
+	@JsonProperty("secureNetFlag")
 	private Boolean secureNetFlag = null;
-
-	
 
 	/** The commitment period. */
 	private String commitmentPeriod = null;
@@ -78,7 +92,5 @@ public class BundleHeader {
 
 	/** The mcs. */
 	private List<MonthlyCostSaver> mcs = new ArrayList<>();
-
-	
 
 }

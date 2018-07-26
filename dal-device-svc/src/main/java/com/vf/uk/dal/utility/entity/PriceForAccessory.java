@@ -1,5 +1,7 @@
 package com.vf.uk.dal.utility.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Data;
 
 /**
@@ -10,6 +12,7 @@ import lombok.Data;
 @Data
 public class PriceForAccessory {
 
+	@JsonProperty("hardwarePrice")
 	private HardwarePrice hardwarePrice = null;
 
 }

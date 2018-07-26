@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
@@ -25,26 +26,34 @@ import lombok.Data;
 @Data
 public class Discounts {
 
+	@JsonProperty("productLineId")
 	private String productLineId = null;
 
+	@JsonProperty("action")
 	private String action = null;
 
+	@JsonProperty("skuId")
 	private String skuId = null;
 
+	@JsonProperty("tag")
 	private String tag = null;
 
+	@JsonProperty("label")
 	private String label = null;
 
+	@JsonProperty("tenure")
 	private String tenure = null;
 
+	@JsonProperty("duration")
 	private String duration = null;
 
+	@JsonProperty("confirmedRequired")
 	private String confirmedRequired = null;
 
+	@JsonProperty("merchandisingMedia")
 	private List<MediaLink> merchandisingMedia = new ArrayList<MediaLink>();
 
 	@JsonIgnore
 	private DiscountPrice discountPrice = null;
 
-	
 }

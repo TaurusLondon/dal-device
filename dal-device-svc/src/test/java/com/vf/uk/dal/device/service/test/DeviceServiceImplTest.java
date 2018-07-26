@@ -1577,4 +1577,102 @@ public class DeviceServiceImplTest {
 		bundlePrice.setMonthlyPrice(monthlyPrice);
 		Assert.assertNotNull(DeviceServiceImplUtility.getDiscountTypeAndComparePrice_Implementation(112.23,bundlePrice));
 	}
+	@Test
+	public void testisPlanAffordable_Implementation(){
+		DeviceSummary deviceSummary = new DeviceSummary();
+		deviceSummary.setColourHex("D10000000");
+		deviceSummary.setColourName("Grey");
+		deviceSummary.setDisplayDescription("5.5 inch");
+		deviceSummary.setDisplayName("display name");
+		deviceSummary.setDeviceId(String.valueOf(122));
+		deviceSummary.setLeadPlanId("Lead plan Id");
+		deviceSummary.setLeadPlanDisplayName("Yearly Plan");
+		deviceSummary.setMemory("64GB");
+		deviceSummary.setPreOrderable(false);
+		DeviceServiceImplUtility.isPlanAffordable_Implementation(deviceSummary, CommonMethods.getCommercialBundle(),
+				222.3, true);
+	}
+	@Test
+	public void getListOfDeviceTileTestInvalidGroupType() {
+		Double value = (double) 12345;
+		try{
+		deviceMakeAndModelServiceImpl.getListOfDeviceTile_Implementation
+				("apple","iPhone-7", "1232_41ed","093353","Acquisition", 
+						value,  "123", "180232");
+		}
+		catch(Exception e){
+			Assert.assertEquals("Received Null Values for the given product group type", e.getMessage());
+		}
+	}
+	@Test
+	public void getListOfDeviceTileTestInvalidGroupTypeDevice_payg() {
+		Double value = (double) 12345;
+		try{
+		deviceMakeAndModelServiceImpl.getListOfDeviceTile_Implementation
+				("apple","iPhone-7",Constants.STRING_DEVICE_PAYG,"093353","Acquisition", 
+						value,  "123", "180232");
+		}
+		catch(Exception e){
+			Assert.assertEquals("No Devices Found for the given input search criteria", e.getMessage());
+		}
+	}
+	@Test
+	public void getMembersForGroupTest() {
+		
+		 deviceMakeAndModelServiceImpl.resetDeviceId_Implementation(
+				true, CommonMethods.getDeviceTilee(),
+				CommonMethods.getDeviceSummary(), "122");
+	}
+	@Test
+	public void getMembersForGroupBlankId() {
+		
+		 deviceMakeAndModelServiceImpl.resetDeviceId_Implementation(
+				true, CommonMethods.getDeviceTilee(),
+				CommonMethods.getDeviceSummary(), "");
+	}
+	@Test
+	public void getMembersForGroup() {
+		
+		 deviceMakeAndModelServiceImpl.resetDeviceId_Implementation(
+				true, CommonMethods.getDeviceTilee(),
+				CommonMethods.getDeviceSummary(), "122");
+	}
+	@Test
+	public void getMembersForGroupDeviceSummaryAffordable() {
+		List<DeviceSummary> dsList =CommonMethods.getDeviceSummary();
+		DeviceSummary ds = dsList.get(0);
+		ds.setIsAffordable(false);
+		dsList.add(ds);
+		 deviceMakeAndModelServiceImpl.resetDeviceId_Implementation(
+				true, CommonMethods.getDeviceTilee(),
+				dsList, "122");
+	}
+	@Test
+	public void isJourneySpecificLeadPlanTest() {
+		Map<String,CommercialBundle> commerBundleIdMap = new HashMap<>();
+		commerBundleIdMap.put("1231", CommonMethods.getCommercialBundle());
+		
+		 Assert.assertNotNull(deviceMakeAndModelServiceImpl.isJourneySpecificLeadPlan(commerBundleIdMap, "108242", "Acquisition"));
+	}
+	@Test
+	public void isJourneySpecificLeadPlanTestBlankMap() {
+		Map<String,CommercialBundle> commerBundleIdMap = new HashMap<>();
+		 Assert.assertNotNull(deviceMakeAndModelServiceImpl.isJourneySpecificLeadPlan(commerBundleIdMap, "108242", "Acquisition"));
+	}
+	@Test
+	public void isJourneySpecificLeadPlanTestBlankId() {
+		Map<String,CommercialBundle> commerBundleIdMap = new HashMap<>();
+		 Assert.assertNotNull(deviceMakeAndModelServiceImpl.isJourneySpecificLeadPlan(commerBundleIdMap, "", "Acquisition"));
+	}
+	@Test
+	public void isJourneySpecificLeadPlanTestNullMap() {
+		 Assert.assertNotNull(deviceMakeAndModelServiceImpl.isJourneySpecificLeadPlan(null, "", "Acquisition"));
+	}
+	@Test
+	public void getMemberByRules() {
+		Map<String,CommercialProduct> commerProdMemMapPAYG = new HashMap<>();
+		commerProdMemMapPAYG.put("123", CommonMethods.getCommercialProduct());
+		 deviceMakeAndModelServiceImpl.getMemberByRules("DEVICE_PAYG", CommonMethods.getDeviceTile("apple", "iphone 7", "groupType"),
+				 CommonMethods.getDeviceTilee(), "PAYG", CommonMethods.getMemberListPojo(), commerProdMemMapPAYG, CommonMethods.getBundleAndHardwareTuple());
+	}
 }
