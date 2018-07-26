@@ -3,23 +3,28 @@ package com.vf.uk.dal.device.datamodel.productgroups;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
 @Data
 public class Group {
 
-	protected String name;
+	@JsonProperty("name")
+	private String name;
 
-	protected Long groupPriority;
+	@JsonProperty("groupPriority")
+	private Long groupPriority;
 
-	protected String groupType;
+	@JsonProperty("groupType")
+	private String groupType;
 	@JsonIgnore
-	protected String version;
-
-	protected List<Member> members;
-
-	protected Integer groupId;
+	@JsonProperty("version")
+	private String version;
+	@JsonProperty("members")
+	private List<Member> members;
+	@JsonProperty("groupId")
+	private Integer groupId;
 
 	
 }
