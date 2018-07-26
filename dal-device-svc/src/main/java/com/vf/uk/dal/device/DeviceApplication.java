@@ -37,11 +37,11 @@ public class DeviceApplication {
 		SpringApplication.run(DeviceApplication.class, args);
 	}
 
-	@Bean
 	/**
 	 * @author
-	 * @return
+	 * @return Executor
 	 */
+	@Bean
 	public Executor asyncExecutor() {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(2);
@@ -52,6 +52,10 @@ public class DeviceApplication {
 		return executor;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	@Bean
 	public RestHighLevelClient getRestClientObject() {
 		return elasticsearchRestCient.getClient();

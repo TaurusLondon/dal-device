@@ -67,9 +67,11 @@ public class DeviceController {
 	}
 
 	/**
-	 * Handles requests for getDeviceTile Service with input as deviceId.
-	 * 
-	 * @param queryParams
+	 *
+	 * Handles requests for getDeviceTile Service with input as deviceId.	
+	 * @param deviceId
+	 * @param journeyType
+	 * @param offerCode
 	 * @return
 	 */
 	@ApiOperation(value = "Get the device tile details for the given device tile Id.", notes = "The service gets the details of the device required to be dispalyed on deviceTile.", response = DeviceTile.class, responseContainer = "List", tags = {
@@ -142,7 +144,6 @@ public class DeviceController {
 			@ApiParam(value = "Promotional offer code applicable.") @RequestParam(value = "offerCode", required = false) String offerCode,
 			@ApiParam(value = "Monthly credit limit applicable in case of conditional accept.(Credit Limit is not completely implemented for Device List)") @RequestParam(value = "creditLimit", required = false) String creditLimit) {
 
-		boolean includeRecommendationsParam = false;
 		FacetedDevice facetedDevice;
 		if (StringUtils.isNotBlank(includeRecommendations)) {
 			Validator.validateIncludeRecommendation(includeRecommendations);
@@ -158,7 +159,7 @@ public class DeviceController {
 		if (StringUtils.isNotBlank(msisdn)) {
 			Validator.validateMSISDN(msisdn, includeRecommendations);
 		}
-		includeRecommendationsParam = Boolean.valueOf(includeRecommendations);
+		boolean includeRecommendationsParam = Boolean.parseBoolean(includeRecommendations);
 		Float creditLimitparam = null;
 
 		if (creditLimit != null) {
