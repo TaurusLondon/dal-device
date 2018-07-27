@@ -8,6 +8,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
+/**
+ * MerchandisingPromotion
+ * @author manoj.bera
+ *
+ */
 @Data
 public class MerchandisingPromotion {
 	@JsonProperty("tag")

@@ -148,7 +148,7 @@ public class Subscription {
 	private String uomCode = null;
 
 	@JsonProperty("asset")
-	private List<Asset> asset = new ArrayList<Asset>();
+	private List<Asset> asset = new ArrayList<>();
 
 	@JsonProperty("isInFlightOrderPresent")
 	private Boolean isInFlightOrderPresent = null;

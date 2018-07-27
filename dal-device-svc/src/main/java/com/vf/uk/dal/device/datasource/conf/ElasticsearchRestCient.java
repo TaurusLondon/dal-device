@@ -29,7 +29,6 @@ public class ElasticsearchRestCient {
 
 	@Value("${elasticsearch.host}")
 	private String vpcEndPoint;
-	// = getYamlConfig().get(Constants.ELASTIC_SEARCH_HOST);
 
 	private RestHighLevelClient restClient;
 
@@ -65,48 +64,6 @@ public class ElasticsearchRestCient {
 			throw e;
 		}
 	}
-
-	/**
-	 * Reads AWS Elastic search VPC end point from Application YML file
-	 * 
-	 * @return
-	 */
-	/*
-	 * public static Map<String, String> getYamlConfig() { Map<String, String>
-	 * configMap = new HashMap<>(); try { YAMLConfigurationSource source = new
-	 * YAMLConfigurationSource("application.yml");
-	 * configMap.put(Constants.ELASTIC_SEARCH_HOST, (String)
-	 * source.getProperties().get(Constants.ELASTIC_SEARCH_HOST));
-	 * configMap.put(Constants.BAZAAR_VOICE_PART1, (String)
-	 * source.getProperties().get(Constants.BAZAAR_VOICE_PART1));
-	 * configMap.put(Constants.BAZAAR_VOICE_PART2, (String)
-	 * source.getProperties().get(Constants.BAZAAR_VOICE_PART2)); } catch
-	 * (Exception exception) { LogHelper.error(RestClient.class,
-	 * "Error ocuured while reading Application YML file" + exception); } return
-	 * configMap;
-	 * 
-	 * }
-	 */
-
-	/**
-	 * Method to create Rest Client object
-	 * 
-	 * @return
-	 */
-	/*
-	 * private static RestClient createRestClient() { try {
-	 * LogHelper.info(RestClient.class,
-	 * "Rest client creation with VPC end point::" + vpcEndPoint); InetAddress
-	 * address = InetAddress.getByName(new URL(vpcEndPoint).getHost());
-	 * restClient = RestClient.builder( new HttpHost(address,
-	 * address.getHostName(), Constants.DEFAULT_PORT, Constants.HTTPS_SCHEME))
-	 * .build(); LogHelper.info(RestClient.class,
-	 * "Rest Client created Successfully  with  VPC End point ::" +
-	 * vpcEndPoint); } catch (UnknownHostException | MalformedURLException e) {
-	 * LogHelper.error(RestClient.class,
-	 * "Error ocuured while creating ES Rest client" + e); } return restClient;
-	 * }
-	 */
 	/**
 	 * Method to create Rest Client object
 	 * 

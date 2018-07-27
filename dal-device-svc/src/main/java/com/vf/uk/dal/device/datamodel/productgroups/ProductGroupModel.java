@@ -7,6 +7,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
+/**
+ * ProductGroupModel
+ * @author manoj.bera
+ *
+ */
 @Data
 public class ProductGroupModel {
 

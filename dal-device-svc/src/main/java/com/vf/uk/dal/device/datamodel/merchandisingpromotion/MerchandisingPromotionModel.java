@@ -6,6 +6,11 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
+/**
+ * MerchandisingPromotionModel
+ * @author manoj.bera
+ *
+ */
 @Data
 public class MerchandisingPromotionModel {
 	@JsonProperty("tag")
@@ -41,7 +46,4 @@ public class MerchandisingPromotionModel {
 	private String priceEstablishedLabel;
 	@JsonProperty("footnotes")
 	private List<String> footnotes = new ArrayList<>();
-
-
-
 }

@@ -5,6 +5,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
+/**
+ * DevicePrice
+ * @author manoj.bera
+ *
+ */
 @Data
 public class DevicePrice {
 
@@ -22,9 +27,4 @@ public class DevicePrice {
 
 	@JsonProperty("productLine")
 	private String productLine;
-
-	public DevicePrice() {
-		super();
-
-	}
 }

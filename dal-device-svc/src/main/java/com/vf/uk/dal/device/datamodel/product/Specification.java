@@ -7,7 +7,6 @@ import lombok.Data;
 /**
  * Specification
  */
-
 @Data
 public class Specification {
 

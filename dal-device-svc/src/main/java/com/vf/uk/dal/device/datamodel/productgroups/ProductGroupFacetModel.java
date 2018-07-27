@@ -6,6 +6,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
+/**
+ * ProductGroupFacetModel
+ * @author manoj.bera
+ *
+ */
 @Data
 public class ProductGroupFacetModel {
 	@JsonProperty("listOfProductGroups")

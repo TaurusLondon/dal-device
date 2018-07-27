@@ -6,6 +6,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
+/**
+ * HardwarePrice
+ * @author manoj.bera
+ *
+ */
 @Data
 public class HardwarePrice {
 	@JsonProperty("hardwareId")

@@ -52,14 +52,8 @@ import com.vf.uk.dal.utility.entity.RecommendedProductListResponse;
  */
 
 public class CommonUtility {
-	/**
-	 * Generates JWT token for security
-	 * 
-	 **/
-	/*
-	 * public static String generateJWT() { return ServiceContext.getJWTToken();
-	 * }
-	 */
+	
+	private CommonUtility(){}
 	/**
 	 * Round off price to two decimal points
 	 * 
@@ -1015,14 +1009,14 @@ public class CommonUtility {
 					.anyMatch(productLinesList.get(0)::equalsIgnoreCase) ? true
 							: commercialBundle.getProductLines().stream()
 									.anyMatch(productLinesList.get(1)::equalsIgnoreCase) ? true : false;
+			boolean isSalesExpire = dateValidationForOffers(startDateTime, endDateTime, Constants.DATE_FORMAT_COHERENCE)
+					&& !commercialBundle.getAvailability().getSalesExpired();
 			if (DeviceServiceImplUtility.isNonUpgrade(journeyType) && isCompatible
-					&& dateValidationForOffers(startDateTime, endDateTime, Constants.DATE_FORMAT_COHERENCE)
-					&& !commercialBundle.getAvailability().getSalesExpired()
+					&& isSalesExpire
 					&& DeviceServiceImplUtility.isNonUpgradeCommercialBundle(commercialBundle)) {
 				flag = true;
 			} else if (DeviceServiceImplUtility.isUpgrade(journeyType) && isCompatible
-					&& dateValidationForOffers(startDateTime, endDateTime, Constants.DATE_FORMAT_COHERENCE)
-					&& !commercialBundle.getAvailability().getSalesExpired()
+					&& isSalesExpire
 					&& DeviceServiceImplUtility.isUpgradeFromCommercialBundle(commercialBundle)) {
 				flag = true;
 			}

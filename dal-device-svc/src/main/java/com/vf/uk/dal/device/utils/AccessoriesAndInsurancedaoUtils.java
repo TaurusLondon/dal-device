@@ -20,8 +20,7 @@ import com.vf.uk.dal.utility.entity.PriceForAccessory;
 
 public class AccessoriesAndInsurancedaoUtils {
 
-	private AccessoriesAndInsurancedaoUtils() {
-	};
+	 AccessoriesAndInsurancedaoUtils() {}
 
 	/**
 	 * 

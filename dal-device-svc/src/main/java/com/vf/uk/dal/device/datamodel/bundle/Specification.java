@@ -4,6 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
+/**
+ * Specification
+ * @author manoj.bera
+ *
+ */
 @Data
 public class Specification {
 
@@ -36,8 +41,4 @@ public class Specification {
 
 	@JsonProperty("hideInList")
 	private boolean hideInList;
-
-	public Specification() {
-		super();
-	}
 }

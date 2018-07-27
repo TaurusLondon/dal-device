@@ -65,11 +65,4 @@ public class CommercialBundle {
 	@JsonProperty("displayGroup")
 	private String displayGroup;
 
-	/**
-	 * CommercialBundle Constructor
-	 */
-	public CommercialBundle() {
-		super();
-	}
-
 }

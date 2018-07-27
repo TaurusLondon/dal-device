@@ -6,6 +6,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
+/**
+ * Relationship
+ * 
+ * @author manoj.bera
+ *
+ */
 @Data
 public class Relationship {
 
@@ -50,9 +56,4 @@ public class Relationship {
 
 	@JsonProperty("incompatibleAddons")
 	private List<AddonIncompatibleProducts> incompatibleAddons;
-
-	public Relationship() {
-		super();
-	}
-
 }
