@@ -1443,6 +1443,14 @@ public class CommonMethods {
 		return leadMemberMap;
 	}
 
+	public static Map<String, List<String>> getleadMemberMapp() {
+		Map<String, List<String>> leadMemberMap = new HashMap<>();
+		List<String> string = new ArrayList<>();
+		string.add("Y");
+		leadMemberMap.put("093353", string);
+		return leadMemberMap;
+	}
+
 	public static List<com.vf.uk.dal.device.entity.PriceForBundleAndHardware> getPrice() {
 		List<com.vf.uk.dal.device.entity.PriceForBundleAndHardware> priceForBundleAndHardwareList = new ArrayList<com.vf.uk.dal.device.entity.PriceForBundleAndHardware>();
 
@@ -4082,6 +4090,12 @@ public class CommonMethods {
 		bhTuple.add(bundleAndHardwareTuple);
 		return bhTuple;
 	}
+	public static BundleAndHardwareTuple getBundleAndHardwareTuplee() {
+		BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
+		bundleAndHardwareTuple.setBundleId("108245");
+		bundleAndHardwareTuple.setHardwareId("093353");
+		return bundleAndHardwareTuple;
+	}
 
 	public static List<com.vf.uk.dal.device.entity.Member> getMemberListPojo() {
 		List<com.vf.uk.dal.device.entity.Member> memberList = new ArrayList<>();
@@ -4090,5 +4104,36 @@ public class CommonMethods {
 		member.setPriority("12");
 		memberList.add(member);
 		return memberList;
+	}
+	public static Group getGroupp() {
+		Group group = new Group();
+		group.setVersion("1.0");
+		group.setGroupPriority((long) 3);
+		group.setGroupType("DEVICE");
+		Group group1 = new Group();
+		group1.setVersion("1.0");
+		group1.setGroupPriority((long) 3);
+		group1.setGroupType(Constants.STRING_ACCESSORY);
+		List<Member> memberList = new ArrayList<Member>();
+		Member member = new Member();
+		member.setId("123");
+		member.setPriority((long) 2);
+		Member member1 = new Member();
+		member1.setId("124");
+		member1.setPriority((long) 1);
+		Member member2 = new Member();
+		member2.setId("093329");
+		member2.setPriority((long) 1);
+		memberList.add(member2);
+		memberList.add(member1);
+		memberList.add(member);
+		group.setMembers(memberList);
+		group.setName("Apple iPhone 6s");
+		group.setVersion("1.0");
+		group1.setMembers(memberList);
+		group1.setName("Apple iPhone 6s cover");
+		group1.setVersion("1.0");
+
+		return group;
 	}
 }

@@ -130,6 +130,9 @@ public class DeviceServiceImplTest {
 
 	@Autowired
 	DeviceService deviceService;
+	
+	@Autowired
+	DeviceUtils deviceUtils;
 
 	@SuppressWarnings("unchecked")
 	@Before
@@ -1788,15 +1791,166 @@ public class DeviceServiceImplTest {
 	}
 	@Test
 	public void getPromotionsForBundleAndHardWarePromotions() {
-		try{
 			List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
 			CommonUtility.getPromotionsForBundleAndHardWarePromotions
 			(bundleHardwareTupleList, "Acquisition", registry);
-			}
-			catch(Exception e){
-				Assert.assertEquals(ExceptionMessages.PROMOTION_API_EXCEPTION, e.getMessage());
-			}
+	}
+	@Test
+	public void getmonthlyPriceFormPrice() {
+		PriceForBundleAndHardware price = CommonMethods.getUtilityPriceForBundleAndHardware();
+		BundlePrice bp = price.getBundlePrice();
+		Price mp = new Price();
+		mp.setGross("20");
+		bp.setMonthlyDiscountPrice(mp);
+		price.setBundlePrice(bp);
+		Assert.assertNotNull(DeviceUtils.getmonthlyPriceFormPrice(price));
+	}
+	@Test
+	public void getmonthlyPriceFormPriceNull() {
+		try{
+		DeviceUtils.getmonthlyPriceFormPrice(null);
+		}
+		catch(Exception e){
+			Assert.assertEquals(e.getMessage(), null);
+		}
+	}
+	@Test
+	public void getmonthlyPriceFormPriceBundlePriceNull() {
+		try{
+		PriceForBundleAndHardware price = CommonMethods.getUtilityPriceForBundleAndHardware();
+		price.setBundlePrice(null);
+		DeviceUtils.getmonthlyPriceFormPrice(price);
+		}
+		catch(Exception e){
+			Assert.assertEquals(e.getMessage(), null);
+		}
+	}
+	@Test
+	public void getmonthlyPriceFormPriceMPNull() {
+		try{
+		PriceForBundleAndHardware price = CommonMethods.getUtilityPriceForBundleAndHardware();
+		BundlePrice bp = price.getBundlePrice();
+		bp.setMonthlyDiscountPrice(null);
+		price.setBundlePrice(bp);
+		DeviceUtils.getmonthlyPriceFormPrice(price);
+		}
+		catch(Exception e){
+			Assert.assertEquals(e.getMessage(), null);
+		}
+	}
+	@Test
+	public void getmonthlyPriceFormPriceMPGrossNull() {
+		try{
+		PriceForBundleAndHardware price = CommonMethods.getUtilityPriceForBundleAndHardware();
+		BundlePrice bp = price.getBundlePrice();
+		Price mp = bp.getMonthlyDiscountPrice();
+		mp.setGross(null);
+		bp.setMonthlyDiscountPrice(mp);
+		price.setBundlePrice(bp);
+		DeviceUtils.getmonthlyPriceFormPrice(price);
+		}
+		catch(Exception e){
+			Assert.assertEquals(e.getMessage(), null);
+		}
+	}
+	@Test
+	public void leastMonthlyPrice() {
+		try{
+		PriceForBundleAndHardware price = CommonMethods.getUtilityPriceForBundleAndHardware();
+		List<PriceForBundleAndHardware> priceList = new ArrayList<>();
+		priceList.add(price);
+		DeviceUtils.leastMonthlyPrice(priceList);
+		}
+
+		catch (Exception e) {
+			Assert.assertEquals(e.getMessage(), null);
+		}
+	}
+	@Test
+	public void sortedPriceForBundleAndHardware() {
+		PriceForBundleAndHardware price = CommonMethods.getUtilityPriceForBundleAndHardware();
+		List<PriceForBundleAndHardware> priceList = new ArrayList<>();
+		priceList.add(price);
+		Assert.assertNotNull(DeviceUtils.sortedPriceForBundleAndHardware(priceList));
+	}
+	@Test
+	public void sortedPriceForBundleAndHardwareForPayG() {
+		PriceForBundleAndHardware price = CommonMethods.getUtilityPriceForBundleAndHardware();
+		List<PriceForBundleAndHardware> priceList = new ArrayList<>();
+		priceList.add(price);
+		Assert.assertNotNull(DeviceUtils.sortedPriceForBundleAndHardwareForPayG(priceList));
+	}
+	@Test
+	public void getmonthlyPriceFormPriceForPayGNulll() {
+		try{
+		DeviceUtils.getmonthlyPriceFormPriceForPayG(null);
+		}
+		catch(Exception e){
+			Assert.assertEquals(e.getMessage(), null);
+		}
+	}
+	@Test
+	public void getmonthlyPriceFormPriceForPayGNull() {
+		try{
+		PriceForBundleAndHardware price = CommonMethods.getUtilityPriceForBundleAndHardware();
+		price.setHardwarePrice(null);
+		DeviceUtils.getmonthlyPriceFormPriceForPayG(price);
+		} catch (Exception e) {
+			Assert.assertEquals(e.getMessage(), null);
+		}
+	}
+	@Test
+	public void getmonthlyPriceFormPriceForPayGMpNull() {
+		try{
+		PriceForBundleAndHardware price = CommonMethods.getUtilityPriceForBundleAndHardware();
+		HardwarePrice bp = price.getHardwarePrice();
+		bp.setOneOffDiscountPrice(null);
+		price.setHardwarePrice(bp);
+		DeviceUtils.getmonthlyPriceFormPrice(price);
+		}
+		catch(Exception e){
+			Assert.assertEquals(e.getMessage(), null);
+		}
+	}
+	@Test
+	public void getmonthlyPriceFormPriceForPayGPriceMPGrossNull() {
+		try{
+		PriceForBundleAndHardware price = CommonMethods.getUtilityPriceForBundleAndHardware();
+		HardwarePrice bp = price.getHardwarePrice();
+		Price mp = bp.getOneOffDiscountPrice();
+		mp.setGross(null);
+		bp.setOneOffDiscountPrice(mp);
+		price.setHardwarePrice(bp);
+		DeviceUtils.getmonthlyPriceFormPrice(price);
+		}
+		catch(Exception e){
+			Assert.assertEquals(e.getMessage(), null);
+		}
+	}
+	@Test
+	public void sortListForProductModel() {
+		Assert.assertNotNull(deviceUtils.sortListForProductModel
+				(CommonMethods.getProductModel(), CommonMethods.getColourHes()));
+	}
+	@Test
+	public void getMemberForCaceDevice() {
+		DeviceUtils.getMemberForCaceDevice(
+				CommonMethods.getListOfProducts(), CommonMethods.getleadMemberMap(), 
+				CommonMethods.getGroupp(), CommonMethods.getMemberListPojo(), "1231", "abc");
+	}
+	@Test
+	public void getBundleharwareTrupleForPaymCacheDevice() {
+		Set<String> bundleIds = new HashSet<>();
+		Set<BundleAndHardwareTuple> bundleAndHardwareTuple = new HashSet<>();
+		bundleAndHardwareTuple.add(CommonMethods.getBundleAndHardwareTuplee());
+		bundleIds.add("1231");
+		DeviceUtils.getBundleharwareTrupleForPaymCacheDevice
+		(bundleIds, CommonMethods.getBundleAndHardwareTuple(),
+				CommonMethods.getBundleAndHardwareTuple(), 
+				bundleAndHardwareTuple, CommonMethods.getleadMemberMap(), 
+				CommonMethods.getleadMemberMapp(), CommonMethods.getCommercialProductsListOfAccessories());
 	}
 	
-
+	
+	
 }
