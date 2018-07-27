@@ -11,6 +11,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
+/**
+ * Path
+ * @author manoj.bera
+ *
+ */
 @Data
 public class Path {
 
@@ -32,7 +37,4 @@ public class Path {
 	@JsonProperty("proratePlan")
 	private String proratePlan;
 
-	public Path() {
-		super();
-	}
 }

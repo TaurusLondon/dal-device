@@ -30,6 +30,11 @@ import com.vf.uk.dal.device.utils.ExceptionMessages;
 import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
 import com.vf.uk.dal.utility.entity.CoupleRelation;
 
+/**
+ * DeviceServiceCommonUtility
+ * @author manoj.bera
+ *
+ */
 @Component
 public class DeviceServiceCommonUtility {
 
@@ -69,7 +74,7 @@ public class DeviceServiceCommonUtility {
 				if (bazaarVoice != null) {
 					if (!bazaarVoice.getJsonsource().isEmpty()) {
 						org.json.JSONObject jSONObject = new org.json.JSONObject(bazaarVoice.getJsonsource());
-						if (!jSONObject.get("Includes").toString().equals("{}")) {
+						if (!"{}".toString().equals(jSONObject.get("Includes"))) {
 							org.json.JSONObject includes = jSONObject.getJSONObject("Includes");
 							org.json.JSONObject products = includes.getJSONObject("Products");
 							Iterator<?> level = products.keys();
@@ -125,6 +130,7 @@ public class DeviceServiceCommonUtility {
 	/**
 	 * Identifies members based on the validation rules.
 	 * 
+	 * @param journeyType
 	 * @param listOfDeviceGroupMembers
 	 * @return leadDeviceSkuId
 	 */
@@ -247,8 +253,8 @@ public class DeviceServiceCommonUtility {
 		@Override
 		public int compare(PriceForBundleAndHardware priceForBundleAndHard,
 				PriceForBundleAndHardware priceForBundleAndHard1) {
-			String gross = null;
-			String gross1 = null;
+			String gross;
+			String gross1;
 			if (priceForBundleAndHard.getHardwarePrice() != null && priceForBundleAndHard1.getHardwarePrice() != null) {
 				if (priceForBundleAndHard.getHardwarePrice().getOneOffDiscountPrice() != null
 						&& priceForBundleAndHard.getHardwarePrice().getOneOffDiscountPrice().getGross() != null) {
@@ -295,8 +301,8 @@ public class DeviceServiceCommonUtility {
 		@Override
 		public int compare(PriceForBundleAndHardware priceForBundleAndHardware,
 				PriceForBundleAndHardware priceForBundleAndHardware1) {
-			String gross = null;
-			String gross1 = null;
+			String gross;
+			String gross1;
 			if (priceForBundleAndHardware.getBundlePrice() != null
 					&& priceForBundleAndHardware1.getBundlePrice() != null) {
 				if (priceForBundleAndHardware.getBundlePrice().getMonthlyDiscountPrice() != null

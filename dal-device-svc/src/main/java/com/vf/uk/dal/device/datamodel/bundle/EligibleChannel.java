@@ -4,6 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
+/**
+ * EligibleChannel
+ * @author manoj.bera
+ *
+ */
 @Data
 public class EligibleChannel {
 
@@ -15,7 +20,4 @@ public class EligibleChannel {
 
 	@JsonProperty("endDate")
 	private String endDate;
-
-	public EligibleChannel() {
-	}
 }

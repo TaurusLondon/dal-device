@@ -4,6 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
+/**
+ * Recommendations
+ * @author manoj.bera
+ *
+ */
 @Data
 public class Recommendations {
 
@@ -13,7 +18,4 @@ public class Recommendations {
 	@JsonProperty("name")
 	private String name;
 
-	public Recommendations() {
-		super();
-	}
 }

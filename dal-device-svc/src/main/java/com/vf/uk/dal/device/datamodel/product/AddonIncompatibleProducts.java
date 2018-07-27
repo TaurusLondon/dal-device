@@ -4,6 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
+/**
+ * AddonIncompatibleProducts
+ * @author manoj.bera
+ *
+ */
 @Data
 public class AddonIncompatibleProducts {
 	@JsonProperty("incompatibleProductId")

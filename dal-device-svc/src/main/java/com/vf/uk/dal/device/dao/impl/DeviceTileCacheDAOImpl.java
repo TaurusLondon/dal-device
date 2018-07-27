@@ -65,8 +65,9 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 	 * @param tablename
 	 */
 	public void delete(String tablename) {
-		String sql = "DELETE FROM PRODUCT." + tablename;
-		getJdbcTemplate().update(sql);
+		StringBuilder sql=new StringBuilder("DELETE FROM PRODUCT.");
+        sql.append(tablename);
+		getJdbcTemplate().update(sql.toString());
 
 	}
 
@@ -76,9 +77,10 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 	 * @return count
 	 */
 	public int count(String tablename) {
-		String sql = "SELECT COUNT(*) FROM PRODUCT." + tablename;
+		StringBuilder sql=new StringBuilder("SELECT COUNT(*) FROM PRODUCT.");
+        sql.append(tablename);
 		int count;
-		count = getJdbcTemplate().queryForObject(sql, Integer.class);
+		count = getJdbcTemplate().queryForObject(sql.toString(), Integer.class);
 		return count;
 	}
 
@@ -104,7 +106,7 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 				+ "HW_ONE_OFF_DISC_PRICE_GROSS, HW_ONE_OFF_DISC_PRICE_NET, HW_ONE_OFF_DISC_PRICE_VAT, CREATE_UPDATE_TIME,"
 				+ "IS_LEAD_MEMBER, MINIMUM_COST,NON_UPGRADE_LEAD_DEVICE_ID,UPGRADE_LEAD_DEVICE_ID,NON_UPGRADE_LEAD_PLAN_ID,UPGRADE_LEAD_PLAN_ID)"
 				+ " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-		int i[] = getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
+		int[] i = getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
 
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
@@ -186,7 +188,7 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 		int result = 0;
 		LogHelper.info(this, "Begin DEVICE_LIST_PRE_CALC_MEDIA ");
 		String sql = "INSERT INTO PRODUCT.DEVICE_LIST_PRE_CALC_MEDIA (DEVICE_ID,ID,VALUE,TYPE,DESCRIPTION,DISCOUNT_ID,PROMO_CATEGORY,OFFER_CODE) values (?,?,?,?,?,?,?,?)";
-		int i[] = getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
+		int[] i = getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
 				Media mediaLink = mediaList.get(i);
@@ -231,7 +233,7 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 				+ "HW_ONE_OFF_PRICE_GROSS, HW_ONE_OFF_PRICE_NET, HW_ONE_OFF_PRICE_VAT, "
 				+ "HW_ONE_OFF_DISC_PRICE_GROSS ,HW_ONE_OFF_DISC_PRICE_NET, HW_ONE_OFF_DISC_PRICE_VAT,CREATE_UPDATE_TIME,JOURNEY_TYPE) "
 				+ "values (?,?,?,?, ?,?,?,?, ?,?,?,?, ?,?,?,?,?)";
-		int i[] = getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
+		int[] i = getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
 				OfferAppliedPriceDetails offerAppliedPriceDetails = offerAppliedPricesList.get(i);
@@ -373,10 +375,9 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 	@Override
 	public CacheDeviceTileResponse insertCacheDeviceToDb() {
 		jdbcTemplate.setDataSource(datasource);
-		Connection conn = DataSourceUtils.getConnection(jdbcTemplate.getDataSource());
 		String jobId = UUID.randomUUID().toString();
 		CacheDeviceTileResponse cacheDeviceTileResponse = new CacheDeviceTileResponse();
-		try {
+		try(Connection conn = DataSourceUtils.getConnection(jdbcTemplate.getDataSource())) {
 
 			String jobStatus = "INPROGRESS";
 
@@ -394,14 +395,6 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 
 		} catch (DataAccessException | SQLException e) {
 			LogHelper.error(this, jobId + "==> " + e);
-		} finally {
-			try {
-				if (conn != null && !conn.isClosed()) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				LogHelper.error(this, jobId + "Exception occurred while closing connection ==> " + e);
-			}
 		}
 
 		return cacheDeviceTileResponse;
@@ -410,10 +403,8 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 	@Override
 	public void updateCacheDeviceToDb(String jobId, String jobStatus) {
 		jdbcTemplate.setDataSource(datasource);
-		Connection conn = null;
-
-		try {
-			conn = DataSourceUtils.getConnection(jdbcTemplate.getDataSource());
+		try(Connection conn = DataSourceUtils.getConnection(jdbcTemplate.getDataSource());) {
+			
 			conn.setAutoCommit(false);
 			String query = "UPDATE DALMS_CACHE_SERVICES SET JOB_STATUS = ?, JOB_END = ?, JOB_LAST_UPDATED = ? WHERE JOB_ID = ?";
 			Object[] params = new Object[] { jobStatus, new Timestamp(new Date().getTime()),
@@ -424,14 +415,6 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 			conn.commit();
 		} catch (DataAccessException | SQLException e) {
 			LogHelper.error(this, jobId + "==> " + e);
-		} finally {
-			try {
-				if (conn != null && !conn.isClosed()) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				LogHelper.error(this, jobId + "Exception occurred while closing connection ==> " + e);
-			}
 		}
 
 	}

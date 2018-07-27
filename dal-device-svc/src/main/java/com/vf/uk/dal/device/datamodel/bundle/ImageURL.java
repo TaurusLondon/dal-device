@@ -4,6 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
+/**
+ * ImageURL
+ * @author manoj.bera
+ *
+ */
 @Data
 public class ImageURL {
 
@@ -12,9 +17,5 @@ public class ImageURL {
 
 	@JsonProperty("imageURL")
 	private String imageURL;
-
-	public ImageURL() {
-		super();
-	}
 
 }

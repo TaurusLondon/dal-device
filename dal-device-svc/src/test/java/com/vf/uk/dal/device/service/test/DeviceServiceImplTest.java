@@ -70,10 +70,12 @@ import com.vf.uk.dal.device.utils.CommonUtility;
 import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.DeviceDetailsMakeAndModelVaiantDaoUtils;
 import com.vf.uk.dal.device.utils.DeviceUtils;
+import com.vf.uk.dal.device.utils.ExceptionMessages;
 import com.vf.uk.dal.device.utils.ResponseMappingHelper;
 import com.vf.uk.dal.device.validator.Validator;
 import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 import com.vf.uk.dal.utility.entity.BundleAndHardwareRequest;
+import com.vf.uk.dal.utility.entity.BundleDetails;
 import com.vf.uk.dal.utility.entity.BundleModelAndPrice;
 import com.vf.uk.dal.utility.entity.PriceForProduct;
 
@@ -128,6 +130,9 @@ public class DeviceServiceImplTest {
 
 	@Autowired
 	DeviceService deviceService;
+	
+	@Autowired
+	DeviceUtils deviceUtils;
 
 	@SuppressWarnings("unchecked")
 	@Before
@@ -1703,4 +1708,249 @@ public class DeviceServiceImplTest {
 		DeviceUtils.getIlsBundleHardwarePriceMap(setOffer, bundleHardwareTroupleMap,
 				"093353", "110154", Arrays.asList("promoteAs"));
 	}
+	@Test
+	public void getPriceDetailsForCompatibaleBundle() {
+		try{
+		 CommonUtility.getPriceDetailsForCompatibaleBundle(null, null, null);
+		}
+		catch(Exception e){
+			Assert.assertEquals(ExceptionMessages.COUPLEBUNDLELIST_API_EXCEPTION, e.getMessage());
+		}
+	}
+	@Test
+	public void getBundleDetailsFromComplansListingAPI() {
+		String url = "http://BUNDLES-V1/bundles/catalogue/bundle/queries/byDeviceId/093353//?sort=abc";
+		given(restTemplate.getForObject(url, BundleDetails.class))
+		.willReturn(CommonMethods.getCompatibleBundleListJson());
+		 Assert.assertNotNull(CommonUtility.getBundleDetailsFromComplansListingAPI
+		 ("093353", "abc", registry));
+	}
+	@Test
+	public void getBundleDetailsFromComplansListingAPIException() {
+		try{
+		 CommonUtility.getBundleDetailsFromComplansListingAPI
+		 ("093353", "abc", registry);
+		}
+		catch(Exception e){
+			Assert.assertEquals(ExceptionMessages.BUNDLECOMPATIBLELIST_API_EXCEPTION, e.getMessage());
+		}
+	}
+	@Test
+	public void getDecimalFormat() {
+		 CommonUtility.getDecimalFormat();
+	}
+	@Test
+	public void getJSONFromString() {
+		try{
+			CommonUtility.getJSONFromString("dasdasd3123");
+			}
+			catch(Exception e){
+				Assert.assertEquals(ExceptionMessages.ERROR_STRING_TO_JSONOBJECT, e.getMessage());
+			}
+	}
+	@Test
+	public void getAccessoryPriceDetails() {
+		try{
+			CommonUtility.getAccessoryPriceDetails
+			(null, registry);
+			}
+			catch(Exception e){
+				Assert.assertEquals(ExceptionMessages.PRICING_API_EXCEPTION, e.getMessage());
+			}
+	}
+	@Test
+	public void getPriceDetailsUsingBundleHarwareTrouple() {
+		try{
+			CommonUtility.getPriceDetailsUsingBundleHarwareTrouple
+			(null, "121", "Acquisition", registry);
+			}
+			catch(Exception e){
+				Assert.assertEquals(ExceptionMessages.PRICING_API_EXCEPTION, e.getMessage());
+			}
+	}
+	@Test
+	public void getSubscriptionBundleId() {
+		try{
+			CommonUtility.getSubscriptionBundleId
+			(null, "abc", registry);
+			}
+			catch(Exception e){
+			}
+	}
+	@Test
+	public void isProductJourneySpecific() {
+		CommercialProduct cp = CommonMethods.getCommercialProduct();
+			Assert.assertNotNull(CommonUtility.isProductJourneySpecific
+					(cp, Constants.JOURNEYTYPE_UPGRADE));
+	}
+	@Test
+	public void isProductJourneySpecificJTBlank() {
+		CommercialProduct cp = CommonMethods.getCommercialProduct();
+			Assert.assertNotNull(CommonUtility.isProductJourneySpecific
+					(cp, ""));
+	}
+	@Test
+	public void getPromotionsForBundleAndHardWarePromotions() {
+			List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
+			CommonUtility.getPromotionsForBundleAndHardWarePromotions
+			(bundleHardwareTupleList, "Acquisition", registry);
+	}
+	@Test
+	public void getmonthlyPriceFormPrice() {
+		PriceForBundleAndHardware price = CommonMethods.getUtilityPriceForBundleAndHardware();
+		BundlePrice bp = price.getBundlePrice();
+		Price mp = new Price();
+		mp.setGross("20");
+		bp.setMonthlyDiscountPrice(mp);
+		price.setBundlePrice(bp);
+		Assert.assertNotNull(DeviceUtils.getmonthlyPriceFormPrice(price));
+	}
+	@Test
+	public void getmonthlyPriceFormPriceNull() {
+		try{
+		DeviceUtils.getmonthlyPriceFormPrice(null);
+		}
+		catch(Exception e){
+			Assert.assertEquals(e.getMessage(), null);
+		}
+	}
+	@Test
+	public void getmonthlyPriceFormPriceBundlePriceNull() {
+		try{
+		PriceForBundleAndHardware price = CommonMethods.getUtilityPriceForBundleAndHardware();
+		price.setBundlePrice(null);
+		DeviceUtils.getmonthlyPriceFormPrice(price);
+		}
+		catch(Exception e){
+			Assert.assertEquals(e.getMessage(), null);
+		}
+	}
+	@Test
+	public void getmonthlyPriceFormPriceMPNull() {
+		try{
+		PriceForBundleAndHardware price = CommonMethods.getUtilityPriceForBundleAndHardware();
+		BundlePrice bp = price.getBundlePrice();
+		bp.setMonthlyDiscountPrice(null);
+		price.setBundlePrice(bp);
+		DeviceUtils.getmonthlyPriceFormPrice(price);
+		}
+		catch(Exception e){
+			Assert.assertEquals(e.getMessage(), null);
+		}
+	}
+	@Test
+	public void getmonthlyPriceFormPriceMPGrossNull() {
+		try{
+		PriceForBundleAndHardware price = CommonMethods.getUtilityPriceForBundleAndHardware();
+		BundlePrice bp = price.getBundlePrice();
+		Price mp = bp.getMonthlyDiscountPrice();
+		mp.setGross(null);
+		bp.setMonthlyDiscountPrice(mp);
+		price.setBundlePrice(bp);
+		DeviceUtils.getmonthlyPriceFormPrice(price);
+		}
+		catch(Exception e){
+			Assert.assertEquals(e.getMessage(), null);
+		}
+	}
+	@Test
+	public void leastMonthlyPrice() {
+		try{
+		PriceForBundleAndHardware price = CommonMethods.getUtilityPriceForBundleAndHardware();
+		List<PriceForBundleAndHardware> priceList = new ArrayList<>();
+		priceList.add(price);
+		DeviceUtils.leastMonthlyPrice(priceList);
+		}
+
+		catch (Exception e) {
+			Assert.assertEquals(e.getMessage(), null);
+		}
+	}
+	@Test
+	public void sortedPriceForBundleAndHardware() {
+		PriceForBundleAndHardware price = CommonMethods.getUtilityPriceForBundleAndHardware();
+		List<PriceForBundleAndHardware> priceList = new ArrayList<>();
+		priceList.add(price);
+		Assert.assertNotNull(DeviceUtils.sortedPriceForBundleAndHardware(priceList));
+	}
+	@Test
+	public void sortedPriceForBundleAndHardwareForPayG() {
+		PriceForBundleAndHardware price = CommonMethods.getUtilityPriceForBundleAndHardware();
+		List<PriceForBundleAndHardware> priceList = new ArrayList<>();
+		priceList.add(price);
+		Assert.assertNotNull(DeviceUtils.sortedPriceForBundleAndHardwareForPayG(priceList));
+	}
+	@Test
+	public void getmonthlyPriceFormPriceForPayGNulll() {
+		try{
+		DeviceUtils.getmonthlyPriceFormPriceForPayG(null);
+		}
+		catch(Exception e){
+			Assert.assertEquals(e.getMessage(), null);
+		}
+	}
+	@Test
+	public void getmonthlyPriceFormPriceForPayGNull() {
+		try{
+		PriceForBundleAndHardware price = CommonMethods.getUtilityPriceForBundleAndHardware();
+		price.setHardwarePrice(null);
+		DeviceUtils.getmonthlyPriceFormPriceForPayG(price);
+		} catch (Exception e) {
+			Assert.assertEquals(e.getMessage(), null);
+		}
+	}
+	@Test
+	public void getmonthlyPriceFormPriceForPayGMpNull() {
+		try{
+		PriceForBundleAndHardware price = CommonMethods.getUtilityPriceForBundleAndHardware();
+		HardwarePrice bp = price.getHardwarePrice();
+		bp.setOneOffDiscountPrice(null);
+		price.setHardwarePrice(bp);
+		DeviceUtils.getmonthlyPriceFormPrice(price);
+		}
+		catch(Exception e){
+			Assert.assertEquals(e.getMessage(), null);
+		}
+	}
+	@Test
+	public void getmonthlyPriceFormPriceForPayGPriceMPGrossNull() {
+		try{
+		PriceForBundleAndHardware price = CommonMethods.getUtilityPriceForBundleAndHardware();
+		HardwarePrice bp = price.getHardwarePrice();
+		Price mp = bp.getOneOffDiscountPrice();
+		mp.setGross(null);
+		bp.setOneOffDiscountPrice(mp);
+		price.setHardwarePrice(bp);
+		DeviceUtils.getmonthlyPriceFormPrice(price);
+		}
+		catch(Exception e){
+			Assert.assertEquals(e.getMessage(), null);
+		}
+	}
+	@Test
+	public void sortListForProductModel() {
+		Assert.assertNotNull(deviceUtils.sortListForProductModel
+				(CommonMethods.getProductModel(), CommonMethods.getColourHes()));
+	}
+	@Test
+	public void getMemberForCaceDevice() {
+		DeviceUtils.getMemberForCaceDevice(
+				CommonMethods.getListOfProducts(), CommonMethods.getleadMemberMap(), 
+				CommonMethods.getGroupp(), CommonMethods.getMemberListPojo(), "1231", "abc");
+	}
+	@Test
+	public void getBundleharwareTrupleForPaymCacheDevice() {
+		Set<String> bundleIds = new HashSet<>();
+		Set<BundleAndHardwareTuple> bundleAndHardwareTuple = new HashSet<>();
+		bundleAndHardwareTuple.add(CommonMethods.getBundleAndHardwareTuplee());
+		bundleIds.add("1231");
+		DeviceUtils.getBundleharwareTrupleForPaymCacheDevice
+		(bundleIds, CommonMethods.getBundleAndHardwareTuple(),
+				CommonMethods.getBundleAndHardwareTuple(), 
+				bundleAndHardwareTuple, CommonMethods.getleadMemberMap(), 
+				CommonMethods.getleadMemberMapp(), CommonMethods.getCommercialProductsListOfAccessories());
+	}
+	
+	
+	
 }

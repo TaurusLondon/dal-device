@@ -6,6 +6,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.vf.uk.dal.device.datamodel.product.DeviceFinancingOption;
 
 import lombok.Data;
+
+/**
+ * OfferAppliedPriceModel
+ * @author manoj.bera
+ *
+ */
 @Data
 public class OfferAppliedPriceModel {
 	@JsonProperty("id")

@@ -4,6 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
+/**
+ *  ItemAttribute
+ * @author manoj.bera
+ *
+ */
 @Data
 public class ItemAttribute {
 
@@ -18,9 +23,4 @@ public class ItemAttribute {
 
 	@JsonProperty("valueUOM")
 	private String valueUOM;
-
-	public ItemAttribute() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 }

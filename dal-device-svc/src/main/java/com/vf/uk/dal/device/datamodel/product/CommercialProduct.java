@@ -7,6 +7,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
+/**
+ * CommercialProduct
+ * @author manoj.bera
+ *
+ */
 @Data
 public class CommercialProduct {
 
@@ -158,7 +163,7 @@ public class CommercialProduct {
 	private PromoteAs promoteAs;
 	@JsonIgnore
 	@JsonProperty("MerchandisingVersion")
-	private String MerchandisingVersion;
+	private String merchandisingVersion;
 
 	@JsonProperty("leadPlanId")
 	private String leadPlanId;

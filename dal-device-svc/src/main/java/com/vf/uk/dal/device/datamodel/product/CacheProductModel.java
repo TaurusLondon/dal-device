@@ -6,6 +6,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
+/**
+ * CacheProductModel
+ * @author manoj.bera
+ *
+ */
 @Data
 public class CacheProductModel {
 

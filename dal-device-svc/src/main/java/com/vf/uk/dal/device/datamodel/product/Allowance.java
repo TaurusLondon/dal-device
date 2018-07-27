@@ -4,6 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
+/**
+ * Allowance
+ * @author manoj.bera
+ * @Data implemented for setter getter ,to string, hashcode
+ */
 @Data
 public class Allowance {
 	@JsonProperty("type")

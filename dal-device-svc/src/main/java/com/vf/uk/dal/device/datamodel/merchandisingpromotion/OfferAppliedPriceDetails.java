@@ -4,6 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
+/**
+ * OfferAppliedPriceDetails
+ * @author manoj.bera
+ *
+ */
 @Data
 public class OfferAppliedPriceDetails {
 	@JsonProperty("deviceId")
@@ -16,6 +21,4 @@ public class OfferAppliedPriceDetails {
 	private String offerCode;
 	@JsonProperty("journeyType")
 	private String journeyType;
-
-	
 }

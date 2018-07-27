@@ -4,6 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
+/**
+ * Equipment
+ * @author manoj.bera
+ *
+ */
 @Data
 public class Equipment {
 

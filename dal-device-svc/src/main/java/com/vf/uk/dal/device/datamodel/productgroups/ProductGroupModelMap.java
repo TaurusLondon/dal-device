@@ -6,6 +6,12 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
+
+/**
+ * ProductGroupModelMap
+ * @author manoj.bera
+ *
+ */
 @Data
 public class ProductGroupModelMap {
 

@@ -6,6 +6,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
+/**
+ * Group
+ * @author manoj.bera
+ *
+ */
 @Data
 public class Group {
 
@@ -20,8 +25,4 @@ public class Group {
 
 	@JsonProperty("specifications")
 	private List<Specification> specifications;
-
-	public Group() {
-		super();
-	}
 }

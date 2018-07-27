@@ -4,6 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
+/**
+ * Media
+ * @author manoj.bera
+ *
+ */
 @Data
 public class Media {
 	@JsonProperty("id")

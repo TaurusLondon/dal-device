@@ -27,6 +27,7 @@ import com.vf.uk.dal.device.svc.impl.DeviceEntityServiceImpl;
 import com.vf.uk.dal.device.svc.impl.DeviceMakeAndModelServiceImpl;
 import com.vf.uk.dal.device.svc.impl.DeviceRecommendationServiceImpl;
 import com.vf.uk.dal.device.svc.impl.DeviceServiceImpl;
+import com.vf.uk.dal.device.utils.DeviceUtils;
 import com.vf.uk.dal.device.utils.ElasticSearchUtils;
 import com.vf.uk.dal.device.utils.ResponseMappingHelper;
 
@@ -61,7 +62,9 @@ import com.vf.uk.dal.device.utils.ResponseMappingHelper;
 	@Bean public RegistryClient getRegistryClient() {
 		return new RegistryClient();
 	}
-
+	@Bean public DeviceUtils getDeviceUtils(){
+		return new DeviceUtils();
+	}
 	
 	@Bean public Environment getEnvironment() {
 		return new Environment();

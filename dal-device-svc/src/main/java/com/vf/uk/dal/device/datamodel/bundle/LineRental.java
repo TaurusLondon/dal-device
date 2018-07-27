@@ -4,6 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
+/**
+ *  LineRental
+ * @author manoj.bera
+ *
+ */
 @Data
 public class LineRental {
 
@@ -12,8 +17,4 @@ public class LineRental {
 
 	@JsonProperty("lineRentalAmount")
 	private Long lineRentalAmount;
-
-	public LineRental() {
-		super();
-	}
 }
