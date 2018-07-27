@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -74,7 +75,7 @@ public class DeviceServiceCommonUtility {
 				if (bazaarVoice != null) {
 					if (!bazaarVoice.getJsonsource().isEmpty()) {
 						org.json.JSONObject jSONObject = new org.json.JSONObject(bazaarVoice.getJsonsource());
-						if (!"{}".toString().equals(jSONObject.get("Includes"))) {
+						if (!StringUtils.equals("{}", jSONObject.get("Includes").toString())) {
 							org.json.JSONObject includes = jSONObject.getJSONObject("Includes");
 							org.json.JSONObject products = includes.getJSONObject("Products");
 							Iterator<?> level = products.keys();
