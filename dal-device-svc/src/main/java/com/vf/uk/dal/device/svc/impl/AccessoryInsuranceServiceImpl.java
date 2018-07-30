@@ -254,7 +254,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 		return insurance;
 	}
 
-	public static BundleDeviceAndProductsList setBundleDeviceAndProductsList(String deviceId, String journeyType,
+	public static BundleDeviceAndProductsList setBundleDeviceAndProductsList(String journeyType,String deviceId,
 			String offerCode, List<String> listOfValidAccesoryIds) {
 		BundleDeviceAndProductsList bundleDeviceAndProductsList = new BundleDeviceAndProductsList();
 		bundleDeviceAndProductsList.setAccessoryList(listOfValidAccesoryIds);
