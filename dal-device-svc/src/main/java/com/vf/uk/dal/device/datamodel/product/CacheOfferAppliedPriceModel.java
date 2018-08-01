@@ -50,7 +50,7 @@ public class CacheOfferAppliedPriceModel {
 	@JsonProperty("oneOffGrossPrice")
 	private Float oneOffGrossPrice;
 
-	@JsonProperty("financingOptions")
+	@JsonProperty("oneOffNetPrice")
 	private Float oneOffNetPrice;
 
 	@JsonProperty("oneOffVatPrice")
