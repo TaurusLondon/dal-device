@@ -817,14 +817,14 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 						listOfDeviceGroupMember.add(entityMember);
 						CommercialProduct commercialProduct = commerProdMemMap.get(member.getId());
 						commercialProductsMatchedMemList.add(commercialProduct);
+						List<String> listOfCompatiblePlanIds = commercialProduct
+								.getListOfCompatiblePlanIds() == null ? Collections.emptyList()
+										: commercialProduct.getListOfCompatiblePlanIds();
 						if (StringUtils.isNotBlank(bundleId)
-								&& commercialProduct.getListOfCompatiblePlanIds().contains(bundleId)) {
+								&& listOfCompatiblePlanIds.contains(bundleId)) {
 							getListOfLeadPlan(bundleId, bundleAndHardwareTupleList, bundleIdMap, fromPricingMap,
 									leadPlanIdMap, listofLeadPlan, member, commercialProduct);
 						} else {
-							List<String> listOfCompatiblePlanIds = commercialProduct
-									.getListOfCompatiblePlanIds() == null ? Collections.emptyList()
-											: commercialProduct.getListOfCompatiblePlanIds();
 							bundleIdMap.put(commercialProduct.getId(), false);
 							if (StringUtils.isNotBlank(commercialProduct.getLeadPlanId())
 									&& isJourneySpecificLeadPlan(commerBundleIdMap, commercialProduct.getLeadPlanId(),
