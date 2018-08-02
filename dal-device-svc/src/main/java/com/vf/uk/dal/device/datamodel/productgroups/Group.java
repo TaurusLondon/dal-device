@@ -23,8 +23,8 @@ public class Group {
 
 	@JsonProperty("groupType")
 	private String groupType;
+	
 	@JsonIgnore
-	@JsonProperty("version")
 	private String version;
 	@JsonProperty("members")
 	private List<Member> members;
