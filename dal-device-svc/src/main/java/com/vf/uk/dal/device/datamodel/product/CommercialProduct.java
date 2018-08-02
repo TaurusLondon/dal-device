@@ -71,8 +71,8 @@ public class CommercialProduct {
 
 	@JsonProperty("omniChannelDiscountEligible")
 	private boolean omniChannelDiscountEligible;
+	
 	@JsonIgnore
-	@JsonProperty("version")
 	private String version;
 
 	@JsonProperty("seoCanonical")
@@ -110,8 +110,8 @@ public class CommercialProduct {
 
 	@JsonProperty("isBattery")
 	private boolean isBattery;
+	
 	@JsonIgnore
-	@JsonProperty("metadataVersion")
 	private String metadataVersion;
 
 	@JsonProperty("displayName")
@@ -161,8 +161,8 @@ public class CommercialProduct {
 
 	@JsonProperty("promoteAs")
 	private PromoteAs promoteAs;
+	
 	@JsonIgnore
-	@JsonProperty("MerchandisingVersion")
 	private String merchandisingVersion;
 
 	@JsonProperty("leadPlanId")
