@@ -334,5 +334,13 @@ public class Constants {
 	public static final String numberExp = "[0-9]{6}";
 	public static final String creditLimitExp = "[0-9]*";
 	public static final String zero = "0";
+	public static final String HANDSET_ONLINE_MODEL = "handset_online_model";
+	public static final String PRODUCT_MAKE = "productMake";
+	public static final String PRODUCT_MODEL = "productModel";
+	public static final String STRING_SIZE = "size";
+	public static final String STRING_PRODUCT_GROUP_TYPE = "productgroupType";
+	public static final String STRING_COLOR = "color";
+	public static final String STRING_LEAD_NON_UPGRADE_DEVICE_ID = "leadNonUpgradeDeviceId";
+	public static final String STRING_LEAD_UPGRADED_DEVICE_ID = "leadUpgradeDeviceId";
 
 }

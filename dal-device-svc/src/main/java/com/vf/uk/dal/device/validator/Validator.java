@@ -425,4 +425,97 @@ public class Validator {
 			throw new ApplicationException(ExceptionMessages.INVALID_DEVICEID_OFFER_CODE);
 		}
 	}
+	/**
+	 * 
+	 * @param deviceId
+	 * @param journeyType
+	 * @param make
+	 * @param model
+	 * @param groupType
+	 * @param sort
+	 * @param pageNumber
+	 * @param pageSize
+	 * @param color
+	 * @param operatingSystem
+	 * @param capacity
+	 * @param mustHaveFeatures
+	 * @return
+	 */
+	public static boolean validateNullValuesFOrHandsetOnlineModel(String deviceId, String journeyType,
+			String make, String model, String groupType, String sort, Integer pageNumber, Integer pageSize,
+			String color, String operatingSystem, String capacity, String mustHaveFeatures) {
+		boolean flag =false;
+		if(validateMakeModelDeviceIDNull(make,model,deviceId)
+		&& validateJourneyTypeGroupType(journeyType,groupType)
+		&& validateSortPageNumberSizeOSCOlorCapacity(sort,pageNumber,pageSize,color,operatingSystem,capacity,mustHaveFeatures)){
+			flag= true;
+		}
+		return flag;
+	}
+	/**
+	 * 
+	 * @param sort
+	 * @param pageNumber
+	 * @param pageSize
+	 * @param color
+	 * @param operatingSystem
+	 * @param capacity
+	 * @param mustHaveFeatures
+	 * @return
+	 */
+	private static boolean validateSortPageNumberSizeOSCOlorCapacity(String sort, Integer pageNumber, Integer pageSize, String color, String operatingSystem, String capacity, String mustHaveFeatures) {
+		boolean flag = false;
+		if(validateSortPageNumberPageSize(sort,pageNumber,pageSize,color,operatingSystem)
+		&& StringUtils.isBlank(capacity)&& StringUtils.isBlank(mustHaveFeatures)){
+			flag = true;
+		}
+		return flag; 
+	}
+	/**
+	 * 
+	 * @param sort
+	 * @param pageNumber
+	 * @param pageSize
+	 * @param color
+	 * @param operatingSystem
+	 * @return
+	 */
+	private static boolean validateSortPageNumberPageSize(String sort, Integer pageNumber, Integer pageSize, String color, String operatingSystem) {
+		boolean flag = false;
+		if(validatePageSortNumber(sort , pageNumber, pageSize) && StringUtils.isBlank(color)&& StringUtils.isBlank(operatingSystem)){
+			flag=true;
+		}
+		return flag;
+	}
+	/**
+	 * 
+	 * @param sort
+	 * @param pageNumber
+	 * @param pageSize
+	 * @return
+	 */
+	private static boolean validatePageSortNumber(String sort, Integer pageNumber, Integer pageSize) {
+		return StringUtils.isBlank(sort)&& 
+				(pageNumber ==null)&& (pageSize ==null);
+	}
+	/**
+	 * 
+	 * @param journeyType
+	 * @param groupType
+	 * @return
+	 */
+	private static boolean validateJourneyTypeGroupType(String journeyType, String groupType) {
+		return StringUtils.isBlank(journeyType) && StringUtils.isBlank(groupType);
+	}
+	/**
+	 * 
+	 * @param make
+	 * @param model
+	 * @param deviceId
+	 * @return
+	 */
+	private static boolean validateMakeModelDeviceIDNull(String make, String model, String deviceId) {
+		
+		return  StringUtils.isBlank(make) && StringUtils.isBlank(model) && StringUtils.isBlank(deviceId);
+	}
 }

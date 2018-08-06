@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.datamodel.bundle.BundleModel;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
+import com.vf.uk.dal.device.datamodel.handsetonlinemodel.HandsetOnlineModelList;
 import com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotionModel;
 import com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceModel;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
@@ -296,6 +297,24 @@ public class ResponseMappingHelper {
 					"::::::Exception occurred preparing List of product Group from ES response:::::: " + e);
 		}
 		return facetField;
+
+	}
+	/**
+	 * 
+	 * @param response
+	 * @return
+	 */
+	public HandsetOnlineModelList getOnlineHandsetModelFromJson(SearchResponse response) {
+
+		HandsetOnlineModelList onlineHandsetModel = new HandsetOnlineModelList();
+
+		try { 
+			onlineHandsetModel = esUtils.getObject(response, HandsetOnlineModelList.class);
+		} catch (Exception e) {
+			LogHelper.error(ResponseMappingHelper.class,
+					"::::::Exception occurred preparing Handset Online Model list from ES response:::::: " + e);
+		}
+		return onlineHandsetModel;
 
 	}
 }

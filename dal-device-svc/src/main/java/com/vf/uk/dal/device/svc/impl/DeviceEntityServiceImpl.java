@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
+import com.vf.uk.dal.device.datamodel.handsetonlinemodel.HandsetOnlineModelList;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
 import com.vf.uk.dal.device.datamodel.product.ProductModel;
 import com.vf.uk.dal.device.datamodel.productgroups.Group;
@@ -48,7 +49,7 @@ public class DeviceEntityServiceImpl implements DeviceEntityService {
 			LogHelper.error(this, ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID + " : " + productIdOrName);
 			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID);
 		}
-		return deviceEs.getListOfCommercialProduct(listOfProdIdsOrNames);
+		return listOfCommercialProduct;
 	}
 
 	/**
@@ -149,5 +150,34 @@ public class DeviceEntityServiceImpl implements DeviceEntityService {
 				}
 			});
 		});
+	}
+	/**
+	 * 
+	 * @param deviceId
+	 * @param journeyType
+	 * @param make
+	 * @param model
+	 * @param groupType
+	 * @param sort
+	 * @param pageNumber
+	 * @param pageSize
+	 * @param color
+	 * @param operatingSystem
+	 * @param capacity
+	 * @param mustHaveFeatures
+	 * @return
+	 */
+	@Override
+	public HandsetOnlineModelList getHandsetOnlineModelDetails(String deviceId, String journeyType,
+			String make, String model, String groupType, String sort,
+			Integer pageNumber, Integer pageSize, String color, String operatingSystem, String capacity,
+			String mustHaveFeatures) {
+		HandsetOnlineModelList listOfHandsetOnlineModel = deviceEs.getListOfHandsetOnlineModel(deviceId,journeyType,make,model,groupType,
+				sort,pageNumber,pageSize,color,operatingSystem,capacity,mustHaveFeatures);
+		if ((listOfHandsetOnlineModel == null)) {
+			LogHelper.error(this, "Null values received for given details" );
+			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_HANDSET_ONLINE_MODEL);
+		}
+		return listOfHandsetOnlineModel;
 	}
 }

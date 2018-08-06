@@ -633,4 +633,154 @@ public class DeviceQueryBuilderHelper {
 		}
 		return searchRequest;
 	}
+	/**
+	 * 
+	 * @param deviceId
+	 * @param journeyType
+	 * @param make
+	 * @param model
+	 * @param groupType
+	 * @param sort
+	 * @param pageNumber
+	 * @param pageSize
+	 * @param color
+	 * @param operatingSystem
+	 * @param capacity
+	 * @param mustHaveFeatures
+	 * @return
+	 */
+	public static SearchRequest searchQueryForListOfHandsetOnlineModel(String deviceId, String journeyType,
+			String make, String model, String groupType, String sort,
+			Integer pageNumber, Integer pageSize, String color, String operatingSystem, String capacity,
+			String mustHaveFeatures) {
+		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
+		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
+		try {
+			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
+			
+			setPageNumberAndSize(pageNumber, pageSize, searchRequestBuilder);
+			BoolQueryBuilder qb = QueryBuilders.boolQuery();
+			
+			qb.must(QueryBuilders.termQuery(Constants.STRING_ALL_TYPE + Constants.STRING_KEY_WORD,
+					Constants.HANDSET_ONLINE_MODEL));
+			
+			setMakeQuery(make, qb);
+			setModelQuery(model, qb);
+			setSizeQuery(capacity, qb);
+			setProductGroupType(groupType, qb);
+			setColorQuery(color, qb);
+			if (StringUtils.isNotBlank(operatingSystem) && !"\"\"".equals(operatingSystem)) {
+				String[] os = operatingSystem.replace("\"", "").split(",");
+				qb.must(QueryBuilders.termsQuery(Constants.STRING_OPERATING_SYSTEM + Constants.STRING_KEY_WORD,
+						Arrays.asList(os)));
+			}
+			if (StringUtils.isNotBlank(mustHaveFeatures) && !"\"\"".equals(mustHaveFeatures)) {
+				String[] mhf = mustHaveFeatures.replace("\"", "").split(",");
+				qb.must(QueryBuilders.termsQuery(Constants.STRING_MUST_HAVE_FEATURES_WITH_COLON + Constants.STRING_KEY_WORD,
+						Arrays.asList(mhf)));
+			}
+			if (StringUtils.isNotBlank(sort) && (StringUtils.isBlank(journeyType)
+					|| Constants.JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyType)
+					|| Constants.STRING_SECOND_LINE.equalsIgnoreCase(journeyType))) {
+				qb.must(QueryBuilders.wildcardQuery(Constants.STRING_LEAD_NON_UPGRADE_DEVICE_ID, "*"));
+			}
+			if (StringUtils.isNotBlank(sort) && Constants.STRING_UPGRADE.equalsIgnoreCase(journeyType)) {
+				qb.must(QueryBuilders.wildcardQuery(Constants.STRING_LEAD_UPGRADED_DEVICE_ID, "*"));
+			}
+			if(StringUtils.isNotBlank(deviceId)){
+				qb.must(QueryBuilders.termQuery("device."+deviceId+".deviceId" + Constants.STRING_KEY_WORD, deviceId));
+			}
+			searchRequestBuilder.query(qb);
+			LogHelper.info(DeviceQueryBuilderHelper.class,
+					" <-----  Setting up Elasticsearch parameters and query  ----->");
+			
+			searchRequest.source(searchRequestBuilder);
+
+		} catch (Exception e) {
+			LogHelper.error(DeviceQueryBuilderHelper.class,
+					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
+		}
+		return searchRequest;
+	}
+	/**
+	 * 
+	 * @param color
+	 * @param qb
+	 */
+	private static void setColorQuery(String color, BoolQueryBuilder qb) {
+		if (StringUtils.isNotBlank(color) && !"\"\"".equals(color)) {
+			String[] colors = color.replace("\"", "").split(",");
+			qb.must(QueryBuilders.termsQuery(Constants.STRING_COLOR + Constants.STRING_KEY_WORD,
+					Arrays.asList(colors)));
+		}
+	}
+	/**
+	 * 
+	 * @param groupType
+	 * @param qb
+	 */
+	private static void setProductGroupType(String groupType, BoolQueryBuilder qb) {
+		if (StringUtils.isNotBlank(groupType) && !"\"\"".equals(groupType)) {
+			String[] groupTypes = groupType.replace("\"", "").split(",");
+			qb.must(QueryBuilders.matchPhraseQuery(Constants.STRING_PRODUCT_GROUP_TYPE, groupTypes));
+		}
+	}
+	/**
+	 * 
+	 * @param capacity
+	 * @param qb
+	 */
+	private static void setSizeQuery(String capacity, BoolQueryBuilder qb) {
+		if (StringUtils.isNotBlank(capacity) && !"\"\"".equals(capacity)) {
+			String[] capa = capacity.replace("\"", "").split(",");
+			qb.must(QueryBuilders.termsQuery(Constants.STRING_SIZE + Constants.STRING_KEY_WORD,
+					Arrays.asList(capa)));
+		}
+	}
+	/**
+	 * 
+	 * @param model
+	 * @param qb
+	 */
+	private static void setModelQuery(String model, BoolQueryBuilder qb) {
+		if (StringUtils.isNotBlank(model)) {
+			String[] modelArray = model.replace("\"", "").split(",");
+			qb.must(QueryBuilders.termQuery(Constants.PRODUCT_MODEL + Constants.STRING_KEY_WORD,
+					Arrays.asList(modelArray)));
+		}
+	}
+	/**
+	 * 
+	 * @param make
+	 * @param qb
+	 */
+	private static void setMakeQuery(String make, BoolQueryBuilder qb) {
+		if (StringUtils.isNotBlank(make)) {
+			String[] makeArray = make.replace("\"", "").split(",");
+			qb.must(QueryBuilders.termsQuery(Constants.PRODUCT_MAKE + Constants.STRING_KEY_WORD,
+					Arrays.asList(makeArray)));
+		}
+	}
+	/**
+	 * 
+	 * @param pageNumber
+	 * @param pageSize
+	 * @param searchRequestBuilder
+	 */
+	private static void setPageNumberAndSize(Integer pageNumber, Integer pageSize,
+			SearchSourceBuilder searchRequestBuilder) {
+		
+		if(pageNumber > 0){
+			searchRequestBuilder.from(pageNumber);
+		}
+		else{
+		searchRequestBuilder.from(from);
+		}
+		if(pageSize > 0){
+			searchRequestBuilder.size(pageSize);
+		}
+		else{
+			searchRequestBuilder.size(size);
+		}
+	}
 }

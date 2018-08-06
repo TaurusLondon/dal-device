@@ -13,6 +13,7 @@ import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.datamodel.bundle.BundleModel;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
+import com.vf.uk.dal.device.datamodel.handsetonlinemodel.HandsetOnlineModelList;
 import com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotionModel;
 import com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceModel;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
@@ -287,5 +288,33 @@ public class DeviceESHelper {
 		SearchResponse bundleResponse = deviceDao.getResponseFromDataSource(queryContextMap);
 		LogHelper.info(this, "converting elasticsearch response into standard json object response");
 		return response.getListOfMerchandisingPromotionFromJson(bundleResponse);
+	}
+	/**
+	 * 
+	 * @param deviceId
+	 * @param journeyType
+	 * @param make
+	 * @param model
+	 * @param groupType
+	 * @param sort
+	 * @param pageNumber
+	 * @param pageSize
+	 * @param color
+	 * @param operatingSystem
+	 * @param capacity
+	 * @param mustHaveFeatures
+	 * @return
+	 */
+	public HandsetOnlineModelList getListOfHandsetOnlineModel(String deviceId, String journeyType,
+			String make, String model, String groupType, String sort,
+			Integer pageNumber, Integer pageSize, String color, String operatingSystem, String capacity,
+			String mustHaveFeatures) {
+		SearchRequest queryContextMap = DeviceQueryBuilderHelper
+				.searchQueryForListOfHandsetOnlineModel(deviceId,journeyType,make,model,groupType,
+						sort,pageNumber,pageSize,color,operatingSystem,capacity,
+						mustHaveFeatures);
+		SearchResponse handsetModelList = deviceDao.getResponseFromDataSource(queryContextMap);
+		LogHelper.info(this, "converting elasticsearch response into List Of Handset Online Model object response");
+		return response.getOnlineHandsetModelFromJson(handsetModelList);
 	}
 }
