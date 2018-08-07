@@ -7,6 +7,11 @@ import lombok.Data;
 /**
  * Specification
  */
+/**
+ * 
+ * @author sahil.monga
+ *
+ */
 @Data
 public class Specification {
 	@JsonProperty("name")

@@ -669,27 +669,11 @@ public class DeviceQueryBuilderHelper {
 			setSizeQuery(capacity, qb);
 			setProductGroupType(groupType, qb);
 			setColorQuery(color, qb);
-			if (StringUtils.isNotBlank(operatingSystem) && !"\"\"".equals(operatingSystem)) {
-				String[] os = operatingSystem.replace("\"", "").split(",");
-				qb.must(QueryBuilders.termsQuery(Constants.STRING_OPERATING_SYSTEM + Constants.STRING_KEY_WORD,
-						Arrays.asList(os)));
-			}
-			if (StringUtils.isNotBlank(mustHaveFeatures) && !"\"\"".equals(mustHaveFeatures)) {
-				String[] mhf = mustHaveFeatures.replace("\"", "").split(",");
-				qb.must(QueryBuilders.termsQuery(Constants.STRING_MUST_HAVE_FEATURES_WITH_COLON + Constants.STRING_KEY_WORD,
-						Arrays.asList(mhf)));
-			}
-			if (StringUtils.isNotBlank(sort) && (StringUtils.isBlank(journeyType)
-					|| Constants.JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyType)
-					|| Constants.STRING_SECOND_LINE.equalsIgnoreCase(journeyType))) {
-				qb.must(QueryBuilders.wildcardQuery(Constants.STRING_LEAD_NON_UPGRADE_DEVICE_ID, "*"));
-			}
-			if (StringUtils.isNotBlank(sort) && Constants.STRING_UPGRADE.equalsIgnoreCase(journeyType)) {
-				qb.must(QueryBuilders.wildcardQuery(Constants.STRING_LEAD_UPGRADED_DEVICE_ID, "*"));
-			}
-			if(StringUtils.isNotBlank(deviceId)){
-				qb.must(QueryBuilders.termQuery("device."+deviceId+".deviceId" + Constants.STRING_KEY_WORD, deviceId));
-			}
+			setOperatingSystem(operatingSystem, qb);
+			setMustHaveFeatures(mustHaveFeatures, qb);
+			setNonLeadUpgradeDeviceID(journeyType, sort, qb);
+			setLeadUpgradeDeviceId(journeyType, sort, qb);
+			setDeviceId(deviceId, qb);
 			searchRequestBuilder.query(qb);
 			LogHelper.info(DeviceQueryBuilderHelper.class,
 					" <-----  Setting up Elasticsearch parameters and query  ----->");
@@ -701,6 +685,64 @@ public class DeviceQueryBuilderHelper {
 					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
 		}
 		return searchRequest;
+	}
+	/**
+	 * 
+	 * @param deviceId
+	 * @param qb
+	 */
+	private static void setDeviceId(String deviceId, BoolQueryBuilder qb) {
+		if(StringUtils.isNotBlank(deviceId)){
+			qb.must(QueryBuilders.termQuery("device."+deviceId+".deviceId" + Constants.STRING_KEY_WORD, deviceId));
+		}
+	}
+	/**
+	 * 
+	 * @param journeyType
+	 * @param sort
+	 * @param qb
+	 */
+	private static void setLeadUpgradeDeviceId(String journeyType, String sort, BoolQueryBuilder qb) {
+		if (StringUtils.isNotBlank(sort) && Constants.STRING_UPGRADE.equalsIgnoreCase(journeyType)) {
+			qb.must(QueryBuilders.wildcardQuery(Constants.STRING_LEAD_UPGRADED_DEVICE_ID, "*"));
+		}
+	}
+	/**
+	 * 
+	 * @param journeyType
+	 * @param sort
+	 * @param qb
+	 */
+	private static void setNonLeadUpgradeDeviceID(String journeyType, String sort, BoolQueryBuilder qb) {
+		if (StringUtils.isNotBlank(sort) && (StringUtils.isBlank(journeyType)
+				|| Constants.JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyType)
+				|| Constants.STRING_SECOND_LINE.equalsIgnoreCase(journeyType))) {
+			qb.must(QueryBuilders.wildcardQuery(Constants.STRING_LEAD_NON_UPGRADE_DEVICE_ID, "*"));
+		}
+	}
+	/**
+	 * 
+	 * @param mustHaveFeatures
+	 * @param qb
+	 */
+	private static void setMustHaveFeatures(String mustHaveFeatures, BoolQueryBuilder qb) {
+		if (StringUtils.isNotBlank(mustHaveFeatures) && !"\"\"".equals(mustHaveFeatures)) {
+			String[] mhf = mustHaveFeatures.replace("\"", "").split(",");
+			qb.must(QueryBuilders.termsQuery(Constants.STRING_MUST_HAVE_FEATURES_WITH_COLON + Constants.STRING_KEY_WORD,
+					Arrays.asList(mhf)));
+		}
+	}
+	/**
+	 * 
+	 * @param operatingSystem
+	 * @param qb
+	 */
+	private static void setOperatingSystem(String operatingSystem, BoolQueryBuilder qb) {
+		if (StringUtils.isNotBlank(operatingSystem) && !"\"\"".equals(operatingSystem)) {
+			String[] os = operatingSystem.replace("\"", "").split(",");
+			qb.must(QueryBuilders.termsQuery(Constants.STRING_OPERATING_SYSTEM + Constants.STRING_KEY_WORD,
+					Arrays.asList(os)));
+		}
 	}
 	/**
 	 * 

@@ -335,7 +335,7 @@ public class Validator {
 	 */
 	public static Double validateCreditLimitAndIds(String make, String model, String bundleId, String deviceId,
 			String creditLimit) {
-		Double creditLimitParam = null;
+		Double creditLimitParam;
 		if (deviceId != null && !deviceId.matches(Constants.numberExp)) {
 			LogHelper.error(Validator.class, ExceptionMessages.INVALID_DEVICE);
 			throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);

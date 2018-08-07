@@ -10,8 +10,11 @@ import lombok.Data;
 /**
  * MetaData
  */
-
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-01-02T12:25:09.565Z")
+/**
+ * 
+ * @author sahil.monga
+ *
+ */
 @Data
 public class MetaData {
 	@JsonProperty("seoCanonical")

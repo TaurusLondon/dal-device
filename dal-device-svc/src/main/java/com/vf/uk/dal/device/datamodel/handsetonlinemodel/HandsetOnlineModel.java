@@ -6,7 +6,11 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
-
+/**
+ * 
+ * @author sahil.monga
+ *
+ */
 @Data
 public class HandsetOnlineModel {
 	@JsonProperty("productGroupName")

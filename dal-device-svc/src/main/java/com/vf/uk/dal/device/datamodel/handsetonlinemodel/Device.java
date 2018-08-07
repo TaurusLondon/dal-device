@@ -5,7 +5,11 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
-
+/**
+ * 
+ * @author sahil.monga
+ *
+ */
 @Data
 public class Device {
 	

@@ -7,7 +7,11 @@ import lombok.Data;
 /**
  * MerchandisingPromotions
  */
-
+/**
+ * 
+ * @author sahil.monga
+ *
+ */
 @Data
 public class MerchandisingPromotions {
 	@JsonProperty("promotionName")
