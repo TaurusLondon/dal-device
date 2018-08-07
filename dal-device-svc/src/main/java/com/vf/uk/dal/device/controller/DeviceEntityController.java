@@ -208,8 +208,7 @@ public class DeviceEntityController {
 			@ApiParam(value = "One or more of the following token separated by comma. \"physicalKeyboard\", \"greatCamera\", \"goodBattery\", \"bigScreen\", \"4GEnabled\", 'lightWeight\"") @RequestParam(value = "mustHaveFeatures", required = false) String mustHaveFeatures) {
 		HandsetOnlineModelList handsetOnlineModel;
 
-		if (Validator.validateNullValuesFOrHandsetOnlineModel(deviceId, journeyType, make, model, groupType, sort,
-				pageNumber, pageSize, color, operatingSystem, capacity, mustHaveFeatures)) {
+		if (Validator.validateNullValuesFOrHandsetOnlineModel(deviceId, journeyType, make, model, groupType, sort, pageNumber, pageSize, color, operatingSystem, capacity, mustHaveFeatures)) {
 			LogHelper.error(this,
 					"Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
 			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);

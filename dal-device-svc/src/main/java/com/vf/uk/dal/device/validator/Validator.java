@@ -45,7 +45,7 @@ public class Validator {
 	 * @return
 	 */
 	public static boolean validateGetListOfDeviceTile(Map<String, String> queryParams) {
-		List<String> validParams = Arrays.asList("make", "model", Constants.GROUP_TYPE, "creditLimit", "journeyType",
+		List<String> validParams = Arrays.asList("make", "model", Constants.GROUP_TYPE, "creditLimit", Constants.JOURNEY_TYPE,
 				"deviceId", Constants.OFFER_CODE, "bundleId", "sort", "pageSize", "pageNumber");
 
 		return validateParams(queryParams, validParams);
@@ -340,10 +340,7 @@ public class Validator {
 			LogHelper.error(Validator.class, ExceptionMessages.INVALID_DEVICE);
 			throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 		}
-		if (creditLimit != null) {
-			Float creditValue = validateForCreditLimit(creditLimit);
-			creditLimitParam = Double.valueOf(creditValue.toString());
-		}
+		creditLimitParam = validateCreditValue(creditLimit);
 		if ((StringUtils.isBlank(make) || "\"\"".equals(make))
 				&& (StringUtils.isBlank(model) || "\"\"".equals(model))) {
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_MAKE_MODEL);
@@ -356,6 +353,21 @@ public class Validator {
 		if (bundleId != null && (!bundleId.matches(Constants.numberExp) || bundleId.matches("[0]*"))) {
 			LogHelper.error(Validator.class, ExceptionMessages.INVALID_BUNDLE);
 			throw new ApplicationException(ExceptionMessages.INVALID_BUNDLE_ID);
+		}
+		return creditLimitParam;
+	}
+	/**
+	 * 
+	 * @param creditLimit
+	 * @return
+	 */
+	private static Double validateCreditValue(String creditLimit) {
+		Double creditLimitParam = null;
+		if (creditLimit != null) {
+			Float creditValue = validateForCreditLimit(creditLimit);
+			if(creditValue != null){
+			creditLimitParam = Double.valueOf(creditValue.toString());
+			}
 		}
 		return creditLimitParam;
 	}
@@ -440,7 +452,7 @@ public class Validator {
 	 * @param capacity
 	 * @param mustHaveFeatures
 	 * @return
-	 */
+	 */ 
 	public static boolean validateNullValuesFOrHandsetOnlineModel(String deviceId, String journeyType,
 			String make, String model, String groupType, String sort, Integer pageNumber, Integer pageSize,
 			String color, String operatingSystem, String capacity, String mustHaveFeatures) {

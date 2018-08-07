@@ -28,6 +28,9 @@ import com.vf.uk.dal.device.datamodel.bundle.DevicePrice;
 import com.vf.uk.dal.device.datamodel.bundle.ImageURL;
 import com.vf.uk.dal.device.datamodel.bundle.LineRental;
 import com.vf.uk.dal.device.datamodel.bundle.ServiceProduct;
+import com.vf.uk.dal.device.datamodel.handsetonlinemodel.Color;
+import com.vf.uk.dal.device.datamodel.handsetonlinemodel.HandsetOnlineModel;
+import com.vf.uk.dal.device.datamodel.handsetonlinemodel.HandsetOnlineModelList;
 import com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotionModel;
 import com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceModel;
 import com.vf.uk.dal.device.datamodel.product.BazaarVoice;
@@ -4115,5 +4118,61 @@ public class CommonMethods {
 		group1.setVersion("1.0");
 
 		return group;
+	}
+	public static 
+	com.vf.uk.dal.device.datamodel.handsetonlinemodel.Device getDeviceHandset() {
+		com.vf.uk.dal.device.datamodel.handsetonlinemodel.Device deviceDetails = new com.vf.uk.dal.device.datamodel.handsetonlinemodel.Device();
+		deviceDetails.setDeviceId("093353");
+		deviceDetails.setDisplayName("Apple Iphone 6s");
+		deviceDetails.setProductClass("handset");
+		List<String> productLines = new ArrayList<String>();
+		productLines.add("Handset");
+		productLines.add("Device");
+		productLines.add("Accesory");
+		deviceDetails.setProductLines(productLines);
+		List<com.vf.uk.dal.device.datamodel.handsetonlinemodel.SpecificationGroup> specificationGroupList = new ArrayList<com.vf.uk.dal.device.datamodel.handsetonlinemodel.SpecificationGroup>();
+		com.vf.uk.dal.device.datamodel.handsetonlinemodel.SpecificationGroup specificationGroup = new com.vf.uk.dal.device.datamodel.handsetonlinemodel.SpecificationGroup();
+		specificationGroup.setComparable(true);
+		specificationGroup.setGroupName("DEVICE");
+		specificationGroup.setPriority(1);
+
+		List<com.vf.uk.dal.device.datamodel.handsetonlinemodel.Specification> specifications = new ArrayList<com.vf.uk.dal.device.datamodel.handsetonlinemodel.Specification>();
+		com.vf.uk.dal.device.datamodel.handsetonlinemodel.Specification specification = new com.vf.uk.dal.device.datamodel.handsetonlinemodel.Specification();
+		specifications.add(specification);
+		specificationGroup.setSpecifications(specifications);
+		deviceDetails.setSpecificationsGroups(specificationGroupList);
+
+		com.vf.uk.dal.device.datamodel.handsetonlinemodel.MetaData metaData = null;
+		metaData = new com.vf.uk.dal.device.datamodel.handsetonlinemodel.MetaData();
+		metaData.setSeoCanonical("canonical");
+		metaData.setSeoDescription("Description");
+		metaData.setSeoIndex("Index");
+		metaData.setSeoKeyWords("keywords");
+
+		deviceDetails.setMetaData(metaData);
+		return deviceDetails;
+	}
+	public static HandsetOnlineModelList getOnlineHandsetModel() {
+		HandsetOnlineModelList homListObject = new HandsetOnlineModelList();
+		List<HandsetOnlineModel> homList = new ArrayList<>();
+		HandsetOnlineModel hm = new HandsetOnlineModel();
+		hm.set__type("__type");
+		hm.setColor(getColourHes());
+		List<Color> colorNameAndHex = new ArrayList<>();
+		Color color = new Color();
+		color.setColorHex("#212327");
+		color.setColorName("Black");
+		colorNameAndHex.add(color);
+		hm.setColorNameAndHex(colorNameAndHex);
+		Map<String,com.vf.uk.dal.device.datamodel.handsetonlinemodel.Device> device = new HashMap<>();
+		device.put("1212", getDeviceHandset());
+		hm.setDevice(device);
+		hm.setLeadNonUpgradeDeviceId("413412");
+		hm.setLeadUpgradeDeviceId("093353");
+		hm.setProductgroupType("PAYG");
+		homList.add(hm);
+		homListObject.setHandsetList(homList);
+		
+		return homListObject;
 	}
 }
