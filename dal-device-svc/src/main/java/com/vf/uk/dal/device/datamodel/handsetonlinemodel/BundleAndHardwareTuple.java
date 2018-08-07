@@ -12,6 +12,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+/**
+ * 
+ * @author sahil.monga
+ *
+ */
 public class BundleAndHardwareTuple {
 	@JsonProperty("hardwareId")
 	private String hardwareId = null;
