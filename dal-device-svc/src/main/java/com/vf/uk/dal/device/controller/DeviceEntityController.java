@@ -1,6 +1,7 @@
 package com.vf.uk.dal.device.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.MediaType;
@@ -19,14 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
-import com.vf.uk.dal.device.datamodel.handsetonlinemodel.HandsetOnlineModel;
 import com.vf.uk.dal.device.datamodel.handsetonlinemodel.HandsetOnlineModelList;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
 import com.vf.uk.dal.device.datamodel.productgroups.Group;
 import com.vf.uk.dal.device.datamodel.productgroups.ProductGroupModelMap;
 import com.vf.uk.dal.device.svc.DeviceEntityService;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
-import com.vf.uk.dal.device.validator.Validator;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -170,53 +169,21 @@ public class DeviceEntityController {
 	}
 	/**
 	 * 
-	 * @param deviceId
-	 * @param journeyType
-	 * @param make
-	 * @param model
-	 * @param groupType
-	 * @param sort
-	 * @param pageNumber
-	 * @param pageSize
-	 * @param color
-	 * @param operatingSystem
-	 * @param capacity
-	 * @param mustHaveFeatures
+	 * @param queryParam
 	 * @return
 	 */
-	@ApiOperation(value = "The service gets the details of the handset Online Model in the response.", notes = "The service gets the details of the Handset Online Model in the response.", response = HandsetOnlineModel.class, tags = {
-			"GetHandsetOnlineModelByDeviceTileMakeAndModelDeviceDetailsDeviceList" })
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Success", response = HandsetOnlineModelList.class, responseContainer = "List"),
-			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
 	@RequestMapping(value = "/productCatalog/device", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON })
-	public HandsetOnlineModelList getHandsetOnlineModel(
-			@ApiParam(value = "Device Id of the device tile being requested", required = false)@RequestParam(value="deviceId", required = false) String deviceId,
-			@ApiParam(value = "Journey Type", required = false)@RequestParam(value="journey Type", required = false) String journeyType,
-			@ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"apple\".", required = false) @RequestParam(value = "make", required = false) String make,
-			@ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"iphone7\".", required = false) @RequestParam(value = "model", required = false) String model,
-			@ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"DEVICE_PAYM\" or \"DEVICE_PAYG\" or \"DATA_DEVICE_PAYM\".", required = false) @RequestParam(value = "groupType", required = false) String groupType,
-			@ApiParam(value = "Values of attributes based on which solr will provide the sorted response, like Most Popular(Priority),Rating, New Releases, Brand(a-z)(z-a) but need to pass EquipmentMake to api, MonthlyPrice(lo-hi)(hi-lo)(Need to pass RecurringCharge).", required = false) @RequestParam(value = "sort", required = false) String sort,
-			@ApiParam(value = "Page Number") @RequestParam(value = "pageNumber", required = false) Integer pageNumber,
-			@ApiParam(value = "Page Size") @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "Filter by Colour of the device as in specification groups. Please note the value of this filter should be passed in double quotes. such as colour is \"Black\",\"Gold\"") @RequestParam(value = "color", required = false) String color,
-			@ApiParam(value = "Filter by OS of the device as in specification groups. Please note the value of this filter should be passed in double quotes. such as operatingSystem is \"iOS 10\",\"iOS 9\"") @RequestParam(value = "operatingSystem", required = false) String operatingSystem,
-			@ApiParam(value = "Filter by capacity of the device as in specification groups. Please note the value of this filter should be passed in double quotes. such as capacity is \"32 GB\",\"8 GB\"") @RequestParam(value = "capacity", required = false) String capacity,
-			@ApiParam(value = "One or more of the following token separated by comma. \"physicalKeyboard\", \"greatCamera\", \"goodBattery\", \"bigScreen\", \"4GEnabled\", 'lightWeight\"") @RequestParam(value = "mustHaveFeatures", required = false) String mustHaveFeatures) {
+	public HandsetOnlineModelList getHandsetOnlineModel(@RequestParam Map<String,String> queryParam) {
 		HandsetOnlineModelList handsetOnlineModel;
 
-		if (Validator.validateNullValuesFOrHandsetOnlineModel(deviceId, journeyType, make, model, groupType, sort, pageNumber, pageSize, color, operatingSystem, capacity, mustHaveFeatures)) {
+		if (queryParam.isEmpty()) {
 			LogHelper.error(this,
 					"Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
 			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
 		} else  {
 			LogHelper.info(this,
 					"Get the list of Online Handset Model ");
-			handsetOnlineModel = deviceEntiryService.getHandsetOnlineModelDetails(deviceId,journeyType,make,model,groupType,
-					sort,pageNumber,pageSize,color,operatingSystem,capacity,mustHaveFeatures);
+			handsetOnlineModel = deviceEntiryService.getHandsetOnlineModelDetails(queryParam);
 		}
 		return handsetOnlineModel;
 	}

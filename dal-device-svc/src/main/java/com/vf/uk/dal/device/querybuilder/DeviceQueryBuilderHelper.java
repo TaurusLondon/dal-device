@@ -2,6 +2,7 @@ package com.vf.uk.dal.device.querybuilder;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -49,11 +50,11 @@ public class DeviceQueryBuilderHelper {
 			qb.must(QueryBuilders.matchPhraseQuery(Constants.STRING_MODEL, model));
 			searchRequestBuilder.query(qb);
 			LogHelper.info(DeviceQueryBuilderHelper.class,
-					" <-----  Setting up Elasticsearch parameters and query  ----->");
+					" <-----  Setting up Elasticsearch parameters and query   ----->");
 			searchRequest.source(searchRequestBuilder);
 		} catch (Exception e) {
 			LogHelper.error(DeviceQueryBuilderHelper.class,
-					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
+					"::::::Exception in using Elasticsearch QueryBuilder  :::::: " + e);
 
 		}
 		return searchRequest;
@@ -75,12 +76,12 @@ public class DeviceQueryBuilderHelper {
 			qb.must(QueryBuilders.matchPhraseQuery(Constants.STRING_GROUP_TYPE, groupType));
 			searchRequestBuilder.query(qb);
 			LogHelper.info(DeviceQueryBuilderHelper.class,
-					" <-----  Setting up Elasticsearch parameters and query  ----->");
+					" <-----  Setting up Elasticsearch parameters and query ----->");
 			searchRequest.source(searchRequestBuilder);
 
 		} catch (Exception e) {
 			LogHelper.error(DeviceQueryBuilderHelper.class,
-					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
+					"::::::Exception in using Elasticsearch QueryBuilder:::::: " + e);
 
 		}
 		return searchRequest;
@@ -103,12 +104,12 @@ public class DeviceQueryBuilderHelper {
 			qb.must(QueryBuilders.matchPhraseQuery(Constants.STRING_GROUP_TYPE, groupType));
 			searchRequestBuilder.query(qb);
 			LogHelper.info(DeviceQueryBuilderHelper.class,
-					" <-----  Setting up Elasticsearch parameters and query  ----->");
+					" <------ Setting up Elasticsearch parameters and query  ----->");
 			searchRequest.source(searchRequestBuilder);
 
 		} catch (Exception e) {
 			LogHelper.error(DeviceQueryBuilderHelper.class,
-					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
+					"::::::Exception in using Elasticsearch QueryBuilder::::::: " + e);
 
 		}
 		return searchRequest;
@@ -123,19 +124,19 @@ public class DeviceQueryBuilderHelper {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
 		try {
-			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
+			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping----->");
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
 			qb.must(QueryBuilders.termQuery(Constants.STRING_ID + Constants.STRING_KEY_WORD, Id));
 			qb.must(QueryBuilders.termQuery(Constants.STRING_ALL_TYPE + Constants.STRING_KEY_WORD,
 					Constants.STRING_RAW + type));
 			searchRequestBuilder.query(qb);
 			LogHelper.info(DeviceQueryBuilderHelper.class,
-					" <-----  Setting up Elasticsearch parameters and query  ----->");
+					" <-----  Setting up Elasticsearch parameters and query ----->");
 			searchRequest.source(searchRequestBuilder);
 
 		} catch (Exception e) {
 			LogHelper.error(DeviceQueryBuilderHelper.class,
-					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
+					"::::::Exception in using Elasticsearch QueryBuilder : ::::: " + e);
 
 		}
 		return searchRequest;
@@ -154,7 +155,7 @@ public class DeviceQueryBuilderHelper {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
 		try {
-			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
+			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------->");
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(idsOrNames.size());
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
@@ -168,12 +169,12 @@ public class DeviceQueryBuilderHelper {
 					.boost(2.0F)).boost(3.0F);
 			searchRequestBuilder.query(qb);
 			LogHelper.info(DeviceQueryBuilderHelper.class,
-					" <-----  Setting up Elasticsearch parameters and query  ----->");
+					" <-----  Setting up Elasticsearch parameters and query  ------>");
 			searchRequest.source(searchRequestBuilder);
 
 		} catch (Exception e) {
 			LogHelper.error(DeviceQueryBuilderHelper.class,
-					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
+					":::::: Exception in using Elasticsearch QueryBuilder :::::: " + e);
 		}
 		return searchRequest;
 	}
@@ -187,7 +188,7 @@ public class DeviceQueryBuilderHelper {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
 		try {
-			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
+			LogHelper.info(DeviceQueryBuilderHelper.class, "<-----Elasticsearch query mapping------>");
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(listOfDeviceIds.size());
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
@@ -197,12 +198,12 @@ public class DeviceQueryBuilderHelper {
 					listOfDeviceIds.toArray()));
 			searchRequestBuilder.query(qb);
 			LogHelper.info(DeviceQueryBuilderHelper.class,
-					" <-----  Setting up Elasticsearch parameters and query  ----->");
+					" <-----   Setting up Elasticsearch parameters and query  ----->");
 			searchRequest.source(searchRequestBuilder);
 
 		} catch (Exception e) {
 			LogHelper.error(DeviceQueryBuilderHelper.class,
-					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
+					":::::: Exception in using Elasticsearch QueryBuilder :::::: " + e);
 
 		}
 		return searchRequest;
@@ -217,19 +218,19 @@ public class DeviceQueryBuilderHelper {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
 		try {
-			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
+			LogHelper.info(DeviceQueryBuilderHelper.class, "<-------Elasticsearch query mapping------>");
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(size);
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
 			qb.must(QueryBuilders.matchPhraseQuery(Constants.STRING_GROUP_TYPE, groupType));
 			searchRequestBuilder.query(qb);
 			LogHelper.info(DeviceQueryBuilderHelper.class,
-					" <-----  Setting up Elasticsearch parameters and query  ----->");
+					" <------  Setting up Elasticsearch parameters and query  ----->");
 			searchRequest.source(searchRequestBuilder);
 
 		} catch (Exception e) {
 			LogHelper.error(DeviceQueryBuilderHelper.class,
-					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
+					"::::::: Exception in using Elasticsearch QueryBuilder :::::: " + e);
 
 		}
 		return searchRequest;
@@ -253,12 +254,12 @@ public class DeviceQueryBuilderHelper {
 					Constants.STRING_RAW + Constants.STRING_PROMOTION));
 			searchRequestBuilder.query(qb);
 			LogHelper.info(DeviceQueryBuilderHelper.class,
-					" <-----  Setting up Elasticsearch parameters and query  ----->");
+					" <-------  Setting up Elasticsearch parameters and query  ----->");
 			searchRequest.source(searchRequestBuilder);
 
 		} catch (Exception e) {
 			LogHelper.error(DeviceQueryBuilderHelper.class,
-					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
+					"::::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
 
 		}
 		return searchRequest;
@@ -279,12 +280,12 @@ public class DeviceQueryBuilderHelper {
 					Constants.STRING_RAW + Constants.STRING_PROMOTION));
 			searchRequestBuilder.query(qb);
 			LogHelper.info(DeviceQueryBuilderHelper.class,
-					" <-----  Setting up Elasticsearch parameters and query  ----->");
+					" <------  Setting up Elasticsearch parameters and query  ----->");
 			searchRequest.source(searchRequestBuilder);
 
 		} catch (Exception e) {
 			LogHelper.error(DeviceQueryBuilderHelper.class,
-					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
+					":::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
 
 		}
 		return searchRequest;
@@ -299,7 +300,7 @@ public class DeviceQueryBuilderHelper {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
 		try {
-			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
+			LogHelper.info(DeviceQueryBuilderHelper.class, "<--------Elasticsearch query mapping------->");
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(size);
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
@@ -310,7 +311,7 @@ public class DeviceQueryBuilderHelper {
 
 		} catch (Exception e) {
 			LogHelper.error(DeviceQueryBuilderHelper.class,
-					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
+					"::::::Exception in using Elasticsearch QueryBuilder ::::::: " + e);
 
 		}
 		return searchRequest;
@@ -337,7 +338,7 @@ public class DeviceQueryBuilderHelper {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
 		try {
-			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
+			LogHelper.info(DeviceQueryBuilderHelper.class, "<--------Elasticsearch query mapping------>");
 			searchRequestBuilder.from(pageNumber);
 			searchRequestBuilder.size(pageSize);
 			if (StringUtils.isNotEmpty(sortOption) && sortOption.equalsIgnoreCase(Constants.SORT_OPTION_ASC)) {
@@ -360,7 +361,7 @@ public class DeviceQueryBuilderHelper {
 
 		} catch (Exception e) {
 			LogHelper.error(DeviceQueryBuilderHelper.class,
-					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
+					"::::::Exception in using Elasticsearch QueryBuilder ::::: " + e);
 
 		}
 		return searchRequest;
@@ -416,7 +417,7 @@ public class DeviceQueryBuilderHelper {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
 		try {
-			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
+			LogHelper.info(DeviceQueryBuilderHelper.class, "<-------Elasticsearch query mapping------->");
 			searchRequestBuilder.size(from);
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
 			qb.must(QueryBuilders.termQuery(Constants.STRING_TYPE + Constants.STRING_KEY_WORD, groupType));
@@ -451,7 +452,7 @@ public class DeviceQueryBuilderHelper {
 
 		} catch (Exception e) {
 			LogHelper.error(DeviceQueryBuilderHelper.class,
-					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
+					"::::::Exception in using Elasticsearch QueryBuilder :::::::: " + e);
 
 		}
 		return searchRequest;
@@ -466,7 +467,7 @@ public class DeviceQueryBuilderHelper {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
 		try {
-			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
+			LogHelper.info(DeviceQueryBuilderHelper.class, "<--------Elasticsearch query mapping-------->");
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(deviceIds.size());
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
@@ -478,7 +479,7 @@ public class DeviceQueryBuilderHelper {
 
 		} catch (Exception e) {
 			LogHelper.error(DeviceQueryBuilderHelper.class,
-					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
+					"::::::::Exception in using Elasticsearch QueryBuilder :::::::: " + e);
 
 		}
 		return searchRequest;
@@ -493,7 +494,7 @@ public class DeviceQueryBuilderHelper {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
 		try {
-			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
+			LogHelper.info(DeviceQueryBuilderHelper.class, "<-----Elasticsearch query mapping----->");
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(bundleIds.size());
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
@@ -505,7 +506,7 @@ public class DeviceQueryBuilderHelper {
 
 		} catch (Exception e) {
 			LogHelper.error(DeviceQueryBuilderHelper.class,
-					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
+					":::::: Exception in using Elasticsearch QueryBuilder  :::::: " + e);
 
 		}
 		return searchRequest;
@@ -523,7 +524,7 @@ public class DeviceQueryBuilderHelper {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
 		try {
-			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
+			LogHelper.info(DeviceQueryBuilderHelper.class, "<-------Elasticsearch query mapping------->");
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(size);
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
@@ -536,7 +537,7 @@ public class DeviceQueryBuilderHelper {
 
 		} catch (Exception e) {
 			LogHelper.error(DeviceQueryBuilderHelper.class,
-					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
+					":::::: Exception in using Elasticsearch QueryBuilder  :::::: " + e);
 
 		}
 		return searchRequest;
@@ -553,7 +554,7 @@ public class DeviceQueryBuilderHelper {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
 		try {
-			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
+			LogHelper.info(DeviceQueryBuilderHelper.class, "<--------Elasticsearch query mapping------>");
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(displayNames.size());
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
@@ -564,7 +565,7 @@ public class DeviceQueryBuilderHelper {
 
 		} catch (Exception e) {
 			LogHelper.error(DeviceQueryBuilderHelper.class,
-					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
+					"::::::::Exception in using Elasticsearch QueryBuilder ::::::  " + e);
 
 		}
 		return searchRequest;
@@ -635,45 +636,29 @@ public class DeviceQueryBuilderHelper {
 	}
 	/**
 	 * 
-	 * @param deviceId
-	 * @param journeyType
-	 * @param make
-	 * @param model
-	 * @param groupType
-	 * @param sort
-	 * @param pageNumber
-	 * @param pageSize
-	 * @param color
-	 * @param operatingSystem
-	 * @param capacity
-	 * @param mustHaveFeatures
+	 * @param queryParam
 	 * @return
 	 */
-	public static SearchRequest searchQueryForListOfHandsetOnlineModel(String deviceId, String journeyType,
-			String make, String model, String groupType, String sort,
-			Integer pageNumber, Integer pageSize, String color, String operatingSystem, String capacity,
-			String mustHaveFeatures) {
+	public static SearchRequest searchQueryForListOfHandsetOnlineModel(Map<String, String> queryParam) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(Constants.CATALOG_VERSION.get());
 		try {
 			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
 			
-			setPageNumberAndSize(pageNumber, pageSize, searchRequestBuilder);
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
-			
 			qb.must(QueryBuilders.termQuery(Constants.STRING_ALL_TYPE + Constants.STRING_KEY_WORD,
 					Constants.HANDSET_ONLINE_MODEL));
-			
-			setMakeQuery(make, qb);
-			setModelQuery(model, qb);
-			setSizeQuery(capacity, qb);
-			setProductGroupType(groupType, qb);
-			setColorQuery(color, qb);
-			setOperatingSystem(operatingSystem, qb);
-			setMustHaveFeatures(mustHaveFeatures, qb);
-			setNonLeadUpgradeDeviceID(journeyType, sort, qb);
-			setLeadUpgradeDeviceId(journeyType, sort, qb);
-			setDeviceId(deviceId, qb);
+			setPageNumberAndSize(queryParam, searchRequestBuilder);
+			setMakeQuery(queryParam, qb);
+			setModelQuery(queryParam, qb);
+			setSizeQuery(queryParam, qb);
+			setProductGroupType(queryParam, qb);
+			setColorQuery(queryParam, qb);
+			setOperatingSystem(queryParam, qb);
+			setMustHaveFeatures(queryParam, qb);
+			setNonLeadUpgradeDeviceID(queryParam, qb);
+			setLeadUpgradeDeviceId( queryParam, qb);
+			setDeviceId(queryParam, qb);
 			searchRequestBuilder.query(qb);
 			LogHelper.info(DeviceQueryBuilderHelper.class,
 					" <-----  Setting up Elasticsearch parameters and query  ----->");
@@ -688,138 +673,157 @@ public class DeviceQueryBuilderHelper {
 	}
 	/**
 	 * 
-	 * @param deviceId
+	 * @param queryParam
 	 * @param qb
 	 */
-	private static void setDeviceId(String deviceId, BoolQueryBuilder qb) {
-		if(StringUtils.isNotBlank(deviceId)){
-			qb.must(QueryBuilders.termQuery("device."+deviceId+".deviceId" + Constants.STRING_KEY_WORD, deviceId));
+	private static void setDeviceId(Map<String, String> queryParam, BoolQueryBuilder qb) {
+		if(queryParam.containsKey(Constants.DEVICE_ID) && StringUtils.isNotBlank(queryParam.get(Constants.DEVICE_ID))){
+			qb.must(QueryBuilders.termQuery("device."+queryParam.get(Constants.DEVICE_ID)+".deviceId" + Constants.STRING_KEY_WORD, queryParam.get(Constants.DEVICE_ID)));
 		}
 	}
 	/**
 	 * 
-	 * @param journeyType
-	 * @param sort
+	 * @param queryParam
 	 * @param qb
 	 */
-	private static void setLeadUpgradeDeviceId(String journeyType, String sort, BoolQueryBuilder qb) {
-		if (StringUtils.isNotBlank(sort) && Constants.STRING_UPGRADE.equalsIgnoreCase(journeyType)) {
+	private static void setLeadUpgradeDeviceId(Map<String, String> queryParam, BoolQueryBuilder qb) {
+		if (queryParam.containsKey(Constants.SORT) && StringUtils.isNotBlank(queryParam.get(Constants.SORT))
+				&& checkForJourneyTypeQueryUpgrade(queryParam)) {
 			qb.must(QueryBuilders.wildcardQuery(Constants.STRING_LEAD_UPGRADED_DEVICE_ID, "*"));
 		}
 	}
 	/**
 	 * 
-	 * @param journeyType
-	 * @param sort
+	 * @param queryParam
 	 * @param qb
 	 */
-	private static void setNonLeadUpgradeDeviceID(String journeyType, String sort, BoolQueryBuilder qb) {
-		if (StringUtils.isNotBlank(sort) && (StringUtils.isBlank(journeyType)
-				|| Constants.JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyType)
-				|| Constants.STRING_SECOND_LINE.equalsIgnoreCase(journeyType))) {
+	private static void setNonLeadUpgradeDeviceID(Map<String, String> queryParam, BoolQueryBuilder qb) {
+		
+		if (queryParam.containsKey(Constants.SORT) && StringUtils.isNotBlank(queryParam.get(Constants.SORT))
+				&& checkForJourneyTypeQuery(queryParam)){
 			qb.must(QueryBuilders.wildcardQuery(Constants.STRING_LEAD_NON_UPGRADE_DEVICE_ID, "*"));
 		}
+	}
+	/**
+	 * 
+	 * @param queryParam
+	 * @return
+	 */
+	private static boolean checkForJourneyTypeQuery(Map<String, String> queryParam) {
+		return queryParam.containsKey(Constants.JOURNEY_TYPE)
+					&& StringUtils.isBlank(queryParam.get(Constants.JOURNEY_TYPE))
+					|| Constants.JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(queryParam.get(Constants.JOURNEY_TYPE))
+					|| Constants.STRING_SECOND_LINE.equalsIgnoreCase(queryParam.get(Constants.JOURNEY_TYPE));
+	}
+	/**
+	 * 
+	 * @param queryParam
+	 * @return
+	 */
+	private static boolean checkForJourneyTypeQueryUpgrade(Map<String, String> queryParam) {
+		return queryParam.containsKey(Constants.JOURNEY_TYPE)
+				&& StringUtils.isNotBlank(queryParam.get(Constants.JOURNEY_TYPE))&& 
+				Constants.STRING_UPGRADE.equalsIgnoreCase(queryParam.get(Constants.JOURNEY_TYPE));
 	}
 	/**
 	 * 
 	 * @param mustHaveFeatures
 	 * @param qb
 	 */
-	private static void setMustHaveFeatures(String mustHaveFeatures, BoolQueryBuilder qb) {
-		if (StringUtils.isNotBlank(mustHaveFeatures) && !"\"\"".equals(mustHaveFeatures)) {
-			String[] mhf = mustHaveFeatures.replace("\"", "").split(",");
+	private static void setMustHaveFeatures(Map<String, String> queryParam, BoolQueryBuilder qb) {
+		if (queryParam.containsKey(Constants.MUST_HAVE_FEATURES) && StringUtils.isNotBlank(queryParam.get(Constants.MUST_HAVE_FEATURES)) && !"\"\"".equals(queryParam.get(Constants.MUST_HAVE_FEATURES))) {
+			String[] mhf = queryParam.get(Constants.MUST_HAVE_FEATURES).replace("\"", "").split(",");
 			qb.must(QueryBuilders.termsQuery(Constants.STRING_MUST_HAVE_FEATURES_WITH_COLON + Constants.STRING_KEY_WORD,
 					Arrays.asList(mhf)));
 		}
 	}
 	/**
 	 * 
-	 * @param operatingSystem
+	 * @param queryParam
 	 * @param qb
 	 */
-	private static void setOperatingSystem(String operatingSystem, BoolQueryBuilder qb) {
-		if (StringUtils.isNotBlank(operatingSystem) && !"\"\"".equals(operatingSystem)) {
-			String[] os = operatingSystem.replace("\"", "").split(",");
+	private static void setOperatingSystem(Map<String, String> queryParam, BoolQueryBuilder qb) {
+		if (queryParam.containsKey(Constants.OPERATING_SYSTEM) && StringUtils.isNotBlank(queryParam.get(Constants.OPERATING_SYSTEM))  && !"\"\"".equals(queryParam.get(Constants.OPERATING_SYSTEM))) {
+			String[] os = queryParam.get(Constants.OPERATING_SYSTEM).replace("\"", "").split(",");
 			qb.must(QueryBuilders.termsQuery(Constants.STRING_OPERATING_SYSTEM + Constants.STRING_KEY_WORD,
 					Arrays.asList(os)));
 		}
 	}
 	/**
 	 * 
-	 * @param color
+	 * @param queryParam
 	 * @param qb
 	 */
-	private static void setColorQuery(String color, BoolQueryBuilder qb) {
-		if (StringUtils.isNotBlank(color) && !"\"\"".equals(color)) {
-			String[] colors = color.replace("\"", "").split(",");
+	private static void setColorQuery(Map<String, String> queryParam, BoolQueryBuilder qb) {
+		if (queryParam.containsKey(Constants.COLOR) && StringUtils.isNotBlank(queryParam.get(Constants.COLOR))  && !"\"\"".equals(queryParam.get(Constants.COLOR))) {
+			String[] colors = queryParam.get(Constants.COLOR).replace("\"", "").split(",");
 			qb.must(QueryBuilders.termsQuery(Constants.STRING_COLOR + Constants.STRING_KEY_WORD,
 					Arrays.asList(colors)));
 		}
 	}
 	/**
 	 * 
-	 * @param groupType
+	 * @param queryParam
 	 * @param qb
 	 */
-	private static void setProductGroupType(String groupType, BoolQueryBuilder qb) {
-		if (StringUtils.isNotBlank(groupType) && !"\"\"".equals(groupType)) {
-			String[] groupTypes = groupType.replace("\"", "").split(",");
+	private static void setProductGroupType(Map<String, String> queryParam, BoolQueryBuilder qb) {
+		if (queryParam.containsKey(Constants.GROUP_TYPE) && StringUtils.isNotBlank(queryParam.get(Constants.GROUP_TYPE)) && !"\"\"".equals(queryParam.get(Constants.GROUP_TYPE))) {
+			String[] groupTypes = queryParam.get(Constants.GROUP_TYPE).replace("\"", "").split(",");
 			qb.must(QueryBuilders.matchPhraseQuery(Constants.STRING_PRODUCT_GROUP_TYPE, groupTypes));
 		}
 	}
 	/**
 	 * 
-	 * @param capacity
+	 * @param queryParam
 	 * @param qb
 	 */
-	private static void setSizeQuery(String capacity, BoolQueryBuilder qb) {
-		if (StringUtils.isNotBlank(capacity) && !"\"\"".equals(capacity)) {
-			String[] capa = capacity.replace("\"", "").split(",");
+	private static void setSizeQuery(Map<String, String> queryParam, BoolQueryBuilder qb) {
+		if (queryParam.containsKey(Constants.CAPACITY) && StringUtils.isNotBlank(queryParam.get(Constants.CAPACITY)) && !"\"\"".equals(queryParam.get(Constants.CAPACITY))) {
+			String[] capa = queryParam.get(Constants.CAPACITY).replace("\"", "").split(",");
 			qb.must(QueryBuilders.termsQuery(Constants.STRING_SIZE + Constants.STRING_KEY_WORD,
 					Arrays.asList(capa)));
 		}
 	}
 	/**
 	 * 
-	 * @param model
+	 * @param queryParam
 	 * @param qb
 	 */
-	private static void setModelQuery(String model, BoolQueryBuilder qb) {
-		if (StringUtils.isNotBlank(model)) {
-			String[] modelArray = model.replace("\"", "").split(",");
+	private static void setModelQuery(Map<String, String> queryParam, BoolQueryBuilder qb) {
+		if (queryParam.containsKey(Constants.MODEL) && StringUtils.isNotBlank(queryParam.get(Constants.MODEL))) {
+			String[] modelArray = queryParam.get(Constants.MODEL).replace("\"", "").split(",");
 			qb.must(QueryBuilders.termQuery(Constants.PRODUCT_MODEL + Constants.STRING_KEY_WORD,
 					Arrays.asList(modelArray)));
 		}
 	}
 	/**
 	 * 
-	 * @param make
+	 * @param queryParam
 	 * @param qb
 	 */
-	private static void setMakeQuery(String make, BoolQueryBuilder qb) {
-		if (StringUtils.isNotBlank(make)) {
-			String[] makeArray = make.replace("\"", "").split(",");
+	private static void setMakeQuery(Map<String, String> queryParam, BoolQueryBuilder qb) {
+		if (queryParam.containsKey(Constants.MAKE) && StringUtils.isNotBlank(queryParam.get(Constants.MAKE))) {
+			String[] makeArray = queryParam.get(Constants.MAKE).replace("\"", "").split(",");
 			qb.must(QueryBuilders.termsQuery(Constants.PRODUCT_MAKE + Constants.STRING_KEY_WORD,
 					Arrays.asList(makeArray)));
 		}
 	}
 	/**
 	 * 
-	 * @param pageNumber
-	 * @param pageSize
+	 * @param queryParam
 	 * @param searchRequestBuilder
 	 */
-	private static void setPageNumberAndSize(Integer pageNumber, Integer pageSize,
+	private static void setPageNumberAndSize(Map<String, String> queryParam,
 			SearchSourceBuilder searchRequestBuilder) {
 		
-		if(pageNumber > 0){
-			searchRequestBuilder.from(pageNumber);
+		if(queryParam.containsKey(Constants.STRING_PAGENUMBER) && queryParam.get(Constants.STRING_PAGENUMBER) != null && Integer.valueOf(queryParam.get(Constants.STRING_PAGENUMBER)) > 0){
+			searchRequestBuilder.from(Integer.valueOf(queryParam.get(Constants.STRING_PAGENUMBER)));
 		}
 		else{
 		searchRequestBuilder.from(from);
 		}
-		if(pageSize > 0){
-			searchRequestBuilder.size(pageSize);
+		if(queryParam.containsKey(Constants.STRING_PAGESIZE) && queryParam.get(Constants.STRING_PAGESIZE) != null &&Integer.valueOf(queryParam.get(Constants.STRING_PAGESIZE)) > 0){
+			searchRequestBuilder.size(Integer.valueOf(queryParam.get(Constants.STRING_PAGESIZE)));
 		}
 		else{
 			searchRequestBuilder.size(size);

@@ -54,24 +54,10 @@ public interface DeviceEntityService {
 			Map<String, List<String>> productGroupmap);
 	/**
 	 * 
-	 * @param deviceId
-	 * @param journeyType
-	 * @param make
-	 * @param model
-	 * @param groupType
-	 * @param sort
-	 * @param pageNumber
-	 * @param pageSize
-	 * @param color
-	 * @param operatingSystem
-	 * @param capacity
-	 * @param mustHaveFeatures
+	 * @param queryParam
 	 * @return
 	 */
-	public HandsetOnlineModelList getHandsetOnlineModelDetails(String deviceId, String journeyType,
-			String make, String model, String groupType, String sort,
-			Integer pageNumber, Integer pageSize, String color, String operatingSystem, String capacity,
-			String mustHaveFeatures);
+	public HandsetOnlineModelList getHandsetOnlineModelDetails(Map<String,String> queryParam);
 
 		
 }

@@ -3,7 +3,9 @@ package com.vf.uk.dal.device.controller.test;
 import static org.mockito.BDDMockito.given;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -464,185 +466,24 @@ public class DeviceControllerTest {
 	}
 	@Test
 	public void getHandsetOnlineModel() {
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("093353", 
-				"Acquisition", "apple", "iphone 7", "PAYG", 
-				"2", 2, 10, "Black", 
-				"iOS", "32GB", "abc"));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("", 
-					"Acquisition", "apple", "iphone 7", "PAYG", 
-					"2", 2, 10, "Black", 
-					"iOS", "32GB", "abc"));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("", 
-				"", "apple", "iphone 7", "PAYG", 
-				"2", 2, 10, "Black", 
-				"iOS", "32GB", "abc"));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("", 
-				"", "", "iphone 7", "PAYG", 
-				"2", 2, 10, "Black", 
-				"iOS", "32GB", "abc"));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("", 
-				"", "", "", "PAYG", 
-				"2", 2, 10, "Black", 
-				"iOS", "32GB", "abc"));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("", 
-				"", "", "", "", 
-				"2", 2, 10, "Black", 
-				"iOS", "32GB", "abc"));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("", 
-				"", "", "", "", 
-				"", 2, 10, "Black", 
-				"iOS", "32GB", "abc"));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("", 
-				"", "", "", "", 
-				"", null, 10, "Black", 
-				"iOS", "32GB", "abc"));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("", 
-				"", "", "", "", 
-				"", null, null, "Black", 
-				"iOS", "32GB", "abc"));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("", 
-				"", "", "", "", 
-				"", null, null, "", 
-				"iOS", "32GB", "abc"));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("", 
-				"", "", "", "", 
-				"", null, null, "", 
-				"", "32GB", "abc"));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("", 
-				"", "", "", "", 
-				"", null, null, "", 
-				"", "", "abc"));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("", 
-				"Acquisition", "", "iphone 7", "PAYG", 
-				"2", 2, 10, "Black", 
-				"iOS", "32GB", "abc"));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("093353", 
-					"", "apple", "iphone 7", "PAYG", 
-					"2", 2, 10, "Black", 
-					"iOS", "32GB", "abc"));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("093353", 
-				"Acquistion", "", "iphone 7", "PAYG", 
-				"2", 2, 10, "Black", 
-				"iOS", "32GB", "abc"));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("093353", 
-				"Acquistion", "apple", "", "PAYG", 
-				"2", 2, 10, "Black", 
-				"iOS", "32GB", "abc"));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("093353", 
-				"Acquistion", "apple", "iphone 7", "", 
-				"2", 2, 10, "Black", 
-				"iOS", "32GB", "abc"));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("093353", 
-				"Acquistion", "apple", "iphone 7", "PAYG", 
-				"", 2, 10, "Black", 
-				"iOS", "32GB", "abc"));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("093353", 
-				"Acquistion", "apple", "iphone 7", "PAYG", 
-				"", null, 10, "Black", 
-				"iOS", "32GB", "abc"));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("093353", 
-				"Acquistion", "apple", "iphone 7", "PAYG", 
-				"", 2, null, "Black", 
-				"iOS", "32GB", "abc"));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("093353", 
-				"Acquistion", "apple", "iphone 7", "PAYG", 
-				"", 2, 10, "", 
-				"iOS", "32GB", "abc"));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("093353", 
-				"Acquistion", "apple", "iphone 7", "PAYG", 
-				"", 2, 10, "Black", 
-				"", "32GB", "abc"));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("093353", 
-				"Acquistion", "apple", "iphone 7", "PAYG", 
-				"", 2, 10, "Black", 
-				"iOS", "", "abc"));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("093353", 
-				"Acquistion", "apple", "iphone 7", "PAYG", 
-				"", 2, 10, "Black", 
-				"iOS", "32GB", ""));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("093353", 
-				"", "apple", "iphone 7", "PAYG", 
-				"", 2, 10, "Black", 
-				"iOS", "32GB", ""));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("093353", 
-				"Acquisition", "apple", "iphone 7", "", 
-				"", 2, 10, "Black", 
-				"iOS", "32GB", ""));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("093353", 
-				"Acquisition", "apple", "", "PAYG", 
-				"", 2, 10, "Black", 
-				"iOS", "32GB", ""));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("093353", 
-				"Acquisition", "", "", "PAYG", 
-				"", 2, 10, "Black", 
-				"iOS", "32GB", ""));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("093353", 
-				"Acquisition", "", "iphone 7", "PAYG", 
-				"", 2, 10, "Black", 
-				"iOS", "32GB", ""));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("", 
-				"Acquisition", "", "iphone 7", "PAYG", 
-				"", 2, 10, "Black", 
-				"iOS", "32GB", ""));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("", 
-				"Acquisition", "apple", "iphone7", "PAYG", 
-				"", 2, 10, "Black", 
-				"iOS", "32GB", ""));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("093353", 
-				"Acquisition", "apple", "iphone7", "PAYG", 
-				"", 2, 10, "Black", 
-				"iOS", "32GB", ""));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("093353", 
-				null, "apple", "iphone7", "PAYG", 
-				"", 2, 10, "Black", 
-				"iOS", "32GB", ""));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("093353", 
-				null, "apple", "iphone7", null, 
-				"", 2, 10, "Black", 
-				"iOS", "32GB", ""));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("093353", 
-				"Acquisition", "apple", "iphone7", null, 
-				"", 2, 10, "Black", 
-				"iOS", "32GB", ""));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("", 
-				"Acquisition", "apple", "", "PAYG", 
-				"", 0, 0, "Black", 
-				"iOS", "32GB", ""));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("093353", 
-				"", "apple", "iphone7", "", 
-				"2", 0, 0, "Black", 
-				"iOS", "32GB", "asda"));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("", 
-				"Acquistion", "", "", "PAYG", 
-				"", 2, 10, "Black", 
-				"iOS", "32GB", ""));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("", 
-				"Acquistion", "", "", "", 
-				"", 2, 10, "Black", 
-				"iOS", "32GB", ""));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("093353", 
-				"Acquistion", "", "", "", 
-				"", 2, 10, "Black", 
-				"iOS", "32GB", "\"\""));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("093353", 
-				"secondline", "apple", "iphone7", "payg", 
-				"20", 2, 10, "Black", 
-				"iOS", "32GB", "\"\""));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("093353", 
-				"upgrade", "apple", "iphone7", "\"\"", 
-				"20", 2, 10, "\"\"", 
-				"\"\"", "32GB", "\"\""));
-		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel("093353", 
-				"upgrade", "apple", "iphone7", "\"\"", 
-				"20", 2, 10, "\"\"", 
-				"\"\"", "\"\"", "\"\""));
+		Map<String,String> hom = new HashMap<>();
+		hom.put("deviceId", "093353");
+		hom.put("journeyType", "Acquisition");
+		hom.put("make", "apple");
+		hom.put("model", "iphone 7");
+		hom.put("groupType", "PAYG");
+		hom.put("sort", "2");
+		hom.put("pageNumber", "2");
+		hom.put("pageSize", "10");
+		hom.put("color", "Black");
+		hom.put("operatingSystem", "Black");
+		hom.put("capacity", "Black");
+		hom.put("mustHaveFeatures", "Black");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom));
 		
-		
+		Map<String, String > map = new HashMap<>();
 		try {
-			deviceEntityController.getHandsetOnlineModel("", 
-					"", "", "", "", 
-					"", null, null, "", 
-					"", "", "");
+			deviceEntityController.getHandsetOnlineModel(map);
 		} catch (Exception e) {
 			Assert.assertEquals("Invalid query parameters", e.getMessage());
 		}
@@ -652,10 +493,20 @@ public class DeviceControllerTest {
 		try {
 			given(response.getOnlineHandsetModelFromJson(Matchers.anyObject()))
 			.willReturn(null);
-			deviceEntityController.getHandsetOnlineModel("093353", 
-					"Acquistion", "apple", "iphone 7", "PAYG", 
-					"", 2, 10, "Black", 
-					"iOS", "32GB", "");
+			Map<String,String> hom = new HashMap<>();
+			hom.put("deviceId", "093353");
+			hom.put("journeyType", "Acquisition");
+			hom.put("make", "apple");
+			hom.put("model", "iphone 7");
+			hom.put("groupType", "PAYG");
+			hom.put("sort", "2");
+			hom.put("pageNumber", "2");
+			hom.put("pageSize", "10");
+			hom.put("color", "Black");
+			hom.put("operatingSystem", "Black");
+			hom.put("capacity", "Black");
+			hom.put("mustHaveFeatures", "Black");
+			deviceEntityController.getHandsetOnlineModel(hom);
 		} catch (Exception e) {
 			Assert.assertEquals("Received Null Values for the given handset online model", e.getMessage());
 		}

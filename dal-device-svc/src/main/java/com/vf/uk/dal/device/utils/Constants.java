@@ -342,5 +342,12 @@ public class Constants {
 	public static final String STRING_COLOR = "color";
 	public static final String STRING_LEAD_NON_UPGRADE_DEVICE_ID = "leadNonUpgradeDeviceId";
 	public static final String STRING_LEAD_UPGRADED_DEVICE_ID = "leadUpgradeDeviceId";
+	public static final String MAKE = "make";
+	public static final String MODEL = "model";
+	public static final String CAPACITY = "capacity";
+	public static final String COLOR = "color";
+	public static final String OPERATING_SYSTEM = "operatingSystem";
+	public static final String MUST_HAVE_FEATURES = "mustHaveFeatures";
+	public static final String SORT = "sort";
 
 }

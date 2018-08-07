@@ -2,6 +2,7 @@ package com.vf.uk.dal.device.helper;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.elasticsearch.action.search.SearchRequest;
@@ -291,28 +292,12 @@ public class DeviceESHelper {
 	}
 	/**
 	 * 
-	 * @param deviceId
-	 * @param journeyType
-	 * @param make
-	 * @param model
-	 * @param groupType
-	 * @param sort
-	 * @param pageNumber
-	 * @param pageSize
-	 * @param color
-	 * @param operatingSystem
-	 * @param capacity
-	 * @param mustHaveFeatures
+	 * @param queryParam
 	 * @return
 	 */
-	public HandsetOnlineModelList getListOfHandsetOnlineModel(String deviceId, String journeyType,
-			String make, String model, String groupType, String sort,
-			Integer pageNumber, Integer pageSize, String color, String operatingSystem, String capacity,
-			String mustHaveFeatures) {
+	public HandsetOnlineModelList getListOfHandsetOnlineModel(Map<String, String> queryParam) {
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper
-				.searchQueryForListOfHandsetOnlineModel(deviceId,journeyType,make,model,groupType,
-						sort,pageNumber,pageSize,color,operatingSystem,capacity,
-						mustHaveFeatures);
+				.searchQueryForListOfHandsetOnlineModel(queryParam);
 		SearchResponse handsetModelList = deviceDao.getResponseFromDataSource(queryContextMap);
 		LogHelper.info(this, "converting elasticsearch response into List Of Handset Online Model object response");
 		return response.getOnlineHandsetModelFromJson(handsetModelList);
