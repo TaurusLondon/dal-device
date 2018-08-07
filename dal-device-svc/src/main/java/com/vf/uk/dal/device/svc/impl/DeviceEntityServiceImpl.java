@@ -174,7 +174,7 @@ public class DeviceEntityServiceImpl implements DeviceEntityService {
 			String mustHaveFeatures) {
 		HandsetOnlineModelList listOfHandsetOnlineModel = deviceEs.getListOfHandsetOnlineModel(deviceId,journeyType,make,model,groupType,
 				sort,pageNumber,pageSize,color,operatingSystem,capacity,mustHaveFeatures);
-		if ((listOfHandsetOnlineModel == null)) {
+		if (listOfHandsetOnlineModel == null) {
 			LogHelper.error(this, "Null values received for given details" );
 			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_HANDSET_ONLINE_MODEL);
 		}
