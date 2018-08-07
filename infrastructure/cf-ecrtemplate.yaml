@@ -1,0 +1,25 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: ECR template for a Digital microservice
+Parameters:
+  ecrname:
+    Description: The name of the ecr repository. To be consistent with the Build and Release in VSTS.
+    Type: String
+
+Resources:
+  ECRRepo: 
+    Type: "AWS::ECR::Repository"
+    Properties: 
+      RepositoryName: !Ref ecrname
+      RepositoryPolicyText: 
+        Version: "2012-10-17"
+        Statement: 
+          - 
+            Effect: Allow
+            Principal: 
+              AWS: 
+                - "arn:aws:iam::587413880611:root" #non-prod
+                - "arn:aws:iam::175616551101:root" #prod 
+            Action: 
+              - "ecr:GetDownloadUrlForLayer"
+              - "ecr:BatchGetImage"
+              - "ecr:BatchCheckLayerAvailability"
