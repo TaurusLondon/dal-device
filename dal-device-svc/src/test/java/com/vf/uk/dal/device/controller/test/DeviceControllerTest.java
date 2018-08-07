@@ -481,6 +481,158 @@ public class DeviceControllerTest {
 		hom.put("mustHaveFeatures", "Black");
 		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom));
 		
+		Map<String,String> hom1 = new HashMap<>();
+		hom1.put("deviceId", "093353");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom1));
+		
+		Map<String,String> hom11 = new HashMap<>();
+		hom11.put("deviceId", "");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom11));
+		
+		Map<String,String> hom2 = new HashMap<>();
+		hom2.put("sort", "2");
+		hom2.put("journeyType", "Acquisition");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom2));
+		
+		Map<String,String> hom21 = new HashMap<>();
+		hom21.put("sort", "");
+		hom21.put("journeyType", "Acquisition");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom21));
+		
+		Map<String,String> hom22 = new HashMap<>();
+		hom22.put("sort", "2");
+		hom22.put("journeyType", "upgrade");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom22));
+		
+		Map<String,String> hom23 = new HashMap<>();
+		hom23.put("sort", "");
+		hom23.put("journeyType", "upgrade");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom23));
+		
+		Map<String,String> hom24 = new HashMap<>();
+		hom24.put("sort", "2");
+		hom24.put("journeyType", "");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom24));
+		
+		Map<String,String> hom25 = new HashMap<>();
+		hom25.put("sort", "2");
+		hom25.put("journeyType", "secondline");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom25));
+		
+		Map<String,String> hom26 = new HashMap<>();
+		hom26.put("sort", "2");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom26));
+		
+		Map<String,String> hom27 = new HashMap<>();
+		hom27.put("journeyType", "secondline");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom27));
+		
+		Map<String,String> hom3 = new HashMap<>();
+		hom3.put("make", "apple");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom3));
+		
+		Map<String,String> hom4 = new HashMap<>();
+		hom4.put("model", "iphone 7");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom4));
+		
+		Map<String,String> hom31 = new HashMap<>();
+		hom31.put("make", "");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom31));
+		
+		Map<String,String> hom41 = new HashMap<>();
+		hom41.put("model", "");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom41));
+		
+		Map<String,String> hom5 = new HashMap<>();
+		hom5.put("groupType", "PAYG");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom5));
+		
+		Map<String,String> hom51 = new HashMap<>();
+		hom51.put("groupType", "");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom51));
+		
+		Map<String,String> hom52 = new HashMap<>();
+		hom52.put("groupType", "\"\"");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom52));
+		
+		Map<String,String> hom6 = new HashMap<>();
+		hom6.put("pageNumber", "2");
+		hom6.put("pageSize", "10");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom6));
+		
+		Map<String,String> hom61 = new HashMap<>();
+		hom61.put("pageNumber", "");
+		hom61.put("pageSize", "");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom61));
+		
+		Map<String,String> hom62 = new HashMap<>();
+		hom62.put("pageNumber", null);
+		hom62.put("pageSize", null);
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom62));
+		
+		Map<String,String> hom63 = new HashMap<>();
+		hom63.put("pageNumber", "0");
+		hom63.put("pageSize", "0");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom63));
+		
+		Map<String,String> hom7 = new HashMap<>();
+		hom7.put("pageNumber", "2");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom7));
+		
+		Map<String,String> hom8 = new HashMap<>();
+		hom8.put("pageSize", "10");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom8));
+		
+		Map<String,String> hom9 = new HashMap<>();
+		hom9.put("color", "Black");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom9));
+		
+		Map<String,String> hom91 = new HashMap<>();
+		hom91.put("color", "");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom91));
+		
+		Map<String,String> hom92 = new HashMap<>();
+		hom92.put("color", "\"\"");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom92));
+		
+		Map<String,String> hom10 = new HashMap<>();
+		hom10.put("operatingSystem", "iOS");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom10));
+		
+		Map<String,String> hom101 = new HashMap<>();
+		hom101.put("operatingSystem", "");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom101));
+		
+		Map<String,String> hom102 = new HashMap<>();
+		hom102.put("operatingSystem", "\"\"");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom102));
+		
+		Map<String,String> hom111 = new HashMap<>();
+		hom111.put("capacity", "32GB");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom111));
+		
+		Map<String,String> hom1111 = new HashMap<>();
+		hom1111.put("capacity", "");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom1111));
+		
+		Map<String,String> hom1112 = new HashMap<>();
+		hom1112.put("capacity", "\"\"");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom1112));
+		
+		Map<String,String> hom12 = new HashMap<>();
+		hom12.put("mustHaveFeatures", "iOS");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom12));
+		
+		Map<String,String> hom122 = new HashMap<>();
+		hom122.put("mustHaveFeatures", "");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom122));
+		
+		Map<String,String> hom121 = new HashMap<>();
+		hom121.put("mustHaveFeatures", "\"\"");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom121));
+		
+		
+		
 		Map<String, String > map = new HashMap<>();
 		try {
 			deviceEntityController.getHandsetOnlineModel(map);
