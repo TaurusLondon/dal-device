@@ -1,0 +1,237 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Deployment of a DAL Microservice to AWS.
+
+Parameters:
+
+  Environment:
+    Description: The name of the environment that is being deployed to.
+    Type: String
+  contextpath:
+    Description: Path to be suffixed to the ALB URL.
+    Type: String
+  Priority:
+    Description: Match priority sequence number for listener rule on ALB
+    Type: Number
+  Cpu:
+    Description: Proportion of CPU reserved for container (1-4096)
+    Type: Number
+  Memory:
+    Description: Hard limit for memory in MB available to container
+    Type: Number
+  MemoryReservation:
+    Description: Base memory in MB reserved for container
+    Type: Number
+  ecrlocation:
+    Description: The account loaction of the ECR Repository
+    Type: String
+  buildname:
+    Description: Name of the ECR Repository for the Service. This will be created as part of the build.
+    Type: String
+  Version:
+    Description: Version to pass in logStreamPrefix
+    Type: String
+  DesiredCount:
+    Description: Target number of containers to run on ECS cluster
+    Type: Number
+  MaxCapacity:
+    Description: Max number of containers to run on ECS cluster
+    Type: Number
+  MinCapacity:
+    Description: Min number of containers to run on ECS Cluster
+    Type: Number
+  icpconfigjdbcUrl:
+    Description: Url for the configuration database
+    Type: String
+  icpconfigjdbcUserName:
+    Description: Username for the configuration database
+    Type: String
+  icpconfigjdbcUserPwd:
+    Description: Password for the configuration database
+    Type: String
+  esendpoint:
+    Description: Endpoint for elastic search
+    Type: String
+  bazaarvoice:
+    Desicription: URL for bazaarvoice
+    Type: String
+  icpenvkafkahost:
+    Description: Hostname for kafka
+    Type: String
+  icpenvkafkaport:
+    Description: Port for kafka
+    Type: Number
+     
+Resources:
+
+   ListenerRule:
+      Type: AWS::ElasticLoadBalancingV2::ListenerRule
+      Properties:
+         Actions:
+          - TargetGroupArn: !Ref TargetGroup
+            Type: forward
+         Conditions:
+           - Field: path-pattern
+             Values:
+              - !Sub /${contextpath}/*
+         ListenerArn:
+            Fn::ImportValue: !Sub digitalx-${Environment}-alb-mas-Listener
+         Priority: !Ref Priority
+
+   TargetGroup:
+      Type: AWS::ElasticLoadBalancingV2::TargetGroup
+      Properties:
+         HealthCheckProtocol: HTTPS
+         Name: !Ref AWS::StackName
+         Protocol: HTTPS
+         Port: 8080
+         HealthCheckPath: !Sub /${contextpath}/health
+         Matcher:
+            HttpCode: 200-299
+         Tags:
+          - Key: Name
+            Value: !Ref AWS::StackName
+         VpcId:
+            Fn::ImportValue: !Sub digitalx-${Environment}-vpc-VpcId
+         TargetGroupAttributes:
+          - Key: deregistration_delay.timeout_seconds
+            Value: 5
+
+   TaskDefinition:
+      Type: AWS::ECS::TaskDefinition
+      Properties:
+         Family: !Ref AWS::StackName
+         TaskRoleArn:
+            Fn::ImportValue: !Sub digitalx-${Environment}-ecs-mas-DefaultTaskRoleArn
+         ContainerDefinitions:
+          - Name: !Ref AWS::StackName
+            Cpu: !Ref Cpu
+            Environment: 
+             - Name: icp_config_jdbc_Url
+               Value: !Ref icpconfigjdbcUrl
+             - Name: icp_config_jdbc_UserName
+               Value: !Ref icpconfigjdbcUserName
+             - Name: icp_config_jdbc_Pwd
+               Value: !Ref icpconfigjdbcPwd  
+             - Name: elasticsearch
+               Value: !Ref esendpoint
+             - Name: bazaarvoice
+               Value: !Ref bazaarvoice
+             - Name: icp_env_kafka_host
+               Value: !Ref icpenvkafkahost
+             - Name: icp_env_kafka_port
+               Value: !Ref icpenvkafkaport
+            Memory: !Ref Memory
+            MemoryReservation: !Ref MemoryReservation
+            Image: !Sub ${ecrlocation}/${buildname}:${Version}
+            PortMappings:
+             - ContainerPort: 8080
+               HostPort: 0
+            LogConfiguration:
+               LogDriver: awslogs
+               Options:
+                  awslogs-group: !Ref AWS::StackName
+                  awslogs-region: !Ref AWS::Region
+                  awslogs-stream-prefix: !Ref Version 
+            
+   EcsService:
+      Type: AWS::ECS::Service
+      DependsOn: ListenerRule
+      Properties:
+        Cluster: !Sub digitalx-${Environment}-ecs-mas
+        DeploymentConfiguration:
+           MaximumPercent: 200
+           MinimumHealthyPercent: 50
+        DesiredCount: !Ref DesiredCount
+        PlacementStrategies: 
+         - Type: spread
+           Field: attribute:ecs.availability-zone
+        LoadBalancers:
+         - ContainerName: !Ref AWS::StackName
+           ContainerPort: 8080
+           TargetGroupArn: !Ref TargetGroup
+        Role:
+           Fn::ImportValue: !Sub digitalx-${Environment}-ecs-mas-ServiceSchedulerRoleArn
+        TaskDefinition: !Ref TaskDefinition
+
+   LogGroup:
+      Type: AWS::Logs::LogGroup
+      Properties:
+        LogGroupName: !Ref AWS::StackName
+        RetentionInDays: 30
+
+   ScalableTarget:
+      Type: AWS::ApplicationAutoScaling::ScalableTarget
+      Properties:
+         MaxCapacity: !Ref MaxCapacity
+         MinCapacity: !Ref MinCapacity
+         ResourceId: !Sub service/digitalx-${Environment}-ecs-mas/${EcsService.Name}
+         RoleARN:
+            Fn::ImportValue: !Sub digitalx-${Environment}-ecs-mas-ScalableTargetRoleArn
+         ScalableDimension: ecs:service:DesiredCount
+         ServiceNamespace: ecs
+
+   ScalingPolicyUp:
+      Type: AWS::ApplicationAutoScaling::ScalingPolicy
+      Properties:
+         PolicyName: !Sub ${AWS::StackName}-scale-up
+         PolicyType: StepScaling
+         ScalingTargetId: !Ref ScalableTarget
+         StepScalingPolicyConfiguration:
+            AdjustmentType: PercentChangeInCapacity
+            Cooldown: 180
+            MinAdjustmentMagnitude: 2
+            StepAdjustments:
+             - MetricIntervalLowerBound: 0
+               ScalingAdjustment: 25
+
+   ScalingPolicyDown:
+      Type: AWS::ApplicationAutoScaling::ScalingPolicy
+      Properties:
+         PolicyName: !Sub ${AWS::StackName}-scale-down
+         PolicyType: StepScaling
+         ScalingTargetId: !Ref ScalableTarget
+         StepScalingPolicyConfiguration:
+            AdjustmentType: PercentChangeInCapacity
+            Cooldown: 180
+            MinAdjustmentMagnitude: 2
+            StepAdjustments:
+             - MetricIntervalLowerBound: 0
+               ScalingAdjustment: -25
+
+   CPUUtilizationHighAlarm:
+      Type: AWS::CloudWatch::Alarm
+      Properties:
+         AlarmDescription: Above high CPU threshold
+         Namespace: AWS/ECS
+         Dimensions:
+          - Name: ClusterName
+            Value: !Sub digitalx-${Environment}-ecs-mas
+          - Name: ServiceName
+            Value: !GetAtt EcsService.Name
+         MetricName: CPUUtilization
+         ComparisonOperator: GreaterThanThreshold
+         Statistic: Average
+         Period: 60
+         EvaluationPeriods: 3
+         Threshold: 80
+         AlarmActions:
+          - !Ref ScalingPolicyUp
+
+   CPUUtilizationLowAlarm:
+      Type: AWS::CloudWatch::Alarm
+      Properties:
+         AlarmDescription: Below low CPU threshold
+         Namespace: AWS/ECS
+         Dimensions:
+          - Name: ClusterName
+            Value: !Sub digitalx-${Environment}-ecs-mas
+          - Name: ServiceName
+            Value: !GetAtt EcsService.Name
+         MetricName: CPUUtilization
+         ComparisonOperator: LessThanThreshold
+         Statistic: Average
+         Period: 60
+         EvaluationPeriods: 5
+         Threshold: 20
+         AlarmActions:
+          - !Ref ScalingPolicyDown
