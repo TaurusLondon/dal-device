@@ -145,7 +145,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 						deviceTile.setDeviceId(leadMemberId);
 						deviceTile.setRating(deviceServiceCommonUtility.getDeviceTileRating(leadMemberId));
 					}
-					List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = null;
+					List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = new ArrayList<>();
 					List<BundleAndHardwarePromotions> listOfBundleAndHardPromo = null;
 					Map<String, BundleAndHardwarePromotions> bundleAndHardwarePromotionsMap = new HashMap<>();
 					Map<String, PriceForBundleAndHardware> priceMapForParticularDevice = new HashMap<>();
@@ -537,11 +537,14 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			public List<DeviceSummary> get() {
 				Constants.CATALOG_VERSION.set(version);
 				for (com.vf.uk.dal.device.entity.Member member : listOfDeviceGroupMember) {
+					boolean isConditional =false;
+					PriceForBundleAndHardware priceForBundleAndHardware = null;
 					CommercialProduct commercialProduct = commerProdMemMap.get(member.getId());
 					Long memberPriority = Long.valueOf(member.getPriority());
 					CommercialBundle comBundle = null;
 					List<BundleAndHardwarePromotions> promotions = null;
 					if (isConditionalAcceptJourney && commercialProduct != null) {
+						isConditional=true;
 						if (isLeadPlanWithinCreditLimit_Implementation(commercialProduct, creditLimit,
 								listOfPriceForBundleAndHardwareLocal, journeyType)) {
 							comBundle = deviceEs.getCommercialBundle(commercialProduct.getLeadPlanId());
@@ -581,8 +584,9 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 							promotions = Arrays.asList(bundleAndHardwarePromotionsMap.get(member.getId()));
 						}
 					}
-					PriceForBundleAndHardware priceForBundleAndHardware = null;
-					if (priceMapForParticularDevice.containsKey(member.getId())) {
+					if(isConditional){
+						priceForBundleAndHardware =!listOfPriceForBundleAndHardwareLocal.isEmpty()?listOfPriceForBundleAndHardwareLocal.get(0):null;
+					}else if (priceMapForParticularDevice.containsKey(member.getId()) && !isConditional) {
 						priceForBundleAndHardware = priceMapForParticularDevice.get(member.getId());
 					}
 					deviceSummary = DeviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceTile(
@@ -714,8 +718,8 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 
 		if (DeviceServiceImplUtility.isPlanPriceWithinCreditLimit_Implementation(creditLimit,
 				priceForBundleAndHardwares, product.getLeadPlanId())) {
-			listOfPriceForBundleAndHardware.clear();
-			listOfPriceForBundleAndHardware.addAll(priceForBundleAndHardwares);
+				listOfPriceForBundleAndHardware.clear();
+				listOfPriceForBundleAndHardware.addAll(priceForBundleAndHardwares);
 
 			return true;
 		} else {
@@ -768,9 +772,9 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 				}
 				if (CollectionUtils.isNotEmpty(priceForBundleAndHardwares)) {
 					listOfPriceForBundleAndHardware.clear();
-					listOfPriceForBundleAndHardware.addAll(priceForBundleAndHardwares);
 					List<PriceForBundleAndHardware> sortedPlanList = DeviceTilesDaoUtils
 							.sortPlansBasedOnMonthlyPrice(priceForBundleAndHardwares);
+					listOfPriceForBundleAndHardware.addAll(sortedPlanList);
 					PriceForBundleAndHardware leadBundle = sortedPlanList.get(0);
 					return deviceEs.getCommercialBundle(leadBundle.getBundlePrice().getBundleId());
 				}
@@ -817,11 +821,9 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 						listOfDeviceGroupMember.add(entityMember);
 						CommercialProduct commercialProduct = commerProdMemMap.get(member.getId());
 						commercialProductsMatchedMemList.add(commercialProduct);
-						List<String> listOfCompatiblePlanIds = commercialProduct
-								.getListOfCompatiblePlanIds() == null ? Collections.emptyList()
-										: commercialProduct.getListOfCompatiblePlanIds();
-						if (StringUtils.isNotBlank(bundleId)
-								&& listOfCompatiblePlanIds.contains(bundleId)) {
+						List<String> listOfCompatiblePlanIds = commercialProduct.getListOfCompatiblePlanIds() == null
+								? Collections.emptyList() : commercialProduct.getListOfCompatiblePlanIds();
+						if (StringUtils.isNotBlank(bundleId) && listOfCompatiblePlanIds.contains(bundleId)) {
 							getListOfLeadPlan(bundleId, bundleAndHardwareTupleList, bundleIdMap, fromPricingMap,
 									leadPlanIdMap, listofLeadPlan, member, commercialProduct);
 						} else {

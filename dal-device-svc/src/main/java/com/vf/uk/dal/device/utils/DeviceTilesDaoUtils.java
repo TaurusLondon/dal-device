@@ -215,13 +215,7 @@ public class DeviceTilesDaoUtils {
 					String discountType = isPartialOrFullTenureDiscount(plans2.getBundlePrice());
 					gross2 = getBundlePriceBasedOnDiscountDuration(plans2.getBundlePrice(), discountType);
 				}
-
-				if (gross1 == gross2)
-					return 0;
-				else if (gross1 > gross2)
-					return 1;
-				else
-					return -1;
+				return Double.compare(gross1,gross2);
 			}
 		});
 
