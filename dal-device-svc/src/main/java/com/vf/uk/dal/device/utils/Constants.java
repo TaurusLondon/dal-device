@@ -349,5 +349,6 @@ public class Constants {
 	public static final String OPERATING_SYSTEM = "operatingSystem";
 	public static final String MUST_HAVE_FEATURES = "mustHaveFeatures";
 	public static final String SORT = "sort";
+	public static final String LEAD_MEMBER_STRING = "leadMember";
 
 }

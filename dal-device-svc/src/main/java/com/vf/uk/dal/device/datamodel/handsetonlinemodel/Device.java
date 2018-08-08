@@ -112,9 +112,6 @@ public class Device {
 	@JsonProperty("promotAsForHardware")
 	private List<String> promotAsForHardware;
 
-	@JsonProperty("specificationsGroups")
-	private List<SpecificationGroup> specificationsGroups;
-	
 	@JsonProperty("startDate")
 	private String startDate;
 

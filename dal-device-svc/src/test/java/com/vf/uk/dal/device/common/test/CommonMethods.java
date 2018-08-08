@@ -30,7 +30,6 @@ import com.vf.uk.dal.device.datamodel.bundle.LineRental;
 import com.vf.uk.dal.device.datamodel.bundle.ServiceProduct;
 import com.vf.uk.dal.device.datamodel.handsetonlinemodel.Color;
 import com.vf.uk.dal.device.datamodel.handsetonlinemodel.HandsetOnlineModel;
-import com.vf.uk.dal.device.datamodel.handsetonlinemodel.HandsetOnlineModelList;
 import com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotionModel;
 import com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceModel;
 import com.vf.uk.dal.device.datamodel.product.BazaarVoice;
@@ -4130,17 +4129,6 @@ public class CommonMethods {
 		productLines.add("Device");
 		productLines.add("Accesory");
 		deviceDetails.setProductLines(productLines);
-		List<com.vf.uk.dal.device.datamodel.handsetonlinemodel.SpecificationGroup> specificationGroupList = new ArrayList<com.vf.uk.dal.device.datamodel.handsetonlinemodel.SpecificationGroup>();
-		com.vf.uk.dal.device.datamodel.handsetonlinemodel.SpecificationGroup specificationGroup = new com.vf.uk.dal.device.datamodel.handsetonlinemodel.SpecificationGroup();
-		specificationGroup.setComparable(true);
-		specificationGroup.setGroupName("DEVICE");
-		specificationGroup.setPriority(1);
-
-		List<com.vf.uk.dal.device.datamodel.handsetonlinemodel.Specification> specifications = new ArrayList<com.vf.uk.dal.device.datamodel.handsetonlinemodel.Specification>();
-		com.vf.uk.dal.device.datamodel.handsetonlinemodel.Specification specification = new com.vf.uk.dal.device.datamodel.handsetonlinemodel.Specification();
-		specifications.add(specification);
-		specificationGroup.setSpecifications(specifications);
-		deviceDetails.setSpecificationsGroups(specificationGroupList);
 
 		com.vf.uk.dal.device.datamodel.handsetonlinemodel.MetaData metaData = null;
 		metaData = new com.vf.uk.dal.device.datamodel.handsetonlinemodel.MetaData();
@@ -4152,8 +4140,7 @@ public class CommonMethods {
 		deviceDetails.setMetaData(metaData);
 		return deviceDetails;
 	}
-	public static HandsetOnlineModelList getOnlineHandsetModel() {
-		HandsetOnlineModelList homListObject = new HandsetOnlineModelList();
+	public static List<HandsetOnlineModel> getOnlineHandsetModel() {
 		List<HandsetOnlineModel> homList = new ArrayList<>();
 		HandsetOnlineModel hm = new HandsetOnlineModel();
 		hm.set__type("__type");
@@ -4171,8 +4158,7 @@ public class CommonMethods {
 		hm.setLeadUpgradeDeviceId("093353");
 		hm.setProductgroupType("PAYG");
 		homList.add(hm);
-		homListObject.setHandsetList(homList);
 		
-		return homListObject;
+		return homList;
 	}
 }

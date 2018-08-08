@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.datamodel.bundle.BundleModel;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
-import com.vf.uk.dal.device.datamodel.handsetonlinemodel.HandsetOnlineModelList;
+import com.vf.uk.dal.device.datamodel.handsetonlinemodel.HandsetOnlineModel;
 import com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotionModel;
 import com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceModel;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
@@ -37,7 +37,7 @@ public class ResponseMappingHelper {
 		try {
 			commercialProductlList = esUtils.getListOfObject(response, CommercialProduct.class);
 			LogHelper.info(ResponseMappingHelper.class,
-					"<---- Commercial Product list: " + commercialProductlList.size() + "---->");
+					"<---- Commercial Product list: " + commercialProductlList.size() + "------>");
 		} catch (Exception e) {
 			LogHelper.error(ResponseMappingHelper.class,
 					"::::::Exception occurred preparing Commercial Product list from ES response:::::: " + e);
@@ -76,10 +76,10 @@ public class ResponseMappingHelper {
 		try {
 			bundleModelList = esUtils.getListOfObject(response, Group.class);
 			LogHelper.info(ResponseMappingHelper.class,
-					"<---- Product group list: " + bundleModelList.size() + "---->");
+					"<---- Product group list:  " + bundleModelList.size() + "----->");
 		} catch (Exception e) {
 			LogHelper.error(ResponseMappingHelper.class,
-					"::::::Exception occurred preparing List of product Group from ES response:::::: " + e);
+					":::::::Exception occurred preparing List of product Group from ES response:::::: " + e);
 		}
 		return bundleModelList;
 
@@ -133,7 +133,7 @@ public class ResponseMappingHelper {
 		try {
 			commercialBundlelList = esUtils.getListOfObject(response, CommercialBundle.class);
 			LogHelper.info(ResponseMappingHelper.class,
-					"<---- Commercial Bundle list: " + commercialBundlelList.size() + "---->");
+					"<---- Commercial Bundle list: " + commercialBundlelList.size() + "----->");
 		} catch (Exception e) {
 			LogHelper.error(ResponseMappingHelper.class,
 					"::::::Exception occurred preparing commercial Bundle list from ES response:::::: " + e);
@@ -158,7 +158,7 @@ public class ResponseMappingHelper {
 					"<---- Product group list: " + bundleModelList.size() + "---->");
 		} catch (Exception e) {
 			LogHelper.error(ResponseMappingHelper.class,
-					"::::::Exception occurred preparing List of product Group from ES response:::::: " + e);
+					"::::::Exception occurred preparing List of product Group from ES response::::::: " + e);
 		}
 		return bundleModelList;
 
@@ -199,7 +199,7 @@ public class ResponseMappingHelper {
 					"<---- Product group list: " + merchandisingPromotionModelList.size() + "---->");
 		} catch (Exception e) {
 			LogHelper.error(ResponseMappingHelper.class,
-					"::::::Exception occurred preparing List of product Group from ES response:::::: " + e);
+					":::::::Exception occurred preparing List of product Group from ES response:::::: " + e);
 		}
 		return merchandisingPromotionModelList;
 
@@ -215,10 +215,10 @@ public class ResponseMappingHelper {
 		List<ProductGroupModel> productGroupModel = null;
 		try {
 			productGroupModel = esUtils.getListOfObject(response, ProductGroupModel.class);
-			LogHelper.info(ResponseMappingHelper.class, "<---- Product group Model ");
+			LogHelper.info(ResponseMappingHelper.class, "<---- Product group Model--> ");
 		} catch (Exception e) {
 			LogHelper.error(ResponseMappingHelper.class,
-					"::::::Exception occurred preparing List of product Group from ES response:::::: " + e);
+					":::::::Exception occurred preparing List of product Group from ES response::::::: " + e);
 		}
 		return productGroupModel;
 
@@ -234,10 +234,10 @@ public class ResponseMappingHelper {
 		List<ProductModel> productModel = null;
 		try {
 			productModel = esUtils.getListOfObject(response, ProductModel.class);
-			LogHelper.info(ResponseMappingHelper.class, "<---- Product group Model ");
+			LogHelper.info(ResponseMappingHelper.class, "<---- Product group Model--> ");
 		} catch (Exception e) {
 			LogHelper.error(ResponseMappingHelper.class,
-					"::::::Exception occurred preparing List of product Group from ES response:::::: " + e);
+					":::::: Exception occurred preparing List of product Group from ES response :::::: " + e);
 		}
 		return productModel;
 
@@ -253,10 +253,10 @@ public class ResponseMappingHelper {
 		List<BundleModel> bundleModel = null;
 		try {
 			bundleModel = esUtils.getListOfObject(response, BundleModel.class);
-			LogHelper.info(ResponseMappingHelper.class, "<---- Product group Model ");
+			LogHelper.info(ResponseMappingHelper.class, "<---- Product group Model---> ");
 		} catch (Exception e) {
 			LogHelper.error(ResponseMappingHelper.class,
-					"::::::Exception occurred preparing List of product Group from ES response:::::: " + e);
+					"::::::::Exception occurred preparing List of product Group from ES response:::::: " + e);
 		}
 		return bundleModel;
 
@@ -304,12 +304,11 @@ public class ResponseMappingHelper {
 	 * @param response
 	 * @return
 	 */
-	public HandsetOnlineModelList getOnlineHandsetModelFromJson(SearchResponse response) {
+	public List<HandsetOnlineModel> getOnlineHandsetModelFromJson(SearchResponse response) {
 
-		HandsetOnlineModelList onlineHandsetModel = new HandsetOnlineModelList();
-
+		List<HandsetOnlineModel> onlineHandsetModel = null;
 		try { 
-			onlineHandsetModel = esUtils.getObject(response, HandsetOnlineModelList.class);
+			onlineHandsetModel = esUtils.getListOfObject(response, HandsetOnlineModel.class);
 		} catch (Exception e) {
 			LogHelper.error(ResponseMappingHelper.class,
 					"::::::Exception occurred preparing Handset Online Model list from ES response:::::: " + e);

@@ -37,6 +37,8 @@ import com.vf.uk.dal.device.controller.DeviceEntityController;
 import com.vf.uk.dal.device.controller.DeviceMakeAndModelController;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.dao.DeviceTileCacheDAO;
+import com.vf.uk.dal.device.datamodel.handsetonlinemodel.HandsetOnlineModel;
+import com.vf.uk.dal.device.datamodel.productgroups.FacetField;
 import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.Insurances;
 import com.vf.uk.dal.device.svc.AccessoryInsuranceService;
@@ -120,6 +122,8 @@ public class DeviceControllerTest {
 				.willReturn(CommonMethods.getCommercialProductsListOfAccessories());
 		given(response.getOnlineHandsetModelFromJson(Matchers.anyObject()))
 		.willReturn(CommonMethods.getOnlineHandsetModel());
+		given(response.getFacetField(Matchers.anyObject()))
+		.willReturn(CommonMethods.getListOfFacetField());
 		given(accessoryInsuranceService.getAccessoriesOfDevice(Matchers.anyString(), Matchers.anyString(),
 				Matchers.anyString())).willReturn(CommonMethods.getAccessoriesTileGroup("093353"));
 	}
@@ -527,6 +531,26 @@ public class DeviceControllerTest {
 		hom27.put("journeyType", "secondline");
 		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom27));
 		
+		Map<String,String> hom28 = new HashMap<>();
+		hom28.put("journeyType", "secondline");
+		hom28.put("groupType", "PAYG");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom28));
+		
+		Map<String,String> hom29 = new HashMap<>();
+		hom29.put("journeyType", "upgrade");
+		hom29.put("groupType", "PAYG");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom29));
+		
+		Map<String,String> hom30 = new HashMap<>();
+		hom30.put("journeyType", "avc");
+		hom30.put("groupType", "PAYG");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom30));
+		
+		Map<String,String> hom311 = new HashMap<>();
+		hom311.put("journeyType", null);
+		hom311.put("groupType", null);
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom311));
+		
 		Map<String,String> hom3 = new HashMap<>();
 		hom3.put("make", "apple");
 		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom3));
@@ -662,6 +686,48 @@ public class DeviceControllerTest {
 		} catch (Exception e) {
 			Assert.assertEquals("Received Null Values for the given handset online model", e.getMessage());
 		}
+	}
+	@Test
+	public void getHandsetOnlineModelNullTestFacet() {
+			given(response.getFacetField(Matchers.anyObject()))
+			.willReturn(null);
+			Map<String,String> hom = new HashMap<>();
+			hom.put("deviceId", "093353");
+			hom.put("journeyType", "Acquisition");
+			hom.put("make", "apple");
+			hom.put("model", "iphone 7");
+			hom.put("groupType", "PAYG");
+			hom.put("sort", "2");
+			hom.put("pageNumber", "2");
+			hom.put("pageSize", "10");
+			hom.put("color", "Black");
+			hom.put("operatingSystem", "Black");
+			hom.put("capacity", "Black");
+			hom.put("mustHaveFeatures", "Black");
+			Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom));
+	}
+	@Test
+	public void getHandsetOnlineModelEmptyTest() {
+			List<HandsetOnlineModel> homList = new ArrayList<>();
+			List<FacetField> facetList = new ArrayList<>();
+			given(response.getOnlineHandsetModelFromJson(Matchers.anyObject()))
+			.willReturn(homList);
+			given(response.getFacetField(Matchers.anyObject()))
+			.willReturn(facetList);
+			Map<String,String> hom = new HashMap<>();
+			hom.put("deviceId", "093353");
+			hom.put("journeyType", "Acquisition");
+			hom.put("make", "apple");
+			hom.put("model", "iphone 7");
+			hom.put("groupType", "PAYG");
+			hom.put("sort", "2");
+			hom.put("pageNumber", "2");
+			hom.put("pageSize", "10");
+			hom.put("color", "Black");
+			hom.put("operatingSystem", "Black");
+			hom.put("capacity", "Black");
+			hom.put("mustHaveFeatures", "Black");
+			Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom));
 	}
 	
 }
