@@ -1003,8 +1003,6 @@ public class CommonUtility {
 				endDateTime = getDateToString(commercialBundle.getAvailability().getEnd(),
 						Constants.DATE_FORMAT_COHERENCE);
 			}
-			// boolean
-			// isCompatible=commercialBundle.getProductLines().containsAll(productLinesList);
 			boolean isCompatible = commercialBundle.getProductLines().stream()
 					.anyMatch(productLinesList.get(0)::equalsIgnoreCase) ? true
 							: commercialBundle.getProductLines().stream()
