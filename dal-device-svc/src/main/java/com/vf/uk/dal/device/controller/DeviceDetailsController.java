@@ -36,6 +36,14 @@ import springfox.documentation.annotations.ApiIgnore;
 @RestController
 @RequestMapping(value = "")
 @EnableAspectJAutoProxy(proxyTargetClass = true)
+/**
+ * 
+ * 1.Controller should able handle all the request and response for the device
+ * services. 2.Controller should able to produce and consume Json Format for the
+ * device services. 3.The service layer needs to be invoked from the device
+ * services inside the controller.
+ *
+ */
 public class DeviceDetailsController {
 
 	@Autowired

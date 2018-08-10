@@ -129,4 +129,5 @@ public class ExceptionMessages {
 	public static final String INVALID_DEVICEID_JOURNEY_TYPE = "JourneyType is not compatible for given DeviceId";
 	public static final String INVALID_DEVICEID_OFFER_CODE = "offerCode is not compatible for given DeviceId";
 	public static final String Index_NOT_FOUND_EXCEPTION = "index_not_found_exception";
+	public static final String NULL_VALUE_FROM_COHERENCE_FOR_HANDSET_ONLINE_MODEL = "Received Null Values for the given handset online model";
 }

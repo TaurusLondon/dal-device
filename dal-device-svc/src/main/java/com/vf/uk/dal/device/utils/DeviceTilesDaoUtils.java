@@ -2,7 +2,6 @@ package com.vf.uk.dal.device.utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -171,28 +170,20 @@ public class DeviceTilesDaoUtils {
 	 */
 	public List<com.vf.uk.dal.device.entity.Member> getAscendingOrderForMembers(
 			List<com.vf.uk.dal.device.entity.Member> listOfDeviceGroupMember) {
-		Collections.sort(listOfDeviceGroupMember, new SortedMemberPriorityList());
+		Collections.sort(listOfDeviceGroupMember,(com.vf.uk.dal.device.entity.Member member1,
+				com.vf.uk.dal.device.entity.Member member2)->{
+					if (member1.getPriority() != null && member2.getPriority() != null) {
+						if (Integer.valueOf(member1.getPriority()) < Integer.valueOf(member2.getPriority())) {
+							return -1;
+						} else{
+							return 1;
+						}
+
+					}
+					return 1;
+				});
 
 		return listOfDeviceGroupMember;
-	}
-
-	class SortedMemberPriorityList implements Comparator<com.vf.uk.dal.device.entity.Member> {
-
-		@Override
-		public int compare(com.vf.uk.dal.device.entity.Member member1, com.vf.uk.dal.device.entity.Member member2) {
-
-			if (member1.getPriority() != null && member2.getPriority() != null) {
-				if (Integer.valueOf(member1.getPriority()) < Integer.valueOf(member2.getPriority())) {
-					return -1;
-				} else
-					return 1;
-
-			}
-
-			else
-				return -1;
-		}
-
 	}
 
 	/**
@@ -202,22 +193,20 @@ public class DeviceTilesDaoUtils {
 	 * @return List<PriceForBundleAndHardware>
 	 */
 	public static List<PriceForBundleAndHardware> sortPlansBasedOnMonthlyPrice(List<PriceForBundleAndHardware> plans) {
-		Collections.sort(plans, new Comparator<PriceForBundleAndHardware>() {
-			@Override
-			public int compare(PriceForBundleAndHardware plans1, PriceForBundleAndHardware plans2) {
-				Double gross1 = null;
-				if (null != plans1.getBundlePrice()) {
-					String discountType = isPartialOrFullTenureDiscount(plans1.getBundlePrice());
-					gross1 = getBundlePriceBasedOnDiscountDuration(plans1.getBundlePrice(), discountType);
-				}
-				Double gross2 = null;
-				if (null != plans2.getBundlePrice()) {
-					String discountType = isPartialOrFullTenureDiscount(plans2.getBundlePrice());
-					gross2 = getBundlePriceBasedOnDiscountDuration(plans2.getBundlePrice(), discountType);
-				}
-				return Double.compare(gross1,gross2);
-			}
-		});
+		Collections.sort(plans,(PriceForBundleAndHardware plans1,
+				PriceForBundleAndHardware plans2)-> {
+					Double gross1 = null;
+					if (null != plans1.getBundlePrice()) {
+						String discountType = isPartialOrFullTenureDiscount(plans1.getBundlePrice());
+						gross1 = getBundlePriceBasedOnDiscountDuration(plans1.getBundlePrice(), discountType);
+					}
+					Double gross2 = null;
+					if (null != plans2.getBundlePrice()) {
+						String discountType = isPartialOrFullTenureDiscount(plans2.getBundlePrice());
+						gross2 = getBundlePriceBasedOnDiscountDuration(plans2.getBundlePrice(), discountType);
+					}
+					return Double.compare(gross1,gross2);
+				});
 
 		return plans;
 	}

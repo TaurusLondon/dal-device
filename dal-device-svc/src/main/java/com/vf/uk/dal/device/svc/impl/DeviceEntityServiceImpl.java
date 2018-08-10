@@ -16,8 +16,12 @@ import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
+import com.vf.uk.dal.common.registry.client.RegistryClient;
+import com.vf.uk.dal.device.datamodel.handsetonlinemodel.HandsetOnlineModel;
+import com.vf.uk.dal.device.datamodel.handsetonlinemodel.HandsetOnlineModelList;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
 import com.vf.uk.dal.device.datamodel.product.ProductModel;
+import com.vf.uk.dal.device.datamodel.productgroups.FacetField;
 import com.vf.uk.dal.device.datamodel.productgroups.Group;
 import com.vf.uk.dal.device.datamodel.productgroups.ProductGroupModel;
 import com.vf.uk.dal.device.datamodel.productgroups.ProductGroupModelMap;
@@ -25,6 +29,7 @@ import com.vf.uk.dal.device.helper.DeviceESHelper;
 import com.vf.uk.dal.device.helper.DeviceServiceImplUtility;
 import com.vf.uk.dal.device.svc.DeviceEntityService;
 import com.vf.uk.dal.device.utils.Constants;
+import com.vf.uk.dal.device.utils.DeviceUtils;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 
 @Component
@@ -32,6 +37,11 @@ public class DeviceEntityServiceImpl implements DeviceEntityService {
 
 	@Autowired
 	DeviceESHelper deviceEs;
+	
+	@Autowired
+	RegistryClient registryclnt;
+	
+	DeviceUtils deviceUtils = new DeviceUtils();
 
 	/**
 	 * Method to prepare the list from the request construct and build the query
@@ -48,7 +58,7 @@ public class DeviceEntityServiceImpl implements DeviceEntityService {
 			LogHelper.error(this, ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID + " : " + productIdOrName);
 			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID);
 		}
-		return deviceEs.getListOfCommercialProduct(listOfProdIdsOrNames);
+		return listOfCommercialProduct;
 	}
 
 	/**
@@ -150,4 +160,45 @@ public class DeviceEntityServiceImpl implements DeviceEntityService {
 			});
 		});
 	}
+	/**
+	 * @queryParam
+	 * @return 
+	 */
+	@Override
+	public HandsetOnlineModelList getHandsetOnlineModelDetails(Map<String,String> queryParam) {
+		
+		try{
+		HandsetOnlineModelList handsetOnlineModelList = new HandsetOnlineModelList();
+		String journeyTypeLocal = queryParam.get(Constants.JOURNEY_TYPE);
+		String journeyType = StringUtils.isBlank(journeyTypeLocal) ? Constants.JOURNEY_TYPE_ACQUISITION : journeyTypeLocal;
+		queryParam.put(Constants.JOURNEY_TYPE, journeyType);
+		String sortCriteria = queryParam.get(Constants.SORT);
+		List<String> criteriaOfSort = DeviceServiceImplUtility.getSortCriteriaForList(sortCriteria);
+		String sortOption;
+		String sortBy;
+		if(CollectionUtils.isNotEmpty(criteriaOfSort)){
+			sortOption = criteriaOfSort.get(0);
+			sortBy = criteriaOfSort.get(1);
+		queryParam.put("sortOption", sortOption);
+		queryParam.put("sortBy", sortBy);
+		}
+		
+		List<HandsetOnlineModel> listOfHandsetOnlineModel = deviceEs.getListOfHandsetOnlineModel(queryParam);
+		List<FacetField> facetFieldList = deviceEs.getFacetFieldForHandsetOnlineModel(queryParam);
+		
+		if(facetFieldList != null && !facetFieldList.isEmpty()){
+			handsetOnlineModelList.setFacetField(facetFieldList);
+		}
+		if(!listOfHandsetOnlineModel.isEmpty()){
+			handsetOnlineModelList.setHandsetList(listOfHandsetOnlineModel);
+		}
+		return handsetOnlineModelList;
+		}
+		catch (Exception e) {
+			LogHelper.error(this, "Received Null Values for the given handset online model" + e);
+			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_HANDSET_ONLINE_MODEL);
+		}
+	}
+	
+	
 }

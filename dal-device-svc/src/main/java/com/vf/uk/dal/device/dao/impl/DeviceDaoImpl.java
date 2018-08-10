@@ -225,12 +225,12 @@ public class DeviceDaoImpl implements DeviceDao {
 	@Override
 	public void getUpdateElasticSearch(String id, String data) {
 		try {
-			UpdateRequest updateRequest = new UpdateRequest(Constants.CATALOG_VERSION.get(), "models", id);
+			UpdateRequest updateRequest = new UpdateRequest(Constants.CATALOG_VERSION.get(), Constants.STRING_MODELS, id);
 			updateRequest.doc(data, XContentType.JSON);
 			restClient.update(updateRequest,
 					new BasicHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString()));
 
-			UpdateRequest updateRequestForNull = new UpdateRequest(Constants.CATALOG_VERSION.get(), "models", id)
+			UpdateRequest updateRequestForNull = new UpdateRequest(Constants.CATALOG_VERSION.get(), Constants.STRING_MODELS, id)
 					.doc(org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder().startObject().endObject());
 			restClient.update(updateRequestForNull);
 		} catch (IOException e) {
@@ -247,7 +247,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	public void getIndexElasticSearch(String id, String data) {
 		try {
 			IndexRequest updateRequestForILSPromo = Requests.indexRequest(Constants.CATALOG_VERSION.get());
-			updateRequestForILSPromo.type("models");
+			updateRequestForILSPromo.type(Constants.STRING_MODELS);
 			updateRequestForILSPromo.id(id);
 			updateRequestForILSPromo.source(data, XContentType.JSON);
 			restClient.index(updateRequestForILSPromo,
