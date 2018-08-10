@@ -1,30 +1,21 @@
 package com.vf.uk.dal.device.datamodel.handsetonlinemodel;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Data;
 
 /**
  * MediaLink
  */
 
-/**
- * 
- * @author sahil.monga
- *
- */
 @Data
 public class MediaLink {
-	@JsonProperty("id")
-	private String id = null;
 
-	@JsonProperty("value")
-	private String value = null;
+	/** Id Of The Media */
+	private String id;
 
-	@JsonProperty("type")
-	private String type = null;
+	/** Value Of The Media */
+	private String value;
 
-	@JsonProperty("priority")
-	private Integer priority = null;
+	/** Type Of The Media */
+	private String type;
 
 }

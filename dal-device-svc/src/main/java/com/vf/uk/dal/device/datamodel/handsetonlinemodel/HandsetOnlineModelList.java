@@ -2,7 +2,6 @@ package com.vf.uk.dal.device.datamodel.handsetonlinemodel;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.vf.uk.dal.device.datamodel.productgroups.FacetField;
 
 import lombok.Data;
@@ -14,9 +13,9 @@ import lombok.Data;
 @Data
 public class HandsetOnlineModelList {
 
-	@JsonProperty("handsetList")
+	/** handset list */
 	private List<HandsetOnlineModel> handsetList;
 	
-	@JsonProperty("facetField")
+	/** facet field */
 	private List<FacetField> facetField;
 }

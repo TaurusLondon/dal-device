@@ -3,59 +3,54 @@ package com.vf.uk.dal.device.datamodel.handsetonlinemodel;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Data;
-/**
- * 
- * @author sahil.monga
- *
- */
+
 @Data
-public class HandsetOnlineModel {
-	@JsonProperty("productGroupName")
+public class HandsetOnlineModel{
+	
+	/** Product group Name */
 	private String productGroupName;
 
-	@JsonProperty("productgroupType")
+	/** product group type */
 	private String productgroupType;
 
-	@JsonProperty("productGroupId")
+	/** product group Id */
 	private Integer productGroupId;
 
-	@JsonProperty("productMake")
+	/** product group make from Group Level */
 	private String productMake;
 
-	@JsonProperty("productModel")
+	/** product group model from Group Level */
 	private String productModel;
 
-	@JsonProperty("__type")
+	/** Type of the model */
 	private String __type;
 
-	@JsonProperty("size")
+	/** Size of all devices belong to particular group */
 	private List<String> size;
 
-	@JsonProperty("color")
+	/** Color of all devices belong to particular group */
 	private List<String> color;
 	
-	@JsonProperty("mustHaveFeatures")
+	/** MustHaveFeatures of all devices belong to particular group */
 	private List<String> mustHaveFeatures;
 
-	@JsonProperty("operatingSystem")
+	/** OperatingSystem of all devices belong to particular group */
 	private List<String> operatingSystem;
 	
-	@JsonProperty("colorNameAndHex")
+	/** color Name And Hex of all devices belong to particular group */
 	private List<Color> colorNameAndHex;
 
-	@JsonProperty("leadUpgradeDeviceId")
+	/** lead Upgrade Device Id of Group */
 	private String leadUpgradeDeviceId;
 
-	@JsonProperty("leadNonUpgradeDeviceId")
+	/** lead Non Upgrade Device Id of Group */
 	private String leadNonUpgradeDeviceId;
 
-	@JsonProperty("groupLableminimumCost")
-	private Float groupLableminimumCost;
+	/** Group Level minimum Cost */
+	private String groupLevelMinimumCost;
 
-	@JsonProperty("device")
-	private Map<String, Device> device;
-
+	/** Devices Information of the Group */
+	private Map<String, Device> devices;
+	
 }

@@ -2,143 +2,95 @@ package com.vf.uk.dal.device.datamodel.handsetonlinemodel;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Data;
-/**
- * 
- * @author sahil.monga
- *
- */
+
 @Data
 public class Device {
 	
-	@JsonProperty("deviceId")
+	/** device Id from Commercial Product */
 	private String deviceId;
 	
-	@JsonProperty("make")
+	/** make from Commercial Product */
 	private String make;
 	
-	@JsonProperty("model")
+	/** model from Commercial Product */
 	private String model;
 	
-	@JsonProperty("nonUpgradeLeadPlanId")
-	private String nonUpgradeLeadPlanId;
+	/** non Upgrade Lead Plan Id Details*/
+	private LeadPlanDetails nonUpgradeLeadPlanDetails;
 	
-	@JsonProperty("upgradeLeadPlanId")
-	private String upgradeLeadPlanId;
+	/** Upgrade Lead Plan Id Details*/
+	private LeadPlanDetails upgradeLeadPlanDetails; 
 	
-	@JsonProperty("isFromPricingForUpgradeLeadPlanId")
-	private Boolean isFromPricingForUpgradeLeadPlanId;
-
-	@JsonProperty("isFromPricingForNonUpgradeLeadPlanId")
-	private Boolean isFromPricingForNonUpgradeLeadPlanId;
-	
-	@JsonProperty("displayName")
+	/** Device Display Name */
 	private String displayName;
 	
-	@JsonProperty("priority")
+	/** Device Priority */
 	private String priority;
 	
-	@JsonProperty("displayDescription")
+	/** Device Display Description */
 	private String displayDescription;
 	
-	@JsonProperty("colourName")
+	/** Device Color */
 	private String colourName;
 	
-	@JsonProperty("colourHex")
+	/** Device Color Hex Code */
 	private String colourHex;
 	
-	@JsonProperty("memory")
+	/** Device Capacity */
 	private String memory;
 	
-	@JsonProperty("leadPlanIdForMEF")
+	/** Lead Plan Id Which is configure in MEF*/
 	private String leadPlanIdForMEF;
 	
-	@JsonProperty("leadPlanDisplayNameForNonUpgrade")
-	private String leadPlanDisplayNameForNonUpgrade;
-	
-	@JsonProperty("bundleTypeNonUpgrade")
-	private String bundleTypeNonUpgrade;
-	
-	@JsonProperty("uomNonUpgrade")
-	private String uomNonUpgrade;
-	
-	@JsonProperty("uomValueNonUpgrade")
-	private String uomValueNonUpgrade;
-	
-	@JsonProperty("leadPlanDisplayNameForUpgrade")
-	private String leadPlanDisplayNameForUpgrade;
-	
-	@JsonProperty("bundleTypeUpgrade")
-	private String bundleTypeUpgrade;
-	
-	@JsonProperty("uomUpgrade")
-	private String uomUpgrade;
-	
-	@JsonProperty("uomValueUpgrade")
-	private String uomValueUpgrade;
-	
-	@JsonProperty("promotAsForNonUpgradeBundle")
-	private List<String> promotAsForNonUpgradeBundle;
-	
-	@JsonProperty("promotAsForUpgradeBundle")
-	private List<String> promotAsForUpgradeBundle;
-	
-	@JsonProperty("bundleHardwareTupleForNonUpgradeLeadPlan")
-	private List<BundleAndHardwareTuple> bundleHardwareTupleForNonUpgradeLeadPlan;
-
-	@JsonProperty("bundleHardwareTupleForUpgradeLeadPlan")
-	private List<BundleAndHardwareTuple> bundleHardwareTupleForUpgradeLeadPlan;
-	
-	@JsonProperty("productGroupURI")
+	/**product Group URI */
 	private String productGroupURI;
 	
-	@JsonProperty("preOrderable")
+	/** Is It Eligible for preOrder or not */
 	private Boolean preOrderable;
 	
-	@JsonProperty("availableFrom")
+	/**  Product selling date  */
 	private String availableFrom;
 	
-	@JsonProperty("productClass")
+	/** product class */
 	private String productClass;
 	
-	@JsonProperty("productLines")
+	/**  Product  Lines */
 	private List<String> productLines;
 	
-	@JsonProperty("merchandisingPromotion")
+	/**  Merchandising Promotion */
 	private List<MerchandisingPromotions> merchandisingPromotion;
 	
-	@JsonProperty("promotAsForHardware")
+	/**  Promote As For Hardware */
 	private List<String> promotAsForHardware;
 
-	@JsonProperty("startDate")
+	/**  Product selling start date */
 	private String startDate;
 
-	@JsonProperty("endDate")
+	/**  Product expiration date */
 	private String endDate;
 
-	@JsonProperty("salesExpired")
+	/**  Product sales Expired Or Not */
 	private Boolean salesExpired;
 	
-	@JsonProperty("isDeviceProduct")
+	/** Is Device Product Or Not */
 	private Boolean isDeviceProduct;
 	
-	@JsonProperty("isServiceProduct")
+	/** Is Service Product Or Not */
 	private Boolean isServiceProduct;
 	
-	@JsonProperty("isBattery")
+	/** Merchandising Control details */
 	private String isBattery;
 	
-	@JsonProperty("merchandisingControl")
+	/** Merchandising Control details */
 	private MerchandisingControl merchandisingControl;
 	
-	@JsonProperty("compatiblePlans")
+	/** Compatible plans details */
 	private List<String> compatiblePlans;
 	
-	@JsonProperty("mediaLink")
+	/** Media Link details */
 	private List<MediaLink> mediaLink;
 	
-	@JsonProperty("metaData")
+	/** Meta data details */
 	private MetaData metaData;
 }

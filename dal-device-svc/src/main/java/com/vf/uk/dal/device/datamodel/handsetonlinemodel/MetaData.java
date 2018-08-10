@@ -3,32 +3,26 @@ package com.vf.uk.dal.device.datamodel.handsetonlinemodel;
 import java.util.List;
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Data;
 
 /**
  * MetaData
  */
-/**
- * 
- * @author sahil.monga
- *
- */
+
 @Data
 public class MetaData {
-	@JsonProperty("seoCanonical")
-	private String seoCanonical = null;
+	/** Seo Canonical */
+	private String seoCanonical;
 
-	@JsonProperty("seoDescription")
-	private String seoDescription = null;
+	/** Seo Description */
+	private String seoDescription;
 
-	@JsonProperty("seoKeyWords")
-	private String seoKeyWords = null;
+	/** Seo Key Words */
+	private String seoKeyWords;
 
-	@JsonProperty("seoIndex")
-	private String seoIndex = null;
+	/** Seo Index */
+	private String seoIndex;
 
-	@JsonProperty("seoRobots")
-	private List<UUID> seoRobots = null;
+	/** Seo Robots */
+	private List<UUID> seoRobots;
 }

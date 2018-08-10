@@ -1,7 +1,5 @@
 package com.vf.uk.dal.device.datamodel.handsetonlinemodel;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,16 +10,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-/**
- * 
- * @author sahil.monga
- *
- */
 public class BundleAndHardwareTuple {
-	@JsonProperty("hardwareId")
+	/** hardware id */
 	private String hardwareId = null;
 
-	@JsonProperty("bundleId")
+	/** bundle id */
 	private String bundleId = null;
 
 }

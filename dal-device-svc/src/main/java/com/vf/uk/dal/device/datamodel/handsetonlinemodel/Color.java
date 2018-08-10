@@ -1,19 +1,13 @@
 package com.vf.uk.dal.device.datamodel.handsetonlinemodel;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Data;
-/**
- * 
- * @author sahil.monga
- *
- */
+
 @Data
 public class Color {
 
-	@JsonProperty("colorName")
+	/** color name */
 	private String colorName;
 	
-	@JsonProperty("colorHex")
+	/** color hex code */
 	private String colorHex;
 }

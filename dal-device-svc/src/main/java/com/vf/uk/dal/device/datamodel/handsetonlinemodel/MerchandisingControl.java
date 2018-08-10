@@ -1,50 +1,44 @@
 package com.vf.uk.dal.device.datamodel.handsetonlinemodel;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Data;
 
 /**
  * MerchandisingControl
  */
 
-/**
- * 
- * @author sahil.monga
- *
- */
 @Data
 public class MerchandisingControl {
-	@JsonProperty("isDisplayableECare")
-	private Boolean isDisplayableECare = null;
+	
+	/** Is Display able ECare*/
+	private Boolean isDisplayableECare;
 
-	@JsonProperty("isSellableECare")
-	private Boolean isSellableECare = null;
+	/** Is Sell able ECare */
+	private Boolean isSellableECare;
 
-	@JsonProperty("isDisplayableAcq")
-	private Boolean isDisplayableAcq = null;
+	/**Is Display able Acq */
+	private Boolean isDisplayableAcq ;
 
-	@JsonProperty("isSellableRet")
-	private Boolean isSellableRet = null;
+	/** Is Sell able Ret */
+	private Boolean isSellableRet;
 
-	@JsonProperty("isDisplayableRet")
-	private Boolean isDisplayableRet = null;
+	/** Is Display able Ret*/
+	private Boolean isDisplayableRet;
 
-	@JsonProperty("isSellableAcq")
-	private Boolean isSellableAcq = null;
+	/** Is Sell able Acq*/
+	private Boolean isSellableAcq;
 
-	@JsonProperty("isDisplayableSavedBasket")
-	private Boolean isDisplayableSavedBasket = null;
+	/** Is Display able Saved Basket*/
+	private Boolean isDisplayableSavedBasket;
 
-	@JsonProperty("order")
-	private Integer order = null;
+	/** Order */
+	private Integer order;
 
-	@JsonProperty("preorderable")
-	private Boolean preorderable = null;
+	/** PreOrder From*/
+	private Boolean preorderable;
 
-	@JsonProperty("availableFrom")
-	private String availableFrom = null;
+	/** available From*/
+	private String availableFrom;
 
-	@JsonProperty("backorderable")
-	private Boolean backorderable = null;
+	/** back order able */ 
+	private Boolean backorderable;
 }
