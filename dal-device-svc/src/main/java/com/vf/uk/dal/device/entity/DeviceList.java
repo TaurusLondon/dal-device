@@ -32,7 +32,7 @@ public class DeviceList {
 	private MerchandisingControl merchandisingControl = null;
 
 	@JsonProperty("media")
-	private List<MediaLink> media = new ArrayList<MediaLink>();
+	private List<MediaLink> media = new ArrayList<>();
 
 	@JsonProperty("priceInfo")
 	private PriceForBundleAndHardware priceInfo = null;

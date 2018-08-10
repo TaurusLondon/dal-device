@@ -39,16 +39,24 @@ import com.vf.uk.dal.device.utils.DeviceDetailsMakeAndModelVaiantDaoUtils;
 import com.vf.uk.dal.device.utils.DeviceTilesDaoUtils;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
-
+/**
+ * 
+ * DeviceServiceImplUtility
+ *
+ */
 public class DeviceServiceImplUtility {
 
 	private DeviceServiceImplUtility() {
 	};
-
+	/**
+	 * 
+	 * @param journeyType
+	 * @return
+	 */
 	public static String getJourney(String journeyType) {
-		boolean nonValidJourney = (!Constants.JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyType)
+		boolean nonValidJourney = !Constants.JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyType)
 				&& !Constants.JOURNEY_TYPE_UPGRADE.equalsIgnoreCase(journeyType)
-				&& !Constants.JOURNEY_TYPE_SECONDLINE.equalsIgnoreCase(journeyType));
+				&& !Constants.JOURNEY_TYPE_SECONDLINE.equalsIgnoreCase(journeyType);
 		String journeytype = null;
 		if (StringUtils.isBlank(journeyType)
 				|| StringUtils.equalsIgnoreCase(Constants.JOURNEY_TYPE_ACQUISITION, journeyType) || nonValidJourney) {
@@ -526,11 +534,11 @@ public class DeviceServiceImplUtility {
 	}
 
 	/**
-	 * Check if plan is affordable as per credit limit and plan monthly price,
-	 * and set flag.
 	 * 
 	 * @param deviceSummary
 	 * @param comBundle
+	 * @param creditLimit
+	 * @param isConditionalAcceptJourney
 	 */
 	public static void isPlanAffordable_Implementation(DeviceSummary deviceSummary, CommercialBundle comBundle,
 			Double creditLimit, boolean isConditionalAcceptJourney) {
@@ -554,8 +562,11 @@ public class DeviceServiceImplUtility {
 	}
 
 	/**
-	 * @param creditDetails
+	 * 
+	 * @param creditLimit
 	 * @param listOfPriceForBundleAndHardware
+	 * @param bundleId
+	 * @return
 	 */
 	public static boolean isPlanPriceWithinCreditLimit_Implementation(Double creditLimit,
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware, String bundleId) {
@@ -574,11 +585,9 @@ public class DeviceServiceImplUtility {
 	}
 
 	/**
-	 * Check if there is full or partial discount, depending on discount type
-	 * get price and check if it is within credit limit.
 	 * 
 	 * @param creditLimit
-	 * @param priceForBundleAndHardware
+	 * @param bundlePrice
 	 * @return
 	 */
 	public static boolean getDiscountTypeAndComparePrice_Implementation(Double creditLimit,
@@ -679,7 +688,7 @@ public class DeviceServiceImplUtility {
 
 	/**
 	 * 
-	 * @param comProduct
+	 * @param commercialBundle
 	 * @return
 	 */
 	public static boolean isNonUpgradeCommercialBundle(CommercialBundle commercialBundle) {
@@ -689,7 +698,7 @@ public class DeviceServiceImplUtility {
 
 	/**
 	 * 
-	 * @param comProduct
+	 * @param commercialBundle
 	 * @return
 	 */
 	public static boolean isUpgradeFromCommercialBundle(CommercialBundle commercialBundle) {
@@ -834,11 +843,11 @@ public class DeviceServiceImplUtility {
 	}
 
 	/**
-	 * Date validation
 	 * 
 	 * @param startDateTime
 	 * @param endDateTime
-	 * @return flag
+	 * @param strDateFormat
+	 * @return
 	 */
 	public static Boolean dateValidationForOffers_Implementation(String startDateTime, String endDateTime,
 			String strDateFormat) {
@@ -861,7 +870,7 @@ public class DeviceServiceImplUtility {
 		try {
 			if (startDateTime != null) {
 				startDate = dateFormat.parse(startDateTime);
-				LogHelper.info(DeviceServiceImplUtility.class, "::::: startDate " + startDate + " :::::");
+				LogHelper.info(DeviceServiceImplUtility.class, "::::: startDate " + startDate + " ::::::");
 			}
 
 		} catch (ParseException | DateTimeParseException e) {
@@ -871,7 +880,7 @@ public class DeviceServiceImplUtility {
 		try {
 			if (endDateTime != null) {
 				endDate = dateFormat.parse(endDateTime);
-				LogHelper.info(DeviceServiceImplUtility.class, "::::: EndDate " + endDate + " :::::");
+				LogHelper.info(DeviceServiceImplUtility.class, "::::: EndDate " + endDate + " :::::::");
 			}
 		} catch (ParseException | DateTimeParseException e) {
 			LogHelper.error(DeviceServiceImplUtility.class, "ParseException: " + e);
@@ -904,7 +913,14 @@ public class DeviceServiceImplUtility {
 		return (currentDate.after(startDate) || currentDate.equals(startDate))
 				&& (currentDate.before(endDate) || currentDate.equals(endDate));
 	}
-
+	/**
+	 * 
+	 * @param offerCode
+	 * @param journeyTypeLocal
+	 * @param registryclnt
+	 * @param bundleAndHardwareTupleList
+	 * @return
+	 */
 	public static List<PriceForBundleAndHardware> getListOfBundleAndHardwareTuple(String offerCode,
 			String journeyTypeLocal, RegistryClient registryclnt,
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList) {

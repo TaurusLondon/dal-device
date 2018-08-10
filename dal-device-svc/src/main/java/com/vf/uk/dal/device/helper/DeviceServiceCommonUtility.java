@@ -3,7 +3,6 @@ package com.vf.uk.dal.device.helper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,6 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringUtils;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -49,7 +49,7 @@ public class DeviceServiceCommonUtility {
 	RegistryClient registryclnt;
 
 	/**
-	 * @param deviceTile
+	 * 
 	 * @param leadMemberId
 	 * @return DeviceTileRating
 	 */
@@ -75,26 +75,7 @@ public class DeviceServiceCommonUtility {
 				if (bazaarVoice != null) {
 					if (!bazaarVoice.getJsonsource().isEmpty()) {
 						org.json.JSONObject jSONObject = new org.json.JSONObject(bazaarVoice.getJsonsource());
-						if (!StringUtils.equals("{}", jSONObject.get("Includes").toString())) {
-							org.json.JSONObject includes = jSONObject.getJSONObject("Includes");
-							org.json.JSONObject products = includes.getJSONObject("Products");
-							Iterator<?> level = products.keys();
-							while (level.hasNext()) {
-								String key = (String) level.next();
-								org.json.JSONObject skuId = products.getJSONObject(key);
-								org.json.JSONObject reviewStatistics = (null != skuId)
-										? skuId.getJSONObject("ReviewStatistics") : null;
-								Double averageOverallRating = (null != reviewStatistics)
-										? (Double) reviewStatistics.get("AverageOverallRating") : null;
-								if (!bvReviewAndRateMap.keySet().contains(key)) {
-									String overallRating = (null != averageOverallRating)
-											? averageOverallRating.toString() : "na";
-									bvReviewAndRateMap.put(key, overallRating);
-								}
-							}
-						} else {
-							bvReviewAndRateMap.put(bazaarVoice.getSkuId(), "na");
-						}
+						setbvReviewAndRate(bvReviewAndRateMap, bazaarVoice, jSONObject);
 					} else {
 						bvReviewAndRateMap.put(bazaarVoice.getSkuId(), "na");
 					}
@@ -105,6 +86,35 @@ public class DeviceServiceCommonUtility {
 			throw new ApplicationException(ExceptionMessages.BAZAARVOICE_RESPONSE_EXCEPTION);
 		}
 		return bvReviewAndRateMap;
+	}
+
+	private void setbvReviewAndRate(HashMap<String, String> bvReviewAndRateMap, BazaarVoice bazaarVoice,
+			org.json.JSONObject jSONObject) throws JSONException {
+		if (!StringUtils.equals("{}", jSONObject.get("Includes").toString())) {
+			org.json.JSONObject includes = jSONObject.getJSONObject("Includes");
+			org.json.JSONObject products = includes.getJSONObject("Products");
+			Iterator<?> level = products.keys();
+			while (level.hasNext()) {
+				String key = (String) level.next();
+				org.json.JSONObject skuId = products.getJSONObject(key);
+				org.json.JSONObject reviewStatistics = (null != skuId)
+						? skuId.getJSONObject("ReviewStatistics") : null;
+				Double averageOverallRating = (null != reviewStatistics)
+						? (Double) reviewStatistics.get("AverageOverallRating") : null;
+				setbvReviewAndRateMap(bvReviewAndRateMap, key, averageOverallRating);
+			}
+		} else {
+			bvReviewAndRateMap.put(bazaarVoice.getSkuId(), "na");
+		}
+	}
+
+	private void setbvReviewAndRateMap(HashMap<String, String> bvReviewAndRateMap, String key,
+			Double averageOverallRating) {
+		if (!bvReviewAndRateMap.keySet().contains(key)) {
+			String overallRating = (null != averageOverallRating)
+					? averageOverallRating.toString() : "na";
+			bvReviewAndRateMap.put(key, overallRating);
+		}
 	}
 
 	/**
@@ -154,6 +164,7 @@ public class DeviceServiceCommonUtility {
 	 * validates the member based on the memberId.
 	 * 
 	 * @param memberId
+	 * @param journeyType
 	 * @return memberFlag
 	 */
 	public Boolean validateMemeber_Implementation(String memberId, String journeyType) {
@@ -180,9 +191,11 @@ public class DeviceServiceCommonUtility {
 	}
 
 	/**
-	 * @author manoj.bera
-	 * @param listOfPriceForBundleAndHardware
-	 * @return PriceForBundleAndHardware
+	 * 
+	 * @param listOfPriceForBundleHeaderLocal
+	 * @param commercialbundleMap
+	 * @param journeyType
+	 * @return
 	 */
 	public PriceForBundleAndHardware identifyLowestPriceOfPlanForDevice(
 			List<PriceForBundleAndHardware> listOfPriceForBundleHeaderLocal,
@@ -200,31 +213,13 @@ public class DeviceServiceCommonUtility {
 			List<PriceForBundleAndHardware> listOfOneOffPriceSorted = getAscendingOrderForOneoffPrice(
 					listOfPriceForBundleAndHardware);
 			if (listOfOneOffPriceSorted != null && !listOfOneOffPriceSorted.isEmpty()) {
-				if (listOfOneOffPriceSorted.get(0).getHardwarePrice().getOneOffDiscountPrice().getGross() != null) {
-					gross = listOfOneOffPriceSorted.get(0).getHardwarePrice().getOneOffDiscountPrice().getGross();
-				} else {
-					gross = listOfOneOffPriceSorted.get(0).getHardwarePrice().getOneOffPrice().getGross();
-				}
+				gross = setGrossPriceForOneOffPriceSorted(listOfOneOffPriceSorted);
 
 				List<PriceForBundleAndHardware> listOfEqualOneOffPriceForBundleHeader = new ArrayList<>();
-				for (PriceForBundleAndHardware bundleAndHardwarePrice : listOfOneOffPriceSorted) {
-					if (bundleAndHardwarePrice.getHardwarePrice() != null
-							&& (bundleAndHardwarePrice.getHardwarePrice().getOneOffDiscountPrice() != null
-									|| bundleAndHardwarePrice.getHardwarePrice().getOneOffPrice() != null)
-							&& gross != null) {
-						if ((bundleAndHardwarePrice.getHardwarePrice().getOneOffDiscountPrice().getGross() != null
-								|| bundleAndHardwarePrice.getHardwarePrice().getOneOffPrice().getGross() != null)
-								&& (gross
-										.equalsIgnoreCase(bundleAndHardwarePrice.getHardwarePrice()
-												.getOneOffDiscountPrice().getGross())
-										|| gross.equalsIgnoreCase(bundleAndHardwarePrice.getHardwarePrice()
-												.getOneOffPrice().getGross()))) {
-							listOfEqualOneOffPriceForBundleHeader.add(bundleAndHardwarePrice);
-						}
-					}
-				}
+				setListOfPriceForBundleAndHardware(gross, listOfOneOffPriceSorted,
+						listOfEqualOneOffPriceForBundleHeader);
 				List<PriceForBundleAndHardware> listOfBundelMonthlyPriceForBundleHeader;
-				if (listOfEqualOneOffPriceForBundleHeader != null && !listOfEqualOneOffPriceForBundleHeader.isEmpty()) {
+				if (!listOfEqualOneOffPriceForBundleHeader.isEmpty()) {
 					listOfBundelMonthlyPriceForBundleHeader = getAscendingOrderForBundlePrice(
 							listOfEqualOneOffPriceForBundleHeader);
 					if (listOfBundelMonthlyPriceForBundleHeader != null
@@ -237,6 +232,44 @@ public class DeviceServiceCommonUtility {
 		return null;
 	}
 
+	private void setListOfPriceForBundleAndHardware(String gross,
+			List<PriceForBundleAndHardware> listOfOneOffPriceSorted,
+			List<PriceForBundleAndHardware> listOfEqualOneOffPriceForBundleHeader) {
+		for (PriceForBundleAndHardware bundleAndHardwarePrice : listOfOneOffPriceSorted) {
+			if (bundleAndHardwarePrice.getHardwarePrice() != null
+					&& (bundleAndHardwarePrice.getHardwarePrice().getOneOffDiscountPrice() != null
+							|| bundleAndHardwarePrice.getHardwarePrice().getOneOffPrice() != null)
+					&& gross != null) {
+				setListOfEqualOneOFFpIrceForBUnde(gross, listOfEqualOneOffPriceForBundleHeader,
+						bundleAndHardwarePrice);
+			}
+		}
+	}
+
+	private void setListOfEqualOneOFFpIrceForBUnde(String gross,
+			List<PriceForBundleAndHardware> listOfEqualOneOffPriceForBundleHeader,
+			PriceForBundleAndHardware bundleAndHardwarePrice) {
+		if ((bundleAndHardwarePrice.getHardwarePrice().getOneOffDiscountPrice().getGross() != null
+				|| bundleAndHardwarePrice.getHardwarePrice().getOneOffPrice().getGross() != null)
+				&& (gross
+						.equalsIgnoreCase(bundleAndHardwarePrice.getHardwarePrice()
+								.getOneOffDiscountPrice().getGross())
+						|| gross.equalsIgnoreCase(bundleAndHardwarePrice.getHardwarePrice()
+								.getOneOffPrice().getGross()))) {
+			listOfEqualOneOffPriceForBundleHeader.add(bundleAndHardwarePrice);
+		}
+	}
+
+	private String setGrossPriceForOneOffPriceSorted(List<PriceForBundleAndHardware> listOfOneOffPriceSorted) {
+		String gross;
+		if (listOfOneOffPriceSorted.get(0).getHardwarePrice().getOneOffDiscountPrice().getGross() != null) {
+			gross = listOfOneOffPriceSorted.get(0).getHardwarePrice().getOneOffDiscountPrice().getGross();
+		} else {
+			gross = listOfOneOffPriceSorted.get(0).getHardwarePrice().getOneOffPrice().getGross();
+		}
+		return gross;
+	}
+
 	/**
 	 * 
 	 * @param bundleHeaderForDeviceSorted
@@ -244,45 +277,42 @@ public class DeviceServiceCommonUtility {
 	 */
 	public List<PriceForBundleAndHardware> getAscendingOrderForOneoffPrice(
 			List<PriceForBundleAndHardware> bundleHeaderForDeviceSorted) {
-		Collections.sort(bundleHeaderForDeviceSorted, new SortedOneOffPriceList1());
+		Collections.sort(bundleHeaderForDeviceSorted,(PriceForBundleAndHardware priceForBundleAndHard,
+				PriceForBundleAndHardware priceForBundleAndHard1)->{
+
+					String gross;
+					String gross1;
+					if (priceForBundleAndHard.getHardwarePrice() != null && priceForBundleAndHard1.getHardwarePrice() != null) {
+						gross = setHardwareOneOfPriceForComparing(priceForBundleAndHard);
+						gross1 = setHardwareOneOfPriceForComparing(priceForBundleAndHard1);
+
+						if (Double.parseDouble(gross) < Double.parseDouble(gross1)) {
+							return -1;
+						} else if (Double.compare(Double.parseDouble(gross), Double.parseDouble(gross1)) == 0) {
+							return 0;
+						} else{
+							return 1;
+						}
+					}
+
+					else{
+						return -1;
+					}
+				
+				});
 
 		return bundleHeaderForDeviceSorted;
 	}
 
-	class SortedOneOffPriceList1 implements Comparator<PriceForBundleAndHardware> {
-
-		@Override
-		public int compare(PriceForBundleAndHardware priceForBundleAndHard,
-				PriceForBundleAndHardware priceForBundleAndHard1) {
-			String gross;
-			String gross1;
-			if (priceForBundleAndHard.getHardwarePrice() != null && priceForBundleAndHard1.getHardwarePrice() != null) {
-				if (priceForBundleAndHard.getHardwarePrice().getOneOffDiscountPrice() != null
-						&& priceForBundleAndHard.getHardwarePrice().getOneOffDiscountPrice().getGross() != null) {
-					gross = priceForBundleAndHard.getHardwarePrice().getOneOffDiscountPrice().getGross();
-				} else {
-					gross = priceForBundleAndHard.getHardwarePrice().getOneOffPrice().getGross();
-				}
-				if (priceForBundleAndHard1.getHardwarePrice().getOneOffDiscountPrice() != null
-						&& priceForBundleAndHard1.getHardwarePrice().getOneOffDiscountPrice().getGross() != null) {
-					gross1 = priceForBundleAndHard1.getHardwarePrice().getOneOffDiscountPrice().getGross();
-				} else {
-					gross1 = priceForBundleAndHard1.getHardwarePrice().getOneOffPrice().getGross();
-				}
-
-				if (Double.parseDouble(gross) < Double.parseDouble(gross1)) {
-					return -1;
-				} else if (Double.compare(Double.parseDouble(gross), Double.parseDouble(gross1)) == 0) {
-					return 0;
-				} else
-					return 1;
-
-			}
-
-			else
-				return -1;
+	private String setHardwareOneOfPriceForComparing(PriceForBundleAndHardware priceForBundleAndHard) {
+		String gross;
+		if (priceForBundleAndHard.getHardwarePrice().getOneOffDiscountPrice() != null
+				&& priceForBundleAndHard.getHardwarePrice().getOneOffDiscountPrice().getGross() != null) {
+			gross = priceForBundleAndHard.getHardwarePrice().getOneOffDiscountPrice().getGross();
+		} else {
+			gross = priceForBundleAndHard.getHardwarePrice().getOneOffPrice().getGross();
 		}
-
+		return gross;
 	}
 
 	/**
@@ -292,43 +322,40 @@ public class DeviceServiceCommonUtility {
 	 */
 	public List<PriceForBundleAndHardware> getAscendingOrderForBundlePrice(
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware) {
-		Collections.sort(listOfPriceForBundleAndHardware, new SortedBundlePriceList1());
+		Collections.sort(listOfPriceForBundleAndHardware,(PriceForBundleAndHardware priceForBundleAndHardware,
+				PriceForBundleAndHardware priceForBundleAndHardware1)->{
+
+					String gross;
+					String gross1;
+					if (priceForBundleAndHardware.getBundlePrice() != null
+							&& priceForBundleAndHardware1.getBundlePrice() != null) {
+						gross = setMonthlyPriceForBundleForCOmpare(priceForBundleAndHardware);
+						gross1 = setMonthlyPriceForBundleForCOmpare(priceForBundleAndHardware1);
+						if (Double.parseDouble(gross) < Double.parseDouble(gross1)) {
+							return -1;
+						} else{
+							return 1;
+						}
+					}
+
+					else{
+						return -1;
+					}
+				
+				});
 
 		return listOfPriceForBundleAndHardware;
 	}
 
-	class SortedBundlePriceList1 implements Comparator<PriceForBundleAndHardware> {
-
-		@Override
-		public int compare(PriceForBundleAndHardware priceForBundleAndHardware,
-				PriceForBundleAndHardware priceForBundleAndHardware1) {
-			String gross;
-			String gross1;
-			if (priceForBundleAndHardware.getBundlePrice() != null
-					&& priceForBundleAndHardware1.getBundlePrice() != null) {
-				if (priceForBundleAndHardware.getBundlePrice().getMonthlyDiscountPrice() != null
-						&& priceForBundleAndHardware.getBundlePrice().getMonthlyDiscountPrice().getGross() != null) {
-					gross = priceForBundleAndHardware.getBundlePrice().getMonthlyDiscountPrice().getGross();
-				} else {
-					gross = priceForBundleAndHardware.getBundlePrice().getMonthlyPrice().getGross();
-				}
-				if (priceForBundleAndHardware1.getBundlePrice().getMonthlyDiscountPrice() != null
-						&& priceForBundleAndHardware1.getBundlePrice().getMonthlyDiscountPrice().getGross() != null) {
-					gross1 = priceForBundleAndHardware1.getBundlePrice().getMonthlyDiscountPrice().getGross();
-				} else {
-					gross1 = priceForBundleAndHardware1.getBundlePrice().getMonthlyPrice().getGross();
-				}
-				if (Double.parseDouble(gross) < Double.parseDouble(gross1)) {
-					return -1;
-				} else
-					return 1;
-
-			}
-
-			else
-				return -1;
+	private String setMonthlyPriceForBundleForCOmpare(PriceForBundleAndHardware priceForBundleAndHardware) {
+		String gross;
+		if (priceForBundleAndHardware.getBundlePrice().getMonthlyDiscountPrice() != null
+				&& priceForBundleAndHardware.getBundlePrice().getMonthlyDiscountPrice().getGross() != null) {
+			gross = priceForBundleAndHardware.getBundlePrice().getMonthlyDiscountPrice().getGross();
+		} else {
+			gross = priceForBundleAndHardware.getBundlePrice().getMonthlyPrice().getGross();
 		}
-
+		return gross;
 	}
 
 	/**
@@ -382,14 +409,7 @@ public class DeviceServiceCommonUtility {
 		List<com.vf.uk.dal.utility.entity.BundleHeader> listOfOneOffPriceForBundleHeader = getAscendingOrderForBundleHeaderOneoffPrice(
 				listOfBundleHeaderForDevice);
 		if (listOfOneOffPriceForBundleHeader != null && !listOfOneOffPriceForBundleHeader.isEmpty()) {
-			if (listOfOneOffPriceForBundleHeader.get(0).getPriceInfo().getHardwarePrice().getOneOffDiscountPrice()
-					.getGross() != null) {
-				gross = listOfOneOffPriceForBundleHeader.get(0).getPriceInfo().getHardwarePrice()
-						.getOneOffDiscountPrice().getGross();
-			} else {
-				gross = listOfOneOffPriceForBundleHeader.get(0).getPriceInfo().getHardwarePrice().getOneOffPrice()
-						.getGross();
-			}
+			gross = setGrossPriceForHardware(listOfOneOffPriceForBundleHeader);
 
 			List<com.vf.uk.dal.utility.entity.BundleHeader> listOfEqualOneOffPriceForBundleHeader = new ArrayList<>();
 			for (com.vf.uk.dal.utility.entity.BundleHeader bundleHeaderForDevice : listOfOneOffPriceForBundleHeader) {
@@ -416,6 +436,20 @@ public class DeviceServiceCommonUtility {
 		}
 	}
 
+	private String setGrossPriceForHardware(
+			List<com.vf.uk.dal.utility.entity.BundleHeader> listOfOneOffPriceForBundleHeader) {
+		String gross;
+		if (listOfOneOffPriceForBundleHeader.get(0).getPriceInfo().getHardwarePrice().getOneOffDiscountPrice()
+				.getGross() != null) {
+			gross = listOfOneOffPriceForBundleHeader.get(0).getPriceInfo().getHardwarePrice()
+					.getOneOffDiscountPrice().getGross();
+		} else {
+			gross = listOfOneOffPriceForBundleHeader.get(0).getPriceInfo().getHardwarePrice().getOneOffPrice()
+					.getGross();
+		}
+		return gross;
+	}
+
 	/**
 	 * @param gross
 	 * @param listOfEqualOneOffPriceForBundleHeader
@@ -427,15 +461,21 @@ public class DeviceServiceCommonUtility {
 		if (bundleHeaderForDevice.getPriceInfo() != null
 				&& bundleHeaderForDevice.getPriceInfo().getHardwarePrice() != null
 				&& DeviceServiceImplUtility.getoneOffPrice(bundleHeaderForDevice) && gross != null) {
-			if ((bundleHeaderForDevice.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice().getGross() != null
-					|| bundleHeaderForDevice.getPriceInfo().getHardwarePrice().getOneOffPrice().getGross() != null)
-					&& (gross
-							.equalsIgnoreCase(bundleHeaderForDevice.getPriceInfo().getHardwarePrice()
-									.getOneOffDiscountPrice().getGross())
-							|| gross.equalsIgnoreCase(bundleHeaderForDevice.getPriceInfo().getHardwarePrice()
-									.getOneOffPrice().getGross()))) {
-				listOfEqualOneOffPriceForBundleHeader.add(bundleHeaderForDevice);
-			}
+			getListOfEqualOneOffPRiceForOneOffPrice(gross, listOfEqualOneOffPriceForBundleHeader, bundleHeaderForDevice);
+		}
+	}
+
+	private void getListOfEqualOneOffPRiceForOneOffPrice(String gross,
+			List<com.vf.uk.dal.utility.entity.BundleHeader> listOfEqualOneOffPriceForBundleHeader,
+			com.vf.uk.dal.utility.entity.BundleHeader bundleHeaderForDevice) {
+		if ((bundleHeaderForDevice.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice().getGross() != null
+				|| bundleHeaderForDevice.getPriceInfo().getHardwarePrice().getOneOffPrice().getGross() != null)
+				&& (gross
+						.equalsIgnoreCase(bundleHeaderForDevice.getPriceInfo().getHardwarePrice()
+								.getOneOffDiscountPrice().getGross())
+						|| gross.equalsIgnoreCase(bundleHeaderForDevice.getPriceInfo().getHardwarePrice()
+								.getOneOffPrice().getGross()))) {
+			listOfEqualOneOffPriceForBundleHeader.add(bundleHeaderForDevice);
 		}
 	}
 
@@ -446,49 +486,46 @@ public class DeviceServiceCommonUtility {
 	 */
 	public List<com.vf.uk.dal.utility.entity.BundleHeader> getAscendingOrderForBundleHeaderOneoffPrice(
 			List<com.vf.uk.dal.utility.entity.BundleHeader> bundleHeaderForDeviceSorted) {
-		Collections.sort(bundleHeaderForDeviceSorted, new SortedOneOffPriceList());
+		Collections.sort(bundleHeaderForDeviceSorted,(com.vf.uk.dal.utility.entity.BundleHeader bundleHeaderList,
+				com.vf.uk.dal.utility.entity.BundleHeader bundleHeaderList1)->{
+					String gross = null;
+					String gross1 = null;
+					if (bundleHeaderList.getPriceInfo() != null && bundleHeaderList1.getPriceInfo() != null
+							&& bundleHeaderList.getPriceInfo().getHardwarePrice() != null
+							&& bundleHeaderList1.getPriceInfo().getHardwarePrice() != null) {
+						gross = setGrossForComparator(bundleHeaderList);
+						gross1 = setGrossForComparator(bundleHeaderList1);
+
+						if (Double.parseDouble(gross) < Double.parseDouble(gross1)) {
+							return -1;
+						} else if (Double.compare(Double.parseDouble(gross), Double.parseDouble(gross1)) == 0) {
+							return 0;
+						} else{
+							return 1;
+						}
+
+					}
+
+					else{
+						return -1;
+					}
+				
+					
+				});
 
 		return bundleHeaderForDeviceSorted;
 	}
 
-	class SortedOneOffPriceList implements Comparator<com.vf.uk.dal.utility.entity.BundleHeader> {
-
-		@Override
-		public int compare(com.vf.uk.dal.utility.entity.BundleHeader bundleHeaderList,
-				com.vf.uk.dal.utility.entity.BundleHeader bundleHeaderList1) {
-			String gross = null;
-			String gross1 = null;
-			if (bundleHeaderList.getPriceInfo() != null && bundleHeaderList1.getPriceInfo() != null
-					&& bundleHeaderList.getPriceInfo().getHardwarePrice() != null
-					&& bundleHeaderList1.getPriceInfo().getHardwarePrice() != null) {
-				if (bundleHeaderList.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice() != null
-						&& bundleHeaderList.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice()
-								.getGross() != null) {
-					gross = bundleHeaderList.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice().getGross();
-				} else {
-					gross = bundleHeaderList.getPriceInfo().getHardwarePrice().getOneOffPrice().getGross();
-				}
-				if (bundleHeaderList1.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice() != null
-						&& bundleHeaderList1.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice()
-								.getGross() != null) {
-					gross1 = bundleHeaderList1.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice().getGross();
-				} else {
-					gross1 = bundleHeaderList1.getPriceInfo().getHardwarePrice().getOneOffPrice().getGross();
-				}
-
-				if (Double.parseDouble(gross) < Double.parseDouble(gross1)) {
-					return -1;
-				} else if (Double.compare(Double.parseDouble(gross), Double.parseDouble(gross1)) == 0) {
-					return 0;
-				} else
-					return 1;
-
-			}
-
-			else
-				return -1;
+	private String setGrossForComparator(com.vf.uk.dal.utility.entity.BundleHeader bundleHeaderList) {
+		String gross;
+		if (bundleHeaderList.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice() != null
+				&& bundleHeaderList.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice()
+						.getGross() != null) {
+			gross = bundleHeaderList.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice().getGross();
+		} else {
+			gross = bundleHeaderList.getPriceInfo().getHardwarePrice().getOneOffPrice().getGross();
 		}
-
+		return gross;
 	}
 
 	/**
@@ -498,45 +535,43 @@ public class DeviceServiceCommonUtility {
 	 */
 	public List<com.vf.uk.dal.utility.entity.BundleHeader> getAscendingOrderForBundleHeaderPrice(
 			List<com.vf.uk.dal.utility.entity.BundleHeader> bundleHeaderForDeviceSorted) {
-		Collections.sort(bundleHeaderForDeviceSorted, new SortedBundlePriceList());
+		Collections.sort(bundleHeaderForDeviceSorted,(com.vf.uk.dal.utility.entity.BundleHeader bundleHeaderList,
+				com.vf.uk.dal.utility.entity.BundleHeader bundleHeaderList1)->{
+					
+
+					String gross = null;
+					String gross1 = null;
+					if (bundleHeaderList.getPriceInfo() != null && bundleHeaderList1.getPriceInfo() != null
+							&& bundleHeaderList.getPriceInfo().getBundlePrice() != null
+							&& bundleHeaderList1.getPriceInfo().getBundlePrice() != null) {
+						gross = setBundlePriceForComparing(bundleHeaderList);
+						gross1 = setBundlePriceForComparing(bundleHeaderList1);
+						if (Double.parseDouble(gross) < Double.parseDouble(gross1)) {
+							return -1;
+						} else{
+							return 1;
+						}
+					}
+
+					else{
+						return -1;
+					}
+				
+				});
 
 		return bundleHeaderForDeviceSorted;
 	}
 
-	class SortedBundlePriceList implements Comparator<com.vf.uk.dal.utility.entity.BundleHeader> {
-
-		@Override
-		public int compare(com.vf.uk.dal.utility.entity.BundleHeader bundleHeaderList,
-				com.vf.uk.dal.utility.entity.BundleHeader bundleHeaderList1) {
-			String gross = null;
-			String gross1 = null;
-			if (bundleHeaderList.getPriceInfo() != null && bundleHeaderList1.getPriceInfo() != null
-					&& bundleHeaderList.getPriceInfo().getBundlePrice() != null
-					&& bundleHeaderList1.getPriceInfo().getBundlePrice() != null) {
-				if (bundleHeaderList.getPriceInfo().getBundlePrice().getMonthlyDiscountPrice() != null
-						&& bundleHeaderList.getPriceInfo().getBundlePrice().getMonthlyDiscountPrice()
-								.getGross() != null) {
-					gross = bundleHeaderList.getPriceInfo().getBundlePrice().getMonthlyDiscountPrice().getGross();
-				} else {
-					gross = bundleHeaderList.getPriceInfo().getBundlePrice().getMonthlyPrice().getGross();
-				}
-				if (bundleHeaderList1.getPriceInfo().getBundlePrice().getMonthlyDiscountPrice() != null
-						&& bundleHeaderList1.getPriceInfo().getBundlePrice().getMonthlyDiscountPrice()
-								.getGross() != null) {
-					gross1 = bundleHeaderList1.getPriceInfo().getBundlePrice().getMonthlyDiscountPrice().getGross();
-				} else {
-					gross1 = bundleHeaderList1.getPriceInfo().getBundlePrice().getMonthlyPrice().getGross();
-				}
-				if (Double.parseDouble(gross) < Double.parseDouble(gross1)) {
-					return -1;
-				} else
-					return 1;
-
-			}
-
-			else
-				return -1;
+	private String setBundlePriceForComparing(com.vf.uk.dal.utility.entity.BundleHeader bundleHeaderList) {
+		String gross;
+		if (bundleHeaderList.getPriceInfo().getBundlePrice().getMonthlyDiscountPrice() != null
+				&& bundleHeaderList.getPriceInfo().getBundlePrice().getMonthlyDiscountPrice()
+						.getGross() != null) {
+			gross = bundleHeaderList.getPriceInfo().getBundlePrice().getMonthlyDiscountPrice().getGross();
+		} else {
+			gross = bundleHeaderList.getPriceInfo().getBundlePrice().getMonthlyPrice().getGross();
 		}
-
+		return gross;
 	}
+
 }

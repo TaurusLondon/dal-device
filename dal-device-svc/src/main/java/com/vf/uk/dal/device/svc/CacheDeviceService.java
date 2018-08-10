@@ -12,16 +12,20 @@ import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
 import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
-
+/**
+ * 
+ * @author sahil.monga
+ *
+ */
 public interface CacheDeviceService {
 
 	/**
 	 * 
 	 * @param groupType
 	 * @param jobId
-	 * @return CompletableFuture
+	 * @param version
+	 * @return
 	 */
-	// @Transactional(rollbackFor = {Exception.class})
 	public CompletableFuture<Integer> cacheDeviceTile(String groupType, String jobId, String version);
 
 	/**

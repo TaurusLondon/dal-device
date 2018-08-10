@@ -31,7 +31,14 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-
+/**
+ * 
+ * 1.Controller should able handle all the request and response for the device
+ * services. 2.Controller should able to produce and consume Json Format for the
+ * device services. 3.The service layer needs to be invoked from the device
+ * services inside the controller.
+ *
+ */
 @RestController
 @RequestMapping(value = "")
 @EnableAspectJAutoProxy(proxyTargetClass = true)

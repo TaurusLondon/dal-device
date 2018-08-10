@@ -17,7 +17,11 @@ import org.elasticsearch.search.sort.SortOrder;
 import com.vf.uk.dal.common.configuration.ConfigHelper;
 import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.utils.Constants;
-
+/**
+ * 
+ * Device Query Builder Helper
+ *
+ */
 public class DeviceQueryBuilderHelper {
 
 	private static int size = ConfigHelper.getInt(Constants.ELASTIC_SEARCH_INDEX_SIZE,
@@ -116,9 +120,10 @@ public class DeviceQueryBuilderHelper {
 	}
 
 	/**
-	 * @author manoj.bera
+	 * 
 	 * @param Id
-	 * @return SearchRequest
+	 * @param type
+	 * @return
 	 */
 	public static SearchRequest searchQueryForCommercialProductAndCommercialBundle(String Id, String type) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
@@ -141,14 +146,11 @@ public class DeviceQueryBuilderHelper {
 		}
 		return searchRequest;
 	}
-
 	/**
 	 * 
-	 * @author manoj.bera Method to build query for either list of ProductIds or
-	 *         list of Product Names.
-	 * 
-	 * @param ids
-	 * @return searchQueryMap
+	 * @param idsOrNames
+	 * @param type
+	 * @return
 	 */
 	public static SearchRequest searchQueryForListOfCommercialProductAndCommercialBundle(List<String> idsOrNames,
 			String type) {
@@ -292,9 +294,10 @@ public class DeviceQueryBuilderHelper {
 	}
 
 	/**
-	 * @author manoj.bera
-	 * @param listOfDeviceIds
-	 * @return SearchRequest
+	 * 
+	 * @param journeyType
+	 * @param groupName
+	 * @return
 	 */
 	public static SearchRequest searchQueryForMerchandisingPromotionModel(List<String> journeyType, String groupName) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();

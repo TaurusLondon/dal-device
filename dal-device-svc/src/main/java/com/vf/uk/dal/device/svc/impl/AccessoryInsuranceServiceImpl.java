@@ -39,7 +39,11 @@ import com.vf.uk.dal.device.utils.ResponseMappingHelper;
 import com.vf.uk.dal.utility.entity.BundleDeviceAndProductsList;
 import com.vf.uk.dal.utility.entity.PriceForAccessory;
 import com.vf.uk.dal.utility.entity.PriceForProduct;
-
+/**
+ * 
+ * Accessory Insurance Service Impl
+ *
+ */
 @Component
 public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService {
 
@@ -483,20 +487,24 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 			for (Insurance insurance : insuranceList) {
 				Price price = insurance.getPrice();
 				if (price != null) {
-					if (StringUtils.isNotBlank(price.getNet())) {
-						price.setNet(FormatPrice(price.getNet()));
-					}
-					if (StringUtils.isNotBlank(price.getVat())) {
-						price.setVat(FormatPrice(price.getVat()));
-					}
-					if (StringUtils.isNotBlank(price.getGross())) {
-						price.setGross(FormatPrice(price.getGross()));
-					}
+					setValuesForPrice(price);
 					insurance.setPrice(price);
 				}
 			}
 		}
 		return insurances;
+	}
+
+	private static void setValuesForPrice(Price price) {
+		if (StringUtils.isNotBlank(price.getNet())) {
+			price.setNet(FormatPrice(price.getNet()));
+		}
+		if (StringUtils.isNotBlank(price.getVat())) {
+			price.setVat(FormatPrice(price.getVat()));
+		}
+		if (StringUtils.isNotBlank(price.getGross())) {
+			price.setGross(FormatPrice(price.getGross()));
+		}
 	}
 
 	/**

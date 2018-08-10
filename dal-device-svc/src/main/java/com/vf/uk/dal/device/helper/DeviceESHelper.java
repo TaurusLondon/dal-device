@@ -272,7 +272,6 @@ public class DeviceESHelper {
 	 */
 	public List<BundleModel> getListOfBundleModel(List<String> bundleIds) {
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper.searchQueryForBundleModel(bundleIds);
-		;
 		SearchResponse bundleModelResponse = deviceDao.getResponseFromDataSource(queryContextMap);
 		LogHelper.info(this, "converting elasticsearch response into standard json object response");
 		return response.getListOfBundleModel(bundleModelResponse);

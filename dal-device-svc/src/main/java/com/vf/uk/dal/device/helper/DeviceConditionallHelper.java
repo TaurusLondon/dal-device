@@ -64,48 +64,11 @@ public class DeviceConditionallHelper {
 				BundleDetails bundleDetails = deviceDao.getBundleDetailsFromComplansListingAPI(prodModel.getProductId(),
 						null);
 				BundlePrice bundlePrice = null;
-				if (null != bundleDetails && CollectionUtils.isNotEmpty(bundleDetails.getPlanList())) {
-					for (com.vf.uk.dal.utility.entity.BundleHeader bundleHeader : bundleDetails.getPlanList()) {
-						LogHelper.info(this, "Leaddevice sku and bundle id  sku " + bundleHeader.getSkuId() + " id   "
-								+ bundleModel.getMonthlyNetPrice());
-						if (bundleHeader.getSkuId().equals(bundleModel.getBundleId())) {
-							if (null != bundleHeader.getPriceInfo()
-									&& null != bundleHeader.getPriceInfo().getBundlePrice()) {
-								bundlePrice = bundleHeader.getPriceInfo().getBundlePrice();
-								break;
-							}
-						}
-					}
-				}
+				bundlePrice = setBundlePriceAndBreak(bundleModel, bundleDetails);
 				if (null != bundlePrice) {
 					Float monthlyPrice = checkPromotionAndGetPrice(bundlePrice);
 					LogHelper.info(this, "Float Monthly price " + monthlyPrice);
-					if (null == monthlyPrice) {
-						bundleModel = null;
-					} else if (monthlyPrice > creditLimit) {
-
-						bundleModel = null;
-						listOfLeadPlanIdNew = new ArrayList<>();
-						listOfLeadPlanIdNew = prodModel.getListOfCompatibleBundles();
-						List<BundleModel> listOfBundleDetails1 = deviceEs.getListOfBundleModel(listOfLeadPlanIdNew);
-						;
-						bundleModelAndPrice = getLowestMontlyPrice(creditLimit, listOfBundleDetails1, bundleDetails,
-								bundleModelAndPrice);
-					} else {
-						if (bundlePrice.getMonthlyPrice() != null) {
-							if (bundlePrice.getMonthlyPrice().getGross() != null
-									&& bundlePrice.getMonthlyPrice().getNet() != null
-									&& bundlePrice.getMonthlyPrice().getVat() != null) {
-
-								bundleModel.setMonthlyGrossPrice(new Float(bundlePrice.getMonthlyPrice().getGross()));
-								bundleModel.setMonthlyNetPrice(new Float(bundlePrice.getMonthlyPrice().getNet()));
-								bundleModel.setMonthlyVatPrice(new Float(bundlePrice.getMonthlyPrice().getVat()));
-
-								bundleModelAndPrice.setBundlePrice(bundlePrice);
-								bundleModelAndPrice.setBundleModel(bundleModel);
-							}
-						}
-					}
+					bundleModelAndPrice = setBundleModelAndPriceOnBAsisOfMonthlyPrice(creditLimit,bundleModel, prodModel, bundleDetails, bundlePrice, monthlyPrice);
 
 				} else {
 					LogHelper.info(this, "Bundle price was null  ");
@@ -119,6 +82,57 @@ public class DeviceConditionallHelper {
 		}
 
 		return bundleModelAndPrice;
+	}
+
+	private BundleModelAndPrice setBundleModelAndPriceOnBAsisOfMonthlyPrice(Float creditLimit,
+			BundleModel bundleModel, ProductModel prodModel,
+			BundleDetails bundleDetails, BundlePrice bundlePrice, Float monthlyPrice) {
+		BundleModelAndPrice bundleModelAndPrice = new BundleModelAndPrice();
+		List<String> listOfLeadPlanIdNew;
+		if (null == monthlyPrice) {
+			bundleModel = null;
+		} else if (monthlyPrice > creditLimit) {
+
+			bundleModel = null;
+			listOfLeadPlanIdNew = prodModel.getListOfCompatibleBundles();
+			List<BundleModel> listOfBundleDetails1 = deviceEs.getListOfBundleModel(listOfLeadPlanIdNew);
+			bundleModelAndPrice = getLowestMontlyPrice(creditLimit, listOfBundleDetails1, bundleDetails,
+					bundleModelAndPrice);
+		} else {
+			setBundleModelANdPrice(bundleModelAndPrice, bundleModel, bundlePrice);
+		}
+		return bundleModelAndPrice;
+	}
+
+	private void setBundleModelANdPrice(BundleModelAndPrice bundleModelAndPrice, BundleModel bundleModel,
+			BundlePrice bundlePrice) {
+		if (bundlePrice.getMonthlyPrice() != null && bundlePrice.getMonthlyPrice().getGross() != null
+					&& bundlePrice.getMonthlyPrice().getNet() != null
+					&& bundlePrice.getMonthlyPrice().getVat() != null) {
+
+				bundleModel.setMonthlyGrossPrice(new Float(bundlePrice.getMonthlyPrice().getGross()));
+				bundleModel.setMonthlyNetPrice(new Float(bundlePrice.getMonthlyPrice().getNet()));
+				bundleModel.setMonthlyVatPrice(new Float(bundlePrice.getMonthlyPrice().getVat()));
+
+				bundleModelAndPrice.setBundlePrice(bundlePrice);
+				bundleModelAndPrice.setBundleModel(bundleModel);
+		}
+	}
+
+	private BundlePrice setBundlePriceAndBreak(BundleModel bundleModel, BundleDetails bundleDetails) {
+		BundlePrice bundlePrice= null;
+		if (null != bundleDetails && CollectionUtils.isNotEmpty(bundleDetails.getPlanList())) {
+			for (com.vf.uk.dal.utility.entity.BundleHeader bundleHeader : bundleDetails.getPlanList()) {
+				LogHelper.info(this, "Leaddevice sku and bundle id  sku " + bundleHeader.getSkuId() + " id   "
+						+ bundleModel.getMonthlyNetPrice());
+				if (bundleHeader.getSkuId().equals(bundleModel.getBundleId())&& null != bundleHeader.getPriceInfo()
+							&& null != bundleHeader.getPriceInfo().getBundlePrice()) {
+						bundlePrice = bundleHeader.getPriceInfo().getBundlePrice();
+						break;
+				}
+			}
+		}
+		return bundlePrice;
 	}
 
 	/**
@@ -164,44 +178,39 @@ public class DeviceConditionallHelper {
 		com.vf.uk.dal.device.entity.BundlePrice bPrice = null;
 		for (BundleModel bundleModel : listOfBundleDetails) {
 			for (com.vf.uk.dal.utility.entity.BundleHeader bundleHeader : bundleDetails.getPlanList()) {
-				if (bundleHeader.getSkuId().equals(bundleModel.getBundleId())) {
-					if (null != bundleHeader.getPriceInfo() && null != bundleHeader.getPriceInfo().getBundlePrice()) {
+				if (bundleHeader.getSkuId().equals(bundleModel.getBundleId())&& null != bundleHeader.getPriceInfo() && null != bundleHeader.getPriceInfo().getBundlePrice()) {
 						com.vf.uk.dal.device.entity.BundlePrice bundlePrice = bundleHeader.getPriceInfo()
 								.getBundlePrice();
 						Float monthlyGrossPrice = checkPromotionAndGetPrice(bundlePrice);
 						if (monthlyGrossPrice != null && monthlyGrossPrice < smallest
 								&& monthlyGrossPrice <= creditLimit) {
 							smallest = monthlyGrossPrice;
-							// assign the smallest bundle
 							bm = bundleModel;
-							// assign the smallest corresponding bundleheader
-							// for prices
 							newBundleHeader = bundleHeader;
 							bPrice = bundlePrice;
-
-						}
 					}
 				}
 			}
 
 		}
-		if (bm != null) {
-			if (newBundleHeader.getPriceInfo() != null && newBundleHeader.getPriceInfo().getMonthlyPrice() != null) {
-				if (newBundleHeader.getPriceInfo().getMonthlyPrice().getGross() != null
-						&& newBundleHeader.getPriceInfo().getMonthlyPrice().getNet() != null
-						&& newBundleHeader.getPriceInfo().getMonthlyPrice().getVat() != null) {
+		if ( bm!= null && newBundleHeader.getPriceInfo() != null && 
+					newBundleHeader.getPriceInfo().getMonthlyPrice() != null 
+					&& checkNullValuesForPriceInfo(newBundleHeader)) {
 
 					bm.setMonthlyGrossPrice(new Float(newBundleHeader.getPriceInfo().getMonthlyPrice().getGross()));
 					bm.setMonthlyNetPrice(new Float(newBundleHeader.getPriceInfo().getMonthlyPrice().getNet()));
 					bm.setMonthlyVatPrice(new Float(newBundleHeader.getPriceInfo().getMonthlyPrice().getVat()));
-
 					bundleModelAndPrice.setBundleModel(bm);
 					bundleModelAndPrice.setBundlePrice(bPrice);
-				}
-			}
 
 		}
 		return bundleModelAndPrice;
+	}
+
+	private boolean checkNullValuesForPriceInfo(com.vf.uk.dal.utility.entity.BundleHeader newBundleHeader) {
+		return newBundleHeader.getPriceInfo().getMonthlyPrice().getGross() != null
+				&& newBundleHeader.getPriceInfo().getMonthlyPrice().getNet() != null
+				&& newBundleHeader.getPriceInfo().getMonthlyPrice().getVat() != null;
 	}
 
 	/**
