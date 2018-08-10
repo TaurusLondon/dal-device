@@ -169,11 +169,20 @@ public class DeviceEntityServiceImpl implements DeviceEntityService {
 		
 		try{
 		HandsetOnlineModelList handsetOnlineModelList = new HandsetOnlineModelList();
-		if(queryParam.containsKey(Constants.JOURNEY_TYPE)){
 		String journeyTypeLocal = queryParam.get(Constants.JOURNEY_TYPE);
 		String journeyType = StringUtils.isBlank(journeyTypeLocal) ? Constants.JOURNEY_TYPE_ACQUISITION : journeyTypeLocal;
 		queryParam.put(Constants.JOURNEY_TYPE, journeyType);
+		String sortCriteria = queryParam.get(Constants.SORT);
+		List<String> criteriaOfSort = DeviceServiceImplUtility.getSortCriteriaForList(sortCriteria);
+		String sortOption;
+		String sortBy;
+		if(CollectionUtils.isNotEmpty(criteriaOfSort)){
+			sortOption = criteriaOfSort.get(0);
+			sortBy = criteriaOfSort.get(1);
+		queryParam.put("sortOption", sortOption);
+		queryParam.put("sortBy", sortBy);
 		}
+		
 		List<HandsetOnlineModel> listOfHandsetOnlineModel = deviceEs.getListOfHandsetOnlineModel(queryParam);
 		List<FacetField> facetFieldList = deviceEs.getFacetFieldForHandsetOnlineModel(queryParam);
 		
@@ -190,5 +199,6 @@ public class DeviceEntityServiceImpl implements DeviceEntityService {
 			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_HANDSET_ONLINE_MODEL);
 		}
 	}
+	
 	
 }

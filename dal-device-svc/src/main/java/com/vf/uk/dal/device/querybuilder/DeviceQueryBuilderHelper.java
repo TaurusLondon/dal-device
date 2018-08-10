@@ -651,6 +651,7 @@ public class DeviceQueryBuilderHelper {
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
 			qb.must(QueryBuilders.termQuery(Constants.STRING_ALL_TYPE + Constants.STRING_KEY_WORD,
 					Constants.HANDSET_ONLINE_MODEL));
+			setSortValueQuery(queryParam, searchRequestBuilder);
 			setPageNumberAndSize(queryParam, searchRequestBuilder);
 			setMakeQuery(queryParam, qb);
 			setModelQuery(queryParam, qb);
@@ -673,6 +674,22 @@ public class DeviceQueryBuilderHelper {
 					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
 		}
 		return searchRequest;
+	}
+	/**
+	 * 
+	 * @param queryParam
+	 * @param searchRequestBuilder
+	 */
+	private static void setSortValueQuery(Map<String, String> queryParam, SearchSourceBuilder searchRequestBuilder) {
+		if(StringUtils.isNotEmpty(queryParam.get(Constants.SORT))){
+			String sortOption = queryParam.get("sortOption");
+			String sortBy = queryParam.get("sortBy");
+		if (StringUtils.isNotEmpty(sortOption) && sortOption.equalsIgnoreCase(Constants.SORT_OPTION_ASC)) {
+			searchRequestBuilder.sort(sortBy.toLowerCase(), SortOrder.ASC);
+		} else if (StringUtils.isNotEmpty(sortOption) && sortOption.equalsIgnoreCase(Constants.SORT_OPTION_DESC)) {
+			searchRequestBuilder.sort(sortBy.toLowerCase(), SortOrder.DESC);
+		}
+		}
 	}
 	/**
 	 * 
