@@ -218,7 +218,7 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 	 */
 	@Override
 	public int saveDeviceMediaData(List<Media> mediaList, String deviceId) {
-		int result = 0;
+		int result;
 		LogHelper.info(this, "Begin DEVICE_LIST_PRE_CALC_MEDIA ");
 		String sql = "INSERT INTO PRODUCT.DEVICE_LIST_PRE_CALC_MEDIA (DEVICE_ID,ID,VALUE,TYPE,DESCRIPTION,DISCOUNT_ID,PROMO_CATEGORY,OFFER_CODE) values (?,?,?,?,?,?,?,?)";
 		int[] i = getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
@@ -253,7 +253,7 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 	 */
 	@Override
 	public int saveDeviceListILSCalcData(List<OfferAppliedPriceDetails> offerAppliedPricesList) {
-		int result = 0;
+		int result;
 		deleteDeviceOfferAppliedData();
 		LogHelper.info(this, "Begin DEVICE_OFFERAPPLIED_PRICE_DATA ");
 		String sql = "INSERT INTO PRODUCT.DEVICE_OFFERAPPLIED_PRICE_DATA " + "(OFFER_CODE, DEVICE_ID,BUNDLE_ID, "
