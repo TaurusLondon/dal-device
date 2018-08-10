@@ -45,7 +45,11 @@ import com.vf.uk.dal.device.utils.DeviceUtils;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
 import com.vf.uk.dal.utility.solr.entity.OfferAppliedPriceDetails;
-
+/**
+ * 
+ * @author sahil.monga
+ *
+ */
 @Component
 public class CacheDeviceServiceImpl implements CacheDeviceService {
 

@@ -4,7 +4,11 @@ import java.util.List;
 
 import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.Insurances;
-
+/**
+ * 
+ * @author sahil.monga
+ *
+ */
 public interface AccessoryInsuranceService {
 
 	/**

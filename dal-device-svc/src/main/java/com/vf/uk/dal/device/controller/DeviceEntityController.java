@@ -1,6 +1,7 @@
 package com.vf.uk.dal.device.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.MediaType;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
+import com.vf.uk.dal.device.datamodel.handsetonlinemodel.HandsetOnlineModelList;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
 import com.vf.uk.dal.device.datamodel.productgroups.Group;
 import com.vf.uk.dal.device.datamodel.productgroups.ProductGroupModelMap;
@@ -29,7 +31,14 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-
+/**
+ * 
+ * 1.Controller should able handle all the request and response for the device
+ * services. 2.Controller should able to produce and consume Json Format for the
+ * device services. 3.The service layer needs to be invoked from the device
+ * services inside the controller.
+ *
+ */
 @RestController
 @RequestMapping(value = "")
 @EnableAspectJAutoProxy(proxyTargetClass = true)
@@ -54,7 +63,7 @@ public class DeviceEntityController {
 				"Missing mandatory parameter " + ex.getParameterName());
 
 	}
-	
+
 	/**
 	 * Handles requests to return the Commercial Products from Product Catalog.
 	 * It takes either Product Id(s) or product Name(s) as input. This is an
@@ -82,7 +91,7 @@ public class DeviceEntityController {
 
 		if (StringUtils.isBlank(productId) && StringUtils.isBlank(productName)) {
 			LogHelper.error(this,
-					"Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
+					"Query parameter(s) passed in the request is invalid " + ExceptionMessages.INVALID_QUERY_PARAMS);
 			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
 		} else if (StringUtils.isNotBlank(productName)) {
 			LogHelper.info(this,
@@ -124,7 +133,7 @@ public class DeviceEntityController {
 			groupDetails = deviceEntiryService.getProductGroupByType(groupType);
 		} else {
 			LogHelper.error(this,
-					"Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
+					" Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
 			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
 		}
 		return groupDetails;
@@ -165,4 +174,25 @@ public class DeviceEntityController {
 
 		return productGroupModelDetails;
 	}
+	/**
+	 * 
+	 * @param queryParam
+	 * @return
+	 */
+	@RequestMapping(value = "/productCatalog/device", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON })
+	public HandsetOnlineModelList getHandsetOnlineModel(@RequestParam Map<String,String> queryParam) {
+		HandsetOnlineModelList handsetOnlineModel;
+
+		if (queryParam.isEmpty()) {
+			LogHelper.error(this,
+					"Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
+			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
+		} else  {
+			LogHelper.info(this,
+					"Get the list of Online Handset Model ");
+			handsetOnlineModel = deviceEntiryService.getHandsetOnlineModelDetails(queryParam);
+		}
+		return handsetOnlineModel;
+	}
+
 }

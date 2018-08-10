@@ -7,7 +7,11 @@ import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
 import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
 import com.vf.uk.dal.utility.solr.entity.Media;
 import com.vf.uk.dal.utility.solr.entity.OfferAppliedPriceDetails;
-
+/**
+ * 
+ * Device Tile Cache Dao
+ *
+ */
 public interface DeviceTileCacheDAO {
 
 	/**
@@ -39,17 +43,20 @@ public interface DeviceTileCacheDAO {
 	public CacheDeviceTileResponse getCacheDeviceJobStatus(String jobId) throws ApplicationException;
 
 	/**
-	 * 
+	 * rollBackTransaction
+	 * @return 
 	 */
 	public void rollBackTransaction();
 
 	/**
-	 * 
+	 * endTransaction
+	 * @return void
 	 */
 	public void endTransaction();
 
 	/**
-	 * 
+	 * beginTransaction
+	 * @return void
 	 */
 	public void beginTransaction();
 

@@ -1,13 +1,17 @@
 package com.vf.uk.dal.device.datamodel.merchandisingpromotion;
 
-/**
- * Condition
- */
+
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
+/**
+ * 
+ * Condition
+ * @author sahil.monga
+ *
+ */
 @Data
 public class Condition {
 

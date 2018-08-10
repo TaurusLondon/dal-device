@@ -37,6 +37,11 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @RequestMapping(value = "")
 @EnableAspectJAutoProxy(proxyTargetClass = true)
+/**
+ * 
+ * @author sahil.monga
+ *
+ */
 public class CacheDeviceAndReviewController {
 
 	@Autowired

@@ -17,10 +17,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * 
- * Swagger configuration class for Device API
- * 
- * @author
- * 
+ * @author sahil.monga
  *
  */
 public class SwaggerConfiguration {
