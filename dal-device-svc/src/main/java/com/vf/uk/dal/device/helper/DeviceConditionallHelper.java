@@ -88,18 +88,19 @@ public class DeviceConditionallHelper {
 			BundleModel bundleModel, ProductModel prodModel,
 			BundleDetails bundleDetails, BundlePrice bundlePrice, Float monthlyPrice) {
 		BundleModelAndPrice bundleModelAndPrice = new BundleModelAndPrice();
+		BundleModel bundleModelMethod = bundleModel;
 		List<String> listOfLeadPlanIdNew;
 		if (null == monthlyPrice) {
-			bundleModel = null;
+			bundleModelMethod = null;
 		} else if (monthlyPrice > creditLimit) {
 
-			bundleModel = null;
+			bundleModelMethod = null;
 			listOfLeadPlanIdNew = prodModel.getListOfCompatibleBundles();
 			List<BundleModel> listOfBundleDetails1 = deviceEs.getListOfBundleModel(listOfLeadPlanIdNew);
 			bundleModelAndPrice = getLowestMontlyPrice(creditLimit, listOfBundleDetails1, bundleDetails,
 					bundleModelAndPrice);
 		} else {
-			setBundleModelANdPrice(bundleModelAndPrice, bundleModel, bundlePrice);
+			setBundleModelANdPrice(bundleModelAndPrice, bundleModelMethod, bundlePrice);
 		}
 		return bundleModelAndPrice;
 	}
