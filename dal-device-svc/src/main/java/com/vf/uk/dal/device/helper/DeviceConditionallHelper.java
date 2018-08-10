@@ -73,7 +73,6 @@ public class DeviceConditionallHelper {
 				} else {
 					LogHelper.info(this, "Bundle price was null  ");
 					LogHelper.info(this, "Bundle Mode was   " + bundleModel);
-					bundleModel = null;
 				}
 
 			}
@@ -90,11 +89,7 @@ public class DeviceConditionallHelper {
 		BundleModelAndPrice bundleModelAndPrice = new BundleModelAndPrice();
 		BundleModel bundleModelMethod = bundleModel;
 		List<String> listOfLeadPlanIdNew;
-		if (null == monthlyPrice) {
-			bundleModelMethod = null;
-		} else if (monthlyPrice > creditLimit) {
-
-			bundleModelMethod = null;
+		if (monthlyPrice > creditLimit) {
 			listOfLeadPlanIdNew = prodModel.getListOfCompatibleBundles();
 			List<BundleModel> listOfBundleDetails1 = deviceEs.getListOfBundleModel(listOfLeadPlanIdNew);
 			bundleModelAndPrice = getLowestMontlyPrice(creditLimit, listOfBundleDetails1, bundleDetails,

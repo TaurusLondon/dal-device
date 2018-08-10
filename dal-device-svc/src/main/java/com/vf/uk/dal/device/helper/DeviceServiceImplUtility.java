@@ -602,13 +602,9 @@ public class DeviceServiceImplUtility {
 		} else if ((null == discountType || (discountType.equals(Constants.LIMITED_TIME_DISCOUNT)))
 				&& null != bundlePrice.getMonthlyPrice() && null != bundlePrice.getMonthlyPrice().getGross()) {
 			grossPrice = new Double(bundlePrice.getMonthlyPrice().getGross());
-
 		}
-
 		return (null != grossPrice && grossPrice <= creditLimit);
-
 	}
-
 	/**
 	 * 
 	 * @param deviceSummary
@@ -631,7 +627,6 @@ public class DeviceServiceImplUtility {
 		}
 		return monthlyPrice;
 	}
-
 	/**
 	 * 
 	 * @param listOfCommercialProducts
@@ -945,7 +940,6 @@ public class DeviceServiceImplUtility {
 		}
 		return leadPlanId;
 	}
-
 	/**
 	 * 
 	 * @param deviceId
@@ -970,7 +964,6 @@ public class DeviceServiceImplUtility {
 		}
 		return bundleHardwareTupleList;
 	}
-
 	/**
 	 * 
 	 * @param deviceId
@@ -1001,5 +994,4 @@ public class DeviceServiceImplUtility {
 		}
 		return deviceDetails;
 	}
-
 }

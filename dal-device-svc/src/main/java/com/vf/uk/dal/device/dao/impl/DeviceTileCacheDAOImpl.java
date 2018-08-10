@@ -92,7 +92,7 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 	 */
 	@Override
 	public int saveDeviceListPreCalcData(List<DevicePreCalculatedData> listProductGroupForDeviceListing) {
-		int result = 0;
+		int result;
 		deleteDeviceListPreCalcDataAndMedia();
 		String sql = "INSERT INTO PRODUCT.DEVICE_LIST_PRE_CALC_DATA"
 				+ "(DEVICE_ID,RATING,LEAD_PLAN_ID,PRODUCT_GROUP_NAME,PRODUCT_GROUP_ID,"

@@ -27,6 +27,7 @@ import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
 import com.vf.uk.dal.device.utils.CommonUtility;
 import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.DeviceTilesDaoUtils;
+import com.vf.uk.dal.device.utils.DeviceUtils;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
 import com.vf.uk.dal.utility.entity.CoupleRelation;
@@ -280,19 +281,12 @@ public class DeviceServiceCommonUtility {
 		Collections.sort(bundleHeaderForDeviceSorted,(PriceForBundleAndHardware priceForBundleAndHard,
 				PriceForBundleAndHardware priceForBundleAndHard1)->{
 
-					String gross;
-					String gross1;
+					Double gross;
+					Double compareGross;
 					if (priceForBundleAndHard.getHardwarePrice() != null && priceForBundleAndHard1.getHardwarePrice() != null) {
-						gross = setHardwareOneOfPriceForComparing(priceForBundleAndHard);
-						gross1 = setHardwareOneOfPriceForComparing(priceForBundleAndHard1);
-
-						if (Double.parseDouble(gross) < Double.parseDouble(gross1)) {
-							return -1;
-						} else if (Double.compare(Double.parseDouble(gross), Double.parseDouble(gross1)) == 0) {
-							return 0;
-						} else{
-							return 1;
-						}
+						gross = DeviceUtils.getDoubleFrmString(setHardwareOneOfPriceForComparing(priceForBundleAndHard));
+						compareGross = DeviceUtils.getDoubleFrmString(setHardwareOneOfPriceForComparing(priceForBundleAndHard1));
+						return Double.compare(gross,compareGross);
 					}
 
 					else{
@@ -488,21 +482,14 @@ public class DeviceServiceCommonUtility {
 			List<com.vf.uk.dal.utility.entity.BundleHeader> bundleHeaderForDeviceSorted) {
 		Collections.sort(bundleHeaderForDeviceSorted,(com.vf.uk.dal.utility.entity.BundleHeader bundleHeaderList,
 				com.vf.uk.dal.utility.entity.BundleHeader bundleHeaderList1)->{
-					String gross = null;
-					String gross1 = null;
+					Double gross;
+					Double compareGross;
 					if (bundleHeaderList.getPriceInfo() != null && bundleHeaderList1.getPriceInfo() != null
 							&& bundleHeaderList.getPriceInfo().getHardwarePrice() != null
 							&& bundleHeaderList1.getPriceInfo().getHardwarePrice() != null) {
-						gross = setGrossForComparator(bundleHeaderList);
-						gross1 = setGrossForComparator(bundleHeaderList1);
-
-						if (Double.parseDouble(gross) < Double.parseDouble(gross1)) {
-							return -1;
-						} else if (Double.compare(Double.parseDouble(gross), Double.parseDouble(gross1)) == 0) {
-							return 0;
-						} else{
-							return 1;
-						}
+						gross = DeviceUtils.getDoubleFrmString(setGrossForComparator(bundleHeaderList));
+						compareGross = DeviceUtils.getDoubleFrmString(setGrossForComparator(bundleHeaderList1));
+						return Double.compare(gross,compareGross);
 
 					}
 
@@ -539,18 +526,14 @@ public class DeviceServiceCommonUtility {
 				com.vf.uk.dal.utility.entity.BundleHeader bundleHeaderList1)->{
 					
 
-					String gross = null;
-					String gross1 = null;
+					Double gross;
+					Double compareGross;
 					if (bundleHeaderList.getPriceInfo() != null && bundleHeaderList1.getPriceInfo() != null
 							&& bundleHeaderList.getPriceInfo().getBundlePrice() != null
 							&& bundleHeaderList1.getPriceInfo().getBundlePrice() != null) {
-						gross = setBundlePriceForComparing(bundleHeaderList);
-						gross1 = setBundlePriceForComparing(bundleHeaderList1);
-						if (Double.parseDouble(gross) < Double.parseDouble(gross1)) {
-							return -1;
-						} else{
-							return 1;
-						}
+						gross = DeviceUtils.getDoubleFrmString(setBundlePriceForComparing(bundleHeaderList));
+						compareGross = DeviceUtils.getDoubleFrmString(setBundlePriceForComparing(bundleHeaderList1));
+						return Double.compare(gross, compareGross);
 					}
 
 					else{
