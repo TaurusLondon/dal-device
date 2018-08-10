@@ -4153,7 +4153,7 @@ public class CommonMethods {
 		hm.setColorNameAndHex(colorNameAndHex);
 		Map<String,com.vf.uk.dal.device.datamodel.handsetonlinemodel.Device> device = new HashMap<>();
 		device.put("1212", getDeviceHandset());
-		hm.setDevice(device);
+		hm.setDevices(device);
 		hm.setLeadNonUpgradeDeviceId("413412");
 		hm.setLeadUpgradeDeviceId("093353");
 		hm.setProductgroupType("PAYG");
