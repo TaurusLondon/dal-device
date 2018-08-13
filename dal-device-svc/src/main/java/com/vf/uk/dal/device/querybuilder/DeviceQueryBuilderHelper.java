@@ -682,12 +682,10 @@ public class DeviceQueryBuilderHelper {
 	 */
 	private static void setSortValueQuery(Map<String, String> queryParam, SearchSourceBuilder searchRequestBuilder) {
 		if(StringUtils.isNotEmpty(queryParam.get(Constants.SORT))){
-			String sortOption = queryParam.get("sortOption");
-			String sortBy = queryParam.get("sortBy");
-		if (StringUtils.isNotEmpty(sortOption) && sortOption.equalsIgnoreCase(Constants.SORT_OPTION_ASC)) {
-			searchRequestBuilder.sort(sortBy.toLowerCase(), SortOrder.ASC);
-		} else if (StringUtils.isNotEmpty(sortOption) && sortOption.equalsIgnoreCase(Constants.SORT_OPTION_DESC)) {
-			searchRequestBuilder.sort(sortBy.toLowerCase(), SortOrder.DESC);
+		if (queryParam.get(Constants.SORT_OPTION_STRING).equalsIgnoreCase(Constants.SORT_OPTION_ASC)) {
+			searchRequestBuilder.sort(Constants.SORT_BY_STRING.toLowerCase(), SortOrder.ASC);
+		} else {
+			searchRequestBuilder.sort(Constants.SORT_BY_STRING.toLowerCase(), SortOrder.DESC);
 		}
 		}
 	}
@@ -730,8 +728,7 @@ public class DeviceQueryBuilderHelper {
 	 * @return
 	 */
 	private static boolean checkForJourneyTypeQuery(Map<String, String> queryParam) {
-		return queryParam.containsKey(Constants.JOURNEY_TYPE)
-					&& Constants.JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(queryParam.get(Constants.JOURNEY_TYPE))
+		return Constants.JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(queryParam.get(Constants.JOURNEY_TYPE))
 					|| Constants.STRING_SECOND_LINE.equalsIgnoreCase(queryParam.get(Constants.JOURNEY_TYPE));
 	}
 	/**
@@ -740,8 +737,7 @@ public class DeviceQueryBuilderHelper {
 	 * @return
 	 */
 	private static boolean checkForJourneyTypeQueryUpgrade(Map<String, String> queryParam) {
-		return queryParam.containsKey(Constants.JOURNEY_TYPE)&& 
-				Constants.STRING_UPGRADE.equalsIgnoreCase(queryParam.get(Constants.JOURNEY_TYPE));
+		return Constants.STRING_UPGRADE.equalsIgnoreCase(queryParam.get(Constants.JOURNEY_TYPE));
 	}
 	/**
 	 * 

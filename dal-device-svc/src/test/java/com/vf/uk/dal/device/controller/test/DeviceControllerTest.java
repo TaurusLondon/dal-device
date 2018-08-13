@@ -655,6 +655,18 @@ public class DeviceControllerTest {
 		hom121.put("mustHaveFeatures", "\"\"");
 		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom121));
 		
+		Map<String,String> hom13 = new HashMap<>();
+		hom13.put("sort", "-priority");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom13));
+	
+		Map<String,String> hom14 = new HashMap<>();
+		hom14.put("sort", "priority");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom14));
+		
+		Map<String,String> hom15 = new HashMap<>();
+		hom15.put("sort", "&priority");
+		Assert.assertNotNull(deviceEntityController.getHandsetOnlineModel(hom15));
+		
 		
 		
 		Map<String, String > map = new HashMap<>();
