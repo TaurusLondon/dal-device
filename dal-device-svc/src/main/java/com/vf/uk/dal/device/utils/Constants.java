@@ -351,5 +351,6 @@ public class Constants {
 	public static final String SORT = "sort";
 	public static final String LEAD_MEMBER_STRING = "leadMember";
 	public static final String STRING_MODELS = "models";
-
+	public static final String SORT_OPTION_STRING = "sortOption";
+	public static final String SORT_BY_STRING = "sortBy";
 }
