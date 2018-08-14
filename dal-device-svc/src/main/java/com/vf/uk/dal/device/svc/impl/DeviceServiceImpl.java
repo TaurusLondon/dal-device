@@ -81,6 +81,9 @@ public class DeviceServiceImpl implements DeviceService {
 
 	@Autowired
 	DeviceConditionallHelper deviceHelper;
+	
+	@Autowired
+	CommonUtility commonUtility;
 
 	DeviceUtils deviceUtils = new DeviceUtils();
 
@@ -192,7 +195,7 @@ public class DeviceServiceImpl implements DeviceService {
 	public FacetedDevice getConditionalForDeviceList(String msisdn, FacetedDevice facetedDevice) {
 		String message;
 		FacetedDevice facetedDeviceResult;
-		String deviceId = CommonUtility.getSubscriptionBundleId(msisdn, Constants.SUBSCRIPTION_TYPE_MSISDN,
+		String deviceId = commonUtility.getSubscriptionBundleId(msisdn, Constants.SUBSCRIPTION_TYPE_MSISDN,
 				registryclnt);
 		LogHelper.info(this, "Getting subscription asset for msisdn " + msisdn + "  deviceID " + deviceId);
 
@@ -285,7 +288,7 @@ public class DeviceServiceImpl implements DeviceService {
 
 		// Calling Pricing Api
 		if (bundleAndHardwareTupleList != null && !bundleAndHardwareTupleList.isEmpty()) {
-			listOfPriceForBundleAndHardware = CommonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode,
+			listOfPriceForBundleAndHardware = commonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode,
 					registryclnt, journeyType);
 		}
 
@@ -342,7 +345,7 @@ public class DeviceServiceImpl implements DeviceService {
 			bundleHardwareTupleList.add(bundleAndHardwareTuple);
 		}
 		if (!bundleHardwareTupleList.isEmpty()) {
-			promotions = CommonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList, journeyType,
+			promotions = commonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList, journeyType,
 					registryclnt);
 		}
 		if (listOfPriceForBundleAndHardware != null && !listOfPriceForBundleAndHardware.isEmpty()) {
@@ -679,7 +682,7 @@ public class DeviceServiceImpl implements DeviceService {
 		List<BundleAndHardwarePromotions> promotions = null;
 
 		if (!bundleHardwareTupleList.isEmpty()) {
-			promotions = CommonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList, journeyType,
+			promotions = commonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList, journeyType,
 					registryclnt);
 		}
 		if (promotions != null) {

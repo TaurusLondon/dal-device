@@ -8,6 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -82,7 +83,7 @@ public class DeviceController {
 			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
-	@RequestMapping(value = "/deviceTile/queries/byDeviceVariant/", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
+	@RequestMapping(value = "/deviceTile/queries/byDeviceVariant/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<DeviceTile> getDeviceTileById(
 			@NotNull @ApiParam(value = "Device Id of the device tile being requested", required = true) @RequestParam(value = "deviceId", required = true) String deviceId,
 			@ApiParam(value = "Journey Type") @RequestParam(value = "journeyType", required = false) String journeyType,
@@ -125,7 +126,7 @@ public class DeviceController {
 			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
-	@RequestMapping(value = "/deviceTile", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
+	@RequestMapping(value = "/deviceTile", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public FacetedDevice getDeviceList(
 			@NotNull @ApiParam(value = "Values on which the attributes should be filtered upon.", required = true) @RequestParam(value = "productClass", required = true) String productClass,
 			@NotNull @ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"DEVICE_PAYM\" or \"DEVICE_PAYG\" or \"DATA_DEVICE_PAYM\".", required = true) @RequestParam(value = "groupType", required = true) String groupType,

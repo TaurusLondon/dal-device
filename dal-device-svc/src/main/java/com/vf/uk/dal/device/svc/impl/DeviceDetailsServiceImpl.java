@@ -40,7 +40,7 @@ import com.vf.uk.dal.utility.entity.CoupleRelation;
 
 @Component
 public class DeviceDetailsServiceImpl implements DeviceDetailsService {
-
+	
 	@Autowired
 	DeviceDao deviceDao;
 
@@ -48,10 +48,16 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 	DeviceESHelper deviceEs;
 
 	@Autowired
+	CommonUtility commonUtility;
+	
+	@Autowired
 	RegistryClient registryclnt;
 
 	@Autowired
 	DeviceServiceCommonUtility deviceServiceCommonUtility;
+	
+	@Autowired
+	DeviceServiceImplUtility deviceServiceImplUtility;
 
 	/**
 	 * Handles requests from controller and connects to DAO.
@@ -121,7 +127,7 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 			bundleAndHardwareTupleList = getListOfPriceForBundleAndHardware_Implementation(commercialProduct, null,
 					journeyTypeLocal);
 		}
-		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = DeviceServiceImplUtility
+		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = deviceServiceImplUtility
 				.getListOfBundleAndHardwareTuple(offerCode, journeyTypeLocal, registryclnt, bundleAndHardwareTupleList);
 		String leadPlanId = DeviceServiceImplUtility.getLeadPlanId(bundleAndHardwareTupleList);
 		LogHelper.info(this, "Start -->  calling  bundleRepository.get");
@@ -133,7 +139,7 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 		}
 		List<BundleAndHardwareTuple> bundleHardwareTupleList = DeviceServiceImplUtility
 				.getBundleAndHardwareTuple(deviceId, commercialProduct, commercialBundle);
-		deviceDetails = DeviceServiceImplUtility.getDeviceDetailsFinal(deviceId, registryclnt, journeyTypeLocal,
+		deviceDetails = deviceServiceImplUtility.getDeviceDetailsFinal(deviceId, registryclnt, journeyTypeLocal,
 				commercialProduct, listOfPriceForBundleAndHardware, bundleHardwareTupleList);
 		if (StringUtils.isNotEmpty(offerCode) && StringUtils.isNotEmpty(journeyTypeLocal)) {
 			deviceDetails.setValidOffer(
@@ -379,7 +385,7 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 
 			if (leadPlanId == null || leadPlanId.isEmpty()) {
 
-				bundleDetailsForDevice = CommonUtility.getPriceDetailsForCompatibaleBundle(deviceId, journeyType,
+				bundleDetailsForDevice = commonUtility.getPriceDetailsForCompatibaleBundle(deviceId, journeyType,
 						registryclnt);
 				listOfBundles = bundleDetailsForDevice.getStandalonePlansList();
 				listOfCoupleRelationForMcs = bundleDetailsForDevice.getCouplePlansList();

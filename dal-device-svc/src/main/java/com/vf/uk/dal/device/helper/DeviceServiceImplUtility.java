@@ -15,6 +15,8 @@ import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
@@ -44,10 +46,12 @@ import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
  * DeviceServiceImplUtility
  *
  */
+@Service
 public class DeviceServiceImplUtility {
-
-	private DeviceServiceImplUtility() {
-	};
+	@Autowired
+	CommonUtility commonUtility;
+	/*private DeviceServiceImplUtility() {
+	};*/
 	/**
 	 * 
 	 * @param journeyType
@@ -916,12 +920,12 @@ public class DeviceServiceImplUtility {
 	 * @param bundleAndHardwareTupleList
 	 * @return
 	 */
-	public static List<PriceForBundleAndHardware> getListOfBundleAndHardwareTuple(String offerCode,
+	public List<PriceForBundleAndHardware> getListOfBundleAndHardwareTuple(String offerCode,
 			String journeyTypeLocal, RegistryClient registryclnt,
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList) {
 		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = null;
 		if (bundleAndHardwareTupleList != null && !bundleAndHardwareTupleList.isEmpty()) {
-			listOfPriceForBundleAndHardware = CommonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode,
+			listOfPriceForBundleAndHardware = commonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode,
 					registryclnt, journeyTypeLocal);
 		}
 		return listOfPriceForBundleAndHardware;
@@ -974,14 +978,14 @@ public class DeviceServiceImplUtility {
 	 * @param bundleHardwareTupleList
 	 * @return DeviceDetails
 	 */
-	public static DeviceDetails getDeviceDetailsFinal(String deviceId, RegistryClient registryclnt,
+	public DeviceDetails getDeviceDetailsFinal(String deviceId, RegistryClient registryclnt,
 			String journeyTypeLocal, CommercialProduct commercialProduct,
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware,
 			List<BundleAndHardwareTuple> bundleHardwareTupleList) {
 		List<BundleAndHardwarePromotions> promotions = null;
 		DeviceDetails deviceDetails;
 		if (!bundleHardwareTupleList.isEmpty()) {
-			promotions = CommonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList,
+			promotions = commonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList,
 					journeyTypeLocal, registryclnt);
 		}
 		if ((isUpgrade(journeyTypeLocal) && isUpgradeFromCommercialProduct(commercialProduct))

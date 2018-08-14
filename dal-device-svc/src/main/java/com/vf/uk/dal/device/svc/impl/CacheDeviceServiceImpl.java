@@ -67,6 +67,9 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 
 	@Autowired
 	DeviceServiceCommonUtility deviceServiceCommonUtility;
+	
+	@Autowired
+	CommonUtility commonUtility;
 
 	ObjectMapper mapper = new ObjectMapper();
 
@@ -151,13 +154,13 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			/**
 			 * ILSPrice Price With Journey Without OfferCode
 			 */
-			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareWithoutOfferCodeForUpgrade = CommonUtility
+			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareWithoutOfferCodeForUpgrade = commonUtility
 					.getPriceDetailsUsingBundleHarwareTrouple(
 							new ArrayList<com.vf.uk.dal.device.entity.BundleAndHardwareTuple>(
 									bundleAndHardwareTupleListJourneyAware),
 							null, Constants.JOURNEY_TYPE_UPGRADE, registryclnt);
 
-			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareWithoutOfferCodeForSecondLine = CommonUtility
+			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareWithoutOfferCodeForSecondLine = commonUtility
 					.getPriceDetailsUsingBundleHarwareTrouple(
 							new ArrayList<com.vf.uk.dal.device.entity.BundleAndHardwareTuple>(
 									bundleAndHardwareTupleListJourneyAware),
@@ -201,7 +204,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 				Map<String, List<PriceForBundleAndHardware>> iLSPriceMapLocalMain = new HashMap<>();
 				jouneyType = DeviceUtils.getJourneybasedOnOfferCode(listOfOfferCodesForUpgrade,
 						listOfSecondLineOfferCode, entry);
-				List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareForOffer = CommonUtility
+				List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareForOffer = commonUtility
 						.getPriceDetailsUsingBundleHarwareTrouple(entry.getValue(), entry.getKey(), jouneyType,
 								registryclnt);
 				DeviceUtils.getIlsPriceForJourneyAwareOfferCodeMap(ilsPriceForJourneyAwareOfferCodeMap, jouneyType,
@@ -378,7 +381,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 	public void getNonLeadPlanMapForPaymCachedevice(Map<String, List<PriceForBundleAndHardware>> nonLeadPlanIdPriceMap,
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleListForNonLeanPlanId) {
 		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareForNonLeadPlanIds;
-		listOfPriceForBundleAndHardwareForNonLeadPlanIds = CommonUtility.getPriceDetailsUsingBundleHarwareTrouple(
+		listOfPriceForBundleAndHardwareForNonLeadPlanIds = commonUtility.getPriceDetailsUsingBundleHarwareTrouple(
 				bundleAndHardwareTupleListForNonLeanPlanId, null, null, registryclnt);
 		if (listOfPriceForBundleAndHardwareForNonLeadPlanIds != null
 				&& !listOfPriceForBundleAndHardwareForNonLeadPlanIds.isEmpty()) {
@@ -412,7 +415,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 	public void getLeadPlanMapForPaymCacheDevice(Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap,
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList) {
 		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareForLeadPlanIds;
-		listOfPriceForBundleAndHardwareForLeadPlanIds = CommonUtility
+		listOfPriceForBundleAndHardwareForLeadPlanIds = commonUtility
 				.getPriceDetailsUsingBundleHarwareTrouple(bundleAndHardwareTupleList, null, null, registryclnt);
 		if (listOfPriceForBundleAndHardwareForLeadPlanIds != null
 				&& !listOfPriceForBundleAndHardwareForLeadPlanIds.isEmpty()) {

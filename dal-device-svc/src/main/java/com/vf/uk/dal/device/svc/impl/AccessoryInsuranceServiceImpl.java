@@ -64,6 +64,9 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 
 	@Autowired
 	DeviceRecommendationService deviceRecommendationService;
+	
+	@Autowired
+	CommonUtility commonUtility;
 
 	/**
 	 * Handles requests from controller and connects to DAO.
@@ -160,7 +163,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 		BundleDeviceAndProductsList bundleDeviceAndProductsList = setBundleDeviceAndProductsList(journeyType, deviceId,
 				offerCode, listOfValidAccesoryIds);
 		PriceForProduct priceForProduct = null;
-		priceForProduct = CommonUtility.getAccessoryPriceDetails(bundleDeviceAndProductsList, registryclnt);
+		priceForProduct = commonUtility.getAccessoryPriceDetails(bundleDeviceAndProductsList, registryclnt);
 
 		Map<String, PriceForAccessory> mapforPrice = new HashMap<>();
 		Map<String, CommercialProduct> mapforCommercialProduct = setMapForCommercialData(listOfFilteredAccessories,

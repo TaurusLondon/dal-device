@@ -32,6 +32,9 @@ public class DeviceRecommendationServiceImpl implements DeviceRecommendationServ
 
 	@Autowired
 	RegistryClient registryclnt;
+	@Autowired
+	CommonUtility commonUtility;
+	
 
 	/**
 	 * Returns recommended device list from chordiant.
@@ -46,7 +49,7 @@ public class DeviceRecommendationServiceImpl implements DeviceRecommendationServ
 		FacetedDevice sortedFacetedDevice = new FacetedDevice();
 		try {
 			RecommendedProductListRequest recomProductListReq = this.getRecommendedDeviceListRequest(msisdn, deviceId);
-			recommendedProductListResponse = CommonUtility.getRecommendedProductList(recomProductListReq, registryclnt);
+			recommendedProductListResponse = commonUtility.getRecommendedProductList(recomProductListReq, registryclnt);
 
 			if (recommendedProductListResponse != null) {
 				sortedFacetedDevice = sortList(facetedDevice, recommendedProductListResponse);

@@ -54,6 +54,9 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 
 	@Autowired
 	DeviceServiceCommonUtility deviceServiceCommonUtility;
+	
+	@Autowired
+	CommonUtility commonUtility;
 
 	/**
 	 * @param make
@@ -443,12 +446,12 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = null;
 			// Calling Pricing Api
 			if (bundleAndHardwareTupleListPAYG != null && !bundleAndHardwareTupleListPAYG.isEmpty()) {
-				listOfPriceForBundleAndHardware = CommonUtility.getPriceDetails(bundleAndHardwareTupleListPAYG, null,
+				listOfPriceForBundleAndHardware = commonUtility.getPriceDetails(bundleAndHardwareTupleListPAYG, null,
 						registryclnt, null);
 			}
 			Map<String, BundleAndHardwarePromotions> bundleAndHardwarePromotionsMap = new HashMap<>();
 			if (bundleAndHardwareTupleListPAYG != null && !bundleAndHardwareTupleListPAYG.isEmpty()) {
-				List<BundleAndHardwarePromotions> allPromotions = CommonUtility
+				List<BundleAndHardwarePromotions> allPromotions = commonUtility
 						.getPromotionsForBundleAndHardWarePromotions(bundleAndHardwareTupleListPAYG, null,
 								registryclnt);
 				if (allPromotions != null && !allPromotions.isEmpty()) {
@@ -560,7 +563,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 							bundleHardwareTupleList.add(bundleAndHardwareTuple);
 						}
 						if (!bundleHardwareTupleList.isEmpty()) {
-							promotions = CommonUtility.getPromotionsForBundleAndHardWarePromotions(
+							promotions = commonUtility.getPromotionsForBundleAndHardWarePromotions(
 									bundleHardwareTupleList, journeyType, registryclnt);
 						}
 
@@ -713,7 +716,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 
 		bundles.add(tuple);
 
-		List<PriceForBundleAndHardware> priceForBundleAndHardwares = CommonUtility.getPriceDetails(bundles, null,
+		List<PriceForBundleAndHardware> priceForBundleAndHardwares = commonUtility.getPriceDetails(bundles, null,
 				registryclnt, journeyType);
 
 		if (DeviceServiceImplUtility.isPlanPriceWithinCreditLimit_Implementation(creditLimit,
@@ -756,7 +759,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			}
 			List<PriceForBundleAndHardware> priceForBundleAndHardwares = null;
 			if (CollectionUtils.isNotEmpty(bundleAndHardwareTupleList)) {
-				priceForBundleAndHardwares = CommonUtility.getPriceDetails(bundleAndHardwareTupleList, null,
+				priceForBundleAndHardwares = commonUtility.getPriceDetails(bundleAndHardwareTupleList, null,
 						registryclnt, journeyType);
 			}
 			if (priceForBundleAndHardwares != null && CollectionUtils.isNotEmpty(priceForBundleAndHardwares)) {

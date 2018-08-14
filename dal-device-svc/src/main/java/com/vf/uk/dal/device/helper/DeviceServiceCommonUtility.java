@@ -48,6 +48,9 @@ public class DeviceServiceCommonUtility {
 
 	@Autowired
 	RegistryClient registryclnt;
+	
+	@Autowired
+	CommonUtility commonUtility;
 
 	/**
 	 * 
@@ -364,7 +367,7 @@ public class DeviceServiceCommonUtility {
 		BundleDetailsForAppSrv bundleDetailsForDevice;
 		List<com.vf.uk.dal.utility.entity.BundleHeader> listOfBundles;
 		List<CoupleRelation> listOfCoupleRelationForMcs;
-		bundleDetailsForDevice = CommonUtility.getPriceDetailsForCompatibaleBundle(commercialProduct.getId(),
+		bundleDetailsForDevice = commonUtility.getPriceDetailsForCompatibaleBundle(commercialProduct.getId(),
 				journeyType, registryclnt);
 		listOfBundles = bundleDetailsForDevice.getStandalonePlansList();
 		listOfCoupleRelationForMcs = bundleDetailsForDevice.getCouplePlansList();

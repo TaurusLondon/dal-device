@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -75,7 +76,7 @@ public class AccessoryInsuranceController {
 			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
-	@RequestMapping(value = "/accessory/queries/byDeviceId/", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
+	@RequestMapping(value = "/accessory/queries/byDeviceId/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<AccessoryTileGroup> getAccessoriesOfDevice(
 			@NotNull @ApiParam(value = "Unique Id of the device being requested", required = true) @RequestParam(value = "deviceId", required = true) String deviceId,
 			@ApiParam(value = "The journey that the user undertakes") @RequestParam(value = "journeyType", required = false) String journeyType,
@@ -103,7 +104,7 @@ public class AccessoryInsuranceController {
 			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
-	@RequestMapping(value = "/insurance/queries/byDeviceId/", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
+	@RequestMapping(value = "/insurance/queries/byDeviceId/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Insurances getInsuranceById(
 			@NotNull @ApiParam(value = "Values based on which inssurnace will be fetched.", required = true) @RequestParam(value = "deviceId", required = true) String deviceId,
 			@ApiParam(value = "user journey") @RequestParam(value = "journeyType", required = false) String journeyType) {

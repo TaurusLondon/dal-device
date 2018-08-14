@@ -12,6 +12,8 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -50,10 +52,12 @@ import com.vf.uk.dal.utility.entity.RecommendedProductListResponse;
  * common methods used across the services.
  *
  */
-
+@Service
 public class CommonUtility {
 	
-	private CommonUtility(){}
+	@Autowired
+	RestTemplate restTemplate;
+	//private CommonUtility(){}
 	/**
 	 * Round off price to two decimal points
 	 * 
@@ -89,10 +93,9 @@ public class CommonUtility {
 	 * @param journeyType
 	 * @return List<PriceForBundleAndHardware>
 	 */
-	public static List<PriceForBundleAndHardware> getPriceDetails(
+	public List<PriceForBundleAndHardware> getPriceDetails(
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, RegistryClient registryClient,
 			String journeyType) {
-		RestTemplate restTemplate = registryClient.getRestTemplate();
 		RequestForBundleAndHardware requestForBundleAndHardware = new RequestForBundleAndHardware();
 		requestForBundleAndHardware.setBundleAndHardwareList(bundleAndHardwareTupleList);
 		requestForBundleAndHardware.setOfferCode(offerCode);
@@ -118,9 +121,8 @@ public class CommonUtility {
 	 * @param registryClient
 	 * @return RecommendedProductListResponse
 	 */
-	public static RecommendedProductListResponse getRecommendedProductList(
+	public RecommendedProductListResponse getRecommendedProductList(
 			RecommendedProductListRequest recomProductList, RegistryClient registryClient) {
-		RestTemplate restTemplate = registryClient.getRestTemplate();
 		return restTemplate.postForObject("http://CUSTOMER-V1/customer/getRecommendedProductList/", recomProductList,
 				RecommendedProductListResponse.class);
 	}
@@ -132,11 +134,10 @@ public class CommonUtility {
 	 * @param registryClient
 	 * @return BundleDetailsForAppSrv
 	 */
-	public static BundleDetailsForAppSrv getPriceDetailsForCompatibaleBundle(String deviceId, String journeyType,
+	public BundleDetailsForAppSrv getPriceDetailsForCompatibaleBundle(String deviceId, String journeyType,
 			RegistryClient registryClient) {
 		try {
 			LogHelper.info(CommonUtility.class, "Start --> Calling  Bundle.getCoupledBundleList");
-			RestTemplate restTemplate = registryClient.getRestTemplate();
 			return restTemplate
 					.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId="
 							+ deviceId + "&journeyType=" + journeyType, BundleDetailsForAppSrv.class);
@@ -156,9 +157,8 @@ public class CommonUtility {
 	 *            the registry client
 	 * @return the bundle details from complans listing API
 	 */
-	public static BundleDetails getBundleDetailsFromComplansListingAPI(String deviceId, String sortCriteria,
+	public BundleDetails getBundleDetailsFromComplansListingAPI(String deviceId, String sortCriteria,
 			RegistryClient registryClient) {
-		RestTemplate restTemplate = registryClient.getRestTemplate();
 		LogHelper.info(CommonUtility.class, "Start -->  calling  Bundle.GetCompatibleListAPI");
 		String URL = "http://BUNDLES-V1/bundles/catalogue/bundle/queries/byDeviceId/" + deviceId + "/";
 		if (sortCriteria != null && StringUtils.isNotBlank(sortCriteria)) {
@@ -218,9 +218,8 @@ public class CommonUtility {
 	 * @param registryClient
 	 * @return PriceForProduct
 	 */
-	public static PriceForProduct getAccessoryPriceDetails(BundleDeviceAndProductsList bundleDeviceAndProductsList,
+	public PriceForProduct getAccessoryPriceDetails(BundleDeviceAndProductsList bundleDeviceAndProductsList,
 			RegistryClient registryClient) {
-		RestTemplate restTemplate = registryClient.getRestTemplate();
 		PriceForProduct client;
 		try {
 			LogHelper.info(CommonUtility.class, "Start -->  calling  Price.product");
@@ -245,12 +244,11 @@ public class CommonUtility {
 	 * @param registryClient
 	 * @return List<PriceForBundleAndHardware>
 	 */
-	public static List<PriceForBundleAndHardware> getPriceDetailsUsingBundleHarwareTrouple(
+	public List<PriceForBundleAndHardware> getPriceDetailsUsingBundleHarwareTrouple(
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType,
 			RegistryClient registryClient) {
 		List<PriceForBundleAndHardware> priceList = null;
 		try {
-			RestTemplate restTemplate = registryClient.getRestTemplate();
 			RequestForBundleAndHardware requestForBundleAndHardware = new RequestForBundleAndHardware();
 			requestForBundleAndHardware.setBundleAndHardwareList(bundleAndHardwareTupleList);
 			requestForBundleAndHardware.setOfferCode(offerCode);
@@ -278,7 +276,7 @@ public class CommonUtility {
 	 * @param registryClient
 	 * @return SubscriptionBundleId
 	 */
-	public static String getSubscriptionBundleId(String subscriptionId, String subscriptionType,
+	public String getSubscriptionBundleId(String subscriptionId, String subscriptionType,
 			RegistryClient registryClient) {
 
 		String bundleId = null;
@@ -286,7 +284,6 @@ public class CommonUtility {
 		try {
 			String url = "http://CUSTOMER-V1/customer/subscription/" + subscriptionType + ":" + subscriptionId
 					+ "/sourcePackageSummary";
-			RestTemplate restTemplate = registryClient.getRestTemplate();
 			SourcePackageSummary sourcePackageSummary = restTemplate.getForObject(url, SourcePackageSummary.class);
 
 			if (null != sourcePackageSummary && null != sourcePackageSummary.getPromotionId()) {
@@ -455,9 +452,8 @@ public class CommonUtility {
 	 * @author manoj.bera
 	 * @SPRINT 6.4
 	 */
-	public static List<BundleAndHardwarePromotions> getPromotionsForBundleAndHardWarePromotions(
+	public List<BundleAndHardwarePromotions> getPromotionsForBundleAndHardWarePromotions(
 			List<BundleAndHardwareTuple> bundleHardwareTupleList, String journeyType, RegistryClient registryClient) {
-		RestTemplate restTemplate = registryClient.getRestTemplate();
 		BundleAndHardwareRequest request = new BundleAndHardwareRequest();
 		request.setBundleAndHardwareList(bundleHardwareTupleList);
 		request.setJourneyType(journeyType);
@@ -466,7 +462,7 @@ public class CommonUtility {
 			LogHelper.info(CommonUtility.class,
 					"http://PROMOTION-V1/promotion/queries/ForBundleAndHardware------POST URL\n"
 							+ "PayLoad\n Start calling");
-			response = restTemplate.postForObject("http://PROMOTION-V1/promotion/queries/ForBundleAndHardware", request,
+			response = restTemplate.postForObject("https://alb-mas.digitalx-dev.svc.vodafoneaws.co.uk/promotion/queries/ForBundleAndHardware", request,
 					BundleAndHardwarePromotions[].class);
 		} catch (RestClientException e) {
 			// Stanley - Added error logging

@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -74,7 +75,7 @@ public class DeviceMakeAndModelController {
 			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
-	@RequestMapping(value = "/deviceTile/queries/byMakeModel/", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
+	@RequestMapping(value = "/deviceTile/queries/byMakeModel/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<DeviceTile> getListOfDeviceTile(
 			@NotNull @ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"apple\".", required = true) @RequestParam(value = "make", required = true) String make,
 			@NotNull @ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"iphone7\".", required = true) @RequestParam(value = "model", required = true) String model,

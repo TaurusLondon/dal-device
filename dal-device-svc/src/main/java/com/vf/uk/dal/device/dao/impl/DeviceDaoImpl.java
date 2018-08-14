@@ -48,6 +48,9 @@ public class DeviceDaoImpl implements DeviceDao {
 
 	@Autowired
 	RegistryClient registryclnt;
+	
+	@Autowired
+	CommonUtility commonUtility;
 
 	@Autowired
 	RestHighLevelClient restClient;
@@ -69,7 +72,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		BundleDetails bundleDetails = null;
 		try {
 			LogHelper.info(this, "Getting Compatible bundle details by calling Compatible Plan List API");
-			bundleDetails = CommonUtility.getBundleDetailsFromComplansListingAPI(deviceId, sortCriteria, registryclnt);
+			bundleDetails = commonUtility.getBundleDetailsFromComplansListingAPI(deviceId, sortCriteria, registryclnt);
 		} catch (ApplicationException e) {
 			LogHelper.error(this, "No Compatible bundle Found By Given Bundle Id " + e);
 			bundleDetails = null;
@@ -103,7 +106,7 @@ public class DeviceDaoImpl implements DeviceDao {
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType) {
 		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware;
 		LogHelper.info(this, "Get the price details for Bundle and Hardware list from Pricing API");
-		listOfPriceForBundleAndHardware = CommonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode,
+		listOfPriceForBundleAndHardware = commonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode,
 				registryclnt, journeyType);
 		return listOfPriceForBundleAndHardware;
 	}
@@ -171,7 +174,7 @@ public class DeviceDaoImpl implements DeviceDao {
 
 		return CompletableFuture.supplyAsync(() -> {
 			Constants.CATALOG_VERSION.set(version);
-			return CommonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode, registryclnt, journeyType);
+			return commonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode, registryclnt, journeyType);
 		});
 
 	}
@@ -189,7 +192,7 @@ public class DeviceDaoImpl implements DeviceDao {
 
 		return CompletableFuture.supplyAsync(() -> {
 			Constants.CATALOG_VERSION.set(version);
-			return CommonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList, journeyType,
+			return commonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList, journeyType,
 					registryclnt);
 		});
 
