@@ -41,7 +41,7 @@
 		<dependency>
 			<groupId>com.vf.uk.dal</groupId>
 			<artifactId>dal-core</artifactId>
-			<version>9.6.4</version>
+			<version>9.6.3</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>slf4j-api</artifactId>
