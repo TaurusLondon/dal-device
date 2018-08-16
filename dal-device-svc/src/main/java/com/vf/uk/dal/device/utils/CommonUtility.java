@@ -455,7 +455,7 @@ public class CommonUtility {
 			LogHelper.info(CommonUtility.class,
 					"http://PROMOTION-V1/promotion/queries/ForBundleAndHardware------POST URL\n"
 							+ "PayLoad\n Start calling");
-			response = restTemplate.postForObject("https://alb-mas.digitalx-dev.svc.vodafoneaws.co.uk/promotion/queries/ForBundleAndHardware", request,
+			response = restTemplate.postForObject("http://PROMOTION-V1/promotion/queries/ForBundleAndHardware", request,
 					BundleAndHardwarePromotions[].class);
 		} catch (RestClientException e) {
 			// Stanley - Added error logging
