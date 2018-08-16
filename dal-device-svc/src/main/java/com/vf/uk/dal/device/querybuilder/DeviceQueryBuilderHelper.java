@@ -24,9 +24,9 @@ import com.vf.uk.dal.device.utils.Constants;
  */
 public class DeviceQueryBuilderHelper {
 
-	private static int size = ConfigHelper.getInt(Constants.ELASTIC_SEARCH_INDEX_SIZE,
+	private static int size = ConfigHelper.getPropertyIntegerValue(Constants.ELASTIC_SEARCH_INDEX_SIZE,
 			Constants.DEFAULT_ELASTIC_SEARCH_INDEX_SIZE);
-	private static int from = ConfigHelper.getInt(Constants.ELASTIC_SEARCH_INDEX_START_FROM,
+	private static int from = ConfigHelper.getPropertyIntegerValue(Constants.ELASTIC_SEARCH_INDEX_START_FROM,
 			Constants.DEFAULT_ELASTIC_SEARCH_START_INDEX);
 	private static String[] includes = null;
 	private static final String[] ex = new String[0];

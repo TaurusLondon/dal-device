@@ -21,8 +21,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vf.uk.dal.common.registry.client.RegistryClient;
-import com.vf.uk.dal.common.registry.client.Utility;
 import com.vf.uk.dal.device.DeviceApplication;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
 import com.vf.uk.dal.device.common.test.CommonMethods;
@@ -68,9 +66,6 @@ public class DeviceIntegrationTest {
 	ResponseMappingHelper response;
 
 	@MockBean
-	RegistryClient registry;
-
-	@MockBean
 	RestTemplate restTemplate;
 
 	@MockBean
@@ -106,9 +101,8 @@ public class DeviceIntegrationTest {
 	public void setupMockBehaviour() throws Exception {
 		aspect.beforeAdvice(null);
 		this.mockMvc = webAppContextSetup(WebApplicationContext).build();
-		String jsonString = new String(Utility.readFile("\\rest-mock\\COMMON-V1.json"));
+		String jsonString = new String(CommonMethods.readFile("\\rest-mock\\COMMON-V1.json"));
 		CurrentJourney obj = new ObjectMapper().readValue(jsonString, CurrentJourney.class);
-		given(registry.getRestTemplate()).willReturn(restTemplate);
 		given(restTemplate
 				.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId="
 						+ "093353" + "&journeyType=" + null, BundleDetailsForAppSrv.class))
@@ -126,10 +120,10 @@ public class DeviceIntegrationTest {
 				.willReturn(CommonMethods.getCommercialBundleFromCommercialBundleRepository());
 		given(response.getListOfMerchandisingPromotionFromJson(Matchers.anyObject()))
 				.willReturn(CommonMethods.getMerchandisingPromotion_One());
-		String jsonString1 = new String(Utility.readFile("\\rest-mock\\CUSTOMER-V1.json"));
+		String jsonString1 = new String(CommonMethods.readFile("\\rest-mock\\CUSTOMER-V1.json"));
 		RecommendedProductListResponse obj1 = new ObjectMapper().readValue(jsonString1,
 				RecommendedProductListResponse.class);
-		given(registry.getRestTemplate()).willReturn(restTemplate);
+		//given(registry.getRestTemplate()).willReturn(restTemplate);
 		given(restTemplate.postForObject("http://CUSTOMER-V1/customer/getRecommendedProductList/",
 				CommonMethods.getRecommendedDeviceListRequest("7741655541", "109381"),
 				RecommendedProductListResponse.class)).willReturn(obj1);

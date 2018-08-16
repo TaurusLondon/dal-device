@@ -14,10 +14,10 @@ import org.apache.commons.lang.StringUtils;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
-import com.vf.uk.dal.common.registry.client.RegistryClient;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
 import com.vf.uk.dal.device.datamodel.product.BazaarVoice;
@@ -47,7 +47,7 @@ public class DeviceServiceCommonUtility {
 	DeviceESHelper deviceEs;
 
 	@Autowired
-	RegistryClient registryclnt;
+	RestTemplate restTemplate;
 	
 	@Autowired
 	CommonUtility commonUtility;
@@ -368,7 +368,7 @@ public class DeviceServiceCommonUtility {
 		List<com.vf.uk.dal.utility.entity.BundleHeader> listOfBundles;
 		List<CoupleRelation> listOfCoupleRelationForMcs;
 		bundleDetailsForDevice = commonUtility.getPriceDetailsForCompatibaleBundle(commercialProduct.getId(),
-				journeyType, registryclnt);
+				journeyType);
 		listOfBundles = bundleDetailsForDevice.getStandalonePlansList();
 		listOfCoupleRelationForMcs = bundleDetailsForDevice.getCouplePlansList();
 		listOfBundleHeaderForDevice.addAll(listOfBundles);

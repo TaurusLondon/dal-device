@@ -19,7 +19,6 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
-import com.vf.uk.dal.common.registry.client.RegistryClient;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.dao.DeviceTileCacheDAO;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
@@ -52,9 +51,6 @@ import com.vf.uk.dal.utility.solr.entity.OfferAppliedPriceDetails;
  */
 @Component
 public class CacheDeviceServiceImpl implements CacheDeviceService {
-
-	@Autowired
-	RegistryClient registryclnt;
 
 	@Autowired
 	DeviceESHelper deviceEs;
@@ -158,13 +154,13 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 					.getPriceDetailsUsingBundleHarwareTrouple(
 							new ArrayList<com.vf.uk.dal.device.entity.BundleAndHardwareTuple>(
 									bundleAndHardwareTupleListJourneyAware),
-							null, Constants.JOURNEY_TYPE_UPGRADE, registryclnt);
+							null, Constants.JOURNEY_TYPE_UPGRADE);
 
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareWithoutOfferCodeForSecondLine = commonUtility
 					.getPriceDetailsUsingBundleHarwareTrouple(
 							new ArrayList<com.vf.uk.dal.device.entity.BundleAndHardwareTuple>(
 									bundleAndHardwareTupleListJourneyAware),
-							null, Constants.JOURNEY_TYPE_SECONDLINE, registryclnt);
+							null, Constants.JOURNEY_TYPE_SECONDLINE);
 
 			Map<String, Map<String, List<PriceForBundleAndHardware>>> mapOfIlsPriceWithoutOfferCode = new HashMap<>();
 			mapOfIlsPriceWithoutOfferCode.put(Constants.JOURNEY_TYPE_UPGRADE, CacheDeviceDaoUtils
@@ -205,8 +201,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 				jouneyType = DeviceUtils.getJourneybasedOnOfferCode(listOfOfferCodesForUpgrade,
 						listOfSecondLineOfferCode, entry);
 				List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareForOffer = commonUtility
-						.getPriceDetailsUsingBundleHarwareTrouple(entry.getValue(), entry.getKey(), jouneyType,
-								registryclnt);
+						.getPriceDetailsUsingBundleHarwareTrouple(entry.getValue(), entry.getKey(), jouneyType);
 				DeviceUtils.getIlsPriceForJourneyAwareOfferCodeMap(ilsPriceForJourneyAwareOfferCodeMap, jouneyType,
 						entry, iLSPriceMapLocalMain, listOfPriceForBundleAndHardwareForOffer);
 			}
@@ -382,7 +377,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleListForNonLeanPlanId) {
 		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareForNonLeadPlanIds;
 		listOfPriceForBundleAndHardwareForNonLeadPlanIds = commonUtility.getPriceDetailsUsingBundleHarwareTrouple(
-				bundleAndHardwareTupleListForNonLeanPlanId, null, null, registryclnt);
+				bundleAndHardwareTupleListForNonLeanPlanId, null, null);
 		if (listOfPriceForBundleAndHardwareForNonLeadPlanIds != null
 				&& !listOfPriceForBundleAndHardwareForNonLeadPlanIds.isEmpty()) {
 			DeviceUtils.getNonLeadPlanMap(nonLeadPlanIdPriceMap, listOfPriceForBundleAndHardwareForNonLeadPlanIds);
@@ -416,7 +411,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList) {
 		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareForLeadPlanIds;
 		listOfPriceForBundleAndHardwareForLeadPlanIds = commonUtility
-				.getPriceDetailsUsingBundleHarwareTrouple(bundleAndHardwareTupleList, null, null, registryclnt);
+				.getPriceDetailsUsingBundleHarwareTrouple(bundleAndHardwareTupleList, null, null);
 		if (listOfPriceForBundleAndHardwareForLeadPlanIds != null
 				&& !listOfPriceForBundleAndHardwareForLeadPlanIds.isEmpty()) {
 			DeviceUtils.getLeadPlanMap(leadPlanIdPriceMap, listOfPriceForBundleAndHardwareForLeadPlanIds);

@@ -21,7 +21,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
-import com.vf.uk.dal.common.registry.client.RegistryClient;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
 import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
@@ -57,7 +56,6 @@ public class CommonUtility {
 	
 	@Autowired
 	RestTemplate restTemplate;
-	//private CommonUtility(){}
 	/**
 	 * Round off price to two decimal points
 	 * 
@@ -94,7 +92,7 @@ public class CommonUtility {
 	 * @return List<PriceForBundleAndHardware>
 	 */
 	public List<PriceForBundleAndHardware> getPriceDetails(
-			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, RegistryClient registryClient,
+			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode,
 			String journeyType) {
 		RequestForBundleAndHardware requestForBundleAndHardware = new RequestForBundleAndHardware();
 		requestForBundleAndHardware.setBundleAndHardwareList(bundleAndHardwareTupleList);
@@ -122,7 +120,7 @@ public class CommonUtility {
 	 * @return RecommendedProductListResponse
 	 */
 	public RecommendedProductListResponse getRecommendedProductList(
-			RecommendedProductListRequest recomProductList, RegistryClient registryClient) {
+			RecommendedProductListRequest recomProductList) {
 		return restTemplate.postForObject("http://CUSTOMER-V1/customer/getRecommendedProductList/", recomProductList,
 				RecommendedProductListResponse.class);
 	}
@@ -134,8 +132,7 @@ public class CommonUtility {
 	 * @param registryClient
 	 * @return BundleDetailsForAppSrv
 	 */
-	public BundleDetailsForAppSrv getPriceDetailsForCompatibaleBundle(String deviceId, String journeyType,
-			RegistryClient registryClient) {
+	public BundleDetailsForAppSrv getPriceDetailsForCompatibaleBundle(String deviceId, String journeyType) {
 		try {
 			LogHelper.info(CommonUtility.class, "Start --> Calling  Bundle.getCoupledBundleList");
 			return restTemplate
@@ -157,8 +154,7 @@ public class CommonUtility {
 	 *            the registry client
 	 * @return the bundle details from complans listing API
 	 */
-	public BundleDetails getBundleDetailsFromComplansListingAPI(String deviceId, String sortCriteria,
-			RegistryClient registryClient) {
+	public BundleDetails getBundleDetailsFromComplansListingAPI(String deviceId, String sortCriteria) {
 		LogHelper.info(CommonUtility.class, "Start -->  calling  Bundle.GetCompatibleListAPI");
 		String URL = "http://BUNDLES-V1/bundles/catalogue/bundle/queries/byDeviceId/" + deviceId + "/";
 		if (sortCriteria != null && StringUtils.isNotBlank(sortCriteria)) {
@@ -218,8 +214,7 @@ public class CommonUtility {
 	 * @param registryClient
 	 * @return PriceForProduct
 	 */
-	public PriceForProduct getAccessoryPriceDetails(BundleDeviceAndProductsList bundleDeviceAndProductsList,
-			RegistryClient registryClient) {
+	public PriceForProduct getAccessoryPriceDetails(BundleDeviceAndProductsList bundleDeviceAndProductsList) {
 		PriceForProduct client;
 		try {
 			LogHelper.info(CommonUtility.class, "Start -->  calling  Price.product");
@@ -245,8 +240,7 @@ public class CommonUtility {
 	 * @return List<PriceForBundleAndHardware>
 	 */
 	public List<PriceForBundleAndHardware> getPriceDetailsUsingBundleHarwareTrouple(
-			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType,
-			RegistryClient registryClient) {
+			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType) {
 		List<PriceForBundleAndHardware> priceList = null;
 		try {
 			RequestForBundleAndHardware requestForBundleAndHardware = new RequestForBundleAndHardware();
@@ -276,8 +270,7 @@ public class CommonUtility {
 	 * @param registryClient
 	 * @return SubscriptionBundleId
 	 */
-	public String getSubscriptionBundleId(String subscriptionId, String subscriptionType,
-			RegistryClient registryClient) {
+	public String getSubscriptionBundleId(String subscriptionId, String subscriptionType) {
 
 		String bundleId = null;
 
@@ -453,7 +446,7 @@ public class CommonUtility {
 	 * @SPRINT 6.4
 	 */
 	public List<BundleAndHardwarePromotions> getPromotionsForBundleAndHardWarePromotions(
-			List<BundleAndHardwareTuple> bundleHardwareTupleList, String journeyType, RegistryClient registryClient) {
+			List<BundleAndHardwareTuple> bundleHardwareTupleList, String journeyType) {
 		BundleAndHardwareRequest request = new BundleAndHardwareRequest();
 		request.setBundleAndHardwareList(bundleHardwareTupleList);
 		request.setJourneyType(journeyType);

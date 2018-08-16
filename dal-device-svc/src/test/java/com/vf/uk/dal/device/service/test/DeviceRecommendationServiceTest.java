@@ -1,7 +1,5 @@
 package com.vf.uk.dal.device.service.test;
 
-import static org.mockito.BDDMockito.given;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +15,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
-import com.vf.uk.dal.common.registry.client.RegistryClient;
 import com.vf.uk.dal.device.beans.test.DeviceTestBeans;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.dao.DeviceTileCacheDAO;
@@ -35,10 +32,9 @@ import com.vf.uk.dal.utility.entity.RecommendedProductListResponse;
 public class DeviceRecommendationServiceTest {
 
 	@Autowired
+	CommonUtility commonUtility;
+	@Autowired
 	DeviceRecommendationService deviceRecommendationService;
-
-	@MockBean
-	RegistryClient registryClientMock;
 
 	@MockBean
 	RestTemplate restTemplateMock;
@@ -57,7 +53,6 @@ public class DeviceRecommendationServiceTest {
 
 	@Before
 	public void setupMockBehaviour() throws Exception {
-		given(registryClientMock.getRestTemplate()).willReturn(restTemplateMock);
 	}
 
 	@After
@@ -104,7 +99,7 @@ public class DeviceRecommendationServiceTest {
 		recList.add(rp);
 		resp.setRecommendedProductList(recList);
 
-		Mockito.when(CommonUtility.getRecommendedProductList(req, registryClientMock)).thenReturn(resp);
+		Mockito.when(commonUtility.getRecommendedProductList(req)).thenReturn(resp);
 		fd = deviceRecommendationService.getRecommendedDeviceList(msisdn, deviceId, fd);
 
 		Assert.assertTrue(fd.getNoOfRecordsFound() > 0);

@@ -32,7 +32,6 @@ public class ElasticsearchRestCient {
 
 	private RestHighLevelClient restClient;
 
-	/* Default constructor */
 	private ElasticsearchRestCient() {
 
 	}

@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
-import com.vf.uk.dal.common.registry.client.RegistryClient;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
 import com.vf.uk.dal.device.datamodel.product.ProductModel;
@@ -48,10 +47,9 @@ import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
  */
 @Service
 public class DeviceServiceImplUtility {
+	
 	@Autowired
 	CommonUtility commonUtility;
-	/*private DeviceServiceImplUtility() {
-	};*/
 	/**
 	 * 
 	 * @param journeyType
@@ -921,12 +919,12 @@ public class DeviceServiceImplUtility {
 	 * @return
 	 */
 	public List<PriceForBundleAndHardware> getListOfBundleAndHardwareTuple(String offerCode,
-			String journeyTypeLocal, RegistryClient registryclnt,
+			String journeyTypeLocal,
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList) {
 		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = null;
 		if (bundleAndHardwareTupleList != null && !bundleAndHardwareTupleList.isEmpty()) {
 			listOfPriceForBundleAndHardware = commonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode,
-					registryclnt, journeyTypeLocal);
+					journeyTypeLocal);
 		}
 		return listOfPriceForBundleAndHardware;
 	}
@@ -978,7 +976,7 @@ public class DeviceServiceImplUtility {
 	 * @param bundleHardwareTupleList
 	 * @return DeviceDetails
 	 */
-	public DeviceDetails getDeviceDetailsFinal(String deviceId, RegistryClient registryclnt,
+	public DeviceDetails getDeviceDetailsFinal(String deviceId,
 			String journeyTypeLocal, CommercialProduct commercialProduct,
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware,
 			List<BundleAndHardwareTuple> bundleHardwareTupleList) {
@@ -986,7 +984,7 @@ public class DeviceServiceImplUtility {
 		DeviceDetails deviceDetails;
 		if (!bundleHardwareTupleList.isEmpty()) {
 			promotions = commonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList,
-					journeyTypeLocal, registryclnt);
+					journeyTypeLocal);
 		}
 		if ((isUpgrade(journeyTypeLocal) && isUpgradeFromCommercialProduct(commercialProduct))
 				|| (isNonUpgrade(journeyTypeLocal) && isNonUpgradeCommercialProduct(commercialProduct))) {

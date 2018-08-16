@@ -46,7 +46,7 @@ public class CatalogServiceAspect {
 		}
 		if (!StringUtils.isNotBlank(version) && !StringUtils.isNotBlank(Constants.CATALOG_VERSION.get())) {
 			Constants.CATALOG_VERSION.set(
-					ConfigHelper.getString(Constants.ELASTIC_SEARCH_ALIAS, Constants.DEFAULT_ELASTIC_SEARCH_ALIAS));
+					ConfigHelper.getPropertyStringValue(Constants.ELASTIC_SEARCH_ALIAS, Constants.DEFAULT_ELASTIC_SEARCH_ALIAS));
 		}
 		LogHelper.info(this, Constants.CATALOG_VERSION.get());
 	}

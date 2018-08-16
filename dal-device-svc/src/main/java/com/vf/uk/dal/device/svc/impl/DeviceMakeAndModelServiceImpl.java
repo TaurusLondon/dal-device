@@ -18,7 +18,6 @@ import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
-import com.vf.uk.dal.common.registry.client.RegistryClient;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
@@ -48,9 +47,6 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 
 	@Autowired
 	DeviceESHelper deviceEs;
-
-	@Autowired
-	RegistryClient registryclnt;
 
 	@Autowired
 	DeviceServiceCommonUtility deviceServiceCommonUtility;
@@ -447,13 +443,12 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			// Calling Pricing Api
 			if (bundleAndHardwareTupleListPAYG != null && !bundleAndHardwareTupleListPAYG.isEmpty()) {
 				listOfPriceForBundleAndHardware = commonUtility.getPriceDetails(bundleAndHardwareTupleListPAYG, null,
-						registryclnt, null);
+						null);
 			}
 			Map<String, BundleAndHardwarePromotions> bundleAndHardwarePromotionsMap = new HashMap<>();
 			if (bundleAndHardwareTupleListPAYG != null && !bundleAndHardwareTupleListPAYG.isEmpty()) {
 				List<BundleAndHardwarePromotions> allPromotions = commonUtility
-						.getPromotionsForBundleAndHardWarePromotions(bundleAndHardwareTupleListPAYG, null,
-								registryclnt);
+						.getPromotionsForBundleAndHardWarePromotions(bundleAndHardwareTupleListPAYG, null);
 				if (allPromotions != null && !allPromotions.isEmpty()) {
 					allPromotions.forEach(
 							promotion -> bundleAndHardwarePromotionsMap.put(promotion.getHardwareId(), promotion));
@@ -564,7 +559,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 						}
 						if (!bundleHardwareTupleList.isEmpty()) {
 							promotions = commonUtility.getPromotionsForBundleAndHardWarePromotions(
-									bundleHardwareTupleList, journeyType, registryclnt);
+									bundleHardwareTupleList, journeyType);
 						}
 
 					} else if (StringUtils.isNotBlank(bundleId) && commercialProduct != null
@@ -717,7 +712,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 		bundles.add(tuple);
 
 		List<PriceForBundleAndHardware> priceForBundleAndHardwares = commonUtility.getPriceDetails(bundles, null,
-				registryclnt, journeyType);
+				 journeyType);
 
 		if (DeviceServiceImplUtility.isPlanPriceWithinCreditLimit_Implementation(creditLimit,
 				priceForBundleAndHardwares, product.getLeadPlanId())) {
@@ -760,7 +755,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			List<PriceForBundleAndHardware> priceForBundleAndHardwares = null;
 			if (CollectionUtils.isNotEmpty(bundleAndHardwareTupleList)) {
 				priceForBundleAndHardwares = commonUtility.getPriceDetails(bundleAndHardwareTupleList, null,
-						registryclnt, journeyType);
+						journeyType);
 			}
 			if (priceForBundleAndHardwares != null && CollectionUtils.isNotEmpty(priceForBundleAndHardwares)) {
 				Iterator<PriceForBundleAndHardware> iterator = priceForBundleAndHardwares.iterator();
