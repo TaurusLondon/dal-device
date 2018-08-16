@@ -23,7 +23,6 @@ import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
-import com.vf.uk.dal.common.registry.client.RegistryClient;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.datamodel.product.BazaarVoice;
 import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
@@ -47,7 +46,7 @@ import com.vf.uk.dal.utility.entity.BundleDetails;
 public class DeviceDaoImpl implements DeviceDao {
 
 	@Autowired
-	RegistryClient registryclnt;
+	CommonUtility commonUtility;
 
 	@Autowired
 	RestHighLevelClient restClient;
@@ -69,7 +68,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		BundleDetails bundleDetails = null;
 		try {
 			LogHelper.info(this, "Getting Compatible bundle details by calling Compatible Plan List API");
-			bundleDetails = CommonUtility.getBundleDetailsFromComplansListingAPI(deviceId, sortCriteria, registryclnt);
+			bundleDetails = commonUtility.getBundleDetailsFromComplansListingAPI(deviceId, sortCriteria);
 		} catch (ApplicationException e) {
 			LogHelper.error(this, "No Compatible bundle Found By Given Bundle Id " + e);
 			bundleDetails = null;
@@ -103,8 +102,8 @@ public class DeviceDaoImpl implements DeviceDao {
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType) {
 		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware;
 		LogHelper.info(this, "Get the price details for Bundle and Hardware list from Pricing API");
-		listOfPriceForBundleAndHardware = CommonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode,
-				registryclnt, journeyType);
+		listOfPriceForBundleAndHardware = commonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode,
+				journeyType);
 		return listOfPriceForBundleAndHardware;
 	}
 
@@ -171,7 +170,7 @@ public class DeviceDaoImpl implements DeviceDao {
 
 		return CompletableFuture.supplyAsync(() -> {
 			Constants.CATALOG_VERSION.set(version);
-			return CommonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode, registryclnt, journeyType);
+			return commonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode,journeyType);
 		});
 
 	}
@@ -189,8 +188,7 @@ public class DeviceDaoImpl implements DeviceDao {
 
 		return CompletableFuture.supplyAsync(() -> {
 			Constants.CATALOG_VERSION.set(version);
-			return CommonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList, journeyType,
-					registryclnt);
+			return commonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList, journeyType);
 		});
 
 	}

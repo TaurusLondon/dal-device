@@ -3,13 +3,13 @@ package com.vf.uk.dal.device.controller;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.lang.StringUtils;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -79,7 +79,7 @@ public class CacheDeviceAndReviewController {
 			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
 
-	@RequestMapping(value = "/deviceTile/cacheDeviceTile", method = RequestMethod.POST, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
+	@RequestMapping(value = "/deviceTile/cacheDeviceTile", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CacheDeviceTileResponse> cacheDeviceTile() {
 		String groupType = getFilterValue(Constants.GROUP_TYPE);
 
@@ -115,7 +115,7 @@ public class CacheDeviceAndReviewController {
 			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
 
 	@RequestMapping(value = "/deviceTile/cacheDeviceTile/{jobId}/status", method = RequestMethod.GET, produces = {
-			MediaType.APPLICATION_JSON })
+			MediaType.APPLICATION_JSON_VALUE })
 	public CacheDeviceTileResponse getCacheDeviceJobStatus(
 			@ApiParam(value = "Device group Type", required = true) @PathVariable("jobId") String jobId) {
 
@@ -137,7 +137,7 @@ public class CacheDeviceAndReviewController {
 			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
 	@RequestMapping(value = "/device/{deviceId}/review", method = RequestMethod.GET, produces = {
-			MediaType.APPLICATION_JSON })
+			MediaType.APPLICATION_JSON_VALUE })
 	public JSONObject getDeviceReviewDetails(
 			@NotNull @ApiParam(value = "Unique Id of the device for which the review is being requested", required = true) @PathVariable(Constants.DEVICE_ID) String deviceId) {
 

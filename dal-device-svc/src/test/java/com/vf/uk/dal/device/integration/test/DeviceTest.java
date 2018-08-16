@@ -35,8 +35,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vf.uk.dal.common.context.ServiceContext;
 import com.vf.uk.dal.common.context.URLParamContext;
-import com.vf.uk.dal.common.registry.client.RegistryClient;
-import com.vf.uk.dal.common.registry.client.Utility;
 import com.vf.uk.dal.common.urlparams.FilterCriteria;
 import com.vf.uk.dal.common.urlparams.FilterOperator;
 import com.vf.uk.dal.common.urlparams.PaginationCriteria;
@@ -111,9 +109,6 @@ public class DeviceTest {
 	ResponseMappingHelper response;
 
 	@MockBean
-	RegistryClient registry;
-
-	@MockBean
 	RestTemplate restTemplate;
 
 	@MockBean
@@ -143,9 +138,8 @@ public class DeviceTest {
 	@Before
 	public void setupMockBehaviour() throws Exception {
 		aspect.beforeAdvice(null);
-		String jsonString = new String(Utility.readFile("\\rest-mock\\COMMON-V1.json"));
+		String jsonString = new String(CommonMethods.readFile("\\rest-mock\\COMMON-V1.json"));
 		CurrentJourney obj = new ObjectMapper().readValue(jsonString, CurrentJourney.class);
-		given(registry.getRestTemplate()).willReturn(restTemplate);
 		given(restTemplate
 				.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId="
 						+ "093353" + "&journeyType=" + null, BundleDetailsForAppSrv.class))
@@ -163,10 +157,9 @@ public class DeviceTest {
 				.willReturn(CommonMethods.getCommercialBundleFromCommercialBundleRepository());
 		given(response.getListOfMerchandisingPromotionFromJson(Matchers.anyObject()))
 				.willReturn(CommonMethods.getMerchandisingPromotion_One());
-		String jsonString1 = new String(Utility.readFile("\\rest-mock\\CUSTOMER-V1.json"));
+		String jsonString1 = new String(CommonMethods.readFile("\\rest-mock\\CUSTOMER-V1.json"));
 		RecommendedProductListResponse obj1 = new ObjectMapper().readValue(jsonString1,
 				RecommendedProductListResponse.class);
-		given(registry.getRestTemplate()).willReturn(restTemplate);
 		given(restTemplate.postForObject("http://CUSTOMER-V1/customer/getRecommendedProductList/",
 				CommonMethods.getRecommendedDeviceListRequest("7741655541", "109381"),
 				RecommendedProductListResponse.class)).willReturn(obj1);
@@ -290,7 +283,6 @@ public class DeviceTest {
 			deviceAndProductsList.setExtraList(new ArrayList<>());
 			deviceAndProductsList.setOfferCode(null);
 			deviceAndProductsList.setPackageType(null);
-			given(registry.getRestTemplate()).willReturn(restTemplate);
 			given(restTemplate.postForObject("http://PRICE-V1/price/product", deviceAndProductsList,
 					PriceForProduct.class)).willReturn(CommonMethods.getPriceForProduct_For_GetAccessories());
 
@@ -385,7 +377,7 @@ public class DeviceTest {
 			bundleHardwareTupleList.add(bundleAndHardwareTuple2);
 			BundleAndHardwareRequest request = new BundleAndHardwareRequest();
 			request.setBundleAndHardwareList(bundleHardwareTupleList);
-			String jsonString = new String(Utility.readFile("\\BundleandhardwarePromotuions.json"));
+			String jsonString = new String(CommonMethods.readFile("\\BundleandhardwarePromotuions.json"));
 			BundleAndHardwarePromotions[] obj = new ObjectMapper().readValue(jsonString,
 					BundleAndHardwarePromotions[].class);
 			given(restTemplate.postForObject("http://PROMOTION-V1/promotion/queries/ForBundleAndHardware", request,
@@ -798,9 +790,8 @@ public class DeviceTest {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-		String jsonString = new String(Utility.readFile("\\rest-mock\\PRICE-V1.json"));
+		String jsonString = new String(CommonMethods.readFile("\\rest-mock\\PRICE-V1.json"));
 		PriceForBundleAndHardware[] obj = mapper.readValue(jsonString, PriceForBundleAndHardware[].class);
-		given(registry.getRestTemplate()).willReturn(restTemplate);
 		try {
 			given(deviceDAOMock.getBazaarVoice(Matchers.anyString()))
 					.willReturn(CommonMethods.getReviewsJsonObject().get(0));
@@ -846,9 +837,8 @@ public class DeviceTest {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-		String jsonString1 = new String(Utility.readFile("\\rest-mock\\PRICE-V1.json"));
+		String jsonString1 = new String(CommonMethods.readFile("\\rest-mock\\PRICE-V1.json"));
 		PriceForBundleAndHardware[] obj1 = mapper.readValue(jsonString1, PriceForBundleAndHardware[].class);
-		given(registry.getRestTemplate()).willReturn(restTemplate);
 		RequestForBundleAndHardware requestForBundleAndHardware = new RequestForBundleAndHardware();
 		List<BundleAndHardwareTuple> bundleList = new ArrayList<>();
 		BundleAndHardwareTuple bundle = new BundleAndHardwareTuple();
@@ -866,12 +856,11 @@ public class DeviceTest {
 
 		// given(deviceDAOMock.getStockAvailabilityByMemberId(Matchers.anyString())).willReturn(CommonMethods.getStockAvailability());
 
-		String jsonString = new String(Utility.readFile("\\rest-mock\\BUNDLES-V1.json"));
+		String jsonString = new String(CommonMethods.readFile("\\rest-mock\\BUNDLES-V1.json"));
 		ObjectMapper mapper1 = new ObjectMapper();
 		mapper1.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 		mapper1.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		BundleDetailsForAppSrv obj = mapper1.readValue(jsonString, BundleDetailsForAppSrv.class);
-		given(registry.getRestTemplate()).willReturn(restTemplate);
 		given(restTemplate.getForObject(
 				"http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=123",
 				BundleDetailsForAppSrv.class)).willReturn(obj);
@@ -897,14 +886,8 @@ public class DeviceTest {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-		String jsonString = new String(Utility.readFile("\\TEST-MOCK\\PRICE_FOR_PAYG.json"));
+		String jsonString = new String(CommonMethods.readFile("\\TEST-MOCK\\PRICE_FOR_PAYG.json"));
 		PriceForBundleAndHardware[] obj = mapper.readValue(jsonString, PriceForBundleAndHardware[].class);
-		given(registry.getRestTemplate()).willReturn(restTemplate);
-		/*
-		 * Map<String,String> ratingmap=new HashMap<>(); ratingmap.put("123",
-		 * "3.7"); ratingmap.put("23", "3.7"); ratingmap.put("sku124", "3.9");
-		 * ratingmap.put("sku24", "3.9");
-		 */
 		given(deviceDAOMock.getBazaarVoice(Matchers.anyString()))
 				.willReturn(CommonMethods.getReviewsJsonObject().get(0));
 		List<BundleAndHardwareTuple> bundleList = new ArrayList<>();
@@ -944,9 +927,8 @@ public class DeviceTest {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-		String jsonString = new String(Utility.readFile("\\rest-mock\\PRICE-V1.json"));
+		String jsonString = new String(CommonMethods.readFile("\\rest-mock\\PRICE-V1.json"));
 		PriceForBundleAndHardware[] obj = mapper.readValue(jsonString, PriceForBundleAndHardware[].class);
-		given(registry.getRestTemplate()).willReturn(restTemplate);
 		try {
 			given(deviceDAOMock.getBazaarVoice(Matchers.anyString()))
 					.willReturn(CommonMethods.getReviewsJsonObject().get(0));
@@ -1013,12 +995,11 @@ public class DeviceTest {
 			bundleHardwareTroupleMap.put("W_HH_OC_Paym_01", listOfBundleHardwareTruple);
 			bundleHardwareTroupleMap.put("W_HH_OC_Paym_02", listOfBundleHardwareTruple);
 
-			String jsonString = new String(Utility.readFile("\\rest-mock\\PRICE-V1.json"));
+			String jsonString = new String(CommonMethods.readFile("\\rest-mock\\PRICE-V1.json"));
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			PriceForBundleAndHardware[] obj = mapper.readValue(jsonString, PriceForBundleAndHardware[].class);
-			given(registry.getRestTemplate()).willReturn(restTemplate);
 			given(restTemplate.postForObject(Matchers.anyString(), Matchers.anyObject(), Matchers.anyObject()))
 					.willReturn(obj);
 			CacheDeviceService.getIlsPriceWithOfferCodeAndJourney(listOfOfferCodesForUpgrade, listOfSecondLineOfferCode,

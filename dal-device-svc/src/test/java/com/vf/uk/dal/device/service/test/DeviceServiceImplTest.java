@@ -26,11 +26,8 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.netflix.discovery.EurekaClient;
 import com.vf.uk.dal.common.configuration.ConfigHelper;
 import com.vf.uk.dal.common.exception.ApplicationException;
-import com.vf.uk.dal.common.registry.client.RegistryClient;
-import com.vf.uk.dal.common.registry.client.Utility;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
 import com.vf.uk.dal.device.beans.test.DeviceTestBeans;
 import com.vf.uk.dal.device.common.test.CommonMethods;
@@ -93,13 +90,7 @@ public class DeviceServiceImplTest {
 	DeviceDao deviceDAOMock;
 
 	@MockBean
-	EurekaClient eureka;
-
-	@MockBean
 	ResponseMappingHelper response;
-
-	@MockBean
-	RegistryClient registry;
 
 	@Autowired
 	DeviceConditionallHelper conditionalHelper;
@@ -132,6 +123,9 @@ public class DeviceServiceImplTest {
 	DeviceService deviceService;
 	
 	@Autowired
+	CommonUtility commonUtility;
+	
+	@Autowired
 	DeviceUtils deviceUtils;
 
 	@SuppressWarnings("unchecked")
@@ -159,7 +153,7 @@ public class DeviceServiceImplTest {
 		given(response.getCommercialProductFromJson(Matchers.anyObject()))
 				.willReturn(CommonMethods.getCommercialProductsListOfAccessories());
 		given(response.getCommercialBundle(Matchers.anyObject())).willReturn(CommonMethods.getCommercialBundle());
-		given(registry.getRestTemplate()).willReturn(restTemplate);
+		
 		given(restTemplate.postForObject("http://PRICE-V1/price/product",
 				CommonMethods.bundleDeviceAndProductsList_For_GetAccessoriesOfDevice(), PriceForProduct.class))
 						.willReturn(CommonMethods.getPriceForProduct_For_GetAccessoriesForDevice());
@@ -678,6 +672,7 @@ public class DeviceServiceImplTest {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void getListOfDeviceTile() {
 
@@ -701,14 +696,14 @@ public class DeviceServiceImplTest {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 
-			String jsonString = new String(Utility.readFile("\\rest-mock\\PRICE-V1.json"));
+			String jsonString = new String(CommonMethods.readFile("\\rest-mock\\PRICE-V1.json"));
 			mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			obj = mapper.readValue(jsonString, PriceForBundleAndHardware[].class);
 		} catch (IOException e) {
 
 		}
-		given(registry.getRestTemplate()).willReturn(restTemplate);
+		
 		RequestForBundleAndHardware requestForBundleAndHardware = new RequestForBundleAndHardware();
 		List<BundleAndHardwareTuple> bundleList = new ArrayList<>();
 		BundleAndHardwareTuple bundle = new BundleAndHardwareTuple();
@@ -719,7 +714,7 @@ public class DeviceServiceImplTest {
 
 		BundleAndHardwarePromotions[] obj1 = null;
 		try {
-			String jsonString1 = new String(Utility.readFile("\\BundleandhardwarePromotuions.json"));
+			String jsonString1 = new String(CommonMethods.readFile("\\BundleandhardwarePromotuions.json"));
 			obj1 = new ObjectMapper().readValue(jsonString1, BundleAndHardwarePromotions[].class);
 		} catch (Exception e) {
 
@@ -782,7 +777,7 @@ public class DeviceServiceImplTest {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 
-			String jsonString = new String(Utility.readFile("\\rest-mock\\PRICE-V1.json"));
+			String jsonString = new String(CommonMethods.readFile("\\rest-mock\\PRICE-V1.json"));
 			mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			obj = mapper.readValue(jsonString, PriceForBundleAndHardware[].class);
@@ -1683,7 +1678,7 @@ public class DeviceServiceImplTest {
 	}
 	@Test
 	public void testgetBundleDetailsFromComplansListingAPI(){
-		CommonUtility.getBundleDetailsFromComplansListingAPI("093353","-sort", registry);
+		commonUtility.getBundleDetailsFromComplansListingAPI("093353","-sort");
 	}
 	@Test
 	public void testappendPrefixString(){
@@ -1711,7 +1706,7 @@ public class DeviceServiceImplTest {
 	@Test
 	public void getPriceDetailsForCompatibaleBundle() {
 		try{
-		 CommonUtility.getPriceDetailsForCompatibaleBundle(null, null, null);
+		 commonUtility.getPriceDetailsForCompatibaleBundle(null, null);
 		}
 		catch(Exception e){
 			Assert.assertEquals(ExceptionMessages.COUPLEBUNDLELIST_API_EXCEPTION, e.getMessage());
@@ -1722,14 +1717,14 @@ public class DeviceServiceImplTest {
 		String url = "http://BUNDLES-V1/bundles/catalogue/bundle/queries/byDeviceId/093353//?sort=abc";
 		given(restTemplate.getForObject(url, BundleDetails.class))
 		.willReturn(CommonMethods.getCompatibleBundleListJson());
-		 Assert.assertNotNull(CommonUtility.getBundleDetailsFromComplansListingAPI
-		 ("093353", "abc", registry));
+		 Assert.assertNotNull(commonUtility.getBundleDetailsFromComplansListingAPI
+		 ("093353", "abc"));
 	}
 	@Test
 	public void getBundleDetailsFromComplansListingAPIException() {
 		try{
-		 CommonUtility.getBundleDetailsFromComplansListingAPI
-		 ("093353", "abc", registry);
+		 commonUtility.getBundleDetailsFromComplansListingAPI
+		 ("093353", "abc");
 		}
 		catch(Exception e){
 			Assert.assertEquals(ExceptionMessages.BUNDLECOMPATIBLELIST_API_EXCEPTION, e.getMessage());
@@ -1751,8 +1746,8 @@ public class DeviceServiceImplTest {
 	@Test
 	public void getAccessoryPriceDetails() {
 		try{
-			CommonUtility.getAccessoryPriceDetails
-			(null, registry);
+			commonUtility.getAccessoryPriceDetails
+			(null);
 			}
 			catch(Exception e){
 				Assert.assertEquals(ExceptionMessages.PRICING_API_EXCEPTION, e.getMessage());
@@ -1761,8 +1756,8 @@ public class DeviceServiceImplTest {
 	@Test
 	public void getPriceDetailsUsingBundleHarwareTrouple() {
 		try{
-			CommonUtility.getPriceDetailsUsingBundleHarwareTrouple
-			(null, "121", "Acquisition", registry);
+			commonUtility.getPriceDetailsUsingBundleHarwareTrouple
+			(null, "121", "Acquisition");
 			}
 			catch(Exception e){
 				Assert.assertEquals(ExceptionMessages.PRICING_API_EXCEPTION, e.getMessage());
@@ -1771,8 +1766,8 @@ public class DeviceServiceImplTest {
 	@Test
 	public void getSubscriptionBundleId() {
 		try{
-			CommonUtility.getSubscriptionBundleId
-			(null, "abc", registry);
+			commonUtility.getSubscriptionBundleId
+			(null, "abc");
 			}
 			catch(Exception e){
 			}
@@ -1792,8 +1787,8 @@ public class DeviceServiceImplTest {
 	@Test
 	public void getPromotionsForBundleAndHardWarePromotions() {
 			List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
-			CommonUtility.getPromotionsForBundleAndHardWarePromotions
-			(bundleHardwareTupleList, "Acquisition", registry);
+			commonUtility.getPromotionsForBundleAndHardWarePromotions
+			(bundleHardwareTupleList, "Acquisition");
 	}
 	@Test
 	public void getmonthlyPriceFormPrice() {

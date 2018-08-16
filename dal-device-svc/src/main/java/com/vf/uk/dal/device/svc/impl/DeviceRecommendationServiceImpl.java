@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.logger.LogHelper;
-import com.vf.uk.dal.common.registry.client.RegistryClient;
 import com.vf.uk.dal.device.entity.Device;
 import com.vf.uk.dal.device.entity.FacetedDevice;
 import com.vf.uk.dal.device.svc.DeviceRecommendationService;
@@ -31,7 +30,8 @@ import com.vf.uk.dal.utility.entity.RecommendedProductListResponse;
 public class DeviceRecommendationServiceImpl implements DeviceRecommendationService {
 
 	@Autowired
-	RegistryClient registryclnt;
+	CommonUtility commonUtility;
+	
 
 	/**
 	 * Returns recommended device list from chordiant.
@@ -46,7 +46,7 @@ public class DeviceRecommendationServiceImpl implements DeviceRecommendationServ
 		FacetedDevice sortedFacetedDevice = new FacetedDevice();
 		try {
 			RecommendedProductListRequest recomProductListReq = this.getRecommendedDeviceListRequest(msisdn, deviceId);
-			recommendedProductListResponse = CommonUtility.getRecommendedProductList(recomProductListReq, registryclnt);
+			recommendedProductListResponse = commonUtility.getRecommendedProductList(recomProductListReq);
 
 			if (recommendedProductListResponse != null) {
 				sortedFacetedDevice = sortList(facetedDevice, recommendedProductListResponse);

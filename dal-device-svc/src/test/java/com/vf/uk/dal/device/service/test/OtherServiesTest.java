@@ -25,8 +25,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vf.uk.dal.common.exception.ApplicationException;
-import com.vf.uk.dal.common.registry.client.RegistryClient;
-import com.vf.uk.dal.common.registry.client.Utility;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
 import com.vf.uk.dal.device.beans.test.DeviceTestBeans;
 import com.vf.uk.dal.device.common.test.CommonMethods;
@@ -75,9 +73,6 @@ public class OtherServiesTest {
 	ResponseMappingHelper response;
 
 	@MockBean
-	RegistryClient registry;
-
-	@MockBean
 	RestTemplate restTemplate;
 
 	@Autowired
@@ -101,9 +96,8 @@ public class OtherServiesTest {
 	@Before
 	public void setupMockBehaviour() throws Exception {
 		catalogServiceAspect.beforeAdvice(null);
-		String jsonString = new String(Utility.readFile("\\rest-mock\\COMMON-V1.json"));
+		String jsonString = new String(CommonMethods.readFile("\\rest-mock\\COMMON-V1.json"));
 		CurrentJourney obj = new ObjectMapper().readValue(jsonString, CurrentJourney.class);
-		given(registry.getRestTemplate()).willReturn(restTemplate);
 		given(restTemplate
 				.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId="
 						+ "093353" + "&journeyType=" + null, BundleDetailsForAppSrv.class))
@@ -121,10 +115,9 @@ public class OtherServiesTest {
 				.willReturn(CommonMethods.getCommercialBundleFromCommercialBundleRepository());
 		given(response.getListOfMerchandisingPromotionFromJson(Matchers.anyObject()))
 				.willReturn(CommonMethods.getMerchandisingPromotion_One());
-		String jsonString1 = new String(Utility.readFile("\\rest-mock\\CUSTOMER-V1.json"));
+		String jsonString1 = new String(CommonMethods.readFile("\\rest-mock\\CUSTOMER-V1.json"));
 		RecommendedProductListResponse obj1 = new ObjectMapper().readValue(jsonString1,
 				RecommendedProductListResponse.class);
-		given(registry.getRestTemplate()).willReturn(restTemplate);
 		given(restTemplate.postForObject("http://CUSTOMER-V1/customer/getRecommendedProductList/",
 				CommonMethods.getRecommendedDeviceListRequest("7741655541", "109381"),
 				RecommendedProductListResponse.class)).willReturn(obj1);
@@ -188,6 +181,7 @@ public class OtherServiesTest {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void notNullTestForgetListOfDeviceDetails() {
 		List<DeviceDetails> deviceDetails;
@@ -198,6 +192,7 @@ public class OtherServiesTest {
 		Assert.assertNotNull(deviceDetails);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void notNullTestForgetListOfDeviceDetailsWithoutLeadPlanId() {
 		List<DeviceDetails> deviceDetails;
@@ -213,6 +208,7 @@ public class OtherServiesTest {
 		Assert.assertNotNull(deviceDetails);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void nuullTestForgetListOfDeviceDetailsWithoutLeadPlanId() {
 		given(response.getCommercialProduct(Matchers.anyObject())).willReturn(null);
@@ -231,8 +227,9 @@ public class OtherServiesTest {
 	public void emptyParamTestForgetListOfDeviceDetails() throws Exception {
 		List<DeviceDetails> deviceDetails = null;
 		try {
+			Map<String, String> map = new HashMap<>();
 			deviceDetails = deviceDetailsController
-					.getListOfDeviceDetails(CommonMethods.getQueryParamsMapForDeviceDetails(null));
+					.getListOfDeviceDetails(map);
 		} catch (Exception e) {
 
 		}

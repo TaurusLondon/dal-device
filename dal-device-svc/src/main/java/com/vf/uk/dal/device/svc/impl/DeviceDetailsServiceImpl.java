@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
-import com.vf.uk.dal.common.registry.client.RegistryClient;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
 import com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion;
@@ -40,7 +39,7 @@ import com.vf.uk.dal.utility.entity.CoupleRelation;
 
 @Component
 public class DeviceDetailsServiceImpl implements DeviceDetailsService {
-
+	
 	@Autowired
 	DeviceDao deviceDao;
 
@@ -48,10 +47,13 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 	DeviceESHelper deviceEs;
 
 	@Autowired
-	RegistryClient registryclnt;
+	CommonUtility commonUtility;
 
 	@Autowired
 	DeviceServiceCommonUtility deviceServiceCommonUtility;
+	
+	@Autowired
+	DeviceServiceImplUtility deviceServiceImplUtility;
 
 	/**
 	 * Handles requests from controller and connects to DAO.
@@ -121,8 +123,8 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 			bundleAndHardwareTupleList = getListOfPriceForBundleAndHardware_Implementation(commercialProduct, null,
 					journeyTypeLocal);
 		}
-		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = DeviceServiceImplUtility
-				.getListOfBundleAndHardwareTuple(offerCode, journeyTypeLocal, registryclnt, bundleAndHardwareTupleList);
+		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = deviceServiceImplUtility
+				.getListOfBundleAndHardwareTuple(offerCode, journeyTypeLocal, bundleAndHardwareTupleList);
 		String leadPlanId = DeviceServiceImplUtility.getLeadPlanId(bundleAndHardwareTupleList);
 		LogHelper.info(this, "Start -->  calling  bundleRepository.get");
 		CommercialBundle commercialBundle = null;
@@ -133,7 +135,7 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 		}
 		List<BundleAndHardwareTuple> bundleHardwareTupleList = DeviceServiceImplUtility
 				.getBundleAndHardwareTuple(deviceId, commercialProduct, commercialBundle);
-		deviceDetails = DeviceServiceImplUtility.getDeviceDetailsFinal(deviceId, registryclnt, journeyTypeLocal,
+		deviceDetails = deviceServiceImplUtility.getDeviceDetailsFinal(deviceId,journeyTypeLocal,
 				commercialProduct, listOfPriceForBundleAndHardware, bundleHardwareTupleList);
 		if (StringUtils.isNotEmpty(offerCode) && StringUtils.isNotEmpty(journeyTypeLocal)) {
 			deviceDetails.setValidOffer(
@@ -379,8 +381,7 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 
 			if (leadPlanId == null || leadPlanId.isEmpty()) {
 
-				bundleDetailsForDevice = CommonUtility.getPriceDetailsForCompatibaleBundle(deviceId, journeyType,
-						registryclnt);
+				bundleDetailsForDevice = commonUtility.getPriceDetailsForCompatibaleBundle(deviceId, journeyType);
 				listOfBundles = bundleDetailsForDevice.getStandalonePlansList();
 				listOfCoupleRelationForMcs = bundleDetailsForDevice.getCouplePlansList();
 				listOfBundleHeaderForDevice.addAll(listOfBundles);

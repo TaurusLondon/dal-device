@@ -104,20 +104,21 @@ public class Constants {
 	public static final String STRING_FACET_OPERATING_SYSYTEM = "OperatingSystem";
 	public static final String STRING_MUST_HAVE_FEATURES = "MustHaveFeatures";
 	public static final String STRING_DATA_UOM_GB = "GB";
-	/* public static final String STRING_ZERO_STOCK_DEVICE_ID= "0"; */
+	public static final String FULL_DURATION = "full_duration,conditional_full_discount";
+	/* public static final String STRING_ZERO_STOCK_DEVICE_ID= "0"; 
 
 	public static final String STRING_DEFAULT_DATA_DIFFERENCE = "5";
 	public static final String STRING_DATA_DIFFERENCE = "DATA_DIFFERENCE_VALUE";
 
 	public static final String STRING_DEFAULT_DATA_DIFFERENCE_UOM = "GB";
 	public static final String STRING_DATA_DIFFERENCE_UOM = "DATA_DIFFERENCE_UOM";
-
+	
 	public static final String STRING_BUNDLE_COMMITMENT_PERIOD = "BUNDLE_COMMITMENT_PERIOD";
 	public static final String STRING_DEFAULT_BUNDLE_COMMITMENT_PERIOD = "24";
 
 	public static final String STRING_BUNDLE_COMMITMENT_PERIOD_VALUE = "BUNDLE_COMMITMENT_PERIOD_VALUE";
 	public static final String STRING_DEFAULT_BUNDLE_COMMITMENT_PERIOD_VALUE = "Months";
-	public static final String FULL_DURATION = "full_duration,conditional_full_discount";
+	
 
 	public static final String DEFAULT_ZOOKEEPER_HOST_STRING = "localhost";// 100.66.65.171:2181,100.66.65.171:2182,100.66.65.171:2183/solr
 	public static final String ZOOKEEPER_HOST_STRING = "ZOOKEEPER_HOST_STRING";
@@ -129,7 +130,7 @@ public class Constants {
 	public static final String ZOOKEEPER_USERNAME = "ZOOKEEPER_USERNAME";
 
 	public static final String DEFAULT_ZOOKEEPER_PASS = "SolrRocks";
-	public static final String ZOOKEEPER_PASS = "ZOOKEEPER_PASSWORD";
+	public static final String ZOOKEEPER_PASS = "ZOOKEEPER_PASSWORD";*/
 
 	public static final String PREFIX_SKU = "sku";
 	public static final String IS_LEAD_MEMEBER_YES = "Y";
