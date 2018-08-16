@@ -19,7 +19,6 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
-import com.vf.uk.dal.common.registry.client.RegistryClient;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.dao.DeviceTileCacheDAO;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
@@ -54,9 +53,6 @@ import com.vf.uk.dal.utility.solr.entity.OfferAppliedPriceDetails;
 public class CacheDeviceServiceImpl implements CacheDeviceService {
 
 	@Autowired
-	RegistryClient registryclnt;
-
-	@Autowired
 	DeviceESHelper deviceEs;
 
 	@Autowired
@@ -67,6 +63,9 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 
 	@Autowired
 	DeviceServiceCommonUtility deviceServiceCommonUtility;
+	
+	@Autowired
+	CommonUtility commonUtility;
 
 	ObjectMapper mapper = new ObjectMapper();
 
@@ -151,17 +150,17 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			/**
 			 * ILSPrice Price With Journey Without OfferCode
 			 */
-			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareWithoutOfferCodeForUpgrade = CommonUtility
+			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareWithoutOfferCodeForUpgrade = commonUtility
 					.getPriceDetailsUsingBundleHarwareTrouple(
 							new ArrayList<com.vf.uk.dal.device.entity.BundleAndHardwareTuple>(
 									bundleAndHardwareTupleListJourneyAware),
-							null, Constants.JOURNEY_TYPE_UPGRADE, registryclnt);
+							null, Constants.JOURNEY_TYPE_UPGRADE);
 
-			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareWithoutOfferCodeForSecondLine = CommonUtility
+			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareWithoutOfferCodeForSecondLine = commonUtility
 					.getPriceDetailsUsingBundleHarwareTrouple(
 							new ArrayList<com.vf.uk.dal.device.entity.BundleAndHardwareTuple>(
 									bundleAndHardwareTupleListJourneyAware),
-							null, Constants.JOURNEY_TYPE_SECONDLINE, registryclnt);
+							null, Constants.JOURNEY_TYPE_SECONDLINE);
 
 			Map<String, Map<String, List<PriceForBundleAndHardware>>> mapOfIlsPriceWithoutOfferCode = new HashMap<>();
 			mapOfIlsPriceWithoutOfferCode.put(Constants.JOURNEY_TYPE_UPGRADE, CacheDeviceDaoUtils
@@ -201,9 +200,8 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 				Map<String, List<PriceForBundleAndHardware>> iLSPriceMapLocalMain = new HashMap<>();
 				jouneyType = DeviceUtils.getJourneybasedOnOfferCode(listOfOfferCodesForUpgrade,
 						listOfSecondLineOfferCode, entry);
-				List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareForOffer = CommonUtility
-						.getPriceDetailsUsingBundleHarwareTrouple(entry.getValue(), entry.getKey(), jouneyType,
-								registryclnt);
+				List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareForOffer = commonUtility
+						.getPriceDetailsUsingBundleHarwareTrouple(entry.getValue(), entry.getKey(), jouneyType);
 				DeviceUtils.getIlsPriceForJourneyAwareOfferCodeMap(ilsPriceForJourneyAwareOfferCodeMap, jouneyType,
 						entry, iLSPriceMapLocalMain, listOfPriceForBundleAndHardwareForOffer);
 			}
@@ -378,8 +376,8 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 	public void getNonLeadPlanMapForPaymCachedevice(Map<String, List<PriceForBundleAndHardware>> nonLeadPlanIdPriceMap,
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleListForNonLeanPlanId) {
 		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareForNonLeadPlanIds;
-		listOfPriceForBundleAndHardwareForNonLeadPlanIds = CommonUtility.getPriceDetailsUsingBundleHarwareTrouple(
-				bundleAndHardwareTupleListForNonLeanPlanId, null, null, registryclnt);
+		listOfPriceForBundleAndHardwareForNonLeadPlanIds = commonUtility.getPriceDetailsUsingBundleHarwareTrouple(
+				bundleAndHardwareTupleListForNonLeanPlanId, null, null);
 		if (listOfPriceForBundleAndHardwareForNonLeadPlanIds != null
 				&& !listOfPriceForBundleAndHardwareForNonLeadPlanIds.isEmpty()) {
 			DeviceUtils.getNonLeadPlanMap(nonLeadPlanIdPriceMap, listOfPriceForBundleAndHardwareForNonLeadPlanIds);
@@ -412,8 +410,8 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 	public void getLeadPlanMapForPaymCacheDevice(Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap,
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList) {
 		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareForLeadPlanIds;
-		listOfPriceForBundleAndHardwareForLeadPlanIds = CommonUtility
-				.getPriceDetailsUsingBundleHarwareTrouple(bundleAndHardwareTupleList, null, null, registryclnt);
+		listOfPriceForBundleAndHardwareForLeadPlanIds = commonUtility
+				.getPriceDetailsUsingBundleHarwareTrouple(bundleAndHardwareTupleList, null, null);
 		if (listOfPriceForBundleAndHardwareForLeadPlanIds != null
 				&& !listOfPriceForBundleAndHardwareForLeadPlanIds.isEmpty()) {
 			DeviceUtils.getLeadPlanMap(leadPlanIdPriceMap, listOfPriceForBundleAndHardwareForLeadPlanIds);

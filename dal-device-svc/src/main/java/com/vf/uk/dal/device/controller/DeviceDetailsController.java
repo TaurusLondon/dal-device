@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -76,7 +76,7 @@ public class DeviceDetailsController {
 	 */
 	@ApiOperation(value = "Get the device details for the given device Id", notes = "The service gets the details of the device specially price, equipment, specification, features, merchandising, etc in the response.", response = DeviceDetails.class, tags = {
 			"Device", })
-	@RequestMapping(value = "/device/{deviceId}", method = RequestMethod.GET, produces = javax.ws.rs.core.MediaType.APPLICATION_JSON)
+	@RequestMapping(value = "/device/{deviceId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = DeviceDetails.class),
 			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
@@ -102,7 +102,7 @@ public class DeviceDetailsController {
 	 * @return
 	 */
 	@ApiIgnore
-	@RequestMapping(value = "/device/", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON })
+	@RequestMapping(value = "/device/", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
 	public List<DeviceDetails> getListOfDeviceDetails(@RequestParam Map<String, String> queryParams) {
 
 		if (!queryParams.isEmpty() && Validator.validateDeviceId(queryParams)) {

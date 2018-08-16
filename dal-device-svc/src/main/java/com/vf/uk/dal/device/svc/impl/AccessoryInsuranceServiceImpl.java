@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
-import com.vf.uk.dal.common.registry.client.RegistryClient;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.dao.DeviceTileCacheDAO;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
@@ -60,10 +59,10 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	DeviceTileCacheDAO deviceTileCacheDAO;
 
 	@Autowired
-	RegistryClient registryclnt;
-
-	@Autowired
 	DeviceRecommendationService deviceRecommendationService;
+	
+	@Autowired
+	CommonUtility commonUtility;
 
 	/**
 	 * Handles requests from controller and connects to DAO.
@@ -160,7 +159,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 		BundleDeviceAndProductsList bundleDeviceAndProductsList = setBundleDeviceAndProductsList(journeyType, deviceId,
 				offerCode, listOfValidAccesoryIds);
 		PriceForProduct priceForProduct = null;
-		priceForProduct = CommonUtility.getAccessoryPriceDetails(bundleDeviceAndProductsList, registryclnt);
+		priceForProduct = commonUtility.getAccessoryPriceDetails(bundleDeviceAndProductsList);
 
 		Map<String, PriceForAccessory> mapforPrice = new HashMap<>();
 		Map<String, CommercialProduct> mapforCommercialProduct = setMapForCommercialData(listOfFilteredAccessories,

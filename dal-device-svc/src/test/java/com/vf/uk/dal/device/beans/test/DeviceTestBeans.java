@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Bean;
 import com.vf.uk.dal.common.beans.Environment;
 import com.vf.uk.dal.common.configuration.ConfigHelper;
 import com.vf.uk.dal.common.configuration.DataSourceInitializer;
-import com.vf.uk.dal.common.registry.client.RegistryClient;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
 import com.vf.uk.dal.device.controller.AccessoryInsuranceController;
 import com.vf.uk.dal.device.controller.CacheDeviceAndReviewController;
@@ -19,6 +18,7 @@ import com.vf.uk.dal.device.dao.impl.DeviceTileCacheDAOImpl;
 import com.vf.uk.dal.device.helper.DeviceConditionallHelper;
 import com.vf.uk.dal.device.helper.DeviceESHelper;
 import com.vf.uk.dal.device.helper.DeviceServiceCommonUtility;
+import com.vf.uk.dal.device.helper.DeviceServiceImplUtility;
 import com.vf.uk.dal.device.svc.DeviceRecommendationService;
 import com.vf.uk.dal.device.svc.impl.AccessoryInsuranceServiceImpl;
 import com.vf.uk.dal.device.svc.impl.CacheDeviceServiceImpl;
@@ -27,6 +27,7 @@ import com.vf.uk.dal.device.svc.impl.DeviceEntityServiceImpl;
 import com.vf.uk.dal.device.svc.impl.DeviceMakeAndModelServiceImpl;
 import com.vf.uk.dal.device.svc.impl.DeviceRecommendationServiceImpl;
 import com.vf.uk.dal.device.svc.impl.DeviceServiceImpl;
+import com.vf.uk.dal.device.utils.CommonUtility;
 import com.vf.uk.dal.device.utils.DeviceUtils;
 import com.vf.uk.dal.device.utils.ElasticSearchUtils;
 import com.vf.uk.dal.device.utils.ResponseMappingHelper;
@@ -57,11 +58,15 @@ import com.vf.uk.dal.device.utils.ResponseMappingHelper;
 	@Bean public DataSourceInitializer dataSourceInitializer() {
 		return new DataSourceInitializer();
 	}
-
 	
-	@Bean public RegistryClient getRegistryClient() {
-		return new RegistryClient();
+	@Bean public DeviceServiceImplUtility getDeviceServiceImplUtility() {
+		return new DeviceServiceImplUtility();
 	}
+	
+	@Bean public CommonUtility getCommonUtility() {
+		return new CommonUtility();
+	}
+	
 	@Bean public DeviceUtils getDeviceUtils(){
 		return new DeviceUtils();
 	}

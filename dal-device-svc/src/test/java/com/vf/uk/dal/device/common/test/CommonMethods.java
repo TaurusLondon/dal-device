@@ -1,6 +1,7 @@
 package com.vf.uk.dal.device.common.test;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -11,13 +12,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vf.uk.dal.common.registry.client.Utility;
 import com.vf.uk.dal.device.datamodel.bundle.Allowance;
 import com.vf.uk.dal.device.datamodel.bundle.Availability;
 import com.vf.uk.dal.device.datamodel.bundle.BundleControl;
@@ -96,6 +99,17 @@ import com.vf.uk.dal.utility.solr.entity.PriceInfo;
 public class CommonMethods {
 	public static Timestamp timeStamp;
 
+	public static byte[] readFile(String filename) throws IOException
+	{
+        String fileData = null;
+        Resource resource = new ClassPathResource(filename);
+        InputStream is = resource.getInputStream();
+        byte[] fileDataBytes = new byte[is.available()];
+        is.read(fileDataBytes);
+        fileData = new String(fileDataBytes);
+        return fileData.getBytes();
+	}
+	
 	public static DeviceDetails getDevice(String id) {
 		DeviceDetails deviceDetails = new DeviceDetails();
 		deviceDetails.setDeviceId("93353");
@@ -1149,7 +1163,7 @@ public class CommonMethods {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			bundleDetails = mapper.readValue(Utility.readFile("\\TEST-MOCK\\BUNDLESV1_compatibleList.json"),
+			bundleDetails = mapper.readValue(readFile("\\TEST-MOCK\\BUNDLESV1_compatibleList.json"),
 					BundleDetails.class);
 			return bundleDetails;
 
@@ -1164,7 +1178,7 @@ public class CommonMethods {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			bundleDetails = mapper.readValue(Utility.readFile("\\TEST-MOCK\\BUNDLESV1_compatibleList3.json"),
+			bundleDetails = mapper.readValue(readFile("\\TEST-MOCK\\BUNDLESV1_compatibleList3.json"),
 					BundleDetails.class);
 			return bundleDetails;
 
@@ -1179,7 +1193,7 @@ public class CommonMethods {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			bundleDetails = mapper.readValue(Utility.readFile("\\TEST-MOCK\\\\BUNDLESV2_compatibleList.json"),
+			bundleDetails = mapper.readValue(readFile("\\TEST-MOCK\\\\BUNDLESV2_compatibleList.json"),
 					BundleDetails.class);
 			return bundleDetails;
 
@@ -1194,7 +1208,7 @@ public class CommonMethods {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			bundleDetails = mapper.readValue(Utility.readFile("\\TEST-MOCK\\BUNDLESV3_compatibleList.json"),
+			bundleDetails = mapper.readValue(readFile("\\TEST-MOCK\\BUNDLESV3_compatibleList.json"),
 					BundleDetails.class);
 			return bundleDetails;
 
@@ -1249,7 +1263,7 @@ public class CommonMethods {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			bundleDetails = mapper.readValue(Utility.readFile("\\TEST-MOCK\\ProductGroupForFacets.json"),
+			bundleDetails = mapper.readValue(readFile("\\TEST-MOCK\\ProductGroupForFacets.json"),
 					ProductGroupFacetModel.class);
 			return bundleDetails;
 
@@ -1264,7 +1278,7 @@ public class CommonMethods {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			bundleDetails = mapper.readValue(Utility.readFile("\\TEST-MOCK\\BUNDLESV1_compatibleList1.json"),
+			bundleDetails = mapper.readValue(readFile("\\TEST-MOCK\\BUNDLESV1_compatibleList1.json"),
 					BundleDetails.class);
 			return bundleDetails;
 
@@ -1401,7 +1415,7 @@ public class CommonMethods {
 	 * false);
 	 * mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 	 * String productModel=new
-	 * String(Utility.readFile("\\BazaarVoiceResponse.json")); BazaarVoice
+	 * String(readFile("\\BazaarVoiceResponse.json")); BazaarVoice
 	 * product=mapper.readValue(productModel, BazaarVoice.class); List
 	 * <BazaarVoice> bazaarList=new ArrayList<>(); bazaarList.add(product);
 	 * return bazaarList; }
@@ -1411,7 +1425,7 @@ public class CommonMethods {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-		String productModel = new String(Utility.readFile("\\TEST-MOCK\\BazaarVoiceResponse.json"));
+		String productModel = new String(readFile("\\TEST-MOCK\\BazaarVoiceResponse.json"));
 		List<BazaarVoice> bazaarList = new ArrayList<>();
 		BazaarVoice bazaar = new BazaarVoice();
 		bazaar.setJsonsource(productModel);
@@ -2224,7 +2238,7 @@ public class CommonMethods {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-			String bundle = new String(Utility.readFile("\\TEST-MOCK\\BundleandhardwarePromotuions.json"));
+			String bundle = new String(readFile("\\TEST-MOCK\\BundleandhardwarePromotuions.json"));
 			BundleAndHardwarePromotions[] bundleList = mapper.readValue(bundle, BundleAndHardwarePromotions[].class);
 
 			return mapper.convertValue(bundleList, new TypeReference<List<BundleAndHardwarePromotions>>() {
@@ -2283,7 +2297,7 @@ public class CommonMethods {
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			String commercialProduct = new String(
-					Utility.readFile("\\TEST-MOCK\\CommercialProductListOfMakeAndModel.json"));
+					readFile("\\TEST-MOCK\\CommercialProductListOfMakeAndModel.json"));
 			CommercialProduct[] commercialProductList = mapper.readValue(commercialProduct, CommercialProduct[].class);
 
 			return mapper.convertValue(commercialProductList, new TypeReference<List<CommercialProduct>>() {
@@ -2308,7 +2322,7 @@ public class CommonMethods {
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			String listOfGroupsString = new String(
-					Utility.readFile("\\TEST-MOCK\\ListOfProductGroupFromProductGroupRepository.json"));
+					readFile("\\TEST-MOCK\\ListOfProductGroupFromProductGroupRepository.json"));
 			Group[] groupList = mapper.readValue(listOfGroupsString, Group[].class);
 
 			return mapper.convertValue(groupList, new TypeReference<List<Group>>() {
@@ -2331,7 +2345,7 @@ public class CommonMethods {
 		String productModel;
 		BazaarVoice product = null;
 		try {
-			productModel = new String(Utility.readFile("\\TEST-MOCK\\BazaarVoiceResponse.json"));
+			productModel = new String(readFile("\\TEST-MOCK\\BazaarVoiceResponse.json"));
 			product = mapper.readValue(productModel, BazaarVoice.class);
 			product.setJsonsource(productModel);
 		} catch (IOException e) {
@@ -2351,7 +2365,7 @@ public class CommonMethods {
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			String bundleModel = new String(
-					Utility.readFile("\\TEST-MOCK\\Coherence_CommercialBundleRepo_CommercialBundle"));
+					readFile("\\TEST-MOCK\\Coherence_CommercialBundleRepo_CommercialBundle"));
 			CommercialBundle bundleModelList = mapper.readValue(bundleModel, CommercialBundle.class);
 
 			return mapper.convertValue(bundleModelList, new TypeReference<CommercialBundle>() {
@@ -2377,7 +2391,7 @@ public class CommonMethods {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			String commercialProduct = new String(Utility.readFile("\\TEST-MOCK\\CommercialProduct_093353.json"));
+			String commercialProduct = new String(readFile("\\TEST-MOCK\\CommercialProduct_093353.json"));
 			CommercialProduct commercialProductList = mapper.readValue(commercialProduct, CommercialProduct.class);
 
 			return mapper.convertValue(commercialProductList, new TypeReference<CommercialProduct>() {
@@ -2398,7 +2412,7 @@ public class CommonMethods {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			String listOfGroupsString = new String(Utility.readFile("\\TEST-MOCK\\ListOfAccessoryGroup.json"));
+			String listOfGroupsString = new String(readFile("\\TEST-MOCK\\ListOfAccessoryGroup.json"));
 			Group[] groupList = mapper.readValue(listOfGroupsString, Group[].class);
 
 			return mapper.convertValue(groupList, new TypeReference<List<Group>>() {
@@ -2425,7 +2439,7 @@ public class CommonMethods {
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			String bundle = new String(
-					Utility.readFile("\\TEST-MOCK\\priceForProduct_For_GetAccessoriesForDevice.json"));
+					readFile("\\TEST-MOCK\\priceForProduct_For_GetAccessoriesForDevice.json"));
 			PriceForProduct bundleList = mapper.readValue(bundle, PriceForProduct.class);
 
 			return mapper.convertValue(bundleList, new TypeReference<PriceForProduct>() {
@@ -2450,7 +2464,7 @@ public class CommonMethods {
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			String bundle = new String(
-					Utility.readFile("\\TEST-MOCK\\bundleDeviceAndProductsList_For_GetAccessoriesOfDevice.json"));
+					readFile("\\TEST-MOCK\\bundleDeviceAndProductsList_For_GetAccessoriesOfDevice.json"));
 			BundleDeviceAndProductsList bundleList = mapper.readValue(bundle, BundleDeviceAndProductsList.class);
 
 			return mapper.convertValue(bundleList, new TypeReference<BundleDeviceAndProductsList>() {
@@ -2477,8 +2491,7 @@ public class CommonMethods {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-			String bundle = new String(Utility
-					.readFile("\\TEST-MOCK\\bundleDeviceAndProductsList_For_GetAccessoriesOfDevice_Integration.json"));
+			String bundle = new String(readFile("\\TEST-MOCK\\bundleDeviceAndProductsList_For_GetAccessoriesOfDevice_Integration.json"));
 			BundleDeviceAndProductsList bundleList = mapper.readValue(bundle, BundleDeviceAndProductsList.class);
 
 			return mapper.convertValue(bundleList, new TypeReference<BundleDeviceAndProductsList>() {
@@ -2506,7 +2519,7 @@ public class CommonMethods {
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			String commercialProduct = new String(
-					Utility.readFile("\\TEST-MOCK\\CommercialProductListOfAccessory.json"));
+					readFile("\\TEST-MOCK\\CommercialProductListOfAccessory.json"));
 			CommercialProduct[] commercialProductList = mapper.readValue(commercialProduct, CommercialProduct[].class);
 
 			return mapper.convertValue(commercialProductList, new TypeReference<List<CommercialProduct>>() {
@@ -2533,7 +2546,7 @@ public class CommonMethods {
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			String commercialProduct = new String(
-					Utility.readFile("\\TEST-MOCK\\CommercialProductOfAccessorywithEndDate.json"));
+					readFile("\\TEST-MOCK\\CommercialProductOfAccessorywithEndDate.json"));
 			CommercialProduct[] commercialProductList = mapper.readValue(commercialProduct, CommercialProduct[].class);
 
 			return mapper.convertValue(commercialProductList, new TypeReference<List<CommercialProduct>>() {
@@ -2555,7 +2568,7 @@ public class CommonMethods {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-		String productModel = new String(Utility.readFile("\\TEST-MOCK\\BazaarVoiceResponse.json"));
+		String productModel = new String(readFile("\\TEST-MOCK\\BazaarVoiceResponse.json"));
 		BazaarVoice product = new BazaarVoice();
 		product = mapper.readValue(productModel, BazaarVoice.class);
 		product.setJsonsource(productModel);
@@ -2573,7 +2586,7 @@ public class CommonMethods {
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			String productGroupModel = new String(
-					Utility.readFile("\\TEST-MOCK\\listOfProductGroupModel_For_DevicePAYM_apple.json"));
+					readFile("\\TEST-MOCK\\listOfProductGroupModel_For_DevicePAYM_apple.json"));
 			ProductGroupModel[] productGroupModelList = mapper.readValue(productGroupModel, ProductGroupModel[].class);
 
 			return mapper.convertValue(productGroupModelList, new TypeReference<List<ProductGroupModel>>() {
@@ -2599,7 +2612,7 @@ public class CommonMethods {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			String bundleDetailsForAppSrv = new String(Utility.readFile("\\TEST-MOCK\\ByCoupledBundleList.json"));
+			String bundleDetailsForAppSrv = new String(readFile("\\TEST-MOCK\\ByCoupledBundleList.json"));
 			BundleDetailsForAppSrv bundleDetails = mapper.readValue(bundleDetailsForAppSrv,
 					BundleDetailsForAppSrv.class);
 
@@ -2626,7 +2639,7 @@ public class CommonMethods {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			String price = new String(Utility.readFile("\\TEST-MOCK\\PriceForBundleAndHardware.json"));
+			String price = new String(readFile("\\TEST-MOCK\\PriceForBundleAndHardware.json"));
 			PriceForBundleAndHardware[] priceList = mapper.readValue(price, PriceForBundleAndHardware[].class);
 
 			return mapper.convertValue(priceList, new TypeReference<List<PriceForBundleAndHardware>>() {
@@ -2712,7 +2725,7 @@ public class CommonMethods {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			String commercialProduct = new String(Utility.readFile("\\TEST-MOCK\\CommercialProduct_088417_PAYG.json"));
+			String commercialProduct = new String(readFile("\\TEST-MOCK\\CommercialProduct_088417_PAYG.json"));
 			CommercialProduct commercialProductList = mapper.readValue(commercialProduct, CommercialProduct.class);
 
 			return mapper.convertValue(commercialProductList, new TypeReference<CommercialProduct>() {
@@ -2739,7 +2752,7 @@ public class CommonMethods {
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			String commercialProduct = new String(
-					Utility.readFile("\\TEST-MOCK\\CommercialProductOfAccessorywithEndDate.json"));
+					readFile("\\TEST-MOCK\\CommercialProductOfAccessorywithEndDate.json"));
 			CommercialProduct commercialProductList = mapper.readValue(commercialProduct, CommercialProduct.class);
 
 			return mapper.convertValue(commercialProductList, new TypeReference<CommercialProduct>() {
@@ -2779,7 +2792,7 @@ public class CommonMethods {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			String price = new String(Utility.readFile("\\TEST-MOCK\\API_Price_calculateForBundleAndHardware"));
+			String price = new String(readFile("\\TEST-MOCK\\API_Price_calculateForBundleAndHardware"));
 			PriceForBundleAndHardware[] priceList = mapper.readValue(price, PriceForBundleAndHardware[].class);
 
 			future.complete(mapper.convertValue(priceList, new TypeReference<List<PriceForBundleAndHardware>>() {
@@ -2823,7 +2836,7 @@ public class CommonMethods {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			String promotion = new String(Utility.readFile("\\TEST-MOCK\\API_BundlePromotions_ListOfBundlePromotions"));
+			String promotion = new String(readFile("\\TEST-MOCK\\API_BundlePromotions_ListOfBundlePromotions"));
 			BundleAndHardwarePromotions[] promotionList = mapper.readValue(promotion,
 					BundleAndHardwarePromotions[].class);
 
@@ -2846,7 +2859,7 @@ public class CommonMethods {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			String commercialProduct = new String(Utility.readFile("\\TEST-MOCK\\CommercialProductForAccessory.json"));
+			String commercialProduct = new String(readFile("\\TEST-MOCK\\CommercialProductForAccessory.json"));
 			CommercialProduct commercialProductList = mapper.readValue(commercialProduct, CommercialProduct.class);
 
 			return mapper.convertValue(commercialProductList, new TypeReference<CommercialProduct>() {
@@ -2866,7 +2879,7 @@ public class CommonMethods {
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			String commercialProduct = new String(
-					Utility.readFile("\\TEST-MOCK\\ListOfCommercialProductsForAccessory.json"));
+					readFile("\\TEST-MOCK\\ListOfCommercialProductsForAccessory.json"));
 			CommercialProduct[] commercialProductList = mapper.readValue(commercialProduct, CommercialProduct[].class);
 
 			return mapper.convertValue(commercialProductList, new TypeReference<List<CommercialProduct>>() {
@@ -2884,7 +2897,7 @@ public class CommonMethods {
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			String listOfGroupsString = new String(
-					Utility.readFile("\\TEST-MOCK\\ListOfProductGroupsForAccessory.json"));
+					readFile("\\TEST-MOCK\\ListOfProductGroupsForAccessory.json"));
 			Group[] groupList = mapper.readValue(listOfGroupsString, Group[].class);
 
 			return mapper.convertValue(groupList, new TypeReference<List<Group>>() {
@@ -2903,7 +2916,7 @@ public class CommonMethods {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-			String bundle = new String(Utility.readFile("\\TEST-MOCK\\PriceForProductForAccessory.json"));
+			String bundle = new String(readFile("\\TEST-MOCK\\PriceForProductForAccessory.json"));
 			PriceForProduct bundleList = mapper.readValue(bundle, PriceForProduct.class);
 
 			return mapper.convertValue(bundleList, new TypeReference<PriceForProduct>() {
@@ -3039,7 +3052,7 @@ public class CommonMethods {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			String commercialProduct = new String(Utility.readFile("\\TEST-MOCK\\CommercialProductForVariant.json"));
+			String commercialProduct = new String(readFile("\\TEST-MOCK\\CommercialProductForVariant.json"));
 			CommercialProduct[] commercialProductList = mapper.readValue(commercialProduct, CommercialProduct[].class);
 
 			return mapper.convertValue(commercialProductList, new TypeReference<List<CommercialProduct>>() {

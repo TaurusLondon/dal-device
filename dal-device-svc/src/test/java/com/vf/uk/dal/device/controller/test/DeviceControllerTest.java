@@ -19,10 +19,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.client.RestTemplate;
 
-import com.netflix.discovery.EurekaClient;
 import com.vf.uk.dal.common.context.ServiceContext;
 import com.vf.uk.dal.common.context.URLParamContext;
-import com.vf.uk.dal.common.registry.client.RegistryClient;
 import com.vf.uk.dal.common.urlparams.FilterCriteria;
 import com.vf.uk.dal.common.urlparams.FilterOperator;
 import com.vf.uk.dal.common.urlparams.PaginationCriteria;
@@ -75,13 +73,7 @@ public class DeviceControllerTest {
 	CacheDeviceAndReviewController cacheDeviceAndReviewController;
 
 	@MockBean
-	EurekaClient eureka;
-
-	@MockBean
 	ResponseMappingHelper response;
-
-	@MockBean
-	RegistryClient registry;
 
 	@MockBean
 	RestTemplate restTemplate;

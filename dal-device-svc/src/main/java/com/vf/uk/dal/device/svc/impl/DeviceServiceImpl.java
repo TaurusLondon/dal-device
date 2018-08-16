@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
-import com.vf.uk.dal.common.registry.client.RegistryClient;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.datamodel.bundle.BundleModel;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
@@ -71,9 +70,6 @@ public class DeviceServiceImpl implements DeviceService {
 	DeviceESHelper deviceEs;
 
 	@Autowired
-	RegistryClient registryclnt;
-
-	@Autowired
 	DeviceRecommendationService deviceRecommendationService;
 
 	@Autowired
@@ -81,6 +77,9 @@ public class DeviceServiceImpl implements DeviceService {
 
 	@Autowired
 	DeviceConditionallHelper deviceHelper;
+	
+	@Autowired
+	CommonUtility commonUtility;
 
 	DeviceUtils deviceUtils = new DeviceUtils();
 
@@ -192,8 +191,7 @@ public class DeviceServiceImpl implements DeviceService {
 	public FacetedDevice getConditionalForDeviceList(String msisdn, FacetedDevice facetedDevice) {
 		String message;
 		FacetedDevice facetedDeviceResult;
-		String deviceId = CommonUtility.getSubscriptionBundleId(msisdn, Constants.SUBSCRIPTION_TYPE_MSISDN,
-				registryclnt);
+		String deviceId = commonUtility.getSubscriptionBundleId(msisdn, Constants.SUBSCRIPTION_TYPE_MSISDN);
 		LogHelper.info(this, "Getting subscription asset for msisdn " + msisdn + "  deviceID " + deviceId);
 
 		if (StringUtils.isNotBlank(deviceId)) {
@@ -285,8 +283,8 @@ public class DeviceServiceImpl implements DeviceService {
 
 		// Calling Pricing Api
 		if (bundleAndHardwareTupleList != null && !bundleAndHardwareTupleList.isEmpty()) {
-			listOfPriceForBundleAndHardware = CommonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode,
-					registryclnt, journeyType);
+			listOfPriceForBundleAndHardware = commonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode,
+					 journeyType);
 		}
 
 		String leadPlanId = null;
@@ -342,8 +340,7 @@ public class DeviceServiceImpl implements DeviceService {
 			bundleHardwareTupleList.add(bundleAndHardwareTuple);
 		}
 		if (!bundleHardwareTupleList.isEmpty()) {
-			promotions = CommonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList, journeyType,
-					registryclnt);
+			promotions = commonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList, journeyType);
 		}
 		if (listOfPriceForBundleAndHardware != null && !listOfPriceForBundleAndHardware.isEmpty()) {
 			priceForBundleAndHardware = listOfPriceForBundleAndHardware.get(0);
@@ -679,8 +676,7 @@ public class DeviceServiceImpl implements DeviceService {
 		List<BundleAndHardwarePromotions> promotions = null;
 
 		if (!bundleHardwareTupleList.isEmpty()) {
-			promotions = CommonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList, journeyType,
-					registryclnt);
+			promotions = commonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList, journeyType);
 		}
 		if (promotions != null) {
 			promotions.forEach(promotion -> promotionmap.put(promotion.getHardwareId(), promotion));

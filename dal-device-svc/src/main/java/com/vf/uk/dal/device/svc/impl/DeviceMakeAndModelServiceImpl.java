@@ -18,7 +18,6 @@ import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
-import com.vf.uk.dal.common.registry.client.RegistryClient;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
@@ -50,10 +49,10 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 	DeviceESHelper deviceEs;
 
 	@Autowired
-	RegistryClient registryclnt;
-
-	@Autowired
 	DeviceServiceCommonUtility deviceServiceCommonUtility;
+	
+	@Autowired
+	CommonUtility commonUtility;
 
 	/**
 	 * @param make
@@ -443,14 +442,13 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = null;
 			// Calling Pricing Api
 			if (bundleAndHardwareTupleListPAYG != null && !bundleAndHardwareTupleListPAYG.isEmpty()) {
-				listOfPriceForBundleAndHardware = CommonUtility.getPriceDetails(bundleAndHardwareTupleListPAYG, null,
-						registryclnt, null);
+				listOfPriceForBundleAndHardware = commonUtility.getPriceDetails(bundleAndHardwareTupleListPAYG, null,
+						null);
 			}
 			Map<String, BundleAndHardwarePromotions> bundleAndHardwarePromotionsMap = new HashMap<>();
 			if (bundleAndHardwareTupleListPAYG != null && !bundleAndHardwareTupleListPAYG.isEmpty()) {
-				List<BundleAndHardwarePromotions> allPromotions = CommonUtility
-						.getPromotionsForBundleAndHardWarePromotions(bundleAndHardwareTupleListPAYG, null,
-								registryclnt);
+				List<BundleAndHardwarePromotions> allPromotions = commonUtility
+						.getPromotionsForBundleAndHardWarePromotions(bundleAndHardwareTupleListPAYG, null);
 				if (allPromotions != null && !allPromotions.isEmpty()) {
 					allPromotions.forEach(
 							promotion -> bundleAndHardwarePromotionsMap.put(promotion.getHardwareId(), promotion));
@@ -560,8 +558,8 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 							bundleHardwareTupleList.add(bundleAndHardwareTuple);
 						}
 						if (!bundleHardwareTupleList.isEmpty()) {
-							promotions = CommonUtility.getPromotionsForBundleAndHardWarePromotions(
-									bundleHardwareTupleList, journeyType, registryclnt);
+							promotions = commonUtility.getPromotionsForBundleAndHardWarePromotions(
+									bundleHardwareTupleList, journeyType);
 						}
 
 					} else if (StringUtils.isNotBlank(bundleId) && commercialProduct != null
@@ -713,8 +711,8 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 
 		bundles.add(tuple);
 
-		List<PriceForBundleAndHardware> priceForBundleAndHardwares = CommonUtility.getPriceDetails(bundles, null,
-				registryclnt, journeyType);
+		List<PriceForBundleAndHardware> priceForBundleAndHardwares = commonUtility.getPriceDetails(bundles, null,
+				 journeyType);
 
 		if (DeviceServiceImplUtility.isPlanPriceWithinCreditLimit_Implementation(creditLimit,
 				priceForBundleAndHardwares, product.getLeadPlanId())) {
@@ -756,8 +754,8 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			}
 			List<PriceForBundleAndHardware> priceForBundleAndHardwares = null;
 			if (CollectionUtils.isNotEmpty(bundleAndHardwareTupleList)) {
-				priceForBundleAndHardwares = CommonUtility.getPriceDetails(bundleAndHardwareTupleList, null,
-						registryclnt, journeyType);
+				priceForBundleAndHardwares = commonUtility.getPriceDetails(bundleAndHardwareTupleList, null,
+						journeyType);
 			}
 			if (priceForBundleAndHardwares != null && CollectionUtils.isNotEmpty(priceForBundleAndHardwares)) {
 				Iterator<PriceForBundleAndHardware> iterator = priceForBundleAndHardwares.iterator();

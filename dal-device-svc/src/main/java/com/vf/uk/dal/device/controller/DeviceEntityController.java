@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -83,7 +83,7 @@ public class DeviceEntityController {
 			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
-	@RequestMapping(value = "/product", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON })
+	@RequestMapping(value = "/product", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
 	public List<CommercialProduct> getCommercialProduct(
 			@ApiParam(value = "Device Id for getting commercial product to displayed. possible value can be comma separated device Id like 093353,080004") @RequestParam(value = "productId", required = false) String productId,
 			@ApiParam(value = "Product Name for getting commercial product to displayed. possible value can be comma separated product names are like Fibre Activation Fee,ATA Device") @RequestParam(value = "productName", required = false) String productName) {
@@ -122,7 +122,7 @@ public class DeviceEntityController {
 			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
-	@RequestMapping(value = "/productGroup", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON })
+	@RequestMapping(value = "/productGroup", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
 	public List<Group> getProductGroupByGroupType(
 			@NotNull @ApiParam(value = "Product group Type for getting product group to displayed. possible value can be like DEVICE_PAYM or DEVICE_PAYG") @RequestParam(value = "groupType", required = true) String groupType) {
 		List<Group> groupDetails;
@@ -157,7 +157,7 @@ public class DeviceEntityController {
 			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
 	@RequestMapping(value = "/device/getDeliveryMethod/getProductGroupModel", method = RequestMethod.GET, produces = {
-			MediaType.APPLICATION_JSON })
+			MediaType.APPLICATION_JSON_VALUE })
 	public ProductGroupModelMap getProductGroupModel(
 			@NotNull @ApiParam(value = "Device Id for getting product Group to displayed. possible value can be comma separated device Id like 093353,080004") @RequestParam(value = "productId", required = true) String productId) {
 		ProductGroupModelMap productGroupModelDetails;
@@ -179,7 +179,7 @@ public class DeviceEntityController {
 	 * @param queryParam
 	 * @return
 	 */
-	@RequestMapping(value = "/productCatalog/device", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON })
+	@RequestMapping(value = "/productCatalog/device", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
 	public HandsetOnlineModelList getHandsetOnlineModel(@RequestParam Map<String,String> queryParam) {
 		HandsetOnlineModelList handsetOnlineModel;
 

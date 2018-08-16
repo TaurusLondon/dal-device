@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
-import com.vf.uk.dal.common.registry.client.RegistryClient;
 import com.vf.uk.dal.device.datamodel.handsetonlinemodel.HandsetOnlineModel;
 import com.vf.uk.dal.device.datamodel.handsetonlinemodel.HandsetOnlineModelList;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
@@ -37,9 +36,6 @@ public class DeviceEntityServiceImpl implements DeviceEntityService {
 
 	@Autowired
 	DeviceESHelper deviceEs;
-	
-	@Autowired
-	RegistryClient registryclnt;
 	
 	DeviceUtils deviceUtils = new DeviceUtils();
 
