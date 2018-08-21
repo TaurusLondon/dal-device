@@ -52,7 +52,7 @@ Parameters:
     Description: Endpoint for elastic search
     Type: String
   bazaarvoice:
-    Desicription: URL for bazaarvoice
+    Description: URL for bazaarvoice
     Type: String
   icpenvkafkahost:
     Description: Hostname for kafka
@@ -110,8 +110,8 @@ Resources:
                Value: !Ref icpconfigjdbcUrl
              - Name: icp_config_jdbc_UserName
                Value: !Ref icpconfigjdbcUserName
-             - Name: icp_config_jdbc_Pwd
-               Value: !Ref icpconfigjdbcPwd  
+             - Name: icp_config_jdbc_UserPwd
+               Value: !Ref icpconfigjdbcUserPwd  
              - Name: elasticsearch
                Value: !Ref esendpoint
              - Name: bazaarvoice_part1
