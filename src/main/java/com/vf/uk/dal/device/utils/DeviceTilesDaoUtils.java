@@ -368,7 +368,7 @@ public class DeviceTilesDaoUtils {
 						merchandisingControl.setIsDisplayableSavedBasket(
 								Boolean.valueOf(productModel.getIsDisplaybaleSavedBasket()));
 						if (productModel.getOrder() != null) {
-							merchandisingControl.setOrder(Integer.valueOf(productModel.getOrder()));
+							merchandisingControl.setOrder(productModel.getOrder());
 						}
 						if (getPreOrBackOderable(productModel.getPreOrderable())) {
 							if (productModel.getAvailableFrom() != null && CommonUtility.dateValidationForProduct(
