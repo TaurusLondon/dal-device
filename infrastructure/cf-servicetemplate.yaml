@@ -52,7 +52,7 @@ Parameters:
     Description: Endpoint for elastic search
     Type: String
   bazaarvoice:
-    Desicription: URL for bazaarvoice
+    Description: URL for bazaarvoice
     Type: String
   icpenvkafkahost:
     Description: Hostname for kafka
