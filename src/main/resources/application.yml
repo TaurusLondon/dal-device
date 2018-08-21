@@ -1,0 +1,110 @@
+spring:
+  application:
+    name: DEVICES-V1
+info:
+  build:
+    version: @swaggerVersion@
+    projectName: @project.artifactId@
+server:
+  contextPath: /devices/catalogue
+  port: 8080
+  ssl:
+    enabled: true
+    key-store: classpath:keystore.jks
+    key-store-password: password
+    key-password: password
+    trust-store: classpath:myTrustStore.jks
+    trust-store-password: password  
+endpoints:
+ actuator:
+   enabled: false
+   sensitive: false
+ autoconfig:
+   enabled: true
+ configprops:
+   enabled: true
+ beans:
+   enabled: true
+ loggers:
+   enabled: true
+ health:
+   enabled: true
+ dump:
+   enabled: true
+ heapdump:
+   enabled: true
+ info:
+   enabled: true  
+ env:
+   enabled: true 
+ metrics:
+   enabled: true
+ mappings:
+   enabled: true
+ shutdown:
+   enabled: false
+ trace:
+   enabled: true
+   
+management:
+ security:
+   enabled: false
+
+icp:
+  config:
+    jdbcUrl: jdbc:oracle:thin:@100.66.65.222:1521:oradb
+    jdbcUserName: daluser
+    jdbcUserPwd: simple4u
+    
+  service:  
+    defaultPageSize: 1000
+    defaultPageNumber: 0  
+
+elasticsearch:
+  host: https://vpc-digitalx-dev-solr-es-hne32eyterqfesg3zzkpeg25q4.eu-west-1.es.amazonaws.com/  
+
+  cache:
+    jcache:
+      config: classpath:ehcache.xml  
+      
+bazaarvoice:
+  urlPart1: "http://api.bazaarvoice.com/data/reviews.json?apiversion=5.4&passkey=a1nyq80ufv2yvznpitrjbco7e&Filter=ProductID:"
+  urlPart2: "&Include=Products&Stats=Reviews&locale=en_GB"
+
+springfox:
+ documentation:
+   swagger:
+     v2:
+       path: /api-docs  
+       
+---
+
+spring:
+  profiles: local
+  application:
+    name: DEVICES-V1
+
+server:
+  contextPath: /devices/catalogue
+  port: 2238
+  ssl:
+    trust-store: classpath:alblowerkeystore.jks
+    trust-store-password: tib123 
+icp:
+  config:
+    jdbcUrl: jdbc:oracle:thin:@100.66.65.222:1521:oradb
+    jdbcUserName: daluser
+    jdbcUserPwd: simple4u
+  service:  
+    defaultPageSize: 1000
+    defaultPageNumber: 0  
+  restclient:
+    mock: 
+      enabled: true
+  
+  env:
+    enableLogStreaming: false
+  security:
+    enabled: true
+   
+

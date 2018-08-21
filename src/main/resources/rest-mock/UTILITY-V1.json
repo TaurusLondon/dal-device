@@ -1,0 +1,58 @@
+[
+  {
+    "skuId": "089943",
+    "sourceId": "VFWarehouse",
+    "quantity": 60,
+    "status": "In Stock",
+    "availableBy": "Today"
+  },
+  {
+    "skuId": "083921",
+    "sourceId": "VFWarehouse",
+    "quantity": 60,
+    "status": "In Stock",
+    "availableBy": "Today"
+  },
+  {
+    "skuId": "089344",
+    "sourceId": "VFWarehouse",
+    "quantity": 70,
+    "status": "Pre Ordered",
+    "availableBy": "1-2 weeks"
+  },
+  {
+    "skuId": "090335",
+    "sourceId": "VFWarehouse",
+    "quantity": 55,
+    "status": "In Stock",
+    "availableBy": "Today"
+  },
+  {
+    "skuId": "089139",
+    "sourceId": "VFWarehouse",
+    "quantity": 45,
+    "status": "In Stock",
+    "availableBy": "Today"
+  },
+  {
+    "skuId": "093405",
+    "sourceId": "VFWarehouse",
+    "quantity": 30,
+    "status": "Pre Ordered",
+    "availableBy": "1-2 weeks"
+  },
+  {
+    "skuId": "090626",
+    "sourceId": "VFWarehouse",
+    "quantity": 0,
+    "status": "Pre Ordered",
+    "availableBy": "1-2 weeks"
+  },
+  {
+    "skuId": "093416",
+    "sourceId": "VFWarehouse",
+    "quantity": 0,
+    "status": "Pre Ordered",
+    "availableBy": "1-2 weeks"
+  }
+] 

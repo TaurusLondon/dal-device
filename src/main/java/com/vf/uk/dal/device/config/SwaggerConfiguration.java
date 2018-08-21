@@ -1,0 +1,47 @@
+package com.vf.uk.dal.device.config;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+@EnableSwagger2
+@Configuration
+
+/**
+ * 
+ * @author sahil.monga
+ *
+ */
+public class SwaggerConfiguration {
+	@Value("${info.build.version}")
+	private String versionNumber;
+
+	@Value("${info.build.projectName}")
+	private String projectName;
+
+	/**
+	 * Generates documentation for all the services under
+	 * com.vf.uk.dal.device.controller
+	 * 
+	 * @return
+	 */
+	@Bean
+	public Docket deviceApi() {
+		return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select()
+				.apis(RequestHandlerSelectors.basePackage("com.vf.uk.dal.device.controller")).paths(PathSelectors.any())
+				.build();
+	}
+
+	private ApiInfo apiInfo() {
+		return new ApiInfoBuilder().title(projectName).description("Device API service operations")
+				.version(versionNumber).build();
+	}
+}
