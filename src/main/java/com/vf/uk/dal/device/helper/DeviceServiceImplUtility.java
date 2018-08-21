@@ -498,7 +498,7 @@ public class DeviceServiceImplUtility {
 					if (member.getId().equalsIgnoreCase(id)) {
 						deviceTile.setGroupName(productGroup.getName());
 						deviceTile.setGroupType(productGroup.getGroupType());
-						memberPriority = Long.valueOf(member.getPriority());
+						memberPriority = member.getPriority();
 					}
 				}
 			}

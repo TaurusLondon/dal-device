@@ -64,10 +64,13 @@ public class ElasticSearchUtils {
 	 * @return
 	 */
 	public <T> T getObject(SearchResponse response, Class<T> classType) {
-		for (SearchHit hit : response.getHits().getHits()) {
-			return getObject(hit, classType);
-		}
-		return null;
+
+		SearchHit[] hitArray = response.getHits().getHits();
+		if (hitArray.length > 0) {
+		return getObject(hitArray[0], classType);
+	}
+	return null;
+	
 	}
 
 	/**

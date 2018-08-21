@@ -583,7 +583,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 						}
 					}
 					if(isConditional){
-						priceForBundleAndHardware =!listOfPriceForBundleAndHardwareLocal.isEmpty()?listOfPriceForBundleAndHardwareLocal.get(0):null;
+						priceForBundleAndHardware = !listOfPriceForBundleAndHardwareLocal.isEmpty()?listOfPriceForBundleAndHardwareLocal.get(0):null;
 					}else if (priceMapForParticularDevice.containsKey(member.getId()) && !isConditional) {
 						priceForBundleAndHardware = priceMapForParticularDevice.get(member.getId());
 					}
