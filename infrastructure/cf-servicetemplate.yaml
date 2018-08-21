@@ -114,7 +114,7 @@ Resources:
                Value: !Ref icpconfigjdbcPwd  
              - Name: elasticsearch
                Value: !Ref esendpoint
-             - Name: bazaarvoice
+             - Name: bazaarvoice_part1
                Value: !Ref bazaarvoice
              - Name: icp_env_kafka_host
                Value: !Ref icpenvkafkahost
