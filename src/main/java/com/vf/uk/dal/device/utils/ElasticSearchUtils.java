@@ -68,7 +68,7 @@ public class ElasticSearchUtils {
 		SearchHit[] hitArray = response.getHits().getHits();
 		if (hitArray.length > 0) {
 		return getObject(hitArray[0], classType);
-	}
+	} 
 	return null;
 	
 	}
