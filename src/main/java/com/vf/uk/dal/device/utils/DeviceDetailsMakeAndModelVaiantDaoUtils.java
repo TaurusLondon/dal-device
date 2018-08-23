@@ -607,11 +607,11 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 			// }
 		}
 		deviceSummary.setMerchandisingMedia(merchandisingMedia);
+		
 		// US13782 : Assembly of promotion Nodes
-		if (CollectionUtils.isNotEmpty(listOfOfferPacks) && priceforBundleAndHardware != null) {
-			deviceSummary.setPromotionsPackage(
-					assembleMechandisingPromotionsPackageGeneric(listOfOfferPacks.get(0), priceforBundleAndHardware));
-		}
+		com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions bundleAndHardwarePromotion=CollectionUtils.isNotEmpty(listOfOfferPacks)?listOfOfferPacks.get(0):null;
+        deviceSummary.setPromotionsPackage(
+                assembleMechandisingPromotionsPackageGeneric(bundleAndHardwarePromotion, priceforBundleAndHardware));
 
 		if (comBundle != null) {
 			deviceSummary.setLeadPlanId(comBundle.getId());
@@ -832,7 +832,8 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		}
 
 		deviceSummary.setMerchandisingMedia(merchandisingMedia);
-
+		deviceSummary.setPromotionsPackage(
+                assembleMechandisingPromotionsPackageGeneric(promotions, priceforBundleAndHardware));
 		deviceSummary.setLeadPlanId(null);
 		// Bundle Type Mapping
 		deviceSummary.setBundleType(null);
