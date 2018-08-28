@@ -335,23 +335,6 @@ public class Constants {
 	public static final String numberExp = "[0-9]{6}";
 	public static final String creditLimitExp = "[0-9]*";
 	public static final String zero = "0";
-	public static final String HANDSET_ONLINE_MODEL = "handset_online_model";
-	public static final String PRODUCT_MAKE = "productMake";
-	public static final String PRODUCT_MODEL = "productModel";
-	public static final String STRING_SIZE = "size";
-	public static final String STRING_PRODUCT_GROUP_TYPE = "productgroupType";
-	public static final String STRING_COLOR = "color";
-	public static final String STRING_LEAD_NON_UPGRADE_DEVICE_ID = "leadNonUpgradeDeviceId";
-	public static final String STRING_LEAD_UPGRADED_DEVICE_ID = "leadUpgradeDeviceId";
-	public static final String MAKE = "make";
-	public static final String MODEL = "model";
-	public static final String CAPACITY = "capacity";
-	public static final String COLOR = "color";
-	public static final String OPERATING_SYSTEM = "operatingSystem";
-	public static final String MUST_HAVE_FEATURES = "mustHaveFeatures";
-	public static final String SORT = "sort";
 	public static final String LEAD_MEMBER_STRING = "leadMember";
 	public static final String STRING_MODELS = "models";
-	public static final String SORT_OPTION_STRING = "sortOption";
-	public static final String SORT_BY_STRING = "sortBy";
 }

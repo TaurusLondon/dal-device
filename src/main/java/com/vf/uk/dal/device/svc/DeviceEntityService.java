@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.vf.uk.dal.device.datamodel.handsetonlinemodel.HandsetOnlineModelList;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
 import com.vf.uk.dal.device.datamodel.product.ProductModel;
 import com.vf.uk.dal.device.datamodel.productgroups.Group;
@@ -52,12 +51,4 @@ public interface DeviceEntityService {
 	 */
 	public void getProductGroupMap(List<ProductModel> productModels, Set<String> displayName,
 			Map<String, List<String>> productGroupmap);
-	/**
-	 * 
-	 * @param queryParam
-	 * @return
-	 */
-	public HandsetOnlineModelList getHandsetOnlineModelDetails(Map<String,String> queryParam);
-
-		
 }
