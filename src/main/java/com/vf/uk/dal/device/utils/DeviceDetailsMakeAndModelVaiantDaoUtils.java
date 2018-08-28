@@ -603,8 +603,6 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 					merchandisingMedia.add(priceEstablishedMediaLink);
 				}
 			}
-			// }
-			// }
 		}
 		deviceSummary.setMerchandisingMedia(merchandisingMedia);
 
