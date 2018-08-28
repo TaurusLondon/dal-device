@@ -50,7 +50,9 @@ import com.vf.uk.dal.device.helper.DeviceConditionallHelper;
 import com.vf.uk.dal.device.helper.DeviceServiceImplUtility;
 import com.vf.uk.dal.device.svc.DeviceService;
 import com.vf.uk.dal.device.utils.Constants;
+import com.vf.uk.dal.device.utils.ExceptionMessages;
 import com.vf.uk.dal.device.utils.ResponseMappingHelper;
+import com.vf.uk.dal.device.validator.Validator;
 import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
 import com.vf.uk.dal.utility.entity.BundleModelAndPrice;
 import com.vf.uk.dal.utility.entity.CurrentJourney;
@@ -1165,4 +1167,47 @@ public class OtherServiesTest {
 		}
 	}
 
+	@Test
+	public void testvalidateDeviceId() {
+		try {
+			Validator.validateDeviceId("");
+		} catch (Exception e) {
+			Assert.assertEquals(e.getMessage(), ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
+		}
+		try {
+			Validator.validateDeviceId("9854");
+		} catch (Exception e) {
+			Assert.assertEquals(e.getMessage(), ExceptionMessages.INVALID_DEVICE_ID);
+		}
+		try {
+			Validator.validateDeviceId("09854");
+		} catch (Exception e) {
+			Assert.assertEquals(e.getMessage(), ExceptionMessages.INVALID_DEVICE_ID);
+		}
+		try {
+			Validator.validateDeviceId("093353");
+		} catch (Exception e) {
+		}
+		try {
+			Validator.validateDeviceId("985451");
+		} catch (Exception e) {
+			Assert.assertEquals(e.getMessage(), ExceptionMessages.INVALID_DEVICE_ID);
+		}
+		try {
+			Validator.validateIncludeRecommendation("false");
+		} catch (Exception e) {
+			Assert.assertEquals(e.getMessage(), ExceptionMessages.INVALID_INCLUDERECOMMENDATION);
+		}
+		try {
+			Validator.validateMSISDN("1312312312", "false");
+		} catch (Exception e) {
+		}
+		try {
+			Validator.validateForCreditLimit("07896das");
+		} catch (Exception e) {
+			Assert.assertEquals(e.getMessage(), ExceptionMessages.INVALID_CREDIT_LIMIT);
+		}
+		
+	}
+	
 }

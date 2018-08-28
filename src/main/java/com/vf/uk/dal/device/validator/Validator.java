@@ -36,7 +36,7 @@ public class Validator {
 	 * @return
 	 */
 	public static boolean validateId(String productId) {
-		return StringUtils.isNotBlank(productId) && (!productId.matches("[0-9]{6}") || productId.matches("[0]*"));
+		return !productId.matches("[0-9]{6}") || productId.matches("[0]*");
 	}
 
 	/**
