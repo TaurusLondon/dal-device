@@ -1,7 +1,6 @@
 package com.vf.uk.dal.device.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
-import com.vf.uk.dal.device.datamodel.handsetonlinemodel.HandsetOnlineModelList;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
 import com.vf.uk.dal.device.datamodel.productgroups.Group;
 import com.vf.uk.dal.device.datamodel.productgroups.ProductGroupModelMap;
@@ -174,25 +172,4 @@ public class DeviceEntityController {
 
 		return productGroupModelDetails;
 	}
-	/**
-	 * 
-	 * @param queryParam
-	 * @return
-	 */
-	@RequestMapping(value = "/productCatalog/device", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
-	public HandsetOnlineModelList getHandsetOnlineModel(@RequestParam Map<String,String> queryParam) {
-		HandsetOnlineModelList handsetOnlineModel;
-
-		if (queryParam.isEmpty()) {
-			LogHelper.error(this,
-					"Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
-			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
-		} else  {
-			LogHelper.info(this,
-					"Get the list of Online Handset Model ");
-			handsetOnlineModel = deviceEntiryService.getHandsetOnlineModelDetails(queryParam);
-		}
-		return handsetOnlineModel;
-	}
-
 }

@@ -603,16 +603,13 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 					merchandisingMedia.add(priceEstablishedMediaLink);
 				}
 			}
-			// }
-			// }
 		}
 		deviceSummary.setMerchandisingMedia(merchandisingMedia);
-		
-		// US13782 : Assembly of promotion Nodes
-		com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions bundleAndHardwarePromotion=CollectionUtils.isNotEmpty(listOfOfferPacks)?listOfOfferPacks.get(0):null;
-        deviceSummary.setPromotionsPackage(
-                assembleMechandisingPromotionsPackageGeneric(bundleAndHardwarePromotion, priceforBundleAndHardware));
 
+		com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions bundleAndHardwarePromotion=CollectionUtils.isNotEmpty(listOfOfferPacks)?listOfOfferPacks.get(0):null;
+		deviceSummary.setPromotionsPackage(
+				assembleMechandisingPromotionsPackageGeneric(bundleAndHardwarePromotion, priceforBundleAndHardware));
+		
 		if (comBundle != null) {
 			deviceSummary.setLeadPlanId(comBundle.getId());
 			// Bundle Type Mapping
@@ -832,8 +829,9 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		}
 
 		deviceSummary.setMerchandisingMedia(merchandisingMedia);
+		
 		deviceSummary.setPromotionsPackage(
-                assembleMechandisingPromotionsPackageGeneric(promotions, priceforBundleAndHardware));
+				assembleMechandisingPromotionsPackageGeneric(promotions, priceforBundleAndHardware));
 		deviceSummary.setLeadPlanId(null);
 		// Bundle Type Mapping
 		deviceSummary.setBundleType(null);

@@ -2,10 +2,8 @@ package com.vf.uk.dal.device.helper;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,6 @@ import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.datamodel.bundle.BundleModel;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
-import com.vf.uk.dal.device.datamodel.handsetonlinemodel.HandsetOnlineModel;
 import com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotionModel;
 import com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceModel;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
@@ -289,43 +286,5 @@ public class DeviceESHelper {
 		SearchResponse bundleResponse = deviceDao.getResponseFromDataSource(queryContextMap);
 		LogHelper.info(this, "converting elasticsearch response into standard json object response");
 		return response.getListOfMerchandisingPromotionFromJson(bundleResponse);
-	}
-	/**
-	 * 
-	 * @param queryParam
-	 * @return
-	 */
-	public List<HandsetOnlineModel> getListOfHandsetOnlineModel(Map<String, String> queryParam) {
-		SearchRequest queryContextMap = DeviceQueryBuilderHelper
-				.searchQueryForListOfHandsetOnlineModel(queryParam);
-		SearchResponse handsetModelList = deviceDao.getResponseFromDataSource(queryContextMap);
-		LogHelper.info(this, "converting elasticsearch response into List Of Handset Online Model object response");
-		return response.getOnlineHandsetModelFromJson(handsetModelList);
-	}
-	
-	/**
-	 * 
-	 * @param queryParam
-	 * @return
-	 */
-	public List<FacetField> getFacetFieldForHandsetOnlineModel(Map<String,String> queryParam) {
-		List<FacetField> facetList =null;
-		if(queryParam.containsKey(Constants.GROUP_TYPE) && StringUtils.isNotBlank(queryParam.get(Constants.GROUP_TYPE)) &&
-				queryParam.containsKey(Constants.JOURNEY_TYPE)){
-		facetList = getProductGroupFacetModelForHandsetModel(queryParam.get(Constants.GROUP_TYPE), queryParam.get(Constants.JOURNEY_TYPE));
-		}
-		return facetList;
-	}
-	/**
-	 * 
-	 * @param groupType
-	 * @param journeyType
-	 * @return ProductGroupFacetModel
-	 */
-	public List<FacetField> getProductGroupFacetModelForHandsetModel(String groupType, String journeyType) {
-		SearchRequest queryContextMap = DeviceQueryBuilderHelper.searchQueryForFacetCountForHandsetModel(groupType, journeyType);
-		SearchResponse bundleResponse = deviceDao.getResponseFromDataSource(queryContextMap);
-		LogHelper.info(this, "converting elasticsearch response into Facet Field");
-		return response.getFacetField(bundleResponse);
 	}
 }

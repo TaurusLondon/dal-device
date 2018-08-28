@@ -247,7 +247,7 @@ public class CommonUtility {
 			requestForBundleAndHardware.setBundleAndHardwareList(bundleAndHardwareTupleList);
 			requestForBundleAndHardware.setOfferCode(offerCode);
 			requestForBundleAndHardware.setPackageType(journeyType);
-			LogHelper.info(CommonUtility.class, "Start --> Calling  Price.calculateForBundleAndHardware");
+			LogHelper.info(CommonUtility.class, "Start --> Calling  Price.calculateForBundleAndHardware journeyType "+journeyType +" OfferCode "+offerCode+" Index Version "+Constants.CATALOG_VERSION.get());
 			PriceForBundleAndHardware[] client = restTemplate.postForObject(
 					"http://PRICE-V1/price/calculateForBundleAndHardware", requestForBundleAndHardware,
 					PriceForBundleAndHardware[].class);
