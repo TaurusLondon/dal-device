@@ -106,11 +106,11 @@ Resources:
           - Name: !Ref AWS::StackName
             Cpu: !Ref Cpu
             Environment: 
-             - Name: icp_config_jdbc_Url
+             - Name: icp_config_jdbcUrl
                Value: !Ref icpconfigjdbcUrl
-             - Name: icp_config_jdbc_UserName
+             - Name: icp_config_jdbcUserName
                Value: !Ref icpconfigjdbcUserName
-             - Name: icp_config_jdbc_UserPwd
+             - Name: icp_config_jdbcUserPwd
                Value: !Ref icpconfigjdbcUserPwd  
              - Name: elasticsearch_host
                Value: !Ref esendpoint
