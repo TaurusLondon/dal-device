@@ -112,7 +112,7 @@ Resources:
                Value: !Ref icpconfigjdbcUserName
              - Name: icp_config_jdbc_UserPwd
                Value: !Ref icpconfigjdbcUserPwd  
-             - Name: elasticsearch
+             - Name: elasticsearch_host
                Value: !Ref esendpoint
              - Name: bazaarvoice_part1
                Value: !Ref bazaarvoice
