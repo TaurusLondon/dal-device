@@ -60,6 +60,15 @@ Parameters:
   icpenvkafkaport:
     Description: Port for kafka
     Type: Number
+  hostname:
+    Description: AppD hostname
+    Type: String
+  appdport:
+    Description: AppD port
+    Type: String
+  appdkey:
+    Description: AppD key
+    Type: String
      
 Resources:
 
