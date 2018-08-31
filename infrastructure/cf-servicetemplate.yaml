@@ -60,7 +60,7 @@ Parameters:
   icpenvkafkaport:
     Description: Port for kafka
     Type: Number
-  java_opts:
+  javaopts:
     Description: AppD hostname
     Type: String
   hostname:
