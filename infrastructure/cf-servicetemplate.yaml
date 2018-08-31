@@ -132,6 +132,8 @@ Resources:
                Value: !Ref icpenvkafkahost
              - Name: icp_env_kafka_port
                Value: !Ref icpenvkafkaport
+             - Name: java_opts
+               Value: !Ref javaopts  
             Memory: !Ref Memory
             MemoryReservation: !Ref MemoryReservation
             Image: !Sub ${ecrlocation}/${buildname}:${Version}
