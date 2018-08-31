@@ -36,7 +36,7 @@
   ParameterValue: "${ICPENVKAFKAHOST}"
 - ParameterKey: "icpenvkafkaport"
   ParameterValue: "${ICPENVKAFKAPORT}"
-- ParameterKey: java_opts
+- ParameterKey: javaopts
   ParameterValue: "${JAVAOPTS}"
 - ParameterKey: hostname
   ParameterValue: "${HOSTNAME}"
