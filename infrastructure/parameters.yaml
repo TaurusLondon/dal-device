@@ -36,3 +36,9 @@
   ParameterValue: "${ICPENVKAFKAHOST}"
 - ParameterKey: "icpenvkafkaport"
   ParameterValue: "${ICPENVKAFKAPORT}"
+- ParameterKey: hostname
+  ParameterValue: "${hostname}"
+- ParameterKey: appdport
+  ParameterValue: "${appdport}"
+- ParameterKey: appdkey
+  ParameterValue: "${appdkey}"
