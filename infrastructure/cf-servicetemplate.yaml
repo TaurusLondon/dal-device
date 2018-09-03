@@ -72,7 +72,10 @@ Parameters:
   appdkey:
     Description: AppD key
     Type: String
-     
+  MSNAME:
+    Description: Service name
+    Type: String
+
 Resources:
 
    ListenerRule:
@@ -133,7 +136,15 @@ Resources:
              - Name: icp_env_kafka_port
                Value: !Ref icpenvkafkaport
              - Name: java_opts
-               Value: !Ref javaopts  
+               Value: !Ref javaopts
+             - Name: hostname
+               Value: !Ref hostname
+             - Name: appdport
+               Value: !Ref appdport
+             - Name: appdkey
+               Value: !Ref appdkey
+             - Name: MSNAME
+               Value: !Ref MSNAME   
             Memory: !Ref Memory
             MemoryReservation: !Ref MemoryReservation
             Image: !Sub ${ecrlocation}/${buildname}:${Version}
