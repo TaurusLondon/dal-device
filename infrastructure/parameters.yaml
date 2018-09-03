@@ -44,4 +44,6 @@
   ParameterValue: "${APPDPORT}"
 - ParameterKey: appdkey
   ParameterValue: "${APPDKEY}"
+- ParameterKey: MSNAME
+  ParameterValue: "${MSNAME}"
 
