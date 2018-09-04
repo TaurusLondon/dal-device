@@ -60,9 +60,6 @@ Parameters:
   icpenvkafkaport:
     Description: Port for kafka
     Type: Number
-  javaopts:
-    Description: AppD hostname
-    Type: String
   hostname:
     Description: AppD hostname
     Type: String
@@ -72,8 +69,14 @@ Parameters:
   appdkey:
     Description: AppD key
     Type: String
-  MSNAME:
-    Description: Service name
+  APPD:
+    Description: AppD True or False
+    Type: String
+  XMS:
+    Description: XMS Value
+    Type: String   
+  XMX:
+    Description: XMX Number
     Type: String
 
 Resources:
@@ -135,16 +138,18 @@ Resources:
                Value: !Ref icpenvkafkahost
              - Name: icp_env_kafka_port
                Value: !Ref icpenvkafkaport
-             - Name: java_opts
-               Value: !Ref javaopts
              - Name: hostname
                Value: !Ref hostname
              - Name: appdport
                Value: !Ref appdport
              - Name: appdkey
                Value: !Ref appdkey
-             - Name: MSNAME
-               Value: !Ref MSNAME   
+             - Name: APPD
+               Value: !Ref APPD
+             - Name: XMS
+               Value: !Ref XMS 
+             - Name: XMX
+               Value: !Ref XMX
             Memory: !Ref Memory
             MemoryReservation: !Ref MemoryReservation
             Image: !Sub ${ecrlocation}/${buildname}:${Version}
