@@ -36,14 +36,16 @@
   ParameterValue: "${ICPENVKAFKAHOST}"
 - ParameterKey: "icpenvkafkaport"
   ParameterValue: "${ICPENVKAFKAPORT}"
-- ParameterKey: javaopts
-  ParameterValue: "${JAVAOPTS}"
 - ParameterKey: hostname
   ParameterValue: "${HOSTNAME}"
 - ParameterKey: appdport
   ParameterValue: "${APPDPORT}"
 - ParameterKey: appdkey
   ParameterValue: "${APPDKEY}"
-- ParameterKey: MSNAME
-  ParameterValue: "${MSNAME}"
+- ParameterKey: APPD
+  ParameterValue: "${APPD}"
+- ParameterKey: XMS
+  ParameterValue: "${XMS}"
+- ParameterKey: XMX
+  ParameterValue: "${XMX}"
 
