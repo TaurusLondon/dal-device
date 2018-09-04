@@ -220,7 +220,7 @@ Resources:
             Cooldown: 180
             MinAdjustmentMagnitude: 2
             StepAdjustments:
-             - MetricIntervalLowerBound: 0
+             - MetricIntervalUpperBound: 0
                ScalingAdjustment: -25
 
    CPUUtilizationHighAlarm:
