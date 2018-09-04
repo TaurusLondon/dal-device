@@ -5,6 +5,8 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -13,8 +15,10 @@ import lombok.Data;
  *
  */
 @Data
+@ApiModel(value="product Group Map" , description="Map of Product Group Model")
 public class ProductGroupModelMap {
 
+	@ApiModelProperty(value = "Map of Product Group", reference = "Map")
 	@JsonProperty("productgroupMap")
 	private Map<String, List<ProductGroupModel>> productgroupMap;
 }
