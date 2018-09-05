@@ -173,8 +173,10 @@ Resources:
            MinimumHealthyPercent: 50
         DesiredCount: !Ref DesiredCount
         PlacementStrategies: 
-         - Type: spread
-           Field: attribute:ecs.availability-zone
+          - Type: spread
+            Field: attribute:ecs.availability-zone
+          - Type: binpack
+            Field: memory
         LoadBalancers:
          - ContainerName: !Ref AWS::StackName
            ContainerPort: 8080
