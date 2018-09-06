@@ -29,7 +29,7 @@ public class AccessoriesAndInsurancedaoUtils {
 	 * @return Accessory
 	 */
 	public static Accessory convertCoherenceAccesoryToAccessory(CommercialProduct commercialProduct,
-			PriceForAccessory priceForAccessory) {
+			PriceForAccessory priceForAccessory, String cdnDomain) {
 		Accessory accessory = null;
 		List<MediaLink> merchandisingMedia = new ArrayList<>();
 		if (commercialProduct != null && priceForAccessory != null) {
@@ -78,7 +78,7 @@ public class AccessoriesAndInsurancedaoUtils {
 							mediaLink = new MediaLink();
 							mediaLink.setId(imageURL.getImageName());
 							mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-							mediaLink.setValue(imageURL.getImageURL());
+							mediaLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,imageURL.getImageURL()));
 							merchandisingMedia.add(mediaLink);
 						}
 					}
@@ -90,7 +90,7 @@ public class AccessoriesAndInsurancedaoUtils {
 							mediaLink = new MediaLink();
 							mediaLink.setId(mediaURL.getMediaName());
 							mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-							mediaLink.setValue(mediaURL.getMediaURL());
+							mediaLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,mediaURL.getMediaURL()));
 							merchandisingMedia.add(mediaLink);
 						}
 					}
@@ -201,7 +201,7 @@ public class AccessoriesAndInsurancedaoUtils {
 	 * @param insuranceProductList
 	 * @return Insurances
 	 */
-	public static Insurances convertCommercialProductToInsurance(List<CommercialProduct> insuranceProductList) {
+	public static Insurances convertCommercialProductToInsurance(List<CommercialProduct> insuranceProductList, String cdnDomain) {
 		List<Double> minPrice = new ArrayList<>();
 		List<Insurance> insuranceList = new ArrayList<>();
 		Insurances insurances = new Insurances();
@@ -230,7 +230,7 @@ public class AccessoriesAndInsurancedaoUtils {
 
 						mediaLink.setId(imageURL.getImageName());
 						mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-						mediaLink.setValue(imageURL.getImageURL());
+						mediaLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,imageURL.getImageURL()));
 						merchandisingMedia.add(mediaLink);
 					}
 				}
@@ -241,7 +241,7 @@ public class AccessoriesAndInsurancedaoUtils {
 						mediaLink = new MediaLink();
 						mediaLink.setId(mediaURL.getMediaName());
 						mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-						mediaLink.setValue(mediaURL.getMediaURL());
+						mediaLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,mediaURL.getMediaURL()));
 						merchandisingMedia.add(mediaLink);
 					}
 				}

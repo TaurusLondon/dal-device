@@ -14,6 +14,7 @@ import java.util.function.Supplier;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
@@ -53,6 +54,9 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 	
 	@Autowired
 	CommonUtility commonUtility;
+	
+	@Value("${cdn.domain.host}")
+	private String cdnDomain;
 
 	/**
 	 * @param make
@@ -589,7 +593,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 					}
 					deviceSummary = DeviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceTile(
 							memberPriority, commercialProduct, comBundle, priceForBundleAndHardware, promotions,
-							groupType, isConditionalAcceptJourney, fromPricingMap);
+							groupType, isConditionalAcceptJourney, fromPricingMap,cdnDomain);
 
 					if (null != deviceSummary && commercialProduct != null) {
 						DeviceServiceImplUtility.isPlanAffordable_Implementation(deviceSummary, comBundle, creditLimit,
@@ -680,7 +684,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 							priceForBundleAndHardware = priceMapForParticularDevice.get(member.getId());
 						}
 						deviceSummary = DeviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceTile_PAYG(
-								memberPriority, commercialProduct, priceForBundleAndHardware, groupType, promotion);
+								memberPriority, commercialProduct, priceForBundleAndHardware, groupType, promotion,cdnDomain);
 						if (deviceSummary != null) {
 							listOfDeviceSummaryLocal.add(deviceSummary);
 						}

@@ -76,7 +76,10 @@ springfox:
    swagger:
      v2:
        path: /api-docs  
-       
+
+cdn:
+  domain:
+    host:        
 ---
 
 spring:

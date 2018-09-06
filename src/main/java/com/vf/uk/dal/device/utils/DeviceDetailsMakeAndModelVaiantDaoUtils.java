@@ -50,7 +50,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 	 */
 	public static DeviceDetails convertCoherenceDeviceToDeviceDetails(CommercialProduct cohProduct,
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware,
-			List<BundleAndHardwarePromotions> listOfOfferPacks) {
+			List<BundleAndHardwarePromotions> listOfOfferPacks, String cdnDomain) {
 		ProductAvailability1 productAvailability = new ProductAvailability1();
 
 		List<MediaLink> merchandisingMedia = new ArrayList<>();
@@ -127,7 +127,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 					mediaLink = new MediaLink();
 					mediaLink.setId(imageURL.getImageName());
 					mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-					mediaLink.setValue(imageURL.getImageURL());
+					mediaLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,imageURL.getImageURL()));
 					merchandisingMedia.add(mediaLink);
 				}
 			}
@@ -138,7 +138,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 					mediaLink = new MediaLink();
 					mediaLink.setId(mediaURL.getMediaName());
 					mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-					mediaLink.setValue(mediaURL.getMediaURL());
+					mediaLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,mediaURL.getMediaURL()));
 					merchandisingMedia.add(mediaLink);
 				}
 			}
@@ -383,7 +383,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 	public static DeviceSummary convertCoherenceDeviceToDeviceTile(Long memberPriority,
 			CommercialProduct commercialProduct, CommercialBundle comBundle,
 			PriceForBundleAndHardware priceforBundleAndHardware, List<BundleAndHardwarePromotions> listOfOfferPacks,
-			String groupType, boolean isConditionalAcceptJourney, Map<String, Boolean> fromPricingMap) {
+			String groupType, boolean isConditionalAcceptJourney, Map<String, Boolean> fromPricingMap, String cdnDomain) {
 
 		DeviceSummary deviceSummary;
 		deviceSummary = new DeviceSummary();
@@ -457,7 +457,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 					mediaLink = new MediaLink();
 					mediaLink.setId(imageURL.getImageName());
 					mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-					mediaLink.setValue(imageURL.getImageURL());
+					mediaLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain, imageURL.getImageURL()));
 					merchandisingMedia.add(mediaLink);
 				}
 			}
@@ -468,7 +468,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 					mediaLink = new MediaLink();
 					mediaLink.setId(mediaURL.getMediaName());
 					mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-					mediaLink.setValue(mediaURL.getMediaURL());
+					mediaLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain, mediaURL.getMediaURL()));
 					merchandisingMedia.add(mediaLink);
 				}
 			}
@@ -666,7 +666,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 	 */
 	public static DeviceSummary convertCoherenceDeviceToDeviceTile_PAYG(Long memberPriority,
 			CommercialProduct commercialProduct, PriceForBundleAndHardware priceforBundleAndHardware, String groupType,
-			BundleAndHardwarePromotions promotions) {
+			BundleAndHardwarePromotions promotions, String cdnDomain) {
 
 		DeviceSummary deviceSummary;
 		deviceSummary = new DeviceSummary();
@@ -768,7 +768,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 					mediaLink = new MediaLink();
 					mediaLink.setId(imageURL.getImageName());
 					mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-					mediaLink.setValue(imageURL.getImageURL());
+					mediaLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,imageURL.getImageURL()));
 					merchandisingMedia.add(mediaLink);
 				}
 			}
@@ -779,7 +779,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 					mediaLink = new MediaLink();
 					mediaLink.setId(mediaURL.getMediaName());
 					mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-					mediaLink.setValue(mediaURL.getMediaURL());
+					mediaLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,mediaURL.getMediaURL()));
 					merchandisingMedia.add(mediaLink);
 				}
 			}

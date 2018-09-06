@@ -10,6 +10,7 @@ import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
@@ -80,9 +81,12 @@ public class DeviceServiceImpl implements DeviceService {
 	
 	@Autowired
 	CommonUtility commonUtility;
+	
+	@Value("${cdn.domain.host}")
+	private String cdnDomain;
 
 	DeviceUtils deviceUtils = new DeviceUtils();
-
+	
 	/**
 	 * Handles requests from controller and connects to DAO.
 	 * 
@@ -350,7 +354,7 @@ public class DeviceServiceImpl implements DeviceService {
 				|| (DeviceServiceImplUtility.isNonUpgrade(journeyType)
 						&& DeviceServiceImplUtility.isNonUpgradeCommercialProduct(commercialProduct))) {
 			deviceSummary = DeviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceTile(memberPriority,
-					commercialProduct, comBundle, priceForBundleAndHardware, promotions, null, false, null);
+					commercialProduct, comBundle, priceForBundleAndHardware, promotions, null, false, null,cdnDomain);
 		} else {
 			LogHelper.error(this, "No data found for given criteria :" + id);
 			throw new ApplicationException(ExceptionMessages.NO_DATA_FOR_GIVEN_SEARCH_CRITERIA);
@@ -465,7 +469,7 @@ public class DeviceServiceImpl implements DeviceService {
 					? productGroupFacetModelForFacets.getListOfFacetsFields() : null;
 			facetedDevice = DeviceTilesDaoUtils.convertProductModelListToDeviceList(listOfProductModel, listOfProducts,
 					facetFields, groupType, null, null, offerPriceMap, offerCode, groupNameWithProdId, null,
-					promotionmap, isLeadMemberFromSolr, withoutOfferPriceMap, journeyType, productGroupdetailsMap);
+					promotionmap, isLeadMemberFromSolr, withoutOfferPriceMap, journeyType, productGroupdetailsMap,cdnDomain);
 
 		} else {
 			LogHelper.error(this, "No ProductGroups Found for the given search criteria: ");
@@ -561,7 +565,7 @@ public class DeviceServiceImpl implements DeviceService {
 					? Collections.emptyList() : productGroupFacetModelForFacets.getListOfFacetsFields();
 			facetedDevice = DeviceTilesDaoUtils.convertProductModelListToDeviceList(listOfProductModel, listOfProducts,
 					listOfFacetField, groupType, ls, bundleModelMap, null, null, groupNameWithProdId,
-					bundleModelAndPriceMap, null, isLeadMemberFromSolr, null, journeyType, Collections.emptyMap());
+					bundleModelAndPriceMap, null, isLeadMemberFromSolr, null, journeyType, Collections.emptyMap(),cdnDomain);
 			LogHelper.info(DeviceTilesDaoUtils.class, "exiting convertProductModelListToDeviceList ");
 			facetedDevice.setNoOfRecordsFound(productGroupFacetModel.getNumFound());
 

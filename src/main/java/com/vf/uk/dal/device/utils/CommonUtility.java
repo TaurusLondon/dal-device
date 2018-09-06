@@ -56,6 +56,7 @@ public class CommonUtility {
 	
 	@Autowired
 	RestTemplate restTemplate;
+	
 	/**
 	 * Round off price to two decimal points
 	 * 
@@ -1009,5 +1010,14 @@ public class CommonUtility {
 			}
 		}
 		return flag;
+	}
+	/**
+	 * 
+	 * @param image
+	 * @return
+	 */
+	public static String getImageMediaUrl(String cdnDomain ,String image)
+	{
+		return StringUtils.isNotBlank(cdnDomain)?cdnDomain+image:image;
 	}
 }

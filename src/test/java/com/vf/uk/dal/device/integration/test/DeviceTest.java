@@ -22,6 +22,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -134,7 +135,10 @@ public class DeviceTest {
 
 	@Autowired
 	DeviceServiceCommonUtility deviceServiceCommonUtility;
-
+	
+	@Value("${cdn.domain.host}")
+	private String cdnDomain;
+	
 	@Before
 	public void setupMockBehaviour() throws Exception {
 		aspect.beforeAdvice(null);
@@ -767,7 +771,7 @@ public class DeviceTest {
 	public void notNullconvertCoherenceDeviceToDeviceTile() {
 		DeviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceTile((long) 2.0,
 				CommonMethods.getCommercialProduct(), CommonMethods.getCommercialBundle(),
-				CommonMethods.getPriceForBundleAndHardware().get(0), null, "DEVICE_PAYM", true, null);
+				CommonMethods.getPriceForBundleAndHardware().get(0), null, "DEVICE_PAYM", true, null,cdnDomain);
 	}
 
 	@JsonIgnoreProperties(ignoreUnknown = true)
@@ -1200,7 +1204,7 @@ public class DeviceTest {
 				CommonMethods.getProductModel(), CommonMethods.getListOfProducts(),
 				CommonMethods.getProductGroupFacetModel_One().getListOfFacetsFields(), "DEVICE_PAYM", null, null,
 				listOfOfferAppliedPrice, "W_HH_OC_02", groupNameWithProdId, null, null, isLeadMemberFromSolr,
-				listOfOfferAppliedPrice, "Upgrade", productGroupdetailsMap);
+				listOfOfferAppliedPrice, "Upgrade", productGroupdetailsMap,cdnDomain);
 		Assert.assertNotNull(deviceList);
 	}
 
@@ -1224,7 +1228,7 @@ public class DeviceTest {
 				CommonMethods.getProductModel(), CommonMethods.getListOfProducts(),
 				CommonMethods.getProductGroupFacetModel_One().getListOfFacetsFields(), "DEVICE_PAYM", null, null,
 				listOfOfferAppliedPrice1, null, groupNameWithProdId, null, null, isLeadMemberFromSolr,
-				listOfOfferAppliedPrice, "Upgrade", productGroupdetailsMap);
+				listOfOfferAppliedPrice, "Upgrade", productGroupdetailsMap,cdnDomain);
 		Assert.assertNotNull(deviceList);
 	}
 
@@ -1245,7 +1249,7 @@ public class DeviceTest {
 				CommonMethods.getProductModel(), CommonMethods.getListOfProducts(),
 				CommonMethods.getProductGroupFacetModel_One().getListOfFacetsFields(), "DEVICE_PAYM", null, null,
 				listOfOfferAppliedPrice1, null, groupNameWithProdId, null, null, isLeadMemberFromSolr,
-				listOfOfferAppliedPrice1, null, productGroupdetailsMap);
+				listOfOfferAppliedPrice1, null, productGroupdetailsMap,cdnDomain);
 		Assert.assertNotNull(deviceList);
 	}
 
@@ -1269,7 +1273,7 @@ public class DeviceTest {
 				CommonMethods.getProductModel(), CommonMethods.getListOfProducts(),
 				CommonMethods.getProductGroupFacetModel_One().getListOfFacetsFields(), "DEVICE_PAYM", null, null,
 				listOfOfferAppliedPrice1, "W_HH_OC_02", groupNameWithProdId, null, null, isLeadMemberFromSolr,
-				listOfOfferAppliedPrice, "Upgrade", productGroupdetailsMap);
+				listOfOfferAppliedPrice, "Upgrade", productGroupdetailsMap,cdnDomain);
 		Assert.assertNotNull(deviceList);
 	}
 
@@ -1290,7 +1294,7 @@ public class DeviceTest {
 				CommonMethods.getProductModel(), CommonMethods.getListOfProducts(),
 				CommonMethods.getProductGroupFacetModel_One().getListOfFacetsFields(), "DEVICE_PAYM", null, null,
 				listOfOfferAppliedPrice1, "W_HH_OC_02", groupNameWithProdId, null, null, isLeadMemberFromSolr,
-				listOfOfferAppliedPrice1, "Upgrade", productGroupdetailsMap);
+				listOfOfferAppliedPrice1, "Upgrade", productGroupdetailsMap,cdnDomain);
 		Assert.assertNotNull(deviceList);
 	}
 
@@ -1314,7 +1318,7 @@ public class DeviceTest {
 				CommonMethods.getProductModel(), CommonMethods.getListOfProducts(),
 				CommonMethods.getProductGroupFacetModel_One().getListOfFacetsFields(), "DEVICE_PAYG", null, null, null,
 				null, groupNameWithProdId, null, null, isLeadMemberFromSolr, null, Constants.JOURNEY_TYPE_ACQUISITION,
-				productGroupdetailsMap);
+				productGroupdetailsMap,cdnDomain);
 		Assert.assertNotNull(deviceList);
 	}
 
@@ -1335,7 +1339,7 @@ public class DeviceTest {
 				CommonMethods.getProductModel(), CommonMethods.getListOfProducts(),
 				CommonMethods.getProductGroupFacetModel_One().getListOfFacetsFields(), "DEVICE_PAYM", null, null,
 				listOfOfferAppliedPrice1, null, groupNameWithProdId, null, null, isLeadMemberFromSolr,
-				listOfOfferAppliedPrice1, "Upgrade", productGroupdetailsMap);
+				listOfOfferAppliedPrice1, "Upgrade", productGroupdetailsMap,cdnDomain);
 		Assert.assertNotNull(deviceList);
 	}
 
@@ -1422,7 +1426,7 @@ public class DeviceTest {
 	public void NotNullTestForDaoUtilsconvertCoherenceDeviceToDeviceDetails() {
 		DeviceDetails deviceDetails = DeviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceDetails(
 				CommonMethods.getCommercialProduct(), CommonMethods.getPriceForBundleAndHardware(),
-				CommonMethods.getListOfBundleAndHardwarePromotions());
+				CommonMethods.getListOfBundleAndHardwarePromotions(),cdnDomain);
 		Assert.assertNotNull(deviceDetails);
 	}
 
