@@ -29,11 +29,13 @@ import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 import com.vf.uk.dal.device.validator.Validator;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+@Api(tags="DeviceCacheAndReview")
 @RestController
 @RequestMapping(value = "")
 @EnableAspectJAutoProxy(proxyTargetClass = true)
@@ -70,8 +72,7 @@ public class CacheDeviceAndReviewController {
 	 * 
 	 * @return cacheDeviceTile
 	 */
-	@ApiOperation(value = "Cache the Device Tile Details in Solr.", notes = "Cache the Device Tile Details in Solr.", response = CacheDeviceTileResponse.class, tags = {
-			"DeviceTile", })
+	@ApiOperation(value = "Cache the Device Tile Details in Solr.", notes = "Cache the Device Tile Details in Solr.", response = CacheDeviceTileResponse.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
@@ -106,8 +107,7 @@ public class CacheDeviceAndReviewController {
 	 * @param jobId
 	 * @return getCacheDeviceJobStatus
 	 */
-	@ApiOperation(value = "Get the Cache Device Tile job status.", notes = "Get the Cache Device Tile job status.", response = CacheDeviceTileResponse.class, tags = {
-			"DeviceTile", })
+	@ApiOperation(value = "Get the Cache Device Tile job status.", notes = "Get the Cache Device Tile job status.", response = CacheDeviceTileResponse.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = CacheDeviceTileResponse.class),
 			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
@@ -129,8 +129,7 @@ public class CacheDeviceAndReviewController {
 	 * @param deviceId
 	 * @return getDeviceReviewDetails
 	 */
-	@ApiOperation(value = "Get the reviews for a specific device Id. Response is coming from Bazar Voice(third party) API.", notes = "The service gets the reviews of a particular device variant", tags = {
-			"Review", })
+	@ApiOperation(value = "Get the reviews for a specific device Id. Response is coming from Bazar Voice(third party) API.", notes = "The service gets the reviews of a particular device variant")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
 			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),

@@ -25,6 +25,7 @@ import com.vf.uk.dal.device.datamodel.productgroups.ProductGroupModelMap;
 import com.vf.uk.dal.device.svc.DeviceEntityService;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -37,6 +38,7 @@ import io.swagger.annotations.ApiResponses;
  * services inside the controller.
  *
  */
+@Api(tags="DeviceEntity")
 @RestController
 @RequestMapping(value = "")
 @EnableAspectJAutoProxy(proxyTargetClass = true)
@@ -73,8 +75,7 @@ public class DeviceEntityController {
 	 * 
 	 * @return List of CommercialProducts
 	 */
-	@ApiOperation(value = "The service gets the details of the commercial Product in the response.", notes = "The service gets the details of the commercial Product in the response.", response = CommercialProduct.class, tags = {
-			"GetCommercialProductByProductNameOrProductId" })
+	@ApiOperation(value = "The service gets the details of the commercial Product in the response.", notes = "The service gets the details of the commercial Product in the response.", response = CommercialProduct.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Success", response = CommercialProduct.class, responseContainer = "List"),
 			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
@@ -112,8 +113,7 @@ public class DeviceEntityController {
 	 * @param groupType
 	 * @return List of ProductGroups
 	 */
-	@ApiOperation(value = "The service gets the details of the Product group in the response.", notes = "The service gets the details of the Product group in the response.", response = Group.class, tags = {
-			"GetProductGroupByGroupType" })
+	@ApiOperation(value = "The service gets the details of the Product group in the response.", notes = "The service gets the details of the Product group in the response.", response = Group.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Success", response = Group.class, responseContainer = "List"),
 			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
@@ -147,8 +147,7 @@ public class DeviceEntityController {
 	 * 
 	 * @return Map of Product Group Model
 	 */
-	@ApiOperation(value = "Handles requests to return the Map of Product Group Model from Product Catalog. It takes Product Id(s) as input.", notes = "This is an Entity API which will return Map of Product Group Model with applying small business logic.", response = ProductGroupModelMap.class, tags = {
-			"ProductGroupModelMap" })
+	@ApiOperation(value = "Handles requests to return the Map of Product Group Model from Product Catalog. It takes Product Id(s) as input.", notes = "This is an Entity API which will return Map of Product Group Model with applying small business logic.", response = ProductGroupModelMap.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = ProductGroupModelMap.class),
 			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
