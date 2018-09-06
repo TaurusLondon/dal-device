@@ -19,6 +19,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Matchers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -127,6 +128,9 @@ public class DeviceServiceImplTest {
 	
 	@Autowired
 	DeviceUtils deviceUtils;
+	
+	@Value("${cdn.domain.host}")
+	private String cdnDomain;
 
 	@SuppressWarnings("unchecked")
 	@Before
@@ -1545,14 +1549,14 @@ public class DeviceServiceImplTest {
 	@Test
 	public void testconvertCoherenceDeviceToDeviceTile_PAYG(){
 		Assert.assertNotNull(DeviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceTile_PAYG(Long.valueOf(1), CommonMethods.getCommercialProduct(),
-				CommonMethods.getPriceForBundleAndHardware().get(0), "DEVICE_PAYG", CommonMethods.getListOfBundleAndHardwarePromotions().get(0))); 
+				CommonMethods.getPriceForBundleAndHardware().get(0), "DEVICE_PAYG", CommonMethods.getListOfBundleAndHardwarePromotions().get(0),cdnDomain)); 
 	} 
 	@Test 
 	public void testconvertCoherenceDeviceToDeviceTile()
 	{
 		Assert.assertNotNull(DeviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceTile(null,
 				CommonMethods.getCommercialProduct(), CommonMethods.getCommercialBundle(), CommonMethods.getUtilityPriceForBundleAndHardware(), CommonMethods.getListOfBundleAndHardwarePromotions(),
-				"DEVICE_PAYG", true, null));
+				"DEVICE_PAYG", true, null,cdnDomain));
 	}
 	@Test
 	public void testgetDoubleFrmString(){
