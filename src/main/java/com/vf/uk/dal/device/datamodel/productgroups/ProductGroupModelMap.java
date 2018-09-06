@@ -15,7 +15,7 @@ import lombok.Data;
  *
  */
 @Data
-@ApiModel(value="product Group Map" , description="Map of Product Group Model")
+@ApiModel(value="productGroupMap" , description="Map of Product Group Model")
 public class ProductGroupModelMap {
 
 	@ApiModelProperty(value = "Map of Product Group", reference = "Map")
