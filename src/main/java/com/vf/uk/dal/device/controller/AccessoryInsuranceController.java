@@ -22,6 +22,7 @@ import com.vf.uk.dal.device.entity.Insurances;
 import com.vf.uk.dal.device.svc.AccessoryInsuranceService;
 import com.vf.uk.dal.device.validator.Validator;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -34,7 +35,7 @@ import io.swagger.annotations.ApiResponses;
  * services inside the controller.
  * 
  */
-
+@Api(tags="DeviceAccessoryInsurance")
 @RestController
 @RequestMapping(value = "")
 @EnableAspectJAutoProxy(proxyTargetClass = true)
@@ -68,8 +69,7 @@ public class AccessoryInsuranceController {
 	 * @param offerCode
 	 * @return getAccessoriesOfDevice
 	 */
-	@ApiOperation(value = "Get compatible accessory details for the given device Id", notes = "The service gets the details of compatible accessory along with the necessary information in the response.", response = AccessoryTileGroup.class, responseContainer = "List", tags = {
-			"AccessoryTileGroup", })
+	@ApiOperation(value = "Get compatible accessory details for the given device Id", notes = "The service gets the details of compatible accessory along with the necessary information in the response.", response = AccessoryTileGroup.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Success", response = AccessoryTileGroup.class, responseContainer = "List"),
 			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
@@ -97,8 +97,7 @@ public class AccessoryInsuranceController {
 	 * @param journeyType
 	 * @return getInsuranceById
 	 */
-	@ApiOperation(value = "Get the list of insurance", notes = "The service gets the details of insurance available with device.", response = Insurances.class, tags = {
-			"Insurances", })
+	@ApiOperation(value = "Get the list of insurance", notes = "The service gets the details of insurance available with device.", response = Insurances.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = Insurances.class),
 			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),

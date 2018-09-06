@@ -20,6 +20,7 @@ import com.vf.uk.dal.device.entity.DeviceTile;
 import com.vf.uk.dal.device.svc.DeviceMakeAndModelService;
 import com.vf.uk.dal.device.validator.Validator;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -30,6 +31,7 @@ import io.swagger.annotations.ApiResponses;
  * @author manoj.bera
  *
  */
+@Api(tags="DeviceMakeAndModel")
 @RestController
 @RequestMapping(value = "")
 @EnableAspectJAutoProxy(proxyTargetClass = true)
@@ -67,8 +69,7 @@ public class DeviceMakeAndModelController {
 	 * @param creditLimit
 	 * @return ListOfDeviceTile
 	 */
-	@ApiOperation(value = "Get the list of device tiles based on the filter criteria. Pagination also defined", notes = "The service gets the details of the device tiles from coherence based on the filter criteria in the response.", response = DeviceTile.class, responseContainer = "List", tags = {
-			"DeviceTile", })
+	@ApiOperation(value = "Get the list of device tiles based on the filter criteria. Pagination also defined", notes = "The service gets the details of the device tiles from coherence based on the filter criteria in the response.", response = DeviceTile.class, responseContainer = "List")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Success", response = DeviceTile.class, responseContainer = "List"),
 			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
