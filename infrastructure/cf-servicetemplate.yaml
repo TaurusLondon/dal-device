@@ -115,7 +115,7 @@ Resources:
           Fn::ImportValue: !Sub digitalx-${Environment}-vpc-VpcId
         TargetGroupAttributes:
         - Key: deregistration_delay.timeout_seconds
-          Value: 120
+          Value: 5
         
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
