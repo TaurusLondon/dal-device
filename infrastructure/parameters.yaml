@@ -36,3 +36,5 @@
   ParameterValue: "${ICPENVKAFKAHOST}"
 - ParameterKey: "icpenvkafkaport"
   ParameterValue: "${ICPENVKAFKAPORT}"
+- ParameterKey: "cdndomainhost"
+  ParameterValue: "${CDNDOMAINHOST}"  
