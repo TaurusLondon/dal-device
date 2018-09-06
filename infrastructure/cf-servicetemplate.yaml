@@ -95,25 +95,28 @@ Resources:
             Fn::ImportValue: !Sub digitalx-${Environment}-alb-mas-Listener
          Priority: !Ref Priority
 
-   TargetGroup:
-      Type: AWS::ElasticLoadBalancingV2::TargetGroup
-      Properties:
-         HealthCheckProtocol: HTTPS
-         Name: !Ref AWS::StackName
-         Protocol: HTTPS
-         Port: 8080
-         HealthCheckPath: !Sub /${contextpath}/health
-         Matcher:
-            HttpCode: 200-299
-         Tags:
-          - Key: Name
-            Value: !Ref AWS::StackName
-         VpcId:
-            Fn::ImportValue: !Sub digitalx-${Environment}-vpc-VpcId
-         TargetGroupAttributes:
-          - Key: deregistration_delay.timeout_seconds
-            Value: 5
-
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+        HealthCheckProtocol: HTTPS
+        Name: !Ref AWS::StackName
+        Protocol: HTTPS
+        Port: 8080
+        HealthCheckPath: !Sub /${contextpath}/health
+        HealthyThresholdCount: 5
+        HealthCheckIntervalSeconds: 30
+        UnhealthyThresholdCount: 2
+        Matcher:
+          HttpCode: 200-299
+        Tags:
+        - Key: Name
+          Value: !Ref AWS::StackName
+        VpcId:
+          Fn::ImportValue: !Sub digitalx-${Environment}-vpc-VpcId
+        TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: 120
+          
    TaskDefinition:
       Type: AWS::ECS::TaskDefinition
       Properties:
