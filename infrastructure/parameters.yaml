@@ -8,6 +8,8 @@
   ParameterValue: "${ECRLOCATION}"
 - ParameterKey: "buildname"
   ParameterValue: "${BUILD_DEFINITIONNAME}"
+- ParameterKey: "buildnumber"
+  ParameterValue: "${BUILD_BUILDNUMBER}" 
 - ParameterKey: "Priority"
   ParameterValue: "${PRIORITY}"
 - ParameterKey: "MaxCapacity"
