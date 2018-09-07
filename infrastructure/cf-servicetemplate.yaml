@@ -159,7 +159,7 @@ Resources:
             - Name: XMX
               Value: !Ref XMX
             - Name: cdn_domain_host
-               Value: !Ref cdndomainhost  
+              Value: !Ref cdndomainhost  
           Memory: !Ref Memory
           MemoryReservation: !Ref MemoryReservation
           Image: !Sub ${ecrlocation}/${buildname}:${buildnumber}
