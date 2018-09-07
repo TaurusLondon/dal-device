@@ -27,6 +27,9 @@ Parameters:
   buildname:
     Description: Name of the ECR Repository for the Service. This will be created as part of the build.
     Type: String
+  buildnumber:
+    Description: Name of the ECR Repository for the Service. This will be created as part of the build.
+    Type: String
   Version:
     Description: Version to pass in logStreamPrefix
     Type: String
