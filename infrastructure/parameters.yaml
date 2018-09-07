@@ -38,5 +38,17 @@
   ParameterValue: "${ICPENVKAFKAHOST}"
 - ParameterKey: "icpenvkafkaport"
   ParameterValue: "${ICPENVKAFKAPORT}"
+- ParameterKey: hostname
+  ParameterValue: "${HOSTNAME}"
+- ParameterKey: appdport
+  ParameterValue: "${APPDPORT}"
+- ParameterKey: appdkey
+  ParameterValue: "${APPDKEY}"
+- ParameterKey: APPD
+  ParameterValue: "${APPD}"
+- ParameterKey: XMS
+  ParameterValue: "${XMS}"
+- ParameterKey: XMX
+  ParameterValue: "${XMX}"
 - ParameterKey: "cdndomainhost"
-  ParameterValue: "${CDNDOMAINHOST}"  
+  ParameterValue: "${CDNDOMAINHOST}"
