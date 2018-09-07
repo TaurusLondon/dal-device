@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -125,7 +124,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 				}
 				List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = new ArrayList<>();
 				Map<String, List<BundleAndHardwareTuple>> bundleHardwareTroupleMap = new HashMap<>();
-				Map<String, List<PriceForBundleAndHardware>> iLSPriceMap = new ConcurrentHashMap<>();
+				Map<String, List<PriceForBundleAndHardware>> iLSPriceMap = new HashMap<>();
 				for (String deviceId : listOfDeviceId) {
 					getDevicePrecaldataForPaymCacheDeviceTile(groupType, deviceIds, listOfProductGroupRepository,
 							listOfOfferCodes, leadMemberMap, leadMemberMapForUpgrade, groupIdAndNameMap,
@@ -313,11 +312,10 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 				deviceIds.add(productGroupForDeviceListing.getDeviceId());
 				listOfProductGroupRepository.add(productGroupForDeviceListing);
 			}
+			listOfPriceForBundleAndHardware.clear();
 		} catch (Exception e) {
 			listOfPriceForBundleAndHardware.clear();
 			LogHelper.error(this, " Exception occured when call happen to compatible bundles api: " + e);
-		}finally{
-			listOfPriceForBundleAndHardware.clear();
 		}
 	}
 

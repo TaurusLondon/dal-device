@@ -5,11 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.entity.BundlePrice;
 import com.vf.uk.dal.device.entity.DeviceFinancingOption;
 import com.vf.uk.dal.device.entity.HardwarePrice;
@@ -110,8 +108,7 @@ public class CacheDeviceDaoUtils {
 	public static Map<String, Object> getPriceInfoForSolr(PriceForBundleAndHardware priceForBundleAndHardware,
 			Map<String, List<PriceForBundleAndHardware>> listOfPriceForBundleAndHardwareWithOfferCode) {
 
-
-		Map<String, Object> result = new ConcurrentHashMap<>();
+		Map<String, Object> result = new HashMap<>();
 		List<com.vf.uk.dal.utility.solr.entity.Media> listOfMedia = new ArrayList<>();
 		BundlePrice bundlePrice = priceForBundleAndHardware.getBundlePrice();
 		Price monthlyPrice = null;
@@ -345,7 +342,6 @@ public class CacheDeviceDaoUtils {
 			onffPrice.setGross(oneoffPrice.getGross());
 			onffPrice.setNet(oneoffPrice.getNet());
 			onffPrice.setVat(oneoffPrice.getVat());
-			LogHelper.info(CacheDeviceDaoUtils.class, hardwareId+"One Off Price Gross"+onffPrice.getGross());
 		}
 		OneOffDiscountPrice onffDiscPrice = null;
 		if (oneOffDisPrice != null) {
@@ -353,7 +349,6 @@ public class CacheDeviceDaoUtils {
 			onffDiscPrice.setGross(oneOffDisPrice.getGross());
 			onffDiscPrice.setNet(oneOffDisPrice.getNet());
 			onffDiscPrice.setVat(oneOffDisPrice.getVat());
-			LogHelper.info(CacheDeviceDaoUtils.class, hardwareId+"One Off Disc Price Gross"+oneOffDisPrice.getGross());
 		}
 		com.vf.uk.dal.utility.solr.entity.HardwarePrice hw = new com.vf.uk.dal.utility.solr.entity.HardwarePrice();
 		hw.setHardwareId(hardwareId);
