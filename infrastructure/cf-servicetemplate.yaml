@@ -138,7 +138,7 @@ Resources:
                Options:
                   awslogs-group: !Ref AWS::StackName
                   awslogs-region: !Ref AWS::Region
-                  awslogs-stream-prefix: !Ref Version 
+                  awslogs-stream-prefix: !Ref buildnumber 
             
    EcsService:
       Type: AWS::ECS::Service
