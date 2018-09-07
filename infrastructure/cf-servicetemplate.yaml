@@ -81,7 +81,9 @@ Parameters:
   XMX:
     Description: XMX Number
     Type: String
-
+  cdndomainhost:
+    Description: Hostname for cdn domain
+    Type: String
 Resources:
 
   ListenerRule:
@@ -156,6 +158,8 @@ Resources:
               Value: !Ref XMS 
             - Name: XMX
               Value: !Ref XMX
+            - Name: cdn_domain_host
+               Value: !Ref cdndomainhost  
           Memory: !Ref Memory
           MemoryReservation: !Ref MemoryReservation
           Image: !Sub ${ecrlocation}/${buildname}:${buildnumber}
@@ -167,7 +171,7 @@ Resources:
               Options:
                 awslogs-group: !Ref AWS::StackName
                 awslogs-region: !Ref AWS::Region
-                awslogs-stream-prefix: !Ref Version 
+                awslogs-stream-prefix: !Ref buildnumber 
           
   EcsService:
     Type: AWS::ECS::Service
