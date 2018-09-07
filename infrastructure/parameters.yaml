@@ -50,4 +50,5 @@
   ParameterValue: "${XMS}"
 - ParameterKey: XMX
   ParameterValue: "${XMX}"
-
+- ParameterKey: "cdndomainhost"
+  ParameterValue: "${CDNDOMAINHOST}"
