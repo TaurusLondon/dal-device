@@ -155,7 +155,7 @@ Resources:
               Value: !Ref XMX
           Memory: !Ref Memory
           MemoryReservation: !Ref MemoryReservation
-          Image: !Sub ${ecrlocation}/${buildname}:${Version}
+          Image: !Sub ${ecrlocation}/${buildname}:${buildnumber}
           PortMappings:
             - ContainerPort: 8080
               HostPort: 0
