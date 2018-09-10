@@ -1020,4 +1020,71 @@ public class CommonUtility {
 	{
 		return StringUtils.isNotBlank(cdnDomain)?cdnDomain+image:image;
 	}
+	/**
+	 * 
+	 * @param listOfOfferPacks
+	 * @param merchandisingMedia
+	 */
+	public static void getNonPricingPromotions(BundleAndHardwarePromotions promotions,
+			List<MediaLink> merchandisingMedia) {
+		List<CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks> entertainmentPacks = promotions
+				.getEntertainmentPacks();
+		List<CataloguepromotionqueriesForBundleAndHardwareDataAllowances> dataAllowances = promotions
+				.getDataAllowances();
+		List<CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions> planCouplingPromotions = promotions
+				.getPlanCouplingPromotions();
+		List<CataloguepromotionqueriesForBundleAndHardwareSash> sash = promotions.getSashBannerForPlan();
+		List<CataloguepromotionqueriesForBundleAndHardwareSecureNet> secureNet = promotions.getSecureNet();
+		List<CataloguepromotionqueriesForHardwareSash> sashBannerForHardware = promotions
+				.getSashBannerForHardware();
+		List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtras = promotions.getFreeExtras();
+		List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccessories = promotions
+				.getFreeAccessory();
+		List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtrasForPlans = promotions
+				.getFreeExtrasForPlan();
+		List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccForPlans = promotions
+				.getFreeAccForPlan();
+		List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtrasForHardwares = promotions
+				.getFreeExtrasForHardware();
+		List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccForHardwares = promotions
+				.getFreeAccForHardware();
+		List<CataloguepromotionqueriesForBundleAndHardwareSash> sashBundleConditional = promotions
+				.getConditionalSashBanner();
+		merchandisingMedia.addAll(CommonUtility.getMediaListForBundleAndHardware(entertainmentPacks, dataAllowances,
+				planCouplingPromotions, sash, secureNet, sashBannerForHardware, freeExtras, freeAccessories,
+				freeExtrasForPlans, freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares,
+				sashBundleConditional));
+	}
+	/**
+	 * 
+	 * @param commercialProduct
+	 * @param merchandisingMedia
+	 */
+	public static void getImageMediaLink(CommercialProduct commercialProduct, List<MediaLink> merchandisingMedia, String cdnDomain) {
+		MediaLink mediaLink;
+		if (commercialProduct.getListOfimageURLs() != null) {
+			for (com.vf.uk.dal.device.datamodel.product.ImageURL imageURL : commercialProduct
+					.getListOfimageURLs()) {
+				if (StringUtils.isNotBlank(imageURL.getImageURL())) {
+					mediaLink = new MediaLink();
+					mediaLink.setId(imageURL.getImageName());
+					mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
+					mediaLink.setValue(getImageMediaUrl(cdnDomain,imageURL.getImageURL()));
+					merchandisingMedia.add(mediaLink);
+				}
+			}
+		}
+		if (commercialProduct.getListOfmediaURLs() != null) {
+			for (com.vf.uk.dal.device.datamodel.product.MediaURL mediaURL : commercialProduct
+					.getListOfmediaURLs()) {
+				if (StringUtils.isNotBlank(mediaURL.getMediaURL())) {
+					mediaLink = new MediaLink();
+					mediaLink.setId(mediaURL.getMediaName());
+					mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
+					mediaLink.setValue(getImageMediaUrl(cdnDomain,mediaURL.getMediaURL()));
+					merchandisingMedia.add(mediaLink);
+				}
+			}
+		}
+	}
 }
