@@ -25,6 +25,7 @@ import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
 import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
 import com.vf.uk.dal.device.entity.MediaLink;
+import com.vf.uk.dal.device.entity.MerchandisingPromotionsPackage;
 import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
 import com.vf.uk.dal.device.entity.RequestForBundleAndHardware;
 import com.vf.uk.dal.device.entity.SourcePackageSummary;
@@ -1001,7 +1002,7 @@ public class CommonUtility {
 	 * @param listOfOfferPacks
 	 * @param merchandisingMedia
 	 */
-	public static void getNonPricingPromotions(BundleAndHardwarePromotions promotions,
+	public static MerchandisingPromotionsPackage getNonPricingPromotions(BundleAndHardwarePromotions promotions,
 			List<MediaLink> merchandisingMedia) {
 		List<CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks> entertainmentPacks = promotions
 				.getEntertainmentPacks();
@@ -1030,6 +1031,11 @@ public class CommonUtility {
 				planCouplingPromotions, sash, secureNet, sashBannerForHardware, freeExtras, freeAccessories,
 				freeExtrasForPlans, freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares,
 				sashBundleConditional));
+		return DeviceTilesDaoUtils.assembleMerchandisingPromotion(promotions,
+				entertainmentPacks, dataAllowances, planCouplingPromotions, sash, secureNet,
+				sashBannerForHardware, freeExtras, freeAccessories, freeExtrasForPlans,
+				freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares,
+				sashBundleConditional);
 	}
 	/**
 	 * 
