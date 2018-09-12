@@ -1071,42 +1071,7 @@ public class DeviceTilesDaoUtils {
 								&& promotionmap.containsKey(productModel.getProductId())) {
 
 							BundleAndHardwarePromotions promotions = promotionmap.get(productModel.getProductId());
-							List<CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks> entertainmentPacks = promotions
-									.getEntertainmentPacks();
-							List<CataloguepromotionqueriesForBundleAndHardwareDataAllowances> dataAllowances = promotions
-									.getDataAllowances();
-							List<CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions> planCouplingPromotions = promotions
-									.getPlanCouplingPromotions();
-							List<CataloguepromotionqueriesForBundleAndHardwareSash> sash = promotions
-									.getSashBannerForPlan();
-							List<CataloguepromotionqueriesForBundleAndHardwareSecureNet> secureNet = promotions
-									.getSecureNet();
-							List<CataloguepromotionqueriesForHardwareSash> sashBannerForHardware = promotions
-									.getSashBannerForHardware();
-							List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtras = promotions
-									.getFreeExtras();
-							List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccessories = promotions
-									.getFreeAccessory();
-							List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtrasForPlans = promotions
-									.getFreeExtrasForPlan();
-							List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccForPlans = promotions
-									.getFreeAccForPlan();
-							List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtrasForHardwares = promotions
-									.getFreeExtrasForHardware();
-							List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccForHardwares = promotions
-									.getFreeAccForHardware();
-							List<CataloguepromotionqueriesForBundleAndHardwareSash> sashBundleConditional = promotions
-									.getConditionalSashBanner();
-							mediaList.addAll(CommonUtility.getMediaListForBundleAndHardware(entertainmentPacks,
-									dataAllowances, planCouplingPromotions, sash, secureNet, sashBannerForHardware,
-									freeExtras, freeAccessories, freeExtrasForPlans, freeAccForPlans,
-									freeExtrasForHardwares, freeAccForHardwares, sashBundleConditional));
-
-							merchandisingPromotionsPackage = assembleMerchandisingPromotion(promotions,
-									entertainmentPacks, dataAllowances, planCouplingPromotions, sash, secureNet,
-									sashBannerForHardware, freeExtras, freeAccessories, freeExtrasForPlans,
-									freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares,
-									sashBundleConditional);
+							CommonUtility.getNonPricingPromotions(promotions, mediaList);
 
 						}
 						if (StringUtils.isNotBlank(productModel.getImageURLsThumbsFront())) {
