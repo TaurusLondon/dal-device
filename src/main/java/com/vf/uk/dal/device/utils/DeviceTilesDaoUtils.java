@@ -52,6 +52,7 @@ import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForHardwareSash;
 
 public class DeviceTilesDaoUtils {
 
+	
 	private static String leadMember = "leadMember";
 
 	/**
@@ -273,7 +274,7 @@ public class DeviceTilesDaoUtils {
 			String offerCode1, Map<String, String> groupNameWithProdId, Map<String, BundlePrice> bundleModelAndPriceMap,
 			Map<String, BundleAndHardwarePromotions> promotionmap, Map<String, Boolean> isLeadMemberFromSolr,
 			Map<String, List<OfferAppliedPriceModel>> withoutOfferPriceMap, String journeyType,
-			Map<String, ProductGroupDetailsForDeviceList> productGroupdetailsMap) {
+			Map<String, ProductGroupDetailsForDeviceList> productGroupdetailsMap, String cdnDomain) {
 		String offerCode = offerCode1;
 		List<Device> deviceList = new ArrayList<>();
 		FacetedDevice facetedDevice = new FacetedDevice();
@@ -1070,49 +1071,14 @@ public class DeviceTilesDaoUtils {
 								&& promotionmap.containsKey(productModel.getProductId())) {
 
 							BundleAndHardwarePromotions promotions = promotionmap.get(productModel.getProductId());
-							List<CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks> entertainmentPacks = promotions
-									.getEntertainmentPacks();
-							List<CataloguepromotionqueriesForBundleAndHardwareDataAllowances> dataAllowances = promotions
-									.getDataAllowances();
-							List<CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions> planCouplingPromotions = promotions
-									.getPlanCouplingPromotions();
-							List<CataloguepromotionqueriesForBundleAndHardwareSash> sash = promotions
-									.getSashBannerForPlan();
-							List<CataloguepromotionqueriesForBundleAndHardwareSecureNet> secureNet = promotions
-									.getSecureNet();
-							List<CataloguepromotionqueriesForHardwareSash> sashBannerForHardware = promotions
-									.getSashBannerForHardware();
-							List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtras = promotions
-									.getFreeExtras();
-							List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccessories = promotions
-									.getFreeAccessory();
-							List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtrasForPlans = promotions
-									.getFreeExtrasForPlan();
-							List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccForPlans = promotions
-									.getFreeAccForPlan();
-							List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtrasForHardwares = promotions
-									.getFreeExtrasForHardware();
-							List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccForHardwares = promotions
-									.getFreeAccForHardware();
-							List<CataloguepromotionqueriesForBundleAndHardwareSash> sashBundleConditional = promotions
-									.getConditionalSashBanner();
-							mediaList.addAll(CommonUtility.getMediaListForBundleAndHardware(entertainmentPacks,
-									dataAllowances, planCouplingPromotions, sash, secureNet, sashBannerForHardware,
-									freeExtras, freeAccessories, freeExtrasForPlans, freeAccForPlans,
-									freeExtrasForHardwares, freeAccForHardwares, sashBundleConditional));
-
-							merchandisingPromotionsPackage = assembleMerchandisingPromotion(promotions,
-									entertainmentPacks, dataAllowances, planCouplingPromotions, sash, secureNet,
-									sashBannerForHardware, freeExtras, freeAccessories, freeExtrasForPlans,
-									freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares,
-									sashBundleConditional);
+							CommonUtility.getNonPricingPromotions(promotions, mediaList);
 
 						}
 						if (StringUtils.isNotBlank(productModel.getImageURLsThumbsFront())) {
 							MediaLink mediaThumbsFrontLink = new MediaLink();
 							mediaThumbsFrontLink.setId(MediaConstants.STRING_FOR_IMAGE_THUMBS_FRONT);
 							mediaThumbsFrontLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-							mediaThumbsFrontLink.setValue(productModel.getImageURLsThumbsFront());
+							mediaThumbsFrontLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,productModel.getImageURLsThumbsFront()));
 							mediaList.add(mediaThumbsFrontLink);
 						}
 
@@ -1120,7 +1086,7 @@ public class DeviceTilesDaoUtils {
 							MediaLink mediaThumbsLeftLink = new MediaLink();
 							mediaThumbsLeftLink.setId(MediaConstants.STRING_FOR_IMAGE_THUMBS_LEFT);
 							mediaThumbsLeftLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-							mediaThumbsLeftLink.setValue(productModel.getImageURLsThumbsLeft());
+							mediaThumbsLeftLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,productModel.getImageURLsThumbsLeft()));
 							mediaList.add(mediaThumbsLeftLink);
 						}
 
@@ -1128,7 +1094,7 @@ public class DeviceTilesDaoUtils {
 							MediaLink mediaThumbsRightLink = new MediaLink();
 							mediaThumbsRightLink.setId(MediaConstants.STRING_FOR_IMAGE_THUMBS_RIGHT);
 							mediaThumbsRightLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-							mediaThumbsRightLink.setValue(productModel.getImageURLsThumbsRight());
+							mediaThumbsRightLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,productModel.getImageURLsThumbsRight()));
 							mediaList.add(mediaThumbsRightLink);
 						}
 
@@ -1136,7 +1102,7 @@ public class DeviceTilesDaoUtils {
 							MediaLink mediaThumbsSideLink = new MediaLink();
 							mediaThumbsSideLink.setId(MediaConstants.STRING_FOR_IMAGE_THUMBS_SIDE);
 							mediaThumbsSideLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-							mediaThumbsSideLink.setValue(productModel.getImageURLsThumbsSide());
+							mediaThumbsSideLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,productModel.getImageURLsThumbsSide()));
 							mediaList.add(mediaThumbsSideLink);
 						}
 
@@ -1144,7 +1110,7 @@ public class DeviceTilesDaoUtils {
 							MediaLink mediaFullLeftLink = new MediaLink();
 							mediaFullLeftLink.setId(MediaConstants.STRING_FOR_IMAGE_FULL_LEFT);
 							mediaFullLeftLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-							mediaFullLeftLink.setValue(productModel.getImageURLsFullLeft());
+							mediaFullLeftLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,productModel.getImageURLsFullLeft()));
 							mediaList.add(mediaFullLeftLink);
 						}
 
@@ -1152,7 +1118,7 @@ public class DeviceTilesDaoUtils {
 							MediaLink mediaFullRightLink = new MediaLink();
 							mediaFullRightLink.setId(MediaConstants.STRING_FOR_IMAGE_FULL_RIGHT);
 							mediaFullRightLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-							mediaFullRightLink.setValue(productModel.getImageURLsFullRight());
+							mediaFullRightLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,productModel.getImageURLsFullRight()));
 							mediaList.add(mediaFullRightLink);
 						}
 
@@ -1160,7 +1126,7 @@ public class DeviceTilesDaoUtils {
 							MediaLink mediaFullSideLink = new MediaLink();
 							mediaFullSideLink.setId(MediaConstants.STRING_FOR_IMAGE_FULL_SIDE);
 							mediaFullSideLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-							mediaFullSideLink.setValue(productModel.getImageURLsFullSide());
+							mediaFullSideLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,productModel.getImageURLsFullSide()));
 							mediaList.add(mediaFullSideLink);
 						}
 
@@ -1168,7 +1134,7 @@ public class DeviceTilesDaoUtils {
 							MediaLink mediaFullBackLink = new MediaLink();
 							mediaFullBackLink.setId(MediaConstants.STRING_FOR_IMAGE_FULL_BACK);
 							mediaFullBackLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-							mediaFullBackLink.setValue(productModel.getImageURLsFullBack());
+							mediaFullBackLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,productModel.getImageURLsFullBack()));
 							mediaList.add(mediaFullBackLink);
 						}
 
@@ -1176,7 +1142,7 @@ public class DeviceTilesDaoUtils {
 							MediaLink mediaGridLink = new MediaLink();
 							mediaGridLink.setId(MediaConstants.STRING_FOR_IMAGE_GRID);
 							mediaGridLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-							mediaGridLink.setValue(productModel.getImageURLsGrid());
+							mediaGridLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,productModel.getImageURLsGrid()));
 							mediaList.add(mediaGridLink);
 						}
 
@@ -1184,7 +1150,7 @@ public class DeviceTilesDaoUtils {
 							MediaLink mediaSmallLink = new MediaLink();
 							mediaSmallLink.setId(MediaConstants.STRING_FOR_IMAGE_SMALL);
 							mediaSmallLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-							mediaSmallLink.setValue(productModel.getImageURLsSmall());
+							mediaSmallLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,productModel.getImageURLsSmall()));
 							mediaList.add(mediaSmallLink);
 						}
 
@@ -1192,7 +1158,7 @@ public class DeviceTilesDaoUtils {
 							MediaLink mediaStickerLink = new MediaLink();
 							mediaStickerLink.setId(MediaConstants.STRING_FOR_IMAGE_STICKER);
 							mediaStickerLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-							mediaStickerLink.setValue(productModel.getImageURLsSticker());
+							mediaStickerLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,productModel.getImageURLsSticker()));
 							mediaList.add(mediaStickerLink);
 						}
 
@@ -1200,7 +1166,7 @@ public class DeviceTilesDaoUtils {
 							MediaLink mediaIconLink = new MediaLink();
 							mediaIconLink.setId(MediaConstants.STRING_FOR_IMAGE_ICON);
 							mediaIconLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-							mediaIconLink.setValue(productModel.getImageURLsIcon());
+							mediaIconLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,productModel.getImageURLsIcon()));
 							mediaList.add(mediaIconLink);
 						}
 
@@ -1208,7 +1174,7 @@ public class DeviceTilesDaoUtils {
 							MediaLink media3DSpinLink = new MediaLink();
 							media3DSpinLink.setId(MediaConstants.STRING_FOR_IMAGE_3DSPIN);
 							media3DSpinLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-							media3DSpinLink.setValue(productModel.getThreeDSpin());
+							media3DSpinLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,productModel.getThreeDSpin()));
 							mediaList.add(media3DSpinLink);
 						}
 
@@ -1216,7 +1182,7 @@ public class DeviceTilesDaoUtils {
 							MediaLink mediaSupportLink = new MediaLink();
 							mediaSupportLink.setId(MediaConstants.STRING_FOR_IMAGE_SUPPORT);
 							mediaSupportLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-							mediaSupportLink.setValue(productModel.getSupport());
+							mediaSupportLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,productModel.getSupport()));
 							mediaList.add(mediaSupportLink);
 						}
 
@@ -1833,4 +1799,5 @@ public class DeviceTilesDaoUtils {
 		return promotionsPackage;
 
 	}
+	
 }

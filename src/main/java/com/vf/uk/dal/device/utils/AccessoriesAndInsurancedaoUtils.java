@@ -29,7 +29,7 @@ public class AccessoriesAndInsurancedaoUtils {
 	 * @return Accessory
 	 */
 	public static Accessory convertCoherenceAccesoryToAccessory(CommercialProduct commercialProduct,
-			PriceForAccessory priceForAccessory) {
+			PriceForAccessory priceForAccessory, String cdnDomain) {
 		Accessory accessory = null;
 		List<MediaLink> merchandisingMedia = new ArrayList<>();
 		if (commercialProduct != null && priceForAccessory != null) {
@@ -70,31 +70,7 @@ public class AccessoriesAndInsurancedaoUtils {
 					}
 				}
 
-				MediaLink mediaLink;
-				if (commercialProduct.getListOfimageURLs() != null) {
-					for (com.vf.uk.dal.device.datamodel.product.ImageURL imageURL : commercialProduct
-							.getListOfimageURLs()) {
-						if (StringUtils.isNotBlank(imageURL.getImageURL())) {
-							mediaLink = new MediaLink();
-							mediaLink.setId(imageURL.getImageName());
-							mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-							mediaLink.setValue(imageURL.getImageURL());
-							merchandisingMedia.add(mediaLink);
-						}
-					}
-				}
-				if (commercialProduct.getListOfmediaURLs() != null) {
-					for (com.vf.uk.dal.device.datamodel.product.MediaURL mediaURL : commercialProduct
-							.getListOfmediaURLs()) {
-						if (StringUtils.isNotBlank(mediaURL.getMediaURL())) {
-							mediaLink = new MediaLink();
-							mediaLink.setId(mediaURL.getMediaName());
-							mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-							mediaLink.setValue(mediaURL.getMediaURL());
-							merchandisingMedia.add(mediaLink);
-						}
-					}
-				}
+				CommonUtility.getImageMediaLink(commercialProduct, merchandisingMedia, cdnDomain);
 
 				/*
 				 * Looping to check if any null values in Merchandising Media
@@ -127,7 +103,6 @@ public class AccessoriesAndInsurancedaoUtils {
 		}
 		return accessory;
 	}
-
 	/**
 	 * 
 	 * @param hardwarePrice
@@ -201,7 +176,7 @@ public class AccessoriesAndInsurancedaoUtils {
 	 * @param insuranceProductList
 	 * @return Insurances
 	 */
-	public static Insurances convertCommercialProductToInsurance(List<CommercialProduct> insuranceProductList) {
+	public static Insurances convertCommercialProductToInsurance(List<CommercialProduct> insuranceProductList, String cdnDomain) {
 		List<Double> minPrice = new ArrayList<>();
 		List<Insurance> insuranceList = new ArrayList<>();
 		Insurances insurances = new Insurances();
@@ -221,31 +196,7 @@ public class AccessoriesAndInsurancedaoUtils {
 			price.setNet(String.valueOf(insuranceProduct.getPriceDetail().getPriceNet()));
 			insurance.setPrice(price);
 			List<MediaLink> merchandisingMedia = new ArrayList<>();
-			MediaLink mediaLink;
-			if (insuranceProduct.getListOfimageURLs() != null) {
-				for (com.vf.uk.dal.device.datamodel.product.ImageURL imageURL : insuranceProduct.getListOfimageURLs()) {
-
-					if (StringUtils.isNotBlank(imageURL.getImageURL())) {
-						mediaLink = new MediaLink();
-
-						mediaLink.setId(imageURL.getImageName());
-						mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-						mediaLink.setValue(imageURL.getImageURL());
-						merchandisingMedia.add(mediaLink);
-					}
-				}
-			}
-			if (insuranceProduct.getListOfmediaURLs() != null) {
-				for (com.vf.uk.dal.device.datamodel.product.MediaURL mediaURL : insuranceProduct.getListOfmediaURLs()) {
-					if (StringUtils.isNotBlank(mediaURL.getMediaURL())) {
-						mediaLink = new MediaLink();
-						mediaLink.setId(mediaURL.getMediaName());
-						mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
-						mediaLink.setValue(mediaURL.getMediaURL());
-						merchandisingMedia.add(mediaLink);
-					}
-				}
-			}
+			CommonUtility.getImageMediaLink(insuranceProduct, merchandisingMedia,cdnDomain);
 
 			insurance.setMerchandisingMedia(merchandisingMedia);
 

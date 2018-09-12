@@ -16,6 +16,7 @@ import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
@@ -50,6 +51,9 @@ public class DeviceServiceImplUtility {
 	
 	@Autowired
 	CommonUtility commonUtility;
+	
+	@Value("${cdn.domain.host}")
+	private String cdnDomain;
 	/**
 	 * 
 	 * @param journeyType
@@ -989,7 +993,7 @@ public class DeviceServiceImplUtility {
 		if ((isUpgrade(journeyTypeLocal) && isUpgradeFromCommercialProduct(commercialProduct))
 				|| (isNonUpgrade(journeyTypeLocal) && isNonUpgradeCommercialProduct(commercialProduct))) {
 			deviceDetails = DeviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceDetails(
-					commercialProduct, listOfPriceForBundleAndHardware, promotions);
+					commercialProduct, listOfPriceForBundleAndHardware, promotions,cdnDomain);
 		} else {
 			LogHelper.error(DeviceServiceImplUtility.class, "No data found for given journeyType :" + deviceId);
 			throw new ApplicationException(ExceptionMessages.NO_DATA_FOR_GIVEN_SEARCH_CRITERIA);

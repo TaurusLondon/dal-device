@@ -28,6 +28,7 @@ import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 import com.vf.uk.dal.device.validator.Validator;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -40,7 +41,7 @@ import io.swagger.annotations.ApiResponses;
  * services inside the controller.
  * 
  */
-
+@Api(tags="Device")
 @RestController
 @RequestMapping(value = "")
 @EnableAspectJAutoProxy(proxyTargetClass = true)
@@ -75,8 +76,7 @@ public class DeviceController {
 	 * @param offerCode
 	 * @return
 	 */
-	@ApiOperation(value = "Get the device tile details for the given device tile Id.", notes = "The service gets the details of the device required to be dispalyed on deviceTile.", response = DeviceTile.class, responseContainer = "List", tags = {
-			"DeviceTile", })
+	@ApiOperation(value = "Get the device tile details for the given device tile Id.", notes = "The service gets the details of the device required to be dispalyed on deviceTile.", response = DeviceTile.class, responseContainer = "List")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Success", response = DeviceTile.class, responseContainer = "List"),
 			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
@@ -119,8 +119,7 @@ public class DeviceController {
 	 * @param creditLimit
 	 * @return FacetedDevice
 	 */
-	@ApiOperation(value = "Get the list of devices based on the filter criteria, like productGroup brand Name. Pagination, sorting, filteration also defined", notes = "The service gets the details of the device list from Solr based on the filter criteria in the response.", response = FacetedDevice.class, tags = {
-			"DeviceTile", })
+	@ApiOperation(value = "Get the list of devices based on the filter criteria, like productGroup brand Name. Pagination, sorting, filteration also defined", notes = "The service gets the details of the device list from Solr based on the filter criteria in the response.", response = FacetedDevice.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = FacetedDevice.class),
 			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),

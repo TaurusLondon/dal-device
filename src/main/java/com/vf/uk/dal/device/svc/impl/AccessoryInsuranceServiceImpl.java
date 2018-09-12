@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
@@ -63,6 +64,9 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	
 	@Autowired
 	CommonUtility commonUtility;
+	
+	@Value("${cdn.domain.host}")
+	private String cdnDomain;
 
 	/**
 	 * Handles requests from controller and connects to DAO.
@@ -165,7 +169,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 		Map<String, CommercialProduct> mapforCommercialProduct = setMapForCommercialData(listOfFilteredAccessories,
 				listOfValidAccesoryIds, priceForProduct, mapforPrice);
 
-		setListOfAccessoryTileGroup(listOfAccessoryTile, mapForGroupName, mapforPrice, mapforCommercialProduct);
+		setListOfAccessoryTileGroup(listOfAccessoryTile, mapForGroupName, mapforPrice, mapforCommercialProduct, cdnDomain);
 	}
 
 	/**
@@ -251,7 +255,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 				List<String> insuranceProductList = getInsuranceProductList(listOfInsuranceMembers, productGroup);
 				List<CommercialProduct> listOfInsuranceProducts = deviceEs
 						.getListOfCommercialProduct(insuranceProductList);
-				insurance = getListOfFilteredInsurance(journeyType, listOfInsuranceProducts);
+				insurance = getListOfFilteredInsurance(journeyType, listOfInsuranceProducts, cdnDomain);
 			}
 		}
 		return insurance;
@@ -380,7 +384,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	 */
 	public static void setListOfAccessoryTileGroup(List<AccessoryTileGroup> listOfAccessoryTile,
 			Map<String, List<String>> mapForGroupName, Map<String, PriceForAccessory> mapforPrice,
-			Map<String, CommercialProduct> mapforCommercialProduct) {
+			Map<String, CommercialProduct> mapforCommercialProduct, String cdnDomain) {
 		for (Map.Entry<String, List<String>> entry : mapForGroupName.entrySet()) {
 			AccessoryTileGroup accessoryTileGroup = new AccessoryTileGroup();
 			List<Accessory> listOfAccessory = new ArrayList<>();
@@ -389,7 +393,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 				Accessory accessory = null;
 				if (mapforCommercialProduct.containsKey(hardwareId) && mapforPrice.containsKey(hardwareId)) {
 					accessory = AccessoriesAndInsurancedaoUtils.convertCoherenceAccesoryToAccessory(
-							mapforCommercialProduct.get(hardwareId), mapforPrice.get(hardwareId));
+							mapforCommercialProduct.get(hardwareId), mapforPrice.get(hardwareId),cdnDomain);
 				}
 				if (accessory != null) {
 					listOfAccessory.add(accessory);
@@ -534,14 +538,14 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	 * @return Insurances
 	 */
 	public static Insurances getListOfFilteredInsurance(String journeyType,
-			List<CommercialProduct> listOfInsuranceProducts) {
+			List<CommercialProduct> listOfInsuranceProducts, String cdnDomain) {
 		Insurances insurance = null;
 		List<CommercialProduct> listOfFilteredInsurances = listOfInsuranceProducts.stream()
 				.filter(commercialProduct -> CommonUtility.isProductNotExpired(commercialProduct)
 						&& CommonUtility.isProductJourneySpecific(commercialProduct, journeyType))
 				.collect(Collectors.toList());
 		if (listOfFilteredInsurances != null && !listOfFilteredInsurances.isEmpty()) {
-			insurance = AccessoriesAndInsurancedaoUtils.convertCommercialProductToInsurance(listOfFilteredInsurances);
+			insurance = AccessoriesAndInsurancedaoUtils.convertCommercialProductToInsurance(listOfFilteredInsurances, cdnDomain);
 		}
 		return insurance;
 	}
