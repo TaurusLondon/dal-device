@@ -182,7 +182,7 @@ public class DeviceServiceCommonUtility {
 
 		Date startDateTime = comProduct.getProductAvailability().getStart();
 		Date endDateTime = comProduct.getProductAvailability().getEnd();
-		boolean preOrderableFlag = comProduct.getProductControl().isPreOrderable();
+		boolean preOrderableFlag = comProduct.getProductControl()==null?false:comProduct.getProductControl().isPreOrderable();
 		boolean isUpgrade = DeviceServiceImplUtility.isUpgrade(journeyType)
 				&& DeviceServiceImplUtility.getProductclassValidation(comProduct)
 				&& DeviceTilesDaoUtils.dateValidation(startDateTime, endDateTime, preOrderableFlag)
