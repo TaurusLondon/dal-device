@@ -25,7 +25,6 @@ import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
 import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
 import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
 import com.vf.uk.dal.device.utils.CommonUtility;
-import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.DeviceTilesDaoUtils;
 import com.vf.uk.dal.device.utils.DeviceUtils;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
@@ -40,6 +39,9 @@ import com.vf.uk.dal.utility.entity.CoupleRelation;
 @Component
 public class DeviceServiceCommonUtility {
 
+	public static final String STRING_MOBILE_PHONE_SERVICE_SELLABLE = "Mobile Phone Service Sellable";
+	public static final String STRING_MBB_SELLABLE = "MBB Sellable";
+	
 	@Autowired
 	DeviceDao deviceDao;
 
@@ -207,8 +209,8 @@ public class DeviceServiceCommonUtility {
 
 		String gross;
 		List<String> productLinesList = new ArrayList<>();
-		productLinesList.add(Constants.STRING_MOBILE_PHONE_SERVICE_SELLABLE);
-		productLinesList.add(Constants.STRING_MBB_SELLABLE);
+		productLinesList.add(STRING_MOBILE_PHONE_SERVICE_SELLABLE);
+		productLinesList.add(STRING_MBB_SELLABLE);
 		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = listOfPriceForBundleHeaderLocal.stream()
 				.filter(price -> CommonUtility.isValidJourneySpecificBundle(price, commercialbundleMap,
 						productLinesList, journeyType))

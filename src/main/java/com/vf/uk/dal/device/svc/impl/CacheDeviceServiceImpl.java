@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
+import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.dao.DeviceTileCacheDAO;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
@@ -40,7 +41,6 @@ import com.vf.uk.dal.device.helper.DeviceServiceImplUtility;
 import com.vf.uk.dal.device.svc.CacheDeviceService;
 import com.vf.uk.dal.device.utils.CacheDeviceDaoUtils;
 import com.vf.uk.dal.device.utils.CommonUtility;
-import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.DeviceUtils;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
@@ -53,6 +53,17 @@ import com.vf.uk.dal.utility.solr.entity.OfferAppliedPriceDetails;
 @Component
 public class CacheDeviceServiceImpl implements CacheDeviceService {
 
+	public static final String JOURNEY_TYPE_ACQUISITION = "Acquisition";
+	public static final String JOURNEY_TYPE_UPGRADE = "Upgrade";
+	public static final String JOURNEY_TYPE_SECONDLINE = "SecondLine";
+	public static final String IS_LEAD_MEMEBER_YES = "Y";
+	public static final String STRING_DEVICE_PAYM = "DEVICE_PAYM";
+	public static final String STRING_DEVICE_PAYG = "DEVICE_PAYG";
+	public static final String JOURNEY_TYPE_SECONDLINE_UPGRADE = "Upgrade,SecondLine";
+	public static final String OFFERCODE_PAYM = "PAYM";
+	public static final String STRING_OPT = "opt_";
+	public static final String STRING_PRODUCT = "product";
+	
 	@Autowired
 	DeviceESHelper deviceEs;
 
@@ -155,18 +166,18 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 					.getPriceDetailsUsingBundleHarwareTrouple(
 							new ArrayList<com.vf.uk.dal.device.entity.BundleAndHardwareTuple>(
 									bundleAndHardwareTupleListJourneyAware),
-							null, Constants.JOURNEY_TYPE_UPGRADE);
+							null, JOURNEY_TYPE_UPGRADE);
 
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareWithoutOfferCodeForSecondLine = commonUtility
 					.getPriceDetailsUsingBundleHarwareTrouple(
 							new ArrayList<com.vf.uk.dal.device.entity.BundleAndHardwareTuple>(
 									bundleAndHardwareTupleListJourneyAware),
-							null, Constants.JOURNEY_TYPE_SECONDLINE);
+							null, JOURNEY_TYPE_SECONDLINE);
 
 			Map<String, Map<String, List<PriceForBundleAndHardware>>> mapOfIlsPriceWithoutOfferCode = new HashMap<>();
-			mapOfIlsPriceWithoutOfferCode.put(Constants.JOURNEY_TYPE_UPGRADE, CacheDeviceDaoUtils
+			mapOfIlsPriceWithoutOfferCode.put(JOURNEY_TYPE_UPGRADE, CacheDeviceDaoUtils
 					.getILSPriceWithoutOfferCode(listOfPriceForBundleAndHardwareWithoutOfferCodeForUpgrade));
-			mapOfIlsPriceWithoutOfferCode.put(Constants.JOURNEY_TYPE_SECONDLINE, CacheDeviceDaoUtils
+			mapOfIlsPriceWithoutOfferCode.put(JOURNEY_TYPE_SECONDLINE, CacheDeviceDaoUtils
 					.getILSPriceWithoutOfferCode(listOfPriceForBundleAndHardwareWithoutOfferCodeForSecondLine));
 
 			// Ratings population logic
@@ -257,10 +268,10 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 				String bundleId = listOfLeadPlanId.get(deviceId);
 				CommercialBundle coommercialbundle = commercialBundleMap.containsKey(bundleId)
 						? commercialBundleMap.get(bundleId) : null;
-				if (DeviceServiceImplUtility.isSellable(Constants.JOURNEY_TYPE_ACQUISITION, coommercialbundle)) {
+				if (DeviceServiceImplUtility.isSellable(JOURNEY_TYPE_ACQUISITION, coommercialbundle)) {
 					nonUpgradeLeadPlanId = bundleId;
 				}
-				if (DeviceServiceImplUtility.isSellable(Constants.JOURNEY_TYPE_UPGRADE, coommercialbundle)) {
+				if (DeviceServiceImplUtility.isSellable(JOURNEY_TYPE_UPGRADE, coommercialbundle)) {
 					upgradeLeadPlanId = bundleId;
 				}
 			}
@@ -286,10 +297,10 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 				if (nonLeadPlanIdPriceMap.containsKey(deviceId)) {
 					List<PriceForBundleAndHardware> listOfPrice = nonLeadPlanIdPriceMap.get(deviceId);
 					bundleHeaderForDevice = deviceServiceCommonUtility.identifyLowestPriceOfPlanForDevice(listOfPrice,
-							commercialBundleMap, Constants.JOURNEY_TYPE_ACQUISITION);
+							commercialBundleMap, JOURNEY_TYPE_ACQUISITION);
 					PriceForBundleAndHardware upgradeCompatiblePlan = deviceServiceCommonUtility
 							.identifyLowestPriceOfPlanForDevice(listOfPrice, commercialBundleMap,
-									Constants.JOURNEY_TYPE_UPGRADE);
+									JOURNEY_TYPE_UPGRADE);
 					if (upgradeCompatiblePlan != null) {
 						upgradeLeadPlanId = upgradeCompatiblePlan.getBundlePrice().getBundleId();
 					}
@@ -334,7 +345,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		String upgradeLeadPlanId = null;
 		List<PriceForBundleAndHardware> listOfPrice = nonLeadPlanIdPriceMap.get(deviceId);
 		PriceForBundleAndHardware upgradeCompatiblePlan = deviceServiceCommonUtility
-				.identifyLowestPriceOfPlanForDevice(listOfPrice, commercialBundleMap, Constants.JOURNEY_TYPE_UPGRADE);
+				.identifyLowestPriceOfPlanForDevice(listOfPrice, commercialBundleMap, JOURNEY_TYPE_UPGRADE);
 		if (upgradeCompatiblePlan != null) {
 			upgradeLeadPlanId = upgradeCompatiblePlan.getBundlePrice().getBundleId();
 		}
@@ -362,7 +373,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		PriceForBundleAndHardware bundleHeaderForDevice;
 		List<PriceForBundleAndHardware> listOfPrice = nonLeadPlanIdPriceMap.get(deviceId);
 		bundleHeaderForDevice = deviceServiceCommonUtility.identifyLowestPriceOfPlanForDevice(listOfPrice,
-				commercialBundleMap, Constants.JOURNEY_TYPE_ACQUISITION);
+				commercialBundleMap, JOURNEY_TYPE_ACQUISITION);
 		if (bundleHeaderForDevice != null) {
 			nonUpgradeLeadPlanId = DeviceUtils.getGroupNamePriceMap(groupNamePriceMap, listOfPriceForBundleAndHardware,
 					bundleHeaderForDevice, groupname);
@@ -441,15 +452,15 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		String leadMemberIdForUpgrade = null;
 
 		leadMemberId = deviceServiceCommonUtility.getMemeberBasedOnRules_Implementation(listOfDeviceGroupMember,
-				Constants.JOURNEY_TYPE_ACQUISITION);
+				JOURNEY_TYPE_ACQUISITION);
 		leadMemberIdForUpgrade = deviceServiceCommonUtility
-				.getMemeberBasedOnRules_Implementation(listOfDeviceGroupMember, Constants.JOURNEY_TYPE_UPGRADE);
+				.getMemeberBasedOnRules_Implementation(listOfDeviceGroupMember, JOURNEY_TYPE_UPGRADE);
 
 		if (leadMemberId != null) {
-			leadMemberMap.put(leadMemberId, Constants.IS_LEAD_MEMEBER_YES);
+			leadMemberMap.put(leadMemberId, IS_LEAD_MEMEBER_YES);
 		}
 		if (leadMemberIdForUpgrade != null) {
-			leadMemberMapForUpgrade.put(leadMemberIdForUpgrade, Constants.IS_LEAD_MEMEBER_YES);
+			leadMemberMapForUpgrade.put(leadMemberIdForUpgrade, IS_LEAD_MEMEBER_YES);
 		}
 	}
 
@@ -462,14 +473,14 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 	public void getOfferCodeForCacheDeviceTile(List<String> listOfOfferCodesForUpgrade,
 			List<String> listOfSecondLineOfferCode, Set<String> listOfOfferCodes) {
 		List<MerchandisingPromotionModel> listOfMerchandisingPromotions = deviceEs.getListOfMerchandisingPromotionModel(
-				Constants.OFFERCODE_PAYM, Constants.JOURNEY_TYPE_SECONDLINE_UPGRADE);
+				OFFERCODE_PAYM, JOURNEY_TYPE_SECONDLINE_UPGRADE);
 		listOfMerchandisingPromotions.forEach(promotionModel -> {
 			if (StringUtils.isNotBlank(promotionModel.getTag())
-					&& promotionModel.getPackageType().contains(Constants.JOURNEY_TYPE_SECONDLINE)) {
+					&& promotionModel.getPackageType().contains(JOURNEY_TYPE_SECONDLINE)) {
 				listOfSecondLineOfferCode.add(promotionModel.getTag());
 			}
 			if (StringUtils.isNotBlank(promotionModel.getTag())
-					&& promotionModel.getPackageType().contains(Constants.JOURNEY_TYPE_UPGRADE)) {
+					&& promotionModel.getPackageType().contains(JOURNEY_TYPE_UPGRADE)) {
 				listOfOfferCodesForUpgrade.add(promotionModel.getTag());
 			}
 			if (StringUtils.isNotBlank(promotionModel.getTag())) {
@@ -582,9 +593,9 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		}
 		String leadMemberId = null;
 		leadMemberId = deviceServiceCommonUtility.getMemeberBasedOnRules_Implementation(listOfDeviceGroupMember,
-				Constants.JOURNEY_TYPE_ACQUISITION);
+				JOURNEY_TYPE_ACQUISITION);
 		if (leadMemberId != null) {
-			leadMemberMap.put(leadMemberId, Constants.IS_LEAD_MEMEBER_YES);
+			leadMemberMap.put(leadMemberId, IS_LEAD_MEMEBER_YES);
 		}
 	}
 
@@ -689,7 +700,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 					}
 					productModel.setMerchandisingMedia(merchandisngList);
 				}
-				String productIdForUpdate = Constants.STRING_OPT + Constants.STRING_PRODUCT + "_"
+				String productIdForUpdate = STRING_OPT + STRING_PRODUCT + "_"
 						+ deviceListObject.getDeviceId();
 				deviceDao.getUpdateElasticSearch(productIdForUpdate, mapper.writeValueAsString(productModel));
 
@@ -833,7 +844,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 				}
 			}
 			for (Map.Entry<String, CacheProductGroupModel> entry : productModelMap.entrySet()) {
-				String productGroupId = Constants.STRING_OPT + "productGroup_" + entry.getKey();
+				String productGroupId = STRING_OPT + "productGroup_" + entry.getKey();
 				deviceDao.getUpdateElasticSearch(productGroupId, mapper.writeValueAsString(entry.getValue()));
 			}
 
@@ -851,7 +862,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 	@Override
 	@Async
 	public CompletableFuture<Integer> cacheDeviceTile(String groupType, String jobId, String version) {
-		Constants.CATALOG_VERSION.set(version);
+		CatalogServiceAspect.CATALOG_VERSION.set(version);
 		int i = 0;
 		List<OfferAppliedPriceDetails> offerAppliedPrices = new ArrayList<>();
 
@@ -860,11 +871,11 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		List<DevicePreCalculatedData> devicePreCalculatedDataForPayG = null;
 		try {
 			deviceTileCacheDAO.beginTransaction();
-			if (StringUtils.containsIgnoreCase(groupType, Constants.STRING_DEVICE_PAYM)) {
-				devicePreCalculatedData = getDeviceListFromPricing(Constants.STRING_DEVICE_PAYM);
+			if (StringUtils.containsIgnoreCase(groupType, STRING_DEVICE_PAYM)) {
+				devicePreCalculatedData = getDeviceListFromPricing(STRING_DEVICE_PAYM);
 			}
-			if (StringUtils.containsIgnoreCase(groupType, Constants.STRING_DEVICE_PAYG)) {
-				devicePreCalculatedDataForPayG = getDeviceListFromPricingForPayG(Constants.STRING_DEVICE_PAYG);
+			if (StringUtils.containsIgnoreCase(groupType, STRING_DEVICE_PAYG)) {
+				devicePreCalculatedDataForPayG = getDeviceListFromPricingForPayG(STRING_DEVICE_PAYG);
 				devicePreCalculatedData.addAll(devicePreCalculatedDataForPayG);
 			}
 			if (devicePreCalculatedData != null && !devicePreCalculatedData.isEmpty()) {

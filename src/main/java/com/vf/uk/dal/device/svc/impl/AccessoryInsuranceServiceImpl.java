@@ -33,7 +33,6 @@ import com.vf.uk.dal.device.svc.AccessoryInsuranceService;
 import com.vf.uk.dal.device.svc.DeviceRecommendationService;
 import com.vf.uk.dal.device.utils.AccessoriesAndInsurancedaoUtils;
 import com.vf.uk.dal.device.utils.CommonUtility;
-import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 import com.vf.uk.dal.device.utils.ResponseMappingHelper;
 import com.vf.uk.dal.utility.entity.BundleDeviceAndProductsList;
@@ -47,6 +46,11 @@ import com.vf.uk.dal.utility.entity.PriceForProduct;
 @Component
 public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService {
 
+	public static final String STRING_HANDSET = "Handset";
+	public static final String STRING_COMPATIBLE_INSURANCE = "Compatible Insurance";
+	public static final String STRING_ACCESSORY = "Accessory,Compatible Accessories";
+	public static final String STRING_COMPATIBLE_ACCESSORIES = "Compatible Accessories";
+	
 	@Autowired
 	DeviceDao deviceDao;
 
@@ -99,7 +103,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 		if (commercialProduct != null && commercialProduct.getId() != null) {
 
 			if (commercialProduct.getIsDeviceProduct()
-					&& commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)) {
+					&& commercialProduct.getProductClass().equalsIgnoreCase(STRING_HANDSET)) {
 
 				LogHelper.info(this, "Start -->  calling  CommercialProduct.getProductGroups");
 				ProductGroups productGroups = commercialProduct.getProductGroups();
@@ -218,7 +222,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	public Insurances getInsuranceResponse(String deviceId, String journeyType, CommercialProduct cohProduct) {
 		Insurances insurance;
 		if (cohProduct.getIsDeviceProduct()
-				&& cohProduct.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)) {
+				&& cohProduct.getProductClass().equalsIgnoreCase(STRING_HANDSET)) {
 			insurance = getInsurance(journeyType, cohProduct);
 		} else {
 			LogHelper.error(this, "Given DeviceId is not ProductClass Handset  :" + deviceId);
@@ -243,7 +247,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 				&& !productGroups.getProductGroup().isEmpty()) {
 			for (com.vf.uk.dal.device.datamodel.product.ProductGroup productGroup : productGroups.getProductGroup()) {
 				if (productGroup.getProductGroupRole() != null && productGroup.getProductGroupRole().trim()
-						.equalsIgnoreCase(Constants.STRING_COMPATIBLE_INSURANCE)) {
+						.equalsIgnoreCase(STRING_COMPATIBLE_INSURANCE)) {
 					insuranceGroupName = productGroup.getProductGroupName();
 					insuranceGroupType = productGroup.getProductGroupRole();
 				}
@@ -313,7 +317,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	public static List<Member> getListOfAccessoriesMembers(Group productGroup) {
 		List<Member> listOfAccesoriesMembers = new ArrayList<>();
 		if (productGroup != null
-				&& StringUtils.containsIgnoreCase(Constants.STRING_ACCESSORY, productGroup.getGroupType())) {
+				&& StringUtils.containsIgnoreCase(STRING_ACCESSORY, productGroup.getGroupType())) {
 			listOfAccesoriesMembers.addAll(productGroup.getMembers());
 			if (!listOfAccesoriesMembers.isEmpty()) {
 				listOfAccesoriesMembers = getAccessoryMembersBasedOnPriority_Implementation(listOfAccesoriesMembers);
@@ -450,7 +454,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	public static void getListOfDeviceGroupName(String deviceId, ProductGroups productGroups,
 			List<String> listOfDeviceGroupName) {
 		for (com.vf.uk.dal.device.datamodel.product.ProductGroup productGroup : productGroups.getProductGroup()) {
-			if (productGroup.getProductGroupRole().equalsIgnoreCase(Constants.STRING_COMPATIBLE_ACCESSORIES)) {
+			if (productGroup.getProductGroupRole().equalsIgnoreCase(STRING_COMPATIBLE_ACCESSORIES)) {
 				listOfDeviceGroupName.add(productGroup.getProductGroupName());
 			}
 		}
@@ -558,7 +562,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	 */
 	public static List<String> getInsuranceProductList(List<Member> listOfInsuranceMembers, Group productGroup) {
 		if (productGroup != null && productGroup.getGroupType() != null
-				&& productGroup.getGroupType().trim().equalsIgnoreCase(Constants.STRING_COMPATIBLE_INSURANCE)) {
+				&& productGroup.getGroupType().trim().equalsIgnoreCase(STRING_COMPATIBLE_INSURANCE)) {
 			listOfInsuranceMembers.addAll(productGroup.getMembers());
 		}
 

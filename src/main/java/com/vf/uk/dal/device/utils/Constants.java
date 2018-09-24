@@ -1,8 +1,8 @@
-package com.vf.uk.dal.device.utils;
+/*package com.vf.uk.dal.device.utils;
 
-/**
+*//**
  * Constant values
- */
+ *//*
 public class Constants {
 	public static final String STRING_DATA_AlLOWANCE = "DATA";
 	public static final String STRING_TEXT_ALLOWANCE = "TEXT";
@@ -105,7 +105,7 @@ public class Constants {
 	public static final String STRING_MUST_HAVE_FEATURES = "MustHaveFeatures";
 	public static final String STRING_DATA_UOM_GB = "GB";
 	public static final String FULL_DURATION = "full_duration,conditional_full_discount";
-	/* public static final String STRING_ZERO_STOCK_DEVICE_ID= "0"; 
+	 public static final String STRING_ZERO_STOCK_DEVICE_ID= "0"; 
 
 	public static final String STRING_DEFAULT_DATA_DIFFERENCE = "5";
 	public static final String STRING_DATA_DIFFERENCE = "DATA_DIFFERENCE_VALUE";
@@ -130,7 +130,7 @@ public class Constants {
 	public static final String ZOOKEEPER_USERNAME = "ZOOKEEPER_USERNAME";
 
 	public static final String DEFAULT_ZOOKEEPER_PASS = "SolrRocks";
-	public static final String ZOOKEEPER_PASS = "ZOOKEEPER_PASSWORD";*/
+	public static final String ZOOKEEPER_PASS = "ZOOKEEPER_PASSWORD";
 
 	public static final String PREFIX_SKU = "sku";
 	public static final String IS_LEAD_MEMEBER_YES = "Y";
@@ -167,62 +167,62 @@ public class Constants {
 	public static final String JOURNEY_TYPE_SECONDLINE = "SecondLine";
 	public static final String OFFERCODE_PAYM = "PAYM";
 	public static final String STRING_PRODUCTGROUP_OPERATOR = "~";
-	/**
+	*//**
 	 * @author manoj.bera
 	 * @Sprint 6.4 Constants Start
-	 */
+	 *//*
 	public static final String STRING_MEDIA_PRICEESTABLISH = "priceEstablishedLabel";
 	public static final String STRING_MEDIA_DESCRIPTION = "description";
 	public static final String STRING_MEDIA_LABEL = "label";
 	public static final String STRING_URL_ALLOWANCE = "URL";
 	public static final String DATE_FORMAT = "yyyy-MM-dd";
 	public static final String STRING_MEDIA_PROMOTION = "promotionMedia";
-	/**
+	*//**
 	 * @author manoj.bera
 	 * @Sprint 6.4 Constants End
-	 */
+	 *//*
 
 	public static final String JOURNEY_TYPE_ACQUISITION = "Acquisition";
-	/**
+	*//**
 	 * @author manoj.bera
 	 * @Sprint 6.5 Constants Start
-	 */
+	 *//*
 
 	public static final String STRING_MBB_SELLABLE = "MBB Sellable";
-	/**
+	*//**
 	 * @author manoj.bera
 	 * @Sprint 6.5 Constants Start
-	 */
-	/**
+	 *//*
+	*//**
 	 * Sprint-6.6 start
-	 */
+	 *//*
 	public static final String PROMO_CATEGORY_PRICING_UPGRADE_DISCOUNT = "Pricing_Upgrade_Discount";
 	public static final String PROMO_CATEGORY_PRICING_SECONDLINE_DISCOUNT = "Pricing_SecondLine_Discount";
-	/**
+	*//**
 	 * Sprint-6.6 End
-	 */
+	 *//*
 
-	/**
+	*//**
 	 * @author suranjit_kashyap
 	 * @Sprint 6.6 Constants Start
-	 */
+	 *//*
 	public static final String STRING_PAGESIZE = "pageSize";
 	public static final String STRING_PAGENUMBER = "pageNumber";
 	public static final String STRING_DATA_DEVICE_PAYM = "DATA_DEVICE_PAYM";
 	public static final String STRING_DATA_DEVICE_PAYG = "DATA_DEVICE_PAYG";
 
-	/**
+	*//**
 	 * @author suranjit_kashyap
 	 * @Sprint 6.6 Constants Start
-	 */
+	 *//*
 
-	/**
+	*//**
 	 * @author krishna.reddy Sprint 7.2
-	 */
+	 *//*
 
-	/**
+	*//**
 	 * @author manoj.bera Sprint 8.3
-	 */
+	 *//*
 	public static final String PAYG_DEVICE = "Mobile Phones";
 
 	public static final int DEFAULT_PORT = -1;
@@ -265,11 +265,11 @@ public class Constants {
 
 	public static final String ELASTIC_SEARCH_INDEX_SIZE = "ELASTIC_SEARCH_INDEX_SIZE";
 
-	/*
+	
 	 * public static final String BAZAAR_VOICE_PART1= "bazaarvoice.urlPart1";
 	 * 
 	 * public static final String BAZAAR_VOICE_PART2= "bazaarvoice.urlPart2";
-	 */
+	 
 
 	// Regular Expression to identify list of ProductIds with comma separated.
 	public static final String NUMER_REG_EXP = "[0-9]{6}";
@@ -338,3 +338,4 @@ public class Constants {
 	public static final String LEAD_MEMBER_STRING = "leadMember";
 	public static final String STRING_MODELS = "models";
 }
+*/

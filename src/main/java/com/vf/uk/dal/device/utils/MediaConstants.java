@@ -1,8 +1,8 @@
-package com.vf.uk.dal.device.utils;
+/*package com.vf.uk.dal.device.utils;
 
-/**
+*//**
  * Constant values used in MediaLink
- **/
+ **//*
 
 public class MediaConstants {
 
@@ -31,3 +31,4 @@ public class MediaConstants {
 	private MediaConstants(){}
 
 }
+*/

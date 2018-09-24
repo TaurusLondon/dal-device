@@ -23,6 +23,7 @@ import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
+import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.datamodel.product.BazaarVoice;
 import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
@@ -31,7 +32,6 @@ import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
 import com.vf.uk.dal.device.helper.DeviceESHelper;
 import com.vf.uk.dal.device.utils.BazaarVoiceCache;
 import com.vf.uk.dal.device.utils.CommonUtility;
-import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 import com.vf.uk.dal.utility.entity.BundleDetails;
 
@@ -45,6 +45,7 @@ import com.vf.uk.dal.utility.entity.BundleDetails;
 @Component("deviceDao")
 public class DeviceDaoImpl implements DeviceDao {
 
+	public static final String STRING_MODELS = "models";
 	@Autowired
 	CommonUtility commonUtility;
 
@@ -169,7 +170,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		LogHelper.info(this, "Start -->  calling  getPriceForBundleAndHardwareListFromTupleList_PriceAPI");
 
 		return CompletableFuture.supplyAsync(() -> {
-			Constants.CATALOG_VERSION.set(version);
+			CatalogServiceAspect.CATALOG_VERSION.set(version);
 			return commonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode,journeyType);
 		});
 
@@ -187,7 +188,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		LogHelper.info(this, "Start -->  calling  getBundleAndHardwarePromotionsListFromBundleListAsync");
 
 		return CompletableFuture.supplyAsync(() -> {
-			Constants.CATALOG_VERSION.set(version);
+			CatalogServiceAspect.CATALOG_VERSION.set(version);
 			return commonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList, journeyType);
 		});
 
@@ -223,12 +224,12 @@ public class DeviceDaoImpl implements DeviceDao {
 	@Override
 	public void getUpdateElasticSearch(String id, String data) {
 		try {
-			UpdateRequest updateRequest = new UpdateRequest(Constants.CATALOG_VERSION.get(), Constants.STRING_MODELS, id);
+			UpdateRequest updateRequest = new UpdateRequest(CatalogServiceAspect.CATALOG_VERSION.get(), STRING_MODELS, id);
 			updateRequest.doc(data, XContentType.JSON);
 			restClient.update(updateRequest,
 					new BasicHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString()));
 
-			UpdateRequest updateRequestForNull = new UpdateRequest(Constants.CATALOG_VERSION.get(), Constants.STRING_MODELS, id)
+			UpdateRequest updateRequestForNull = new UpdateRequest(CatalogServiceAspect.CATALOG_VERSION.get(), STRING_MODELS, id)
 					.doc(org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder().startObject().endObject());
 			restClient.update(updateRequestForNull);
 		} catch (IOException e) {
@@ -244,8 +245,8 @@ public class DeviceDaoImpl implements DeviceDao {
 	@Override
 	public void getIndexElasticSearch(String id, String data) {
 		try {
-			IndexRequest updateRequestForILSPromo = Requests.indexRequest(Constants.CATALOG_VERSION.get());
-			updateRequestForILSPromo.type(Constants.STRING_MODELS);
+			IndexRequest updateRequestForILSPromo = Requests.indexRequest(CatalogServiceAspect.CATALOG_VERSION.get());
+			updateRequestForILSPromo.type(STRING_MODELS);
 			updateRequestForILSPromo.id(id);
 			updateRequestForILSPromo.source(data, XContentType.JSON);
 			restClient.index(updateRequestForILSPromo,

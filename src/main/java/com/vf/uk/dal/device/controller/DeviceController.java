@@ -24,7 +24,6 @@ import com.vf.uk.dal.common.urlparams.PaginationCriteria;
 import com.vf.uk.dal.device.entity.DeviceTile;
 import com.vf.uk.dal.device.entity.FacetedDevice;
 import com.vf.uk.dal.device.svc.DeviceService;
-import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 import com.vf.uk.dal.device.validator.Validator;
 
@@ -47,6 +46,7 @@ import io.swagger.annotations.ApiResponses;
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public class DeviceController {
 
+	public static final String numberExp = "[0-9]{6}";
 	@Autowired
 	DeviceService deviceService;
 
@@ -89,7 +89,7 @@ public class DeviceController {
 			@ApiParam(value = "Journey Type") @RequestParam(value = "journeyType", required = false) String journeyType,
 			@ApiParam(value = "Promotional Offer Code that's applicable") @RequestParam(value = "offerCode", required = false) String offerCode) {
 		List<DeviceTile> listOfDeviceTile;
-		if (!deviceId.matches(Constants.numberExp)) {
+		if (!deviceId.matches(numberExp)) {
 			LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
 			throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 		}
