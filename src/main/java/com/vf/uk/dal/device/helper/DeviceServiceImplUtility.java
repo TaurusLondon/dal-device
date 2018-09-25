@@ -36,7 +36,6 @@ import com.vf.uk.dal.device.entity.DeviceTile;
 import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
 import com.vf.uk.dal.device.entity.ProductGroupDetailsForDeviceList;
 import com.vf.uk.dal.device.utils.CommonUtility;
-import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.DeviceDetailsMakeAndModelVaiantDaoUtils;
 import com.vf.uk.dal.device.utils.DeviceTilesDaoUtils;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
@@ -49,6 +48,25 @@ import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 @Service
 public class DeviceServiceImplUtility {
 	
+	public static final String JOURNEY_TYPE_ACQUISITION = "Acquisition";
+	public static final String JOURNEY_TYPE_UPGRADE = "Upgrade";
+	public static final String JOURNEY_TYPE_SECONDLINE = "SecondLine";
+	public static final String SORT_HYPEN = "-";
+	public static final String STRING_DEVICE_PAYM = "DEVICE_PAYM";
+	public static final String STRING_DEVICE_PAYG = "DEVICE_PAYG";
+	public static final String DATE_FORMAT = "yyyy-MM-dd";
+	public static final String STRING_HANDSET = "Handset";
+	public static final String PAYG_DEVICE = "Mobile Phones";
+	public static final String LIMITED_TIME_DISCOUNT = "limited_time";
+	public static final String FULL_DURATION_DISCOUNT = "full_duration";
+	public static final String STRING_DATA_DEVICE = "Data Device";
+	public static final String STRING_DATADEVICE_PAYM = "DATA_DEVICE_PAYM";
+	public static final String STRING_DATADEVICE_PAYG = "DATA_DEVICE_PAYG";
+	public static final String SORT_OPTION_DESC = "desc";
+	public static final String SORT_OPTION_ASC = "asc";
+	public static final String STRING_DEVICE_NEARLY_NEW = "DEVICE_NEARLY_NEW";
+	public static final String STRING_TRUE = "true";
+	
 	@Autowired
 	CommonUtility commonUtility;
 	
@@ -60,19 +78,19 @@ public class DeviceServiceImplUtility {
 	 * @return
 	 */
 	public static String getJourney(String journeyType) {
-		boolean nonValidJourney = !Constants.JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyType)
-				&& !Constants.JOURNEY_TYPE_UPGRADE.equalsIgnoreCase(journeyType)
-				&& !Constants.JOURNEY_TYPE_SECONDLINE.equalsIgnoreCase(journeyType);
+		boolean nonValidJourney = !JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyType)
+				&& !JOURNEY_TYPE_UPGRADE.equalsIgnoreCase(journeyType)
+				&& !JOURNEY_TYPE_SECONDLINE.equalsIgnoreCase(journeyType);
 		String journeytype = null;
 		if (StringUtils.isBlank(journeyType)
-				|| StringUtils.equalsIgnoreCase(Constants.JOURNEY_TYPE_ACQUISITION, journeyType) || nonValidJourney) {
-			journeytype = Constants.JOURNEY_TYPE_ACQUISITION;
+				|| StringUtils.equalsIgnoreCase(JOURNEY_TYPE_ACQUISITION, journeyType) || nonValidJourney) {
+			journeytype = JOURNEY_TYPE_ACQUISITION;
 		} else if (StringUtils.isNotBlank(journeyType)
-				&& StringUtils.equalsIgnoreCase(Constants.JOURNEY_TYPE_UPGRADE, journeyType)) {
-			journeytype = Constants.JOURNEY_TYPE_UPGRADE;
+				&& StringUtils.equalsIgnoreCase(JOURNEY_TYPE_UPGRADE, journeyType)) {
+			journeytype = JOURNEY_TYPE_UPGRADE;
 		} else if (StringUtils.isNotBlank(journeyType)
-				&& StringUtils.equalsIgnoreCase(Constants.JOURNEY_TYPE_SECONDLINE, journeyType)) {
-			journeytype = Constants.JOURNEY_TYPE_SECONDLINE;
+				&& StringUtils.equalsIgnoreCase(JOURNEY_TYPE_SECONDLINE, journeyType)) {
+			journeytype = JOURNEY_TYPE_SECONDLINE;
 		}
 		return journeytype;
 	}
@@ -130,7 +148,7 @@ public class DeviceServiceImplUtility {
 	 */
 	public static String getSortCriteria(String sortCriteria) {
 		String sortCriteriaLocal;
-		if (StringUtils.isNotBlank(sortCriteria) && sortCriteria.startsWith(Constants.SORT_HYPEN)) {
+		if (StringUtils.isNotBlank(sortCriteria) && sortCriteria.startsWith(SORT_HYPEN)) {
 			sortCriteriaLocal = sortCriteria.substring(1);
 		} else {
 			sortCriteriaLocal = sortCriteria;
@@ -196,7 +214,7 @@ public class DeviceServiceImplUtility {
 	public static void getBundleAndHardwareList(String groupType, String journeyType,
 			List<BundleAndHardwareTuple> bundleHardwareTupleList, ProductModel productModel) {
 		if (StringUtils.isNotBlank(journeyType)
-				&& StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_UPGRADE)
+				&& StringUtils.equalsIgnoreCase(journeyType, JOURNEY_TYPE_UPGRADE)
 				&& StringUtils.isNotBlank(productModel.getUpgradeLeadPlanId())
 				&& productModel.getUpgradeLeadPlanId().length() == 6) {
 			BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
@@ -210,7 +228,7 @@ public class DeviceServiceImplUtility {
 			bundleAndHardwareTuple.setBundleId(productModel.getNonUpgradeLeadPlanId());
 			bundleAndHardwareTuple.setHardwareId(productModel.getProductId());
 			bundleHardwareTupleList.add(bundleAndHardwareTuple);
-		} else if (groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG)
+		} else if (groupType.equalsIgnoreCase(STRING_DEVICE_PAYG)
 				&& getJourneyTypevalidationForDeviceList(journeyType)) {
 			BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
 			bundleAndHardwareTuple.setBundleId(null);
@@ -238,7 +256,7 @@ public class DeviceServiceImplUtility {
 		Date startDateTime = null;
 		if (productModel2.getProductStartDate() != null) {
 			try {
-				startDateTime = new SimpleDateFormat(Constants.DATE_FORMAT).parse(productModel2.getProductStartDate());
+				startDateTime = new SimpleDateFormat(DATE_FORMAT).parse(productModel2.getProductStartDate());
 			} catch (ParseException e) {
 				LogHelper.error(DeviceServiceImplUtility.class, "Parse Exception: " + e);
 			}
@@ -256,7 +274,7 @@ public class DeviceServiceImplUtility {
 		Date endDateTime = null;
 		if (productModel2.getProductEndDate() != null) {
 			try {
-				endDateTime = new SimpleDateFormat(Constants.DATE_FORMAT).parse(productModel2.getProductEndDate());
+				endDateTime = new SimpleDateFormat(DATE_FORMAT).parse(productModel2.getProductEndDate());
 			} catch (ParseException ex) {
 				LogHelper.error(DeviceServiceImplUtility.class, "Parse Exception: " + ex);
 			}
@@ -331,7 +349,7 @@ public class DeviceServiceImplUtility {
 	 */
 	public static boolean isUpgradeCheck(String journeyType, Date startDateTime, Date endDateTime,
 			ProductModel productModel2, boolean preOrderableFlag) {
-		return isUpgrade(journeyType) && productModel2.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)
+		return isUpgrade(journeyType) && productModel2.getProductClass().equalsIgnoreCase(STRING_HANDSET)
 				&& DeviceServiceImplUtility.dateValidation(startDateTime, endDateTime, preOrderableFlag)
 				&& isRet(productModel2);
 	}
@@ -347,7 +365,7 @@ public class DeviceServiceImplUtility {
 	 */
 	public static boolean isNonUpgradeCheck(String journeyType, Date startDateTime, Date endDateTime,
 			ProductModel productModel2, boolean preOrderableFlag) {
-		return isNonUpgrade(journeyType) && productModel2.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)
+		return isNonUpgrade(journeyType) && productModel2.getProductClass().equalsIgnoreCase(STRING_HANDSET)
 				&& DeviceServiceImplUtility.dateValidation(startDateTime, endDateTime, preOrderableFlag)
 				&& isAcq(productModel2);
 	}
@@ -359,7 +377,7 @@ public class DeviceServiceImplUtility {
 	 */
 	public static boolean isUpgrade(String journeyType) {
 		return StringUtils.isNotBlank(journeyType)
-				&& StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_UPGRADE);
+				&& StringUtils.equalsIgnoreCase(journeyType, JOURNEY_TYPE_UPGRADE);
 	}
 
 	/**
@@ -368,8 +386,8 @@ public class DeviceServiceImplUtility {
 	 * @return
 	 */
 	public static boolean isRet(ProductModel productModel2) {
-		return Constants.STRING_TRUE.equalsIgnoreCase(productModel2.getIsDisplayableRet())
-				&& Constants.STRING_TRUE.equalsIgnoreCase(productModel2.getIsSellableRet());
+		return STRING_TRUE.equalsIgnoreCase(productModel2.getIsDisplayableRet())
+				&& STRING_TRUE.equalsIgnoreCase(productModel2.getIsSellableRet());
 	}
 
 	/**
@@ -378,8 +396,8 @@ public class DeviceServiceImplUtility {
 	 * @return
 	 */
 	public static boolean isAcq(ProductModel productModel2) {
-		return Constants.STRING_TRUE.equalsIgnoreCase(productModel2.getIsDisplayableAcq())
-				&& Constants.STRING_TRUE.equalsIgnoreCase(productModel2.getIsSellableAcq());
+		return STRING_TRUE.equalsIgnoreCase(productModel2.getIsDisplayableAcq())
+				&& STRING_TRUE.equalsIgnoreCase(productModel2.getIsSellableAcq());
 	}
 
 	/**
@@ -389,7 +407,7 @@ public class DeviceServiceImplUtility {
 	 */
 	public static boolean isNonUpgrade(String journeyType) {
 		return StringUtils.isBlank(journeyType) || (StringUtils.isNotBlank(journeyType)
-				&& !StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_UPGRADE));
+				&& !StringUtils.equalsIgnoreCase(journeyType, JOURNEY_TYPE_UPGRADE));
 	}
 
 	/**
@@ -402,11 +420,11 @@ public class DeviceServiceImplUtility {
 		String sortOption = null;
 		List<String> criteria = new ArrayList<>();
 		if (sortCriteria != null) {
-			if (sortCriteria.startsWith(Constants.SORT_HYPEN)) {
-				sortOption = Constants.SORT_OPTION_DESC;
+			if (sortCriteria.startsWith(SORT_HYPEN)) {
+				sortOption = SORT_OPTION_DESC;
 				sortBy = sortCriteria.substring(1, sortCriteria.length());
-			} else if (!sortCriteria.startsWith(Constants.SORT_HYPEN)) {
-				sortOption = Constants.SORT_OPTION_ASC;
+			} else if (!sortCriteria.startsWith(SORT_HYPEN)) {
+				sortOption = SORT_OPTION_ASC;
 				sortBy = sortCriteria;
 			}
 			criteria.add(sortOption);
@@ -420,11 +438,11 @@ public class DeviceServiceImplUtility {
 	 * @return
 	 */
 	public static boolean validateGroupType(String groupType) {
-		boolean result = groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYM)
-				|| groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG);
-		boolean result1 = groupType.equalsIgnoreCase(Constants.STRING_DEVICE_NEARLY_NEW)
-				|| groupType.equalsIgnoreCase(Constants.STRING_DATADEVICE_PAYM)
-				|| groupType.equalsIgnoreCase(Constants.STRING_DATADEVICE_PAYG);
+		boolean result = groupType.equalsIgnoreCase(STRING_DEVICE_PAYM)
+				|| groupType.equalsIgnoreCase(STRING_DEVICE_PAYG);
+		boolean result1 = groupType.equalsIgnoreCase(STRING_DEVICE_NEARLY_NEW)
+				|| groupType.equalsIgnoreCase(STRING_DATADEVICE_PAYM)
+				|| groupType.equalsIgnoreCase(STRING_DATADEVICE_PAYG);
 		return result || result1;
 	}
 
@@ -434,9 +452,9 @@ public class DeviceServiceImplUtility {
 	 */
 	public static boolean getJourneyForMakeAndModel(String journeyTypeInput) {
 		return StringUtils.isBlank(journeyTypeInput)
-				|| (!Constants.JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyTypeInput)
-						&& !Constants.JOURNEY_TYPE_UPGRADE.equalsIgnoreCase(journeyTypeInput)
-						&& !Constants.JOURNEY_TYPE_SECONDLINE.equalsIgnoreCase(journeyTypeInput));
+				|| (!JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyTypeInput)
+						&& !JOURNEY_TYPE_UPGRADE.equalsIgnoreCase(journeyTypeInput)
+						&& !JOURNEY_TYPE_SECONDLINE.equalsIgnoreCase(journeyTypeInput));
 	}
 
 	/**
@@ -445,8 +463,8 @@ public class DeviceServiceImplUtility {
 	 * @return
 	 */
 	public static boolean getProductclassValidation(CommercialProduct comProduct) {
-		return comProduct.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)
-				|| comProduct.getProductClass().equalsIgnoreCase(Constants.STRING_DATA_DEVICE);
+		return comProduct.getProductClass().equalsIgnoreCase(STRING_HANDSET)
+				|| comProduct.getProductClass().equalsIgnoreCase(STRING_DATA_DEVICE);
 	}
 
 	/**
@@ -476,10 +494,10 @@ public class DeviceServiceImplUtility {
 	public static String getJourneyForVariant(String journeyTypeInput) {
 		String journeyType;
 		if (StringUtils.isBlank(journeyTypeInput)
-				|| (!Constants.JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyTypeInput)
-						&& !Constants.JOURNEY_TYPE_UPGRADE.equalsIgnoreCase(journeyTypeInput)
-						&& !Constants.JOURNEY_TYPE_SECONDLINE.equalsIgnoreCase(journeyTypeInput))) {
-			journeyType = Constants.JOURNEY_TYPE_ACQUISITION;
+				|| (!JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyTypeInput)
+						&& !JOURNEY_TYPE_UPGRADE.equalsIgnoreCase(journeyTypeInput)
+						&& !JOURNEY_TYPE_SECONDLINE.equalsIgnoreCase(journeyTypeInput))) {
+			journeyType = JOURNEY_TYPE_ACQUISITION;
 		} else {
 			journeyType = journeyTypeInput;
 		}
@@ -521,7 +539,7 @@ public class DeviceServiceImplUtility {
 		String discountType = DeviceTilesDaoUtils
 				.isPartialOrFullTenureDiscount(priceForBundleAndHardware.getBundlePrice());
 
-		if ((null != discountType && discountType.equals(Constants.FULL_DURATION_DISCOUNT))
+		if ((null != discountType && discountType.equals(FULL_DURATION_DISCOUNT))
 				&& null != priceForBundleAndHardware.getBundlePrice().getMonthlyDiscountPrice()
 				&& null != priceForBundleAndHardware.getBundlePrice().getMonthlyDiscountPrice().getGross()) {
 			Double grossPrice = Double
@@ -529,7 +547,7 @@ public class DeviceServiceImplUtility {
 			if (grossPrice > creditLimit) {
 				iterator.remove();
 			}
-		} else if ((null == discountType || (discountType.equals(Constants.LIMITED_TIME_DISCOUNT)))
+		} else if ((null == discountType || (discountType.equals(LIMITED_TIME_DISCOUNT)))
 				&& null != priceForBundleAndHardware.getBundlePrice().getMonthlyPrice()
 				&& null != priceForBundleAndHardware.getBundlePrice().getMonthlyPrice().getGross()) {
 			Double grossPrice = new Double(priceForBundleAndHardware.getBundlePrice().getMonthlyPrice().getGross());
@@ -600,12 +618,12 @@ public class DeviceServiceImplUtility {
 			com.vf.uk.dal.device.entity.BundlePrice bundlePrice) {
 		String discountType = DeviceTilesDaoUtils.isPartialOrFullTenureDiscount(bundlePrice);
 		Double grossPrice = null;
-		if (null != discountType && discountType.equals(Constants.FULL_DURATION_DISCOUNT)) {
+		if (null != discountType && discountType.equals(FULL_DURATION_DISCOUNT)) {
 			if (null != bundlePrice.getMonthlyDiscountPrice()
 					&& null != bundlePrice.getMonthlyDiscountPrice().getGross()) {
 				grossPrice = Double.parseDouble(bundlePrice.getMonthlyDiscountPrice().getGross());
 			}
-		} else if ((null == discountType || (discountType.equals(Constants.LIMITED_TIME_DISCOUNT)))
+		} else if ((null == discountType || (discountType.equals(LIMITED_TIME_DISCOUNT)))
 				&& null != bundlePrice.getMonthlyPrice() && null != bundlePrice.getMonthlyPrice().getGross()) {
 			grossPrice = new Double(bundlePrice.getMonthlyPrice().getGross());
 		}
@@ -620,12 +638,12 @@ public class DeviceServiceImplUtility {
 	public static Double getBundlePriceBasedOnDiscountDuration_Implementation(DeviceSummary deviceSummary,
 			String discountType) {
 		Double monthlyPrice = null;
-		if ((null != discountType && discountType.equals(Constants.FULL_DURATION_DISCOUNT))
+		if ((null != discountType && discountType.equals(FULL_DURATION_DISCOUNT))
 				&& null != deviceSummary.getPriceInfo().getBundlePrice().getMonthlyDiscountPrice()
 				&& null != deviceSummary.getPriceInfo().getBundlePrice().getMonthlyDiscountPrice().getGross()) {
 			monthlyPrice = Double
 					.parseDouble(deviceSummary.getPriceInfo().getBundlePrice().getMonthlyDiscountPrice().getGross());
-		} else if ((null == discountType || discountType.equals(Constants.LIMITED_TIME_DISCOUNT))
+		} else if ((null == discountType || discountType.equals(LIMITED_TIME_DISCOUNT))
 				&& null != deviceSummary.getPriceInfo().getBundlePrice().getMonthlyPrice()
 				&& StringUtils.isNotBlank(deviceSummary.getPriceInfo().getBundlePrice().getMonthlyPrice().getGross())) {
 			monthlyPrice = Double
@@ -784,12 +802,12 @@ public class DeviceServiceImplUtility {
 	public static boolean isSellable(String journeyType, CommercialBundle commercialBundle) {
 		boolean sellableCheck = false;
 		if (commercialBundle != null) {
-			if (Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
+			if (JOURNEY_TYPE_UPGRADE.equalsIgnoreCase(journeyType)
 					&& DeviceServiceImplUtility.isUpgradeFromCommercialBundle(commercialBundle)
 					&& !commercialBundle.getAvailability().getSalesExpired()) {
 				sellableCheck = true;
 			}
-			if (!Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)
+			if (!JOURNEY_TYPE_UPGRADE.equalsIgnoreCase(journeyType)
 					&& commercialBundle.getBundleControl() != null
 					&& DeviceServiceImplUtility.isNonUpgradeCommercialBundle(commercialBundle)
 					&& !commercialBundle.getAvailability().getSalesExpired()) {
@@ -836,7 +854,7 @@ public class DeviceServiceImplUtility {
 	public static String getJourneyTypeForVariantAndList(String journeyTypeInput) {
 		String journeyType;
 		if (DeviceServiceImplUtility.getJourneyForMakeAndModel(journeyTypeInput)) {
-			journeyType = Constants.JOURNEY_TYPE_ACQUISITION;
+			journeyType = JOURNEY_TYPE_ACQUISITION;
 		} else {
 			journeyType = journeyTypeInput;
 		}
@@ -962,7 +980,7 @@ public class DeviceServiceImplUtility {
 			bundleAndHardwareTuple.setHardwareId(deviceId);
 			bundleHardwareTupleList.add(bundleAndHardwareTuple);
 		} else if (commercialProduct.getProductLines() != null && !commercialProduct.getProductLines().isEmpty()
-				&& commercialProduct.getProductLines().contains(Constants.PAYG_DEVICE)) {
+				&& commercialProduct.getProductLines().contains(PAYG_DEVICE)) {
 			BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
 			bundleAndHardwareTuple.setBundleId(null);
 			bundleAndHardwareTuple.setHardwareId(deviceId);

@@ -68,7 +68,6 @@ import com.vf.uk.dal.device.svc.DeviceRecommendationService;
 import com.vf.uk.dal.device.svc.DeviceService;
 import com.vf.uk.dal.device.utils.AccessoriesAndInsurancedaoUtils;
 import com.vf.uk.dal.device.utils.CacheDeviceDaoUtils;
-import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.DeviceDetailsMakeAndModelVaiantDaoUtils;
 import com.vf.uk.dal.device.utils.DeviceTilesDaoUtils;
 import com.vf.uk.dal.device.utils.DeviceUtils;
@@ -94,6 +93,12 @@ import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
 
 public class DeviceTest {
 
+	public static final String LIMITED_TIME_DISCOUNT = "limited_time";
+	public static final String FULL_DURATION_DISCOUNT = "full_duration";
+	public static final String STRING_DEVICE_PAYG = "DEVICE_PAYG";
+	public static final String STRING_DEVICE_PAYM = "DEVICE_PAYM";
+	public static final String JOURNEY_TYPE_ACQUISITION = "Acquisition";
+	
 	@Autowired
 	DeviceESHelper deviceESHelper;
 
@@ -1100,7 +1105,7 @@ public class DeviceTest {
 		DevicePreCalculatedData productGroupForDeviceListing = CacheDeviceDaoUtils
 				.convertBundleHeaderForDeviceToProductGroupForDeviceListing("093353", null, "groupname", "groupId",
 						CommonMethods.getPrice(), CommonMethods.getleadMemberMap(), iLSPriceMap,
-						CommonMethods.getleadMemberMap(), null, Constants.STRING_DEVICE_PAYG);
+						CommonMethods.getleadMemberMap(), null, STRING_DEVICE_PAYG);
 
 		Assert.assertNotNull(productGroupForDeviceListing);
 	}
@@ -1112,7 +1117,7 @@ public class DeviceTest {
 		DevicePreCalculatedData productGroupForDeviceListing = CacheDeviceDaoUtils
 				.convertBundleHeaderForDeviceToProductGroupForDeviceListing("093353", "leadPlanId", "groupname",
 						"groupId", CommonMethods.getPrice(), CommonMethods.getleadMemberMap(), iLSPriceMap,
-						CommonMethods.getleadMemberMap(), "upgradeLeadPlanId", Constants.STRING_DEVICE_PAYM);
+						CommonMethods.getleadMemberMap(), "upgradeLeadPlanId", STRING_DEVICE_PAYM);
 
 		Assert.assertNotNull(productGroupForDeviceListing);
 	}
@@ -1317,7 +1322,7 @@ public class DeviceTest {
 		FacetedDevice deviceList = DeviceTilesDaoUtils.convertProductModelListToDeviceList(
 				CommonMethods.getProductModel(), CommonMethods.getListOfProducts(),
 				CommonMethods.getProductGroupFacetModel_One().getListOfFacetsFields(), "DEVICE_PAYG", null, null, null,
-				null, groupNameWithProdId, null, null, isLeadMemberFromSolr, null, Constants.JOURNEY_TYPE_ACQUISITION,
+				null, groupNameWithProdId, null, null, isLeadMemberFromSolr, null, JOURNEY_TYPE_ACQUISITION,
 				productGroupdetailsMap,cdnDomain);
 		Assert.assertNotNull(deviceList);
 	}
@@ -1354,9 +1359,9 @@ public class DeviceTest {
 	@Test
 	public void NotNullTestForGetBundlePriceBasedOnDiscountDuration() {
 		DeviceTilesDaoUtils.getBundlePriceBasedOnDiscountDuration(
-				CommonMethods.getPriceForBundleAndHardware().get(0).getBundlePrice(), Constants.FULL_DURATION_DISCOUNT);
+				CommonMethods.getPriceForBundleAndHardware().get(0).getBundlePrice(), FULL_DURATION_DISCOUNT);
 		DeviceTilesDaoUtils.getBundlePriceBasedOnDiscountDuration(
-				CommonMethods.getPriceForBundleAndHardware().get(0).getBundlePrice(), Constants.LIMITED_TIME_DISCOUNT);
+				CommonMethods.getPriceForBundleAndHardware().get(0).getBundlePrice(), LIMITED_TIME_DISCOUNT);
 	}
 
 	@Test

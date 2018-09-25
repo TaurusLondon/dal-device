@@ -77,7 +77,6 @@ import com.vf.uk.dal.device.entity.SourcePackageSummary;
 import com.vf.uk.dal.device.entity.Specification;
 import com.vf.uk.dal.device.entity.SpecificationGroup;
 import com.vf.uk.dal.device.entity.StepPricingInfo;
-import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 import com.vf.uk.dal.utility.entity.BundleDetails;
 import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
@@ -96,7 +95,18 @@ import com.vf.uk.dal.utility.solr.entity.PriceInfo;
 
 public class CommonMethods {
 	public static Timestamp timeStamp;
-
+	public static final String STRING_ACCESSORY = "Accessory,Compatible Accessories";
+	public static final String CONDITIONAL_FULL_DISCOUNT = "conditional_full_discount";
+	public static final String PREFERENCE_NAME_HANDSET = "HANDSET";
+	public static final String PREFERENCE_DATATYPE_CODE_PREFERENCE = "PREFERENCE";
+	public static final String PREFERENCE_NAME_RECOMMIT = "RECOMMIT";
+	public static final String ACCOUNT_CATEGORY_INDIVIDUAL = "Individual";
+	public static final String STRING_TARIFF = "TARIFF";
+	public static final String PREFERENCE_DATATYPE_ELIGIBILITY_CRITERIA = "ELIGIBILITY_CRITERIA";
+	public static final String PREFERENCE_NAME_SEGMENT = "SEGMENT";
+	public static final String PREFERENCE_NAME_UPGRADE = "UPGRADE_TYPE";
+	public static final String PREFERENCE_DATATYPE_CODE_GENERAL = "GENERAL";
+	
 	public static byte[] readFile(String filename) throws IOException
 	{
         String fileData = null;
@@ -835,7 +845,7 @@ public class CommonMethods {
 		Group group1 = new Group();
 		group1.setVersion("1.0");
 		group1.setGroupPriority((long) 3);
-		group1.setGroupType(Constants.STRING_ACCESSORY);
+		group1.setGroupType(STRING_ACCESSORY);
 		List<Member> memberList = new ArrayList<Member>();
 		Member member = new Member();
 		member.setId("123");
@@ -870,7 +880,7 @@ public class CommonMethods {
 		Group group1 = new Group();
 		group1.setVersion("1.0");
 		group1.setGroupPriority((long) 3);
-		group1.setGroupType(Constants.STRING_ACCESSORY);
+		group1.setGroupType(STRING_ACCESSORY);
 		List<Member> memberList = new ArrayList<Member>();
 		Member member = new Member();
 		member.setId("123");
@@ -905,7 +915,7 @@ public class CommonMethods {
 		Group group1 = new Group();
 		group1.setVersion("1.0");
 		group1.setGroupPriority((long) 3);
-		group1.setGroupType(Constants.STRING_ACCESSORY);
+		group1.setGroupType(STRING_ACCESSORY);
 		List<Member> memberList = new ArrayList<Member>();
 		Member member = new Member();
 		member.setId("123");
@@ -1708,7 +1718,7 @@ public class CommonMethods {
 		merchandisingPromotions.setDescription("description");
 		merchandisingPromotions.setPriceEstablishedLabel("priceEstablishedLabel");
 		merchandisingPromotions.setPromotionMedia("promotionMedia");
-		merchandisingPromotions.setMpType(Constants.CONDITIONAL_FULL_DISCOUNT);
+		merchandisingPromotions.setMpType(CONDITIONAL_FULL_DISCOUNT);
 		bundlePrice.setMerchandisingPromotions(merchandisingPromotions);
 		com.vf.uk.dal.device.entity.Price monthlyDiscountPrice = new com.vf.uk.dal.device.entity.Price();
 		monthlyDiscountPrice.setGross("10.11");
@@ -2666,38 +2676,38 @@ public class CommonMethods {
 		RecommendedProductListRequest recomProdListReq = new RecommendedProductListRequest();
 
 		recomProdListReq.setSerialNumber(msisdn);
-		recomProdListReq.setAccountCategory(Constants.ACCOUNT_CATEGORY_INDIVIDUAL);
+		recomProdListReq.setAccountCategory(ACCOUNT_CATEGORY_INDIVIDUAL);
 
 		List<InstalledProduct> instProds = new ArrayList<>();
 		InstalledProduct instProd = new InstalledProduct();
 		instProd.setId(deviceId);
-		instProd.setTypeCode(Constants.STRING_TARIFF);
+		instProd.setTypeCode(STRING_TARIFF);
 		instProd.setAmount("220000.00");
 		instProds.add(instProd);
 		recomProdListReq.setInstalledProducts(instProds);
 
 		List<Preferences> prefs = new ArrayList<>();
 		Preferences handsetPref = new Preferences();
-		handsetPref.setName(Constants.PREFERENCE_NAME_HANDSET);
-		handsetPref.setDataTypeCode(Constants.PREFERENCE_DATATYPE_CODE_PREFERENCE);
+		handsetPref.setName(PREFERENCE_NAME_HANDSET);
+		handsetPref.setDataTypeCode(PREFERENCE_DATATYPE_CODE_PREFERENCE);
 		handsetPref.setValue("all");
 		prefs.add(handsetPref);
 
 		Preferences upgradePref = new Preferences();
-		upgradePref.setName(Constants.PREFERENCE_NAME_UPGRADE);
-		upgradePref.setDataTypeCode(Constants.PREFERENCE_DATATYPE_CODE_GENERAL);
+		upgradePref.setName(PREFERENCE_NAME_UPGRADE);
+		upgradePref.setDataTypeCode(PREFERENCE_DATATYPE_CODE_GENERAL);
 		upgradePref.setValue("SIMOFLEX");
 		prefs.add(upgradePref);
 
 		Preferences recommitPref = new Preferences();
-		recommitPref.setName(Constants.PREFERENCE_NAME_RECOMMIT);
-		recommitPref.setDataTypeCode(Constants.PREFERENCE_DATATYPE_CODE_GENERAL);
+		recommitPref.setName(PREFERENCE_NAME_RECOMMIT);
+		recommitPref.setDataTypeCode(PREFERENCE_DATATYPE_CODE_GENERAL);
 		recommitPref.setValue("FALSE");
 		prefs.add(recommitPref);
 
 		Preferences segmentPref = new Preferences();
-		segmentPref.setName(Constants.PREFERENCE_NAME_SEGMENT);
-		segmentPref.setDataTypeCode(Constants.PREFERENCE_DATATYPE_ELIGIBILITY_CRITERIA);
+		segmentPref.setName(PREFERENCE_NAME_SEGMENT);
+		segmentPref.setDataTypeCode(PREFERENCE_DATATYPE_ELIGIBILITY_CRITERIA);
 		segmentPref.setValue("cbu");
 		prefs.add(segmentPref);
 
@@ -2705,7 +2715,7 @@ public class CommonMethods {
 
 		List<String> recomPrdTypes;
 		recomPrdTypes = new ArrayList<>();
-		recomPrdTypes.add(Constants.PREFERENCE_NAME_HANDSET);
+		recomPrdTypes.add(PREFERENCE_NAME_HANDSET);
 
 		recomProdListReq.setBasketItems(null);
 		recomProdListReq.setNoOfRecommendations("100");
@@ -3795,7 +3805,7 @@ public class CommonMethods {
 		merchandisingPromotions.setDescription("description");
 		merchandisingPromotions.setPriceEstablishedLabel("priceEstablishedLabel");
 		merchandisingPromotions.setPromotionMedia("promotionMedia");
-		merchandisingPromotions.setMpType(Constants.CONDITIONAL_FULL_DISCOUNT);
+		merchandisingPromotions.setMpType(CONDITIONAL_FULL_DISCOUNT);
 		bundlePrice.setMerchandisingPromotions(merchandisingPromotions);
 		com.vf.uk.dal.device.entity.Price monthlyDiscountPrice = new com.vf.uk.dal.device.entity.Price();
 		monthlyDiscountPrice.setGross("13.11");
@@ -4106,7 +4116,7 @@ public class CommonMethods {
 		Group group1 = new Group();
 		group1.setVersion("1.0");
 		group1.setGroupPriority((long) 3);
-		group1.setGroupType(Constants.STRING_ACCESSORY);
+		group1.setGroupType(STRING_ACCESSORY);
 		List<Member> memberList = new ArrayList<Member>();
 		Member member = new Member();
 		member.setId("123");

@@ -24,13 +24,13 @@ import com.vf.uk.dal.device.datamodel.productgroups.ProductGroupModelMap;
 import com.vf.uk.dal.device.helper.DeviceESHelper;
 import com.vf.uk.dal.device.helper.DeviceServiceImplUtility;
 import com.vf.uk.dal.device.svc.DeviceEntityService;
-import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.DeviceUtils;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 
 @Component
 public class DeviceEntityServiceImpl implements DeviceEntityService {
 
+	public static final String COMPATIBLE_DELIVERY = "Compatible Delivery";
 	@Autowired
 	DeviceESHelper deviceEs;
 	
@@ -69,7 +69,7 @@ public class DeviceEntityServiceImpl implements DeviceEntityService {
 		Map<String, List<String>> productGroupmap = new HashMap<>();
 		getProductGroupMap(productModels, displayName, productGroupmap);
 		List<ProductGroupModel> productGroupModels = deviceEs.getListOfProductGroupModel(displayName,
-				Constants.COMPATIBLE_DELIVERY);
+				COMPATIBLE_DELIVERY);
 		getProductGroupModelBasedOnDelivery(result, productGroupmap, productGroupModels);
 		if (result.isEmpty()) {
 			LogHelper.error(this, ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID + " : " + deviceIds);
@@ -138,7 +138,7 @@ public class DeviceEntityServiceImpl implements DeviceEntityService {
 				String[] arr = group.split("@");
 				String groupName = arr[0];
 				String groupRole = arr[1];
-				if (StringUtils.isNotBlank(groupRole) && Constants.COMPATIBLE_DELIVERY.equalsIgnoreCase(groupRole)) {
+				if (StringUtils.isNotBlank(groupRole) && COMPATIBLE_DELIVERY.equalsIgnoreCase(groupRole)) {
 					displayName.add(groupName);
 					if (productGroupmap.containsKey(group)) {
 						List<String> products = productGroupmap.get(group);

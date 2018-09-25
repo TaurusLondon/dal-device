@@ -22,7 +22,6 @@ import com.vf.uk.dal.device.datamodel.productgroups.Group;
 import com.vf.uk.dal.device.datamodel.productgroups.ProductGroupFacetModel;
 import com.vf.uk.dal.device.datamodel.productgroups.ProductGroupModel;
 import com.vf.uk.dal.device.querybuilder.DeviceQueryBuilderHelper;
-import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.ResponseMappingHelper;
 
 /**
@@ -32,7 +31,9 @@ import com.vf.uk.dal.device.utils.ResponseMappingHelper;
  */
 @Component
 public class DeviceESHelper {
-
+	public static final String STRING_BUNDLE = "bundle";
+	public static final String STRING_PRODUCT = "product";
+	
 	@Autowired
 	DeviceDao deviceDao;
 
@@ -165,7 +166,7 @@ public class DeviceESHelper {
 	 */
 	public CommercialBundle getCommercialBundle(String bundleId) {
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper.searchQueryForCommercialBundle(bundleId,
-				Constants.STRING_BUNDLE);
+				STRING_BUNDLE);
 		SearchResponse commercialBundleResponse = deviceDao.getResponseFromDataSource(queryContextMap);
 		LogHelper.info(this, "converting elasticsearch response into Commercial Bundle object response");
 		return response.getCommercialBundle(commercialBundleResponse);
@@ -179,7 +180,7 @@ public class DeviceESHelper {
 	public List<CommercialBundle> getListOfCommercialBundle(List<String> bundleIds) {
 
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper.searchQueryForListOfCommercialBundle(bundleIds,
-				Constants.STRING_BUNDLE);
+				STRING_BUNDLE);
 		SearchResponse commercialBundleResponse = deviceDao.getResponseFromDataSource(queryContextMap);
 		LogHelper.info(this, "converting elasticsearch response into Commercial Bundle List object response");
 		return response.getListOfCommercialBundleFromJson(commercialBundleResponse);
@@ -192,7 +193,7 @@ public class DeviceESHelper {
 	 */
 	public List<CommercialProduct> getListOfCommercialProduct(List<String> deviceIds) {
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper
-				.searchQueryForListOfCommercialProductAndCommercialBundle(deviceIds, Constants.STRING_PRODUCT);
+				.searchQueryForListOfCommercialProductAndCommercialBundle(deviceIds, STRING_PRODUCT);
 		SearchResponse commercialListForInsuranceResponse = deviceDao.getResponseFromDataSource(queryContextMap);
 		LogHelper.info(this, "converting elasticsearch response into List Of CommercialProduct object response");
 		return response.getCommercialProductFromJson(commercialListForInsuranceResponse);
@@ -205,7 +206,7 @@ public class DeviceESHelper {
 	 */
 	public CommercialProduct getCommercialProduct(String deviceId) {
 		SearchRequest queryContextMap = DeviceQueryBuilderHelper
-				.searchQueryForCommercialProductAndCommercialBundle(deviceId, Constants.STRING_PRODUCT);
+				.searchQueryForCommercialProductAndCommercialBundle(deviceId, STRING_PRODUCT);
 		SearchResponse commercialProduct = deviceDao.getResponseFromDataSource(queryContextMap);
 		LogHelper.info(this, "converting elasticsearch response into Commercial Product object response");
 		return response.getCommercialProduct(commercialProduct);

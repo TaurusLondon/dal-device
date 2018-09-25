@@ -13,7 +13,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.vf.uk.dal.common.configuration.ConfigHelper;
 import com.vf.uk.dal.common.logger.LogHelper;
-import com.vf.uk.dal.device.utils.Constants;
 
 /**
  * 
@@ -23,7 +22,9 @@ import com.vf.uk.dal.device.utils.Constants;
 @Aspect
 @Component
 public class CatalogServiceAspect {
-
+	public static final ThreadLocal<String> CATALOG_VERSION = new ThreadLocal<>();
+	public static final String ELASTIC_SEARCH_ALIAS = "ELASTIC_SEARCH_ALIAS";
+	public static final String DEFAULT_ELASTIC_SEARCH_ALIAS = "vodafoneindex";
 	/**
 	 * 
 	 * @param joinPoint
@@ -38,17 +39,17 @@ public class CatalogServiceAspect {
 			String versionFromHeader = servletRequest.getHeader("dal-catalogue-version");
 			if (StringUtils.isNotBlank(versionFromHeader)) {
 				version = "dal-cat-" + versionFromHeader;
-				Constants.CATALOG_VERSION.set(version);
+				CATALOG_VERSION.set(version);
 			} else {
-				Constants.CATALOG_VERSION.set(null);
+				CATALOG_VERSION.set(null);
 			}
 
 		}
-		if (!StringUtils.isNotBlank(version) && !StringUtils.isNotBlank(Constants.CATALOG_VERSION.get())) {
-			Constants.CATALOG_VERSION.set(
-					ConfigHelper.getString(Constants.ELASTIC_SEARCH_ALIAS, Constants.DEFAULT_ELASTIC_SEARCH_ALIAS));
+		if (!StringUtils.isNotBlank(version) && !StringUtils.isNotBlank(CATALOG_VERSION.get())) {
+			CATALOG_VERSION.set(
+					ConfigHelper.getString(ELASTIC_SEARCH_ALIAS, DEFAULT_ELASTIC_SEARCH_ALIAS));
 		}
-		LogHelper.info(this, Constants.CATALOG_VERSION.get());
+		LogHelper.info(this, CATALOG_VERSION.get());
 	}
 
 }

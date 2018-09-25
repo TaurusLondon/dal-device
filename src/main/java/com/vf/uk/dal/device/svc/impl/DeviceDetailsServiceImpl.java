@@ -28,10 +28,8 @@ import com.vf.uk.dal.device.helper.DeviceServiceCommonUtility;
 import com.vf.uk.dal.device.helper.DeviceServiceImplUtility;
 import com.vf.uk.dal.device.svc.DeviceDetailsService;
 import com.vf.uk.dal.device.utils.CommonUtility;
-import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 import com.vf.uk.dal.device.utils.ListOfDeviceDetailsDaoUtils;
-import com.vf.uk.dal.device.utils.MediaConstants;
 import com.vf.uk.dal.device.validator.Validator;
 import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
 import com.vf.uk.dal.utility.entity.BundleHeader;
@@ -39,6 +37,17 @@ import com.vf.uk.dal.utility.entity.CoupleRelation;
 
 @Component
 public class DeviceDetailsServiceImpl implements DeviceDetailsService {
+	public static final String PAYG_DEVICE = "Mobile Phones";
+	public static final String DATE_FORMAT_COHERENCE = "yyyy-MM-dd HH:mm:ss.SSS";
+	public static final String STRING_HANDSET = "Handset";
+	public static final String STRING_FOR_MEDIA_TYPE = "URL";
+	public static final String STRING_TEXT_ALLOWANCE = "TEXT";
+	public static final String JOURNEY_TYPE_ACQUISITION = "Acquisition";
+	public static final String STRING_OFFERS_DESCRIPTION = "merchandisingPromotions.merchandisingPromotion.description";
+	public static final String STRING_FOR_ENTERTAINMENT = "Entertainment";
+	public static final String STRING_OFFERS_LABEL = "merchandisingPromotions.merchandisingPromotion.label";
+	public static final String STRING_TEXT = "TEXT";
+	public static final String STRING_PROMOTION_MEDIA = "merchandisingPromotions.merchandisingPromotion.PromotionMedia";
 	
 	@Autowired
 	DeviceDao deviceDao;
@@ -109,9 +118,9 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 		String journeyTypeLocal = null;
 		List<BundleAndHardwareTuple> bundleAndHardwareTupleList;
 		if (commercialProduct.getProductLines() != null && !commercialProduct.getProductLines().isEmpty()
-				&& commercialProduct.getProductLines().contains(Constants.PAYG_DEVICE)) {
+				&& commercialProduct.getProductLines().contains(PAYG_DEVICE)) {
 			Validator.getJourneyAndOfferCodeValidationForPAYG(offerCode, journeyType);
-			journeyTypeLocal = Constants.JOURNEY_TYPE_ACQUISITION;
+			journeyTypeLocal = JOURNEY_TYPE_ACQUISITION;
 			bundleAndHardwareTupleList = new ArrayList<>();
 			BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
 			bundleAndHardwareTuple.setHardwareId(commercialProduct.getId());
@@ -200,9 +209,9 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 				MerchandisingPromotion merchandisingPromotion = deviceEs.getMerchandisingPromotion(promotionName);
 				if (merchandisingPromotion != null) {
 					String startDateTime = CommonUtility.getDateToString(merchandisingPromotion.getStartDateTime(),
-							Constants.DATE_FORMAT_COHERENCE);
+							DATE_FORMAT_COHERENCE);
 					String endDateTime = CommonUtility.getDateToString(merchandisingPromotion.getEndDateTime(),
-							Constants.DATE_FORMAT_COHERENCE);
+							DATE_FORMAT_COHERENCE);
 					String promotionPackageType = merchandisingPromotion.getCondition().getPackageType();
 					List<String> promotionPackagesList = new ArrayList<>();
 					if (StringUtils.isNotEmpty(promotionPackageType)) {
@@ -213,7 +222,7 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 							+ "::::: START DATE :: " + startDateTime + ":::: END DATE ::: " + endDateTime + " :::: ");
 					if (promotionName != null && promotionName.equals(merchandisingPromotion.getTag())
 							&& DeviceServiceImplUtility.dateValidationForOffers_Implementation(startDateTime,
-									endDateTime, Constants.DATE_FORMAT_COHERENCE)
+									endDateTime, DATE_FORMAT_COHERENCE)
 							&& promotionPackagesList.contains(journeyType.toLowerCase())) {
 						offerCodes.add(promotionName);
 					}
@@ -243,7 +252,7 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 			DeviceDetails deviceDetails;
 			CommercialProduct commercialProduct = deviceEs.getCommercialProduct(deviceSkuId);
 			if (commercialProduct != null && commercialProduct.getIsDeviceProduct()
-					&& commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)) {
+					&& commercialProduct.getProductClass().equalsIgnoreCase(STRING_HANDSET)) {
 				List<MediaLink> listOfmerchandisingMedia = new ArrayList<>();
 				deviceDetails = new DeviceDetails();
 				deviceDetails.setDeviceId(commercialProduct.getId());
@@ -267,7 +276,7 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 						commercialProduct.getProductControl().isDisplayableSavedBasket());
 				merchandisingControl.setOrder(commercialProduct.getOrder().intValue());
 				merchandisingControl.setPreorderable(commercialProduct.getProductControl().isPreOrderable());
-				String dateFormat = Constants.DATE_FORMAT_COHERENCE;
+				String dateFormat = DATE_FORMAT_COHERENCE;
 				if (commercialProduct.getProductControl().getAvailableFrom() != null) {
 					merchandisingControl.setAvailableFrom(CommonUtility
 							.getDateToString(commercialProduct.getProductControl().getAvailableFrom(), dateFormat));
@@ -313,7 +322,7 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 							.getListOfimageURLs()) {
 						mediaLink = new MediaLink();
 						mediaLink.setId(imageURL.getImageName());
-						mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
+						mediaLink.setType(STRING_FOR_MEDIA_TYPE);
 						mediaLink.setValue(imageURL.getImageURL());
 						listOfmerchandisingMedia.add(mediaLink);
 					}
@@ -323,7 +332,7 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 							.getListOfmediaURLs()) {
 						mediaLink = new MediaLink();
 						mediaLink.setId(mediaURL.getMediaName());
-						mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
+						mediaLink.setType(STRING_FOR_MEDIA_TYPE);
 						mediaLink.setValue(mediaURL.getMediaURL());
 						listOfmerchandisingMedia.add(mediaLink);
 					}
@@ -440,11 +449,11 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 						&& !merchandisingPromotion.getType().equalsIgnoreCase("full_duration")
 						&& !merchandisingPromotion.getType().equalsIgnoreCase("limited_time")) {
 					String startDateTime = CommonUtility.getDateToString(merchandisingPromotion.getStartDateTime(),
-							Constants.DATE_FORMAT_COHERENCE);
+							DATE_FORMAT_COHERENCE);
 					String endDateTime = CommonUtility.getDateToString(merchandisingPromotion.getEndDateTime(),
-							Constants.DATE_FORMAT_COHERENCE);
+							DATE_FORMAT_COHERENCE);
 					if (promotionName != null && promotionName.equals(merchandisingPromotion.getTag()) && CommonUtility
-							.dateValidationForOffers(startDateTime, endDateTime, Constants.DATE_FORMAT_COHERENCE)) {
+							.dateValidationForOffers(startDateTime, endDateTime, DATE_FORMAT_COHERENCE)) {
 						listOfMediaLink.addAll(listOfMediaLinkBasedOnMerchandising(merchandisingPromotion));
 					}
 				}
@@ -465,21 +474,21 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 		List<MediaLink> listOfMediaLink = new ArrayList<>();
 
 		mediaLinkForLabel = new MediaLink();
-		mediaLinkForLabel.setId(merchandisingPromotion.getType() + "." + Constants.STRING_OFFERS_LABEL);
-		mediaLinkForLabel.setType(Constants.STRING_TEXT_ALLOWANCE);
+		mediaLinkForLabel.setId(merchandisingPromotion.getType() + "." + STRING_OFFERS_LABEL);
+		mediaLinkForLabel.setType(STRING_TEXT_ALLOWANCE);
 		mediaLinkForLabel.setValue(merchandisingPromotion.getLabel());
 		listOfMediaLink.add(mediaLinkForLabel);
 
 		mediaLinkForDescription = new MediaLink();
-		mediaLinkForDescription.setId(merchandisingPromotion.getType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
-		mediaLinkForDescription.setType(Constants.STRING_TEXT_ALLOWANCE);
+		mediaLinkForDescription.setId(merchandisingPromotion.getType() + "." + STRING_OFFERS_DESCRIPTION);
+		mediaLinkForDescription.setType(STRING_TEXT_ALLOWANCE);
 		mediaLinkForDescription.setValue(merchandisingPromotion.getDescription());
 		listOfMediaLink.add(mediaLinkForDescription);
 		if (merchandisingPromotion.getType() != null && StringUtils.containsIgnoreCase(merchandisingPromotion.getType(),
-				Constants.STRING_FOR_ENTERTAINMENT)) {
+				STRING_FOR_ENTERTAINMENT)) {
 			mediaLinkForUrlGrid = new MediaLink();
-			mediaLinkForUrlGrid.setId(merchandisingPromotion.getType() + "." + Constants.STRING_PROMOTION_MEDIA);
-			mediaLinkForUrlGrid.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
+			mediaLinkForUrlGrid.setId(merchandisingPromotion.getType() + "." + STRING_PROMOTION_MEDIA);
+			mediaLinkForUrlGrid.setType(STRING_FOR_MEDIA_TYPE);
 			mediaLinkForUrlGrid.setValue(merchandisingPromotion.getPromotionMedia());
 			listOfMediaLink.add(mediaLinkForUrlGrid);
 		}
@@ -503,11 +512,11 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 						&& !merchandisingPromotion.getType().equalsIgnoreCase("full_duration")
 						&& !merchandisingPromotion.getType().equalsIgnoreCase("limited_time")) {
 					String startDateTime = CommonUtility.getDateToString(merchandisingPromotion.getStartDateTime(),
-							Constants.DATE_FORMAT_COHERENCE);
+							DATE_FORMAT_COHERENCE);
 					String endDateTime = CommonUtility.getDateToString(merchandisingPromotion.getEndDateTime(),
-							Constants.DATE_FORMAT_COHERENCE);
+							DATE_FORMAT_COHERENCE);
 					if (promotionName.equals(merchandisingPromotion.getTag()) && CommonUtility
-							.dateValidationForOffers(startDateTime, endDateTime, Constants.DATE_FORMAT_COHERENCE)) {
+							.dateValidationForOffers(startDateTime, endDateTime, DATE_FORMAT_COHERENCE)) {
 						listOfMediaLink.addAll(listOfMediaLinkBasedOnMerchandising(merchandisingPromotion));
 					}
 				}
@@ -543,15 +552,15 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 						if (listOfHardwareMerch != null) {
 							MediaLink mediaLinkForLabel = new MediaLink();
 							mediaLinkForLabel
-									.setId(listOfHardwareMerch.getMpType() + "." + Constants.STRING_OFFERS_LABEL);
-							mediaLinkForLabel.setType(Constants.STRING_TEXT);
+									.setId(listOfHardwareMerch.getMpType() + "." + STRING_OFFERS_LABEL);
+							mediaLinkForLabel.setType(STRING_TEXT);
 							mediaLinkForLabel.setValue(listOfHardwareMerch.getLabel());
 							listOfmerchandisingMedia.add(mediaLinkForLabel);
 
 							MediaLink mediaLinkForDescription = new MediaLink();
 							mediaLinkForDescription
-									.setId(listOfHardwareMerch.getMpType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
-							mediaLinkForDescription.setType(Constants.STRING_TEXT);
+									.setId(listOfHardwareMerch.getMpType() + "." + STRING_OFFERS_DESCRIPTION);
+							mediaLinkForDescription.setType(STRING_TEXT);
 							mediaLinkForDescription.setValue(listOfHardwareMerch.getDescription());
 							listOfmerchandisingMedia.add(mediaLinkForDescription);
 						}
@@ -563,15 +572,15 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 							if (merchandisingPromotion != null) {
 								MediaLink mediaLinkForLabel = new MediaLink();
 								mediaLinkForLabel
-										.setId(merchandisingPromotion.getType() + "." + Constants.STRING_OFFERS_LABEL);
-								mediaLinkForLabel.setType(Constants.STRING_TEXT);
+										.setId(merchandisingPromotion.getType() + "." + STRING_OFFERS_LABEL);
+								mediaLinkForLabel.setType(STRING_TEXT);
 								mediaLinkForLabel.setValue(merchandisingPromotion.getLabel());
 								listOfmerchandisingMedia.add(mediaLinkForLabel);
 
 								MediaLink mediaLinkForDescription = new MediaLink();
 								mediaLinkForDescription.setId(
-										merchandisingPromotion.getType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
-								mediaLinkForDescription.setType(Constants.STRING_TEXT);
+										merchandisingPromotion.getType() + "." + STRING_OFFERS_DESCRIPTION);
+								mediaLinkForDescription.setType(STRING_TEXT);
 								mediaLinkForDescription.setValue(merchandisingPromotion.getDescription());
 								listOfmerchandisingMedia.add(mediaLinkForDescription);
 							}
