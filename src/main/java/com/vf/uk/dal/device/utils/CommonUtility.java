@@ -1063,7 +1063,7 @@ public class CommonUtility {
 				if (StringUtils.isNotBlank(imageURL.getImageURL())) {
 					mediaLink = new MediaLink();
 					mediaLink.setId(imageURL.getImageName());
-					mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
+					mediaLink.setType(STRING_URL_ALLOWANCE);
 					mediaLink.setValue(getImageMediaUrl(cdnDomain,imageURL.getImageURL()));
 					merchandisingMedia.add(mediaLink);
 				}
@@ -1075,7 +1075,7 @@ public class CommonUtility {
 				if (StringUtils.isNotBlank(mediaURL.getMediaURL())) {
 					mediaLink = new MediaLink();
 					mediaLink.setId(mediaURL.getMediaName());
-					mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
+					mediaLink.setType(STRING_URL_ALLOWANCE);
 					mediaLink.setValue(getImageMediaUrl(cdnDomain,mediaURL.getMediaURL()));
 					merchandisingMedia.add(mediaLink);
 				}

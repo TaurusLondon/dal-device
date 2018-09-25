@@ -49,7 +49,6 @@ import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
 import com.vf.uk.dal.device.helper.DeviceConditionallHelper;
 import com.vf.uk.dal.device.helper.DeviceServiceImplUtility;
 import com.vf.uk.dal.device.svc.DeviceService;
-import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 import com.vf.uk.dal.device.utils.ResponseMappingHelper;
 import com.vf.uk.dal.device.validator.Validator;
@@ -62,6 +61,20 @@ import com.vf.uk.dal.utility.entity.RecommendedProductListResponse;
 @SpringBootTest(classes = DeviceTestBeans.class)
 public class OtherServiesTest {
 
+	public static final String LIMITED_TIME_DISCOUNT = "limited_time";
+	public static final String FULL_DURATION_DISCOUNT = "full_duration";
+	public static final String JOURNEY_TYPE_UPGRADE = "Upgrade";
+	public static final String JOURNEY_TYPE_SECONDLINE = "SecondLine";
+	public static final String JOURNEY_TYPE_ACQUISITION = "Acquisition";
+	public static final String STRING_DEVICE_PAYM = "DEVICE_PAYM";
+	public static final String STRING_DEVICE_PAYG = "DEVICE_PAYG";
+	public static final String DATE_FORMAT = "yyyy-MM-dd";
+	public static final String STRING_HANDSET = "Handset";
+	public static final String STRING_ACCESSORY = "Accessory,Compatible Accessories";
+	public static final String STRING_DEVICE_NEARLY_NEW = "DEVICE_NEARLY_NEW";
+	public static final String STRING_DATADEVICE_PAYM = "DATA_DEVICE_PAYM";
+	public static final String STRING_DATADEVICE_PAYG = "DATA_DEVICE_PAYG";
+	
 	@MockBean
 	DeviceTileCacheDAOImpl deviceCacheDAOMock;
 
@@ -343,7 +356,7 @@ public class OtherServiesTest {
 	@Test
 	public void TestDeviceServiceImplUtility_One() {
 		try {
-			DeviceServiceImplUtility.getJourney(Constants.JOURNEY_TYPE_SECONDLINE);
+			DeviceServiceImplUtility.getJourney(JOURNEY_TYPE_SECONDLINE);
 		} catch (Exception e) {
 		}
 	}
@@ -456,7 +469,7 @@ public class OtherServiesTest {
 			pm.setUpgradeLeadPlanId("");
 			pm.setNonUpgradeLeadPlanId("");
 			List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
-			DeviceServiceImplUtility.getBundleAndHardwareList(Constants.STRING_DEVICE_PAYM, "", bundleHardwareTupleList,
+			DeviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYM, "", bundleHardwareTupleList,
 					pm);
 		} catch (Exception e) {
 		}
@@ -469,7 +482,7 @@ public class OtherServiesTest {
 			pm.setUpgradeLeadPlanId("1212");
 			pm.setNonUpgradeLeadPlanId("1212");
 			List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
-			DeviceServiceImplUtility.getBundleAndHardwareList(Constants.STRING_DEVICE_PAYM, "", bundleHardwareTupleList,
+			DeviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYM, "", bundleHardwareTupleList,
 					pm);
 		} catch (Exception e) {
 		}
@@ -482,7 +495,7 @@ public class OtherServiesTest {
 			pm.setUpgradeLeadPlanId("1212");
 			pm.setNonUpgradeLeadPlanId("1212");
 			List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
-			DeviceServiceImplUtility.getBundleAndHardwareList(Constants.STRING_DEVICE_PAYM, "Acquisition",
+			DeviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYM, "Acquisition",
 					bundleHardwareTupleList, pm);
 		} catch (Exception e) {
 		}
@@ -495,8 +508,8 @@ public class OtherServiesTest {
 			pm.setUpgradeLeadPlanId("1212");
 			pm.setNonUpgradeLeadPlanId("1212");
 			List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
-			DeviceServiceImplUtility.getBundleAndHardwareList(Constants.STRING_DEVICE_PAYM,
-					Constants.JOURNEY_TYPE_UPGRADE, bundleHardwareTupleList, pm);
+			DeviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYM,
+					JOURNEY_TYPE_UPGRADE, bundleHardwareTupleList, pm);
 		} catch (Exception e) {
 		}
 	}
@@ -508,8 +521,8 @@ public class OtherServiesTest {
 			pm.setUpgradeLeadPlanId("");
 			pm.setNonUpgradeLeadPlanId("");
 			List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
-			DeviceServiceImplUtility.getBundleAndHardwareList(Constants.STRING_DEVICE_PAYM,
-					Constants.JOURNEY_TYPE_UPGRADE, bundleHardwareTupleList, pm);
+			DeviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYM,
+					JOURNEY_TYPE_UPGRADE, bundleHardwareTupleList, pm);
 		} catch (Exception e) {
 		}
 	}
@@ -521,8 +534,8 @@ public class OtherServiesTest {
 			pm.setUpgradeLeadPlanId("1212");
 			pm.setNonUpgradeLeadPlanId("1212");
 			List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
-			DeviceServiceImplUtility.getBundleAndHardwareList(Constants.STRING_DEVICE_PAYG,
-					Constants.JOURNEY_TYPE_ACQUISITION, bundleHardwareTupleList, pm);
+			DeviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYG,
+					JOURNEY_TYPE_ACQUISITION, bundleHardwareTupleList, pm);
 		} catch (Exception e) {
 		}
 	}
@@ -534,8 +547,8 @@ public class OtherServiesTest {
 			pm.setUpgradeLeadPlanId("1212");
 			pm.setNonUpgradeLeadPlanId("1212");
 			List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
-			DeviceServiceImplUtility.getBundleAndHardwareList(Constants.STRING_DEVICE_PAYM,
-					Constants.JOURNEY_TYPE_ACQUISITION, bundleHardwareTupleList, pm);
+			DeviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYM,
+					JOURNEY_TYPE_ACQUISITION, bundleHardwareTupleList, pm);
 		} catch (Exception e) {
 		}
 	}
@@ -603,8 +616,8 @@ public class OtherServiesTest {
 	@Test
 	public void TestdateValidation() {
 		try {
-			Date startDate = new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-2017");
-			Date endDate = new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-3000");
+			Date startDate = new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017");
+			Date endDate = new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000");
 			DeviceServiceImplUtility.dateValidation(null, null, false);
 			DeviceServiceImplUtility.dateValidation(null, null, true);
 			DeviceServiceImplUtility.dateValidation(startDate, null, true);
@@ -618,12 +631,12 @@ public class OtherServiesTest {
 			DeviceServiceImplUtility.dateValidation(endDate, startDate, false);
 			DeviceServiceImplUtility.dateValidation(null, startDate, false);
 			DeviceServiceImplUtility.dateValidation(null, startDate, true);
-			DeviceServiceImplUtility.dateValidation(new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-2018"),
+			DeviceServiceImplUtility.dateValidation(new SimpleDateFormat(DATE_FORMAT).parse("21-11-2018"),
 					startDate, true);
-			DeviceServiceImplUtility.dateValidation(new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-2018"),
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-2017"), true);
-			DeviceServiceImplUtility.dateValidation(new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-2018"),
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-2019"), true);
+			DeviceServiceImplUtility.dateValidation(new SimpleDateFormat(DATE_FORMAT).parse("21-11-2018"),
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"), true);
+			DeviceServiceImplUtility.dateValidation(new SimpleDateFormat(DATE_FORMAT).parse("21-11-2018"),
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2019"), true);
 			Date currentDate = new Date();
 			DeviceServiceImplUtility.getDateForValidation(currentDate, startDate, endDate);
 			DeviceServiceImplUtility.getDateForValidation(currentDate, startDate, endDate);
@@ -633,15 +646,15 @@ public class OtherServiesTest {
 			DeviceServiceImplUtility.getDateForValidation(currentDate, startDate, currentDate);
 			DeviceServiceImplUtility.getDateForValidation(currentDate, startDate, endDate);
 			DeviceServiceImplUtility.getDateForValidation(currentDate,
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-3000"), startDate);
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), startDate);
 			DeviceServiceImplUtility.getDateForValidation(currentDate,
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-3000"),
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-2017"));
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"),
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"));
 			DeviceServiceImplUtility.getDateForValidation(currentDate,
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-3000"),
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-3000"));
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"),
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"));
 			DeviceServiceImplUtility.getDateForValidation(currentDate,
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-3000"), currentDate);
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), currentDate);
 
 			DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, null, "//");
 			DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, null, "//");
@@ -688,12 +701,12 @@ public class OtherServiesTest {
 	public void TestisMember() {
 		try {
 			ProductModel pm = new ProductModel();
-			pm.setProductClass(Constants.STRING_HANDSET);
+			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("true");
 			pm.setIsSellableRet("true");
-			DeviceServiceImplUtility.isMember(Constants.JOURNEY_TYPE_UPGRADE,
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-2017"),
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-3000"), pm, true);
+			DeviceServiceImplUtility.isMember(JOURNEY_TYPE_UPGRADE,
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true);
 		} catch (Exception e) {
 		}
 	}
@@ -702,12 +715,12 @@ public class OtherServiesTest {
 	public void TestisMember_One() {
 		try {
 			ProductModel pm = new ProductModel();
-			pm.setProductClass(Constants.STRING_HANDSET);
+			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("true");
 			pm.setIsSellableRet("true");
-			DeviceServiceImplUtility.isMember(Constants.JOURNEY_TYPE_ACQUISITION,
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-2017"),
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-3000"), pm, true);
+			DeviceServiceImplUtility.isMember(JOURNEY_TYPE_ACQUISITION,
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true);
 		} catch (Exception e) {
 		}
 	}
@@ -716,12 +729,12 @@ public class OtherServiesTest {
 	public void TestisMember_Two() {
 		try {
 			ProductModel pm = new ProductModel();
-			pm.setProductClass(Constants.STRING_ACCESSORY);
+			pm.setProductClass(STRING_ACCESSORY);
 			pm.setIsDisplayableRet("true");
 			pm.setIsSellableRet("true");
-			DeviceServiceImplUtility.isMember(Constants.JOURNEY_TYPE_UPGRADE,
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-2017"),
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-3000"), pm, true);
+			DeviceServiceImplUtility.isMember(JOURNEY_TYPE_UPGRADE,
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true);
 		} catch (Exception e) {
 		}
 	}
@@ -730,12 +743,12 @@ public class OtherServiesTest {
 	public void TestisMember_Three() {
 		try {
 			ProductModel pm = new ProductModel();
-			pm.setProductClass(Constants.STRING_HANDSET);
+			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("false");
 			pm.setIsSellableRet("true");
-			DeviceServiceImplUtility.isMember(Constants.JOURNEY_TYPE_UPGRADE,
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-2017"),
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-3000"), pm, true);
+			DeviceServiceImplUtility.isMember(JOURNEY_TYPE_UPGRADE,
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true);
 		} catch (Exception e) {
 		}
 	}
@@ -744,12 +757,12 @@ public class OtherServiesTest {
 	public void TestisUpgrade() {
 		try {
 			ProductModel pm = new ProductModel();
-			pm.setProductClass(Constants.STRING_HANDSET);
+			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("true");
 			pm.setIsSellableRet("true");
-			DeviceServiceImplUtility.isUpgradeCheck(Constants.JOURNEY_TYPE_UPGRADE,
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-2017"),
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-3000"), pm, true);
+			DeviceServiceImplUtility.isUpgradeCheck(JOURNEY_TYPE_UPGRADE,
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true);
 		} catch (Exception e) {
 		}
 	}
@@ -758,12 +771,12 @@ public class OtherServiesTest {
 	public void TestisUpgradeCheck_One() {
 		try {
 			ProductModel pm = new ProductModel();
-			pm.setProductClass(Constants.STRING_HANDSET);
+			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("true");
 			pm.setIsSellableRet("true");
-			DeviceServiceImplUtility.isUpgradeCheck(Constants.JOURNEY_TYPE_ACQUISITION,
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-2017"),
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-3000"), pm, true);
+			DeviceServiceImplUtility.isUpgradeCheck(JOURNEY_TYPE_ACQUISITION,
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true);
 		} catch (Exception e) {
 		}
 	}
@@ -772,12 +785,12 @@ public class OtherServiesTest {
 	public void TestisUpgradeCheck_Two() {
 		try {
 			ProductModel pm = new ProductModel();
-			pm.setProductClass(Constants.STRING_ACCESSORY);
+			pm.setProductClass(STRING_ACCESSORY);
 			pm.setIsDisplayableRet("true");
 			pm.setIsSellableRet("true");
-			DeviceServiceImplUtility.isUpgradeCheck(Constants.JOURNEY_TYPE_UPGRADE,
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-2017"),
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-3000"), pm, true);
+			DeviceServiceImplUtility.isUpgradeCheck(JOURNEY_TYPE_UPGRADE,
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true);
 		} catch (Exception e) {
 		}
 	}
@@ -786,12 +799,12 @@ public class OtherServiesTest {
 	public void TestisUpgradeCheck_Three() {
 		try {
 			ProductModel pm = new ProductModel();
-			pm.setProductClass(Constants.STRING_HANDSET);
+			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("false");
 			pm.setIsSellableRet("true");
-			DeviceServiceImplUtility.isUpgradeCheck(Constants.JOURNEY_TYPE_UPGRADE,
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-2017"),
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-3000"), pm, true);
+			DeviceServiceImplUtility.isUpgradeCheck(JOURNEY_TYPE_UPGRADE,
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true);
 		} catch (Exception e) {
 		}
 	}
@@ -800,12 +813,12 @@ public class OtherServiesTest {
 	public void TestisUpgradeCheck_Four() {
 		try {
 			ProductModel pm = new ProductModel();
-			pm.setProductClass(Constants.STRING_HANDSET);
+			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("false");
 			pm.setIsSellableRet("false");
-			DeviceServiceImplUtility.isUpgradeCheck(Constants.JOURNEY_TYPE_UPGRADE,
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-3000"),
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-2017"), pm, true);
+			DeviceServiceImplUtility.isUpgradeCheck(JOURNEY_TYPE_UPGRADE,
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"),
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"), pm, true);
 		} catch (Exception e) {
 		}
 	}
@@ -814,12 +827,12 @@ public class OtherServiesTest {
 	public void TestisNonUpgrade() {
 		try {
 			ProductModel pm = new ProductModel();
-			pm.setProductClass(Constants.STRING_HANDSET);
+			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("true");
 			pm.setIsSellableRet("true");
-			DeviceServiceImplUtility.isNonUpgradeCheck(Constants.JOURNEY_TYPE_ACQUISITION,
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-2017"),
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-3000"), pm, true);
+			DeviceServiceImplUtility.isNonUpgradeCheck(JOURNEY_TYPE_ACQUISITION,
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true);
 		} catch (Exception e) {
 		}
 	}
@@ -828,12 +841,12 @@ public class OtherServiesTest {
 	public void TestisNonUpgradeCheck_One() {
 		try {
 			ProductModel pm = new ProductModel();
-			pm.setProductClass(Constants.STRING_HANDSET);
+			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("true");
 			pm.setIsSellableRet("true");
-			DeviceServiceImplUtility.isNonUpgradeCheck(Constants.JOURNEY_TYPE_UPGRADE,
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-2017"),
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-3000"), pm, true);
+			DeviceServiceImplUtility.isNonUpgradeCheck(JOURNEY_TYPE_UPGRADE,
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true);
 		} catch (Exception e) {
 		}
 	}
@@ -842,12 +855,12 @@ public class OtherServiesTest {
 	public void TestisNonUpgradeCheck_Two() {
 		try {
 			ProductModel pm = new ProductModel();
-			pm.setProductClass(Constants.STRING_ACCESSORY);
+			pm.setProductClass(STRING_ACCESSORY);
 			pm.setIsDisplayableAcq("true");
 			pm.setIsSellableAcq("true");
-			DeviceServiceImplUtility.isNonUpgradeCheck(Constants.JOURNEY_TYPE_ACQUISITION,
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-2017"),
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-3000"), pm, true);
+			DeviceServiceImplUtility.isNonUpgradeCheck(JOURNEY_TYPE_ACQUISITION,
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true);
 		} catch (Exception e) {
 		}
 	}
@@ -856,12 +869,12 @@ public class OtherServiesTest {
 	public void TestisNonUpgradeCheck_Three() {
 		try {
 			ProductModel pm = new ProductModel();
-			pm.setProductClass(Constants.STRING_HANDSET);
+			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableAcq("false");
 			pm.setIsSellableAcq("true");
-			DeviceServiceImplUtility.isNonUpgradeCheck(Constants.JOURNEY_TYPE_ACQUISITION,
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-2017"),
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-3000"), pm, true);
+			DeviceServiceImplUtility.isNonUpgradeCheck(JOURNEY_TYPE_ACQUISITION,
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true);
 		} catch (Exception e) {
 		}
 	}
@@ -870,12 +883,12 @@ public class OtherServiesTest {
 	public void TestisNonUpgradeCheck_Four() {
 		try {
 			ProductModel pm = new ProductModel();
-			pm.setProductClass(Constants.STRING_HANDSET);
+			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableAcq("false");
 			pm.setIsSellableAcq("true");
-			DeviceServiceImplUtility.isNonUpgradeCheck(Constants.JOURNEY_TYPE_ACQUISITION,
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-3000"),
-					new SimpleDateFormat(Constants.DATE_FORMAT).parse("21-11-2017"), pm, true);
+			DeviceServiceImplUtility.isNonUpgradeCheck(JOURNEY_TYPE_ACQUISITION,
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"),
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"), pm, true);
 		} catch (Exception e) {
 		}
 	}
@@ -884,7 +897,7 @@ public class OtherServiesTest {
 	public void TestisRet() {
 		try {
 			ProductModel pm = new ProductModel();
-			pm.setProductClass(Constants.STRING_HANDSET);
+			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("true");
 			pm.setIsSellableRet("true");
 			DeviceServiceImplUtility.isRet(pm);
@@ -896,7 +909,7 @@ public class OtherServiesTest {
 	public void TestisRet_One() {
 		try {
 			ProductModel pm = new ProductModel();
-			pm.setProductClass(Constants.STRING_HANDSET);
+			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("true");
 			pm.setIsSellableRet("false");
 			DeviceServiceImplUtility.isRet(pm);
@@ -908,7 +921,7 @@ public class OtherServiesTest {
 	public void TestisRet_Two() {
 		try {
 			ProductModel pm = new ProductModel();
-			pm.setProductClass(Constants.STRING_HANDSET);
+			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("false");
 			pm.setIsSellableRet("false");
 			DeviceServiceImplUtility.isRet(pm);
@@ -920,7 +933,7 @@ public class OtherServiesTest {
 	public void TestisRet_Three() {
 		try {
 			ProductModel pm = new ProductModel();
-			pm.setProductClass(Constants.STRING_HANDSET);
+			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("false");
 			pm.setIsSellableRet("true");
 			DeviceServiceImplUtility.isRet(pm);
@@ -932,7 +945,7 @@ public class OtherServiesTest {
 	public void TestisAcq() {
 		try {
 			ProductModel pm = new ProductModel();
-			pm.setProductClass(Constants.STRING_HANDSET);
+			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableAcq("true");
 			pm.setIsSellableAcq("true");
 			DeviceServiceImplUtility.isAcq(pm);
@@ -944,7 +957,7 @@ public class OtherServiesTest {
 	public void TestisAcq_One() {
 		try {
 			ProductModel pm = new ProductModel();
-			pm.setProductClass(Constants.STRING_HANDSET);
+			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableAcq("true");
 			pm.setIsSellableAcq("false");
 			DeviceServiceImplUtility.isAcq(pm);
@@ -956,7 +969,7 @@ public class OtherServiesTest {
 	public void TestisAcq_Two() {
 		try {
 			ProductModel pm = new ProductModel();
-			pm.setProductClass(Constants.STRING_HANDSET);
+			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableAcq("false");
 			pm.setIsSellableAcq("false");
 			DeviceServiceImplUtility.isAcq(pm);
@@ -968,7 +981,7 @@ public class OtherServiesTest {
 	public void TestisAcq_Three() {
 		try {
 			ProductModel pm = new ProductModel();
-			pm.setProductClass(Constants.STRING_HANDSET);
+			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableAcq("false");
 			pm.setIsSellableAcq("true");
 			DeviceServiceImplUtility.isAcq(pm);
@@ -983,7 +996,7 @@ public class OtherServiesTest {
 			DeviceServiceImplUtility.isNonUpgrade("asa");
 			DeviceServiceImplUtility.getSortCriteriaForList(null);
 			DeviceServiceImplUtility.getSortCriteriaForList("++adadad");
-			DeviceServiceImplUtility.getSortCriteriaForList(Constants.SORT_HYPEN);
+			DeviceServiceImplUtility.getSortCriteriaForList("-");
 		} catch (Exception e) {
 		}
 	}
@@ -991,16 +1004,16 @@ public class OtherServiesTest {
 	@Test
 	public void TestvalidateGroupType() {
 		try {
-			DeviceServiceImplUtility.validateGroupType(Constants.STRING_DEVICE_PAYM);
-			DeviceServiceImplUtility.validateGroupType(Constants.STRING_DEVICE_PAYG);
+			DeviceServiceImplUtility.validateGroupType(STRING_DEVICE_PAYM);
+			DeviceServiceImplUtility.validateGroupType(STRING_DEVICE_PAYG);
 			DeviceServiceImplUtility.validateGroupType("abc");
-			DeviceServiceImplUtility.validateGroupType(Constants.STRING_DEVICE_NEARLY_NEW);
-			DeviceServiceImplUtility.validateGroupType(Constants.STRING_DATADEVICE_PAYM);
-			DeviceServiceImplUtility.validateGroupType(Constants.STRING_DATADEVICE_PAYG);
+			DeviceServiceImplUtility.validateGroupType(STRING_DEVICE_NEARLY_NEW);
+			DeviceServiceImplUtility.validateGroupType(STRING_DATADEVICE_PAYM);
+			DeviceServiceImplUtility.validateGroupType(STRING_DATADEVICE_PAYG);
 			DeviceServiceImplUtility.getJourneyForMakeAndModel("");
-			DeviceServiceImplUtility.getJourneyForMakeAndModel(Constants.JOURNEY_TYPE_ACQUISITION);
-			DeviceServiceImplUtility.getJourneyForMakeAndModel(Constants.JOURNEY_TYPE_UPGRADE);
-			DeviceServiceImplUtility.getJourneyForMakeAndModel(Constants.JOURNEY_TYPE_SECONDLINE);
+			DeviceServiceImplUtility.getJourneyForMakeAndModel(JOURNEY_TYPE_ACQUISITION);
+			DeviceServiceImplUtility.getJourneyForMakeAndModel(JOURNEY_TYPE_UPGRADE);
+			DeviceServiceImplUtility.getJourneyForMakeAndModel(JOURNEY_TYPE_SECONDLINE);
 			DeviceServiceImplUtility.getJourneyForMakeAndModel("avcv");
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353();
 			cp.setProductControl(null);
@@ -1053,12 +1066,12 @@ public class OtherServiesTest {
 		}
 		try {
 			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(null,
-					Constants.FULL_DURATION_DISCOUNT);
+					FULL_DURATION_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
 			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(null,
-					Constants.LIMITED_TIME_DISCOUNT);
+					LIMITED_TIME_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
@@ -1073,7 +1086,7 @@ public class OtherServiesTest {
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
 			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds,
-					Constants.FULL_DURATION_DISCOUNT);
+					FULL_DURATION_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
@@ -1086,7 +1099,7 @@ public class OtherServiesTest {
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
 			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds,
-					Constants.FULL_DURATION_DISCOUNT);
+					FULL_DURATION_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
@@ -1099,7 +1112,7 @@ public class OtherServiesTest {
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
 			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds,
-					Constants.FULL_DURATION_DISCOUNT);
+					FULL_DURATION_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
@@ -1112,7 +1125,7 @@ public class OtherServiesTest {
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
 			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds,
-					Constants.LIMITED_TIME_DISCOUNT);
+					LIMITED_TIME_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
@@ -1123,7 +1136,7 @@ public class OtherServiesTest {
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
 			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds,
-					Constants.LIMITED_TIME_DISCOUNT);
+					LIMITED_TIME_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
@@ -1136,7 +1149,7 @@ public class OtherServiesTest {
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
 			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds,
-					Constants.LIMITED_TIME_DISCOUNT);
+					LIMITED_TIME_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
@@ -1149,7 +1162,7 @@ public class OtherServiesTest {
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
 			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds,
-					Constants.LIMITED_TIME_DISCOUNT);
+					LIMITED_TIME_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
@@ -1162,7 +1175,7 @@ public class OtherServiesTest {
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
 			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds,
-					Constants.LIMITED_TIME_DISCOUNT);
+					LIMITED_TIME_DISCOUNT);
 		} catch (Exception e) {
 		}
 	}

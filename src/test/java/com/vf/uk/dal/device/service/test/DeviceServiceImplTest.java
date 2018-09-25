@@ -65,7 +65,6 @@ import com.vf.uk.dal.device.svc.impl.AccessoryInsuranceServiceImpl;
 import com.vf.uk.dal.device.svc.impl.DeviceDetailsServiceImpl;
 import com.vf.uk.dal.device.svc.impl.DeviceMakeAndModelServiceImpl;
 import com.vf.uk.dal.device.utils.CommonUtility;
-import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.DeviceDetailsMakeAndModelVaiantDaoUtils;
 import com.vf.uk.dal.device.utils.DeviceUtils;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
@@ -81,6 +80,16 @@ import com.vf.uk.dal.utility.entity.PriceForProduct;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = DeviceTestBeans.class)
 public class DeviceServiceImplTest {
+	
+	public static final String JOURNEYTYPE_UPGRADE = "UPGRADE";
+	public static final String STRING_COMPATIBLE_INSURANCE = "Compatible Insurance";
+	public static final String JOURNEY_TYPE_SECONDLINE = "SecondLine";
+	public static final String JOURNEY_TYPE_UPGRADE = "Upgrade";
+	public static final String JOURNEY_TYPE_ACQUISITION = "Acquisition";
+	public static final String STRING_DEVICE_PAYG = "DEVICE_PAYG";
+	public static final String STRING_DATA_DEVICE = "Data Device";
+	
+	
 	@Autowired
 	DeviceMakeAndModelServiceImpl deviceMakeAndModelServiceImpl;
 
@@ -413,7 +422,7 @@ public class DeviceServiceImplTest {
 	public void TestgetInsuranceProductList() {
 		try {
 			Group gp = new Group();
-			gp.setGroupType(Constants.STRING_COMPATIBLE_INSURANCE);
+			gp.setGroupType(STRING_COMPATIBLE_INSURANCE);
 			List<Member> members = new ArrayList<>();
 			Member member = new Member();
 			member.setId("123");
@@ -430,7 +439,7 @@ public class DeviceServiceImplTest {
 	@Test
 	public void TestgetInsuranceProductList5() {
 			Group gp = new Group();
-			gp.setGroupType(Constants.STRING_COMPATIBLE_INSURANCE);
+			gp.setGroupType(STRING_COMPATIBLE_INSURANCE);
 			List<Member> members = new ArrayList<>();
 			Member member = new Member();
 			member.setId("123");
@@ -446,7 +455,7 @@ public class DeviceServiceImplTest {
 	@Test
 	public void TestgetInsuranceProductList6() {
 			Group gp = new Group();
-			gp.setGroupType(Constants.STRING_COMPATIBLE_INSURANCE);
+			gp.setGroupType(STRING_COMPATIBLE_INSURANCE);
 			List<Member> members = new ArrayList<>();
 			Member member = new Member();
 			member.setId(null);
@@ -469,7 +478,7 @@ public class DeviceServiceImplTest {
 	public void TestgetInsuranceProductList7() {
 		try {
 			Group gp = new Group();
-			gp.setGroupType(Constants.STRING_COMPATIBLE_INSURANCE);
+			gp.setGroupType(STRING_COMPATIBLE_INSURANCE);
 			List<Member> members = new ArrayList<>();
 			Member member = new Member();
 			member.setId(null);
@@ -487,7 +496,7 @@ public class DeviceServiceImplTest {
 	public void TestgetInsuranceProductList4() {
 		try {
 			Group gp = new Group();
-			gp.setGroupType(Constants.STRING_COMPATIBLE_INSURANCE);
+			gp.setGroupType(STRING_COMPATIBLE_INSURANCE);
 			List<Member> members = new ArrayList<>();
 			Member member = new Member();
 			member.setId("123");
@@ -800,7 +809,7 @@ public class DeviceServiceImplTest {
 	@Test
 	public void TestgetDeviceDetails_Implementation() {
 		try {
-			Assert.assertNull(deviceDetailsService.getDeviceDetails_Implementation("093353", Constants.JOURNEY_TYPE_SECONDLINE, "abc"));
+			Assert.assertNull(deviceDetailsService.getDeviceDetails_Implementation("093353", JOURNEY_TYPE_SECONDLINE, "abc"));
 		} catch (Exception e) {
 		}
 	}
@@ -828,7 +837,7 @@ public class DeviceServiceImplTest {
 			pg.setProductGroup(pgg);
 			cp.setProductGroups(pg);
 			given(response.getCommercialProduct(Matchers.anyObject())).willReturn(null);
-			Assert.assertNotNull(deviceDetailsService.getDeviceDetails_Implementation("093353", Constants.JOURNEY_TYPE_SECONDLINE, "abc"));
+			Assert.assertNotNull(deviceDetailsService.getDeviceDetails_Implementation("093353", JOURNEY_TYPE_SECONDLINE, "abc"));
 		} catch (Exception e) {
 		}
 	}
@@ -839,7 +848,7 @@ public class DeviceServiceImplTest {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			cp.setId(null);
 			given(response.getCommercialProduct(Matchers.anyObject())).willReturn(cp);
-			Assert.assertNotNull(deviceDetailsService.getDeviceDetails_Implementation("093353", Constants.JOURNEY_TYPE_SECONDLINE, "abc"));
+			Assert.assertNotNull(deviceDetailsService.getDeviceDetails_Implementation("093353", JOURNEY_TYPE_SECONDLINE, "abc"));
 		} catch (Exception e) {
 		}
 	}
@@ -850,7 +859,7 @@ public class DeviceServiceImplTest {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			cp.setIsDeviceProduct(false);
 			given(response.getCommercialProduct(Matchers.anyObject())).willReturn(cp);
-			Assert.assertNull(deviceDetailsService.getDeviceDetails_Implementation("093353", Constants.JOURNEY_TYPE_SECONDLINE, "abc"));
+			Assert.assertNull(deviceDetailsService.getDeviceDetails_Implementation("093353", JOURNEY_TYPE_SECONDLINE, "abc"));
 		} catch (Exception e) {
 		}
 	}
@@ -861,7 +870,7 @@ public class DeviceServiceImplTest {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			cp.setProductClass("accessories");
 			given(response.getCommercialProduct(Matchers.anyObject())).willReturn(cp);
-			Assert.assertNull(deviceDetailsService.getDeviceDetails_Implementation("093353", Constants.JOURNEY_TYPE_SECONDLINE, "abc"));
+			Assert.assertNull(deviceDetailsService.getDeviceDetails_Implementation("093353", JOURNEY_TYPE_SECONDLINE, "abc"));
 		} catch (Exception e) {
 		}
 	}
@@ -870,9 +879,9 @@ public class DeviceServiceImplTest {
 	public void TestgetDeviceDetails_ImplementationInvalidCPPCInvalid1() {
 		try {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
-			cp.setProductClass(Constants.STRING_DATA_DEVICE);
+			cp.setProductClass(STRING_DATA_DEVICE);
 			given(response.getCommercialProduct(Matchers.anyObject())).willReturn(cp);
-			Assert.assertNull(deviceDetailsService.getDeviceDetails_Implementation("093353", Constants.JOURNEY_TYPE_SECONDLINE, "abc"));
+			Assert.assertNull(deviceDetailsService.getDeviceDetails_Implementation("093353", JOURNEY_TYPE_SECONDLINE, "abc"));
 		} catch (Exception e) {
 		}
 	}
@@ -902,7 +911,7 @@ public class DeviceServiceImplTest {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			List<String> pl = new ArrayList<>();
 			cp.setProductLines(pl);
-			Assert.assertNotNull(deviceDetailsService.getDeviceDetailsResponse("093353", "abc", Constants.JOURNEY_TYPE_SECONDLINE, cp));
+			Assert.assertNotNull(deviceDetailsService.getDeviceDetailsResponse("093353", "abc", JOURNEY_TYPE_SECONDLINE, cp));
 		} catch (Exception e) {
 		}
 	}
@@ -911,7 +920,7 @@ public class DeviceServiceImplTest {
 	public void TestgetDeviceDetailsResponseJourney() {
 		try {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
-			Assert.assertNotNull(deviceDetailsService.getDeviceDetailsResponse("093353", "abc", Constants.JOURNEY_TYPE_SECONDLINE, cp));
+			Assert.assertNotNull(deviceDetailsService.getDeviceDetailsResponse("093353", "abc", JOURNEY_TYPE_SECONDLINE, cp));
 		} catch (Exception e) {
 		}
 	}
@@ -920,7 +929,7 @@ public class DeviceServiceImplTest {
 	public void TestgetDeviceDetailsResponseJourneyUG() {
 		try {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
-			Assert.assertNotNull(deviceDetailsService.getDeviceDetailsResponse("093353", "abc", Constants.JOURNEY_TYPE_UPGRADE, cp));
+			Assert.assertNotNull(deviceDetailsService.getDeviceDetailsResponse("093353", "abc", JOURNEY_TYPE_UPGRADE, cp));
 		} catch (Exception e) {
 		}
 	}
@@ -929,7 +938,7 @@ public class DeviceServiceImplTest {
 	public void TestgetDeviceDetailsResponseJourneyNull() {
 		try {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
-			Assert.assertNotNull(deviceDetailsService.getDeviceDetailsResponse("093353", null, Constants.JOURNEY_TYPE_SECONDLINE, cp));
+			Assert.assertNotNull(deviceDetailsService.getDeviceDetailsResponse("093353", null, JOURNEY_TYPE_SECONDLINE, cp));
 		} catch (Exception e) {
 		}
 	}
@@ -956,7 +965,7 @@ public class DeviceServiceImplTest {
 	public void TestgetDeviceDetailsResponseJourneyUGNull() {
 		try {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
-			Assert.assertNull(deviceDetailsService.getDeviceDetailsResponse("093353", null, Constants.JOURNEY_TYPE_UPGRADE, cp));
+			Assert.assertNull(deviceDetailsService.getDeviceDetailsResponse("093353", null, JOURNEY_TYPE_UPGRADE, cp));
 		} catch (Exception e) {
 		}
 	}
@@ -964,7 +973,7 @@ public class DeviceServiceImplTest {
 	@Test
 	public void TestgetJourneyAndOfferCodeValidationForPAYG() {
 		try {
-			Validator.getJourneyAndOfferCodeValidationForPAYG("", Constants.JOURNEY_TYPE_ACQUISITION);
+			Validator.getJourneyAndOfferCodeValidationForPAYG("", JOURNEY_TYPE_ACQUISITION);
 		} catch (Exception e) {
 		}
 	}
@@ -981,7 +990,7 @@ public class DeviceServiceImplTest {
 	public void TestgetDeviceDetailsResponseJourneyUGNull1() {
 		try {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
-			Assert.assertNotNull(deviceDetailsService.getDeviceDetailsResponse("093353", null, Constants.JOURNEY_TYPE_UPGRADE, cp));
+			Assert.assertNotNull(deviceDetailsService.getDeviceDetailsResponse("093353", null, JOURNEY_TYPE_UPGRADE, cp));
 		} catch (Exception e) {
 		}
 	}
@@ -990,7 +999,7 @@ public class DeviceServiceImplTest {
 	public void TestgetDeviceDetailsResponseJourneyUG1() {
 		try {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
-			Assert.assertNotNull(deviceDetailsService.getDeviceDetailsResponse("093353", "abc", Constants.JOURNEY_TYPE_ACQUISITION, cp));
+			Assert.assertNotNull(deviceDetailsService.getDeviceDetailsResponse("093353", "abc", JOURNEY_TYPE_ACQUISITION, cp));
 		} catch (Exception e) {
 		}
 	}
@@ -1614,7 +1623,7 @@ public class DeviceServiceImplTest {
 		Double value = (double) 12345;
 		try{
 		deviceMakeAndModelServiceImpl.getListOfDeviceTile_Implementation
-				("apple","iPhone-7",Constants.STRING_DEVICE_PAYG,"093353","Acquisition", 
+				("apple","iPhone-7",STRING_DEVICE_PAYG,"093353","Acquisition", 
 						value,  "123", "180232");
 		}
 		catch(Exception e){
@@ -1780,7 +1789,7 @@ public class DeviceServiceImplTest {
 	public void isProductJourneySpecific() {
 		CommercialProduct cp = CommonMethods.getCommercialProduct();
 			Assert.assertNotNull(CommonUtility.isProductJourneySpecific
-					(cp, Constants.JOURNEYTYPE_UPGRADE));
+					(cp, JOURNEYTYPE_UPGRADE));
 	}
 	@Test
 	public void isProductJourneySpecificJTBlank() {
