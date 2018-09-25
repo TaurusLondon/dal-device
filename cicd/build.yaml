@@ -1,0 +1,123 @@
+resources:
+- repo: self
+  clean: true
+
+queue:
+  name: linux-agents
+  demands: maven
+
+steps:
+- task: SonarSource.sonarqube.15B84CA1-B62F-4A2A-A403-89B77A063157.SonarQubePrepare@4
+  displayName: 'Prepare analysis on SonarQube'
+  inputs:
+    SonarQube: 'Dev - External'
+    scannerMode: Other
+
+- task: Maven@2
+  displayName: 'Package POM'
+  inputs:
+    testRunTitle: '$(Build.DefinitionName)-unittest'
+    codeCoverageToolOption: JaCoCo
+    sonarQubeRunAnalysis: true
+
+- task: SonarSource.sonarqube.291ed61f-1ee4-45d3-b1b0-bf822d9095ef.SonarQubePublish@4
+  displayName: 'Publish Quality Gate Result'
+
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(Build.SourcesDirectory)'
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)'
+    Contents: '**/*.jar'
+    TargetFolder: '$(Build.SourcesDirectory)'
+    flattenFolders: true
+
+- bash: |
+   Version=$(ls | grep '^dal-[A-Za-z0-9].*.jar$' | sed 's/[^0-9.]*\([0-9.]*\)\.jar/\1/')
+   echo "##vso[task.setvariable variable=Version]$Version" 
+  displayName: 'Get Version from Jar'
+
+- task: AmazonWebServices.aws-vsts-tools.S3Download.S3Download@1
+  displayName: 'S3 Download: AppD Agent'
+  inputs:
+    awsCredentials: 'non-prod'
+    regionName: 'eu-west-1'
+    bucketName: 'digitalx-app-commons3bucket'
+    sourceFolder: artifacts/appd
+    globExpressions: appdagent.tar
+    targetFolder: '$(Build.SourcesDirectory)'
+    flattenFolders: true
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: $(Build.DefinitionName)'
+  inputs:
+    PathtoPublish: '$(Build.SourcesDirectory)/$(Build.DefinitionName)-svc-$(Version).jar'
+    ArtifactName: '$(Build.DefinitionName)'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: test_results'
+  inputs:
+    PathtoPublish: 'target/surefire-reports'
+    ArtifactName: 'test_results'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: infrastructure'
+  inputs:
+    PathtoPublish: infrastructure
+    ArtifactName: infrastructure
+
+- task: AmazonWebServices.aws-vsts-tools.CloudFormationCreateOrUpdateStack.CloudFormationCreateOrUpdateStack@1
+  displayName: 'Create/Update Stack: $(Build.DefinitionName)'
+  inputs:
+    awsCredentials: 'newvo-e'
+    regionName: 'eu-west-1'
+    stackName: '$(Build.DefinitionName)'
+    templateFile: 'infrastructure/cf-ecrtemplate.yaml'
+    templateParametersSource: inline
+    templateParameters: |
+     - ParameterKey: ecrname
+       ParameterValue: "$(Build.DefinitionName)"
+    warnWhenNoWorkNeeded: false
+    timeoutInMins: 5
+
+- task: Docker@0
+  displayName: 'Build an image'
+  inputs:
+    containerregistrytype: 'Container Registry'
+    buildArguments: |
+     MSNAME=$(Build.DefinitionName)
+     VERSION=$(Version)
+    imageName: '$(Build.DefinitionName):$(Build.BuildId)'
+    includeLatestTag: true
+    workingDirectory: '$(Build.ArtifactStagingDirectory)'
+
+- task: AmazonWebServices.aws-vsts-tools.ECRPushImage.ECRPushImage@1
+  displayName: 'Push Image'
+  inputs:
+    awsCredentials: 'newvo-e'
+    regionName: 'eu-west-1'
+    sourceImageName: '$(Build.DefinitionName)'
+    sourceImageTag: '$(Build.BuildId)'
+    repositoryName: '$(Build.DefinitionName)'
+    pushTag: '$(Build.BuildId)'
+    autoCreateRepository: true
+
+- task: AmazonWebServices.aws-vsts-tools.ECRPushImage.ECRPushImage@1
+  displayName: 'Tag Image: Version'
+  inputs:
+    awsCredentials: 'newvo-e'
+    regionName: 'eu-west-1'
+    sourceImageName: '$(Build.DefinitionName)'
+    sourceImageTag: '$(Build.BuildId)'
+    repositoryName: '$(Build.DefinitionName)'
+    pushTag: '$(Version)'
+    autoCreateRepository: true
+
+- task: AmazonWebServices.aws-vsts-tools.ECRPushImage.ECRPushImage@1
+  displayName: 'Tag Image: Latest'
+  inputs:
+    awsCredentials: 'newvo-e'
+    regionName: 'eu-west-1'
+    sourceImageName: '$(Build.DefinitionName)'
+    sourceImageTag: '$(Build.BuildId)'
+    repositoryName: '$(Build.DefinitionName)'
+    autoCreateRepository: true
