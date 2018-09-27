@@ -84,23 +84,23 @@ public class DeviceTilesDaoUtils {
 	public static final String PROMO_CATEGORY_PRICING_SECONDLINE_DISCOUNT = "Pricing_SecondLine_Discount";
 	public static final String PROMO_CATEGORY_PRICING_AUTOMETIC_DISCOUNT = "Pricing_Automatic_Discount";
 	public static final String STRING_FOR_MEDIA_TYPE = "URL";
-	public static final String STRING_FOR_IMAGE_THUMBS_SIDE = "imagesURLs.thumbs.side";
-	public static final String STRING_FOR_IMAGE_THUMBS_FRONT = "imagesURLs.thumbs.front";
-	public static final String STRING_FOR_IMAGE_THUMBS_LEFT = "imagesURLs.thumbs.left";
-	public static final String STRING_FOR_IMAGE_THUMBS_RIGHT = "imagesURLs.thumbs.right";
+	public static final String STRING_FOR_IMAGE_THUMBS_SIDE = "imageURLs.thumbs.side";
+	public static final String STRING_FOR_IMAGE_THUMBS_FRONT = "imageURLs.thumbs.front";
+	public static final String STRING_FOR_IMAGE_THUMBS_LEFT = "imageURLs.thumbs.left";
+	public static final String STRING_FOR_IMAGE_THUMBS_RIGHT = "imageURLs.thumbs.right";
 	
-	public static final String STRING_FOR_IMAGE_FULL_FRONT = "imagesURLs.full.front";
-	public static final String STRING_FOR_IMAGE_FULL_LEFT = "imagesURLs.full.left";
-	public static final String STRING_FOR_IMAGE_FULL_RIGHT = "imagesURLs.full.right";
-	public static final String STRING_FOR_IMAGE_FULL_SIDE = "imagesURLs.full.side";
-	public static final String STRING_FOR_IMAGE_FULL_BACK = "imagesURLs.full.back";
+	public static final String STRING_FOR_IMAGE_FULL_FRONT = "imageURLs.full.front";
+	public static final String STRING_FOR_IMAGE_FULL_LEFT = "imageURLs.full.left";
+	public static final String STRING_FOR_IMAGE_FULL_RIGHT = "imageURLs.full.right";
+	public static final String STRING_FOR_IMAGE_FULL_SIDE = "imageURLs.full.side";
+	public static final String STRING_FOR_IMAGE_FULL_BACK = "imageURLs.full.back";
 
-	public static final String STRING_FOR_IMAGE_GRID = "imagesURLs.grid";
-	public static final String STRING_FOR_IMAGE_SMALL = "imagesURLs.small";
-	public static final String STRING_FOR_IMAGE_STICKER = "imagesURLs.sticker";
-	public static final String STRING_FOR_IMAGE_3DSPIN = "imagesURLs.3dSpin";
-	public static final String STRING_FOR_IMAGE_SUPPORT = "imagesURLs.support";
-	public static final String STRING_FOR_IMAGE_ICON = "imagesURLs.icon";
+	public static final String STRING_FOR_IMAGE_GRID = "imageURLs.grid";
+	public static final String STRING_FOR_IMAGE_SMALL = "imageURLs.small";
+	public static final String STRING_FOR_IMAGE_STICKER = "imageURLs.sticker";
+	public static final String STRING_FOR_IMAGE_3DSPIN = "imageURLs.3dSpin";
+	public static final String STRING_FOR_IMAGE_SUPPORT = "imageURLs.support";
+	public static final String STRING_FOR_IMAGE_ICON = "imageURLs.icon";
 	
 	/**
 	 * @author manoj.bera
