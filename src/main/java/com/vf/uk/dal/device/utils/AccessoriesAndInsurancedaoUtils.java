@@ -20,6 +20,12 @@ import com.vf.uk.dal.utility.entity.PriceForAccessory;
 
 public class AccessoriesAndInsurancedaoUtils {
 
+	public static final String STRING_PRICE_ESTABLISHED_LABEL = "merchandisingPromotions.merchandisingPromotion.priceEstablishedLabel";
+	public static final String STRING_OFFERS_LABEL = "merchandisingPromotions.merchandisingPromotion.label";
+	public static final String STRING_OFFERS_DESCRIPTION = "merchandisingPromotions.merchandisingPromotion.description";
+	public static final String STRING_COLOUR = "Colour";
+	public static final String STRING_TEXT = "TEXT";
+	
 	 AccessoriesAndInsurancedaoUtils() {}
 
 	/**
@@ -55,12 +61,12 @@ public class AccessoriesAndInsurancedaoUtils {
 						.getSpecificationGroups();
 				if (listOfSpecificationGroups != null && !listOfSpecificationGroups.isEmpty()) {
 					for (com.vf.uk.dal.device.datamodel.product.Group specificationGroup : listOfSpecificationGroups) {
-						if (specificationGroup.getGroupName().equalsIgnoreCase(Constants.STRING_COLOUR)) {
+						if (specificationGroup.getGroupName().equalsIgnoreCase(STRING_COLOUR)) {
 							List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup
 									.getSpecifications();
 							if (listOfSpec != null && !listOfSpec.isEmpty()) {
 								for (com.vf.uk.dal.device.datamodel.product.Specification spec : listOfSpec) {
-									if (spec.getName().equalsIgnoreCase(Constants.STRING_COLOUR)) {
+									if (spec.getName().equalsIgnoreCase(STRING_COLOUR)) {
 										accessory.setColour(spec.getValue());
 									}
 								}
@@ -116,24 +122,24 @@ public class AccessoriesAndInsurancedaoUtils {
 		if (merchandisingPromotions != null) {
 			if (StringUtils.isNotBlank(merchandisingPromotions.getLabel())) {
 				MediaLink mediaLinkLabel = new MediaLink();
-				mediaLinkLabel.setId(merchandisingPromotions.getMpType() + "." + Constants.STRING_OFFERS_LABEL);
-				mediaLinkLabel.setType(Constants.STRING_TEXT);
+				mediaLinkLabel.setId(merchandisingPromotions.getMpType() + "." + STRING_OFFERS_LABEL);
+				mediaLinkLabel.setType(STRING_TEXT);
 				mediaLinkLabel.setValue(merchandisingPromotions.getLabel());
 				merchandisingMedia.add(mediaLinkLabel);
 			}
 			if (StringUtils.isNotBlank(merchandisingPromotions.getDescription())) {
 				MediaLink mediaLinkPriceEstablishedLabel = new MediaLink();
 				mediaLinkPriceEstablishedLabel
-						.setId(merchandisingPromotions.getMpType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
-				mediaLinkPriceEstablishedLabel.setType(Constants.STRING_TEXT);
+						.setId(merchandisingPromotions.getMpType() + "." + STRING_OFFERS_DESCRIPTION);
+				mediaLinkPriceEstablishedLabel.setType(STRING_TEXT);
 				mediaLinkPriceEstablishedLabel.setValue(merchandisingPromotions.getDescription());
 				merchandisingMedia.add(mediaLinkPriceEstablishedLabel);
 			}
 			if (StringUtils.isNotBlank(merchandisingPromotions.getPriceEstablishedLabel())) {
 				MediaLink mediaLinkPriceEstablishedLabel = new MediaLink();
 				mediaLinkPriceEstablishedLabel
-						.setId(merchandisingPromotions.getMpType() + "." + Constants.STRING_PRICE_ESTABLISHED_LABEL);
-				mediaLinkPriceEstablishedLabel.setType(Constants.STRING_TEXT);
+						.setId(merchandisingPromotions.getMpType() + "." + STRING_PRICE_ESTABLISHED_LABEL);
+				mediaLinkPriceEstablishedLabel.setType(STRING_TEXT);
 				mediaLinkPriceEstablishedLabel.setValue(merchandisingPromotions.getPriceEstablishedLabel());
 				merchandisingMedia.add(mediaLinkPriceEstablishedLabel);
 			}

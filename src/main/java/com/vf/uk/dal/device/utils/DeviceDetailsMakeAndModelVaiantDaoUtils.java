@@ -38,6 +38,21 @@ import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForHardwareSash;
 
 public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 
+	public static final String STRING_PRICE_ESTABLISHED_LABEL = "merchandisingPromotions.merchandisingPromotion.priceEstablishedLabel";
+	public static final String STRING_PRICE_PROMOTION_MEDIA = "merchandisingPromotions.merchandisingPromotion.promotionMedia";
+	public static final String DATE_FORMAT_COHERENCE = "yyyy-MM-dd HH:mm:ss.SSS";
+	public static final String PAYG_DEVICE = "Mobile Phones";
+	public static final String STRING_PROMOTION_MEDIA = "merchandisingPromotions.merchandisingPromotion.PromotionMedia";
+	public static final String STRING_OFFERS_LABEL = "merchandisingPromotions.merchandisingPromotion.label";
+	public static final String STRING_OFFERS_DESCRIPTION = "merchandisingPromotions.merchandisingPromotion.description";
+	public static final String STRING_FOR_MEDIA_TYPE = "URL";
+	public static final String STRING_COLOUR = "Colour";
+	public static final String STRING_HEXVALUE = "HexValue";
+	public static final String STRING_CAPACITY = "Capacity";
+	public static final String STRING_DATA_AlLOWANCE = "DATA";
+	public static final String STRING_DEVICE_PAYG = "DEVICE_PAYG";
+	
+	
 	private DeviceDetailsMakeAndModelVaiantDaoUtils() {
 	};
 
@@ -77,7 +92,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		merchandisingControl.setIsDisplayableSavedBasket(cohProduct.getProductControl().isDisplayableSavedBasket());
 		merchandisingControl.setOrder(cohProduct.getOrder().intValue());
 		merchandisingControl.setPreorderable(cohProduct.getProductControl().isPreOrderable());
-		String dateFormat = Constants.DATE_FORMAT_COHERENCE;
+		String dateFormat = DATE_FORMAT_COHERENCE;
 		if (cohProduct.getProductControl().getAvailableFrom() != null) {
 			merchandisingControl.setAvailableFrom(
 					CommonUtility.getDateToString(cohProduct.getProductControl().getAvailableFrom(), dateFormat));
@@ -102,7 +117,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		deviceDetails.setEquipmentDetail(equipment);
 
 		if (cohProduct.getProductLines() != null && !cohProduct.getProductLines().isEmpty()
-				&& !cohProduct.getProductLines().contains(Constants.PAYG_DEVICE)) {
+				&& !cohProduct.getProductLines().contains(PAYG_DEVICE)) {
 			deviceDetails.setLeadPlanId(cohProduct.getLeadPlanId());
 		} else {
 			deviceDetails.setLeadPlanId(null);
@@ -126,7 +141,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 				if (StringUtils.isNotBlank(imageURL.getImageURL())) {
 					mediaLink = new MediaLink();
 					mediaLink.setId(imageURL.getImageName());
-					mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
+					mediaLink.setType(STRING_FOR_MEDIA_TYPE);
 					mediaLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,imageURL.getImageURL()));
 					merchandisingMedia.add(mediaLink);
 				}
@@ -137,7 +152,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 				if (StringUtils.isNotBlank(mediaURL.getMediaURL())) {
 					mediaLink = new MediaLink();
 					mediaLink.setId(mediaURL.getMediaName());
-					mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
+					mediaLink.setType(STRING_FOR_MEDIA_TYPE);
 					mediaLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,mediaURL.getMediaURL()));
 					merchandisingMedia.add(mediaLink);
 				}
@@ -236,7 +251,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 				if (merchPromoForHardware != null && StringUtils.isNotBlank(merchPromoForHardware.getMpType())) {
 					if (StringUtils.isNotBlank(merchPromoForHardware.getLabel())) {
 						priceMediaLinkLabel
-								.setId(merchPromoForHardware.getMpType() + "." + Constants.STRING_OFFERS_LABEL);
+								.setId(merchPromoForHardware.getMpType() + "." + STRING_OFFERS_LABEL);
 						priceMediaLinkLabel.setType("TEXT");
 						priceMediaLinkLabel.setValue(merchPromoForHardware.getLabel());
 						priceMediaLinkLabel.setPriority(merchPromoForHardware.getPriority());
@@ -246,7 +261,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 					if (StringUtils.isNotBlank(merchPromoForHardware.getDescription())) {
 						MediaLink priceMediaLinkDescription = new MediaLink();
 						priceMediaLinkDescription
-								.setId(merchPromoForHardware.getMpType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
+								.setId(merchPromoForHardware.getMpType() + "." + STRING_OFFERS_DESCRIPTION);
 						priceMediaLinkDescription.setType("TEXT");
 						priceMediaLinkDescription.setValue(merchPromoForHardware.getDescription());
 						priceMediaLinkDescription.setPriority(merchPromoForHardware.getPriority());
@@ -256,7 +271,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 					if (StringUtils.isNotBlank(merchPromoForHardware.getPriceEstablishedLabel())) {
 						MediaLink priceEstablishedMediaLink = new MediaLink();
 						priceEstablishedMediaLink.setId(
-								merchPromoForHardware.getMpType() + "." + Constants.STRING_PRICE_ESTABLISHED_LABEL);
+								merchPromoForHardware.getMpType() + "." + STRING_PRICE_ESTABLISHED_LABEL);
 						priceEstablishedMediaLink.setType("TEXT");
 						priceEstablishedMediaLink.setValue(merchPromoForHardware.getPriceEstablishedLabel());
 						priceEstablishedMediaLink.setPriority(merchPromoForHardware.getPriority());
@@ -272,7 +287,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 					if (StringUtils.isNotBlank(merchPromoForBundle.getLabel())) {
 						MediaLink priceMediaLinkLabelForBundle = new MediaLink();
 						priceMediaLinkLabelForBundle
-								.setId(merchPromoForBundle.getMpType() + "." + Constants.STRING_OFFERS_LABEL);
+								.setId(merchPromoForBundle.getMpType() + "." + STRING_OFFERS_LABEL);
 						priceMediaLinkLabelForBundle.setType("TEXT");
 						priceMediaLinkLabelForBundle.setValue(merchPromoForBundle.getLabel());
 						priceMediaLinkLabelForBundle.setPriority(merchPromoForBundle.getPriority());
@@ -282,7 +297,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 					if (StringUtils.isNotBlank(merchPromoForBundle.getDescription())) {
 						MediaLink priceMediaLinkDescriptionForBundle = new MediaLink();
 						priceMediaLinkDescriptionForBundle
-								.setId(merchPromoForBundle.getMpType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
+								.setId(merchPromoForBundle.getMpType() + "." + STRING_OFFERS_DESCRIPTION);
 						priceMediaLinkDescriptionForBundle.setType("TEXT");
 						priceMediaLinkDescriptionForBundle.setValue(merchPromoForBundle.getDescription());
 						priceMediaLinkDescriptionForBundle.setPriority(merchPromoForBundle.getPriority());
@@ -292,7 +307,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 					if (StringUtils.isNotBlank(merchPromoForBundle.getPriceEstablishedLabel())) {
 						MediaLink priceEstablishedMediaLinkForBundle = new MediaLink();
 						priceEstablishedMediaLinkForBundle.setId(
-								merchPromoForBundle.getMpType() + "." + Constants.STRING_PRICE_ESTABLISHED_LABEL);
+								merchPromoForBundle.getMpType() + "." + STRING_PRICE_ESTABLISHED_LABEL);
 						priceEstablishedMediaLinkForBundle.setType("TEXT");
 						priceEstablishedMediaLinkForBundle.setValue(merchPromoForBundle.getPriceEstablishedLabel());
 						priceEstablishedMediaLinkForBundle.setPriority(merchPromoForBundle.getPriority());
@@ -370,9 +385,9 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		if (commercialProduct.getProductControl() != null && commercialProduct.getProductControl().isPreOrderable()) {
 			String startDateTime;
 			startDateTime = CommonUtility.getDateToString(commercialProduct.getProductControl().getAvailableFrom(),
-					Constants.DATE_FORMAT_COHERENCE);
+					DATE_FORMAT_COHERENCE);
 			if (startDateTime != null
-					&& CommonUtility.dateValidationForProduct(startDateTime, Constants.DATE_FORMAT_COHERENCE)) {
+					&& CommonUtility.dateValidationForProduct(startDateTime, DATE_FORMAT_COHERENCE)) {
 				deviceSummary.setPreOrderable(true);
 				deviceSummary.setAvailableFrom(startDateTime);
 			} else {
@@ -395,26 +410,26 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 
 		if (listOfSpecificationGroups != null && !listOfSpecificationGroups.isEmpty()) {
 			for (com.vf.uk.dal.device.datamodel.product.Group specificationGroup : listOfSpecificationGroups) {
-				if (specificationGroup.getGroupName().equalsIgnoreCase(Constants.STRING_COLOUR)) {
+				if (specificationGroup.getGroupName().equalsIgnoreCase(STRING_COLOUR)) {
 					List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup
 							.getSpecifications();
 					if (listOfSpec != null && !listOfSpec.isEmpty()) {
 						for (com.vf.uk.dal.device.datamodel.product.Specification spec : listOfSpec) {
-							if (spec.getName().equalsIgnoreCase(Constants.STRING_COLOUR)) {
+							if (spec.getName().equalsIgnoreCase(STRING_COLOUR)) {
 								deviceSummary.setColourName(spec.getValue());
 							}
-							if (spec.getName().equalsIgnoreCase(Constants.STRING_HEXVALUE)) {
+							if (spec.getName().equalsIgnoreCase(STRING_HEXVALUE)) {
 								deviceSummary.setColourHex(spec.getValue());
 							}
 						}
 					}
 				}
-				if (specificationGroup.getGroupName().equalsIgnoreCase(Constants.STRING_CAPACITY)) {
+				if (specificationGroup.getGroupName().equalsIgnoreCase(STRING_CAPACITY)) {
 					List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup
 							.getSpecifications();
 					if (listOfSpec != null && !listOfSpec.isEmpty()) {
 						for (com.vf.uk.dal.device.datamodel.product.Specification spec : listOfSpec) {
-							if (spec.getName().equalsIgnoreCase(Constants.STRING_CAPACITY)) {
+							if (spec.getName().equalsIgnoreCase(STRING_CAPACITY)) {
 								deviceSummary.setMemory(spec.getValue() + spec.getValueUOM());
 							}
 						}
@@ -474,7 +489,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 			MediaLink priceMediaLinkLabel = new MediaLink();
 			if (merchPromoForHardware != null && StringUtils.isNotBlank(merchPromoForHardware.getMpType())) {
 				if (StringUtils.isNotBlank(merchPromoForHardware.getLabel())) {
-					priceMediaLinkLabel.setId(merchPromoForHardware.getMpType() + "." + Constants.STRING_OFFERS_LABEL);
+					priceMediaLinkLabel.setId(merchPromoForHardware.getMpType() + "." + STRING_OFFERS_LABEL);
 					priceMediaLinkLabel.setType("TEXT");
 					priceMediaLinkLabel.setValue(merchPromoForHardware.getLabel());
 					priceMediaLinkLabel.setPriority(merchPromoForHardware.getPriority());
@@ -484,7 +499,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 				if (StringUtils.isNotBlank(merchPromoForHardware.getDescription())) {
 					MediaLink priceMediaLinkDescription = new MediaLink();
 					priceMediaLinkDescription
-							.setId(merchPromoForHardware.getMpType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
+							.setId(merchPromoForHardware.getMpType() + "." + STRING_OFFERS_DESCRIPTION);
 					priceMediaLinkDescription.setType("TEXT");
 					priceMediaLinkDescription.setValue(merchPromoForHardware.getDescription());
 					priceMediaLinkDescription.setPriority(merchPromoForHardware.getPriority());
@@ -494,7 +509,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 				if (StringUtils.isNotBlank(merchPromoForHardware.getPriceEstablishedLabel())) {
 					MediaLink priceEstablishedMediaLink = new MediaLink();
 					priceEstablishedMediaLink
-							.setId(merchPromoForHardware.getMpType() + "." + Constants.STRING_PRICE_ESTABLISHED_LABEL);
+							.setId(merchPromoForHardware.getMpType() + "." + STRING_PRICE_ESTABLISHED_LABEL);
 					priceEstablishedMediaLink.setType("TEXT");
 					priceEstablishedMediaLink.setValue(merchPromoForHardware.getPriceEstablishedLabel());
 					priceEstablishedMediaLink.setPriority(merchPromoForHardware.getPriority());
@@ -503,7 +518,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 				if (StringUtils.isNotBlank(merchPromoForHardware.getPromotionMedia())) {
 					MediaLink priceEstablishedMediaLink = new MediaLink();
 					priceEstablishedMediaLink
-							.setId(merchPromoForHardware.getMpType() + "." + Constants.STRING_PROMOTION_MEDIA);
+							.setId(merchPromoForHardware.getMpType() + "." + STRING_PROMOTION_MEDIA);
 					priceEstablishedMediaLink.setType("URL");
 					priceEstablishedMediaLink.setValue(merchPromoForHardware.getPromotionMedia());
 					priceEstablishedMediaLink.setPriority(merchPromoForHardware.getPriority());
@@ -519,7 +534,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 				if (StringUtils.isNotBlank(merchPromoForBundle.getLabel())) {
 					MediaLink priceMediaLinkLabelForBundle = new MediaLink();
 					priceMediaLinkLabelForBundle
-							.setId(merchPromoForBundle.getMpType() + "." + Constants.STRING_OFFERS_LABEL);
+							.setId(merchPromoForBundle.getMpType() + "." + STRING_OFFERS_LABEL);
 					priceMediaLinkLabelForBundle.setType("TEXT");
 					priceMediaLinkLabelForBundle.setValue(merchPromoForBundle.getLabel());
 					priceMediaLinkLabelForBundle.setPriority(merchPromoForBundle.getPriority());
@@ -529,7 +544,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 				if (StringUtils.isNotBlank(merchPromoForBundle.getDescription())) {
 					MediaLink priceMediaLinkDescriptionForBundle = new MediaLink();
 					priceMediaLinkDescriptionForBundle
-							.setId(merchPromoForBundle.getMpType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
+							.setId(merchPromoForBundle.getMpType() + "." + STRING_OFFERS_DESCRIPTION);
 					priceMediaLinkDescriptionForBundle.setType("TEXT");
 					priceMediaLinkDescriptionForBundle.setValue(merchPromoForBundle.getDescription());
 					priceMediaLinkDescriptionForBundle.setPriority(merchPromoForBundle.getPriority());
@@ -539,7 +554,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 				if (StringUtils.isNotBlank(merchPromoForBundle.getPriceEstablishedLabel())) {
 					MediaLink priceEstablishedMediaLinkForBundle = new MediaLink();
 					priceEstablishedMediaLinkForBundle
-							.setId(merchPromoForBundle.getMpType() + "." + Constants.STRING_PRICE_ESTABLISHED_LABEL);
+							.setId(merchPromoForBundle.getMpType() + "." + STRING_PRICE_ESTABLISHED_LABEL);
 					priceEstablishedMediaLinkForBundle.setType("TEXT");
 					priceEstablishedMediaLinkForBundle.setValue(merchPromoForBundle.getPriceEstablishedLabel());
 					priceEstablishedMediaLinkForBundle.setPriority(merchPromoForBundle.getPriority());
@@ -548,7 +563,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 				if (StringUtils.isNotBlank(merchPromoForBundle.getPromotionMedia())) {
 					MediaLink priceEstablishedMediaLink = new MediaLink();
 					priceEstablishedMediaLink
-							.setId(merchPromoForBundle.getMpType() + "." + Constants.STRING_PROMOTION_MEDIA);
+							.setId(merchPromoForBundle.getMpType() + "." + STRING_PROMOTION_MEDIA);
 					priceEstablishedMediaLink.setType("URL");
 					priceEstablishedMediaLink.setValue(merchPromoForBundle.getPromotionMedia());
 					priceEstablishedMediaLink.setPriority(merchPromoForBundle.getPriority());
@@ -569,7 +584,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 			deviceSummary.setLeadPlanDisplayName(comBundle.getDisplayName());
 			if (comBundle.getAllowances() != null && !comBundle.getAllowances().isEmpty()) {
 				for (Allowance bundleAllowance : comBundle.getAllowances()) {
-					if (StringUtils.containsIgnoreCase(bundleAllowance.getType(), Constants.STRING_DATA_AlLOWANCE)) {
+					if (StringUtils.containsIgnoreCase(bundleAllowance.getType(), STRING_DATA_AlLOWANCE)) {
 						deviceSummary.setUom(bundleAllowance.getUom());
 						deviceSummary.setUomValue(bundleAllowance.getValue());
 					}
@@ -583,7 +598,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 
 		// Price calculation
 
-		if (groupType != null && groupType.equals(Constants.STRING_DEVICE_PAYG)) {
+		if (groupType != null && groupType.equals(STRING_DEVICE_PAYG)) {
 			price = new Price();
 			price.setGross(commercialProduct.getPriceDetail().getPriceGross().toString());
 			price.setNet(commercialProduct.getPriceDetail().getPriceNet().toString());
@@ -628,9 +643,9 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		if (commercialProduct.getProductControl() != null && commercialProduct.getProductControl().isPreOrderable()) {
 			String startDateTime;
 			startDateTime = CommonUtility.getDateToString(commercialProduct.getProductControl().getAvailableFrom(),
-					Constants.DATE_FORMAT_COHERENCE);
+					DATE_FORMAT_COHERENCE);
 			if (startDateTime != null
-					&& CommonUtility.dateValidationForProduct(startDateTime, Constants.DATE_FORMAT_COHERENCE)) {
+					&& CommonUtility.dateValidationForProduct(startDateTime, DATE_FORMAT_COHERENCE)) {
 				deviceSummary.setPreOrderable(true);
 				deviceSummary.setAvailableFrom(startDateTime);
 			} else {
@@ -657,26 +672,26 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 
 		if (listOfSpecificationGroups != null && !listOfSpecificationGroups.isEmpty()) {
 			for (com.vf.uk.dal.device.datamodel.product.Group specificationGroup : listOfSpecificationGroups) {
-				if (specificationGroup.getGroupName().equalsIgnoreCase(Constants.STRING_COLOUR)) {
+				if (specificationGroup.getGroupName().equalsIgnoreCase(STRING_COLOUR)) {
 					List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup
 							.getSpecifications();
 					if (listOfSpec != null && !listOfSpec.isEmpty()) {
 						for (com.vf.uk.dal.device.datamodel.product.Specification spec : listOfSpec) {
-							if (spec.getName().equalsIgnoreCase(Constants.STRING_COLOUR)) {
+							if (spec.getName().equalsIgnoreCase(STRING_COLOUR)) {
 								deviceSummary.setColourName(spec.getValue());
 							}
-							if (spec.getName().equalsIgnoreCase(Constants.STRING_HEXVALUE)) {
+							if (spec.getName().equalsIgnoreCase(STRING_HEXVALUE)) {
 								deviceSummary.setColourHex(spec.getValue());
 							}
 						}
 					}
 				}
-				if (specificationGroup.getGroupName().equalsIgnoreCase(Constants.STRING_CAPACITY)) {
+				if (specificationGroup.getGroupName().equalsIgnoreCase(STRING_CAPACITY)) {
 					List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup
 							.getSpecifications();
 					if (listOfSpec != null && !listOfSpec.isEmpty()) {
 						for (com.vf.uk.dal.device.datamodel.product.Specification spec : listOfSpec) {
-							if (spec.getName().equalsIgnoreCase(Constants.STRING_CAPACITY)) {
+							if (spec.getName().equalsIgnoreCase(STRING_CAPACITY)) {
 								deviceSummary.setMemory(spec.getValue() + spec.getValueUOM());
 							}
 						}
@@ -701,7 +716,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 				if (merchPromoForHardware != null && StringUtils.isNotBlank(merchPromoForHardware.getMpType())) {
 					if (StringUtils.isNotBlank(merchPromoForHardware.getLabel())) {
 						priceMediaLinkLabel
-								.setId(merchPromoForHardware.getMpType() + "." + Constants.STRING_OFFERS_LABEL);
+								.setId(merchPromoForHardware.getMpType() + "." + STRING_OFFERS_LABEL);
 						priceMediaLinkLabel.setType("TEXT");
 						priceMediaLinkLabel.setValue(merchPromoForHardware.getLabel());
 						priceMediaLinkLabel.setPriority(merchPromoForHardware.getPriority());
@@ -711,7 +726,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 					if (StringUtils.isNotBlank(merchPromoForHardware.getDescription())) {
 						MediaLink priceMediaLinkDescription = new MediaLink();
 						priceMediaLinkDescription
-								.setId(merchPromoForHardware.getMpType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
+								.setId(merchPromoForHardware.getMpType() + "." + STRING_OFFERS_DESCRIPTION);
 						priceMediaLinkDescription.setType("TEXT");
 						priceMediaLinkDescription.setValue(merchPromoForHardware.getDescription());
 						priceMediaLinkDescription.setPriority(merchPromoForHardware.getPriority());
@@ -721,7 +736,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 					if (StringUtils.isNotBlank(merchPromoForHardware.getPriceEstablishedLabel())) {
 						MediaLink priceEstablishedMediaLink = new MediaLink();
 						priceEstablishedMediaLink.setId(
-								merchPromoForHardware.getMpType() + "." + Constants.STRING_PRICE_ESTABLISHED_LABEL);
+								merchPromoForHardware.getMpType() + "." + STRING_PRICE_ESTABLISHED_LABEL);
 						priceEstablishedMediaLink.setType("TEXT");
 						priceEstablishedMediaLink.setValue(merchPromoForHardware.getPriceEstablishedLabel());
 						priceEstablishedMediaLink.setPriority(merchPromoForHardware.getPriority());

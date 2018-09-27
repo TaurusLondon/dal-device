@@ -41,7 +41,6 @@ import com.vf.uk.dal.device.helper.DeviceServiceImplUtility;
 import com.vf.uk.dal.device.svc.DeviceRecommendationService;
 import com.vf.uk.dal.device.svc.DeviceService;
 import com.vf.uk.dal.device.utils.CommonUtility;
-import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.DeviceDetailsMakeAndModelVaiantDaoUtils;
 import com.vf.uk.dal.device.utils.DeviceTilesDaoUtils;
 import com.vf.uk.dal.device.utils.DeviceUtils;
@@ -60,6 +59,17 @@ import com.vf.uk.dal.utility.entity.BundleModelAndPrice;
 
 @Component("deviceService")
 public class DeviceServiceImpl implements DeviceService {
+	
+	public static final String SUBSCRIPTION_TYPE_MSISDN = "msisdn";
+	public static final String STRING_DEVICE_PAYM = "DEVICE_PAYM";
+	public static final String STRING_DEVICE_PAYG = "DEVICE_PAYG";
+	public static final String JOURNEY_TYPE_ACQUISITION = "Acquisition";
+	public static final String JOURNEY_TYPE_UPGRADE = "Upgrade";
+	public static final String STRING_DATA_DEVICE = "Data Device";
+	public static final String STRING_HANDSET = "Handset";
+	public static final String DATA_NOT_FOUND = "NA";
+	public static final String STRING_DATADEVICE_PAYM = "DATA_DEVICE_PAYM";
+	public static final String OFFERCODE_PAYM = "PAYM";
 
 	@Autowired
 	DeviceDao deviceDao;
@@ -154,9 +164,9 @@ public class DeviceServiceImpl implements DeviceService {
 		sortCriteriaLocal = DeviceServiceImplUtility.getSortCriteria(sortCriteria);
 		Validator.validateForDeviceList(sortCriteria, sortCriteriaLocal, groupType, productClass);
 		String journeytype = DeviceServiceImplUtility.getJourney(journeyType);
-		if (StringUtils.isNotBlank(groupType) && groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG)) {
+		if (StringUtils.isNotBlank(groupType) && groupType.equalsIgnoreCase(STRING_DEVICE_PAYG)) {
 			Validator.validateForPAYG(journeytype, offerCode);
-			journeytype = Constants.JOURNEY_TYPE_ACQUISITION;
+			journeytype = JOURNEY_TYPE_ACQUISITION;
 		}
 		LogHelper.info(this, "Start -->  calling  getDeviceList in ServiceImpl");
 		if (includeRecommendations && StringUtils.isBlank(msisdn)) {
@@ -195,7 +205,7 @@ public class DeviceServiceImpl implements DeviceService {
 	public FacetedDevice getConditionalForDeviceList(String msisdn, FacetedDevice facetedDevice) {
 		String message;
 		FacetedDevice facetedDeviceResult;
-		String deviceId = commonUtility.getSubscriptionBundleId(msisdn, Constants.SUBSCRIPTION_TYPE_MSISDN);
+		String deviceId = commonUtility.getSubscriptionBundleId(msisdn, SUBSCRIPTION_TYPE_MSISDN);
 		LogHelper.info(this, "Getting subscription asset for msisdn " + msisdn + "  deviceID " + deviceId);
 
 		if (StringUtils.isNotBlank(deviceId)) {
@@ -266,10 +276,10 @@ public class DeviceServiceImpl implements DeviceService {
 		DeviceSummary deviceSummary = null;
 		deviceTile.setDeviceId(id);
 		deviceTile.setRating(deviceServiceCommonUtility.getDeviceTileRating(id));
-		if (commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_HANDSET)) {
-			strGroupType = Constants.STRING_DEVICE_PAYM;
-		} else if (commercialProduct.getProductClass().equalsIgnoreCase(Constants.STRING_DATA_DEVICE)) {
-			strGroupType = Constants.STRING_DATADEVICE_PAYM;
+		if (commercialProduct.getProductClass().equalsIgnoreCase(STRING_HANDSET)) {
+			strGroupType = STRING_DEVICE_PAYM;
+		} else if (commercialProduct.getProductClass().equalsIgnoreCase(STRING_DATA_DEVICE)) {
+			strGroupType = STRING_DATADEVICE_PAYM;
 		}
 
 		LogHelper.info(this, "Start -->  calling  productGroupRepository.getProductGroupsByType");
@@ -603,10 +613,10 @@ public class DeviceServiceImpl implements DeviceService {
 		listOfProductModelLocal.forEach(productModel -> DeviceServiceImplUtility.getBundleAndHardwareList(groupType,
 				journeyType, bundleHardwareTupleList, productModel));
 		getPromotionMapForDeviceList(journeyType, bundleHardwareTupleList, promotionmap);
-		if (groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYM)) {
+		if (groupType.equalsIgnoreCase(STRING_DEVICE_PAYM)) {
 			boolean offerCodeJourney = (StringUtils.isNotBlank(offerCode) && StringUtils.isNotBlank(journeyType));
 			if (offerCodeJourney || (StringUtils.isBlank(offerCode) && (StringUtils.isNotBlank(journeyType)))
-					&& !StringUtils.equals(Constants.JOURNEY_TYPE_ACQUISITION, journeyType)) {
+					&& !StringUtils.equals(JOURNEY_TYPE_ACQUISITION, journeyType)) {
 				if (StringUtils.isNotBlank(offerCode)) {
 					getOfferAppliedPriceWithOfferCode(journeyType, offerCode, listOfProducts, offerPriceMap);
 				}
@@ -626,7 +636,7 @@ public class DeviceServiceImpl implements DeviceService {
 	public void getOfferAppliedPriceWithoutOfferCode(String journeyType, List<String> listOfProducts,
 			Map<String, List<OfferAppliedPriceModel>> withoutOfferPriceMap) {
 		List<OfferAppliedPriceModel> listOfWithoutOfferAppliedPrice = deviceEs
-				.getListOfOfferAppliedPriceModel(listOfProducts, journeyType, Constants.DATA_NOT_FOUND);
+				.getListOfOfferAppliedPriceModel(listOfProducts, journeyType, DATA_NOT_FOUND);
 		listOfWithoutOfferAppliedPrice.forEach(offers -> {
 			List<OfferAppliedPriceModel> offeredPrice;
 			if (withoutOfferPriceMap.containsKey(offers.getHardwareId())) {
@@ -649,7 +659,7 @@ public class DeviceServiceImpl implements DeviceService {
 	public void getOfferAppliedPriceWithOfferCode(String journeyType, String offerCode, List<String> listOfProducts,
 			Map<String, List<OfferAppliedPriceModel>> offerPriceMap) {
 		List<MerchandisingPromotionModel> listOfMerchandisingPromotions = null;
-		listOfMerchandisingPromotions = deviceEs.getListOfMerchandisingPromotionModel(Constants.OFFERCODE_PAYM,
+		listOfMerchandisingPromotions = deviceEs.getListOfMerchandisingPromotionModel(OFFERCODE_PAYM,
 				journeyType);
 		MerchandisingPromotionModel merchandisingPromotionModel = listOfMerchandisingPromotions.stream()
 				.filter(promotionModel -> offerCode.equals(promotionModel.getTag())).findAny().orElse(null);
@@ -701,14 +711,14 @@ public class DeviceServiceImpl implements DeviceService {
 			Map<String, Boolean> isLeadMemberFromSolr, ProductGroupModel productGroupModel) {
 		if (StringUtils.isNotBlank(productGroupModel.getNonUpgradeLeadDeviceId())
 				&& (StringUtils.isBlank(journeyType) || (StringUtils.isNotBlank(journeyType)
-						&& !StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_UPGRADE)))) {
+						&& !StringUtils.equalsIgnoreCase(journeyType, JOURNEY_TYPE_UPGRADE)))) {
 			listOfProducts.add(productGroupModel.getNonUpgradeLeadDeviceId());
 			isLeadMemberFromSolr.put("leadMember", true);
 			DeviceServiceImplUtility.getProductGroupdetailsMap(productGroupModel, productGroupdetailsMap,
 					productGroupModel.getNonUpgradeLeadDeviceId());
 		} else if (StringUtils.isNotBlank(productGroupModel.getUpgradeLeadDeviceId())
 				&& StringUtils.isNotBlank(journeyType)
-				&& StringUtils.equalsIgnoreCase(journeyType, Constants.JOURNEY_TYPE_UPGRADE)) {
+				&& StringUtils.equalsIgnoreCase(journeyType, JOURNEY_TYPE_UPGRADE)) {
 			listOfProducts.add(productGroupModel.getUpgradeLeadDeviceId());
 			isLeadMemberFromSolr.put("leadMember", true);
 			DeviceServiceImplUtility.getProductGroupdetailsMap(productGroupModel, productGroupdetailsMap,
@@ -750,19 +760,19 @@ public class DeviceServiceImpl implements DeviceService {
 		Map<String, Object> productGroupFacetMap = new HashMap<>();
 		ProductGroupFacetModel productGroupFacetModel = null;
 		ProductGroupFacetModel productGroupFacetModelForFacets = null;
-		if (groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYG)) {
-			productGroupFacetModel = deviceEs.getProductGroupFacetModel(Constants.STRING_DEVICE_PAYG, make, capacity,
+		if (groupType.equalsIgnoreCase(STRING_DEVICE_PAYG)) {
+			productGroupFacetModel = deviceEs.getProductGroupFacetModel(STRING_DEVICE_PAYG, make, capacity,
 					colour, operatingSystem, mustHaveFeatures, sortBy, sortOption, pageNumber, pageSize, journeyType);
-			List<FacetField> facetList = deviceEs.getProductGroupFacetModel(Constants.STRING_DEVICE_PAYG, journeyType);
+			List<FacetField> facetList = deviceEs.getProductGroupFacetModel(STRING_DEVICE_PAYG, journeyType);
 			productGroupFacetModelForFacets = null;
 			if (facetList != null && CollectionUtils.isNotEmpty(facetList)) {
 				productGroupFacetModelForFacets = new ProductGroupFacetModel();
 				productGroupFacetModelForFacets.setListOfFacetsFields(facetList);
 			}
-		} else if (groupType.equalsIgnoreCase(Constants.STRING_DEVICE_PAYM)) {
-			productGroupFacetModel = deviceEs.getProductGroupFacetModel(Constants.STRING_DEVICE_PAYM, make, capacity,
+		} else if (groupType.equalsIgnoreCase(STRING_DEVICE_PAYM)) {
+			productGroupFacetModel = deviceEs.getProductGroupFacetModel(STRING_DEVICE_PAYM, make, capacity,
 					colour, operatingSystem, mustHaveFeatures, sortBy, sortOption, pageNumber, pageSize, journeyType);
-			List<FacetField> facetList = deviceEs.getProductGroupFacetModel(Constants.STRING_DEVICE_PAYM, journeyType);
+			List<FacetField> facetList = deviceEs.getProductGroupFacetModel(STRING_DEVICE_PAYM, journeyType);
 
 			if (facetList != null && CollectionUtils.isNotEmpty(facetList)) {
 				productGroupFacetModelForFacets = new ProductGroupFacetModel();

@@ -26,6 +26,9 @@ import com.vf.uk.dal.utility.solr.entity.OfferAppliedPriceDetails;
  *
  */
 public class DeviceUtils {
+	public static final String DEVICE_RATING_NA = "NA";
+	public static final String JOURNEY_TYPE_UPGRADE = "Upgrade";
+	public static final String JOURNEY_TYPE_SECONDLINE = "SecondLine";
 	/**
 	 * 
 	 * @param value
@@ -390,9 +393,9 @@ public class DeviceUtils {
 		String jouneyType = null;
 		if ((listOfOfferCodesForUpgrade.contains(entry.getKey()) && listOfSecondLineOfferCode.contains(entry.getKey()))
 				|| (listOfOfferCodesForUpgrade.contains(entry.getKey()))) {
-			jouneyType = Constants.JOURNEY_TYPE_UPGRADE;
+			jouneyType = JOURNEY_TYPE_UPGRADE;
 		} else if (listOfSecondLineOfferCode.contains(entry.getKey())) {
-			jouneyType = Constants.JOURNEY_TYPE_SECONDLINE;
+			jouneyType = JOURNEY_TYPE_SECONDLINE;
 		}
 		return jouneyType;
 	}
@@ -572,7 +575,7 @@ public class DeviceUtils {
 		if (ratingsReviewMap.containsKey(CommonUtility.appendPrefixString(deviceDataRating.getDeviceId()))) {
 			String avarageOverallRating = ratingsReviewMap
 					.get(CommonUtility.appendPrefixString(deviceDataRating.getDeviceId()));
-			if (avarageOverallRating != null && !Constants.DEVICE_RATING_NA.equalsIgnoreCase(avarageOverallRating)) {
+			if (avarageOverallRating != null && !DEVICE_RATING_NA.equalsIgnoreCase(avarageOverallRating)) {
 				deviceDataRating.setRating(Float.parseFloat(avarageOverallRating));
 			} else {
 				deviceDataRating.setRating(null);

@@ -21,6 +21,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
+import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
 import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
@@ -54,6 +55,18 @@ import com.vf.uk.dal.utility.entity.RecommendedProductListResponse;
  */
 @Service
 public class CommonUtility {
+	public static final String PREFIX_SKU = "sku";
+	public static final String zero = "0";
+	public static final String STRING_TEXT_ALLOWANCE = "TEXT";
+	public static final String DATE_FORMAT_COHERENCE = "yyyy-MM-dd HH:mm:ss.SSS";
+	public static final String JOURNEYTYPE_UPGRADE = "UPGRADE";
+	public static final String STRING_PROMOTION_MEDIA = "merchandisingPromotions.merchandisingPromotion.PromotionMedia";
+	public static final String STRING_OFFERS_LABEL = "merchandisingPromotions.merchandisingPromotion.label";
+	public static final String STRING_OFFERS_DESCRIPTION = "merchandisingPromotions.merchandisingPromotion.description";
+	public static final String STRING_MEDIA_PRICEESTABLISH = "priceEstablishedLabel";
+	public static final String STRING_MEDIA_DESCRIPTION = "description";
+	public static final String STRING_MEDIA_LABEL = "label";
+	public static final String STRING_URL_ALLOWANCE = "URL";
 	
 	@Autowired
 	RestTemplate restTemplate;
@@ -200,9 +213,9 @@ public class CommonUtility {
 	 * @return
 	 */
 	public static String appendPrefixString(String deviceId) {
-		StringBuilder target = new StringBuilder(Constants.PREFIX_SKU);
+		StringBuilder target = new StringBuilder(PREFIX_SKU);
 		String leadingZero = deviceId.substring(0, 1);
-		if (leadingZero.equals(Constants.zero)) {
+		if (leadingZero.equals(zero)) {
 			target.append(deviceId.substring(1, deviceId.length()));
 		} else {
 			target.append(deviceId);
@@ -249,7 +262,7 @@ public class CommonUtility {
 			requestForBundleAndHardware.setBundleAndHardwareList(bundleAndHardwareTupleList);
 			requestForBundleAndHardware.setOfferCode(offerCode);
 			requestForBundleAndHardware.setPackageType(journeyType);
-			LogHelper.info(CommonUtility.class, "Start --> Calling  Price.calculateForBundleAndHardware journeyType "+journeyType +" OfferCode "+offerCode+" Index Version "+Constants.CATALOG_VERSION.get());
+			LogHelper.info(CommonUtility.class, "Start --> Calling  Price.calculateForBundleAndHardware journeyType "+journeyType +" OfferCode "+offerCode+" Index Version "+CatalogServiceAspect.CATALOG_VERSION.get());
 			PriceForBundleAndHardware[] client = restTemplate.postForObject(
 					"http://PRICE-V1/price/calculateForBundleAndHardware", requestForBundleAndHardware,
 					PriceForBundleAndHardware[].class);
@@ -394,15 +407,15 @@ public class CommonUtility {
 		String endDateTime = null;
 		if (commercialProduct.getProductAvailability().getStart() != null) {
 			startDateTime = getDateToString(commercialProduct.getProductAvailability().getStart(),
-					Constants.DATE_FORMAT_COHERENCE);
+					DATE_FORMAT_COHERENCE);
 		}
 		if (commercialProduct.getProductAvailability().getEnd() != null) {
 			endDateTime = getDateToString(commercialProduct.getProductAvailability().getEnd(),
-					Constants.DATE_FORMAT_COHERENCE);
+					DATE_FORMAT_COHERENCE);
 		}
 		if (!commercialProduct.getProductAvailability().isSalesExpired()) {
 
-			isProductExpired = dateValidationForOffers(startDateTime, endDateTime, Constants.DATE_FORMAT_COHERENCE);
+			isProductExpired = dateValidationForOffers(startDateTime, endDateTime, DATE_FORMAT_COHERENCE);
 
 		}
 		return isProductExpired;
@@ -417,7 +430,7 @@ public class CommonUtility {
 	 */
 	public static boolean isProductJourneySpecific(CommercialProduct commercialProduct, String journeyType) {
 		boolean isProductJourneySpecific = false;
-		if (StringUtils.isNotBlank(journeyType) && Constants.JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)) {
+		if (StringUtils.isNotBlank(journeyType) && JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)) {
 			if (commercialProduct.getProductControl() != null && commercialProduct.getProductControl().isSellableRet()
 					&& commercialProduct.getProductControl().isDisplayableRet()) {
 
@@ -504,8 +517,8 @@ public class CommonUtility {
 			for (CataloguepromotionqueriesForBundleAndHardwareAccessory freeAccForHardware : freeAccForHardwares) {
 				if (StringUtils.isNotBlank(freeAccForHardware.getLabel())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(freeAccForHardware.getType() + "." + Constants.STRING_OFFERS_LABEL);
-					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
+					mediaOfferLink.setId(freeAccForHardware.getType() + "." + STRING_OFFERS_LABEL);
+					mediaOfferLink.setType(STRING_TEXT_ALLOWANCE);
 					mediaOfferLink.setValue(freeAccForHardware.getLabel());
 					if (StringUtils.isNotBlank(freeAccForHardware.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(freeAccForHardware.getPriority()));
@@ -514,8 +527,8 @@ public class CommonUtility {
 				}
 				if (StringUtils.isNotBlank(freeAccForHardware.getDescription())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(freeAccForHardware.getType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
-					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
+					mediaOfferLink.setId(freeAccForHardware.getType() + "." + STRING_OFFERS_DESCRIPTION);
+					mediaOfferLink.setType(STRING_TEXT_ALLOWANCE);
 					mediaOfferLink.setValue(freeAccForHardware.getDescription());
 					if (StringUtils.isNotBlank(freeAccForHardware.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(freeAccForHardware.getPriority()));
@@ -524,8 +537,8 @@ public class CommonUtility {
 				}
 				if (StringUtils.isNotBlank(freeAccForHardware.getPromotionMedia())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(freeAccForHardware.getType() + "." + Constants.STRING_PROMOTION_MEDIA);
-					mediaOfferLink.setType(Constants.STRING_URL_ALLOWANCE);
+					mediaOfferLink.setId(freeAccForHardware.getType() + "." + STRING_PROMOTION_MEDIA);
+					mediaOfferLink.setType(STRING_URL_ALLOWANCE);
 					mediaOfferLink.setValue(freeAccForHardware.getPromotionMedia());
 					if (StringUtils.isNotBlank(freeAccForHardware.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(freeAccForHardware.getPriority()));
@@ -538,8 +551,8 @@ public class CommonUtility {
 			for (CataloguepromotionqueriesForBundleAndHardwareExtras freeExtrasForHardware : freeExtrasForHardwares) {
 				if (StringUtils.isNotBlank(freeExtrasForHardware.getLabel())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(freeExtrasForHardware.getType() + "." + Constants.STRING_OFFERS_LABEL);
-					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
+					mediaOfferLink.setId(freeExtrasForHardware.getType() + "." + STRING_OFFERS_LABEL);
+					mediaOfferLink.setType(STRING_TEXT_ALLOWANCE);
 					mediaOfferLink.setValue(freeExtrasForHardware.getLabel());
 					if (StringUtils.isNotBlank(freeExtrasForHardware.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(freeExtrasForHardware.getPriority()));
@@ -548,8 +561,8 @@ public class CommonUtility {
 				}
 				if (StringUtils.isNotBlank(freeExtrasForHardware.getDescription())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(freeExtrasForHardware.getType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
-					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
+					mediaOfferLink.setId(freeExtrasForHardware.getType() + "." + STRING_OFFERS_DESCRIPTION);
+					mediaOfferLink.setType(STRING_TEXT_ALLOWANCE);
 					mediaOfferLink.setValue(freeExtrasForHardware.getDescription());
 					if (StringUtils.isNotBlank(freeExtrasForHardware.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(freeExtrasForHardware.getPriority()));
@@ -558,8 +571,8 @@ public class CommonUtility {
 				}
 				if (StringUtils.isNotBlank(freeExtrasForHardware.getPromotionMedia())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(freeExtrasForHardware.getType() + "." + Constants.STRING_PROMOTION_MEDIA);
-					mediaOfferLink.setType(Constants.STRING_URL_ALLOWANCE);
+					mediaOfferLink.setId(freeExtrasForHardware.getType() + "." + STRING_PROMOTION_MEDIA);
+					mediaOfferLink.setType(STRING_URL_ALLOWANCE);
 					mediaOfferLink.setValue(freeExtrasForHardware.getPromotionMedia());
 					if (StringUtils.isNotBlank(freeExtrasForHardware.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(freeExtrasForHardware.getPriority()));
@@ -572,8 +585,8 @@ public class CommonUtility {
 			for (CataloguepromotionqueriesForBundleAndHardwareAccessory freeAccForPlan : freeAccForPlans) {
 				if (StringUtils.isNotBlank(freeAccForPlan.getLabel())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(freeAccForPlan.getType() + "." + Constants.STRING_OFFERS_LABEL);
-					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
+					mediaOfferLink.setId(freeAccForPlan.getType() + "." + STRING_OFFERS_LABEL);
+					mediaOfferLink.setType(STRING_TEXT_ALLOWANCE);
 					mediaOfferLink.setValue(freeAccForPlan.getLabel());
 					if (StringUtils.isNotBlank(freeAccForPlan.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(freeAccForPlan.getPriority()));
@@ -582,8 +595,8 @@ public class CommonUtility {
 				}
 				if (StringUtils.isNotBlank(freeAccForPlan.getDescription())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(freeAccForPlan.getType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
-					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
+					mediaOfferLink.setId(freeAccForPlan.getType() + "." + STRING_OFFERS_DESCRIPTION);
+					mediaOfferLink.setType(STRING_TEXT_ALLOWANCE);
 					mediaOfferLink.setValue(freeAccForPlan.getDescription());
 					if (StringUtils.isNotBlank(freeAccForPlan.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(freeAccForPlan.getPriority()));
@@ -592,8 +605,8 @@ public class CommonUtility {
 				}
 				if (StringUtils.isNotBlank(freeAccForPlan.getPromotionMedia())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(freeAccForPlan.getType() + "." + Constants.STRING_PROMOTION_MEDIA);
-					mediaOfferLink.setType(Constants.STRING_URL_ALLOWANCE);
+					mediaOfferLink.setId(freeAccForPlan.getType() + "." + STRING_PROMOTION_MEDIA);
+					mediaOfferLink.setType(STRING_URL_ALLOWANCE);
 					mediaOfferLink.setValue(freeAccForPlan.getPromotionMedia());
 					if (StringUtils.isNotBlank(freeAccForPlan.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(freeAccForPlan.getPriority()));
@@ -606,8 +619,8 @@ public class CommonUtility {
 			for (CataloguepromotionqueriesForBundleAndHardwareExtras freeExtrasForPlan : freeExtrasForPlans) {
 				if (StringUtils.isNotBlank(freeExtrasForPlan.getLabel())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(freeExtrasForPlan.getType() + "." + Constants.STRING_OFFERS_LABEL);
-					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
+					mediaOfferLink.setId(freeExtrasForPlan.getType() + "." + STRING_OFFERS_LABEL);
+					mediaOfferLink.setType(STRING_TEXT_ALLOWANCE);
 					mediaOfferLink.setValue(freeExtrasForPlan.getLabel());
 					if (StringUtils.isNotBlank(freeExtrasForPlan.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(freeExtrasForPlan.getPriority()));
@@ -616,8 +629,8 @@ public class CommonUtility {
 				}
 				if (StringUtils.isNotBlank(freeExtrasForPlan.getDescription())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(freeExtrasForPlan.getType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
-					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
+					mediaOfferLink.setId(freeExtrasForPlan.getType() + "." + STRING_OFFERS_DESCRIPTION);
+					mediaOfferLink.setType(STRING_TEXT_ALLOWANCE);
 					mediaOfferLink.setValue(freeExtrasForPlan.getDescription());
 					if (StringUtils.isNotBlank(freeExtrasForPlan.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(freeExtrasForPlan.getPriority()));
@@ -626,8 +639,8 @@ public class CommonUtility {
 				}
 				if (StringUtils.isNotBlank(freeExtrasForPlan.getPromotionMedia())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(freeExtrasForPlan.getType() + "." + Constants.STRING_PROMOTION_MEDIA);
-					mediaOfferLink.setType(Constants.STRING_URL_ALLOWANCE);
+					mediaOfferLink.setId(freeExtrasForPlan.getType() + "." + STRING_PROMOTION_MEDIA);
+					mediaOfferLink.setType(STRING_URL_ALLOWANCE);
 					mediaOfferLink.setValue(freeExtrasForPlan.getPromotionMedia());
 					if (StringUtils.isNotBlank(freeExtrasForPlan.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(freeExtrasForPlan.getPriority()));
@@ -640,8 +653,8 @@ public class CommonUtility {
 			for (CataloguepromotionqueriesForBundleAndHardwareAccessory freeAccessory : freeAccessories) {
 				if (StringUtils.isNotBlank(freeAccessory.getLabel())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(freeAccessory.getType() + "." + Constants.STRING_OFFERS_LABEL);
-					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
+					mediaOfferLink.setId(freeAccessory.getType() + "." + STRING_OFFERS_LABEL);
+					mediaOfferLink.setType(STRING_TEXT_ALLOWANCE);
 					mediaOfferLink.setValue(freeAccessory.getLabel());
 					if (StringUtils.isNotBlank(freeAccessory.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(freeAccessory.getPriority()));
@@ -650,8 +663,8 @@ public class CommonUtility {
 				}
 				if (StringUtils.isNotBlank(freeAccessory.getDescription())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(freeAccessory.getType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
-					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
+					mediaOfferLink.setId(freeAccessory.getType() + "." + STRING_OFFERS_DESCRIPTION);
+					mediaOfferLink.setType(STRING_TEXT_ALLOWANCE);
 					mediaOfferLink.setValue(freeAccessory.getDescription());
 					if (StringUtils.isNotBlank(freeAccessory.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(freeAccessory.getPriority()));
@@ -660,8 +673,8 @@ public class CommonUtility {
 				}
 				if (StringUtils.isNotBlank(freeAccessory.getPromotionMedia())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(freeAccessory.getType() + "." + Constants.STRING_PROMOTION_MEDIA);
-					mediaOfferLink.setType(Constants.STRING_URL_ALLOWANCE);
+					mediaOfferLink.setId(freeAccessory.getType() + "." + STRING_PROMOTION_MEDIA);
+					mediaOfferLink.setType(STRING_URL_ALLOWANCE);
 					mediaOfferLink.setValue(freeAccessory.getPromotionMedia());
 					if (StringUtils.isNotBlank(freeAccessory.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(freeAccessory.getPriority()));
@@ -674,8 +687,8 @@ public class CommonUtility {
 			for (CataloguepromotionqueriesForBundleAndHardwareExtras freeExtra : freeExtras) {
 				if (StringUtils.isNotBlank(freeExtra.getLabel())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(freeExtra.getType() + "." + Constants.STRING_OFFERS_LABEL);
-					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
+					mediaOfferLink.setId(freeExtra.getType() + "." + STRING_OFFERS_LABEL);
+					mediaOfferLink.setType(STRING_TEXT_ALLOWANCE);
 					mediaOfferLink.setValue(freeExtra.getLabel());
 					if (StringUtils.isNotBlank(freeExtra.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(freeExtra.getPriority()));
@@ -684,8 +697,8 @@ public class CommonUtility {
 				}
 				if (StringUtils.isNotBlank(freeExtra.getDescription())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(freeExtra.getType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
-					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
+					mediaOfferLink.setId(freeExtra.getType() + "." + STRING_OFFERS_DESCRIPTION);
+					mediaOfferLink.setType(STRING_TEXT_ALLOWANCE);
 					mediaOfferLink.setValue(freeExtra.getDescription());
 					if (StringUtils.isNotBlank(freeExtra.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(freeExtra.getPriority()));
@@ -694,8 +707,8 @@ public class CommonUtility {
 				}
 				if (StringUtils.isNotBlank(freeExtra.getPromotionMedia())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(freeExtra.getType() + "." + Constants.STRING_PROMOTION_MEDIA);
-					mediaOfferLink.setType(Constants.STRING_URL_ALLOWANCE);
+					mediaOfferLink.setId(freeExtra.getType() + "." + STRING_PROMOTION_MEDIA);
+					mediaOfferLink.setType(STRING_URL_ALLOWANCE);
 					mediaOfferLink.setValue(freeExtra.getPromotionMedia());
 					if (StringUtils.isNotBlank(freeExtra.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(freeExtra.getPriority()));
@@ -708,8 +721,8 @@ public class CommonUtility {
 			for (CataloguepromotionqueriesForHardwareSash sashBannerHardware : sashBannerForHardware) {
 				if (StringUtils.isNotBlank(sashBannerHardware.getLabel())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(sashBannerHardware.getType() + "." + Constants.STRING_OFFERS_LABEL);
-					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
+					mediaOfferLink.setId(sashBannerHardware.getType() + "." + STRING_OFFERS_LABEL);
+					mediaOfferLink.setType(STRING_TEXT_ALLOWANCE);
 					mediaOfferLink.setValue(sashBannerHardware.getLabel());
 					if (StringUtils.isNotBlank(sashBannerHardware.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(sashBannerHardware.getPriority()));
@@ -718,8 +731,8 @@ public class CommonUtility {
 				}
 				if (StringUtils.isNotBlank(sashBannerHardware.getDescription())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(sashBannerHardware.getType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
-					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
+					mediaOfferLink.setId(sashBannerHardware.getType() + "." + STRING_OFFERS_DESCRIPTION);
+					mediaOfferLink.setType(STRING_TEXT_ALLOWANCE);
 					mediaOfferLink.setValue(sashBannerHardware.getDescription());
 					if (StringUtils.isNotBlank(sashBannerHardware.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(sashBannerHardware.getPriority()));
@@ -728,8 +741,8 @@ public class CommonUtility {
 				}
 				if (StringUtils.isNotBlank(sashBannerHardware.getPromotionMedia())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(sashBannerHardware.getType() + "." + Constants.STRING_PROMOTION_MEDIA);
-					mediaOfferLink.setType(Constants.STRING_URL_ALLOWANCE);
+					mediaOfferLink.setId(sashBannerHardware.getType() + "." + STRING_PROMOTION_MEDIA);
+					mediaOfferLink.setType(STRING_URL_ALLOWANCE);
 					mediaOfferLink.setValue(sashBannerHardware.getPromotionMedia());
 					if (StringUtils.isNotBlank(sashBannerHardware.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(sashBannerHardware.getPriority()));
@@ -742,8 +755,8 @@ public class CommonUtility {
 			for (CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks entertainment : entertainmentPacks) {
 				if (StringUtils.isNotBlank(entertainment.getLabel())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(entertainment.getType() + "." + Constants.STRING_OFFERS_LABEL);
-					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
+					mediaOfferLink.setId(entertainment.getType() + "." + STRING_OFFERS_LABEL);
+					mediaOfferLink.setType(STRING_TEXT_ALLOWANCE);
 					mediaOfferLink.setValue(entertainment.getLabel());
 					if (StringUtils.isNotBlank(entertainment.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(entertainment.getPriority()));
@@ -752,8 +765,8 @@ public class CommonUtility {
 				}
 				if (StringUtils.isNotBlank(entertainment.getDescription())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(entertainment.getType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
-					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
+					mediaOfferLink.setId(entertainment.getType() + "." + STRING_OFFERS_DESCRIPTION);
+					mediaOfferLink.setType(STRING_TEXT_ALLOWANCE);
 					mediaOfferLink.setValue(entertainment.getDescription());
 					if (StringUtils.isNotBlank(entertainment.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(entertainment.getPriority()));
@@ -762,8 +775,8 @@ public class CommonUtility {
 				}
 				if (StringUtils.isNotBlank(entertainment.getPromotionMedia())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(entertainment.getType() + "." + Constants.STRING_PROMOTION_MEDIA);
-					mediaOfferLink.setType(Constants.STRING_URL_ALLOWANCE);
+					mediaOfferLink.setId(entertainment.getType() + "." + STRING_PROMOTION_MEDIA);
+					mediaOfferLink.setType(STRING_URL_ALLOWANCE);
 					mediaOfferLink.setValue(entertainment.getPromotionMedia());
 					if (StringUtils.isNotBlank(entertainment.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(entertainment.getPriority()));
@@ -776,8 +789,8 @@ public class CommonUtility {
 			for (CataloguepromotionqueriesForBundleAndHardwareDataAllowances dataAllowance : dataAllowances) {
 				if (StringUtils.isNotBlank(dataAllowance.getLabel())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(dataAllowance.getType() + "." + Constants.STRING_OFFERS_LABEL);
-					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
+					mediaOfferLink.setId(dataAllowance.getType() + "." + STRING_OFFERS_LABEL);
+					mediaOfferLink.setType(STRING_TEXT_ALLOWANCE);
 					mediaOfferLink.setValue(dataAllowance.getLabel());
 					if (StringUtils.isNotBlank(dataAllowance.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(dataAllowance.getPriority()));
@@ -786,8 +799,8 @@ public class CommonUtility {
 				}
 				if (StringUtils.isNotBlank(dataAllowance.getDescription())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(dataAllowance.getType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
-					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
+					mediaOfferLink.setId(dataAllowance.getType() + "." + STRING_OFFERS_DESCRIPTION);
+					mediaOfferLink.setType(STRING_TEXT_ALLOWANCE);
 					mediaOfferLink.setValue(dataAllowance.getDescription());
 					if (StringUtils.isNotBlank(dataAllowance.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(dataAllowance.getPriority()));
@@ -796,8 +809,8 @@ public class CommonUtility {
 				}
 				if (StringUtils.isNotBlank(dataAllowance.getPromotionMedia())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(dataAllowance.getType() + "." + Constants.STRING_PROMOTION_MEDIA);
-					mediaOfferLink.setType(Constants.STRING_URL_ALLOWANCE);
+					mediaOfferLink.setId(dataAllowance.getType() + "." + STRING_PROMOTION_MEDIA);
+					mediaOfferLink.setType(STRING_URL_ALLOWANCE);
 					mediaOfferLink.setValue(dataAllowance.getPromotionMedia());
 					if (StringUtils.isNotBlank(dataAllowance.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(dataAllowance.getPriority()));
@@ -810,8 +823,8 @@ public class CommonUtility {
 			for (CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions planCouplingPromotion : planCouplingPromotions) {
 				if (StringUtils.isNotBlank(planCouplingPromotion.getLabel())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(planCouplingPromotion.getType() + "." + Constants.STRING_OFFERS_LABEL);
-					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
+					mediaOfferLink.setId(planCouplingPromotion.getType() + "." + STRING_OFFERS_LABEL);
+					mediaOfferLink.setType(STRING_TEXT_ALLOWANCE);
 					mediaOfferLink.setValue(planCouplingPromotion.getLabel());
 					if (StringUtils.isNotBlank(planCouplingPromotion.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(planCouplingPromotion.getPriority()));
@@ -820,8 +833,8 @@ public class CommonUtility {
 				}
 				if (StringUtils.isNotBlank(planCouplingPromotion.getDescription())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(planCouplingPromotion.getType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
-					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
+					mediaOfferLink.setId(planCouplingPromotion.getType() + "." + STRING_OFFERS_DESCRIPTION);
+					mediaOfferLink.setType(STRING_TEXT_ALLOWANCE);
 					mediaOfferLink.setValue(planCouplingPromotion.getDescription());
 					if (StringUtils.isNotBlank(planCouplingPromotion.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(planCouplingPromotion.getPriority()));
@@ -830,8 +843,8 @@ public class CommonUtility {
 				}
 				if (StringUtils.isNotBlank(planCouplingPromotion.getPromotionMedia())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(planCouplingPromotion.getType() + "." + Constants.STRING_PROMOTION_MEDIA);
-					mediaOfferLink.setType(Constants.STRING_URL_ALLOWANCE);
+					mediaOfferLink.setId(planCouplingPromotion.getType() + "." + STRING_PROMOTION_MEDIA);
+					mediaOfferLink.setType(STRING_URL_ALLOWANCE);
 					mediaOfferLink.setValue(planCouplingPromotion.getPromotionMedia());
 					if (StringUtils.isNotBlank(planCouplingPromotion.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(planCouplingPromotion.getPriority()));
@@ -850,8 +863,8 @@ public class CommonUtility {
 			for (CataloguepromotionqueriesForBundleAndHardwareSecureNet secureNetPromotion : secureNet) {
 				if (StringUtils.isNotBlank(secureNetPromotion.getLabel())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(secureNetPromotion.getType() + "." + Constants.STRING_OFFERS_LABEL);
-					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
+					mediaOfferLink.setId(secureNetPromotion.getType() + "." + STRING_OFFERS_LABEL);
+					mediaOfferLink.setType(STRING_TEXT_ALLOWANCE);
 					mediaOfferLink.setValue(secureNetPromotion.getLabel());
 					if (StringUtils.isNotBlank(secureNetPromotion.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(secureNetPromotion.getPriority()));
@@ -860,8 +873,8 @@ public class CommonUtility {
 				}
 				if (StringUtils.isNotBlank(secureNetPromotion.getDescription())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(secureNetPromotion.getType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
-					mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
+					mediaOfferLink.setId(secureNetPromotion.getType() + "." + STRING_OFFERS_DESCRIPTION);
+					mediaOfferLink.setType(STRING_TEXT_ALLOWANCE);
 					mediaOfferLink.setValue(secureNetPromotion.getDescription());
 					if (StringUtils.isNotBlank(secureNetPromotion.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(secureNetPromotion.getPriority()));
@@ -870,8 +883,8 @@ public class CommonUtility {
 				}
 				if (StringUtils.isNotBlank(secureNetPromotion.getPromotionMedia())) {
 					MediaLink mediaOfferLink = new MediaLink();
-					mediaOfferLink.setId(secureNetPromotion.getType() + "." + Constants.STRING_PROMOTION_MEDIA);
-					mediaOfferLink.setType(Constants.STRING_URL_ALLOWANCE);
+					mediaOfferLink.setId(secureNetPromotion.getType() + "." + STRING_PROMOTION_MEDIA);
+					mediaOfferLink.setType(STRING_URL_ALLOWANCE);
 					mediaOfferLink.setValue(secureNetPromotion.getPromotionMedia());
 					if (StringUtils.isNotBlank(secureNetPromotion.getPriority())) {
 						mediaOfferLink.setPriority(Integer.valueOf(secureNetPromotion.getPriority()));
@@ -888,8 +901,8 @@ public class CommonUtility {
 			CataloguepromotionqueriesForBundleAndHardwareSash sashPromotion) {
 		if (StringUtils.isNotBlank(sashPromotion.getLabel())) {
 			MediaLink mediaOfferLink = new MediaLink();
-			mediaOfferLink.setId(sashPromotion.getType() + "." + Constants.STRING_OFFERS_LABEL);
-			mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
+			mediaOfferLink.setId(sashPromotion.getType() + "." + STRING_OFFERS_LABEL);
+			mediaOfferLink.setType(STRING_TEXT_ALLOWANCE);
 			mediaOfferLink.setValue(sashPromotion.getLabel());
 			if (StringUtils.isNotBlank(sashPromotion.getPriority())) {
 				mediaOfferLink.setPriority(Integer.valueOf(sashPromotion.getPriority()));
@@ -898,8 +911,8 @@ public class CommonUtility {
 		}
 		if (StringUtils.isNotBlank(sashPromotion.getDescription())) {
 			MediaLink mediaOfferLink = new MediaLink();
-			mediaOfferLink.setId(sashPromotion.getType() + "." + Constants.STRING_OFFERS_DESCRIPTION);
-			mediaOfferLink.setType(Constants.STRING_TEXT_ALLOWANCE);
+			mediaOfferLink.setId(sashPromotion.getType() + "." + STRING_OFFERS_DESCRIPTION);
+			mediaOfferLink.setType(STRING_TEXT_ALLOWANCE);
 			mediaOfferLink.setValue(sashPromotion.getDescription());
 			if (StringUtils.isNotBlank(sashPromotion.getPriority())) {
 				mediaOfferLink.setPriority(Integer.valueOf(sashPromotion.getPriority()));
@@ -908,8 +921,8 @@ public class CommonUtility {
 		}
 		if (StringUtils.isNotBlank(sashPromotion.getPromotionMedia())) {
 			MediaLink mediaOfferLink = new MediaLink();
-			mediaOfferLink.setId(sashPromotion.getType() + "." + Constants.STRING_PROMOTION_MEDIA);
-			mediaOfferLink.setType(Constants.STRING_URL_ALLOWANCE);
+			mediaOfferLink.setId(sashPromotion.getType() + "." + STRING_PROMOTION_MEDIA);
+			mediaOfferLink.setType(STRING_URL_ALLOWANCE);
 			mediaOfferLink.setValue(sashPromotion.getPromotionMedia());
 			if (StringUtils.isNotBlank(sashPromotion.getPriority())) {
 				mediaOfferLink.setPriority(Integer.valueOf(sashPromotion.getPriority()));
@@ -964,17 +977,17 @@ public class CommonUtility {
 			String endDateTime = null;
 			if (commercialBundle.getAvailability().getStart() != null) {
 				startDateTime = getDateToString(commercialBundle.getAvailability().getStart(),
-						Constants.DATE_FORMAT_COHERENCE);
+						DATE_FORMAT_COHERENCE);
 			}
 			if (commercialBundle.getAvailability().getEnd() != null) {
 				endDateTime = getDateToString(commercialBundle.getAvailability().getEnd(),
-						Constants.DATE_FORMAT_COHERENCE);
+						DATE_FORMAT_COHERENCE);
 			}
 			boolean isCompatible = commercialBundle.getProductLines().stream()
 					.anyMatch(productLinesList.get(0)::equalsIgnoreCase) ? true
 							: commercialBundle.getProductLines().stream()
 									.anyMatch(productLinesList.get(1)::equalsIgnoreCase) ? true : false;
-			boolean isSalesExpire = dateValidationForOffers(startDateTime, endDateTime, Constants.DATE_FORMAT_COHERENCE)
+			boolean isSalesExpire = dateValidationForOffers(startDateTime, endDateTime, DATE_FORMAT_COHERENCE)
 					&& !commercialBundle.getAvailability().getSalesExpired();
 			if (DeviceServiceImplUtility.isNonUpgrade(journeyType) && isCompatible
 					&& isSalesExpire
@@ -1050,7 +1063,7 @@ public class CommonUtility {
 				if (StringUtils.isNotBlank(imageURL.getImageURL())) {
 					mediaLink = new MediaLink();
 					mediaLink.setId(imageURL.getImageName());
-					mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
+					mediaLink.setType(STRING_URL_ALLOWANCE);
 					mediaLink.setValue(getImageMediaUrl(cdnDomain,imageURL.getImageURL()));
 					merchandisingMedia.add(mediaLink);
 				}
@@ -1062,7 +1075,7 @@ public class CommonUtility {
 				if (StringUtils.isNotBlank(mediaURL.getMediaURL())) {
 					mediaLink = new MediaLink();
 					mediaLink.setId(mediaURL.getMediaName());
-					mediaLink.setType(MediaConstants.STRING_FOR_MEDIA_TYPE);
+					mediaLink.setType(STRING_URL_ALLOWANCE);
 					mediaLink.setValue(getImageMediaUrl(cdnDomain,mediaURL.getMediaURL()));
 					merchandisingMedia.add(mediaLink);
 				}

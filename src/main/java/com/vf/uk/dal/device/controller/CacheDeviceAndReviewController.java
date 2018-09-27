@@ -23,9 +23,9 @@ import com.vf.uk.dal.common.context.ServiceContext;
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.common.urlparams.FilterCriteria;
+import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.svc.CacheDeviceService;
-import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 import com.vf.uk.dal.device.validator.Validator;
 
@@ -46,6 +46,11 @@ import io.swagger.annotations.ApiResponses;
  */
 public class CacheDeviceAndReviewController {
 
+	public static final String DEVICE_ID = "deviceId";
+	public static final String GROUP_TYPE = "groupType";
+	public static final String STRING_DEVICE_PAYM = "DEVICE_PAYM";
+	public static final String STRING_DEVICE_PAYG = "DEVICE_PAYG";
+	public static final String STRING_DEVICE_NEARLY_NEW = "DEVICE_NEARLY_NEW";
 	@Autowired
 	CacheDeviceService cacheDeviceService;
 
@@ -82,17 +87,17 @@ public class CacheDeviceAndReviewController {
 
 	@RequestMapping(value = "/deviceTile/cacheDeviceTile", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CacheDeviceTileResponse> cacheDeviceTile() {
-		String groupType = getFilterValue(Constants.GROUP_TYPE);
+		String groupType = getFilterValue(GROUP_TYPE);
 
 		if (StringUtils.isNotBlank(groupType)) {
-			if (StringUtils.containsIgnoreCase(groupType, Constants.STRING_DEVICE_PAYG)
-					|| StringUtils.containsIgnoreCase(groupType, Constants.STRING_DEVICE_PAYM)
-					|| StringUtils.containsIgnoreCase(groupType, Constants.STRING_DEVICE_NEARLY_NEW)) {
+			if (StringUtils.containsIgnoreCase(groupType, STRING_DEVICE_PAYG)
+					|| StringUtils.containsIgnoreCase(groupType, STRING_DEVICE_PAYM)
+					|| StringUtils.containsIgnoreCase(groupType, STRING_DEVICE_NEARLY_NEW)) {
 				CacheDeviceTileResponse cacheDeviceTileResponse = cacheDeviceService.insertCacheDeviceToDb();
 				ResponseEntity<CacheDeviceTileResponse> response = new ResponseEntity<>(cacheDeviceTileResponse,
 						HttpStatus.CREATED);
 				cacheDeviceService.cacheDeviceTile(groupType, cacheDeviceTileResponse.getJobId(),
-						Constants.CATALOG_VERSION.get());
+						CatalogServiceAspect.CATALOG_VERSION.get());
 
 				return response;
 			} else {
@@ -138,7 +143,7 @@ public class CacheDeviceAndReviewController {
 	@RequestMapping(value = "/device/{deviceId}/review", method = RequestMethod.GET, produces = {
 			MediaType.APPLICATION_JSON_VALUE })
 	public JSONObject getDeviceReviewDetails(
-			@NotNull @ApiParam(value = "Unique Id of the device for which the review is being requested", required = true) @PathVariable(Constants.DEVICE_ID) String deviceId) {
+			@NotNull @ApiParam(value = "Unique Id of the device for which the review is being requested", required = true) @PathVariable(DEVICE_ID) String deviceId) {
 
 		Validator.validateDeviceId(deviceId);
 		LogHelper.info(this, "Start -->  calling  getDeviceReviewDetails");

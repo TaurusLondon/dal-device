@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.logger.LogHelper;
+import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
@@ -33,7 +34,6 @@ import com.vf.uk.dal.device.helper.DeviceServiceCommonUtility;
 import com.vf.uk.dal.device.helper.DeviceServiceImplUtility;
 import com.vf.uk.dal.device.svc.DeviceMakeAndModelService;
 import com.vf.uk.dal.device.utils.CommonUtility;
-import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.device.utils.DeviceDetailsMakeAndModelVaiantDaoUtils;
 import com.vf.uk.dal.device.utils.DeviceTilesDaoUtils;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
@@ -43,6 +43,9 @@ import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 @Component
 public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService {
 
+	public static final String NO_DATA_FOUND_FOR_GROUP_TYPE = "No data found for given group type:";
+	public static final String STRING_DEVICE_PAYG = "DEVICE_PAYG";
+	
 	@Autowired
 	DeviceDao deviceDao;
 
@@ -113,14 +116,14 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			LogHelper.info(this, "End -->  After calling  CommericalProduct.getByMakeAndModel");
 
 		} else {
-			LogHelper.error(this, Constants.NO_DATA_FOUND_FOR_GROUP_TYPE + groupType);
+			LogHelper.error(this, NO_DATA_FOUND_FOR_GROUP_TYPE + groupType);
 			throw new ApplicationException(ExceptionMessages.NULL_VALUE_GROUP_TYPE);
 		}
 		List<Group> listOfProductGroup = deviceEs.getProductGroupByType(groupType);
-		if (groupType.equals(Constants.STRING_DEVICE_PAYG)) {
+		if (groupType.equals(STRING_DEVICE_PAYG)) {
 			listOfDeviceTile = getDeviceTileByMakeAndModelForPAYG(listOfCommercialProducts, listOfProductGroup, make,
 					model, groupType);
-		} else if (!groupType.equals(Constants.STRING_DEVICE_PAYG)) {
+		} else if (!groupType.equals(STRING_DEVICE_PAYG)) {
 			List<CommercialProduct> commercialProductsMatchedMemList = new ArrayList<>();
 			Map<String, CommercialProduct> commerProdMemMap = new HashMap<>();
 			Map<String, CommercialBundle> commerBundleIdMap = new HashMap<>();
@@ -152,14 +155,14 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 					List<BundleAndHardwarePromotions> listOfBundleAndHardPromo = null;
 					Map<String, BundleAndHardwarePromotions> bundleAndHardwarePromotionsMap = new HashMap<>();
 					Map<String, PriceForBundleAndHardware> priceMapForParticularDevice = new HashMap<>();
-					if (!groupType.equals(Constants.STRING_DEVICE_PAYG) && bundleAndHardwareTupleList != null
+					if (!groupType.equals(STRING_DEVICE_PAYG) && bundleAndHardwareTupleList != null
 							&& !bundleAndHardwareTupleList.isEmpty()) {
 						CompletableFuture<List<PriceForBundleAndHardware>> calculatePriceTask = deviceDao
 								.getPriceForBundleAndHardwareListFromTupleListAsync(bundleAndHardwareTupleList,
-										offerCode, journeyType, Constants.CATALOG_VERSION.get());
+										offerCode, journeyType, CatalogServiceAspect.CATALOG_VERSION.get());
 						CompletableFuture<List<com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions>> promotionTask = deviceDao
 								.getBundleAndHardwarePromotionsListFromBundleListAsync(bundleAndHardwareTupleList,
-										journeyType, Constants.CATALOG_VERSION.get());
+										journeyType, CatalogServiceAspect.CATALOG_VERSION.get());
 
 						try {
 							CompletableFuture.allOf(calculatePriceTask, promotionTask).get();
@@ -191,7 +194,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 							listOfDeviceGroupMember, listOfPriceForBundleAndHardware, commerProdMemMap,
 							isConditionalAcceptJourney, journeyType, creditLimit, commercialBundleMap, bundleIdMap,
 							bundleId, bundleAndHardwarePromotionsMap, leadPlanIdMap, groupType,
-							priceMapForParticularDevice, fromPricingMap, Constants.CATALOG_VERSION.get());
+							priceMapForParticularDevice, fromPricingMap, CatalogServiceAspect.CATALOG_VERSION.get());
 					List<DeviceSummary> listOfDeviceSummary;
 					try {
 						listOfDeviceSummary = future1.get();
@@ -468,7 +471,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			deviceTile.setGroupType(groupType);
 			CompletableFuture<List<DeviceSummary>> future1 = getDeviceSummery_Implementation_PAYG(
 					listOfDeviceGroupMember, commerProdMemMapPAYG, groupType, priceMapForParticularDevice,
-					bundleAndHardwarePromotionsMap, Constants.CATALOG_VERSION.get());
+					bundleAndHardwarePromotionsMap, CatalogServiceAspect.CATALOG_VERSION.get());
 			List<DeviceSummary> listOfDeviceSummary;
 			try {
 				listOfDeviceSummary = future1.get();
@@ -537,7 +540,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			@Override
 
 			public List<DeviceSummary> get() {
-				Constants.CATALOG_VERSION.set(version);
+				CatalogServiceAspect.CATALOG_VERSION.set(version);
 				for (com.vf.uk.dal.device.entity.Member member : listOfDeviceGroupMember) {
 					boolean isConditional =false;
 					PriceForBundleAndHardware priceForBundleAndHardware = null;
@@ -673,7 +676,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 
 			@Override
 			public List<DeviceSummary> get() {
-				Constants.CATALOG_VERSION.set(version);
+				CatalogServiceAspect.CATALOG_VERSION.set(version);
 				for (com.vf.uk.dal.device.entity.Member member : listOfDeviceGroupMember) {
 					CommercialProduct commercialProduct = commerProdMemMap.get(member.getId());
 					BundleAndHardwarePromotions promotion = promotions.get(member.getId());

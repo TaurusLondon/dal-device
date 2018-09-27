@@ -15,7 +15,6 @@ import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.datamodel.bundle.BundleModel;
 import com.vf.uk.dal.device.datamodel.product.ProductModel;
 import com.vf.uk.dal.device.entity.BundlePrice;
-import com.vf.uk.dal.device.utils.Constants;
 import com.vf.uk.dal.utility.entity.BundleDetails;
 import com.vf.uk.dal.utility.entity.BundleModelAndPrice;
 
@@ -27,6 +26,7 @@ import com.vf.uk.dal.utility.entity.BundleModelAndPrice;
 @Component
 public class DeviceConditionallHelper {
 
+	public static final String FULL_DURATION = "full_duration,conditional_full_discount";
 	@Autowired
 	DeviceDao deviceDao;
 
@@ -141,7 +141,7 @@ public class DeviceConditionallHelper {
 				.getMerchandisingPromotions();
 		Float monthlyPrice = null;
 		if (null != merchandisingPromotion) {
-			if (StringUtils.containsIgnoreCase(Constants.FULL_DURATION, merchandisingPromotion.getMpType())) {
+			if (StringUtils.containsIgnoreCase(FULL_DURATION, merchandisingPromotion.getMpType())) {
 				if (StringUtils.isNotBlank(bundlePrice.getMonthlyDiscountPrice().getGross())) {
 					monthlyPrice = Float.parseFloat(bundlePrice.getMonthlyDiscountPrice().getGross());
 				}

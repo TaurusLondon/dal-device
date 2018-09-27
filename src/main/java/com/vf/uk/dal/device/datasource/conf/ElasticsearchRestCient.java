@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.logger.LogHelper;
-import com.vf.uk.dal.device.utils.Constants;
 
 /**
  * This class to create Java rest client object to communicate with elastic
@@ -26,6 +25,9 @@ import com.vf.uk.dal.device.utils.Constants;
  */
 @Component
 public class ElasticsearchRestCient {
+
+	public static final int DEFAULT_PORT = -1;
+	public static final String HTTPS_SCHEME = "https";
 
 	@Value("${elasticsearch.host}")
 	private String vpcEndPoint;
@@ -73,8 +75,8 @@ public class ElasticsearchRestCient {
 			LogHelper.info(RestClient.class, "Rest client creation with VPC end point::" + vpcEndPoint);
 			InetAddress address = InetAddress.getByName(new URL(vpcEndPoint).getHost());
 			restClient = new RestHighLevelClient(RestClient
-					.builder(new HttpHost(address, address.getHostName(), Constants.DEFAULT_PORT,
-							Constants.HTTPS_SCHEME))
+					.builder(new HttpHost(address, address.getHostName(), DEFAULT_PORT,
+							HTTPS_SCHEME))
 					.setRequestConfigCallback(new RestClientBuilder.RequestConfigCallback() {
 						@Override
 						public RequestConfig.Builder customizeRequestConfig(
