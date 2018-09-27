@@ -13,6 +13,7 @@ import org.apache.commons.lang.StringUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -257,12 +258,16 @@ public class CommonUtility {
 	public List<PriceForBundleAndHardware> getPriceDetailsUsingBundleHarwareTrouple(
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType) {
 		List<PriceForBundleAndHardware> priceList = null;
+		HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
 		try {
 			RequestForBundleAndHardware requestForBundleAndHardware = new RequestForBundleAndHardware();
 			requestForBundleAndHardware.setBundleAndHardwareList(bundleAndHardwareTupleList);
 			requestForBundleAndHardware.setOfferCode(offerCode);
 			requestForBundleAndHardware.setPackageType(journeyType);
 			LogHelper.info(CommonUtility.class, "Start --> Calling  Price.calculateForBundleAndHardware journeyType "+journeyType +" OfferCode "+offerCode+" Index Version "+CatalogServiceAspect.CATALOG_VERSION.get());
+			/** Price API throwing timeout exception while calling PAYG price to handle that override timeout*/
+			factory.setConnectTimeout(300000);
+			restTemplate.setRequestFactory(factory);
 			PriceForBundleAndHardware[] client = restTemplate.postForObject(
 					"http://PRICE-V1/price/calculateForBundleAndHardware", requestForBundleAndHardware,
 					PriceForBundleAndHardware[].class);
@@ -273,6 +278,9 @@ public class CommonUtility {
 		} catch (Exception e) {
 			LogHelper.error(CommonUtility.class, "" + e);
 			throw new ApplicationException(ExceptionMessages.PRICING_API_EXCEPTION);
+		} finally {
+			factory.setConnectTimeout(61000);
+			restTemplate.setRequestFactory(factory);
 		}
 		return priceList;
 	}
