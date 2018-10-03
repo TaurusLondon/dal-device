@@ -8,12 +8,14 @@ queue:
 
 steps:
 - task: SonarSource.sonarqube.15B84CA1-B62F-4A2A-A403-89B77A063157.SonarQubePrepare@4
+  ## This task initiates the link to SonarQube. This is a required task.
   displayName: 'Prepare analysis on SonarQube'
   inputs:
     SonarQube: 'Dev - External'
     scannerMode: Other
 
 - task: Maven@2
+  ## This task initiates a maven Package and Unit Test on the service. This is a required task.
   displayName: 'Package POM'
   inputs:
     testRunTitle: '$(Build.DefinitionName)-unittest'
@@ -21,9 +23,11 @@ steps:
     sonarQubeRunAnalysis: true
 
 - task: SonarSource.sonarqube.291ed61f-1ee4-45d3-b1b0-bf822d9095ef.SonarQubePublish@4
+  ## This task posts the SonarQube quality gate on the Build. This is not required as yet.
   displayName: 'Publish Quality Gate Result'
 
 - task: CopyFiles@2
+  ## This copies jar file to the correct location within the VSTS agent.  This is a required task.
   displayName: 'Copy Files to: $(Build.SourcesDirectory)'
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)'
@@ -35,8 +39,10 @@ steps:
    Version=$(ls | grep '^dal-[A-Za-z0-9].*.jar$' | sed 's/[^0-9.]*\([0-9.]*\)\.jar/\1/')
    echo "##vso[task.setvariable variable=Version]$Version" 
   displayName: 'Get Version from Jar'
+  ## This task get the artifact version from the Jar produced by the Maven Package phase. This is a required task.
 
 - task: AmazonWebServices.aws-vsts-tools.S3Download.S3Download@1
+  ## This task downloads the VSTS agent to the VSTS agent. This is currently a required task.
   displayName: 'S3 Download: AppD Agent'
   inputs:
     awsCredentials: 'non-prod'
@@ -48,24 +54,28 @@ steps:
     flattenFolders: true
 
 - task: PublishBuildArtifacts@1
+  ## This task publishes the VSTS agent to VSTS for use in the release. This is a required task.
   displayName: 'Publish Artifact: $(Build.DefinitionName)'
   inputs:
     PathtoPublish: '$(Build.SourcesDirectory)/$(Build.DefinitionName)-svc-$(Version).jar'
     ArtifactName: '$(Build.DefinitionName)'
 
 - task: PublishBuildArtifacts@1
+  ## This task publishes the VSTS test report to the VSTS Build. This is not a required task.
   displayName: 'Publish Artifact: test_results'
   inputs:
     PathtoPublish: 'target/surefire-reports'
     ArtifactName: 'test_results'
 
 - task: PublishBuildArtifacts@1
+  ## This task publishes the VSTS infrastructiure documents for use later in the build and release. This is a required task.
   displayName: 'Publish Artifact: infrastructure'
   inputs:
     PathtoPublish: infrastructure
     ArtifactName: infrastructure
 
 - task: AmazonWebServices.aws-vsts-tools.CloudFormationCreateOrUpdateStack.CloudFormationCreateOrUpdateStack@1
+  ## This task creates or updates the ECR that will be used to share the image accross accounts. This is a required task.
   displayName: 'Create/Update Stack: $(Build.DefinitionName)'
   inputs:
     awsCredentials: 'newvo-e'
@@ -74,12 +84,13 @@ steps:
     templateFile: 'infrastructure/cf-ecrtemplate.yaml'
     templateParametersSource: inline
     templateParameters: |
-     - ParameterKey: ecrname
+     - ParameterKey: EcrName
        ParameterValue: "$(Build.DefinitionName)"
     warnWhenNoWorkNeeded: false
     timeoutInMins: 5
 
 - task: Docker@0
+  ## This task builds a docker image. This is a required task.
   displayName: 'Build an image'
   inputs:
     containerregistrytype: 'Container Registry'
@@ -91,6 +102,7 @@ steps:
     workingDirectory: '$(Build.ArtifactStagingDirectory)'
 
 - task: AmazonWebServices.aws-vsts-tools.ECRPushImage.ECRPushImage@1
+  ## This task pushes the image to the ECR and will tag the image with the Build ID. This is a required task.
   displayName: 'Push Image'
   inputs:
     awsCredentials: 'newvo-e'
@@ -102,6 +114,7 @@ steps:
     autoCreateRepository: true
 
 - task: AmazonWebServices.aws-vsts-tools.ECRPushImage.ECRPushImage@1
+  ## This will tag the image with the code version. This is a required task.
   displayName: 'Tag Image: Version'
   inputs:
     awsCredentials: 'newvo-e'
@@ -113,6 +126,7 @@ steps:
     autoCreateRepository: true
 
 - task: AmazonWebServices.aws-vsts-tools.ECRPushImage.ECRPushImage@1
+  ## This will tag the image as latest. Currently this is not used however is still recommended.
   displayName: 'Tag Image: Latest'
   inputs:
     awsCredentials: 'newvo-e'
