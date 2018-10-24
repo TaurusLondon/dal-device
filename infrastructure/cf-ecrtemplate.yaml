@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: ECR template for a Digital microservice
 Parameters:
-  ecrname:
+  EcrName:
     Description: The name of the ecr repository. To be consistent with the Build and Release in VSTS.
     Type: String
 
@@ -9,7 +9,7 @@ Resources:
   ECRRepo: 
     Type: "AWS::ECR::Repository"
     Properties: 
-      RepositoryName: !Ref ecrname
+      RepositoryName: !Ref EcrName
       RepositoryPolicyText: 
         Version: "2012-10-17"
         Statement: 
