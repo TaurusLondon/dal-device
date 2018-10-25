@@ -1,6 +1,7 @@
 package com.vf.uk.dal.device.svc.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -96,9 +97,9 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		Set<String> listOfOfferCodes = new HashSet<>();
 		getOfferCodeForCacheDeviceTile(listOfOfferCodesForUpgrade, listOfSecondLineOfferCode, listOfOfferCodes);
 
-		Map<String, String> leadMemberMap = new ConcurrentHashMap<>();
-		Map<String, String> leadMemberMapForUpgrade = new ConcurrentHashMap<>();
-		Map<String, String> groupIdAndNameMap = new ConcurrentHashMap<>();
+		Map<String, String> leadMemberMap = new HashMap<>();
+		Map<String, String> leadMemberMapForUpgrade = new HashMap<>();
+		Map<String, String> groupIdAndNameMap = new HashMap<>();
 		Map<String, Map<String, Map<String, List<PriceForBundleAndHardware>>>> ilsOfferPriceWithJourneyAware = new ConcurrentHashMap<>();
 		if (listOfProductGroup != null && !listOfProductGroup.isEmpty()) {
 			for (Group productGroup : listOfProductGroup) {
@@ -109,14 +110,14 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap = new ConcurrentHashMap<>();
 			Map<String, List<PriceForBundleAndHardware>> nonLeadPlanIdPriceMap = new ConcurrentHashMap<>();
 			Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap = new ConcurrentHashMap<>();
-			Map<String, CommercialBundle> commercialBundleMap = new ConcurrentHashMap<>();
+			Map<String, CommercialBundle> commercialBundleMap = new HashMap<>();
 			Set<String> setOfCompatiblePlanIds = new HashSet<>();
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList = new ArrayList<>();
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleListForNonLeanPlanId = new ArrayList<>();
 			Set<BundleAndHardwareTuple> bundleAndHardwareTupleListJourneyAware = new HashSet<>();
 			if (!listOfDeviceId.isEmpty()) {
-				Map<String, String> listOfLeadPlanId = new ConcurrentHashMap<>();
-				Map<String, List<String>> listOfCimpatiblePlanMap = new ConcurrentHashMap<>();
+				Map<String, String> listOfLeadPlanId = new HashMap<>();
+				Map<String, List<String>> listOfCimpatiblePlanMap = new HashMap<>();
 				List<CommercialProduct> listOfCommercialProduct = deviceEs.getListOfCommercialProduct(listOfDeviceId);
 				if (listOfCommercialProduct != null && !listOfCommercialProduct.isEmpty()) {
 					DeviceUtils.getBundleharwareTrupleForPaymCacheDevice(setOfCompatiblePlanIds,
@@ -134,7 +135,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 							bundleAndHardwareTupleListForNonLeanPlanId);
 				}
 				List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = new ArrayList<>();
-				Map<String, List<BundleAndHardwareTuple>> bundleHardwareTroupleMap = new ConcurrentHashMap<>();
+				Map<String, List<BundleAndHardwareTuple>> bundleHardwareTroupleMap = new HashMap<>();
 				Map<String, List<PriceForBundleAndHardware>> iLSPriceMap = new ConcurrentHashMap<>();
 				for (String deviceId : listOfDeviceId) {
 					getDevicePrecaldataForPaymCacheDeviceTile(groupType, deviceIds, listOfProductGroupRepository,
@@ -505,8 +506,8 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		DevicePreCalculatedData productGroupForDeviceListing;
 		List<Group> listOfProductGroup = deviceEs.getProductGroupByType(groupType);
 		List<String> listOfDeviceId = new ArrayList<>();
-		Map<String, String> leadMemberMap = new ConcurrentHashMap<>();
-		Map<String, String> groupIdAndNameMap = new ConcurrentHashMap<>();
+		Map<String, String> leadMemberMap = new HashMap<>();
+		Map<String, String> groupIdAndNameMap = new HashMap<>();
 		if (listOfProductGroup != null && !listOfProductGroup.isEmpty()) {
 			for (Group productGroup : listOfProductGroup) {
 				getLeadMembermapForCacheDevicePayg(listOfDeviceId, leadMemberMap, groupIdAndNameMap, productGroup);
