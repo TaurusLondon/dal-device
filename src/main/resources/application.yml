@@ -45,7 +45,15 @@ endpoints:
    enabled: false
  trace:
    enabled: true
-   
+cloud:
+  aws:
+    cloudwatch:
+      namespace: dal-device-metrics
+      fixedDelayBetweenRuns: 60000
+    credentials:
+      instanceProfile: true
+    stack:
+      auto: false
 management:
  security:
    enabled: false

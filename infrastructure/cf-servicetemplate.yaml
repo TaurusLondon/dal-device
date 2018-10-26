@@ -159,7 +159,9 @@ Resources:
             - Name: XMX
               Value: !Ref XMX
             - Name: cdn_domain_host
-              Value: !Ref cdndomainhost  
+              Value: !Ref cdndomainhost
+            - Name: cloud_aws_cloudwatch_namespace
+              Value: !Sub dal-${Environment}-device  
           Memory: !Ref Memory
           MemoryReservation: !Ref MemoryReservation
           Image: !Sub ${ecrlocation}/${buildname}:${buildnumber}
