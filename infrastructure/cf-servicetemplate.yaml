@@ -160,7 +160,7 @@ Resources:
             - Name: bazaarvoice_urlPart1
               Value: !Ref 'bazaarvoice'
             - Name: cloud_aws_cloudwatch_namespace
-              Value: !Sub dal-${Environment}-device
+              Value: !Ref 'AWS::StackName'
           Memory: !Ref 'Memory'
           MemoryReservation: !Ref 'MemoryReservation'
           Image: !Sub '${EcrLocation}/${BuildName}:${BuildID}'
