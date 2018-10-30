@@ -158,7 +158,9 @@ Resources:
             - Name: cdn_domain_host
               Value: !Ref 'cdndomainhost'
             - Name: bazaarvoice_urlPart1
-              Value: !Ref 'bazaarvoice'  
+              Value: !Ref 'bazaarvoice'
+            - Name: cloud_aws_cloudwatch_namespace
+              Value: !Ref 'AWS::StackName'
           Memory: !Ref 'Memory'
           MemoryReservation: !Ref 'MemoryReservation'
           Image: !Sub '${EcrLocation}/${BuildName}:${BuildID}'
