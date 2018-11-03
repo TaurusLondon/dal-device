@@ -34,6 +34,10 @@ public class Group {
 	
 	@JsonProperty("groupId")
 	private Integer groupId;
+	
+	private String equipmentMake;
+	
+	private String equipmentModel;
 
 	
 }
