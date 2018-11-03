@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>com.vf.uk.dal</groupId>
 	<artifactId>dal-device-svc</artifactId>
-	<version>11.2.0</version>
+	<version>11.2.1</version>
 	<packaging>jar</packaging>
 	<build>  
 		<plugins>
@@ -135,16 +135,33 @@
 	</dependencies>
 	<repositories>
 		<repository>
-        <id>vfuk-digital-visualstudio.com-digital</id>
-        <url>https://vfuk-digital.pkgs.visualstudio.com/_packaging/Digital/maven/v1</url>
-        <releases>
-        <enabled>true</enabled>
-        </releases>
-        <snapshots>
-        <enabled>true</enabled>
-        </snapshots>
-	</repository>
-    </repositories>
+			<id>maven2</id>
+			<name>maven public</name>
+			<url>http://uk.maven.org/maven2</url>
+		</repository>
+		<repository>
+			<id>vfuk-digital-visualstudio.com-digital</id>
+			<url>https://vfuk-digital.pkgs.visualstudio.com/_packaging/Digital/maven/v1</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<distributionManagement>
+		<repository>
+			<id>vfuk-digital-visualstudio.com-digital</id>
+			<url>https://vfuk-digital.pkgs.visualstudio.com/_packaging/Digital/maven/v1</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</distributionManagement>
 	<!-- To Support Sonar Code Fixes we have added the JDK Version 1.8 -->
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
