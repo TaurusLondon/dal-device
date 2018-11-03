@@ -43,6 +43,10 @@ import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 @Component
 public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService {
 
+	private static final String AND = " and ";
+	private static final String NO_DATA_FOUND_FOR_GIVEN_MAKE_AND_MMODEL = "No data found for given make and mmodel :";
+	private static final String NO_DATA_FOUND_FOR_GIVEN_MAKE_AND_MMODEL2 = NO_DATA_FOUND_FOR_GIVEN_MAKE_AND_MMODEL;
+	private static final String EXCEPTION_OCCURED_WHILE_EXECUTING_THREAD_POOL = "Exception occured while executing thread pool :";
 	public static final String NO_DATA_FOUND_FOR_GROUP_TYPE = "No data found for given group type:";
 	public static final String STRING_DEVICE_PAYG = "DEVICE_PAYG";
 
@@ -169,7 +173,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 							listOfPriceForBundleAndHardware = calculatePriceTask.get();
 							listOfBundleAndHardPromo = promotionTask.get();
 						} catch (Exception e) {
-							LogHelper.error(this, "Exception occured while executing thread pool :" + e);
+							LogHelper.error(this, EXCEPTION_OCCURED_WHILE_EXECUTING_THREAD_POOL + e);
 							throw new ApplicationException(ExceptionMessages.ERROR_IN_FUTURE_TASK);
 						}
 					}
@@ -199,7 +203,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 					try {
 						listOfDeviceSummary = future1.get();
 					} catch (Exception e) {
-						LogHelper.error(this, "Exception occured while executing thread pool :" + e);
+						LogHelper.error(this, EXCEPTION_OCCURED_WHILE_EXECUTING_THREAD_POOL + e);
 						throw new ApplicationException(ExceptionMessages.ERROR_IN_FUTURE_TASK);
 					}
 					resetDeviceId_Implementation(isConditionalAcceptJourney, deviceTile, listOfDeviceSummary, deviceId);
@@ -217,13 +221,13 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 					throw new ApplicationException(ExceptionMessages.MAKE_AND_MODEL_NOT_FOUND_IN_GROUPTYPE);
 				}
 			} else {
-				LogHelper.error(this, "No data found for given make and mmodel :" + make + " and " + model);
+				LogHelper.error(this, NO_DATA_FOUND_FOR_GIVEN_MAKE_AND_MMODEL2 + make + AND + model);
 				throw new ApplicationException(
 						ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST);
 			}
 		}
 		if (CollectionUtils.isEmpty(listOfDeviceTile)) {
-			LogHelper.error(this, "No data found for given make and mmodel :" + make + " and " + model);
+			LogHelper.error(this, NO_DATA_FOUND_FOR_GIVEN_MAKE_AND_MMODEL2 + make + AND + model);
 			throw new ApplicationException(ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST);
 		}
 		return listOfDeviceTile;
@@ -418,7 +422,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			getMemberByRules(groupType, listOfDeviceTile, deviceTile, groupName, listOfDeviceGroupMember,
 					commerProdMemMapPAYG, bundleAndHardwareTupleListPAYG);
 		} else {
-			LogHelper.error(this, "No data found for given make and mmodel :" + make + " and " + model);
+			LogHelper.error(this, NO_DATA_FOUND_FOR_GIVEN_MAKE_AND_MMODEL2 + make + AND + model);
 			throw new ApplicationException(ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST);
 		}
 		return listOfDeviceTile;
@@ -464,13 +468,14 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			Map<String, PriceForBundleAndHardware> priceMapForParticularDevice = new HashMap<>();
 			if (listOfPriceForBundleAndHardware != null && !listOfPriceForBundleAndHardware.isEmpty()) {
 				listOfPriceForBundleAndHardware.forEach(priceForBundleAndHardware->{
-					if(priceForBundleAndHardware != null && priceForBundleAndHardware.getHardwarePrice() != null && StringUtils.isNotBlank(priceForBundleAndHardware.getHardwarePrice().getHardwareId())){
+					if(priceForBundleAndHardware != null && priceForBundleAndHardware.getHardwarePrice() != null && 
+							StringUtils.isNotBlank(priceForBundleAndHardware.getHardwarePrice().getHardwareId())
+							&& priceForBundleAndHardware.getHardwarePrice().getOneOffPrice()!=null){
 						priceMapForParticularDevice
 						.put(priceForBundleAndHardware.getHardwarePrice().getHardwareId(), priceForBundleAndHardware);
 					}
 					else{
-						LogHelper.error(this, "PRICE API of PriceForBundleAndHardware Exception---------------");
-						throw new ApplicationException(ExceptionMessages.PRICING_API_EXCEPTION);
+						LogHelper.error(this, "PAYG PRICE Coming as null from Pricing API---------------");
 					}
 				});
 			}
@@ -484,7 +489,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			try {
 				listOfDeviceSummary = future1.get();
 			} catch (Exception e) {
-				LogHelper.error(this, "Exception occured while executing thread pool :" + e);
+				LogHelper.error(this, EXCEPTION_OCCURED_WHILE_EXECUTING_THREAD_POOL + e);
 				throw new ApplicationException(ExceptionMessages.ERROR_IN_FUTURE_TASK);
 			}
 			deviceTile.setDeviceSummary(listOfDeviceSummary);
@@ -694,10 +699,11 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 						PriceForBundleAndHardware priceForBundleAndHardware = null;
 						if (priceMapForParticularDevice.containsKey(member.getId())) {
 							priceForBundleAndHardware = priceMapForParticularDevice.get(member.getId());
+							deviceSummary = DeviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceTile_PAYG(
+									memberPriority, commercialProduct, priceForBundleAndHardware, groupType, promotion,
+									cdnDomain);
 						}
-						deviceSummary = DeviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceTile_PAYG(
-								memberPriority, commercialProduct, priceForBundleAndHardware, groupType, promotion,
-								cdnDomain);
+						
 						if (deviceSummary != null) {
 							listOfDeviceSummaryLocal.add(deviceSummary);
 						}

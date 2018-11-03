@@ -244,7 +244,8 @@ public class DeviceUtils {
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareForLeadPlanIds) {
 		listOfPriceForBundleAndHardwareForLeadPlanIds.forEach(priceForBundleAndHardware -> {
 
-			if (priceForBundleAndHardware != null && priceForBundleAndHardware.getHardwarePrice() != null) {
+			if (priceForBundleAndHardware != null && priceForBundleAndHardware.getHardwarePrice() != null
+					&& priceForBundleAndHardware.getHardwarePrice().getOneOffPrice() != null) {
 				leadPlanIdPriceMap.put(priceForBundleAndHardware.getHardwarePrice().getHardwareId(),
 						priceForBundleAndHardware);
 			}
