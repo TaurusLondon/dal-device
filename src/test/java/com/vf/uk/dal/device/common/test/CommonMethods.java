@@ -894,11 +894,13 @@ public class CommonMethods {
 		memberList.add(member2);
 		memberList.add(member1);
 		memberList.add(member);
+		group.setEquipmentMake("apple");
+		group.setEquipmentModel("iPhone-7");
 		group.setMembers(memberList);
-		group.setName("Apple iPhone 6s");
+		group.setName("Apple iPhone 7");
 		group.setVersion("1.0");
 		group1.setMembers(memberList);
-		group1.setName("Apple iPhone 6s cover");
+		group1.setName("Apple iPhone 7 cover");
 		group1.setVersion("1.0");
 		groupList.add(group);
 		groupList.add(group1);

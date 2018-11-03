@@ -1687,7 +1687,7 @@ public class DeviceServiceImplTest {
 		Map<String,CommercialProduct> commerProdMemMapPAYG = new HashMap<>();
 		commerProdMemMapPAYG.put("123", CommonMethods.getCommercialProduct());
 		 deviceMakeAndModelServiceImpl.getMemberByRules("DEVICE_PAYG", CommonMethods.getDeviceTile("apple", "iphone 7", "groupType"),
-				 CommonMethods.getDeviceTilee(), "PAYG", CommonMethods.getMemberListPojo(), commerProdMemMapPAYG, CommonMethods.getBundleAndHardwareTuple());
+				 CommonMethods.getDeviceTilee(), "PAYG", CommonMethods.getMemberListPojo(), commerProdMemMapPAYG, new HashSet<>(CommonMethods.getBundleAndHardwareTuple()));
 	}
 	@Test
 	public void testgetBundleDetailsFromComplansListingAPI(){

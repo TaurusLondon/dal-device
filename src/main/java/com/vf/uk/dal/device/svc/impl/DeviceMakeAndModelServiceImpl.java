@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -142,7 +143,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 				if (listOfProductGroup != null && !listOfProductGroup.isEmpty()) {
 					groupName = getMembersForGroup(bundleId, journeyType, listOfDeviceGroupMember, listOfProductGroup,
 							commercialProductsMatchedMemList, commerProdMemMap, commerBundleIdMap,
-							bundleAndHardwareTupleList, bundleIdMap, fromPricingMap, leadPlanIdMap, listofLeadPlan);
+							bundleAndHardwareTupleList, bundleIdMap, fromPricingMap, leadPlanIdMap, listofLeadPlan,make,model);
 				}
 			}
 
@@ -380,11 +381,11 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 		List<DeviceTile> listOfDeviceTile = new ArrayList<>();
 		DeviceTile deviceTile = new DeviceTile();
 		String groupName = null;
-		List<com.vf.uk.dal.device.entity.Member> listOfDeviceGroupMember = new ArrayList<>();
+		Set<com.vf.uk.dal.device.entity.Member> listOfDeviceGroupMember = new HashSet<>();
 		com.vf.uk.dal.device.entity.Member entityMember;
 		List<CommercialProduct> commercialProductsMatchedMemListForPAYG = new ArrayList<>();
 		Map<String, CommercialProduct> commerProdMemMapPAYG = new HashMap<>();
-		List<BundleAndHardwareTuple> bundleAndHardwareTupleListPAYG = new ArrayList<>();
+		Set<BundleAndHardwareTuple> bundleAndHardwareTupleListPAYG = new HashSet<>();
 		BundleAndHardwareTuple bundleAndHardwareTuple;
 		if (!CollectionUtils.isEmpty(listOfCommercialProducts)) {
 			listOfCommercialProducts.forEach(commercialProduct -> {
@@ -398,7 +399,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			});
 			if (listOfProductGroup != null && !listOfProductGroup.isEmpty()) {
 				for (Group productGroupPAYG : listOfProductGroup) {
-					if (productGroupPAYG.getMembers() != null && !productGroupPAYG.getMembers().isEmpty()) {
+					if (StringUtils.equalsIgnoreCase(productGroupPAYG.getEquipmentMake(),make) && StringUtils.equalsIgnoreCase(productGroupPAYG.getEquipmentModel(),model)&& productGroupPAYG.getMembers() != null && !productGroupPAYG.getMembers().isEmpty()) {
 						for (Member member : productGroupPAYG.getMembers()) {
 							if (commerProdMemMapPAYG.containsKey(member.getId())) {
 								groupName = productGroupPAYG.getName();
@@ -419,7 +420,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			}
 		}
 		if (!commercialProductsMatchedMemListForPAYG.isEmpty()) {
-			getMemberByRules(groupType, listOfDeviceTile, deviceTile, groupName, listOfDeviceGroupMember,
+			getMemberByRules(groupType, listOfDeviceTile, deviceTile, groupName, new ArrayList<>(listOfDeviceGroupMember),
 					commerProdMemMapPAYG, bundleAndHardwareTupleListPAYG);
 		} else {
 			LogHelper.error(this, NO_DATA_FOUND_FOR_GIVEN_MAKE_AND_MMODEL2 + make + AND + model);
@@ -441,7 +442,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 	public void getMemberByRules(String groupType, List<DeviceTile> listOfDeviceTile, DeviceTile deviceTile,
 			String groupName, List<com.vf.uk.dal.device.entity.Member> listOfDeviceGroupMember,
 			Map<String, CommercialProduct> commerProdMemMapPAYG,
-			List<BundleAndHardwareTuple> bundleAndHardwareTupleListPAYG) {
+			Set<BundleAndHardwareTuple> bundleAndHardwareTupleListPAYG) {
 		if (listOfDeviceGroupMember != null && !listOfDeviceGroupMember.isEmpty()) {
 			String leadMemberId = deviceServiceCommonUtility
 					.getMemeberBasedOnRules_Implementation(listOfDeviceGroupMember, null);
@@ -453,13 +454,13 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = null;
 			// Calling Pricing Api
 			if (bundleAndHardwareTupleListPAYG != null && !bundleAndHardwareTupleListPAYG.isEmpty()) {
-				listOfPriceForBundleAndHardware = commonUtility.getPriceDetails(bundleAndHardwareTupleListPAYG, null,
+				listOfPriceForBundleAndHardware = commonUtility.getPriceDetails(new ArrayList<>(bundleAndHardwareTupleListPAYG), null,
 						null);
 			}
 			Map<String, BundleAndHardwarePromotions> bundleAndHardwarePromotionsMap = new HashMap<>();
 			if (bundleAndHardwareTupleListPAYG != null && !bundleAndHardwareTupleListPAYG.isEmpty()) {
 				List<BundleAndHardwarePromotions> allPromotions = commonUtility
-						.getPromotionsForBundleAndHardWarePromotions(bundleAndHardwareTupleListPAYG, null);
+						.getPromotionsForBundleAndHardWarePromotions(new ArrayList<>(bundleAndHardwareTupleListPAYG), null);
 				if (allPromotions != null && !allPromotions.isEmpty()) {
 					allPromotions.forEach(
 							promotion -> bundleAndHardwarePromotionsMap.put(promotion.getHardwareId(), promotion));
@@ -706,6 +707,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 						
 						if (deviceSummary != null) {
 							listOfDeviceSummaryLocal.add(deviceSummary);
+							deviceSummary=null;
 						}
 					}
 
@@ -828,11 +830,11 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			List<CommercialProduct> commercialProductsMatchedMemList, Map<String, CommercialProduct> commerProdMemMap,
 			Map<String, CommercialBundle> commerBundleIdMap, List<BundleAndHardwareTuple> bundleAndHardwareTupleList,
 			Map<String, Boolean> bundleIdMap, Map<String, Boolean> fromPricingMap, Map<String, String> leadPlanIdMap,
-			List<String> listofLeadPlan) {
+			List<String> listofLeadPlan, String make, String model) {
 		com.vf.uk.dal.device.entity.Member entityMember;
 		String groupName = null;
 		for (Group productGroup : listOfProductGroup) {
-			if (productGroup.getMembers() != null && !productGroup.getMembers().isEmpty()) {
+			if (StringUtils.equalsIgnoreCase(productGroup.getEquipmentMake(),make) && StringUtils.equalsIgnoreCase(productGroup.getEquipmentModel(),model)&&productGroup.getMembers() != null && !productGroup.getMembers().isEmpty()) {
 				for (Member member : productGroup.getMembers()) {
 					if (commerProdMemMap.containsKey(member.getId())) {
 						groupName = productGroup.getName();
