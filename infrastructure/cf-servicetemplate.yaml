@@ -89,9 +89,6 @@ Parameters:
   bazaarvoice:
     Description: Fill me in please and update my type!
     Type: String  
-  dalpublicmetricsexportenabled:
-    Description: Flag to disable export of all public spring boot metrics to CloudWatch!
-    Type: String
   springmetricsexportenabled:
     Description: Flag to disable export of spring boot metrics to CloudWatch!
     Type: String  
@@ -167,8 +164,6 @@ Resources:
               Value: !Ref 'bazaarvoice'
             - Name: cloud_aws_cloudwatch_namespace
               Value: !Ref 'AWS::StackName'
-            - Name: dal_public_metrics_export_enabled
-              Value: !Ref 'dalpublicmetricsexportenabled'
             - Name: spring_metrics_export_enabled
               Value: !Ref 'springmetricsexportenabled'  
           Memory: !Ref 'Memory'
