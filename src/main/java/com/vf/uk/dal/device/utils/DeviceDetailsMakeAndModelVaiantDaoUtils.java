@@ -7,6 +7,8 @@ import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
+import com.vf.uk.dal.common.exception.ApplicationException;
+import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.datamodel.bundle.Allowance;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
@@ -213,7 +215,11 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		if (listOfPriceForBundleAndHardware != null && !listOfPriceForBundleAndHardware.isEmpty()) {
 			PriceForBundleAndHardware priceForBundleAndHardware;
 			priceForBundleAndHardware = listOfPriceForBundleAndHardware.get(0);
-			if (priceForBundleAndHardware.getHardwarePrice() != null && cohProduct.getId().equalsIgnoreCase(priceForBundleAndHardware.getHardwarePrice().getHardwareId())) {
+			if(priceForBundleAndHardware.getHardwarePrice() == null){
+				LogHelper.error(DeviceDetailsMakeAndModelVaiantDaoUtils.class, "PRICE API of PriceForBundleAndHardware Exception---------------");
+				throw new ApplicationException(ExceptionMessages.PRICING_API_EXCEPTION);
+			}
+			if (cohProduct.getId().equalsIgnoreCase(priceForBundleAndHardware.getHardwarePrice().getHardwareId())) {
 				if (priceForBundleAndHardware != null && priceForBundleAndHardware.getHardwarePrice() != null
 						&& getOnePriceCheckForPriceForBundleAndHarware(priceForBundleAndHardware)
 						&& priceForBundleAndHardware.getHardwarePrice().getOneOffPrice().getGross().equalsIgnoreCase(
