@@ -1118,7 +1118,7 @@ public class DeviceTilesDaoUtils {
 								&& promotionmap.containsKey(productModel.getProductId())) {
 
 							BundleAndHardwarePromotions promotions = promotionmap.get(productModel.getProductId());
-							CommonUtility.getNonPricingPromotions(promotions, mediaList);
+							merchandisingPromotionsPackage = CommonUtility.getNonPricingPromotions(promotions, mediaList);
 
 						}
 						if (StringUtils.isNotBlank(productModel.getImageURLsThumbsFront())) {
