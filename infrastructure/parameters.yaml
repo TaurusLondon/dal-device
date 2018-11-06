@@ -56,7 +56,5 @@
   ParameterValue: "${CDNDOMAINHOST}"
 - ParameterKey: bazaarvoice
   ParameterValue: "${BAZAARVOICE}"
-- ParameterKey: dalpublicmetricsexportenabled
-  ParameterValue: "${DALPUBLICMETRICSEXPORTENABLED}"
 - ParameterKey: springmetricsexportenabled
   ParameterValue: "${SPRINGMETRICSEXPORTENABLED}"  
