@@ -213,7 +213,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		if (listOfPriceForBundleAndHardware != null && !listOfPriceForBundleAndHardware.isEmpty()) {
 			PriceForBundleAndHardware priceForBundleAndHardware;
 			priceForBundleAndHardware = listOfPriceForBundleAndHardware.get(0);
-			if (cohProduct.getId().equalsIgnoreCase(priceForBundleAndHardware.getHardwarePrice().getHardwareId())) {
+			if (priceForBundleAndHardware.getHardwarePrice() != null && cohProduct.getId().equalsIgnoreCase(priceForBundleAndHardware.getHardwarePrice().getHardwareId())) {
 				if (priceForBundleAndHardware != null && priceForBundleAndHardware.getHardwarePrice() != null
 						&& getOnePriceCheckForPriceForBundleAndHarware(priceForBundleAndHardware)
 						&& priceForBundleAndHardware.getHardwarePrice().getOneOffPrice().getGross().equalsIgnoreCase(
