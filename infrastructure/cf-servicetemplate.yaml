@@ -89,6 +89,9 @@ Parameters:
   bazaarvoice:
     Description: Fill me in please and update my type!
     Type: String  
+  springmetricsexportenabled:
+    Description: Flag to disable export of spring boot metrics to CloudWatch!
+    Type: String  
 Resources:
   ListenerRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
@@ -161,6 +164,8 @@ Resources:
               Value: !Ref 'bazaarvoice'
             - Name: cloud_aws_cloudwatch_namespace
               Value: !Ref 'AWS::StackName'
+            - Name: spring_metrics_export_enabled
+              Value: !Ref 'springmetricsexportenabled'  
           Memory: !Ref 'Memory'
           MemoryReservation: !Ref 'MemoryReservation'
           Image: !Sub '${EcrLocation}/${BuildName}:${BuildID}'

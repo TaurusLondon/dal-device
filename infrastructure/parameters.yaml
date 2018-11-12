@@ -56,3 +56,5 @@
   ParameterValue: "${CDNDOMAINHOST}"
 - ParameterKey: bazaarvoice
   ParameterValue: "${BAZAARVOICE}"
+- ParameterKey: springmetricsexportenabled
+  ParameterValue: "${SPRINGMETRICSEXPORTENABLED}"  
