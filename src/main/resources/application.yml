@@ -1,6 +1,10 @@
 spring:
   application:
     name: DEVICES-V1
+  metrics:
+    export:
+      enabled: false
+      excludes: classes,*classes*  
 info:
   build:
     version: @swaggerVersion@
