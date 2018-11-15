@@ -10,7 +10,8 @@ info:
     version: @swaggerVersion@
     projectName: @project.artifactId@
 server:
-  contextPath: /devices/catalogue
+  servlet:
+    context-path: /devices/catalogue
   port: 8080
   ssl:
     enabled: true
