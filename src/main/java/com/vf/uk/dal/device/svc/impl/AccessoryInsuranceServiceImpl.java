@@ -39,6 +39,7 @@ import com.vf.uk.dal.utility.entity.PriceForAccessory;
 import com.vf.uk.dal.utility.entity.PriceForProduct;
 
 import lombok.extern.slf4j.Slf4j;
+
 /**
  * 
  * Accessory Insurance Service Impl
@@ -52,7 +53,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	public static final String STRING_COMPATIBLE_INSURANCE = "Compatible Insurance";
 	public static final String STRING_ACCESSORY = "Accessory,Compatible Accessories";
 	public static final String STRING_COMPATIBLE_ACCESSORIES = "Compatible Accessories";
-	
+
 	@Autowired
 	DeviceDao deviceDao;
 
@@ -67,10 +68,10 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 
 	@Autowired
 	DeviceRecommendationService deviceRecommendationService;
-	
+
 	@Autowired
 	CommonUtility commonUtility;
-	
+
 	@Value("${cdn.domain.host}")
 	private String cdnDomain;
 
@@ -100,16 +101,16 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 		List<AccessoryTileGroup> listOfAccessoryTile = new ArrayList<>();
 
 		CommercialProduct commercialProduct = deviceEs.getCommercialProduct(deviceId);
-		log.info( "End -->  After calling  CommercialProductRepository.get");
+		log.info("End -->  After calling  CommercialProductRepository.get");
 
 		if (commercialProduct != null && commercialProduct.getId() != null) {
 
 			if (commercialProduct.getIsDeviceProduct()
 					&& commercialProduct.getProductClass().equalsIgnoreCase(STRING_HANDSET)) {
 
-				log.info( "Start -->  calling  CommercialProduct.getProductGroups");
+				log.info("Start -->  calling  CommercialProduct.getProductGroups");
 				ProductGroups productGroups = commercialProduct.getProductGroups();
-				log.info( "End -->  After calling  CommercialProduct.getProductGroups");
+				log.info("End -->  After calling  CommercialProduct.getProductGroups");
 
 				List<String> listOfDeviceGroupName = new ArrayList<>();
 				List<String> finalAccessoryList = new ArrayList<>();
@@ -119,20 +120,20 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 					getAccessoriesResponse(deviceId, journeyType, offerCode, listOfAccessoryTile, productGroups,
 							listOfDeviceGroupName, finalAccessoryList);
 				} else {
-					log.error( "No Compatible Accessories found for given device Id:" + deviceId);
+					log.error("No Compatible Accessories found for given device Id:" + deviceId);
 					throw new ApplicationException(ExceptionMessages.NULL_COMPATIBLE_VALUE_FOR_DEVICE_ID);
 				}
 
 			} else {
-				log.error( "Given DeviceId is not ProductClass Handset  :" + deviceId);
+				log.error("Given DeviceId is not ProductClass Handset  :" + deviceId);
 				throw new ApplicationException(ExceptionMessages.DEVICE_ID_NOT_HANDSET);
 			}
 		} else {
-			log.error( "No data found for given device Id:" + deviceId);
+			log.error("No data found for given device Id:" + deviceId);
 			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID);
 		}
 		if (listOfAccessoryTile.isEmpty()) {
-			log.error( "No Compatible Accessories found for given device Id:" + deviceId);
+			log.error("No Compatible Accessories found for given device Id:" + deviceId);
 			throw new ApplicationException(ExceptionMessages.NULL_COMPATIBLE_VALUE_FOR_DEVICE_ID);
 		}
 		return listOfAccessoryTile;
@@ -159,7 +160,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 		for (Group productGroup : listOfProductGroup) {
 			getFinalAccessoryList(finalAccessoryList, mapForGroupName, productGroup);
 		}
-		log.info( "Start -->   calling  CommercialProduct.getAll From ES");
+		log.info("Start -->   calling  CommercialProduct.getAll From ES");
 		List<CommercialProduct> listOfFilteredAccessories = getListOfFilteredAccessories(journeyType,
 				finalAccessoryList);
 
@@ -175,7 +176,8 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 		Map<String, CommercialProduct> mapforCommercialProduct = setMapForCommercialData(listOfFilteredAccessories,
 				listOfValidAccesoryIds, priceForProduct, mapforPrice);
 
-		setListOfAccessoryTileGroup(listOfAccessoryTile, mapForGroupName, mapforPrice, mapforCommercialProduct, cdnDomain);
+		setListOfAccessoryTileGroup(listOfAccessoryTile, mapForGroupName, mapforPrice, mapforCommercialProduct,
+				cdnDomain);
 	}
 
 	/**
@@ -207,7 +209,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 		if (cohProduct != null) {
 			insurance = getInsuranceResponse(deviceId, journeyType, cohProduct);
 		} else {
-			log.error( "No data found for given Device Id :" + deviceId);
+			log.error("No data found for given Device Id :" + deviceId);
 			throw new ApplicationException(ExceptionMessages.NULL_COMPATIBLE_INSURANCES_FOR_DEVICE_ID);
 		}
 		validateInsuranceNullable(deviceId, insurance);
@@ -223,11 +225,10 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	 */
 	public Insurances getInsuranceResponse(String deviceId, String journeyType, CommercialProduct cohProduct) {
 		Insurances insurance;
-		if (cohProduct.getIsDeviceProduct()
-				&& cohProduct.getProductClass().equalsIgnoreCase(STRING_HANDSET)) {
+		if (cohProduct.getIsDeviceProduct() && cohProduct.getProductClass().equalsIgnoreCase(STRING_HANDSET)) {
 			insurance = getInsurance(journeyType, cohProduct);
 		} else {
-			log.error( "Given DeviceId is not ProductClass Handset  :" + deviceId);
+			log.error("Given DeviceId is not ProductClass Handset  :" + deviceId);
 			throw new ApplicationException(ExceptionMessages.DEVICE_ID_NOT_HANDSET);
 		}
 		return insurance;
@@ -248,13 +249,13 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 		if (productGroups != null && productGroups.getProductGroup() != null
 				&& !productGroups.getProductGroup().isEmpty()) {
 			for (com.vf.uk.dal.device.datamodel.product.ProductGroup productGroup : productGroups.getProductGroup()) {
-				if (productGroup.getProductGroupRole() != null && productGroup.getProductGroupRole().trim()
-						.equalsIgnoreCase(STRING_COMPATIBLE_INSURANCE)) {
+				if (productGroup.getProductGroupRole() != null
+						&& productGroup.getProductGroupRole().trim().equalsIgnoreCase(STRING_COMPATIBLE_INSURANCE)) {
 					insuranceGroupName = productGroup.getProductGroupName();
 					insuranceGroupType = productGroup.getProductGroupRole();
 				}
 			}
-			log.info( "::::: Insurance GroupName " + insuranceGroupName + " ::::::");
+			log.info("::::: Insurance GroupName " + insuranceGroupName + " ::::::");
 			if (StringUtils.isNotBlank(insuranceGroupName)) {
 
 				Group productGroup = deviceEs.getProductGroupByTypeAndGroupName(insuranceGroupName, insuranceGroupType);
@@ -267,7 +268,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 		return insurance;
 	}
 
-	public static BundleDeviceAndProductsList setBundleDeviceAndProductsList(String journeyType,String deviceId,
+	public static BundleDeviceAndProductsList setBundleDeviceAndProductsList(String journeyType, String deviceId,
 			String offerCode, List<String> listOfValidAccesoryIds) {
 		BundleDeviceAndProductsList bundleDeviceAndProductsList = new BundleDeviceAndProductsList();
 		bundleDeviceAndProductsList.setAccessoryList(listOfValidAccesoryIds);
@@ -318,8 +319,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	 */
 	public static List<Member> getListOfAccessoriesMembers(Group productGroup) {
 		List<Member> listOfAccesoriesMembers = new ArrayList<>();
-		if (productGroup != null
-				&& StringUtils.containsIgnoreCase(STRING_ACCESSORY, productGroup.getGroupType())) {
+		if (productGroup != null && StringUtils.containsIgnoreCase(STRING_ACCESSORY, productGroup.getGroupType())) {
 			listOfAccesoriesMembers.addAll(productGroup.getMembers());
 			if (!listOfAccesoriesMembers.isEmpty()) {
 				listOfAccesoriesMembers = getAccessoryMembersBasedOnPriority_Implementation(listOfAccesoriesMembers);
@@ -399,7 +399,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 				Accessory accessory = null;
 				if (mapforCommercialProduct.containsKey(hardwareId) && mapforPrice.containsKey(hardwareId)) {
 					accessory = AccessoriesAndInsurancedaoUtils.convertCoherenceAccesoryToAccessory(
-							mapforCommercialProduct.get(hardwareId), mapforPrice.get(hardwareId),cdnDomain);
+							mapforCommercialProduct.get(hardwareId), mapforPrice.get(hardwareId), cdnDomain);
 				}
 				if (accessory != null) {
 					listOfAccessory.add(accessory);
@@ -410,8 +410,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 				accessoryTileGroup.setAccessories(listOfAccessory);
 				listOfAccessoryTile.add(accessoryTileGroup);
 			} else {
-				log.error(
-						"Accessories not found for the given :" + entry.getKey());
+				log.error("Accessories not found for the given :" + entry.getKey());
 			}
 		}
 	}
@@ -462,8 +461,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 		}
 
 		if (listOfDeviceGroupName.isEmpty()) {
-			log.error(
-					" No Compatible Accessories found for given device Id:" + deviceId);
+			log.error(" No Compatible Accessories found for given device Id:" + deviceId);
 			throw new ApplicationException(ExceptionMessages.NULL_COMPATIBLE_VALUE_FOR_DEVICE_ID);
 		}
 	}
@@ -478,8 +476,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 			getFormattedPriceForGetCompatibleInsurances(insurance);
 			insurance.setMinCost(FormatPrice(insurance.getMinCost()));
 		} else {
-			log.error(
-					"No Compatible Insurances found for given device Id" + deviceId);
+			log.error("No Compatible Insurances found for given device Id" + deviceId);
 			throw new ApplicationException(ExceptionMessages.NULL_COMPATIBLE_INSURANCES_FOR_DEVICE_ID);
 		}
 	}
@@ -551,7 +548,8 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 						&& CommonUtility.isProductJourneySpecific(commercialProduct, journeyType))
 				.collect(Collectors.toList());
 		if (listOfFilteredInsurances != null && !listOfFilteredInsurances.isEmpty()) {
-			insurance = AccessoriesAndInsurancedaoUtils.convertCommercialProductToInsurance(listOfFilteredInsurances, cdnDomain);
+			insurance = AccessoriesAndInsurancedaoUtils.convertCommercialProductToInsurance(listOfFilteredInsurances,
+					cdnDomain);
 		}
 		return insurance;
 	}

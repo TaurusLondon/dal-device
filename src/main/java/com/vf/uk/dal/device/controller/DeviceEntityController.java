@@ -91,7 +91,7 @@ public class DeviceEntityController {
 		List<CommercialProduct> commProductDetails;
 
 		if (StringUtils.isBlank(productId) && StringUtils.isBlank(productName)) {
-			log.info("Query parameter(s) passed in the request is invalid " + ExceptionMessages.INVALID_QUERY_PARAMS);
+			log.error("Query parameter(s) passed in the request is invalid " + ExceptionMessages.INVALID_QUERY_PARAMS);
 			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
 		} else if (StringUtils.isNotBlank(productName)) {
 			log.info("Get the list of Product Details for the Product Name passed as request params: " + productName);
@@ -129,7 +129,7 @@ public class DeviceEntityController {
 			log.info("Get the list of Product Details for the Product Id passed as request params: " + groupType);
 			groupDetails = deviceEntiryService.getProductGroupByType(groupType);
 		} else {
-			log.info(" Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
+			log.error(" Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
 			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
 		}
 		return groupDetails;
@@ -158,7 +158,7 @@ public class DeviceEntityController {
 		ProductGroupModelMap productGroupModelDetails;
 
 		if (StringUtils.isBlank(productId)) {
-			log.info("Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
+			log.error("Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
 			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
 		} else {
 			log.info("Get the list of Product Details for the Product Id (s) passed as request params: " + productId);

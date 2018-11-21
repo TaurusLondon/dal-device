@@ -86,8 +86,7 @@ public class CacheDeviceAndReviewController {
 	@RequestMapping(value = "/deviceTile/cacheDeviceTile", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CacheDeviceTileResponse> cacheDeviceTile(
 			@ApiParam(value = "Device group Type", required = true) @RequestParam("groupType") String groupType) {
-		//String groupType = getFilterValue(GROUP_TYPE);
-
+		
 		if (StringUtils.isNotBlank(groupType)) {
 			if (StringUtils.containsIgnoreCase(groupType, STRING_DEVICE_PAYG)
 					|| StringUtils.containsIgnoreCase(groupType, STRING_DEVICE_PAYM)

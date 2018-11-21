@@ -80,7 +80,7 @@ public class ListOfDeviceDetailsDaoUtils {
 				}
 			}
 		} catch (Exception e) {
-			log.info("Exception occured when call happen to compatible bundles api: " + e);
+			log.error("Exception occured when call happen to compatible bundles api: " + e);
 		}
 
 		return bundleHeaderForDevice1;
