@@ -5,11 +5,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.datamodel.productgroups.ProductGroupModel;
 import com.vf.uk.dal.device.entity.Member;
 import com.vf.uk.dal.device.entity.ProductGroup;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ListOfDeviceDetailsDaoUtils {
 
 	// For price API
@@ -70,7 +72,7 @@ public class ListOfDeviceDetailsDaoUtils {
 							bundleId = listOfBundelMonthlyPriceForBundleHeader.get(0).getSkuId();
 						}
 					}
-					LogHelper.info(this, "Compatible Id:" + bundleId);
+					log.info("Compatible Id:" + bundleId);
 					if (bundleId != null && !bundleId.isEmpty()) {
 						bundleHeaderForDevice1 = listOfBundelMonthlyPriceForBundleHeader.get(0);
 					}
@@ -78,7 +80,7 @@ public class ListOfDeviceDetailsDaoUtils {
 				}
 			}
 		} catch (Exception e) {
-			LogHelper.error(this, "Exception occured when call happen to compatible bundles api: " + e);
+			log.error("Exception occured when call happen to compatible bundles api: " + e);
 		}
 
 		return bundleHeaderForDevice1;

@@ -20,7 +20,6 @@ import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.configuration.DataSourceInitializer;
 import com.vf.uk.dal.common.exception.ApplicationException;
-import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.dao.DeviceTileCacheDAO;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
@@ -35,11 +34,14 @@ import com.vf.uk.dal.utility.solr.entity.OneOffDiscountPrice;
 import com.vf.uk.dal.utility.solr.entity.OneOffPrice;
 import com.vf.uk.dal.utility.solr.entity.PriceInfo;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 
  * Connects to database and saves the data.
  *
  */
+@Slf4j
 @Component("deviceTileCacheDAO")
 public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 	@Autowired
@@ -219,7 +221,7 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 	@Override
 	public int saveDeviceMediaData(List<Media> mediaList, String deviceId) {
 		int result;
-		LogHelper.info(this, "Begin DEVICE_LIST_PRE_CALC_MEDIA ");
+		log.info("Begin DEVICE_LIST_PRE_CALC_MEDIA ");
 		String sql = "INSERT INTO PRODUCT.DEVICE_LIST_PRE_CALC_MEDIA (DEVICE_ID,ID,VALUE,TYPE,DESCRIPTION,DISCOUNT_ID,PROMO_CATEGORY,OFFER_CODE) values (?,?,?,?,?,?,?,?)";
 		int[] i = getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
 			@Override
@@ -240,7 +242,7 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 				return mediaList.size();
 			}
 		});
-		LogHelper.info(this, "End DEVICE_LIST_PRE_CALC_MEDIA method");
+		log.info("End DEVICE_LIST_PRE_CALC_MEDIA method");
 
 		result = checkLengthAndsetResult(i);
 		return result;
@@ -255,7 +257,7 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 	public int saveDeviceListILSCalcData(List<OfferAppliedPriceDetails> offerAppliedPricesList) {
 		int result;
 		deleteDeviceOfferAppliedData();
-		LogHelper.info(this, "Begin DEVICE_OFFERAPPLIED_PRICE_DATA ");
+		log.info("Begin DEVICE_OFFERAPPLIED_PRICE_DATA ");
 		String sql = "INSERT INTO PRODUCT.DEVICE_OFFERAPPLIED_PRICE_DATA " + "(OFFER_CODE, DEVICE_ID,BUNDLE_ID, "
 				+ "BUNDLE_MNTHLY_PRICE_GROSS,BUNDLE_MNTHLY_PRICE_NET, BUNDLE_MNTHLY_PRICE_VAT, "
 				+ "BUNDLE_MNTHLY_DISC_PRICE_GROSS, BUNDLE_MNTHLY_DISC_PRICE_NET, BUNDLE_MNTHLY_DISC_PRICE_VAT, "
@@ -376,7 +378,7 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 				return offerAppliedPricesList.size();
 			}
 		});
-		LogHelper.info(this, "End DEVICE_OFFERAPPLIED_PRICE_DATA method");
+		log.info("End DEVICE_OFFERAPPLIED_PRICE_DATA method");
 
 		result = checkLengthAndsetResult( i);
 		return result;
@@ -394,7 +396,7 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 			conn = DataSourceUtils.getConnection(getJdbcTemplate().getDataSource());
 			conn.setAutoCommit(false);
 		} catch (SQLException e) {
-			LogHelper.error(this, "Exception occurred while opening connection" + e);
+			log.error( "Exception occurred while opening connection" + e);
 		}
 	}
 
@@ -404,14 +406,14 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 		try {
 			conn.commit();
 		} catch (SQLException e) {
-			LogHelper.error(this, "Exception occurred while persisting data in intermediate tables" + e);
+			log.error( "Exception occurred while persisting data in intermediate tables" + e);
 		} finally {
 			try {
 				if (conn != null && !conn.isClosed()) {
 					conn.close();
 				}
 			} catch (SQLException e) {
-				LogHelper.error(this, "Exception occurred while closing connection" + e);
+				log.error( "Exception occurred while closing connection" + e);
 			}
 		}
 	}
@@ -422,14 +424,14 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 		try {
 			conn.rollback();
 		} catch (SQLException e) {
-			LogHelper.error(this, "Exception occurred while persisting data in intermediate tables" + e);
+			log.error( "Exception occurred while persisting data in intermediate tables" + e);
 		} finally {
 			try {
 				if (conn != null && !conn.isClosed()) {
 					conn.close();
 				}
 			} catch (SQLException e) {
-				LogHelper.error(this, "Exception occurred while closing connection" + e);
+				log.error( "Exception occurred while closing connection" + e);
 			}
 		}
 	}
@@ -455,11 +457,11 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 			Object[] params = new Object[] { jobId, "CacheDevice", null, new Timestamp(new Date().getTime()), jobStatus,
 					new Timestamp(new Date().getTime()) };
 			jdbcTemplate.update(query, params);
-			LogHelper.info(this, jobId + " inserted in DALMS_CACHE_SERVICES_TABLE");
+			log.info(jobId + " inserted in DALMS_CACHE_SERVICES_TABLE");
 			connection.commit();
 
 		} catch (DataAccessException | SQLException e) {
-			LogHelper.error(this, jobId + "==> " + e);
+			log.error( jobId + "==> " + e);
 		}
 
 		return cacheDeviceTileResponse;
@@ -476,10 +478,10 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 					new Timestamp(new Date().getTime()), jobId };
 			jdbcTemplate.update(query, params);
 
-			LogHelper.info(this, jobId + " updated with status " + jobStatus + " in DALMS_CACHE_SERVICES_TABLE");
+			log.info(jobId + " updated with status " + jobStatus + " in DALMS_CACHE_SERVICES_TABLE");
 			conn.commit();
 		} catch (DataAccessException | SQLException e) {
-			LogHelper.error(this, jobId + "==> " + e);
+			log.error( jobId + "==> " + e);
 		}
 
 	}
@@ -506,7 +508,7 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 			}
 
 		} catch (Exception exception) {
-			LogHelper.error(this, jobId + "==>" + exception);
+			log.error( jobId + "==>" + exception);
 			throw new ApplicationException(ExceptionMessages.INVALID_JOB_ID);
 		}
 		return response;

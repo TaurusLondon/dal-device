@@ -11,8 +11,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
-import com.vf.uk.dal.common.logger.LogHelper;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 public class BazaarVoiceCache {
 
@@ -24,7 +25,7 @@ public class BazaarVoiceCache {
 
 	@Cacheable(value = "bazaarVoiceCache", key = "#deviceId")
 	public String getBazaarVoiceReviews(String deviceId) {
-		LogHelper.info(this, new Date() + " Retrieving from BazaarVoice : " + deviceId);
+		log.info( new Date() + " Retrieving from BazaarVoice : " + deviceId);
 		String jsonObject = null;
 		URL connection;
 		URLConnection urlConn;
@@ -36,7 +37,7 @@ public class BazaarVoiceCache {
 			}
 
 		} catch (Exception e) {
-			LogHelper.info(this, "Error Retrieving from BazaarVoice : " + e);
+			log.info( "Error Retrieving from BazaarVoice : " + e);
 		}
 		return jsonObject;
 	}

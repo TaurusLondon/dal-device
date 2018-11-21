@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
-import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
 import com.vf.uk.dal.device.datamodel.product.ProductModel;
 import com.vf.uk.dal.device.datamodel.productgroups.Group;
@@ -27,6 +26,9 @@ import com.vf.uk.dal.device.svc.DeviceEntityService;
 import com.vf.uk.dal.device.utils.DeviceUtils;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Component
 public class DeviceEntityServiceImpl implements DeviceEntityService {
 
@@ -48,7 +50,7 @@ public class DeviceEntityServiceImpl implements DeviceEntityService {
 		List<String> listOfProdIdsOrNames = DeviceServiceImplUtility.getListOfProductIdsOrNames(productIdOrName);
 		List<CommercialProduct> listOfCommercialProduct = deviceEs.getListOfCommercialProduct(listOfProdIdsOrNames);
 		if (CollectionUtils.isEmpty(listOfCommercialProduct)) {
-			LogHelper.error(this, ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID + " : " + productIdOrName);
+			log.error( ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID + " : " + productIdOrName);
 			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID);
 		}
 		return listOfCommercialProduct;
@@ -72,7 +74,7 @@ public class DeviceEntityServiceImpl implements DeviceEntityService {
 				COMPATIBLE_DELIVERY);
 		getProductGroupModelBasedOnDelivery(result, productGroupmap, productGroupModels);
 		if (result.isEmpty()) {
-			LogHelper.error(this, ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID + " : " + deviceIds);
+			log.error( ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID + " : " + deviceIds);
 			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID);
 		} else {
 			ProductGroupModelMap = new ProductGroupModelMap();
@@ -90,7 +92,7 @@ public class DeviceEntityServiceImpl implements DeviceEntityService {
 	public List<Group> getProductGroupByType(String groupType) {
 		List<Group> listOfGroup = deviceEs.getProductGroupByType(groupType);
 		if (CollectionUtils.isEmpty(listOfGroup)) {
-			LogHelper.error(this, ExceptionMessages.NULL_VALUE_GROUP_TYPE + " : " + groupType);
+			log.error( ExceptionMessages.NULL_VALUE_GROUP_TYPE + " : " + groupType);
 			throw new ApplicationException(ExceptionMessages.NULL_VALUE_GROUP_TYPE);
 		}
 		return listOfGroup;

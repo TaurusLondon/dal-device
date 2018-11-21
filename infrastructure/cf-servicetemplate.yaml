@@ -113,7 +113,7 @@ Resources:
       Name: !Ref 'AWS::StackName'
       Protocol: HTTPS
       Port: 8080
-      HealthCheckPath: !Sub '/${ContextPath}/health'
+      HealthCheckPath: !Sub '/${ContextPath}/actuator/health'
       HealthyThresholdCount: !Ref 'HealthyThresholdCount'
       UnhealthyThresholdCount: !Ref 'UnhealthyThresholdCount'
       HealthCheckTimeoutSeconds: !Ref 'HealthCheckTimeoutSeconds'

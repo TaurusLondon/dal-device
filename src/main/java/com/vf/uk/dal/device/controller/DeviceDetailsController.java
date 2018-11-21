@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
-import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.entity.DeviceDetails;
 import com.vf.uk.dal.device.svc.DeviceDetailsService;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
@@ -31,6 +30,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 import springfox.documentation.annotations.ApiIgnore;
 
 @Api(tags="DeviceDetails")
@@ -45,6 +45,7 @@ import springfox.documentation.annotations.ApiIgnore;
  * services inside the controller.
  *
  */
+@Slf4j
 public class DeviceDetailsController {
 
 	public static final String JOURNEY_TYPE_ACQUISITION = "Acquisition";
@@ -92,7 +93,7 @@ public class DeviceDetailsController {
 			@ApiParam(value = "Type of journey that the user undertakes e.g. \"Acquisition\", \"upgrade\", \"ils\" etc.") @RequestParam(value = "journeyType", required = false) String journeyType,
 			@ApiParam(value = "Offer code that defines what type of promotional discount needs to be displaced.") @RequestParam(value = "offerCode", required = false) String offerCode) {
 		DeviceDetails deviceDetails;
-		LogHelper.info(this, ":::::::Test Logger for VSTS migration And Validate Pipeline Validation::::::::");
+		log.info( ":::::::Test Logger for VSTS migration And Validate Pipeline Validation::::::::");
 		Validator.validateDeviceDetails(deviceId);
 		String journeyTypeLocal = StringUtils.isNotBlank(journeyType) ? journeyType
 				: JOURNEY_TYPE_ACQUISITION;
@@ -112,7 +113,7 @@ public class DeviceDetailsController {
 
 		if (!queryParams.isEmpty() && Validator.validateDeviceId(queryParams)) {
 
-			LogHelper.info(this, "Query parameter(s) passed in the request " + queryParams);
+			log.info( "Query parameter(s) passed in the request " + queryParams);
 			List<DeviceDetails> listOfDeviceDetails;
 
 			String deviceId = queryParams.containsKey(DEVICE_ID) ? queryParams.get(DEVICE_ID)
@@ -123,18 +124,18 @@ public class DeviceDetailsController {
 					: null;
 
 			if (deviceId != null) {
-				LogHelper.info(this,
+				log.info(
 						"Get the list of device details for the device id passed as request params " + deviceId);
-				LogHelper.info(this, "Start -->  calling  getListOfDeviceDetails");
+				log.info( "Start -->  calling  getListOfDeviceDetails");
 				listOfDeviceDetails = deviceDetailsService.getListOfDeviceDetails(deviceId, offerCode, journeyType);
-				LogHelper.info(this, "End -->  calling  getListofDeviceDetails");
+				log.info( "End -->  calling  getListofDeviceDetails");
 			} else {
-				LogHelper.error(this, DEVICE_ID_IS_EMPTY);
+				log.error( DEVICE_ID_IS_EMPTY);
 				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
 			}
 			return listOfDeviceDetails;
 		} else {
-			LogHelper.error(this, ExceptionMessages.INVALID_QUERY_PARAMS);
+			log.error( ExceptionMessages.INVALID_QUERY_PARAMS);
 			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
 		}
 

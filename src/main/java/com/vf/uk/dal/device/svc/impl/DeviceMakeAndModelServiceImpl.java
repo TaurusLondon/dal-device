@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
-import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
@@ -41,6 +40,9 @@ import com.vf.uk.dal.device.utils.ExceptionMessages;
 import com.vf.uk.dal.device.validator.Validator;
 import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Component
 public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService {
 
@@ -116,12 +118,12 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 
 		List<CommercialProduct> listOfCommercialProducts = null;
 		if (DeviceServiceImplUtility.validateGroupType(groupType)) {
-			LogHelper.info(this, "Start -->  calling  CommericalProduct.getByMakeAndModel");
+			log.info( "Start -->  calling  CommericalProduct.getByMakeAndModel");
 			listOfCommercialProducts = deviceEs.getListOfCommercialProductByMakeAndModel(make, model);
-			LogHelper.info(this, "End -->  After calling  CommericalProduct.getByMakeAndModel");
+			log.info( "End -->  After calling  CommericalProduct.getByMakeAndModel");
 
 		} else {
-			LogHelper.error(this, NO_DATA_FOUND_FOR_GROUP_TYPE + groupType);
+			log.error( NO_DATA_FOUND_FOR_GROUP_TYPE + groupType);
 			throw new ApplicationException(ExceptionMessages.NULL_VALUE_GROUP_TYPE);
 		}
 		List<Group> listOfProductGroup = deviceEs.getProductGroupByType(groupType);
@@ -174,7 +176,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 							listOfPriceForBundleAndHardware = calculatePriceTask.get();
 							listOfBundleAndHardPromo = promotionTask.get();
 						} catch (Exception e) {
-							LogHelper.error(this, EXCEPTION_OCCURED_WHILE_EXECUTING_THREAD_POOL + e);
+							log.error( EXCEPTION_OCCURED_WHILE_EXECUTING_THREAD_POOL + e);
 							throw new ApplicationException(ExceptionMessages.ERROR_IN_FUTURE_TASK);
 						}
 					}
@@ -204,7 +206,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 					try {
 						listOfDeviceSummary = future1.get();
 					} catch (Exception e) {
-						LogHelper.error(this, EXCEPTION_OCCURED_WHILE_EXECUTING_THREAD_POOL + e);
+						log.error( EXCEPTION_OCCURED_WHILE_EXECUTING_THREAD_POOL + e);
 						throw new ApplicationException(ExceptionMessages.ERROR_IN_FUTURE_TASK);
 					}
 					resetDeviceId_Implementation(isConditionalAcceptJourney, deviceTile, listOfDeviceSummary, deviceId);
@@ -218,17 +220,17 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 						listOfDeviceTile.add(deviceTile);
 					}
 				} else {
-					LogHelper.error(this, "Requested Make and Model Not found in given group type:" + groupType);
+					log.error( "Requested Make and Model Not found in given group type:" + groupType);
 					throw new ApplicationException(ExceptionMessages.MAKE_AND_MODEL_NOT_FOUND_IN_GROUPTYPE);
 				}
 			} else {
-				LogHelper.error(this, NO_DATA_FOUND_FOR_GIVEN_MAKE_AND_MMODEL2 + make + AND + model);
+				log.error( NO_DATA_FOUND_FOR_GIVEN_MAKE_AND_MMODEL2 + make + AND + model);
 				throw new ApplicationException(
 						ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST);
 			}
 		}
 		if (CollectionUtils.isEmpty(listOfDeviceTile)) {
-			LogHelper.error(this, NO_DATA_FOUND_FOR_GIVEN_MAKE_AND_MMODEL2 + make + AND + model);
+			log.error( NO_DATA_FOUND_FOR_GIVEN_MAKE_AND_MMODEL2 + make + AND + model);
 			throw new ApplicationException(ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST);
 		}
 		return listOfDeviceTile;
@@ -423,7 +425,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			getMemberByRules(groupType, listOfDeviceTile, deviceTile, groupName, new ArrayList<>(listOfDeviceGroupMember),
 					commerProdMemMapPAYG, bundleAndHardwareTupleListPAYG);
 		} else {
-			LogHelper.error(this, NO_DATA_FOUND_FOR_GIVEN_MAKE_AND_MMODEL2 + make + AND + model);
+			log.error( NO_DATA_FOUND_FOR_GIVEN_MAKE_AND_MMODEL2 + make + AND + model);
 			throw new ApplicationException(ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST);
 		}
 		return listOfDeviceTile;
@@ -476,7 +478,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 						.put(priceForBundleAndHardware.getHardwarePrice().getHardwareId(), priceForBundleAndHardware);
 					}
 					else{
-						LogHelper.error(this, "PAYG PRICE Coming as null from Pricing API---------------");
+						log.error( "PAYG PRICE Coming as null from Pricing API---------------");
 					}
 				});
 			}
@@ -490,13 +492,13 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			try {
 				listOfDeviceSummary = future1.get();
 			} catch (Exception e) {
-				LogHelper.error(this, EXCEPTION_OCCURED_WHILE_EXECUTING_THREAD_POOL + e);
+				log.error( EXCEPTION_OCCURED_WHILE_EXECUTING_THREAD_POOL + e);
 				throw new ApplicationException(ExceptionMessages.ERROR_IN_FUTURE_TASK);
 			}
 			deviceTile.setDeviceSummary(listOfDeviceSummary);
 			listOfDeviceTile.add(deviceTile);
 		} else {
-			LogHelper.error(this, "Requested Make and Model Not found in given group type:" + groupType);
+			log.error( "Requested Make and Model Not found in given group type:" + groupType);
 			throw new ApplicationException(ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST);
 		}
 	}

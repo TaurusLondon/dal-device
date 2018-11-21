@@ -15,10 +15,12 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.datamodel.productgroups.Count;
 import com.vf.uk.dal.device.datamodel.productgroups.FacetField;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Component
 public class ElasticSearchUtils {
 
@@ -37,7 +39,7 @@ public class ElasticSearchUtils {
 		try {
 			res = future0.get();
 		} catch (Exception e) {
-			LogHelper.error(ElasticSearchUtils.class, "Exception occured while executing thread pool :" + e);
+			log.error("Exception occured while executing thread pool :" + e);
 		}
 		return res;
 	}
@@ -67,10 +69,10 @@ public class ElasticSearchUtils {
 
 		SearchHit[] hitArray = response.getHits().getHits();
 		if (hitArray.length > 0) {
-		return getObject(hitArray[0], classType);
-	} 
-	return null;
-	
+			return getObject(hitArray[0], classType);
+		}
+		return null;
+
 	}
 
 	/**
@@ -84,8 +86,7 @@ public class ElasticSearchUtils {
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			return mapper.readValue(hit.getSourceAsString(), classType);
 		} catch (IOException e) {
-			LogHelper.error(ResponseMappingHelper.class,
-					"::::::Exception occurred preparing Commercial Product list from ES response:::::: " + e);
+			log.error("::::::Exception occurred preparing Commercial Product list from ES response:::::: " + e);
 		}
 		return null;
 	}
@@ -114,7 +115,7 @@ public class ElasticSearchUtils {
 				res.add(facetFeild);
 			}
 		} catch (Exception e) {
-			LogHelper.error(ElasticSearchUtils.class, "Exception occured while executing thread pool :" + e);
+			log.error("Exception occured while executing thread pool :" + e);
 		}
 		return res;
 	}

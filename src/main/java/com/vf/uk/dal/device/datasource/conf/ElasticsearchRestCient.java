@@ -14,7 +14,7 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.vf.uk.dal.common.logger.LogHelper;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * This class to create Java rest client object to communicate with elastic
@@ -23,6 +23,7 @@ import com.vf.uk.dal.common.logger.LogHelper;
  * @author dharmapuri.veerabhad
  *
  */
+@Slf4j
 @Component
 public class ElasticsearchRestCient {
 
@@ -46,7 +47,7 @@ public class ElasticsearchRestCient {
 	public RestHighLevelClient getClient() {
 		if (restClient == null) {
 			restClient = createRestClient();
-			LogHelper.info(RestClient.class, "Rest client object created");
+			log.info( "Rest client object created");
 		}
 		return restClient;
 	}
@@ -59,9 +60,9 @@ public class ElasticsearchRestCient {
 	public void closeRestClient() throws IOException {
 		try {
 			restClient.close();
-			LogHelper.info(RestClient.class, "Rest client object closed");
+			log.info( "Rest client object closed");
 		} catch (IOException e) {
-			LogHelper.info(RestClient.class, "Exception occured while closing rest client object");
+			log.info( "Exception occured while closing rest client object");
 			throw e;
 		}
 	}
@@ -72,7 +73,7 @@ public class ElasticsearchRestCient {
 	 */
 	private RestHighLevelClient createRestClient() {
 		try {
-			LogHelper.info(RestClient.class, "Rest client creation with VPC end point::" + vpcEndPoint);
+			log.info( "Rest client creation with VPC end point::" + vpcEndPoint);
 			InetAddress address = InetAddress.getByName(new URL(vpcEndPoint).getHost());
 			restClient = new RestHighLevelClient(RestClient
 					.builder(new HttpHost(address, address.getHostName(), DEFAULT_PORT,
@@ -84,9 +85,9 @@ public class ElasticsearchRestCient {
 							return requestConfigBuilder.setConnectTimeout(5000).setSocketTimeout(60000);
 						}
 					}).setMaxRetryTimeoutMillis(60000));
-			LogHelper.info(RestClient.class, "Rest Client created Successfully  with  VPC End point ::" + vpcEndPoint);
+			log.info( "Rest Client created Successfully  with  VPC End point ::" + vpcEndPoint);
 		} catch (UnknownHostException | MalformedURLException e) {
-			LogHelper.error(RestClient.class, "Error ocuured while creating ES Rest client" + e);
+			log.error( "Error ocuured while creating ES Rest client" + e);
 		}
 		return restClient;
 	}

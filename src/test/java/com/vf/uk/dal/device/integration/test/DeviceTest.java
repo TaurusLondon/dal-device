@@ -19,7 +19,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,8 +36,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vf.uk.dal.common.context.ServiceContext;
 import com.vf.uk.dal.common.context.URLParamContext;
-import com.vf.uk.dal.common.urlparams.FilterCriteria;
-import com.vf.uk.dal.common.urlparams.FilterOperator;
 import com.vf.uk.dal.common.urlparams.PaginationCriteria;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
 import com.vf.uk.dal.device.beans.test.DeviceTestBeans;
@@ -156,15 +154,15 @@ public class DeviceTest {
 		given(restTemplate.getForObject(
 				"http://COMMON-V1/common/journey/" + "c1a42269-6562-4c96-b3be-1ca2a6681d57" + "/queries/currentJourney",
 				CurrentJourney.class)).willReturn(obj);
-		given(response.getMerchandisingPromotion(Matchers.anyObject())).willReturn(CommonMethods.getMemPro());
-		given(response.getCommercialProduct(Matchers.anyObject()))
+		given(response.getMerchandisingPromotion(ArgumentMatchers.any())).willReturn(CommonMethods.getMemPro());
+		given(response.getCommercialProduct(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getCommercialProductsListOfMakeAndModel().get(0));
-		given(response.getListOfGroupFromJson(Matchers.anyObject())).willReturn(CommonMethods.getGroup());
-		given(response.getCommercialProductFromJson(Matchers.anyObject()))
+		given(response.getListOfGroupFromJson(ArgumentMatchers.any())).willReturn(CommonMethods.getGroup());
+		given(response.getCommercialProductFromJson(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getCommercialProductsListOfAccessories());
-		given(response.getCommercialBundle(Matchers.anyObject()))
+		given(response.getCommercialBundle(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getCommercialBundleFromCommercialBundleRepository());
-		given(response.getListOfMerchandisingPromotionFromJson(Matchers.anyObject()))
+		given(response.getListOfMerchandisingPromotionFromJson(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getMerchandisingPromotion_One());
 		String jsonString1 = new String(CommonMethods.readFile("\\rest-mock\\CUSTOMER-V1.json"));
 		RecommendedProductListResponse obj1 = new ObjectMapper().readValue(jsonString1,
@@ -295,11 +293,11 @@ public class DeviceTest {
 			given(restTemplate.postForObject("http://PRICE-V1/price/product", deviceAndProductsList,
 					PriceForProduct.class)).willReturn(CommonMethods.getPriceForProduct_For_GetAccessories());
 
-			given(response.getListOfGroupFromJson(Matchers.anyObject()))
+			given(response.getListOfGroupFromJson(ArgumentMatchers.any()))
 					.willReturn(CommonMethods.getListOfProductGroupForAccessories());
-			given(response.getCommercialProductFromJson(Matchers.anyObject()))
+			given(response.getCommercialProductFromJson(ArgumentMatchers.any()))
 					.willReturn(CommonMethods.getListOfCommercialProductsForAccessory());
-			given(response.getCommercialProduct(Matchers.anyObject()))
+			given(response.getCommercialProduct(ArgumentMatchers.any()))
 					.willReturn(CommonMethods.getCommercialProductByDeviceIdForAccessory());
 			Assert.assertNotNull(accessoryInsuranceController.getAccessoriesOfDevice("093353", null, null));
 		} catch (Exception e) {
@@ -322,13 +320,13 @@ public class DeviceTest {
 	@Test
 	public void notNullTestForGetInsuranceByIdWithJourneyType() {
 		/*
-		 * given(deviceDAOMock.getCommercialProductByProductId(Matchers.
+		 * given(deviceDAOMock.getCommercialProductByProductId(ArgumentMatchers.
 		 * anyString()))
 		 * .willReturn(CommonMethods.getCommercialProductForInsurance());
-		 * given(deviceDAOMock.getGroupByProdGroupName(Matchers.anyString(),
-		 * Matchers.anyString()))
+		 * given(deviceDAOMock.getGroupByProdGroupName(ArgumentMatchers.anyString(),
+		 * ArgumentMatchers.anyString()))
 		 * .willReturn(CommonMethods.getGropuFromProductGroups());
-		 * given(deviceDAOMock.getCommercialProductsList(Matchers.anyList()))
+		 * given(deviceDAOMock.getCommercialProductsList(ArgumentMatchers.anyList()))
 		 * .willReturn(Arrays.asList(CommonMethods.
 		 * getCommercialProductForInsurance()));
 		 */
@@ -367,13 +365,13 @@ public class DeviceTest {
 			PaginationCriteria paginationCriteria = new PaginationCriteria(9, 0);
 
 			ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
-			given(response.getListOfProductGroupModel(Matchers.anyObject()))
+			given(response.getListOfProductGroupModel(ArgumentMatchers.any()))
 					.willReturn(CommonMethods.getListOfProductGroupMode());
-			given(response.getFacetField(Matchers.anyObject())).willReturn(CommonMethods.getListOfFacetField());
-			given(response.getListOfProductModel(Matchers.anyObject())).willReturn(CommonMethods.getProductModel());
-			given(this.response.getListOfMerchandisingPromotionModelFromJson(Matchers.anyObject()))
+			given(response.getFacetField(ArgumentMatchers.any())).willReturn(CommonMethods.getListOfFacetField());
+			given(response.getListOfProductModel(ArgumentMatchers.any())).willReturn(CommonMethods.getProductModel());
+			given(this.response.getListOfMerchandisingPromotionModelFromJson(ArgumentMatchers.any()))
 					.willReturn(CommonMethods.getModel());
-			given(response.getListOfOfferAppliedPriceModel(Matchers.anyObject()))
+			given(response.getListOfOfferAppliedPriceModel(ArgumentMatchers.any()))
 					.willReturn(CommonMethods.getOfferAppliedPriceModel());
 			List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
 			BundleAndHardwareTuple bundleAndHardwareTuple1 = new BundleAndHardwareTuple();
@@ -398,10 +396,10 @@ public class DeviceTest {
 					"iPhone-7", "White", "iOS 9", "32 GB", null, "Great Camera", null, null, null, null);
 			Assert.assertNotNull(deviceDetailsList);
 			/*
-			 * given(deviceDAOMock.getBundleDetails(Matchers.anyList()))
+			 * given(deviceDAOMock.getBundleDetails(ArgumentMatchers.anyList()))
 			 * .willReturn(CommonMethods.getBundleModelListForBundleList());
 			 */
-			given(response.getListOfBundleModel(Matchers.anyObject()))
+			given(response.getListOfBundleModel(ArgumentMatchers.any()))
 					.willReturn(CommonMethods.getBundleModelListForBundleList());
 
 			deviceDetailsList = deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple",
@@ -411,7 +409,7 @@ public class DeviceTest {
 			deviceDetailsList = deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple",
 					"iPhone-7", "White", "iOS 9", "32 GB", null, "Great Camera", "SecondLine", null, null, null);
 			Assert.assertNotNull(deviceDetailsList);
-			ServiceContext.urlParamContext.remove();
+			ServiceContext.URL_PARAM_CONTEXT.remove();
 			ServiceContext.setURLParamContext(new URLParamContext("-Priority", "", null, paginationCriteria));
 			deviceDetailsList = deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "-Priority", 1, 9, "Apple",
 					"iPhone-7", "White", "iOS 9", "32 GB", null, "Great Camera", "SecondLine", null, null, null);
@@ -448,7 +446,7 @@ public class DeviceTest {
 					"iPhone-7", "White", "iOS 9", "32 GB", null, "Great Camera", null, null, "W_HH_PAYM_01", null);
 		} catch (Exception e) {
 		}
-		ServiceContext.urlParamContext.remove();
+		ServiceContext.URL_PARAM_CONTEXT.remove();
 
 	}
 
@@ -470,7 +468,7 @@ public class DeviceTest {
 	public void nullTestForGetDeviceList_One() {
 		FacetedDevice deviceLists = null;
 		try {
-			Mockito.when(deviceRecomServiceMock.getRecommendedDeviceList("journeyId", "093353", Mockito.anyObject()))
+			Mockito.when(deviceRecomServiceMock.getRecommendedDeviceList("journeyId", "093353", Mockito.any()))
 					.thenReturn(deviceLists);
 
 			deviceLists = deviceService.getDeviceList("Handset1", "apple", "iPhone 7", "DEVICE_PAYM", "asc", 1, 2,
@@ -485,7 +483,7 @@ public class DeviceTest {
 	public void nullTestForGetDeviceList_Two() {
 		FacetedDevice deviceLists = null;
 		try {
-			Mockito.when(deviceRecomServiceMock.getRecommendedDeviceList("journeyId", "093353", Mockito.anyObject()))
+			Mockito.when(deviceRecomServiceMock.getRecommendedDeviceList("journeyId", "093353", Mockito.any()))
 					.thenReturn(deviceLists);
 
 			deviceLists = deviceService.getDeviceList("Handset", null, "iPhone 7", "DEVICE_PAYM", "Priority", 1, 2,
@@ -500,7 +498,7 @@ public class DeviceTest {
 	public void nullTestForGetDeviceList_Three() {
 		FacetedDevice deviceLists = null;
 		try {
-			Mockito.when(deviceRecomServiceMock.getRecommendedDeviceList("journeyId", "093353", Mockito.anyObject()))
+			Mockito.when(deviceRecomServiceMock.getRecommendedDeviceList("journeyId", "093353", Mockito.any()))
 					.thenReturn(deviceLists);
 
 			deviceLists = deviceService.getDeviceList(null, "apple", "iphone 7", "DEVICE_PAYM", "Priority", 1, 2,
@@ -515,7 +513,7 @@ public class DeviceTest {
 	public void nullTestForGetDeviceList_Four() {
 		FacetedDevice deviceLists = null;
 		try {
-			Mockito.when(deviceRecomServiceMock.getRecommendedDeviceList("journeyId", "093353", Mockito.anyObject()))
+			Mockito.when(deviceRecomServiceMock.getRecommendedDeviceList("journeyId", "093353", Mockito.any()))
 					.thenReturn(deviceLists);
 
 			deviceLists = deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE", "Priority", 1, 2,
@@ -642,10 +640,10 @@ public class DeviceTest {
 
 	@Test
 	public void nullTestForGetDeviceListForGroupTypeWithOutConditionalAcceptance() {
-		given(response.getListOfProductGroupModel(Matchers.anyObject()))
+		given(response.getListOfProductGroupModel(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getListOfProductGroupMode());
-		given(response.getFacetField(Matchers.anyObject())).willReturn(CommonMethods.getListOfFacetField());
-		given(response.getListOfProductModel(Matchers.anyObject())).willReturn(CommonMethods.getProductModel());
+		given(response.getFacetField(ArgumentMatchers.any())).willReturn(CommonMethods.getListOfFacetField());
+		given(response.getListOfProductModel(ArgumentMatchers.any())).willReturn(CommonMethods.getProductModel());
 
 		FacetedDevice deviceLists = null;
 		try {
@@ -660,19 +658,19 @@ public class DeviceTest {
 	@Test
 	public void nullTestForGetDeviceListForGroupTypeWithOutConditionalAcceptanceForexception() {
 		try {
-			given(response.getListOfProductGroupModel(Matchers.anyObject()))
+			given(response.getListOfProductGroupModel(ArgumentMatchers.any()))
 					.willReturn(CommonMethods.getListOfProductGroupModeForNullLeadPlan());
-			given(response.getFacetField(Matchers.anyObject())).willReturn(CommonMethods.getListOfFacetField());
-			given(response.getListOfProductModel(Matchers.anyObject())).willReturn(CommonMethods.getProductModel());
+			given(response.getFacetField(ArgumentMatchers.any())).willReturn(CommonMethods.getListOfFacetField());
+			given(response.getListOfProductModel(ArgumentMatchers.any())).willReturn(CommonMethods.getProductModel());
 			deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYM", "Priority", 0, 9, "32 GB",
 					"White", "iOS", "Great Camera", null, null, null, "447582367723", true);
 		} catch (Exception e) {
 		}
 		try {
-			given(response.getListOfProductGroupModel(Matchers.anyObject()))
+			given(response.getListOfProductGroupModel(ArgumentMatchers.any()))
 					.willReturn(CommonMethods.getListOfProductGroupMode());
-			given(response.getFacetField(Matchers.anyObject())).willReturn(CommonMethods.getListOfFacetField());
-			given(response.getListOfProductModel(Matchers.anyObject())).willReturn(Collections.emptyList());
+			given(response.getFacetField(ArgumentMatchers.any())).willReturn(CommonMethods.getListOfFacetField());
+			given(response.getListOfProductModel(ArgumentMatchers.any())).willReturn(Collections.emptyList());
 			deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYM", "Priority", 0, 9, "32 GB",
 					"White", "iOS", "Great Camera", null, null, null, "447582367723", true);
 		} catch (Exception e) {
@@ -681,13 +679,13 @@ public class DeviceTest {
 
 	@Test
 	public void nullTestForGetDeviceListForGroupTypeWithOutConditionalAcceptance_One() {
-		given(response.getListOfProductGroupModel(Matchers.anyObject()))
+		given(response.getListOfProductGroupModel(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getListOfProductGroupMode());
-		given(response.getFacetField(Matchers.anyObject())).willReturn(CommonMethods.getListOfFacetField());
-		given(response.getListOfProductModel(Matchers.anyObject())).willReturn(CommonMethods.getProductModel());
-		given(response.getListOfOfferAppliedPriceModel(Matchers.anyObject()))
+		given(response.getFacetField(ArgumentMatchers.any())).willReturn(CommonMethods.getListOfFacetField());
+		given(response.getListOfProductModel(ArgumentMatchers.any())).willReturn(CommonMethods.getProductModel());
+		given(response.getListOfOfferAppliedPriceModel(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getOfferAppliedPriceModel());
-		given(this.response.getListOfMerchandisingPromotionModelFromJson(Matchers.anyObject()))
+		given(this.response.getListOfMerchandisingPromotionModelFromJson(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getMerChandisingPromotion_One());
 
 		try {
@@ -701,7 +699,7 @@ public class DeviceTest {
 
 	@Test(expected = Exception.class)
 	public void nullTestForGetDeviceListForExcption() {
-		given(this.response.getListOfMerchandisingPromotionModelFromJson(Matchers.anyObject()))
+		given(this.response.getListOfMerchandisingPromotionModelFromJson(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getMerChandisingPromotion());
 		deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYM", "Priority", 0, 9, "32 GB", "White",
 				"iOS", "Great Camera", "JourneyType", null, null, "447582367723", true);
@@ -710,7 +708,7 @@ public class DeviceTest {
 
 	@Test(expected = Exception.class)
 	public void nullTestForGetDeviceListForExcption_One() {
-		given(this.response.getListOfMerchandisingPromotionModelFromJson(Matchers.anyObject()))
+		given(this.response.getListOfMerchandisingPromotionModelFromJson(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getMerChandisingPromotion());
 
 		deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYM", "Priority", 0, 9, "32 GB", "White",
@@ -720,7 +718,7 @@ public class DeviceTest {
 
 	@Test(expected = Exception.class)
 	public void nullTestForGetDeviceListForExcption_Three() {
-		given(this.response.getListOfMerchandisingPromotionModelFromJson(Matchers.anyObject()))
+		given(this.response.getListOfMerchandisingPromotionModelFromJson(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getMerChandisingPromotion());
 		deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYM", "Priority", 0, 9, "32 GB", "White",
 				"iOS", "Great Camera", "SecondLine", null, "offerCode", "447582367723", true);
@@ -729,7 +727,7 @@ public class DeviceTest {
 
 	@Test(expected = Exception.class)
 	public void nullTestForGetDeviceListForExcption_Four() {
-		given(this.response.getListOfMerchandisingPromotionModelFromJson(Matchers.anyObject()))
+		given(this.response.getListOfMerchandisingPromotionModelFromJson(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getMerChandisingPromotion());
 		deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYM", "Priority", 0, 9, "32 GB", "White",
 				"iOS", "Great Camera", "SecondLine", null, "W_HH_PAYM_02", null, true);
@@ -738,7 +736,7 @@ public class DeviceTest {
 
 	@Test
 	public void notNullTestForgetGroupNameWithListOfProduct() {
-		given(response.getListOfProductModel(Matchers.anyObject())).willReturn(CommonMethods.getProductModel());
+		given(response.getListOfProductModel(ArgumentMatchers.any())).willReturn(CommonMethods.getProductModel());
 		List<String> variantsList = new ArrayList<String>();
 		variantsList.add("093353|1");
 		variantsList.add("092660|5");
@@ -762,7 +760,7 @@ public class DeviceTest {
 				.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId="
 						+ "092572" + "&journeyType=" + "Upgrade", BundleDetailsForAppSrv.class))
 								.willReturn(CommonMethods.getCoupledBundleListForDevice());
-		given(response.getCommercialProduct(Matchers.anyObject()))
+		given(response.getCommercialProduct(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getCommercialProductsListOfVariant().get(0));
 		try {
 			deviceController.getDeviceTileById("093329", "Upgrade", "W_HH_SIMONLY");
@@ -783,26 +781,22 @@ public class DeviceTest {
 	@JsonIgnore
 	@Test
 	public void notNullTestForcacheDeviceTile() throws JsonParseException, JsonMappingException, IOException {
-		ServiceContext.urlParamContext.remove();
-		List<FilterCriteria> fcList = new ArrayList<FilterCriteria>();
-		fcList.add(new FilterCriteria("groupType", FilterOperator.EQUALTO, "DEVICE_PAYM"));
-		ServiceContext.setURLParamContext(new URLParamContext("", "", fcList, null));
 		given(deviceTileCache.insertCacheDeviceToDb()).willReturn(CommonMethods.getCacheDeviceTileResponse());
 		List<CommercialProduct> a = new ArrayList<>();
 		a.add(CommonMethods.getCommercialProduct_Five());
-		given(response.getCommercialProductFromJson(Matchers.anyObject())).willReturn(a);
+		given(response.getCommercialProductFromJson(ArgumentMatchers.any())).willReturn(a);
 		List<CommercialBundle> listOfCommerCualBundle = new ArrayList<>();
 		listOfCommerCualBundle.add(CommonMethods.getCommercialBundle());
-		given(response.getListOfCommercialBundleFromJson(Matchers.anyObject())).willReturn(listOfCommerCualBundle);
-		// given(deviceDAOMock.getStockAvailabilityByMemberId(Matchers.anyString())).willReturn(CommonMethods.getStockAvailability());
-		// given(deviceDAOMock.getStockAvailabilityByMemberId(Matchers.anyString())).willReturn(CommonMethods.getStockAvailability());
+		given(response.getListOfCommercialBundleFromJson(ArgumentMatchers.any())).willReturn(listOfCommerCualBundle);
+		// given(deviceDAOMock.getStockAvailabilityByMemberId(ArgumentMatchers.anyString())).willReturn(CommonMethods.getStockAvailability());
+		// given(deviceDAOMock.getStockAvailabilityByMemberId(ArgumentMatchers.anyString())).willReturn(CommonMethods.getStockAvailability());
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 		String jsonString = new String(CommonMethods.readFile("\\rest-mock\\PRICE-V1.json"));
 		PriceForBundleAndHardware[] obj = mapper.readValue(jsonString, PriceForBundleAndHardware[].class);
 		try {
-			given(deviceDAOMock.getBazaarVoice(Matchers.anyString()))
+			given(deviceDAOMock.getBazaarVoice(ArgumentMatchers.anyString()))
 					.willReturn(CommonMethods.getReviewsJsonObject().get(0));
 		} catch (Exception e) {
 		}
@@ -820,18 +814,14 @@ public class DeviceTest {
 		 * requestForBundleAndHardware, PriceForBundleAndHardware[].class))
 		 * .willReturn(obj);
 		 */
-		given(restTemplate.postForObject(Matchers.anyString(), Matchers.any(), Matchers.anyObject())).willReturn(obj);
+		given(restTemplate.postForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(), ArgumentMatchers.any())).willReturn(obj);
 
-		cacheDeviceAndReviewController.cacheDeviceTile();
+		cacheDeviceAndReviewController.cacheDeviceTile("DEVICE_PAYM");
 
 	}
 
 	@Test
 	public void notNullTestForcacheDeviceTileWithoutLeadMember() throws IOException {
-		List<FilterCriteria> fcList = new ArrayList<FilterCriteria>();
-		fcList.add(new FilterCriteria("groupType", FilterOperator.EQUALTO, "DEVICE_PAYM"));
-		ServiceContext.setURLParamContext(new URLParamContext("", "", fcList, null));
-
 		given(deviceTileCache.insertCacheDeviceToDb()).willReturn(CommonMethods.getCacheDeviceTileResponse());
 		CommercialProduct com = CommonMethods.getCommercialProductForCacheDeviceTile();
 		com.setLeadPlanId(null);
@@ -839,10 +829,10 @@ public class DeviceTest {
 		List<CommercialProduct> a = new ArrayList<>();
 		a.add(com);
 		a.add(com1);
-		given(response.getCommercialProductFromJson(Matchers.anyObject())).willReturn(a);
+		given(response.getCommercialProductFromJson(ArgumentMatchers.any())).willReturn(a);
 		List<CommercialBundle> listOfCommerCualBundle = new ArrayList<>();
 		listOfCommerCualBundle.add(CommonMethods.getCommercialBundle());
-		given(response.getListOfCommercialBundleFromJson(Matchers.anyObject())).willReturn(listOfCommerCualBundle);
+		given(response.getListOfCommercialBundleFromJson(ArgumentMatchers.any())).willReturn(listOfCommerCualBundle);
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
@@ -859,11 +849,11 @@ public class DeviceTest {
 		given(restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
 				requestForBundleAndHardware, PriceForBundleAndHardware[].class)).willReturn(obj1);
 		/*
-		 * given(restTemplate.postForObject(Matchers.anyString(),
-		 * Matchers.any(), Matchers.anyObject())) .willReturn(obj);
+		 * given(restTemplate.postForObject(ArgumentMatchers.anyString(),
+		 * ArgumentMatchers.any(), ArgumentMatchers.any())) .willReturn(obj);
 		 */
 
-		// given(deviceDAOMock.getStockAvailabilityByMemberId(Matchers.anyString())).willReturn(CommonMethods.getStockAvailability());
+		// given(deviceDAOMock.getStockAvailabilityByMemberId(ArgumentMatchers.anyString())).willReturn(CommonMethods.getStockAvailability());
 
 		String jsonString = new String(CommonMethods.readFile("\\rest-mock\\BUNDLES-V1.json"));
 		ObjectMapper mapper1 = new ObjectMapper();
@@ -874,7 +864,7 @@ public class DeviceTest {
 				"http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=123",
 				BundleDetailsForAppSrv.class)).willReturn(obj);
 		try {
-			cacheDeviceAndReviewController.cacheDeviceTile();
+			cacheDeviceAndReviewController.cacheDeviceTile("DEVICE_PAYM");
 		} catch (Exception e) {
 		}
 	}
@@ -884,20 +874,17 @@ public class DeviceTest {
 	@Test
 	public void notNullTestForcacheDeviceTileWithoutOfferCodeForPAYG()
 			throws JsonParseException, JsonMappingException, IOException {
-		List<FilterCriteria> fcList = new ArrayList<FilterCriteria>();
-		fcList.add(new FilterCriteria("groupType", FilterOperator.EQUALTO, "DEVICE_PAYG"));
-		ServiceContext.setURLParamContext(new URLParamContext("", "", fcList, null));
 		given(deviceTileCache.insertCacheDeviceToDb()).willReturn(CommonMethods.getCacheDeviceTileResponse());
 		Collection<CommercialProduct> a = new ArrayList<>();
 		a.add(CommonMethods.getCommercialProduct_Five());
-		given(this.response.getListOfMerchandisingPromotionModelFromJson(Matchers.anyObject()))
+		given(this.response.getListOfMerchandisingPromotionModelFromJson(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getModel());
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 		String jsonString = new String(CommonMethods.readFile("\\TEST-MOCK\\PRICE_FOR_PAYG.json"));
 		PriceForBundleAndHardware[] obj = mapper.readValue(jsonString, PriceForBundleAndHardware[].class);
-		given(deviceDAOMock.getBazaarVoice(Matchers.anyString()))
+		given(deviceDAOMock.getBazaarVoice(ArgumentMatchers.anyString()))
 				.willReturn(CommonMethods.getReviewsJsonObject().get(0));
 		List<BundleAndHardwareTuple> bundleList = new ArrayList<>();
 		RequestForBundleAndHardware requestForBundleAndHardware = new RequestForBundleAndHardware();
@@ -910,7 +897,7 @@ public class DeviceTest {
 		requestForBundleAndHardware.setPackageType(null);
 		given(restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
 				requestForBundleAndHardware, PriceForBundleAndHardware[].class)).willReturn(obj);
-		cacheDeviceAndReviewController.cacheDeviceTile();
+		cacheDeviceAndReviewController.cacheDeviceTile("DEVICE_PAYG");
 	}
 
 	@JsonIgnoreProperties(ignoreUnknown = true)
@@ -918,28 +905,24 @@ public class DeviceTest {
 	@Test
 	public void notNullTestForcacheDeviceTileWithoutOfferCode()
 			throws JsonParseException, JsonMappingException, IOException {
-		ServiceContext.urlParamContext.remove();
-		List<FilterCriteria> fcList = new ArrayList<FilterCriteria>();
-		fcList.add(new FilterCriteria("groupType", FilterOperator.EQUALTO, "DEVICE_PAYM"));
-		ServiceContext.setURLParamContext(new URLParamContext("", "", fcList, null));
 		given(deviceTileCache.insertCacheDeviceToDb()).willReturn(CommonMethods.getCacheDeviceTileResponse());
 		List<CommercialProduct> a = new ArrayList<>();
 		a.add(CommonMethods.getCommercialProduct_Five());
-		given(response.getCommercialProductFromJson(Matchers.anyObject())).willReturn(a);
+		given(response.getCommercialProductFromJson(ArgumentMatchers.any())).willReturn(a);
 		List<CommercialBundle> listOfCommerCualBundle = new ArrayList<>();
 		listOfCommerCualBundle.add(CommonMethods.getCommercialBundle());
-		given(response.getListOfCommercialBundleFromJson(Matchers.anyObject())).willReturn(listOfCommerCualBundle);
-		given(this.response.getListOfMerchandisingPromotionModelFromJson(Matchers.anyObject()))
+		given(response.getListOfCommercialBundleFromJson(ArgumentMatchers.any())).willReturn(listOfCommerCualBundle);
+		given(this.response.getListOfMerchandisingPromotionModelFromJson(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getModel());
-		// given(deviceDAOMock.getStockAvailabilityByMemberId(Matchers.anyString())).willReturn(CommonMethods.getStockAvailability());
-		// given(deviceDAOMock.getStockAvailabilityByMemberId(Matchers.anyString())).willReturn(CommonMethods.getStockAvailability());
+		// given(deviceDAOMock.getStockAvailabilityByMemberId(ArgumentMatchers.anyString())).willReturn(CommonMethods.getStockAvailability());
+		// given(deviceDAOMock.getStockAvailabilityByMemberId(ArgumentMatchers.anyString())).willReturn(CommonMethods.getStockAvailability());
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 		String jsonString = new String(CommonMethods.readFile("\\rest-mock\\PRICE-V1.json"));
 		PriceForBundleAndHardware[] obj = mapper.readValue(jsonString, PriceForBundleAndHardware[].class);
 		try {
-			given(deviceDAOMock.getBazaarVoice(Matchers.anyString()))
+			given(deviceDAOMock.getBazaarVoice(ArgumentMatchers.anyString()))
 					.willReturn(CommonMethods.getReviewsJsonObject().get(0));
 		} catch (Exception e) {
 		}
@@ -955,24 +938,16 @@ public class DeviceTest {
 		given(restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
 				requestForBundleAndHardware, PriceForBundleAndHardware[].class)).willReturn(obj);
 
-		cacheDeviceAndReviewController.cacheDeviceTile();
+		cacheDeviceAndReviewController.cacheDeviceTile("DEVICE_PAYM");
 	}
 
 	@Test
 	public void nullTestForCacheDeviceTile() {
-		ServiceContext.urlParamContext.remove();
-		List<FilterCriteria> fcList = new ArrayList<FilterCriteria>();
-		fcList.add(new FilterCriteria("groupType", FilterOperator.EQUALTO, ""));
-		ServiceContext.setURLParamContext(new URLParamContext("", "", fcList, null));
 		try {
-			cacheDeviceAndReviewController.cacheDeviceTile();
+			cacheDeviceAndReviewController.cacheDeviceTile("");
 		} catch (Exception e) {
 			try {
-				ServiceContext.urlParamContext.remove();
-				fcList = new ArrayList<FilterCriteria>();
-				fcList.add(new FilterCriteria("groupType", FilterOperator.EQUALTO, "INVALID_GT"));
-				ServiceContext.setURLParamContext(new URLParamContext("", "", fcList, null));
-				cacheDeviceAndReviewController.cacheDeviceTile();
+				cacheDeviceAndReviewController.cacheDeviceTile("INVALID_GT");
 			} catch (Exception ex) {
 			}
 		}
@@ -1009,7 +984,7 @@ public class DeviceTest {
 			mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			PriceForBundleAndHardware[] obj = mapper.readValue(jsonString, PriceForBundleAndHardware[].class);
-			given(restTemplate.postForObject(Matchers.anyString(), Matchers.anyObject(), Matchers.anyObject()))
+			given(restTemplate.postForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(), ArgumentMatchers.any()))
 					.willReturn(obj);
 			CacheDeviceService.getIlsPriceWithOfferCodeAndJourney(listOfOfferCodesForUpgrade, listOfSecondLineOfferCode,
 					bundleHardwareTroupleMap, new HashMap<>());
