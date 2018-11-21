@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.vf.uk.dal.common.context.ServiceContext;
 import com.vf.uk.dal.common.exception.ApplicationException;
-import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.common.urlparams.PaginationCriteria;
 import com.vf.uk.dal.device.entity.DeviceTile;
 import com.vf.uk.dal.device.entity.FacetedDevice;
@@ -32,6 +31,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 1.Controller should able handle all the request and response for the device
@@ -44,6 +44,7 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @RequestMapping(value = "")
 @EnableAspectJAutoProxy(proxyTargetClass = true)
+@Slf4j
 public class DeviceController {
 
 	public static final String numberExp = "[0-9]{6}";
@@ -90,7 +91,7 @@ public class DeviceController {
 			@ApiParam(value = "Promotional Offer Code that's applicable") @RequestParam(value = "offerCode", required = false) String offerCode) {
 		List<DeviceTile> listOfDeviceTile;
 		if (!deviceId.matches(numberExp)) {
-			LogHelper.error(this, ExceptionMessages.INVALID_DEVICE);
+			log.error( ExceptionMessages.INVALID_DEVICE);
 			throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 		}
 		listOfDeviceTile = deviceService.getDeviceTileById(deviceId, offerCode, journeyType);

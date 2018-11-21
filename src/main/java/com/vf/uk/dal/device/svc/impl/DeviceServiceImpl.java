@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
-import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.datamodel.bundle.BundleModel;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
@@ -50,6 +49,8 @@ import com.vf.uk.dal.device.validator.Validator;
 import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
 import com.vf.uk.dal.utility.entity.BundleModelAndPrice;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * This class should implement all the methods of DeviceService and should
  * contains the actual business logic and DTO methods.
@@ -57,6 +58,7 @@ import com.vf.uk.dal.utility.entity.BundleModelAndPrice;
  * @author
  */
 
+@Slf4j
 @Component("deviceService")
 public class DeviceServiceImpl implements DeviceService {
 	
@@ -123,16 +125,16 @@ public class DeviceServiceImpl implements DeviceService {
 	public List<DeviceTile> getDeviceTileByIdForVariant(String id, String offerCode, String journeyTypeInput) {
 		String journeyType;
 		journeyType = DeviceServiceImplUtility.getJourneyTypeForVariantAndList(journeyTypeInput);
-		LogHelper.info(this, "Start  -->  calling  CommercialProductRepository.get");
+		log.info( "Start  -->  calling  CommercialProductRepository.get");
 		CommercialProduct commercialProduct = deviceEs.getCommercialProduct(id);
-		LogHelper.info(this, "End  -->  After calling  CommercialProductRepository.get");
+		log.info( "End  -->  After calling  CommercialProductRepository.get");
 
 		List<DeviceTile> listOfDeviceTile;
 		if (commercialProduct != null && commercialProduct.getId() != null && commercialProduct.getIsDeviceProduct()
 				&& DeviceServiceImplUtility.getProductclassValidation(commercialProduct)) {
 			listOfDeviceTile = getDeviceTileListOfVariant(id, offerCode, journeyType, commercialProduct);
 		} else {
-			LogHelper.error(this, ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID + id);
+			log.error( ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID + id);
 			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID);
 		}
 
@@ -168,13 +170,13 @@ public class DeviceServiceImpl implements DeviceService {
 			Validator.validateForPAYG(journeytype, offerCode);
 			journeytype = JOURNEY_TYPE_ACQUISITION;
 		}
-		LogHelper.info(this, "Start -->  calling  getDeviceList in ServiceImpl");
+		log.info( "Start -->  calling  getDeviceList in ServiceImpl");
 		if (includeRecommendations && StringUtils.isBlank(msisdn)) {
-			LogHelper.error(this, "Invalid MSISDN provided. MSISDN is required for retrieving recommendations.");
+			log.error( "Invalid MSISDN provided. MSISDN is required for retrieving recommendations.");
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MSISDN);
 		} else {
 			if (creditLimit != null) {
-				LogHelper.info(this, "Getting devices for conditional Accept, with credit limit :" + creditLimit);
+				log.info( "Getting devices for conditional Accept, with credit limit :" + creditLimit);
 				facetedDevice = getDeviceListForConditionalAccept(productClass, make, model, groupType, sortCriteria,
 						pageNumber, pageSize, capacity, colour, operatingSystem, mustHaveFeatures, creditLimit,
 						journeytype);
@@ -191,7 +193,7 @@ public class DeviceServiceImpl implements DeviceService {
 
 			}
 		}
-		LogHelper.info(this, "End -->  calling  GetDeviceList in ServiceImpl");
+		log.info( "End -->  calling  GetDeviceList in ServiceImpl");
 		return facetedDevice;
 	}
 
@@ -206,10 +208,10 @@ public class DeviceServiceImpl implements DeviceService {
 		String message;
 		FacetedDevice facetedDeviceResult;
 		String deviceId = commonUtility.getSubscriptionBundleId(msisdn, SUBSCRIPTION_TYPE_MSISDN);
-		LogHelper.info(this, "Getting subscription asset for msisdn " + msisdn + "  deviceID " + deviceId);
+		log.info( "Getting subscription asset for msisdn " + msisdn + "  deviceID " + deviceId);
 
 		if (StringUtils.isNotBlank(deviceId)) {
-			LogHelper.info(this, "Getting recommendationed devices for msisdn " + msisdn + " deviceID " + deviceId);
+			log.info( "Getting recommendationed devices for msisdn " + msisdn + " deviceID " + deviceId);
 			FacetedDevice sortedFacetedDevice = deviceRecommendationService.getRecommendedDeviceList(msisdn, deviceId,
 					facetedDevice);
 			if (null != sortedFacetedDevice && null != Long.valueOf(sortedFacetedDevice.getNoOfRecordsFound())
@@ -219,13 +221,13 @@ public class DeviceServiceImpl implements DeviceService {
 			} else {
 				message = "RECOMMENDATIONS_NOT_AVAILABLE_GRPL_FAILURE";
 				facetedDevice.setMessage(message);
-				LogHelper.info(this, "Failed to sort based on recommendations. Returning original device list. msisdn "
+				log.info( "Failed to sort based on recommendations. Returning original device list. msisdn "
 						+ msisdn + " deviceID " + deviceId);
 				facetedDeviceResult = facetedDevice;
 				return facetedDeviceResult;
 			}
 		} else {
-			LogHelper.info(this, "Failed to get subscription asset for msisdn " + msisdn);
+			log.info( "Failed to get subscription asset for msisdn " + msisdn);
 			message = "RECOMMENDATIONS_NOT_AVAILABLE_SUBSCRIPTION_FAILURE";
 			facetedDevice.setMessage(message);
 			facetedDeviceResult = facetedDevice;
@@ -282,9 +284,9 @@ public class DeviceServiceImpl implements DeviceService {
 			strGroupType = STRING_DATADEVICE_PAYM;
 		}
 
-		LogHelper.info(this, "Start -->  calling  productGroupRepository.getProductGroupsByType");
+		log.info( "Start -->  calling  productGroupRepository.getProductGroupsByType");
 		List<Group> listOfProductGroup = deviceEs.getProductGroupByType(strGroupType);
-		LogHelper.info(this, "End -->  After calling  productGroupRepository.getProductGroupsByType");
+		log.info( "End -->  After calling  productGroupRepository.getProductGroupsByType");
 
 		if (listOfProductGroup != null && !listOfProductGroup.isEmpty()) {
 			memberPriority = DeviceServiceImplUtility.getDevicevariantMemberPriority(id, deviceTile,
@@ -304,16 +306,16 @@ public class DeviceServiceImpl implements DeviceService {
 		String leadPlanId = null;
 		if (commercialProduct.getLeadPlanId() != null) {
 			leadPlanId = commercialProduct.getLeadPlanId();
-			LogHelper.info(this, "::::: LeadPlanId " + leadPlanId + ":::::");
+			log.info( "::::: LeadPlanId " + leadPlanId + ":::::");
 		} else if (bundleAndHardwareTupleList != null && !bundleAndHardwareTupleList.isEmpty()) {
 			leadPlanId = bundleAndHardwareTupleList.get(0).getBundleId();
-			LogHelper.info(this, "::::: LeadPlanId " + leadPlanId + " ::::: ");
+			log.info( "::::: LeadPlanId " + leadPlanId + " ::::: ");
 		}
 
-		LogHelper.info(this, "Start -->  calling  bundleRepository.get");
+		log.info( "Start -->  calling  bundleRepository.get");
 		CommercialBundle comBundle = (leadPlanId == null || StringUtils.isEmpty(leadPlanId)) ? null
 				: deviceEs.getCommercialBundle(leadPlanId);
-		LogHelper.info(this, "End -->  After calling  bundleRepository.get");
+		log.info( "End -->  After calling  bundleRepository.get");
 
 		List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
 		deviceSummary = getFinalDeviceSummary(id, journeyType, commercialProduct, memberPriority,
@@ -366,7 +368,7 @@ public class DeviceServiceImpl implements DeviceService {
 			deviceSummary = DeviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceTile(memberPriority,
 					commercialProduct, comBundle, priceForBundleAndHardware, promotions, null, false, null,cdnDomain);
 		} else {
-			LogHelper.error(this, "No data found for given criteria :" + id);
+			log.error( "No data found for given criteria :" + id);
 			throw new ApplicationException(ExceptionMessages.NO_DATA_FOR_GIVEN_SEARCH_CRITERIA);
 		}
 		return deviceSummary;
@@ -401,7 +403,7 @@ public class DeviceServiceImpl implements DeviceService {
 				deviceServiceCommonUtility.getTupleList(commercialProduct, journeyType, bundleAndHardwareTupleList,
 						listOfBundleHeaderForDevice);
 			} catch (Exception e) {
-				LogHelper.error(this, "Exception occured when call happen to compatible bundles api: " + e);
+				log.error( "Exception occured when call happen to compatible bundles api: " + e);
 			}
 			listOfBundleHeaderForDevice.clear();
 		}
@@ -440,7 +442,7 @@ public class DeviceServiceImpl implements DeviceService {
 				.get("productGroupFacetModel");
 		ProductGroupFacetModel productGroupFacetModelForFacets = (ProductGroupFacetModel) productGroupFacetMap
 				.get("productGroupFacetModelForFacets");
-		LogHelper.info(this, "Facets :"
+		log.info( "Facets :"
 				+ (null != productGroupFacetModelForFacets ? productGroupFacetModelForFacets.getNumFound() : null));
 		List<String> listOfProducts = new ArrayList<>();
 		Map<String, String> groupNameWithProdId = new HashMap<>();
@@ -455,10 +457,10 @@ public class DeviceServiceImpl implements DeviceService {
 								listOfProducts, groupNameWithProdId, isLeadMemberFromSolr, productGroupModel));
 			}
 			if (listOfProducts.isEmpty()) {
-				LogHelper.error(this, "Empty Lead DeviceId List Coming From Solr :  " + listOfProducts);
+				log.error( "Empty Lead DeviceId List Coming From Solr :  " + listOfProducts);
 				throw new ApplicationException(ExceptionMessages.NO_LEAD_MEMBER_ID_COMING_FROM_SOLR);
 			}
-			LogHelper.error(this, "Lead DeviceId List Coming From Solr------------:  " + listOfProducts);
+			log.error( "Lead DeviceId List Coming From Solr------------:  " + listOfProducts);
 			List<ProductModel> listOfProductModel = deviceEs.getListOfProductModel(listOfProducts);
 			List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
 
@@ -471,7 +473,7 @@ public class DeviceServiceImpl implements DeviceService {
 						listOfProducts, listOfProductModel, bundleHardwareTupleList, offerPriceMap,
 						withoutOfferPriceMap, promotionmap);
 			} else {
-				LogHelper.error(this, "No Data Found for the given list of Products : " + listOfProductModel);
+				log.error( "No Data Found for the given list of Products : " + listOfProductModel);
 				throw new ApplicationException(ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_PRODUCT_LIST);
 			}
 
@@ -482,7 +484,7 @@ public class DeviceServiceImpl implements DeviceService {
 					promotionmap, isLeadMemberFromSolr, withoutOfferPriceMap, journeyType, productGroupdetailsMap,cdnDomain);
 
 		} else {
-			LogHelper.error(this, "No ProductGroups Found for the given search criteria: ");
+			log.error( "No ProductGroups Found for the given search criteria: ");
 			throw new ApplicationException(ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST);
 		}
 		return facetedDevice;
@@ -507,7 +509,7 @@ public class DeviceServiceImpl implements DeviceService {
 	public FacetedDevice getDeviceListForConditionalAccept(String productClass, String make, String model,
 			String groupType, String sortCriteria, int pageNumber, int pageSize, String capacity, String colour,
 			String operatingSystem, String mustHaveFeatures, Float creditLimit, String journeyType) {
-		LogHelper.info(DeviceTilesDaoUtils.class, "Entering getDeviceListForConditionalAccept ");
+		log.info( "Entering getDeviceListForConditionalAccept ");
 
 		FacetedDevice facetedDevice;
 		List<CommercialProduct> ls = null;
@@ -525,7 +527,7 @@ public class DeviceServiceImpl implements DeviceService {
 				.get("productGroupFacetModel");
 		ProductGroupFacetModel productGroupFacetModelForFacets = (ProductGroupFacetModel) productGroupFacetMap
 				.get("productGroupFacetModelForFacets");
-		LogHelper.info(this, "Facets :"
+		log.info( "Facets :"
 				+ (null != productGroupFacetModelForFacets ? productGroupFacetModelForFacets.getNumFound() : null));
 
 		List<String> listOfProductVariants;
@@ -570,21 +572,21 @@ public class DeviceServiceImpl implements DeviceService {
 
 			Map<String, Boolean> isLeadMemberFromSolr = new HashMap<>();
 			isLeadMemberFromSolr.put("leadMember", false);
-			LogHelper.info(DeviceTilesDaoUtils.class, "Entering convertProductModelListToDeviceList ");
+			log.info( "Entering convertProductModelListToDeviceList ");
 			List<FacetField> listOfFacetField = productGroupFacetModelForFacets.getListOfFacetsFields() == null
 					? Collections.emptyList() : productGroupFacetModelForFacets.getListOfFacetsFields();
 			facetedDevice = DeviceTilesDaoUtils.convertProductModelListToDeviceList(listOfProductModel, listOfProducts,
 					listOfFacetField, groupType, ls, bundleModelMap, null, null, groupNameWithProdId,
 					bundleModelAndPriceMap, null, isLeadMemberFromSolr, null, journeyType, Collections.emptyMap(),cdnDomain);
-			LogHelper.info(DeviceTilesDaoUtils.class, "exiting convertProductModelListToDeviceList ");
+			log.info( "exiting convertProductModelListToDeviceList ");
 			facetedDevice.setNoOfRecordsFound(productGroupFacetModel.getNumFound());
 
 		} else {
-			LogHelper.error(this, "No ProductGroups Found for the given search criteria: ");
+			log.error( "No ProductGroups Found for the given search criteria: ");
 			throw new ApplicationException(ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST);
 		}
 
-		LogHelper.info(DeviceTilesDaoUtils.class, "exiting getDeviceListForConditionalAccept ");
+		log.info( "exiting getDeviceListForConditionalAccept ");
 		return facetedDevice;
 	}
 
@@ -851,7 +853,7 @@ public class DeviceServiceImpl implements DeviceService {
 			int nextId = 2;
 			Map<String, String> deviceMap = deviceHelper.getLeadDeviceMap(listOfProductVariants);
 			for (String deviceId : listOfProductVariants) {
-				LogHelper.error(this, "Device Id :" + deviceId);
+				log.error( "Device Id :" + deviceId);
 				String nextdeviceId = deviceMap.get(nextId + "");
 
 				nextId++;

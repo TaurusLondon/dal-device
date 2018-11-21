@@ -9,7 +9,6 @@ import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
-import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.datamodel.bundle.BundleModel;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
 import com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceModel;
@@ -44,14 +43,17 @@ import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwar
 import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareSecureNet;
 import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForHardwareSash;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Mapping of coherence and solr entities to Device entities.
  * 
  * @author
  **/
 
+@Slf4j
 public class DeviceTilesDaoUtils {
-	
+
 	public static final String DATA_NOT_FOUND = "NA";
 	public static final String IS_PREORDERABLE_YES = "true";
 	private static String leadMember = "leadMember";
@@ -88,7 +90,7 @@ public class DeviceTilesDaoUtils {
 	public static final String STRING_FOR_IMAGE_THUMBS_FRONT = "imageURLs.thumbs.front";
 	public static final String STRING_FOR_IMAGE_THUMBS_LEFT = "imageURLs.thumbs.left";
 	public static final String STRING_FOR_IMAGE_THUMBS_RIGHT = "imageURLs.thumbs.right";
-	
+
 	public static final String STRING_FOR_IMAGE_FULL_FRONT = "imageURLs.full.front";
 	public static final String STRING_FOR_IMAGE_FULL_LEFT = "imageURLs.full.left";
 	public static final String STRING_FOR_IMAGE_FULL_RIGHT = "imageURLs.full.right";
@@ -101,7 +103,7 @@ public class DeviceTilesDaoUtils {
 	public static final String STRING_FOR_IMAGE_3DSPIN = "imageURLs.3dSpin";
 	public static final String STRING_FOR_IMAGE_SUPPORT = "imageURLs.support";
 	public static final String STRING_FOR_IMAGE_ICON = "imageURLs.icon";
-	
+
 	/**
 	 * @author manoj.bera
 	 * @param priceForBundleAndHardware
@@ -218,12 +220,12 @@ public class DeviceTilesDaoUtils {
 	 */
 	public List<com.vf.uk.dal.device.entity.Member> getAscendingOrderForMembers(
 			List<com.vf.uk.dal.device.entity.Member> listOfDeviceGroupMember) {
-		Collections.sort(listOfDeviceGroupMember,(com.vf.uk.dal.device.entity.Member member1,
-				com.vf.uk.dal.device.entity.Member member2)->{
+		Collections.sort(listOfDeviceGroupMember,
+				(com.vf.uk.dal.device.entity.Member member1, com.vf.uk.dal.device.entity.Member member2) -> {
 					if (member1.getPriority() != null && member2.getPriority() != null) {
 						if (Integer.valueOf(member1.getPriority()) < Integer.valueOf(member2.getPriority())) {
 							return -1;
-						} else{
+						} else {
 							return 1;
 						}
 
@@ -241,20 +243,19 @@ public class DeviceTilesDaoUtils {
 	 * @return List<PriceForBundleAndHardware>
 	 */
 	public static List<PriceForBundleAndHardware> sortPlansBasedOnMonthlyPrice(List<PriceForBundleAndHardware> plans) {
-		Collections.sort(plans,(PriceForBundleAndHardware plans1,
-				PriceForBundleAndHardware plans2)-> {
-					Double gross1 = null;
-					if (null != plans1.getBundlePrice()) {
-						String discountType = isPartialOrFullTenureDiscount(plans1.getBundlePrice());
-						gross1 = getBundlePriceBasedOnDiscountDuration(plans1.getBundlePrice(), discountType);
-					}
-					Double gross2 = null;
-					if (null != plans2.getBundlePrice()) {
-						String discountType = isPartialOrFullTenureDiscount(plans2.getBundlePrice());
-						gross2 = getBundlePriceBasedOnDiscountDuration(plans2.getBundlePrice(), discountType);
-					}
-					return Double.compare(gross1,gross2);
-				});
+		Collections.sort(plans, (PriceForBundleAndHardware plans1, PriceForBundleAndHardware plans2) -> {
+			Double gross1 = null;
+			if (null != plans1.getBundlePrice()) {
+				String discountType = isPartialOrFullTenureDiscount(plans1.getBundlePrice());
+				gross1 = getBundlePriceBasedOnDiscountDuration(plans1.getBundlePrice(), discountType);
+			}
+			Double gross2 = null;
+			if (null != plans2.getBundlePrice()) {
+				String discountType = isPartialOrFullTenureDiscount(plans2.getBundlePrice());
+				gross2 = getBundlePriceBasedOnDiscountDuration(plans2.getBundlePrice(), discountType);
+			}
+			return Double.compare(gross1, gross2);
+		});
 
 		return plans;
 	}
@@ -295,8 +296,7 @@ public class DeviceTilesDaoUtils {
 					|| bundlePrice.getMerchandisingPromotions().getMpType()
 							.equalsIgnoreCase(CONDITIONAL_FULL_DISCOUNT)) {
 				return FULL_DURATION_DISCOUNT;
-			} else if (bundlePrice.getMerchandisingPromotions().getMpType()
-					.equalsIgnoreCase(LIMITED_TIME_DISCOUNT)
+			} else if (bundlePrice.getMerchandisingPromotions().getMpType().equalsIgnoreCase(LIMITED_TIME_DISCOUNT)
 					|| bundlePrice.getMerchandisingPromotions().getMpType()
 							.equalsIgnoreCase(CONDITIONAL_LIMITED_DISCOUNT)) {
 				return LIMITED_TIME_DISCOUNT;
@@ -367,8 +367,9 @@ public class DeviceTilesDaoUtils {
 					if (productModel.getProductClass().equalsIgnoreCase(STRING_PRODUCT_MODEL)) {
 						String leadPlanId = null;
 						deviceDetails = new Device();
-						ProductGroupDetailsForDeviceList groupdeatils = productGroupdetailsMap.containsKey(productModel.getProductId())
-								? productGroupdetailsMap.get(productModel.getProductId()) : null;
+						ProductGroupDetailsForDeviceList groupdeatils = productGroupdetailsMap
+								.containsKey(productModel.getProductId())
+										? productGroupdetailsMap.get(productModel.getProductId()) : null;
 						if (groupdeatils != null) {
 							deviceDetails.setColor(groupdeatils.getColor());
 							deviceDetails.setSize(groupdeatils.getSize());
@@ -419,8 +420,8 @@ public class DeviceTilesDaoUtils {
 							merchandisingControl.setOrder(productModel.getOrder());
 						}
 						if (getPreOrBackOderable(productModel.getPreOrderable())) {
-							if (productModel.getAvailableFrom() != null && CommonUtility.dateValidationForProduct(
-									productModel.getAvailableFrom(), DATE_FORMAT_SOLR)) {
+							if (productModel.getAvailableFrom() != null && CommonUtility
+									.dateValidationForProduct(productModel.getAvailableFrom(), DATE_FORMAT_SOLR)) {
 								merchandisingControl.setPreorderable(true);
 								merchandisingControl.setAvailableFrom(productModel.getAvailableFrom());
 							} else {
@@ -435,14 +436,14 @@ public class DeviceTilesDaoUtils {
 						boolean offerFlag = false;
 						BundleModel bundleModel = null;
 						BundlePrice bundlePrice = null;
-						LogHelper.info(DeviceTilesDaoUtils.class, "IN Facet " + leadPlanId);
-						LogHelper.info(DeviceTilesDaoUtils.class, "IN Facet for" + bundleModelMap);
+						log.info("IN Facet " + leadPlanId);
+						log.info("IN Facet for" + bundleModelMap);
 						if (leadPlanId != null && bundleModelMap != null) {
 							bundleModel = bundleModelMap.get(leadPlanId);
 							if (null != bundleModelAndPriceMap && !bundleModelAndPriceMap.isEmpty()) {
 								bundlePrice = bundleModelAndPriceMap.get(leadPlanId);
 							}
-							LogHelper.info(DeviceTilesDaoUtils.class, "IN Facet " + bundleModel);
+							log.info("IN Facet " + bundleModel);
 
 							if (bundleModel == null) {
 
@@ -461,10 +462,10 @@ public class DeviceTilesDaoUtils {
 						if (groupType.equalsIgnoreCase(STRING_DEVICE_PAYM)
 								|| groupType.equalsIgnoreCase(STRING_DEVICE_PAYG)) {
 
-							if (groupType.equalsIgnoreCase(STRING_DEVICE_PAYM) && ((StringUtils
-									.isNotBlank(offerCode) && StringUtils.isNotBlank(journeyType))
-									|| (StringUtils.isBlank(offerCode) && (StringUtils.isNotBlank(journeyType)
-											&& !StringUtils.equals(JOURNEY_TYPE_ACQUISITION, journeyType))))
+							if (groupType.equalsIgnoreCase(STRING_DEVICE_PAYM)
+									&& ((StringUtils.isNotBlank(offerCode) && StringUtils.isNotBlank(journeyType))
+											|| (StringUtils.isBlank(offerCode) && (StringUtils.isNotBlank(journeyType)
+													&& !StringUtils.equals(JOURNEY_TYPE_ACQUISITION, journeyType))))
 
 							) {
 
@@ -544,8 +545,7 @@ public class DeviceTilesDaoUtils {
 									String[] typeArray = mediaStrList[i + 2].split("&&");
 									if (StringUtils.isNotBlank(offerCode) && offerFlag
 											&& !DATA_NOT_FOUND.equalsIgnoreCase(mediaStrList[i + 4])
-											&& PROMO_CATEGORY_PRICING_DISCOUNT
-													.equalsIgnoreCase(mediaStrList[i + 3])
+											&& PROMO_CATEGORY_PRICING_DISCOUNT.equalsIgnoreCase(mediaStrList[i + 3])
 											&& offerCode.equalsIgnoreCase(mediaStrList[i + 4]) && leadPlanId != null
 											&& leadPlanId.equalsIgnoreCase(typeArray[1])) {
 										MediaLink mediaLink = new MediaLink();
@@ -582,8 +582,7 @@ public class DeviceTilesDaoUtils {
 											bundleMerchecdising.setLabel(bundleLabel);
 											bundleMerchecdising.setMpType(bundleMpType);
 											bundleMerchecdising.setPriceEstablishedLabel(bundlePriceEstablishedLabel);
-											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													STRING_MEDIA_PROMOTION)
+											if (StringUtils.containsIgnoreCase(mediaStrList[i], STRING_MEDIA_PROMOTION)
 													&& StringUtils.isNotBlank(mediaStrList[i + 1])
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												promotionMedia = mediaStrList[i + 1];
@@ -621,8 +620,7 @@ public class DeviceTilesDaoUtils {
 											hardwareMerchecdising.setMpType(hardwareMpType);
 											hardwareMerchecdising
 													.setPriceEstablishedLabel(hardwarePriceEstablishedLabel);
-											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													STRING_MEDIA_PROMOTION)
+											if (StringUtils.containsIgnoreCase(mediaStrList[i], STRING_MEDIA_PROMOTION)
 													&& StringUtils.isNotBlank(mediaStrList[i + 1])
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePromotionMedia = mediaStrList[i + 1];
@@ -638,15 +636,13 @@ public class DeviceTilesDaoUtils {
 											&& leadPlanId != null && leadPlanId.equalsIgnoreCase(typeArray[1])) {
 										boolean nonOfferAppliedPriceFlag = false;
 										if (StringUtils.isNotBlank(journeyType)
-												&& StringUtils.equalsIgnoreCase(journeyType,
-														JOURNEY_TYPE_UPGRADE)
+												&& StringUtils.equalsIgnoreCase(journeyType, JOURNEY_TYPE_UPGRADE)
 												&& PROMO_CATEGORY_PRICING_UPGRADE_DISCOUNT
 														.equalsIgnoreCase(mediaStrList[i + 3])) {
 											nonOfferAppliedPriceFlag = true;
 										}
 										if (StringUtils.isNotBlank(journeyType)
-												&& StringUtils.equalsIgnoreCase(journeyType,
-														JOURNEY_TYPE_SECONDLINE)
+												&& StringUtils.equalsIgnoreCase(journeyType, JOURNEY_TYPE_SECONDLINE)
 												&& PROMO_CATEGORY_PRICING_SECONDLINE_DISCOUNT
 														.equalsIgnoreCase(mediaStrList[i + 3])) {
 											nonOfferAppliedPriceFlag = true;
@@ -658,8 +654,7 @@ public class DeviceTilesDaoUtils {
 											mediaLink.setType(typeArray[0]);
 											mediaList.add(mediaLink);
 
-											if (PROMO_TYPE_BUNDLEPROMOTION
-													.equalsIgnoreCase(typeArray[i + 2])) {
+											if (PROMO_TYPE_BUNDLEPROMOTION.equalsIgnoreCase(typeArray[i + 2])) {
 												bundleTag = typeArray[3];
 												if (StringUtils.contains(
 														mediaStrList[i].substring(mediaStrList[i].lastIndexOf('.') + 1,
@@ -698,8 +693,7 @@ public class DeviceTilesDaoUtils {
 													bundleMerchecdising.setPromotionMedia(promotionMedia);
 												bundleMerchandising = bundleMerchecdising;
 											}
-											if (PROMO_TYPE_HARDWAREPROMOTION
-													.equalsIgnoreCase(typeArray[i + 2])) {
+											if (PROMO_TYPE_HARDWAREPROMOTION.equalsIgnoreCase(typeArray[i + 2])) {
 												hardwareTag = typeArray[i + 3];
 												if (StringUtils.contains(
 														mediaStrList[i].substring(mediaStrList[i].lastIndexOf('.') + 1,
@@ -780,8 +774,7 @@ public class DeviceTilesDaoUtils {
 											bundleMerchecdising.setMpType(bundleMpType);
 											bundleMerchecdising.setPriceEstablishedLabel(bundlePriceEstablishedLabel);
 											bundleMerchecdising.setTag(bundleTag);
-											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													STRING_MEDIA_PROMOTION)
+											if (StringUtils.containsIgnoreCase(mediaStrList[i], STRING_MEDIA_PROMOTION)
 													&& StringUtils.isNotBlank(mediaStrList[i + 1])
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												promotionMedia = mediaStrList[i + 1];
@@ -819,8 +812,7 @@ public class DeviceTilesDaoUtils {
 											hardwareMerchecdising
 													.setPriceEstablishedLabel(hardwarePriceEstablishedLabel);
 											hardwareMerchecdising.setTag(hardwareTag);
-											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													STRING_MEDIA_PROMOTION)
+											if (StringUtils.containsIgnoreCase(mediaStrList[i], STRING_MEDIA_PROMOTION)
 													&& StringUtils.isNotBlank(mediaStrList[i + 1])
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePromotionMedia = mediaStrList[i + 1];
@@ -833,8 +825,7 @@ public class DeviceTilesDaoUtils {
 
 									if (StringUtils.equalsIgnoreCase(groupType, STRING_DEVICE_PAYG)
 											&& StringUtils.isBlank(offerCode) && StringUtils.isNotBlank(journeyType)
-											&& StringUtils.equalsIgnoreCase(journeyType,
-													JOURNEY_TYPE_ACQUISITION)
+											&& StringUtils.equalsIgnoreCase(journeyType, JOURNEY_TYPE_ACQUISITION)
 											&& DATA_NOT_FOUND.equalsIgnoreCase(mediaStrList[i + 4])
 											&& StringUtils.isNotBlank(mediaStrList[i + 3])) {
 										MediaLink mediaLink = new MediaLink();
@@ -871,8 +862,7 @@ public class DeviceTilesDaoUtils {
 											bundleMerchecdising.setMpType(bundleMpType);
 											bundleMerchecdising.setPriceEstablishedLabel(bundlePriceEstablishedLabel);
 											bundleMerchecdising.setTag(bundleTag);
-											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													STRING_MEDIA_PROMOTION)
+											if (StringUtils.containsIgnoreCase(mediaStrList[i], STRING_MEDIA_PROMOTION)
 													&& StringUtils.isNotBlank(mediaStrList[i + 1])
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												promotionMedia = mediaStrList[i + 1];
@@ -910,8 +900,7 @@ public class DeviceTilesDaoUtils {
 											hardwareMerchecdising
 													.setPriceEstablishedLabel(hardwarePriceEstablishedLabel);
 											hardwareMerchecdising.setTag(hardwareTag);
-											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													STRING_MEDIA_PROMOTION)
+											if (StringUtils.containsIgnoreCase(mediaStrList[i], STRING_MEDIA_PROMOTION)
 													&& StringUtils.isNotBlank(mediaStrList[i + 1])
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePromotionMedia = mediaStrList[i + 1];
@@ -962,8 +951,7 @@ public class DeviceTilesDaoUtils {
 											bundleMerchecdising.setMpType(bundleMpType);
 											bundleMerchecdising.setPriceEstablishedLabel(bundlePriceEstablishedLabel);
 											bundleMerchecdising.setTag(bundleTag);
-											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													STRING_MEDIA_PROMOTION)
+											if (StringUtils.containsIgnoreCase(mediaStrList[i], STRING_MEDIA_PROMOTION)
 													&& StringUtils.isNotBlank(mediaStrList[i + 1])
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												promotionMedia = mediaStrList[i + 1];
@@ -1001,8 +989,7 @@ public class DeviceTilesDaoUtils {
 											hardwareMerchecdising
 													.setPriceEstablishedLabel(hardwarePriceEstablishedLabel);
 											hardwareMerchecdising.setTag(hardwareTag);
-											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													STRING_MEDIA_PROMOTION)
+											if (StringUtils.containsIgnoreCase(mediaStrList[i], STRING_MEDIA_PROMOTION)
 													&& StringUtils.isNotBlank(mediaStrList[i + 1])
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePromotionMedia = mediaStrList[i + 1];
@@ -1014,8 +1001,7 @@ public class DeviceTilesDaoUtils {
 									}
 
 									if (StringUtils.isBlank(offerCode)
-											&& StringUtils.equalsIgnoreCase(JOURNEY_TYPE_ACQUISITION,
-													journeyType)
+											&& StringUtils.equalsIgnoreCase(JOURNEY_TYPE_ACQUISITION, journeyType)
 											&& DATA_NOT_FOUND.equalsIgnoreCase(mediaStrList[i + 4])
 											&& PROMO_CATEGORY_PRICING_AUTOMETIC_DISCOUNT
 													.equalsIgnoreCase(mediaStrList[i + 3])
@@ -1048,8 +1034,7 @@ public class DeviceTilesDaoUtils {
 												bundlePriceEstablishedLabel = mediaStrList[i + 1];
 											}
 
-											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													STRING_MEDIA_PROMOTION)
+											if (StringUtils.containsIgnoreCase(mediaStrList[i], STRING_MEDIA_PROMOTION)
 													&& StringUtils.isNotBlank(mediaStrList[i + 1])
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												promotionMedia = mediaStrList[i + 1];
@@ -1086,8 +1071,7 @@ public class DeviceTilesDaoUtils {
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePriceEstablishedLabel = mediaStrList[i + 1];
 											}
-											if (StringUtils.containsIgnoreCase(mediaStrList[i],
-													STRING_MEDIA_PROMOTION)
+											if (StringUtils.containsIgnoreCase(mediaStrList[i], STRING_MEDIA_PROMOTION)
 													&& StringUtils.isNotBlank(mediaStrList[i + 1])
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePromotionMedia = mediaStrList[i + 1];
@@ -1118,14 +1102,16 @@ public class DeviceTilesDaoUtils {
 								&& promotionmap.containsKey(productModel.getProductId())) {
 
 							BundleAndHardwarePromotions promotions = promotionmap.get(productModel.getProductId());
-							merchandisingPromotionsPackage = CommonUtility.getNonPricingPromotions(promotions, mediaList);
+							merchandisingPromotionsPackage = CommonUtility.getNonPricingPromotions(promotions,
+									mediaList);
 
 						}
 						if (StringUtils.isNotBlank(productModel.getImageURLsThumbsFront())) {
 							MediaLink mediaThumbsFrontLink = new MediaLink();
 							mediaThumbsFrontLink.setId(STRING_FOR_IMAGE_THUMBS_FRONT);
 							mediaThumbsFrontLink.setType(STRING_FOR_MEDIA_TYPE);
-							mediaThumbsFrontLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,productModel.getImageURLsThumbsFront()));
+							mediaThumbsFrontLink.setValue(
+									CommonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsThumbsFront()));
 							mediaList.add(mediaThumbsFrontLink);
 						}
 
@@ -1133,7 +1119,8 @@ public class DeviceTilesDaoUtils {
 							MediaLink mediaThumbsLeftLink = new MediaLink();
 							mediaThumbsLeftLink.setId(STRING_FOR_IMAGE_THUMBS_LEFT);
 							mediaThumbsLeftLink.setType(STRING_FOR_MEDIA_TYPE);
-							mediaThumbsLeftLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,productModel.getImageURLsThumbsLeft()));
+							mediaThumbsLeftLink.setValue(
+									CommonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsThumbsLeft()));
 							mediaList.add(mediaThumbsLeftLink);
 						}
 
@@ -1141,7 +1128,8 @@ public class DeviceTilesDaoUtils {
 							MediaLink mediaThumbsRightLink = new MediaLink();
 							mediaThumbsRightLink.setId(STRING_FOR_IMAGE_THUMBS_RIGHT);
 							mediaThumbsRightLink.setType(STRING_FOR_MEDIA_TYPE);
-							mediaThumbsRightLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,productModel.getImageURLsThumbsRight()));
+							mediaThumbsRightLink.setValue(
+									CommonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsThumbsRight()));
 							mediaList.add(mediaThumbsRightLink);
 						}
 
@@ -1149,7 +1137,8 @@ public class DeviceTilesDaoUtils {
 							MediaLink mediaThumbsSideLink = new MediaLink();
 							mediaThumbsSideLink.setId(STRING_FOR_IMAGE_THUMBS_SIDE);
 							mediaThumbsSideLink.setType(STRING_FOR_MEDIA_TYPE);
-							mediaThumbsSideLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,productModel.getImageURLsThumbsSide()));
+							mediaThumbsSideLink.setValue(
+									CommonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsThumbsSide()));
 							mediaList.add(mediaThumbsSideLink);
 						}
 
@@ -1157,7 +1146,8 @@ public class DeviceTilesDaoUtils {
 							MediaLink mediaFullLeftLink = new MediaLink();
 							mediaFullLeftLink.setId(STRING_FOR_IMAGE_FULL_LEFT);
 							mediaFullLeftLink.setType(STRING_FOR_MEDIA_TYPE);
-							mediaFullLeftLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,productModel.getImageURLsFullLeft()));
+							mediaFullLeftLink.setValue(
+									CommonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsFullLeft()));
 							mediaList.add(mediaFullLeftLink);
 						}
 
@@ -1165,7 +1155,8 @@ public class DeviceTilesDaoUtils {
 							MediaLink mediaFullRightLink = new MediaLink();
 							mediaFullRightLink.setId(STRING_FOR_IMAGE_FULL_RIGHT);
 							mediaFullRightLink.setType(STRING_FOR_MEDIA_TYPE);
-							mediaFullRightLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,productModel.getImageURLsFullRight()));
+							mediaFullRightLink.setValue(
+									CommonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsFullRight()));
 							mediaList.add(mediaFullRightLink);
 						}
 
@@ -1173,7 +1164,8 @@ public class DeviceTilesDaoUtils {
 							MediaLink mediaFullSideLink = new MediaLink();
 							mediaFullSideLink.setId(STRING_FOR_IMAGE_FULL_SIDE);
 							mediaFullSideLink.setType(STRING_FOR_MEDIA_TYPE);
-							mediaFullSideLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,productModel.getImageURLsFullSide()));
+							mediaFullSideLink.setValue(
+									CommonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsFullSide()));
 							mediaList.add(mediaFullSideLink);
 						}
 
@@ -1181,7 +1173,8 @@ public class DeviceTilesDaoUtils {
 							MediaLink mediaFullBackLink = new MediaLink();
 							mediaFullBackLink.setId(STRING_FOR_IMAGE_FULL_BACK);
 							mediaFullBackLink.setType(STRING_FOR_MEDIA_TYPE);
-							mediaFullBackLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,productModel.getImageURLsFullBack()));
+							mediaFullBackLink.setValue(
+									CommonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsFullBack()));
 							mediaList.add(mediaFullBackLink);
 						}
 
@@ -1189,7 +1182,8 @@ public class DeviceTilesDaoUtils {
 							MediaLink mediaGridLink = new MediaLink();
 							mediaGridLink.setId(STRING_FOR_IMAGE_GRID);
 							mediaGridLink.setType(STRING_FOR_MEDIA_TYPE);
-							mediaGridLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,productModel.getImageURLsGrid()));
+							mediaGridLink.setValue(
+									CommonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsGrid()));
 							mediaList.add(mediaGridLink);
 						}
 
@@ -1197,7 +1191,8 @@ public class DeviceTilesDaoUtils {
 							MediaLink mediaSmallLink = new MediaLink();
 							mediaSmallLink.setId(STRING_FOR_IMAGE_SMALL);
 							mediaSmallLink.setType(STRING_FOR_MEDIA_TYPE);
-							mediaSmallLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,productModel.getImageURLsSmall()));
+							mediaSmallLink.setValue(
+									CommonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsSmall()));
 							mediaList.add(mediaSmallLink);
 						}
 
@@ -1205,7 +1200,8 @@ public class DeviceTilesDaoUtils {
 							MediaLink mediaStickerLink = new MediaLink();
 							mediaStickerLink.setId(STRING_FOR_IMAGE_STICKER);
 							mediaStickerLink.setType(STRING_FOR_MEDIA_TYPE);
-							mediaStickerLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,productModel.getImageURLsSticker()));
+							mediaStickerLink.setValue(
+									CommonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsSticker()));
 							mediaList.add(mediaStickerLink);
 						}
 
@@ -1213,7 +1209,8 @@ public class DeviceTilesDaoUtils {
 							MediaLink mediaIconLink = new MediaLink();
 							mediaIconLink.setId(STRING_FOR_IMAGE_ICON);
 							mediaIconLink.setType(STRING_FOR_MEDIA_TYPE);
-							mediaIconLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,productModel.getImageURLsIcon()));
+							mediaIconLink.setValue(
+									CommonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsIcon()));
 							mediaList.add(mediaIconLink);
 						}
 
@@ -1221,7 +1218,8 @@ public class DeviceTilesDaoUtils {
 							MediaLink media3DSpinLink = new MediaLink();
 							media3DSpinLink.setId(STRING_FOR_IMAGE_3DSPIN);
 							media3DSpinLink.setType(STRING_FOR_MEDIA_TYPE);
-							media3DSpinLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,productModel.getThreeDSpin()));
+							media3DSpinLink
+									.setValue(CommonUtility.getImageMediaUrl(cdnDomain, productModel.getThreeDSpin()));
 							mediaList.add(media3DSpinLink);
 						}
 
@@ -1229,7 +1227,8 @@ public class DeviceTilesDaoUtils {
 							MediaLink mediaSupportLink = new MediaLink();
 							mediaSupportLink.setId(STRING_FOR_IMAGE_SUPPORT);
 							mediaSupportLink.setType(STRING_FOR_MEDIA_TYPE);
-							mediaSupportLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain,productModel.getSupport()));
+							mediaSupportLink
+									.setValue(CommonUtility.getImageMediaUrl(cdnDomain, productModel.getSupport()));
 							mediaList.add(mediaSupportLink);
 						}
 
@@ -1273,8 +1272,7 @@ public class DeviceTilesDaoUtils {
 				}
 			}
 		} else {
-			LogHelper.info(DeviceTilesDaoUtils.class,
-					"Products not provided while converting ProductModelListToDeviceList.");
+			log.info("Products not provided while converting ProductModelListToDeviceList.");
 		}
 		facetedDevice.setDevice(deviceList);
 		facetedDevice.setNoOfRecordsFound(count);
@@ -1846,5 +1844,5 @@ public class DeviceTilesDaoUtils {
 		return promotionsPackage;
 
 	}
-	
+
 }

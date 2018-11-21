@@ -14,6 +14,19 @@
 	<build>  
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
@@ -32,12 +45,20 @@
 					<groupId>org.slf4j</groupId>
 					<artifactId>log4j-over-slf4j</artifactId>
 				</exclusion>
+				<exclusion>
+					<artifactId>log4j-to-slf4j</artifactId>
+					<groupId>org.apache.logging.log4j</groupId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
-		   <groupId>org.springframework.cloud</groupId>
-		   <artifactId>spring-cloud-starter-netflix-archaius</artifactId>
-		   <version>2.0.2.RELEASE</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1</version>
 		</dependency>
 		<!-- <dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-starter-eureka</artifactId> 
 			<version>1.2.0.RELEASE</version> <exclusions> <exclusion> <artifactId>log4j-over-slf4j</artifactId> 
@@ -46,15 +67,11 @@
 		<dependency>
 			<groupId>com.vf.uk.dal</groupId>
 			<artifactId>dal-core</artifactId>
-			<version>10.0.2</version>
-			<exclusions> 
+			<version>10.2.0</version>
+			<exclusions>
 				<exclusion>
 					<artifactId>slf4j-api</artifactId>
 					<groupId>org.slf4j</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>servlet-api</artifactId>
-					<groupId>javax.servlet</groupId>
 				</exclusion>
 				<exclusion>
 					<artifactId>log4j-over-slf4j</artifactId>
@@ -69,11 +86,6 @@
 		</dependency>
 		<!-- Coherence Jars -->
 		<!-- LoggingUtility uses slf4j-ext and json-simple jar -->
-		<dependency>
-			<groupId>com.googlecode.json-simple</groupId>
-			<artifactId>json-simple</artifactId>
-			<version>1.1</version>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -138,6 +150,17 @@
 			</exclusions>
 		</dependency>
 	</dependencies>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>Finchley.SR2</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<repositories>
 		<repository>
 			<id>maven2</id>

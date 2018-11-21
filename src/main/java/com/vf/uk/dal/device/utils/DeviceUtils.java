@@ -10,7 +10,6 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
 import com.vf.uk.dal.device.datamodel.product.ProductModel;
@@ -21,10 +20,13 @@ import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
 import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
 import com.vf.uk.dal.utility.solr.entity.OfferAppliedPriceDetails;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Contains utility methods for bundle svc
  *
  */
+@Slf4j
 public class DeviceUtils {
 	public static final String DEVICE_RATING_NA = "NA";
 	public static final String JOURNEY_TYPE_UPGRADE = "Upgrade";
@@ -287,8 +289,7 @@ public class DeviceUtils {
 		List<PriceForBundleAndHardware> listOfPriceForGroupName;
 		listOfPriceForBundleAndHardware.add(bundleHeaderForDevice);
 		nonUpgradeLeadPlanId = bundleHeaderForDevice.getBundlePrice().getBundleId();
-		LogHelper.info(DeviceUtils.class,
-				"Lead Plan Id Not Present " + bundleHeaderForDevice.getBundlePrice().getBundleId());
+		log.info("Lead Plan Id Not Present " + bundleHeaderForDevice.getBundlePrice().getBundleId());
 		if (groupNamePriceMap.containsKey(groupname)) {
 			listOfPriceForGroupName = groupNamePriceMap.get(groupname);
 			listOfPriceForGroupName.add(bundleHeaderForDevice);

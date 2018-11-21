@@ -9,7 +9,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -98,20 +98,20 @@ public class DeviceControllerTest {
 	@Before
 	public void setupMockBehaviour() throws Exception {
 		aspect.beforeAdvice(null);
-		given(deviceServiceMakeAndModelMock.getListOfDeviceTile(Matchers.anyString(), Matchers.anyString(),
-				Matchers.anyString(), Matchers.anyString(), Matchers.anyDouble(), Matchers.anyString(),
-				Matchers.anyString(), Matchers.anyString()))
+		given(deviceServiceMakeAndModelMock.getListOfDeviceTile(ArgumentMatchers.anyString(), ArgumentMatchers.anyString(),
+				ArgumentMatchers.anyString(), ArgumentMatchers.anyString(), ArgumentMatchers.anyDouble(), ArgumentMatchers.anyString(),
+				ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
 						.willReturn(CommonMethods.getDeviceTile("apple", "iPhone-7", "DIVICE_PAYM"));
-		given(deviceServiceMock.getDeviceTileById(Matchers.anyString(), Matchers.anyString(), Matchers.anyString()))
+		given(deviceServiceMock.getDeviceTileById(ArgumentMatchers.anyString(), ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
 				.willReturn(CommonMethods.getDeviceTile("apple", "iPhone-7", "DEVICE_PAYM"));
 		given(deviceServiceCacheMock.insertCacheDeviceToDb()).willReturn(CommonMethods.getCacheDeviceTileResponse());
-		given(response.getListOfGroupFromJson(Matchers.anyObject())).willReturn(CommonMethods.getGroup());
-		given(response.getCommercialProductFromJson(Matchers.anyObject()))
+		given(response.getListOfGroupFromJson(ArgumentMatchers.any())).willReturn(CommonMethods.getGroup());
+		given(response.getCommercialProductFromJson(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getCommercialProductsListOfAccessories());
-		given(response.getFacetField(Matchers.anyObject()))
+		given(response.getFacetField(ArgumentMatchers.any()))
 		.willReturn(CommonMethods.getListOfFacetField());
-		given(accessoryInsuranceService.getAccessoriesOfDevice(Matchers.anyString(), Matchers.anyString(),
-				Matchers.anyString())).willReturn(CommonMethods.getAccessoriesTileGroup("093353"));
+		given(accessoryInsuranceService.getAccessoriesOfDevice(ArgumentMatchers.anyString(), ArgumentMatchers.anyString(),
+				ArgumentMatchers.anyString())).willReturn(CommonMethods.getAccessoriesTileGroup("093353"));
 	}
 
 	@Test
@@ -265,10 +265,10 @@ public class DeviceControllerTest {
 			deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple", "iPhone-7", "White",
 					"iOS 9", "32 GB", null, "Great Camera", null, "true", null, "W_HH_OC_02");
 		} catch (Exception ex) {
-			Assert.assertEquals("Please enter valid credit limit.", ex.getMessage());
+			Assert.assertEquals("Page Size Value cannot be negative", ex.getMessage());
 		}
 		try {
-			ServiceContext.urlParamContext.remove();
+			ServiceContext.URL_PARAM_CONTEXT.remove();
 			paginationCriteria = new PaginationCriteria(9, -1);
 			ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
 			deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple", "iPhone-7", "White",
@@ -277,7 +277,7 @@ public class DeviceControllerTest {
 			Assert.assertEquals("Page Number Value cannot be negative", ex1.getMessage());
 		}
 		try {
-			ServiceContext.urlParamContext.remove();
+			ServiceContext.URL_PARAM_CONTEXT.remove();
 			paginationCriteria = new PaginationCriteria(9, 0);
 			ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
 			deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple", "iPhone-7", "White",
@@ -313,19 +313,11 @@ public class DeviceControllerTest {
 
 	@Test
 	public void nullTestForCacheDeviceTile() {
-		ServiceContext.urlParamContext.remove();
-		List<FilterCriteria> fcList = new ArrayList<FilterCriteria>();
-		fcList.add(new FilterCriteria("groupType", FilterOperator.EQUALTO, ""));
-		ServiceContext.setURLParamContext(new URLParamContext("", "", fcList, null));
 		try {
-			cacheDeviceAndReviewController.cacheDeviceTile();
+			cacheDeviceAndReviewController.cacheDeviceTile("");
 		} catch (Exception e) {
 			try {
-				ServiceContext.urlParamContext.remove();
-				fcList = new ArrayList<FilterCriteria>();
-				fcList.add(new FilterCriteria("groupType", FilterOperator.EQUALTO, "INVALID_GT"));
-				ServiceContext.setURLParamContext(new URLParamContext("", "", fcList, null));
-				cacheDeviceAndReviewController.cacheDeviceTile();
+				cacheDeviceAndReviewController.cacheDeviceTile("INVALID_GT");
 			} catch (Exception ex) {
 				Assert.assertEquals("Invalid Group Type sent in the request", ex.getMessage());
 			}
@@ -334,12 +326,8 @@ public class DeviceControllerTest {
 
 	@Test
 	public void NotnullTestForCacheDeviceTile() {
-		ServiceContext.urlParamContext.remove();
-		List<FilterCriteria> fcList = new ArrayList<FilterCriteria>();
-		fcList.add(new FilterCriteria("groupType", FilterOperator.EQUALTO, "DEVICE_PAYM"));
-		ServiceContext.setURLParamContext(new URLParamContext("", "", fcList, null));
 		try {
-			cacheDeviceAndReviewController.cacheDeviceTile();
+			cacheDeviceAndReviewController.cacheDeviceTile("DEVICE_PAYM");
 		} catch (Exception e) {
 			Assert.assertEquals("Invalid Group Type sent in the request", e.getMessage());
 		}

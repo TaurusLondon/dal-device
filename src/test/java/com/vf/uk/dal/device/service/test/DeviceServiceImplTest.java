@@ -17,7 +17,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -141,36 +141,35 @@ public class DeviceServiceImplTest {
 	@Value("${cdn.domain.host}")
 	private String cdnDomain;
 
-	@SuppressWarnings("unchecked")
 	@Before
 	public void setupMockBehaviour() throws Exception {
 		aspect.beforeAdvice(null);
-		given(response.getCommercialProduct(Matchers.anyObject()))
+		given(response.getCommercialProduct(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getCommercialProductByDeviceId_093353_PAYG());
-		given(response.getListOfGroupFromJson(Matchers.anyObject()))
+		given(response.getListOfGroupFromJson(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getListOfProductGroupFromProductGroupRepository());
-		given(response.getCommercialProductFromJson(Matchers.anyObject()))
+		given(response.getCommercialProductFromJson(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getCommercialProductsListOfMakeAndModel());
-		given(response.getCommercialBundle(Matchers.anyObject())).willReturn(CommonMethods.getCommercialBundle());
-		given(response.getListOfCommercialBundleFromJson(Matchers.anyObject()))
+		given(response.getCommercialBundle(ArgumentMatchers.any())).willReturn(CommonMethods.getCommercialBundle());
+		given(response.getListOfCommercialBundleFromJson(ArgumentMatchers.any()))
 				.willReturn(Arrays.asList(CommonMethods.getCommercialBundle()));
-		given(deviceDAOMock.getPriceForBundleAndHardwareListFromTupleListAsync(Matchers.anyList(), Matchers.anyString(),
-				Matchers.anyString(), Matchers.anyString()))
+		given(deviceDAOMock.getPriceForBundleAndHardwareListFromTupleListAsync(ArgumentMatchers.anyList(), ArgumentMatchers.anyString(),
+				ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
 						.willReturn(CommonMethods.getPriceForBundleAndHardwareListFromTupleListAsync());
-		given(deviceDAOMock.getBundleAndHardwarePromotionsListFromBundleListAsync(Matchers.anyList(),
-				Matchers.anyString(), Matchers.anyString()))
+		given(deviceDAOMock.getBundleAndHardwarePromotionsListFromBundleListAsync(ArgumentMatchers.anyList(),
+				ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
 						.willReturn(CommonMethods.getBundleAndHardwarePromotionsListFromBundleListAsync());
-		given(response.getCommercialProduct(Matchers.anyObject()))
+		given(response.getCommercialProduct(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getCommercialProductByDeviceId_093353_PAYG());
-		given(response.getListOfGroupFromJson(Matchers.anyObject())).willReturn(CommonMethods.getGroup());
-		given(response.getCommercialProductFromJson(Matchers.anyObject()))
+		given(response.getListOfGroupFromJson(ArgumentMatchers.any())).willReturn(CommonMethods.getGroup());
+		given(response.getCommercialProductFromJson(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getCommercialProductsListOfAccessories());
-		given(response.getCommercialBundle(Matchers.anyObject())).willReturn(CommonMethods.getCommercialBundle());
+		given(response.getCommercialBundle(ArgumentMatchers.any())).willReturn(CommonMethods.getCommercialBundle());
 		
 		given(restTemplate.postForObject("http://PRICE-V1/price/product",
 				CommonMethods.bundleDeviceAndProductsList_For_GetAccessoriesOfDevice(), PriceForProduct.class))
 						.willReturn(CommonMethods.getPriceForProduct_For_GetAccessoriesForDevice());
-		given(response.getMerchandisingPromotion(Matchers.anyObject())).willReturn(CommonMethods.getMemPro());
+		given(response.getMerchandisingPromotion(ArgumentMatchers.any())).willReturn(CommonMethods.getMemPro());
 	}
 
 	@Test
@@ -178,8 +177,8 @@ public class DeviceServiceImplTest {
 		String url = "http://CUSTOMER-V1/customer/subscription/msisdn:7741655542/sourcePackageSummary";
 		given(restTemplate.getForObject(url, SourcePackageSummary.class))
 				.willReturn(CommonMethods.getSourcePackageSummary());
-		given(deviceRecomServiceMock.getRecommendedDeviceList(Matchers.anyString(), Matchers.anyString(),
-				Matchers.anyObject()))
+		given(deviceRecomServiceMock.getRecommendedDeviceList(ArgumentMatchers.anyString(), ArgumentMatchers.anyString(),
+				ArgumentMatchers.any()))
 						.willReturn(CommonMethods.getFacetedDeviceList("HANDSET", "Apple", "iPhone-7", "DEVICE_PAYM",
 								"", 1, 9, "wrtety"));
 		Assert.assertNotNull(deviceService.getConditionalForDeviceList("7741655542",
@@ -207,7 +206,7 @@ public class DeviceServiceImplTest {
 	@Test
 	public void getAccessoriesOfDeviceCPNull() {
 		try {
-			given(response.getCommercialProduct(Matchers.anyObject())).willReturn(null);
+			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(null);
 			Assert.assertNull(accessoryInsuranceService.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
 		} catch (Exception e) {
 
@@ -219,7 +218,7 @@ public class DeviceServiceImplTest {
 		try {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			cp.setId(null);
-			given(response.getCommercialProduct(Matchers.anyObject())).willReturn(cp);
+			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNull(accessoryInsuranceService.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
 		} catch (Exception e) {
 
@@ -231,7 +230,7 @@ public class DeviceServiceImplTest {
 		try {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			cp.setProductClass("abc");
-			given(response.getCommercialProduct(Matchers.anyObject())).willReturn(cp);
+			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNull(accessoryInsuranceService.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
 		} catch (Exception e) {
 
@@ -243,7 +242,7 @@ public class DeviceServiceImplTest {
 		try {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			cp.setIsDeviceProduct(false);
-			given(response.getCommercialProduct(Matchers.anyObject())).willReturn(cp);
+			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNotNull(accessoryInsuranceService.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
 		} catch (Exception e) {
 
@@ -255,7 +254,7 @@ public class DeviceServiceImplTest {
 		try {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			cp.setProductGroups(null);
-			given(response.getCommercialProduct(Matchers.anyObject())).willReturn(cp);
+			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNull(accessoryInsuranceService.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
 		} catch (Exception e) {
 
@@ -269,7 +268,7 @@ public class DeviceServiceImplTest {
 			ProductGroups pg = cp.getProductGroups();
 			pg.setProductGroup(null);
 			cp.setProductGroups(pg);
-			given(response.getCommercialProduct(Matchers.anyObject())).willReturn(cp);
+			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNull(accessoryInsuranceService.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
 		} catch (Exception e) {
 
@@ -284,7 +283,7 @@ public class DeviceServiceImplTest {
 			List<ProductGroup> pgg = new ArrayList<>();
 			pg.setProductGroup(pgg);
 			cp.setProductGroups(pg);
-			given(response.getCommercialProduct(Matchers.anyObject())).willReturn(cp);
+			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNull(accessoryInsuranceService.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
 		} catch (Exception e) {
 
@@ -305,7 +304,7 @@ public class DeviceServiceImplTest {
 			pgg.addAll(pgc);
 			pg.setProductGroup(pgg);
 			cp.setProductGroups(pg);
-			given(response.getCommercialProduct(Matchers.anyObject())).willReturn(cp);
+			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNull(accessoryInsuranceService.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
 		} catch (Exception e) {
 
@@ -315,7 +314,7 @@ public class DeviceServiceImplTest {
 	@Test
 	public void getAccessoriesOfDeviceCPProductGroupInvalid() {
 		try {
-			given(response.getListOfGroupFromJson(Matchers.anyObject())).willReturn(CommonMethods.getGroup_Two());
+			given(response.getListOfGroupFromJson(ArgumentMatchers.any())).willReturn(CommonMethods.getGroup_Two());
 			Assert.assertNull(accessoryInsuranceService.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
 		} catch (Exception e) {
 
@@ -348,7 +347,7 @@ public class DeviceServiceImplTest {
 	@Test
 	public void getgetListOfFilteredAccessories1() {
 		try {
-			given(response.getCommercialProductFromJson(Matchers.anyObject()))
+			given(response.getCommercialProductFromJson(ArgumentMatchers.any()))
 					.willReturn(CommonMethods.getCommercialProductsListOfAccessoriesWithEndDate());
 			List<String> finalAccessoryList = new ArrayList<>();
 			Assert.assertNotNull(accessoryInsuranceService.getListOfFilteredAccessories("Acquisition", finalAccessoryList));
@@ -595,7 +594,7 @@ public class DeviceServiceImplTest {
 		try {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			cp.setIsDeviceProduct(false);
-			given(response.getCommercialProduct(Matchers.anyObject())).willReturn(cp);
+			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNotNull(accessoryInsuranceService.getInsuranceByDeviceId("098578asa", "Acquisition"));
 		} catch (Exception e) {
 		}
@@ -606,7 +605,7 @@ public class DeviceServiceImplTest {
 		try {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			cp.setProductClass("abc");
-			given(response.getCommercialProduct(Matchers.anyObject())).willReturn(cp);
+			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNotNull(accessoryInsuranceService.getInsuranceByDeviceId("098578asa", "Acquisition"));
 		} catch (Exception e) {
 		}
@@ -617,7 +616,7 @@ public class DeviceServiceImplTest {
 		try {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			cp.setProductGroups(null);
-			given(response.getCommercialProduct(Matchers.anyObject())).willReturn(cp);
+			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNotNull(accessoryInsuranceService.getInsuranceByDeviceId("098578asa", "Acquisition"));
 		} catch (Exception e) {
 
@@ -631,7 +630,7 @@ public class DeviceServiceImplTest {
 			ProductGroups pg = cp.getProductGroups();
 			pg.setProductGroup(null);
 			cp.setProductGroups(pg);
-			given(response.getCommercialProduct(Matchers.anyObject())).willReturn(cp);
+			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNull(accessoryInsuranceService.getInsuranceByDeviceId("098578asa", "Acquisition"));
 		} catch (Exception e) {
 
@@ -646,7 +645,7 @@ public class DeviceServiceImplTest {
 			List<ProductGroup> pgg = new ArrayList<>();
 			pg.setProductGroup(pgg);
 			cp.setProductGroups(pg);
-			given(response.getCommercialProduct(Matchers.anyObject())).willReturn(cp);
+			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNull(accessoryInsuranceService.getInsuranceByDeviceId("098578asa", "Acquisition"));
 		} catch (Exception e) {
 
@@ -656,7 +655,7 @@ public class DeviceServiceImplTest {
 	@Test
 	public void getInsuranceCPNull() {
 		try {
-			given(response.getCommercialProduct(Matchers.anyObject())).willReturn(null);
+			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(null);
 			Assert.assertNotNull(accessoryInsuranceService.getInsuranceByDeviceId("098578asa", "Acquisition"));
 		} catch (Exception e) {
 
@@ -677,32 +676,31 @@ public class DeviceServiceImplTest {
 			pgg.addAll(pgc);
 			pg.setProductGroup(pgg);
 			cp.setProductGroups(pg);
-			given(response.getCommercialProduct(Matchers.anyObject())).willReturn(cp);
+			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNotNull(accessoryInsuranceService.getInsuranceByDeviceId("098578asa", "Acquisition"));
 		} catch (Exception e) {
 
 		}
 
 	}
-
-	@SuppressWarnings("unchecked")
+	
 	@Test
 	public void getListOfDeviceTile() {
 
-		given(response.getCommercialProduct(Matchers.anyObject()))
+		given(response.getCommercialProduct(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getCommercialProductByDeviceId_093353_PAYG());
-		given(response.getListOfGroupFromJson(Matchers.anyObject()))
+		given(response.getListOfGroupFromJson(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getListOfProductGroupFromProductGroupRepository());
-		given(response.getCommercialProductFromJson(Matchers.anyObject()))
+		given(response.getCommercialProductFromJson(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getCommercialProductsListOfMakeAndModel());
-		given(response.getCommercialBundle(Matchers.anyObject())).willReturn(CommonMethods.getCommercialBundle());
-		given(response.getListOfCommercialBundleFromJson(Matchers.anyObject()))
+		given(response.getCommercialBundle(ArgumentMatchers.any())).willReturn(CommonMethods.getCommercialBundle());
+		given(response.getListOfCommercialBundleFromJson(ArgumentMatchers.any()))
 				.willReturn(Arrays.asList(CommonMethods.getCommercialBundle()));
-		given(deviceDAOMock.getPriceForBundleAndHardwareListFromTupleListAsync(Matchers.anyList(), Matchers.anyString(),
-				Matchers.anyString(), Matchers.anyString()))
+		given(deviceDAOMock.getPriceForBundleAndHardwareListFromTupleListAsync(ArgumentMatchers.anyList(), ArgumentMatchers.anyString(),
+				ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
 						.willReturn(CommonMethods.getPriceForBundleAndHardwareListFromTupleListAsync());
-		given(deviceDAOMock.getBundleAndHardwarePromotionsListFromBundleListAsync(Matchers.anyList(),
-				Matchers.anyString(), Matchers.anyString()))
+		given(deviceDAOMock.getBundleAndHardwarePromotionsListFromBundleListAsync(ArgumentMatchers.anyList(),
+				ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
 						.willReturn(CommonMethods.getBundleAndHardwarePromotionsListFromBundleListAsync());
 
 		PriceForBundleAndHardware[] obj = null;
@@ -836,7 +834,7 @@ public class DeviceServiceImplTest {
 			pgg.addAll(pgc);
 			pg.setProductGroup(pgg);
 			cp.setProductGroups(pg);
-			given(response.getCommercialProduct(Matchers.anyObject())).willReturn(null);
+			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(null);
 			Assert.assertNotNull(deviceDetailsService.getDeviceDetails_Implementation("093353", JOURNEY_TYPE_SECONDLINE, "abc"));
 		} catch (Exception e) {
 		}
@@ -847,7 +845,7 @@ public class DeviceServiceImplTest {
 		try {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			cp.setId(null);
-			given(response.getCommercialProduct(Matchers.anyObject())).willReturn(cp);
+			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNotNull(deviceDetailsService.getDeviceDetails_Implementation("093353", JOURNEY_TYPE_SECONDLINE, "abc"));
 		} catch (Exception e) {
 		}
@@ -858,7 +856,7 @@ public class DeviceServiceImplTest {
 		try {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			cp.setIsDeviceProduct(false);
-			given(response.getCommercialProduct(Matchers.anyObject())).willReturn(cp);
+			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNull(deviceDetailsService.getDeviceDetails_Implementation("093353", JOURNEY_TYPE_SECONDLINE, "abc"));
 		} catch (Exception e) {
 		}
@@ -869,7 +867,7 @@ public class DeviceServiceImplTest {
 		try {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			cp.setProductClass("accessories");
-			given(response.getCommercialProduct(Matchers.anyObject())).willReturn(cp);
+			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNull(deviceDetailsService.getDeviceDetails_Implementation("093353", JOURNEY_TYPE_SECONDLINE, "abc"));
 		} catch (Exception e) {
 		}
@@ -880,7 +878,7 @@ public class DeviceServiceImplTest {
 		try {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			cp.setProductClass(STRING_DATA_DEVICE);
-			given(response.getCommercialProduct(Matchers.anyObject())).willReturn(cp);
+			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNull(deviceDetailsService.getDeviceDetails_Implementation("093353", JOURNEY_TYPE_SECONDLINE, "abc"));
 		} catch (Exception e) {
 		}
@@ -1091,10 +1089,10 @@ public class DeviceServiceImplTest {
 				CommonMethods.getCompatibleBundleListJson(), modelPrice);
 		List<String> listOfProductsNew = new ArrayList<>();
 		listOfProductsNew.add("093353");
-		given(response.getListOfProductModel(Matchers.anyObject())).willReturn(CommonMethods.getProductModel());
-		given(response.getListOfBundleModel(Matchers.anyObject()))
+		given(response.getListOfProductModel(ArgumentMatchers.any())).willReturn(CommonMethods.getProductModel());
+		given(response.getListOfBundleModel(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getBundleModelListForBundleListForConditional());
-		given(deviceDAOMock.getBundleDetailsFromComplansListingAPI(Matchers.anyString(), Matchers.anyString()))
+		given(deviceDAOMock.getBundleDetailsFromComplansListingAPI(ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
 				.willReturn(CommonMethods.getCompatibleBundleListJson());
 		Assert.assertNotNull(conditionalHelper.calculatePlan((float) 10, listOfProductsNew, CommonMethods.getProductModel()));
 	}
@@ -1139,7 +1137,7 @@ public class DeviceServiceImplTest {
 	@Test
 	public void TestgetReviewRatingList_Implementation() {
 
-		given(deviceDAOMock.getBazaarVoice(Matchers.anyString())).willThrow(new ApplicationException(""));
+		given(deviceDAOMock.getBazaarVoice(ArgumentMatchers.anyString())).willThrow(new ApplicationException(""));
 		try {
 			utility.getReviewRatingList_Implementation(Arrays.asList("093353"));
 		} catch (Exception e) {
@@ -1339,7 +1337,7 @@ public class DeviceServiceImplTest {
 	@Test
 	public void TestgetMediaListForDeviceCPNull2() {
 		try {
-			given(response.getMerchandisingPromotion(Matchers.anyObject())).willReturn(null);
+			given(response.getMerchandisingPromotion(ArgumentMatchers.any())).willReturn(null);
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			PromoteAs pa = cp.getPromoteAs();
 			List<String> promotionName = new ArrayList<>();
@@ -1356,7 +1354,7 @@ public class DeviceServiceImplTest {
 		try {
 			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mp = CommonMethods.getMemPro();
 			mp.setType("conditional_full_discount");
-			given(response.getMerchandisingPromotion(Matchers.anyObject())).willReturn(mp);
+			given(response.getMerchandisingPromotion(ArgumentMatchers.any())).willReturn(mp);
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			PromoteAs pa = cp.getPromoteAs();
 			List<String> promotionName = new ArrayList<>();
@@ -1373,7 +1371,7 @@ public class DeviceServiceImplTest {
 		try {
 			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mp = CommonMethods.getMemPro();
 			mp.setType("conditional_full_discount");
-			given(response.getMerchandisingPromotion(Matchers.anyObject())).willReturn(mp);
+			given(response.getMerchandisingPromotion(ArgumentMatchers.any())).willReturn(mp);
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			PromoteAs pa = cp.getPromoteAs();
 			List<String> promotionName = new ArrayList<>();
@@ -1390,7 +1388,7 @@ public class DeviceServiceImplTest {
 		try {
 			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mp = CommonMethods.getMemPro();
 			mp.setType("conditional_full_discount");
-			given(response.getMerchandisingPromotion(Matchers.anyObject())).willReturn(mp);
+			given(response.getMerchandisingPromotion(ArgumentMatchers.any())).willReturn(mp);
 			CommercialProduct cp = CommonMethods.getCommercialProductsListOfAccessoriesWithEndDate_One();
 			PromoteAs pa = cp.getPromoteAs();
 			List<String> promotionName = new ArrayList<>();
@@ -1407,7 +1405,7 @@ public class DeviceServiceImplTest {
 		try {
 			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mp = CommonMethods.getMemPro();
 			mp.setType("conditional_limited_discount");
-			given(response.getMerchandisingPromotion(Matchers.anyObject())).willReturn(mp);
+			given(response.getMerchandisingPromotion(ArgumentMatchers.any())).willReturn(mp);
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			PromoteAs pa = cp.getPromoteAs();
 			List<String> promotionName = new ArrayList<>();
@@ -1424,7 +1422,7 @@ public class DeviceServiceImplTest {
 		try {
 			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mp = CommonMethods.getMemPro();
 			mp.setType("limited_time");
-			given(response.getMerchandisingPromotion(Matchers.anyObject())).willReturn(mp);
+			given(response.getMerchandisingPromotion(ArgumentMatchers.any())).willReturn(mp);
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			PromoteAs pa = cp.getPromoteAs();
 			List<String> promotionName = new ArrayList<>();
@@ -1529,7 +1527,7 @@ public class DeviceServiceImplTest {
 		try {
 			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mp = CommonMethods.getMemPro();
 			mp.setType("conditional_full_discount");
-			given(response.getMerchandisingPromotion(Matchers.anyObject())).willReturn(CommonMethods.getMemPro());
+			given(response.getMerchandisingPromotion(ArgumentMatchers.any())).willReturn(CommonMethods.getMemPro());
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			PromoteAs pa = cp.getPromoteAs();
 			List<String> promotioname = new ArrayList<>();

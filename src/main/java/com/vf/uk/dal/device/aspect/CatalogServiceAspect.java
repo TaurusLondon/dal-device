@@ -12,13 +12,15 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.vf.uk.dal.common.configuration.ConfigHelper;
-import com.vf.uk.dal.common.logger.LogHelper;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 
  * This Aspect class to handle catalog Version
  *
  */
+@Slf4j
 @Aspect
 @Component
 public class CatalogServiceAspect {
@@ -49,7 +51,7 @@ public class CatalogServiceAspect {
 			CATALOG_VERSION.set(
 					ConfigHelper.getString(ELASTIC_SEARCH_ALIAS, DEFAULT_ELASTIC_SEARCH_ALIAS));
 		}
-		LogHelper.info(this, CATALOG_VERSION.get());
+		log.info(CATALOG_VERSION.get());
 	}
 
 }

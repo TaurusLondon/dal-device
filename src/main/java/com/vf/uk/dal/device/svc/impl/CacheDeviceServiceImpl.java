@@ -19,7 +19,6 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vf.uk.dal.common.exception.ApplicationException;
-import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.dao.DeviceTileCacheDAO;
@@ -45,11 +44,14 @@ import com.vf.uk.dal.device.utils.DeviceUtils;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
 import com.vf.uk.dal.utility.solr.entity.OfferAppliedPriceDetails;
+
+import lombok.extern.slf4j.Slf4j;
 /**
  * 
  * @author sahil.monga
  *
  */
+@Slf4j
 @Component
 public class CacheDeviceServiceImpl implements CacheDeviceService {
 
@@ -188,7 +190,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 							ilsOfferPriceWithJourneyAware, mapOfIlsPriceWithoutOfferCode, ratingsReviewMap,
 							deviceDataRating));
 		} else {
-			LogHelper.error(this, "Receieved Null Values for the given product group type");
+			log.error( "Receieved Null Values for the given product group type");
 			throw new ApplicationException(ExceptionMessages.NULL_VALUE_GROUP_TYPE);
 		}
 		return listOfProductGroupRepository;
@@ -286,7 +288,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 							deviceId);
 
 				}
-				LogHelper.info(this, "Lead Plan Id Present " + nonUpgradeLeadPlanId);
+				log.info( "Lead Plan Id Present " + nonUpgradeLeadPlanId);
 				if (StringUtils.isNotBlank(nonUpgradeLeadPlanId) && !leadPlanIdPriceMap.isEmpty()
 						&& leadPlanIdPriceMap.containsKey(deviceId)) {
 					DeviceUtils.getLeadPlanGroupPriceMap(leadPlanIdPriceMap, groupNamePriceMap,
@@ -326,7 +328,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			}
 		} catch (Exception e) {
 			listOfPriceForBundleAndHardware.clear();
-			LogHelper.error(this, " Exception occured when call happen to compatible bundles api: " + e);
+			log.error( " Exception occured when call happen to compatible bundles api: " + e);
 		}finally{
 			listOfPriceForBundleAndHardware.clear();
 		}
@@ -553,7 +555,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 						listOfPriceForBundleAndHardware.clear();
 					} catch (Exception e) {
 						listOfPriceForBundleAndHardware.clear();
-						LogHelper.error(this, "Exception occured when call happen to compatible bundles api: " + e);
+						log.error( "Exception occured when call happen to compatible bundles api: " + e);
 					}
 				}
 				if (!groupNamePriceMap.isEmpty()) {
@@ -569,7 +571,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 				DeviceUtils.updateDeviceratingForCacheDevice(ratingsReviewMap, deviceDataRating);
 			});
 		} else {
-			LogHelper.error(this, "Receieved Null Values for the given product group type");
+			log.error( "Receieved Null Values for the given product group type");
 		}
 		return listOfProductGroupRepository;
 
@@ -849,7 +851,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			}
 
 		} catch (Exception e) {
-			LogHelper.error(this, "::::::Exception From es ::::::" + e);
+			log.error( "::::::Exception From es ::::::" + e);
 		}
 	}
 
@@ -891,7 +893,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 				}
 
 			} else {
-				LogHelper.error(this, jobId + "==>No Device Pre Calculated Data found To Store");
+				log.error( jobId + "==>No Device Pre Calculated Data found To Store");
 				exceptionFlag = true;
 				throw new ApplicationException(ExceptionMessages.NO_DEVICE_PRE_CALCULATED_DATA);
 			}
@@ -907,7 +909,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			indexPrecalData(deviceListObjectList);
 		} catch (Exception e) {
 			exceptionFlag = true;
-			LogHelper.error(this, jobId + "==>" + e);
+			log.error( jobId + "==>" + e);
 			deviceTileCacheDAO.rollBackTransaction();
 		} finally {
 			if (exceptionFlag) {
@@ -946,12 +948,12 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 	public JSONObject getDeviceReviewDetails(String deviceId) {
 		JSONObject jsonObject = null;
 		String deviceIdMdfd = CommonUtility.appendPrefixString(deviceId);
-		LogHelper.info(this, "::::: deviceIdMdfd :: " + deviceIdMdfd + ":::::");
+		log.info( "::::: deviceIdMdfd :: " + deviceIdMdfd + ":::::");
 		String response = deviceDao.getDeviceReviewDetails(deviceIdMdfd);
 		if (StringUtils.isNotBlank(response)) {
 			jsonObject = CommonUtility.getJSONFromString(response);
 		} else {
-			LogHelper.error(this, "No reviews found");
+			log.error( "No reviews found");
 			throw new ApplicationException(ExceptionMessages.NO_REVIEWS_FOUND);
 		}
 		return jsonObject;

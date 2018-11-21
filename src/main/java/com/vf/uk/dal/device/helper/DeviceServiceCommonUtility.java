@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
-import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
 import com.vf.uk.dal.device.datamodel.product.BazaarVoice;
@@ -31,11 +30,14 @@ import com.vf.uk.dal.device.utils.ExceptionMessages;
 import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
 import com.vf.uk.dal.utility.entity.CoupleRelation;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * DeviceServiceCommonUtility
  * @author manoj.bera
  *
  */
+@Slf4j
 @Component
 public class DeviceServiceCommonUtility {
 
@@ -63,7 +65,7 @@ public class DeviceServiceCommonUtility {
 		Map<String, String> rating = getDeviceReviewRating_Implementation(new ArrayList<>(Arrays.asList(leadMemberId)));
 		String avarageOverallRating = rating.containsKey(CommonUtility.appendPrefixString(leadMemberId))
 				? rating.get(CommonUtility.appendPrefixString(leadMemberId)) : "na";
-		LogHelper.info(this, "AvarageOverallRating for deviceId: " + leadMemberId + " Rating: " + avarageOverallRating);
+		log.info( "AvarageOverallRating for deviceId: " + leadMemberId + " Rating: " + avarageOverallRating);
 		return avarageOverallRating;
 	}
 
@@ -88,7 +90,7 @@ public class DeviceServiceCommonUtility {
 				}
 			}
 		} catch (Exception e) {
-			LogHelper.error(this, "Failed to get device review ratings, Exception: " + e);
+			log.error( "Failed to get device review ratings, Exception: " + e);
 			throw new ApplicationException(ExceptionMessages.BAZAARVOICE_RESPONSE_EXCEPTION);
 		}
 		return bvReviewAndRateMap;
@@ -131,15 +133,15 @@ public class DeviceServiceCommonUtility {
 	public List<BazaarVoice> getReviewRatingList_Implementation(List<String> listMemberIds) {
 
 		try {
-			LogHelper.info(this, "Start -->  calling  BazaarReviewRepository.get");
+			log.info( "Start -->  calling  BazaarReviewRepository.get");
 			List<BazaarVoice> response = new ArrayList<>();
 			for (String skuId : listMemberIds) {
 				response.add(deviceDao.getBazaarVoice(skuId));
 			}
-			LogHelper.info(this, "End --> After calling  BazaarReviewRepository.get");
+			log.info( "End --> After calling  BazaarReviewRepository.get");
 			return response;
 		} catch (Exception e) {
-			LogHelper.error(this, "Bazar Voice Exception: " + e);
+			log.error( "Bazar Voice Exception: " + e);
 			throw new ApplicationException(ExceptionMessages.BAZARVOICE_SERVICE_EXCEPTION);
 		}
 	}
@@ -176,9 +178,9 @@ public class DeviceServiceCommonUtility {
 	public Boolean validateMemeber_Implementation(String memberId, String journeyType) {
 		Boolean memberFlag = false;
 
-		LogHelper.info(this, " Start -->  calling  CommercialProductRepository.get");
+		log.info( " Start -->  calling  CommercialProductRepository.get");
 		CommercialProduct comProduct = deviceEs.getCommercialProduct(memberId);
-		LogHelper.info(this, " End -->  After calling  CommercialProductRepository.get");
+		log.info( " End -->  After calling  CommercialProductRepository.get");
 
 		Date startDateTime = comProduct.getProductAvailability().getStart();
 		Date endDateTime = comProduct.getProductAvailability().getEnd();
@@ -424,14 +426,14 @@ public class DeviceServiceCommonUtility {
 					bundleId = listOfBundelMonthlyPriceForBundleHeader.get(0).getSkuId();
 				}
 			}
-			LogHelper.info(this, "Compatible Id:" + bundleId);
+			log.info( "Compatible Id:" + bundleId);
 			if (bundleId != null && !bundleId.isEmpty()) {
 				bundleAndHardwareTuple = new BundleAndHardwareTuple();
 				bundleAndHardwareTuple.setBundleId(bundleId);
 				bundleAndHardwareTuple.setHardwareId(commercialProduct.getId());
 				bundleAndHardwareTupleList.add(bundleAndHardwareTuple);
 			}
-			LogHelper.info(this, "List Of Bundle and Hardware Tuple:Inside compatible " + bundleAndHardwareTupleList);
+			log.info( "List Of Bundle and Hardware Tuple:Inside compatible " + bundleAndHardwareTupleList);
 		}
 	}
 

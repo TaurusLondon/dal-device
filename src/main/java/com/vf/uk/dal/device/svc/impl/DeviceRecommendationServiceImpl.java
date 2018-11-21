@@ -9,7 +9,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.entity.Device;
 import com.vf.uk.dal.device.entity.FacetedDevice;
 import com.vf.uk.dal.device.svc.DeviceRecommendationService;
@@ -20,11 +19,14 @@ import com.vf.uk.dal.utility.entity.RecommendedProduct;
 import com.vf.uk.dal.utility.entity.RecommendedProductListRequest;
 import com.vf.uk.dal.utility.entity.RecommendedProductListResponse;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Provides recommended devices for a logged in user.
  * 
  * @author rajendra.swarna
  */
+@Slf4j
 @Component("deviceRecommendationService")
 public class DeviceRecommendationServiceImpl implements DeviceRecommendationService {
 
@@ -60,11 +62,11 @@ public class DeviceRecommendationServiceImpl implements DeviceRecommendationServ
 			if (recommendedProductListResponse != null) {
 				sortedFacetedDevice = sortList(facetedDevice, recommendedProductListResponse);
 			} else {
-				LogHelper.error(this, "Unable to retrieve recommended device list from chordiant.");
+				log.error( "Unable to retrieve recommended device list from chordiant.");
 			}
 
 		} catch (Exception e) {
-			LogHelper.error(this, "Failed to get recommended device list " + e);
+			log.error( "Failed to get recommended device list " + e);
 			sortedFacetedDevice.setMessage("RECOMMENDATIONS_NOT_AVAILABLE_GRPL_SERVICE_FAILURE");
 		}
 		return sortedFacetedDevice;
