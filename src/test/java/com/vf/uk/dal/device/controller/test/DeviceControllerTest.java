@@ -265,7 +265,7 @@ public class DeviceControllerTest {
 			deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple", "iPhone-7", "White",
 					"iOS 9", "32 GB", null, "Great Camera", null, "true", null, "W_HH_OC_02");
 		} catch (Exception ex) {
-			Assert.assertEquals("Please enter valid credit limit.", ex.getMessage());
+			Assert.assertEquals("Page Size Value cannot be negative", ex.getMessage());
 		}
 		try {
 			ServiceContext.URL_PARAM_CONTEXT.remove();
