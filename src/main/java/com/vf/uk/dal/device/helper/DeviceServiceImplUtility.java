@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
-import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
 import com.vf.uk.dal.device.datamodel.product.ProductModel;
@@ -40,11 +39,14 @@ import com.vf.uk.dal.device.utils.DeviceDetailsMakeAndModelVaiantDaoUtils;
 import com.vf.uk.dal.device.utils.DeviceTilesDaoUtils;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
+
+import lombok.extern.slf4j.Slf4j;
 /**
  * 
  * DeviceServiceImplUtility
  *
  */
+@Slf4j
 @Service
 public class DeviceServiceImplUtility {
 	
@@ -258,7 +260,7 @@ public class DeviceServiceImplUtility {
 			try {
 				startDateTime = new SimpleDateFormat(DATE_FORMAT).parse(productModel2.getProductStartDate());
 			} catch (ParseException e) {
-				LogHelper.error(DeviceServiceImplUtility.class, "Parse Exception: " + e);
+				log.error( "Parse Exception: " + e);
 			}
 		}
 		return startDateTime;
@@ -276,7 +278,7 @@ public class DeviceServiceImplUtility {
 			try {
 				endDateTime = new SimpleDateFormat(DATE_FORMAT).parse(productModel2.getProductEndDate());
 			} catch (ParseException ex) {
-				LogHelper.error(DeviceServiceImplUtility.class, "Parse Exception: " + ex);
+				log.error( "Parse Exception: " + ex);
 			}
 		}
 		return endDateTime;
@@ -880,7 +882,7 @@ public class DeviceServiceImplUtility {
 			currentDate = dateFormat.parse(currentDateStr);
 
 		} catch (ParseException | DateTimeParseException e) {
-			LogHelper.error(DeviceServiceImplUtility.class, " ParseException: " + e);
+			log.error( " ParseException: " + e);
 		}
 
 		Date startDate = null;
@@ -889,20 +891,20 @@ public class DeviceServiceImplUtility {
 		try {
 			if (startDateTime != null) {
 				startDate = dateFormat.parse(startDateTime);
-				LogHelper.info(DeviceServiceImplUtility.class, "::::: startDate " + startDate + " ::::::");
+				log.info( "::::: startDate " + startDate + " ::::::");
 			}
 
 		} catch (ParseException | DateTimeParseException e) {
-			LogHelper.error(DeviceServiceImplUtility.class, "ParseException: " + e);
+			log.error( "ParseException: " + e);
 		}
 
 		try {
 			if (endDateTime != null) {
 				endDate = dateFormat.parse(endDateTime);
-				LogHelper.info(DeviceServiceImplUtility.class, "::::: EndDate " + endDate + " :::::::");
+				log.info( "::::: EndDate " + endDate + " :::::::");
 			}
 		} catch (ParseException | DateTimeParseException e) {
-			LogHelper.error(DeviceServiceImplUtility.class, "ParseException: " + e);
+			log.error( "ParseException: " + e);
 		}
 
 		if (startDate != null && endDate != null && getDateForValidation(currentDate, startDate, endDate)) {
@@ -960,7 +962,7 @@ public class DeviceServiceImplUtility {
 		String leadPlanId = null;
 		if (bundleAndHardwareTupleList != null && !bundleAndHardwareTupleList.isEmpty()) {
 			leadPlanId = bundleAndHardwareTupleList.get(0).getBundleId();
-			LogHelper.info(DeviceServiceImplUtility.class, "::::: LeadPlanId " + leadPlanId + " :::::");
+			log.info( "::::: LeadPlanId " + leadPlanId + " :::::");
 		}
 		return leadPlanId;
 	}
@@ -1013,7 +1015,7 @@ public class DeviceServiceImplUtility {
 			deviceDetails = DeviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceDetails(
 					commercialProduct, listOfPriceForBundleAndHardware, promotions,cdnDomain);
 		} else {
-			LogHelper.error(DeviceServiceImplUtility.class, "No data found for given journeyType :" + deviceId);
+			log.error( "No data found for given journeyType :" + deviceId);
 			throw new ApplicationException(ExceptionMessages.NO_DATA_FOR_GIVEN_SEARCH_CRITERIA);
 		}
 		return deviceDetails;

@@ -9,7 +9,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.entity.BundlePrice;
 import com.vf.uk.dal.device.entity.DeviceFinancingOption;
 import com.vf.uk.dal.device.entity.HardwarePrice;
@@ -23,6 +22,9 @@ import com.vf.uk.dal.utility.solr.entity.OfferAppliedPriceDetails;
 import com.vf.uk.dal.utility.solr.entity.OneOffDiscountPrice;
 import com.vf.uk.dal.utility.solr.entity.OneOffPrice;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class CacheDeviceDaoUtils {
 
 	public static final String STRING_DEVICE_PAYM = "DEVICE_PAYM";
@@ -367,7 +369,7 @@ public class CacheDeviceDaoUtils {
 			onffPrice.setGross(oneoffPrice.getGross());
 			onffPrice.setNet(oneoffPrice.getNet());
 			onffPrice.setVat(oneoffPrice.getVat());
-			LogHelper.info(CacheDeviceDaoUtils.class, hardwareId+"One Off Price Gross"+onffPrice.getGross());
+			log.info( hardwareId+"One Off Price Gross"+onffPrice.getGross());
 		}
 		OneOffDiscountPrice onffDiscPrice = null;
 		if (oneOffDisPrice != null) {
@@ -375,7 +377,7 @@ public class CacheDeviceDaoUtils {
 			onffDiscPrice.setGross(oneOffDisPrice.getGross());
 			onffDiscPrice.setNet(oneOffDisPrice.getNet());
 			onffDiscPrice.setVat(oneOffDisPrice.getVat());
-			LogHelper.info(CacheDeviceDaoUtils.class, hardwareId+"One Off Disc Price Gross"+oneOffDisPrice.getGross());
+			log.info( hardwareId+"One Off Disc Price Gross"+oneOffDisPrice.getGross());
 		}
 		com.vf.uk.dal.utility.solr.entity.HardwarePrice hw = new com.vf.uk.dal.utility.solr.entity.HardwarePrice();
 		hw.setHardwareId(hardwareId);

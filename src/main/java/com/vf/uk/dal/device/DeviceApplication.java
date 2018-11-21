@@ -5,13 +5,13 @@ import java.util.concurrent.Executor;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.vf.uk.dal.common.annotation.Service;
 import com.vf.uk.dal.device.datasource.conf.ElasticsearchRestCient;
 
 /**
@@ -21,7 +21,7 @@ import com.vf.uk.dal.device.datasource.conf.ElasticsearchRestCient;
  * @author
  **/
 
-@Service
+@SpringBootApplication
 @EnableTransactionManagement
 @EnableAsync
 @EnableCaching

@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
-import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.dao.DeviceTileCacheDAO;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
@@ -38,11 +37,14 @@ import com.vf.uk.dal.device.utils.ResponseMappingHelper;
 import com.vf.uk.dal.utility.entity.BundleDeviceAndProductsList;
 import com.vf.uk.dal.utility.entity.PriceForAccessory;
 import com.vf.uk.dal.utility.entity.PriceForProduct;
+
+import lombok.extern.slf4j.Slf4j;
 /**
  * 
  * Accessory Insurance Service Impl
  *
  */
+@Slf4j
 @Component
 public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService {
 
@@ -98,16 +100,16 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 		List<AccessoryTileGroup> listOfAccessoryTile = new ArrayList<>();
 
 		CommercialProduct commercialProduct = deviceEs.getCommercialProduct(deviceId);
-		LogHelper.info(this, "End -->  After calling  CommercialProductRepository.get");
+		log.info( "End -->  After calling  CommercialProductRepository.get");
 
 		if (commercialProduct != null && commercialProduct.getId() != null) {
 
 			if (commercialProduct.getIsDeviceProduct()
 					&& commercialProduct.getProductClass().equalsIgnoreCase(STRING_HANDSET)) {
 
-				LogHelper.info(this, "Start -->  calling  CommercialProduct.getProductGroups");
+				log.info( "Start -->  calling  CommercialProduct.getProductGroups");
 				ProductGroups productGroups = commercialProduct.getProductGroups();
-				LogHelper.info(this, "End -->  After calling  CommercialProduct.getProductGroups");
+				log.info( "End -->  After calling  CommercialProduct.getProductGroups");
 
 				List<String> listOfDeviceGroupName = new ArrayList<>();
 				List<String> finalAccessoryList = new ArrayList<>();
@@ -117,20 +119,20 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 					getAccessoriesResponse(deviceId, journeyType, offerCode, listOfAccessoryTile, productGroups,
 							listOfDeviceGroupName, finalAccessoryList);
 				} else {
-					LogHelper.error(this, "No Compatible Accessories found for given device Id:" + deviceId);
+					log.error( "No Compatible Accessories found for given device Id:" + deviceId);
 					throw new ApplicationException(ExceptionMessages.NULL_COMPATIBLE_VALUE_FOR_DEVICE_ID);
 				}
 
 			} else {
-				LogHelper.error(this, "Given DeviceId is not ProductClass Handset  :" + deviceId);
+				log.error( "Given DeviceId is not ProductClass Handset  :" + deviceId);
 				throw new ApplicationException(ExceptionMessages.DEVICE_ID_NOT_HANDSET);
 			}
 		} else {
-			LogHelper.error(this, "No data found for given device Id:" + deviceId);
+			log.error( "No data found for given device Id:" + deviceId);
 			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID);
 		}
 		if (listOfAccessoryTile.isEmpty()) {
-			LogHelper.error(this, "No Compatible Accessories found for given device Id:" + deviceId);
+			log.error( "No Compatible Accessories found for given device Id:" + deviceId);
 			throw new ApplicationException(ExceptionMessages.NULL_COMPATIBLE_VALUE_FOR_DEVICE_ID);
 		}
 		return listOfAccessoryTile;
@@ -157,7 +159,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 		for (Group productGroup : listOfProductGroup) {
 			getFinalAccessoryList(finalAccessoryList, mapForGroupName, productGroup);
 		}
-		LogHelper.info(this, "Start -->   calling  CommercialProduct.getAll From ES");
+		log.info( "Start -->   calling  CommercialProduct.getAll From ES");
 		List<CommercialProduct> listOfFilteredAccessories = getListOfFilteredAccessories(journeyType,
 				finalAccessoryList);
 
@@ -205,7 +207,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 		if (cohProduct != null) {
 			insurance = getInsuranceResponse(deviceId, journeyType, cohProduct);
 		} else {
-			LogHelper.error(this, "No data found for given Device Id :" + deviceId);
+			log.error( "No data found for given Device Id :" + deviceId);
 			throw new ApplicationException(ExceptionMessages.NULL_COMPATIBLE_INSURANCES_FOR_DEVICE_ID);
 		}
 		validateInsuranceNullable(deviceId, insurance);
@@ -225,7 +227,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 				&& cohProduct.getProductClass().equalsIgnoreCase(STRING_HANDSET)) {
 			insurance = getInsurance(journeyType, cohProduct);
 		} else {
-			LogHelper.error(this, "Given DeviceId is not ProductClass Handset  :" + deviceId);
+			log.error( "Given DeviceId is not ProductClass Handset  :" + deviceId);
 			throw new ApplicationException(ExceptionMessages.DEVICE_ID_NOT_HANDSET);
 		}
 		return insurance;
@@ -252,7 +254,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 					insuranceGroupType = productGroup.getProductGroupRole();
 				}
 			}
-			LogHelper.info(this, "::::: Insurance GroupName " + insuranceGroupName + " ::::::");
+			log.info( "::::: Insurance GroupName " + insuranceGroupName + " ::::::");
 			if (StringUtils.isNotBlank(insuranceGroupName)) {
 
 				Group productGroup = deviceEs.getProductGroupByTypeAndGroupName(insuranceGroupName, insuranceGroupType);
@@ -408,7 +410,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 				accessoryTileGroup.setAccessories(listOfAccessory);
 				listOfAccessoryTile.add(accessoryTileGroup);
 			} else {
-				LogHelper.error(AccessoryInsuranceServiceImpl.class,
+				log.error(
 						"Accessories not found for the given :" + entry.getKey());
 			}
 		}
@@ -432,7 +434,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 					mapforPrice.put(hardwareId, priceForAccessory);
 			}
 		} else {
-			LogHelper.info(AccessoryInsuranceServiceImpl.class, "Null values received from Price API");
+			log.info("Null values received from Price API");
 			throw new ApplicationException(ExceptionMessages.NULL_VALUES_FROM_PRICING_API);
 		}
 
@@ -460,7 +462,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 		}
 
 		if (listOfDeviceGroupName.isEmpty()) {
-			LogHelper.error(AccessoryInsuranceServiceImpl.class,
+			log.error(
 					" No Compatible Accessories found for given device Id:" + deviceId);
 			throw new ApplicationException(ExceptionMessages.NULL_COMPATIBLE_VALUE_FOR_DEVICE_ID);
 		}
@@ -476,7 +478,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 			getFormattedPriceForGetCompatibleInsurances(insurance);
 			insurance.setMinCost(FormatPrice(insurance.getMinCost()));
 		} else {
-			LogHelper.error(AccessoryInsuranceServiceImpl.class,
+			log.error(
 					"No Compatible Insurances found for given device Id" + deviceId);
 			throw new ApplicationException(ExceptionMessages.NULL_COMPATIBLE_INSURANCES_FOR_DEVICE_ID);
 		}

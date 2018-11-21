@@ -10,7 +10,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.datamodel.bundle.BundleModel;
 import com.vf.uk.dal.device.datamodel.product.ProductModel;
@@ -18,11 +17,14 @@ import com.vf.uk.dal.device.entity.BundlePrice;
 import com.vf.uk.dal.utility.entity.BundleDetails;
 import com.vf.uk.dal.utility.entity.BundleModelAndPrice;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * DeviceConditionallHelper
  * @author manoj.bera
  *
  */
+@Slf4j
 @Component
 public class DeviceConditionallHelper {
 
@@ -49,30 +51,30 @@ public class DeviceConditionallHelper {
 		BundleModel bundleModel = null;
 		if (listOfProductModel != null && !listOfProductModel.isEmpty()) {
 
-			LogHelper.info(this, "inside CP for lead device " + listOfProductsNew);
+			log.info( "inside CP for lead device " + listOfProductsNew);
 			List<String> listOfLeadPlanIdNew = new ArrayList<>();
 			ProductModel prodModel = listOfProductModel.get(0);
-			LogHelper.info(this, "LEad Plan id  " + prodModel.getLeadPlanId());
+			log.info( "LEad Plan id  " + prodModel.getLeadPlanId());
 			listOfLeadPlanIdNew.add(prodModel.getLeadPlanId());
 
 			List<BundleModel> listOfBundleDetails = deviceEs.getListOfBundleModel(listOfLeadPlanIdNew);
-			LogHelper.info(this, "List of bundle details  " + listOfBundleDetails);
+			log.info( "List of bundle details  " + listOfBundleDetails);
 			if (listOfBundleDetails != null && !listOfBundleDetails.isEmpty()) {
 				bundleModel = listOfBundleDetails.get(0);
 
-				LogHelper.info(this, "LeadBundle detaisls gross " + bundleModel.getMonthlyGrossPrice());
+				log.info( "LeadBundle detaisls gross " + bundleModel.getMonthlyGrossPrice());
 				BundleDetails bundleDetails = deviceDao.getBundleDetailsFromComplansListingAPI(prodModel.getProductId(),
 						null);
 				BundlePrice bundlePrice = null;
 				bundlePrice = setBundlePriceAndBreak(bundleModel, bundleDetails);
 				if (null != bundlePrice) {
 					Float monthlyPrice = checkPromotionAndGetPrice(bundlePrice);
-					LogHelper.info(this, "Float Monthly price " + monthlyPrice);
+					log.info( "Float Monthly price " + monthlyPrice);
 					bundleModelAndPrice = setBundleModelAndPriceOnBAsisOfMonthlyPrice(creditLimit,bundleModel, prodModel, bundleDetails, bundlePrice, monthlyPrice);
 
 				} else {
-					LogHelper.info(this, "Bundle price was null  ");
-					LogHelper.info(this, "Bundle Mode was   " + bundleModel);
+					log.info( "Bundle price was null  ");
+					log.info( "Bundle Mode was   " + bundleModel);
 				}
 
 			}
@@ -119,7 +121,7 @@ public class DeviceConditionallHelper {
 		BundlePrice bundlePrice= null;
 		if (null != bundleDetails && CollectionUtils.isNotEmpty(bundleDetails.getPlanList())) {
 			for (com.vf.uk.dal.utility.entity.BundleHeader bundleHeader : bundleDetails.getPlanList()) {
-				LogHelper.info(this, "Leaddevice sku and bundle id  sku " + bundleHeader.getSkuId() + " id   "
+				log.info( "Leaddevice sku and bundle id  sku " + bundleHeader.getSkuId() + " id   "
 						+ bundleModel.getMonthlyNetPrice());
 				if (bundleHeader.getSkuId().equals(bundleModel.getBundleId())&& null != bundleHeader.getPriceInfo()
 							&& null != bundleHeader.getPriceInfo().getBundlePrice()) {

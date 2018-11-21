@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -110,15 +110,15 @@ public class DeviceIntegrationTest {
 		given(restTemplate.getForObject(
 				"http://COMMON-V1/common/journey/" + "c1a42269-6562-4c96-b3be-1ca2a6681d57" + "/queries/currentJourney",
 				CurrentJourney.class)).willReturn(obj);
-		given(response.getMerchandisingPromotion(Matchers.anyObject())).willReturn(CommonMethods.getMemPro());
-		given(response.getCommercialProduct(Matchers.anyObject()))
+		given(response.getMerchandisingPromotion(ArgumentMatchers.any())).willReturn(CommonMethods.getMemPro());
+		given(response.getCommercialProduct(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getCommercialProductsListOfMakeAndModel().get(0));
-		given(response.getListOfGroupFromJson(Matchers.anyObject())).willReturn(CommonMethods.getGroup());
-		given(response.getCommercialProductFromJson(Matchers.anyObject()))
+		given(response.getListOfGroupFromJson(ArgumentMatchers.any())).willReturn(CommonMethods.getGroup());
+		given(response.getCommercialProductFromJson(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getCommercialProductsListOfAccessories());
-		given(response.getCommercialBundle(Matchers.anyObject()))
+		given(response.getCommercialBundle(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getCommercialBundleFromCommercialBundleRepository());
-		given(response.getListOfMerchandisingPromotionFromJson(Matchers.anyObject()))
+		given(response.getListOfMerchandisingPromotionFromJson(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getMerchandisingPromotion_One());
 		String jsonString1 = new String(CommonMethods.readFile("\\rest-mock\\CUSTOMER-V1.json"));
 		RecommendedProductListResponse obj1 = new ObjectMapper().readValue(jsonString1,
@@ -139,7 +139,7 @@ public class DeviceIntegrationTest {
 	}
 	@Test
 	public void NotNullTestForAccessory()  throws JsonProcessingException, Exception  {
-		given(response.getCommercialProduct(Matchers.anyObject()))
+		given(response.getCommercialProduct(ArgumentMatchers.any()))
 		.willReturn(CommonMethods.getCommercialProductByDeviceIdForAccessory());
 		given(restTemplate.postForObject("http://PRICE-V1/price/product",
 				CommonMethods.bundleDeviceAndProductsList_For_GetAccessoriesOfDeviceIntegration(), PriceForProduct.class))
@@ -157,7 +157,7 @@ public class DeviceIntegrationTest {
 	}
 	@Test
 	public void NotNullTestForInsurance()  throws JsonProcessingException, Exception  {
-		given(response.getCommercialProduct(Matchers.anyObject()))
+		given(response.getCommercialProduct(ArgumentMatchers.any()))
 		.willReturn(CommonMethods.getCommercialProductForInsurance());
 		mockMvc.perform(get("/insurance/queries/byDeviceId/?deviceId=093353").accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(
@@ -171,7 +171,7 @@ public class DeviceIntegrationTest {
 	}
 	@Test
 	public void NullTestForgetDeviceTileMakeAndModel()  throws JsonProcessingException, Exception  {
-		given(response.getCommercialProductFromJson(Matchers.anyObject()))
+		given(response.getCommercialProductFromJson(ArgumentMatchers.any()))
 		.willReturn(CommonMethods.getCommercialProductsListOfMakeAndModel());
 		mockMvc.perform(get("/deviceTile/queries/byMakeModel/?groupType=DEVICE_PAYM&make=apple&model=iPhone-7&journeyType=Upgrade").accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(

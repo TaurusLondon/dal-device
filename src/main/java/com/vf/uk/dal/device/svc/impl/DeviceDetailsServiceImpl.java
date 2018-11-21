@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
-import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
 import com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion;
@@ -35,6 +34,9 @@ import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
 import com.vf.uk.dal.utility.entity.BundleHeader;
 import com.vf.uk.dal.utility.entity.CoupleRelation;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Component
 public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 	public static final String PAYG_DEVICE = "Mobile Phones";
@@ -87,17 +89,17 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 	 * @return DeviceDetails
 	 */
 	public DeviceDetails getDeviceDetails_Implementation(String deviceId, String journeyTypeInput, String offerCode) {
-		LogHelper.info(this, "Start -->  calling  CommercialProductRepository.get");
+		log.info( "Start -->  calling  CommercialProductRepository.get");
 		String journeyType;
 		journeyType = DeviceServiceImplUtility.getJourneyForVariant(journeyTypeInput);
 		CommercialProduct commercialProduct = deviceEs.getCommercialProduct(deviceId);
-		LogHelper.info(this, "End -->  After calling  CommercialProductRepository.get");
+		log.info( "End -->  After calling  CommercialProductRepository.get");
 		DeviceDetails deviceDetails;
 		if (commercialProduct != null && commercialProduct.getId() != null && commercialProduct.getIsDeviceProduct()
 				&& DeviceServiceImplUtility.getProductclassValidation(commercialProduct)) {
 			deviceDetails = getDeviceDetailsResponse(deviceId, offerCode, journeyType, commercialProduct);
 		} else {
-			LogHelper.error(this, "No data found for given Device Id :" + deviceId);
+			log.error( "No data found for given Device Id :" + deviceId);
 			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID);
 		}
 		return deviceDetails;
@@ -135,11 +137,11 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = deviceServiceImplUtility
 				.getListOfBundleAndHardwareTuple(offerCode, journeyTypeLocal, bundleAndHardwareTupleList);
 		String leadPlanId = DeviceServiceImplUtility.getLeadPlanId(bundleAndHardwareTupleList);
-		LogHelper.info(this, "Start -->  calling  bundleRepository.get");
+		log.info( "Start -->  calling  bundleRepository.get");
 		CommercialBundle commercialBundle = null;
 		if (StringUtils.isNotBlank(leadPlanId)) {
 			commercialBundle = deviceEs.getCommercialBundle(leadPlanId);
-			LogHelper.info(this, "End -->  After calling  bundleRepository.get");
+			log.info( "End -->  After calling  bundleRepository.get");
 
 		}
 		List<BundleAndHardwareTuple> bundleHardwareTupleList = DeviceServiceImplUtility
@@ -182,7 +184,7 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 				deviceServiceCommonUtility.getTupleList(commercialProduct, journeyType, bundleAndHardwareTupleList,
 						listOfBundleHeaderForDevice);
 			} catch (Exception e) {
-				LogHelper.error(this, "Exception occured when call happen to compatible bundles api: " + e);
+				log.error( "Exception occured when call happen to compatible bundles api: " + e);
 			}
 		}
 
@@ -204,7 +206,7 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 
 		if (commercialProduct.getPromoteAs() != null && commercialProduct.getPromoteAs().getPromotionName() != null
 				&& !commercialProduct.getPromoteAs().getPromotionName().isEmpty()) {
-			LogHelper.info(this, "Start -->  calling  MerchandisingPromotion.get");
+			log.info( "Start -->  calling  MerchandisingPromotion.get");
 			for (String promotionName : commercialProduct.getPromoteAs().getPromotionName()) {
 				MerchandisingPromotion merchandisingPromotion = deviceEs.getMerchandisingPromotion(promotionName);
 				if (merchandisingPromotion != null) {
@@ -218,7 +220,7 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 						promotionPackagesList = Arrays.asList(promotionPackageType.toLowerCase().split(","));
 					}
 
-					LogHelper.info(this, ":::::::: MERCHE_PROMOTION_TAG :::: " + merchandisingPromotion.getTag()
+					log.info( ":::::::: MERCHE_PROMOTION_TAG :::: " + merchandisingPromotion.getTag()
 							+ "::::: START DATE :: " + startDateTime + ":::: END DATE ::: " + endDateTime + " :::: ");
 					if (promotionName != null && promotionName.equals(merchandisingPromotion.getTag())
 							&& DeviceServiceImplUtility.dateValidationForOffers_Implementation(startDateTime,
@@ -228,7 +230,7 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 					}
 				}
 			}
-			LogHelper.info(this, "End -->  After calling  MerchandisingPromotion.get");
+			log.info( "End -->  After calling  MerchandisingPromotion.get");
 		}
 		validOffer = offerCodes.contains(offerCode) ? true : false;
 		return validOffer;
@@ -363,7 +365,7 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = deviceDao
 				.getPriceForBundleAndHardware(listOfBundleAndHardwareTuple, offerCode, journeyType);
 
-		LogHelper.info(this, "Setting prices and its corresponding promotions");
+		log.info( "Setting prices and its corresponding promotions");
 		settingPriceAndPromotionsToListOfDevices(listOfPriceForBundleAndHardware, listOfDevices);
 
 		return listOfDevices;
@@ -398,7 +400,7 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 						coupleRelationMcs -> listOfBundleHeaderForDevice.addAll(coupleRelationMcs.getPlanList()));
 
 				if (listOfBundleHeaderForDevice.isEmpty()) {
-					LogHelper.error(this,
+					log.error(
 							"No Compatible Bundles found for given device Id from bundles api: " + listOfBundles);
 
 				} else {
@@ -426,7 +428,7 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 			}
 
 		} catch (Exception e) {
-			LogHelper.error(this, " Exception occured when call happen to compatible bundles api : " + e);
+			log.error( " Exception occured when call happen to compatible bundles api : " + e);
 		}
 		return leadPlanId;
 
@@ -601,7 +603,7 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 	public List<DeviceDetails> getListOfDeviceDetails(String deviceId, String offerCode, String journeyType) {
 		List<DeviceDetails> listOfDevices;
 		List<String> listOfDeviceIds;
-		LogHelper.info(this, "Get the list of device details of device id(s) " + deviceId);
+		log.info( "Get the list of device details of device id(s) " + deviceId);
 		if (deviceId.contains(",")) {
 			String[] deviceIds = deviceId.split(",");
 			listOfDeviceIds = Arrays.asList(deviceIds);
@@ -612,7 +614,7 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 			listOfDevices = getDeviceDetailsList(listOfDeviceIds, offerCode, journeyType);
 		}
 		if (listOfDevices == null || listOfDevices.isEmpty()) {
-			LogHelper.error(this, "Invalid Device Id" + ExceptionMessages.INVALID_DEVICE_ID);
+			log.error( "Invalid Device Id" + ExceptionMessages.INVALID_DEVICE_ID);
 			throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 		}
 		return listOfDevices;

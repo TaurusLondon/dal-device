@@ -15,6 +15,7 @@ import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.Requests;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
@@ -22,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
-import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.datamodel.product.BazaarVoice;
@@ -35,6 +35,8 @@ import com.vf.uk.dal.device.utils.CommonUtility;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 import com.vf.uk.dal.utility.entity.BundleDetails;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 1.Implementation of DeviceDAO Interface 2.DeviceDaoImpl should make call to
  * the exact methods of Solr and Coherence and should retrieve all the details.
@@ -42,6 +44,7 @@ import com.vf.uk.dal.utility.entity.BundleDetails;
  * 
  **/
 
+@Slf4j
 @Component("deviceDao")
 public class DeviceDaoImpl implements DeviceDao {
 
@@ -68,10 +71,10 @@ public class DeviceDaoImpl implements DeviceDao {
 	public BundleDetails getBundleDetailsFromComplansListingAPI(String deviceId, String sortCriteria) {
 		BundleDetails bundleDetails = null;
 		try {
-			LogHelper.info(this, "Getting Compatible bundle details by calling Compatible Plan List API");
+			log.info( "Getting Compatible bundle details by calling Compatible Plan List API");
 			bundleDetails = commonUtility.getBundleDetailsFromComplansListingAPI(deviceId, sortCriteria);
 		} catch (ApplicationException e) {
-			LogHelper.error(this, "No Compatible bundle Found By Given Bundle Id " + e);
+			log.error( "No Compatible bundle Found By Given Bundle Id " + e);
 			bundleDetails = null;
 		}
 		return bundleDetails;
@@ -87,7 +90,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	@Override
 	public String getDeviceReviewDetails(String deviceId) {
 		String jsonObject;
-		LogHelper.info(this, "Start -->  calling  BazaarReviewRepository.get");
+		log.info( "Start -->  calling  BazaarReviewRepository.get");
 		jsonObject = bzrVoiceCache.getBazaarVoiceReviews(deviceId);
 		return jsonObject;
 	}
@@ -102,7 +105,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	public List<PriceForBundleAndHardware> getPriceForBundleAndHardware(
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType) {
 		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware;
-		LogHelper.info(this, "Get the price details for Bundle and Hardware list from Pricing API");
+		log.info( "Get the price details for Bundle and Hardware list from Pricing API");
 		listOfPriceForBundleAndHardware = commonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode,
 				journeyType);
 		return listOfPriceForBundleAndHardware;
@@ -167,7 +170,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	public CompletableFuture<List<PriceForBundleAndHardware>> getPriceForBundleAndHardwareListFromTupleListAsync(
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType,
 			String version) {
-		LogHelper.info(this, "Start -->  calling  getPriceForBundleAndHardwareListFromTupleList_PriceAPI");
+		log.info( "Start -->  calling  getPriceForBundleAndHardwareListFromTupleList_PriceAPI");
 
 		return CompletableFuture.supplyAsync(() -> {
 			CatalogServiceAspect.CATALOG_VERSION.set(version);
@@ -185,7 +188,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	@Override
 	public CompletableFuture<List<com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions>> getBundleAndHardwarePromotionsListFromBundleListAsync(
 			List<BundleAndHardwareTuple> bundleHardwareTupleList, String journeyType, String version) {
-		LogHelper.info(this, "Start -->  calling  getBundleAndHardwarePromotionsListFromBundleListAsync");
+		log.info( "Start -->  calling  getBundleAndHardwarePromotionsListFromBundleListAsync");
 
 		return CompletableFuture.supplyAsync(() -> {
 			CatalogServiceAspect.CATALOG_VERSION.set(version);
@@ -200,19 +203,18 @@ public class DeviceDaoImpl implements DeviceDao {
 	 */
 	@Override
 	public SearchResponse getResponseFromDataSource(SearchRequest searchRequest) {
-		LogHelper.info(this, "Start call time Elasticsearch" + System.currentTimeMillis());
+		log.info( "Start call time Elasticsearch" + System.currentTimeMillis());
 		SearchResponse response = null;
 		try {
-			response = restClient.search(searchRequest,
-					new BasicHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString()));
+			response = restClient.search(searchRequest, RequestOptions.DEFAULT);
 		} catch (Exception e) {
 			if (StringUtils.containsIgnoreCase(e.getMessage(), ExceptionMessages.Index_NOT_FOUND_EXCEPTION)) {
-				LogHelper.error(this, ExceptionMessages.Index_NOT_FOUND_EXCEPTION);
+				log.error( ExceptionMessages.Index_NOT_FOUND_EXCEPTION);
 				throw new ApplicationException(ExceptionMessages.Index_NOT_FOUND_EXCEPTION);
 			}
-			LogHelper.error(this, "::::::Exception occured while querieng bundle models from ES " + e);
+			log.error( "::::::Exception occured while querieng bundle models from ES " + e);
 		}
-		LogHelper.info(this, "End call time Elasticsearch" + System.currentTimeMillis());
+		log.info( "End call time Elasticsearch" + System.currentTimeMillis());
 		return response;
 	}
 
@@ -226,14 +228,13 @@ public class DeviceDaoImpl implements DeviceDao {
 		try {
 			UpdateRequest updateRequest = new UpdateRequest(CatalogServiceAspect.CATALOG_VERSION.get(), STRING_MODELS, id);
 			updateRequest.doc(data, XContentType.JSON);
-			restClient.update(updateRequest,
-					new BasicHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString()));
+			restClient.update(updateRequest, RequestOptions.DEFAULT);
 
 			UpdateRequest updateRequestForNull = new UpdateRequest(CatalogServiceAspect.CATALOG_VERSION.get(), STRING_MODELS, id)
 					.doc(org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder().startObject().endObject());
 			restClient.update(updateRequestForNull);
 		} catch (IOException e) {
-			LogHelper.error(this, "::::::Exception From es ::::::" + e);
+			log.error( "::::::Exception From es ::::::" + e);
 		}
 	}
 
@@ -252,7 +253,7 @@ public class DeviceDaoImpl implements DeviceDao {
 			restClient.index(updateRequestForILSPromo,
 					new BasicHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString()));
 		} catch (IOException e) {
-			LogHelper.error(this, "::::::Exception From es ::::::" + e);
+			log.error( "::::::Exception From es ::::::" + e);
 		}
 	}
 }

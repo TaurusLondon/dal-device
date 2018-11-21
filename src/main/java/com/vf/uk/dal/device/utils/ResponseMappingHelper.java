@@ -7,7 +7,6 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.datamodel.bundle.BundleModel;
 import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
 import com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotionModel;
@@ -18,6 +17,9 @@ import com.vf.uk.dal.device.datamodel.productgroups.FacetField;
 import com.vf.uk.dal.device.datamodel.productgroups.Group;
 import com.vf.uk.dal.device.datamodel.productgroups.ProductGroupModel;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Component
 public class ResponseMappingHelper {
 
@@ -35,10 +37,10 @@ public class ResponseMappingHelper {
 
 		try {
 			commercialProductlList = esUtils.getListOfObject(response, CommercialProduct.class);
-			LogHelper.info(ResponseMappingHelper.class,
+			log.info(
 					"<---- Commercial Product list: " + commercialProductlList.size() + "------>");
 		} catch (Exception e) {
-			LogHelper.error(ResponseMappingHelper.class,
+			log.error(
 					"::::::Exception occurred preparing Commercial Product list from ES response:::::: " + e);
 		}
 		return commercialProductlList;
@@ -55,9 +57,9 @@ public class ResponseMappingHelper {
 		CommercialProduct obj = null;
 		try {
 			obj = esUtils.getObject(response, CommercialProduct.class);
-			LogHelper.info(ResponseMappingHelper.class, "<---- Commercial Product list: ---->");
+			log.info( "<---- Commercial Product list: ---->");
 		} catch (Exception e) {
-			LogHelper.error(ResponseMappingHelper.class,
+			log.error(
 					"::::::Exception occurred preparing Commercial product from ES response:::::: " + e);
 		}
 		return obj;
@@ -74,10 +76,10 @@ public class ResponseMappingHelper {
 		List<Group> bundleModelList = new ArrayList<>();
 		try {
 			bundleModelList = esUtils.getListOfObject(response, Group.class);
-			LogHelper.info(ResponseMappingHelper.class,
+			log.info(
 					"<---- Product group list:  " + bundleModelList.size() + "----->");
 		} catch (Exception e) {
-			LogHelper.error(ResponseMappingHelper.class,
+			log.error(
 					":::::::Exception occurred preparing List of product Group from ES response:::::: " + e);
 		}
 		return bundleModelList;
@@ -95,7 +97,7 @@ public class ResponseMappingHelper {
 		try {
 			obj = esUtils.getObject(response, Group.class);
 		} catch (Exception e) {
-			LogHelper.error(ResponseMappingHelper.class,
+			log.error(
 					"::::::Exception occurred preparing Product Group from ES response:::::: " + e);
 		}
 		return obj;
@@ -112,9 +114,9 @@ public class ResponseMappingHelper {
 		CommercialBundle obj = new CommercialBundle();
 		try {
 			obj = esUtils.getObject(response, CommercialBundle.class);
-			LogHelper.info(ResponseMappingHelper.class, "<---- Commercial Bundle list ---->");
+			log.info( "<---- Commercial Bundle list ---->");
 		} catch (Exception e) {
-			LogHelper.error(ResponseMappingHelper.class,
+			log.error(
 					"::::::Exception occurred preparing Commercial Bundle from ES response:::::: " + e);
 		}
 		return obj;
@@ -131,10 +133,10 @@ public class ResponseMappingHelper {
 		List<CommercialBundle> commercialBundlelList = new ArrayList<>();
 		try {
 			commercialBundlelList = esUtils.getListOfObject(response, CommercialBundle.class);
-			LogHelper.info(ResponseMappingHelper.class,
+			log.info(
 					"<---- Commercial Bundle list: " + commercialBundlelList.size() + "----->");
 		} catch (Exception e) {
-			LogHelper.error(ResponseMappingHelper.class,
+			log.error(
 					"::::::Exception occurred preparing commercial Bundle list from ES response:::::: " + e);
 		}
 		return commercialBundlelList;
@@ -153,10 +155,10 @@ public class ResponseMappingHelper {
 		try {
 			bundleModelList = esUtils.getListOfObject(response,
 					com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion.class);
-			LogHelper.info(ResponseMappingHelper.class,
+			log.info(
 					"<---- Product group list: " + bundleModelList.size() + "---->");
 		} catch (Exception e) {
-			LogHelper.error(ResponseMappingHelper.class,
+			log.error(
 					"::::::Exception occurred preparing List of product Group from ES response::::::: " + e);
 		}
 		return bundleModelList;
@@ -175,9 +177,9 @@ public class ResponseMappingHelper {
 		try {
 			obj = esUtils.getObject(response,
 					com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion.class);
-			LogHelper.info(ResponseMappingHelper.class, "<---- Commercial Bundle list ---->");
+			log.info( "<---- Commercial Bundle list ---->");
 		} catch (Exception e) {
-			LogHelper.error(ResponseMappingHelper.class,
+			log.error(
 					"::::::Exception occurred preparing Commercial Bundle from ES response:::::: " + e);
 		}
 		return obj;
@@ -194,10 +196,10 @@ public class ResponseMappingHelper {
 		List<MerchandisingPromotionModel> merchandisingPromotionModelList = new ArrayList<>();
 		try {
 			merchandisingPromotionModelList = esUtils.getListOfObject(response, MerchandisingPromotionModel.class);
-			LogHelper.info(ResponseMappingHelper.class,
+			log.info(
 					"<---- Product group list: " + merchandisingPromotionModelList.size() + "---->");
 		} catch (Exception e) {
-			LogHelper.error(ResponseMappingHelper.class,
+			log.error(
 					":::::::Exception occurred preparing List of product Group from ES response:::::: " + e);
 		}
 		return merchandisingPromotionModelList;
@@ -214,9 +216,9 @@ public class ResponseMappingHelper {
 		List<ProductGroupModel> productGroupModel = null;
 		try {
 			productGroupModel = esUtils.getListOfObject(response, ProductGroupModel.class);
-			LogHelper.info(ResponseMappingHelper.class, "<---- Product group Model--> ");
+			log.info( "<---- Product group Model--> ");
 		} catch (Exception e) {
-			LogHelper.error(ResponseMappingHelper.class,
+			log.error(
 					":::::::Exception occurred preparing List of product Group from ES response::::::: " + e);
 		}
 		return productGroupModel;
@@ -233,9 +235,9 @@ public class ResponseMappingHelper {
 		List<ProductModel> productModel = null;
 		try {
 			productModel = esUtils.getListOfObject(response, ProductModel.class);
-			LogHelper.info(ResponseMappingHelper.class, "<---- Product group Model--> ");
+			log.info( "<---- Product group Model--> ");
 		} catch (Exception e) {
-			LogHelper.error(ResponseMappingHelper.class,
+			log.error(
 					":::::: Exception occurred preparing List of product Group from ES response :::::: " + e);
 		}
 		return productModel;
@@ -252,9 +254,9 @@ public class ResponseMappingHelper {
 		List<BundleModel> bundleModel = null;
 		try {
 			bundleModel = esUtils.getListOfObject(response, BundleModel.class);
-			LogHelper.info(ResponseMappingHelper.class, "<---- Product group Model---> ");
+			log.info( "<---- Product group Model---> ");
 		} catch (Exception e) {
-			LogHelper.error(ResponseMappingHelper.class,
+			log.error(
 					"::::::::Exception occurred preparing List of product Group from ES response:::::: " + e);
 		}
 		return bundleModel;
@@ -271,9 +273,9 @@ public class ResponseMappingHelper {
 		List<OfferAppliedPriceModel> offerAppliedPriceModel = null;
 		try {
 			offerAppliedPriceModel = esUtils.getListOfObject(response, OfferAppliedPriceModel.class);
-			LogHelper.info(ResponseMappingHelper.class, "<---- Product group Model ");
+			log.info( "<---- Product group Model ");
 		} catch (Exception e) {
-			LogHelper.error(ResponseMappingHelper.class,
+			log.error(
 					"::::::Exception occurred preparing List of product Group from ES response:::::: " + e);
 		}
 		return offerAppliedPriceModel;
@@ -290,9 +292,9 @@ public class ResponseMappingHelper {
 		List<FacetField> facetField = null;
 		try {
 			facetField = esUtils.getListOfObjectForAggrs(response);
-			LogHelper.info(ResponseMappingHelper.class, "<---- Product group Model ");
+			log.info( "<---- Product group Model ");
 		} catch (Exception e) {
-			LogHelper.error(ResponseMappingHelper.class,
+			log.error(
 					"::::::Exception occurred preparing List of product Group from ES response:::::: " + e);
 		}
 		return facetField;

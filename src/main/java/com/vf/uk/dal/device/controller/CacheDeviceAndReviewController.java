@@ -1,7 +1,5 @@
 package com.vf.uk.dal.device.controller;
 
-import java.util.List;
-
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.StringUtils;
@@ -16,13 +14,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vf.uk.dal.common.context.ServiceContext;
 import com.vf.uk.dal.common.exception.ApplicationException;
-import com.vf.uk.dal.common.logger.LogHelper;
-import com.vf.uk.dal.common.urlparams.FilterCriteria;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
 import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.svc.CacheDeviceService;
@@ -34,6 +30,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 
 @Api(tags="DeviceCacheAndReview")
 @RestController
@@ -44,6 +41,7 @@ import io.swagger.annotations.ApiResponses;
  * @author sahil.monga
  *
  */
+@Slf4j
 public class CacheDeviceAndReviewController {
 
 	public static final String DEVICE_ID = "deviceId";
@@ -86,8 +84,9 @@ public class CacheDeviceAndReviewController {
 			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
 
 	@RequestMapping(value = "/deviceTile/cacheDeviceTile", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<CacheDeviceTileResponse> cacheDeviceTile() {
-		String groupType = getFilterValue(GROUP_TYPE);
+	public ResponseEntity<CacheDeviceTileResponse> cacheDeviceTile(
+			@ApiParam(value = "Device group Type", required = true) @RequestParam("groupType") String groupType) {
+		//String groupType = getFilterValue(GROUP_TYPE);
 
 		if (StringUtils.isNotBlank(groupType)) {
 			if (StringUtils.containsIgnoreCase(groupType, STRING_DEVICE_PAYG)
@@ -146,30 +145,7 @@ public class CacheDeviceAndReviewController {
 			@NotNull @ApiParam(value = "Unique Id of the device for which the review is being requested", required = true) @PathVariable(DEVICE_ID) String deviceId) {
 
 		Validator.validateDeviceId(deviceId);
-		LogHelper.info(this, "Start -->  calling  getDeviceReviewDetails");
+		log.info( "Start -->  calling  getDeviceReviewDetails");
 		return cacheDeviceService.getDeviceReviewDetails(deviceId);
-	}
-
-	/**
-	 * 
-	 * Checks the filterValue coming from ServiceContext based on incoming
-	 * filterName.
-	 *
-	 * @param String
-	 * 
-	 * @return String
-	 **/
-
-	private String getFilterValue(String filterName) {
-		String ret = null;
-		List<FilterCriteria> filterCriteriaList = ServiceContext.getFilterCriteria();
-		if (filterCriteriaList != null && !filterCriteriaList.isEmpty()) {
-			for (FilterCriteria filterCriteria : filterCriteriaList) {
-				if (filterCriteria.getFilterFieldName().equals(filterName)) {
-					ret = filterCriteria.getFilterFieldValue().trim();
-				}
-			}
-		}
-		return ret;
 	}
 }

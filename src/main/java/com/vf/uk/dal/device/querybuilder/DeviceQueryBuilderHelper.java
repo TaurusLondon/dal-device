@@ -14,13 +14,16 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 
 import com.vf.uk.dal.common.configuration.ConfigHelper;
-import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
+
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 
  * Device Query Builder Helper
  *
  */
+@Slf4j
 public class DeviceQueryBuilderHelper {
 
 	public static final String ELASTIC_SEARCH_INDEX_SIZE = "ELASTIC_SEARCH_INDEX_SIZE";
@@ -70,10 +73,8 @@ public class DeviceQueryBuilderHelper {
 	public static final String STRING_NON_UPGRADED_LEAD_DEVICE_ID = "nonUpgradeLeadDeviceId";
 	public static final String JOURNEY_TYPE_ACQUISITION = "Acquisition";
 	public static final String STRING_SECOND_LINE = "secondline";
-	private static int size = ConfigHelper.getInt(ELASTIC_SEARCH_INDEX_SIZE,
-			DEFAULT_ELASTIC_SEARCH_INDEX_SIZE);
-	private static int from = ConfigHelper.getInt(ELASTIC_SEARCH_INDEX_START_FROM,
-			DEFAULT_ELASTIC_SEARCH_START_INDEX);
+	private static int size = ConfigHelper.getInt(ELASTIC_SEARCH_INDEX_SIZE, DEFAULT_ELASTIC_SEARCH_INDEX_SIZE);
+	private static int from = ConfigHelper.getInt(ELASTIC_SEARCH_INDEX_START_FROM, DEFAULT_ELASTIC_SEARCH_START_INDEX);
 	private static String[] includes = null;
 	private static final String[] ex = new String[0];
 	static {
@@ -96,15 +97,13 @@ public class DeviceQueryBuilderHelper {
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(size);
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
-			qb.must(QueryBuilders.matchPhraseQuery(STRING_MAKE, make));
-			qb.must(QueryBuilders.matchPhraseQuery(STRING_MODEL, model));
+			qb.must(QueryBuilders.termQuery(STRING_MAKE + STRING_KEY_WORD, make));
+			qb.must(QueryBuilders.termQuery(STRING_MODEL + STRING_KEY_WORD, model));
 			searchRequestBuilder.query(qb);
-			LogHelper.info(DeviceQueryBuilderHelper.class,
-					" <-----  Setting up Elasticsearch parameters and query   ----->");
+			log.info(" <-----  Setting up Elasticsearch parameters and query   ----->");
 			searchRequest.source(searchRequestBuilder);
 		} catch (Exception e) {
-			LogHelper.error(DeviceQueryBuilderHelper.class,
-					"::::::Exception in using Elasticsearch QueryBuilder  :::::: " + e);
+			log.error("::::::Exception in using Elasticsearch QueryBuilder  :::::: " + e);
 
 		}
 		return searchRequest;
@@ -123,15 +122,13 @@ public class DeviceQueryBuilderHelper {
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(size);
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
-			qb.must(QueryBuilders.matchPhraseQuery(STRING_GROUP_TYPE, groupType));
+			qb.must(QueryBuilders.termQuery(STRING_GROUP_TYPE + STRING_KEY_WORD, groupType));
 			searchRequestBuilder.query(qb);
-			LogHelper.info(DeviceQueryBuilderHelper.class,
-					" <-----  Setting up Elasticsearch parameters and query ----->");
+			log.info(" <-----  Setting up Elasticsearch parameters and query ----->");
 			searchRequest.source(searchRequestBuilder);
 
 		} catch (Exception e) {
-			LogHelper.error(DeviceQueryBuilderHelper.class,
-					"::::::Exception in using Elasticsearch QueryBuilder:::::: " + e);
+			log.error("::::::Exception in using Elasticsearch QueryBuilder:::::: " + e);
 
 		}
 		return searchRequest;
@@ -150,16 +147,14 @@ public class DeviceQueryBuilderHelper {
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(size);
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
-			qb.must(QueryBuilders.matchPhraseQuery(STRING_GROUP_NAME, groupName));
-			qb.must(QueryBuilders.matchPhraseQuery(STRING_GROUP_TYPE, groupType));
+			qb.must(QueryBuilders.termQuery(STRING_GROUP_NAME + STRING_KEY_WORD, groupName));
+			qb.must(QueryBuilders.termQuery(STRING_GROUP_TYPE + STRING_KEY_WORD, groupType));
 			searchRequestBuilder.query(qb);
-			LogHelper.info(DeviceQueryBuilderHelper.class,
-					" <------ Setting up Elasticsearch parameters and query  ----->");
+			log.info(" <------ Setting up Elasticsearch parameters and query  ----->");
 			searchRequest.source(searchRequestBuilder);
 
 		} catch (Exception e) {
-			LogHelper.error(DeviceQueryBuilderHelper.class,
-					"::::::Exception in using Elasticsearch QueryBuilder::::::: " + e);
+			log.error("::::::Exception in using Elasticsearch QueryBuilder::::::: " + e);
 
 		}
 		return searchRequest;
@@ -175,23 +170,21 @@ public class DeviceQueryBuilderHelper {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
 		try {
-			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping----->");
+			log.info("<------Elasticsearch query mapping----->");
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
-			qb.must(QueryBuilders.termQuery(STRING_ID + STRING_KEY_WORD, Id));
-			qb.must(QueryBuilders.termQuery(STRING_ALL_TYPE + STRING_KEY_WORD,
-					STRING_RAW + type));
+			qb.must(QueryBuilders.termsQuery(STRING_ID + STRING_KEY_WORD, Id));
+			qb.must(QueryBuilders.termsQuery(STRING_ALL_TYPE + STRING_KEY_WORD, STRING_RAW + type));
 			searchRequestBuilder.query(qb);
-			LogHelper.info(DeviceQueryBuilderHelper.class,
-					" <-----  Setting up Elasticsearch parameters and query ----->");
+			log.info(" <-----  Setting up Elasticsearch parameters and query ----->");
 			searchRequest.source(searchRequestBuilder);
 
 		} catch (Exception e) {
-			LogHelper.error(DeviceQueryBuilderHelper.class,
-					"::::::Exception in using Elasticsearch QueryBuilder : ::::: " + e);
+			log.error("::::::Exception in using Elasticsearch QueryBuilder : ::::: " + e);
 
 		}
 		return searchRequest;
 	}
+
 	/**
 	 * 
 	 * @param idsOrNames
@@ -203,7 +196,7 @@ public class DeviceQueryBuilderHelper {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
 		try {
-			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------->");
+			log.info("<------Elasticsearch query mapping------->");
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(idsOrNames.size());
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
@@ -212,17 +205,14 @@ public class DeviceQueryBuilderHelper {
 			} else {
 				qb.must(QueryBuilders.termsQuery(STRING_GROUP_NAME + STRING_KEY_WORD, idsOrNames));
 			}
-			qb.must(QueryBuilders
-					.termQuery(STRING_ALL_TYPE + STRING_KEY_WORD, STRING_RAW + type)
-					.boost(2.0F)).boost(3.0F);
+			qb.must(QueryBuilders.termQuery(STRING_ALL_TYPE + STRING_KEY_WORD, STRING_RAW + type).boost(2.0F))
+					.boost(3.0F);
 			searchRequestBuilder.query(qb);
-			LogHelper.info(DeviceQueryBuilderHelper.class,
-					" <-----  Setting up Elasticsearch parameters and query  ------>");
+			log.info(" <-----  Setting up Elasticsearch parameters and query  ------>");
 			searchRequest.source(searchRequestBuilder);
 
 		} catch (Exception e) {
-			LogHelper.error(DeviceQueryBuilderHelper.class,
-					":::::: Exception in using Elasticsearch QueryBuilder :::::: " + e);
+			log.error(":::::: Exception in using Elasticsearch QueryBuilder :::::: " + e);
 		}
 		return searchRequest;
 	}
@@ -236,22 +226,18 @@ public class DeviceQueryBuilderHelper {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
 		try {
-			LogHelper.info(DeviceQueryBuilderHelper.class, "<-----Elasticsearch query mapping------>");
+			log.info("<-----Elasticsearch query mapping------>");
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(listOfDeviceIds.size());
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
-			qb.must(QueryBuilders.matchPhraseQuery(STRING_GROUP_TYPE,
-					STRING_COMPATIBLE_ACCESSORIES));
-			qb.must(QueryBuilders.termsQuery(STRING_GROUP_NAME + STRING_KEY_WORD,
-					listOfDeviceIds.toArray()));
+			qb.must(QueryBuilders.matchPhraseQuery(STRING_GROUP_TYPE, STRING_COMPATIBLE_ACCESSORIES));
+			qb.must(QueryBuilders.termsQuery(STRING_GROUP_NAME + STRING_KEY_WORD, listOfDeviceIds.toArray()));
 			searchRequestBuilder.query(qb);
-			LogHelper.info(DeviceQueryBuilderHelper.class,
-					" <-----   Setting up Elasticsearch parameters and query  ----->");
+			log.info(" <-----   Setting up Elasticsearch parameters and query  ----->");
 			searchRequest.source(searchRequestBuilder);
 
 		} catch (Exception e) {
-			LogHelper.error(DeviceQueryBuilderHelper.class,
-					":::::: Exception in using Elasticsearch QueryBuilder :::::: " + e);
+			log.error(":::::: Exception in using Elasticsearch QueryBuilder :::::: " + e);
 
 		}
 		return searchRequest;
@@ -266,19 +252,17 @@ public class DeviceQueryBuilderHelper {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
 		try {
-			LogHelper.info(DeviceQueryBuilderHelper.class, "<-------Elasticsearch query mapping------>");
+			log.info("<-------Elasticsearch query mapping------>");
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(size);
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
 			qb.must(QueryBuilders.matchPhraseQuery(STRING_GROUP_TYPE, groupType));
 			searchRequestBuilder.query(qb);
-			LogHelper.info(DeviceQueryBuilderHelper.class,
-					" <------  Setting up Elasticsearch parameters and query  ----->");
+			log.info(" <------  Setting up Elasticsearch parameters and query  ----->");
 			searchRequest.source(searchRequestBuilder);
 
 		} catch (Exception e) {
-			LogHelper.error(DeviceQueryBuilderHelper.class,
-					"::::::: Exception in using Elasticsearch QueryBuilder :::::: " + e);
+			log.error("::::::: Exception in using Elasticsearch QueryBuilder :::::: " + e);
 
 		}
 		return searchRequest;
@@ -296,18 +280,14 @@ public class DeviceQueryBuilderHelper {
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(promotionAsTags.size());
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
-			qb.must(QueryBuilders.termsQuery(STRING_Tag + STRING_KEY_WORD,
-					promotionAsTags.toArray()));
-			qb.must(QueryBuilders.termQuery(STRING_ALL_TYPE + STRING_KEY_WORD,
-					STRING_RAW + STRING_PROMOTION));
+			qb.must(QueryBuilders.termsQuery(STRING_Tag + STRING_KEY_WORD, promotionAsTags.toArray()));
+			qb.must(QueryBuilders.termQuery(STRING_ALL_TYPE + STRING_KEY_WORD, STRING_RAW + STRING_PROMOTION));
 			searchRequestBuilder.query(qb);
-			LogHelper.info(DeviceQueryBuilderHelper.class,
-					" <-------  Setting up Elasticsearch parameters and query  ----->");
+			log.info(" <-------  Setting up Elasticsearch parameters and query  ----->");
 			searchRequest.source(searchRequestBuilder);
 
 		} catch (Exception e) {
-			LogHelper.error(DeviceQueryBuilderHelper.class,
-					"::::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
+			log.error("::::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
 
 		}
 		return searchRequest;
@@ -324,16 +304,13 @@ public class DeviceQueryBuilderHelper {
 		try {
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
 			qb.must(QueryBuilders.matchPhraseQuery(STRING_Tag, promotionAsTag));
-			qb.must(QueryBuilders.termQuery(STRING_ALL_TYPE + STRING_KEY_WORD,
-					STRING_RAW + STRING_PROMOTION));
+			qb.must(QueryBuilders.termQuery(STRING_ALL_TYPE + STRING_KEY_WORD, STRING_RAW + STRING_PROMOTION));
 			searchRequestBuilder.query(qb);
-			LogHelper.info(DeviceQueryBuilderHelper.class,
-					" <------  Setting up Elasticsearch parameters and query  ----->");
+			log.info(" <------  Setting up Elasticsearch parameters and query  ----->");
 			searchRequest.source(searchRequestBuilder);
 
 		} catch (Exception e) {
-			LogHelper.error(DeviceQueryBuilderHelper.class,
-					":::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
+			log.error(":::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
 
 		}
 		return searchRequest;
@@ -349,7 +326,7 @@ public class DeviceQueryBuilderHelper {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
 		try {
-			LogHelper.info(DeviceQueryBuilderHelper.class, "<--------Elasticsearch query mapping------->");
+			log.info("<--------Elasticsearch query mapping------->");
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(size);
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
@@ -359,8 +336,7 @@ public class DeviceQueryBuilderHelper {
 			searchRequest.source(searchRequestBuilder);
 
 		} catch (Exception e) {
-			LogHelper.error(DeviceQueryBuilderHelper.class,
-					"::::::Exception in using Elasticsearch QueryBuilder ::::::: " + e);
+			log.error("::::::Exception in using Elasticsearch QueryBuilder ::::::: " + e);
 
 		}
 		return searchRequest;
@@ -387,7 +363,7 @@ public class DeviceQueryBuilderHelper {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
 		try {
-			LogHelper.info(DeviceQueryBuilderHelper.class, "<--------Elasticsearch query mapping------>");
+			log.info("<--------Elasticsearch query mapping------>");
 			searchRequestBuilder.from(pageNumber);
 			searchRequestBuilder.size(pageSize);
 			if (StringUtils.isNotEmpty(sortOption) && sortOption.equalsIgnoreCase(SORT_OPTION_ASC)) {
@@ -400,8 +376,7 @@ public class DeviceQueryBuilderHelper {
 
 			if (STRING_UPGRADE.equalsIgnoreCase(journeyType)) {
 				qb.must(QueryBuilders.wildcardQuery(STRING_UPGRADED_LEAD_DEVICE_ID, "*"));
-			} else if (StringUtils.isBlank(journeyType)
-					|| JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyType)
+			} else if (StringUtils.isBlank(journeyType) || JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyType)
 					|| STRING_SECOND_LINE.equalsIgnoreCase(journeyType)) {
 				qb.must(QueryBuilders.wildcardQuery(STRING_NON_UPGRADED_LEAD_DEVICE_ID, "*"));
 			}
@@ -409,8 +384,7 @@ public class DeviceQueryBuilderHelper {
 			searchRequest.source(searchRequestBuilder);
 
 		} catch (Exception e) {
-			LogHelper.error(DeviceQueryBuilderHelper.class,
-					"::::::Exception in using Elasticsearch QueryBuilder ::::: " + e);
+			log.error("::::::Exception in using Elasticsearch QueryBuilder ::::: " + e);
 
 		}
 		return searchRequest;
@@ -430,23 +404,19 @@ public class DeviceQueryBuilderHelper {
 		BoolQueryBuilder qb = QueryBuilders.boolQuery();
 		if (StringUtils.isNotBlank(make)) {
 			String[] makeArray = make.replace("\"", "").split(",");
-			qb.must(QueryBuilders.termsQuery(STRING_EQUIPMENT_MAKE_COLON + STRING_KEY_WORD,
-					Arrays.asList(makeArray)));
+			qb.must(QueryBuilders.termsQuery(STRING_EQUIPMENT_MAKE_COLON + STRING_KEY_WORD, Arrays.asList(makeArray)));
 		}
 		if (capacity != null && !"\"\"".equals(capacity)) {
 			String[] capa = capacity.replace("\"", "").split(",");
-			qb.must(QueryBuilders.termsQuery(STRING_CAPACITY_COLON + STRING_KEY_WORD,
-					Arrays.asList(capa)));
+			qb.must(QueryBuilders.termsQuery(STRING_CAPACITY_COLON + STRING_KEY_WORD, Arrays.asList(capa)));
 		}
 		if (colour != null && !"\"\"".equals(colour)) {
 			String[] color = colour.replace("\"", "").split(",");
-			qb.must(QueryBuilders.termsQuery(STRING_COLOUR_COLON + STRING_KEY_WORD,
-					Arrays.asList(color)));
+			qb.must(QueryBuilders.termsQuery(STRING_COLOUR_COLON + STRING_KEY_WORD, Arrays.asList(color)));
 		}
 		if (operatingSystem != null && !"\"\"".equals(operatingSystem)) {
 			String[] os = operatingSystem.replace("\"", "").split(",");
-			qb.must(QueryBuilders.termsQuery(STRING_OPERATING_SYSTEM + STRING_KEY_WORD,
-					Arrays.asList(os)));
+			qb.must(QueryBuilders.termsQuery(STRING_OPERATING_SYSTEM + STRING_KEY_WORD, Arrays.asList(os)));
 		}
 		if (mustHaveFeatures != null && !"\"\"".equals(mustHaveFeatures)) {
 			String[] mhf = mustHaveFeatures.replace("\"", "").split(",");
@@ -466,14 +436,13 @@ public class DeviceQueryBuilderHelper {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
 		try {
-			LogHelper.info(DeviceQueryBuilderHelper.class, "<-------Elasticsearch query mapping--------->");
+			log.info("<-------Elasticsearch query mapping--------->");
 			searchRequestBuilder.size(from);
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
 			qb.must(QueryBuilders.termQuery(STRING_TYPE + STRING_KEY_WORD, groupType));
 			if (STRING_UPGRADE.equalsIgnoreCase(journeyType)) {
 				qb.must(QueryBuilders.wildcardQuery(STRING_UPGRADED_LEAD_DEVICE_ID, "*"));
-			} else if (StringUtils.isBlank(journeyType)
-					|| JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyType)
+			} else if (StringUtils.isBlank(journeyType) || JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyType)
 					|| STRING_SECOND_LINE.equalsIgnoreCase(journeyType)) {
 				qb.must(QueryBuilders.wildcardQuery(STRING_NON_UPGRADED_LEAD_DEVICE_ID, "*"));
 			}
@@ -485,8 +454,7 @@ public class DeviceQueryBuilderHelper {
 					.field(STRING_COLOUR_COLON + STRING_KEY_WORD);
 			TermsAggregationBuilder operatingSystem = AggregationBuilders.terms(STRING_OPERATING_SYSTEM)
 					.field(STRING_OPERATING_SYSTEM + STRING_KEY_WORD);
-			TermsAggregationBuilder mustHaveFeatures = AggregationBuilders
-					.terms(STRING_MUST_HAVE_FEATURES_WITH_COLON)
+			TermsAggregationBuilder mustHaveFeatures = AggregationBuilders.terms(STRING_MUST_HAVE_FEATURES_WITH_COLON)
 					.field(STRING_MUST_HAVE_FEATURES_WITH_COLON + STRING_KEY_WORD);
 			TermsAggregationBuilder colour = AggregationBuilders.terms(STRING_COLOUR_FOR_FACET)
 					.field(STRING_COLOUR_FOR_FACET + STRING_KEY_WORD);
@@ -500,8 +468,7 @@ public class DeviceQueryBuilderHelper {
 			searchRequest.source(searchRequestBuilder);
 
 		} catch (Exception e) {
-			LogHelper.error(DeviceQueryBuilderHelper.class,
-					"::::::Exception in using Elasticsearch QueryBuilder :::::::: " + e);
+			log.error("::::::Exception in using Elasticsearch QueryBuilder :::::::: " + e);
 
 		}
 		return searchRequest;
@@ -516,19 +483,17 @@ public class DeviceQueryBuilderHelper {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
 		try {
-			LogHelper.info(DeviceQueryBuilderHelper.class, "<--------Elasticsearch query mapping-------->");
+			log.info("<--------Elasticsearch query mapping-------->");
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(deviceIds.size());
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
 			qb.must(QueryBuilders.termsQuery(STRING_PRODUCT_ID + STRING_KEY_WORD, deviceIds));
-			qb.must(QueryBuilders.termsQuery(STRING_ALL_TYPE + STRING_KEY_WORD,
-					STRING_OPT + STRING_PRODUCT));
+			qb.must(QueryBuilders.termsQuery(STRING_ALL_TYPE + STRING_KEY_WORD, STRING_OPT + STRING_PRODUCT));
 			searchRequestBuilder.query(qb);
 			searchRequest.source(searchRequestBuilder);
 
 		} catch (Exception e) {
-			LogHelper.error(DeviceQueryBuilderHelper.class,
-					"::::::::Exception in using Elasticsearch QueryBuilder :::::::: " + e);
+			log.error("::::::::Exception in using Elasticsearch QueryBuilder :::::::: " + e);
 
 		}
 		return searchRequest;
@@ -543,19 +508,17 @@ public class DeviceQueryBuilderHelper {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
 		try {
-			LogHelper.info(DeviceQueryBuilderHelper.class, "<-----Elasticsearch query mapping----->");
+			log.info("<-----Elasticsearch query mapping----->");
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(bundleIds.size());
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
 			qb.must(QueryBuilders.termsQuery(STRING_BUNDLE_ID + STRING_KEY_WORD, bundleIds));
-			qb.must(QueryBuilders.termsQuery(STRING_ALL_TYPE + STRING_KEY_WORD,
-					STRING_OPT + STRING_BUNDLE));
+			qb.must(QueryBuilders.termsQuery(STRING_ALL_TYPE + STRING_KEY_WORD, STRING_OPT + STRING_BUNDLE));
 			searchRequestBuilder.query(qb);
 			searchRequest.source(searchRequestBuilder);
 
 		} catch (Exception e) {
-			LogHelper.error(DeviceQueryBuilderHelper.class,
-					":::::: Exception in using Elasticsearch QueryBuilder  :::::: " + e);
+			log.error(":::::: Exception in using Elasticsearch QueryBuilder  :::::: " + e);
 
 		}
 		return searchRequest;
@@ -573,7 +536,7 @@ public class DeviceQueryBuilderHelper {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
 		try {
-			LogHelper.info(DeviceQueryBuilderHelper.class, "<-------Elasticsearch query mapping------->");
+			log.info("<-------Elasticsearch query mapping------->");
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(size);
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
@@ -585,8 +548,7 @@ public class DeviceQueryBuilderHelper {
 			searchRequest.source(searchRequestBuilder);
 
 		} catch (Exception e) {
-			LogHelper.error(DeviceQueryBuilderHelper.class,
-					":::::: Exception in using Elasticsearch QueryBuilder  :::::: " + e);
+			log.error(":::::: Exception in using Elasticsearch QueryBuilder  :::::: " + e);
 
 		}
 		return searchRequest;
@@ -603,7 +565,7 @@ public class DeviceQueryBuilderHelper {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
 		try {
-			LogHelper.info(DeviceQueryBuilderHelper.class, "<--------Elasticsearch query mapping------>");
+			log.info("<--------Elasticsearch query mapping------>");
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(displayNames.size());
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
@@ -613,8 +575,7 @@ public class DeviceQueryBuilderHelper {
 			searchRequest.source(searchRequestBuilder);
 
 		} catch (Exception e) {
-			LogHelper.error(DeviceQueryBuilderHelper.class,
-					"::::::::Exception in using Elasticsearch QueryBuilder ::::::  " + e);
+			log.error("::::::::Exception in using Elasticsearch QueryBuilder ::::::  " + e);
 
 		}
 		return searchRequest;
@@ -631,25 +592,21 @@ public class DeviceQueryBuilderHelper {
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
 		try {
 
-			LogHelper.info(DeviceQueryBuilderHelper.class,
-					"<------Elasticsearch query mapping ForCommercial Bundle------>");
+			log.info("<------Elasticsearch query mapping ForCommercial Bundle------>");
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(idsOrNames.size());
 
 			searchRequestBuilder.fetchSource(includes, ex);
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
 			qb.must(QueryBuilders.termsQuery(STRING_ID + STRING_KEY_WORD, idsOrNames));
-			qb.must(QueryBuilders
-					.termQuery(STRING_ALL_TYPE + STRING_KEY_WORD, STRING_RAW + type)
-					.boost(2.0F)).boost(3.0F);
+			qb.must(QueryBuilders.termQuery(STRING_ALL_TYPE + STRING_KEY_WORD, STRING_RAW + type).boost(2.0F))
+					.boost(3.0F);
 			searchRequestBuilder.query(qb);
-			LogHelper.info(DeviceQueryBuilderHelper.class,
-					" <-----  Setting up Elasticsearch parameters and query For Commercial Bundle ----->");
+			log.info(" <-----  Setting up Elasticsearch parameters and query For Commercial Bundle ----->");
 			searchRequest.source(searchRequestBuilder);
 
 		} catch (Exception e) {
-			LogHelper.error(DeviceQueryBuilderHelper.class,
-					"::::::Exception in using Elasticsearch QueryBuilder For Commercial Bundle :::::: " + e);
+			log.error("::::::Exception in using Elasticsearch QueryBuilder For Commercial Bundle :::::: " + e);
 		}
 		return searchRequest;
 	}
@@ -666,19 +623,16 @@ public class DeviceQueryBuilderHelper {
 
 		searchRequestBuilder.fetchSource(includes, ex);
 		try {
-			LogHelper.info(DeviceQueryBuilderHelper.class, "<------Elasticsearch query mapping------>");
+			log.info("<------Elasticsearch query mapping------>");
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
 			qb.must(QueryBuilders.termQuery(STRING_ID + STRING_KEY_WORD, Id));
-			qb.must(QueryBuilders.termQuery(STRING_ALL_TYPE + STRING_KEY_WORD,
-					STRING_RAW + type));
+			qb.must(QueryBuilders.termQuery(STRING_ALL_TYPE + STRING_KEY_WORD, STRING_RAW + type));
 			searchRequestBuilder.query(qb);
-			LogHelper.info(DeviceQueryBuilderHelper.class,
-					" <-----  Setting up Elasticsearch parameters and query  ----->");
+			log.info(" <-----  Setting up Elasticsearch parameters and query  ----->");
 			searchRequest.source(searchRequestBuilder);
 
 		} catch (Exception e) {
-			LogHelper.error(DeviceQueryBuilderHelper.class,
-					"::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
+			log.error("::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
 
 		}
 		return searchRequest;

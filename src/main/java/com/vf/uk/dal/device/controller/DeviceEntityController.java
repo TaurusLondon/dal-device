@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
-import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
 import com.vf.uk.dal.device.datamodel.productgroups.Group;
 import com.vf.uk.dal.device.datamodel.productgroups.ProductGroupModelMap;
@@ -30,6 +29,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 
  * 1.Controller should able handle all the request and response for the device
@@ -38,10 +39,11 @@ import io.swagger.annotations.ApiResponses;
  * services inside the controller.
  *
  */
-@Api(tags="DeviceEntity")
+@Api(tags = "DeviceEntity")
 @RestController
 @RequestMapping(value = "")
 @EnableAspectJAutoProxy(proxyTargetClass = true)
+@Slf4j
 public class DeviceEntityController {
 	@Autowired
 	DeviceEntityService deviceEntiryService;
@@ -89,16 +91,13 @@ public class DeviceEntityController {
 		List<CommercialProduct> commProductDetails;
 
 		if (StringUtils.isBlank(productId) && StringUtils.isBlank(productName)) {
-			LogHelper.error(this,
-					"Query parameter(s) passed in the request is invalid " + ExceptionMessages.INVALID_QUERY_PARAMS);
+			log.info("Query parameter(s) passed in the request is invalid " + ExceptionMessages.INVALID_QUERY_PARAMS);
 			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
 		} else if (StringUtils.isNotBlank(productName)) {
-			LogHelper.info(this,
-					"Get the list of Product Details for the Product Name passed as request params: " + productName);
+			log.info("Get the list of Product Details for the Product Name passed as request params: " + productName);
 			commProductDetails = deviceEntiryService.getCommercialProductDetails(productName);
 		} else {
-			LogHelper.info(this,
-					"Get the list of Product Details for the Product Name passed as request params: " + productName);
+			log.info("Get the list of Product Details for the Product Name passed as request params: " + productName);
 			commProductDetails = deviceEntiryService.getCommercialProductDetails(productId);
 		}
 
@@ -120,18 +119,17 @@ public class DeviceEntityController {
 			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
-	@RequestMapping(value = "/productGroup", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@RequestMapping(value = "/productGroup", method = RequestMethod.GET, produces = {
+			MediaType.APPLICATION_JSON_VALUE })
 	public List<Group> getProductGroupByGroupType(
 			@NotNull @ApiParam(value = "Product group Type for getting product group to displayed. possible value can be like DEVICE_PAYM or DEVICE_PAYG") @RequestParam(value = "groupType", required = true) String groupType) {
 		List<Group> groupDetails;
 
 		if (StringUtils.isNotBlank(groupType)) {
-			LogHelper.info(this,
-					"Get the list of Product Details for the Product Id passed as request params: " + groupType);
+			log.info("Get the list of Product Details for the Product Id passed as request params: " + groupType);
 			groupDetails = deviceEntiryService.getProductGroupByType(groupType);
 		} else {
-			LogHelper.error(this,
-					" Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
+			log.info(" Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
 			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
 		}
 		return groupDetails;
@@ -160,12 +158,10 @@ public class DeviceEntityController {
 		ProductGroupModelMap productGroupModelDetails;
 
 		if (StringUtils.isBlank(productId)) {
-			LogHelper.error(this,
-					"Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
+			log.info("Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
 			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
 		} else {
-			LogHelper.info(this,
-					"Get the list of Product Details for the Product Id (s) passed as request params: " + productId);
+			log.info("Get the list of Product Details for the Product Id (s) passed as request params: " + productId);
 			productGroupModelDetails = deviceEntiryService.getMapOfProductModelForGetDeliveryMethod(productId);
 		}
 

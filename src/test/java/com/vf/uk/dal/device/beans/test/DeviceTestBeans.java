@@ -84,12 +84,6 @@ import com.vf.uk.dal.device.utils.ResponseMappingHelper;
 	@Bean public DeviceDao getDeviceDaoImpl() {
 		return new DeviceDaoImpl();
 	}
-
-	
-	@Bean public ConfigHelper getConfigHelper() {
-		return new ConfigHelper();
-	}
-
 	
 	@Bean public ResponseMappingHelper getResponseMappingHelper() {
 		return new ResponseMappingHelper();

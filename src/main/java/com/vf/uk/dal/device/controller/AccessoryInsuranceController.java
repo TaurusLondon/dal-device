@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.entity.AccessoryTileGroup;
 import com.vf.uk.dal.device.entity.Insurances;
 import com.vf.uk.dal.device.svc.AccessoryInsuranceService;
@@ -27,6 +26,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 1.Controller should able handle all the request and response for the device
@@ -39,6 +39,7 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @RequestMapping(value = "")
 @EnableAspectJAutoProxy(proxyTargetClass = true)
+@Slf4j
 public class AccessoryInsuranceController {
 
 	@Autowired
@@ -83,9 +84,9 @@ public class AccessoryInsuranceController {
 			@ApiParam(value = "Promotional offer applicable") @RequestParam(value = "offerCode", required = false) String offerCode) {
 		List<AccessoryTileGroup> listOfAccessoryTileGroup;
 		Validator.validateAccessoryFields(deviceId);
-		LogHelper.info(this, "Start -->  calling  getAccessoriesOfDevice");
+		log.info( "Start -->  calling  getAccessoriesOfDevice");
 		listOfAccessoryTileGroup = accessoryInsuranceService.getAccessoriesOfDevice(deviceId, journeyType, offerCode);
-		LogHelper.info(this, "End -->  calling  getAccessoriesOfDevice");
+		log.info( "End -->  calling  getAccessoriesOfDevice");
 		return listOfAccessoryTileGroup;
 
 	}
@@ -109,9 +110,9 @@ public class AccessoryInsuranceController {
 			@ApiParam(value = "user journey") @RequestParam(value = "journeyType", required = false) String journeyType) {
 
 		Insurances insurance;
-		LogHelper.info(this, "Start -->  calling  getInusranceByDeviceId");
+		log.info( "Start -->  calling  getInusranceByDeviceId");
 		Validator.validateInsuranceDetails(deviceId);
-		LogHelper.info(this, "End -->  calling  getInsuranceDeviceId");
+		log.info( "End -->  calling  getInsuranceDeviceId");
 		insurance = accessoryInsuranceService.getInsuranceByDeviceId(deviceId, journeyType);
 		return insurance;
 
