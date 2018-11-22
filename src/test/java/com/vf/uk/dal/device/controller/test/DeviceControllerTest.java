@@ -17,11 +17,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.client.RestTemplate;
 
-import com.vf.uk.dal.common.context.ServiceContext;
-import com.vf.uk.dal.common.context.URLParamContext;
-import com.vf.uk.dal.common.urlparams.FilterCriteria;
-import com.vf.uk.dal.common.urlparams.FilterOperator;
-import com.vf.uk.dal.common.urlparams.PaginationCriteria;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
 import com.vf.uk.dal.device.beans.test.DeviceTestBeans;
 import com.vf.uk.dal.device.common.test.CommonMethods;
@@ -252,11 +247,8 @@ public class DeviceControllerTest {
 
 	@Test
 	public void invalidRequestDeviceList() {
-		PaginationCriteria paginationCriteria;
 		try {
-			paginationCriteria = new PaginationCriteria(-9, -1);
-			ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
-			deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple", "iPhone-7", "White",
+			deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", -1, -9, "Apple", "iPhone-7", "White",
 					"iOS 9", "32 GB", null, "Great Camera", null, "invalid", null, "W_HH_OC_02");
 		} catch (Exception e) {
 			Assert.assertEquals("Invalid include recommendation value passed", e.getMessage());
@@ -265,22 +257,16 @@ public class DeviceControllerTest {
 			deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple", "iPhone-7", "White",
 					"iOS 9", "32 GB", null, "Great Camera", null, "true", null, "W_HH_OC_02");
 		} catch (Exception ex) {
-			Assert.assertEquals("Page Size Value cannot be negative", ex.getMessage());
+			Assert.assertEquals("Please enter valid credit limit.", ex.getMessage());
 		}
 		try {
-			ServiceContext.URL_PARAM_CONTEXT.remove();
-			paginationCriteria = new PaginationCriteria(9, -1);
-			ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
-			deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple", "iPhone-7", "White",
+			deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", -1, 9, "Apple", "iPhone-7", "White",
 					"iOS 9", "32 GB", null, "Great Camera", null, "true", null, "W_HH_OC_02");
 		} catch (Exception ex1) {
 			Assert.assertEquals("Page Number Value cannot be negative", ex1.getMessage());
 		}
 		try {
-			ServiceContext.URL_PARAM_CONTEXT.remove();
-			paginationCriteria = new PaginationCriteria(9, 0);
-			ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
-			deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple", "iPhone-7", "White",
+			deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 0, 9, "Apple", "iPhone-7", "White",
 					"iOS 9", "32 GB", "123456", "Great Camera", null, "true", null, "W_HH_OC_02");
 		} catch (Exception ex2) {
 			Assert.assertEquals("Invalid MSISDN passed in the request", ex2.getMessage());

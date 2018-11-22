@@ -8,9 +8,11 @@ import org.apache.commons.lang.StringUtils;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.exception.SystemException;
-import com.vf.uk.dal.common.logger.LogHelper;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class Validator {
 	
 	private Validator() {
@@ -40,10 +42,10 @@ public class Validator {
 	 */
 	public static void validateDeviceId(String deviceId) {
 		if (StringUtils.isBlank(deviceId)) {
-			LogHelper.error(Validator.class, "DeviceId is null");
+			log.error( "DeviceId is null");
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
 		} else if (Validator.validateId(deviceId)) {
-			LogHelper.error(Validator.class, "DeviceId is Invalid");
+			log.error( "DeviceId is Invalid");
 			throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 		}
 	}
@@ -240,7 +242,7 @@ public class Validator {
 				try {
 					creditLimitparam = Float.parseFloat(creditLimit);
 				} catch (NumberFormatException ex) {
-					LogHelper.error(Validator.class, "Credit limit value not correct " + ex);
+					log.error( "Credit limit value not correct " + ex);
 					throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
 				}
 			}
@@ -260,29 +262,29 @@ public class Validator {
 	public static void validateForDeviceList(String sortCriteria, String sortCriteriaLocal, String groupType,
 			String productClass) {
 		if (sortCriteria == null || sortCriteria.isEmpty()) {
-			LogHelper.error(Validator.class, "sortCriteria is null");
+			log.error( "sortCriteria is null");
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_SORT);
 		}
 		if (StringUtils.isNotBlank(sortCriteriaLocal) && !Validator.validateSortCriteria(sortCriteriaLocal)) {
-			LogHelper.error(Validator.class, "Received sortCriteria is invalid.");
+			log.error( "Received sortCriteria is invalid.");
 			throw new ApplicationException(ExceptionMessages.RECEVIED_INVALID_SORTCRITERIA);
 		}
 
 		if (groupType == null || groupType.isEmpty()) {
-			LogHelper.error(Validator.class, "Group Type is null");
+			log.error( "Group Type is null");
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_GROUPTYPE);
 		}
 		if (productClass == null || productClass.isEmpty()) {
-			LogHelper.error(Validator.class, "productClass is null");
+			log.error( "productClass is null");
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_PRODUCT_CLASS);
 		}
 		if (!productClass.equalsIgnoreCase(STRING_HANDSET)) {
-			LogHelper.error(Validator.class, "Invalid Product class");
+			log.error( "Invalid Product class");
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_PRODUCT_CLASS);
 		}
 		if (!groupType.equalsIgnoreCase(STRING_DEVICE_PAYM)
 				&& !groupType.equalsIgnoreCase(STRING_DEVICE_PAYG)) {
-			LogHelper.error(Validator.class, "Invalid Group Type");
+			log.error( "Invalid Group Type");
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_GROUP_TYPE);
 		}
 
@@ -296,10 +298,10 @@ public class Validator {
 	public static void validateForPAYG(String journeytype, String offerCode) {
 		if (StringUtils.equalsIgnoreCase(JOURNEY_TYPE_UPGRADE, journeytype)
 				|| StringUtils.equalsIgnoreCase(JOURNEY_TYPE_SECONDLINE, journeytype)) {
-			LogHelper.error(Validator.class, "JourneyType is not compatible for given GroupType");
+			log.error( "JourneyType is not compatible for given GroupType");
 			throw new ApplicationException(ExceptionMessages.INVALID_GROUP_TYPE_JOURNEY_TYPE);
 		} else if (StringUtils.isNotBlank(offerCode)) {
-			LogHelper.error(Validator.class, "offerCode is not compatible for given GroupType");
+			log.error( "offerCode is not compatible for given GroupType");
 			throw new ApplicationException(ExceptionMessages.INVALID_GROUP_TYPE_OFFER_CODE);
 		}
 	}
@@ -315,24 +317,24 @@ public class Validator {
 	public static String validateAllParameters(String make, String model, String groupType, String journeyType) {
 		String journeyTypeLocal = null;
 		if (make == null || make.isEmpty()) {
-			LogHelper.error(Validator.class, "make is null");
+			log.error( "make is null");
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_MAKE);
 		}
 		if (model == null || model.isEmpty()) {
-			LogHelper.error(Validator.class, "model is null");
+			log.error( "model is null");
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_MODEL);
 		}
 
 		if (groupType == null || groupType.isEmpty()) {
-			LogHelper.error(Validator.class, " Group Type is null ");
+			log.error( " Group Type is null ");
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_GROUPTYPE);
 		} else if (!Validator.validateGroupType(groupType)) {
-			LogHelper.error(Validator.class, "Invalid Group Type");
+			log.error( "Invalid Group Type");
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_GROUP_TYPE);
 		} else if (groupType.equalsIgnoreCase(STRING_DEVICE_PAYG) && (StringUtils.isNotBlank(journeyType)
 				&& (journeyType.equalsIgnoreCase(JOURNEY_TYPE_SECONDLINE)
 						|| journeyType.equalsIgnoreCase(JOURNEY_TYPE_UPGRADE)))) {
-			LogHelper.error(Validator.class, "JourneyType is Not Compatible with given GroupType");
+			log.error( "JourneyType is Not Compatible with given GroupType");
 			throw new ApplicationException(ExceptionMessages.INVALID_GROUP_TYPE_JOURNEY_TYPE);
 		} else if (groupType.equalsIgnoreCase(STRING_DEVICE_PAYM)) {
 			journeyTypeLocal = journeyType;
@@ -355,7 +357,7 @@ public class Validator {
 			String creditLimit) {
 		Double creditLimitParam;
 		if (deviceId != null && !deviceId.matches(numberExp)) {
-			LogHelper.error(Validator.class, ExceptionMessages.INVALID_DEVICE);
+			log.error( ExceptionMessages.INVALID_DEVICE);
 			throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 		}
 		creditLimitParam = validateCreditValue(creditLimit);
@@ -369,7 +371,7 @@ public class Validator {
 		}
 
 		if (bundleId != null && (!bundleId.matches(numberExp) || bundleId.matches("[0]*"))) {
-			LogHelper.error(Validator.class, ExceptionMessages.INVALID_BUNDLE);
+			log.error( ExceptionMessages.INVALID_BUNDLE);
 			throw new ApplicationException(ExceptionMessages.INVALID_BUNDLE_ID);
 		}
 		return creditLimitParam;
@@ -397,12 +399,12 @@ public class Validator {
 	public static void validateAccessoryFields(String deviceId) {
 		if (StringUtils.isNotBlank(deviceId)) {
 			if (!deviceId.matches(numberExp)) {
-				LogHelper.error(Validator.class, ExceptionMessages.INVALID_DEVICE);
+				log.error( ExceptionMessages.INVALID_DEVICE);
 				throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 			}
 
 		} else {
-			LogHelper.error(Validator.class, DEVICE_ID_IS_EMPTY);
+			log.error( DEVICE_ID_IS_EMPTY);
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
 		}
 	}
@@ -414,11 +416,11 @@ public class Validator {
 	public static void validateInsuranceDetails(String deviceId) {
 		if (StringUtils.isNotBlank(deviceId)) {
 			if (!deviceId.matches(numberExp)) {
-				LogHelper.error(Validator.class, ExceptionMessages.INVALID_DEVICE);
+				log.error( ExceptionMessages.INVALID_DEVICE);
 				throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 			}
 		} else {
-			LogHelper.error(Validator.class, DEVICE_ID_IS_EMPTY);
+			log.error( DEVICE_ID_IS_EMPTY);
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
 		}
 	}
@@ -431,11 +433,11 @@ public class Validator {
 	public static void validateDeviceDetails(String deviceId) {
 		if (StringUtils.isNotBlank(deviceId)) {
 			if (!deviceId.matches(numberExp)) {
-				LogHelper.error(Validator.class, ExceptionMessages.INVALID_DEVICE);
+				log.error( ExceptionMessages.INVALID_DEVICE);
 				throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 			}
 		} else {
-			LogHelper.error(Validator.class, DEVICE_ID_IS_EMPTY);
+			log.error( DEVICE_ID_IS_EMPTY);
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
 		}
 	}
@@ -448,10 +450,10 @@ public class Validator {
 	public static void getJourneyAndOfferCodeValidationForPAYG(String offerCode, String journeyType) {
 		if (StringUtils.isNotBlank(journeyType) && (journeyType.equalsIgnoreCase(JOURNEY_TYPE_SECONDLINE)
 				|| journeyType.equalsIgnoreCase(JOURNEY_TYPE_UPGRADE))) {
-			LogHelper.error(Validator.class, "JourneyType is not compatible for given DeviceId");
+			log.error( "JourneyType is not compatible for given DeviceId");
 			throw new ApplicationException(ExceptionMessages.INVALID_DEVICEID_JOURNEY_TYPE);
 		} else if (StringUtils.isNotBlank(offerCode)) {
-			LogHelper.error(Validator.class, "offerCode is not compatible for given DeviceId");
+			log.error( "offerCode is not compatible for given DeviceId");
 			throw new ApplicationException(ExceptionMessages.INVALID_DEVICEID_OFFER_CODE);
 		}
 	}
