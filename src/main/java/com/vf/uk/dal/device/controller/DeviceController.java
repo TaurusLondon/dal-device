@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vf.uk.dal.common.context.ServiceContext;
 import com.vf.uk.dal.common.exception.ApplicationException;
-import com.vf.uk.dal.common.urlparams.PaginationCriteria;
 import com.vf.uk.dal.device.entity.DeviceTile;
 import com.vf.uk.dal.device.entity.FacetedDevice;
 import com.vf.uk.dal.device.svc.DeviceService;
@@ -131,8 +129,8 @@ public class DeviceController {
 			@NotNull @ApiParam(value = "Values on which the attributes should be filtered upon.", required = true) @RequestParam(value = "productClass", required = true) String productClass,
 			@NotNull @ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"DEVICE_PAYM\" or \"DEVICE_PAYG\" or \"DATA_DEVICE_PAYM\".", required = true) @RequestParam(value = "groupType", required = true) String groupType,
 			@NotNull @ApiParam(value = "Values of attributes based on which solr will provide the sorted response, like Most Popular(Priority),Rating, New Releases, Brand(a-z)(z-a) but need to pass EquipmentMake to api, MonthlyPrice(lo-hi)(hi-lo)(Need to pass RecurringCharge).", required = true) @RequestParam(value = "sort", required = true) String sort,
-			@ApiParam(value = "Page Number") @RequestParam(value = "pageNumber", required = false) Integer pageNumber,
-			@ApiParam(value = "Page Size") @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "Page Number") @RequestParam(value = "pageNumber", required = false, defaultValue = "${icp.service.defaultPageNumber}") Integer pageNumber,
+			@ApiParam(value = "Page Size") @RequestParam(value = "pageSize", required = false, defaultValue = "${icp.service.defaultPageSize}") Integer pageSize,
 			@ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"apple\". Make is also known as Manufacturer.") @RequestParam(value = "make", required = false) String make,
 			@ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"iphone7\".", required = false) @RequestParam(value = "model", required = false) String model,
 			@ApiParam(value = "Filter by Colour of the device as in specification groups. Please note the value of this filter should be passed in double quotes. example: colour = \"Black\",\"Gold\"") @RequestParam(value = "color", required = false) String color,
@@ -149,14 +147,9 @@ public class DeviceController {
 		if (StringUtils.isNotBlank(includeRecommendations)) {
 			Validator.validateIncludeRecommendation(includeRecommendations);
 		}
-		int pageNumberParam = 0;
-		int pageSizeParam = 0;
-		PaginationCriteria paginationCriteria = ServiceContext.getPaginationCriteria();
-		if (paginationCriteria != null) {
-			pageNumberParam = paginationCriteria.getPageNumber();
-			pageSizeParam = paginationCriteria.getPageSize();
-			Validator.validatePageSize(pageSizeParam, pageNumberParam);
-		}
+		
+		Validator.validatePageSize(pageSize, pageNumber);
+			
 		if (StringUtils.isNotBlank(msisdn)) {
 			Validator.validateMSISDN(msisdn, includeRecommendations);
 		}
@@ -166,9 +159,8 @@ public class DeviceController {
 		if (creditLimit != null) {
 			creditLimitparam = Validator.validateForCreditLimit(creditLimit);
 		}
-		String sortCriteria = ServiceContext.getSortCriteria();
-		facetedDevice = deviceService.getDeviceList(productClass, make, model, groupType, sortCriteria, pageNumberParam,
-				pageSizeParam, capacity, color, operatingSystem, mustHaveFeatures, journeyType, creditLimitparam,
+		facetedDevice = deviceService.getDeviceList(productClass, make, model, groupType, sort, pageNumber,
+				pageSize, capacity, color, operatingSystem, mustHaveFeatures, journeyType, creditLimitparam,
 				offerCode, msisdn, includeRecommendationsParam);
 		return facetedDevice;
 	}
