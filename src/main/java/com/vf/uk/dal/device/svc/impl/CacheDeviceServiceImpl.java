@@ -1,6 +1,7 @@
 package com.vf.uk.dal.device.svc.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -429,10 +430,25 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 				.getPriceDetailsUsingBundleHarwareTrouple(bundleAndHardwareTupleList, null, null);
 		if (listOfPriceForBundleAndHardwareForLeadPlanIds != null
 				&& !listOfPriceForBundleAndHardwareForLeadPlanIds.isEmpty()) {
-			DeviceUtils.getLeadPlanMap(leadPlanIdPriceMap, listOfPriceForBundleAndHardwareForLeadPlanIds);
+			getLeadPlanMap(leadPlanIdPriceMap, listOfPriceForBundleAndHardwareForLeadPlanIds);
 		}
 	}
+	/**
+	 * 
+	 * @param leadPlanIdPriceMap
+	 * @param listOfPriceForBundleAndHardwareForLeadPlanIds
+	 */
+	public void getLeadPlanMap(Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap,
+			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareForLeadPlanIds) {
+		listOfPriceForBundleAndHardwareForLeadPlanIds.forEach(priceForBundleAndHardware -> {
 
+			if (priceForBundleAndHardware != null && priceForBundleAndHardware.getHardwarePrice() != null
+					&& priceForBundleAndHardware.getHardwarePrice().getOneOffPrice() != null) {
+				leadPlanIdPriceMap.put(priceForBundleAndHardware.getHardwarePrice().getHardwareId(),
+						priceForBundleAndHardware);
+			}
+		});
+	}
 	/**
 	 * 
 	 * @param listOfDeviceId
@@ -514,8 +530,8 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			for (Group productGroup : listOfProductGroup) {
 				getLeadMembermapForCacheDevicePayg(listOfDeviceId, leadMemberMap, groupIdAndNameMap, productGroup);
 			}
-			Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap = new ConcurrentHashMap<>();
-			Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap = new ConcurrentHashMap<>();
+			Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap = Collections.synchronizedMap( new HashMap<>());
+			Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap = Collections.synchronizedMap( new HashMap<>());
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList = new ArrayList<>();
 			if (!listOfDeviceId.isEmpty()) {
 				List<CommercialProduct> listOfCommercialProduct = deviceEs.getListOfCommercialProduct(listOfDeviceId);

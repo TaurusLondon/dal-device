@@ -239,23 +239,6 @@ public class DeviceUtils {
 
 	/**
 	 * 
-	 * @param leadPlanIdPriceMap
-	 * @param listOfPriceForBundleAndHardwareForLeadPlanIds
-	 */
-	public static void getLeadPlanMap(Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap,
-			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareForLeadPlanIds) {
-		listOfPriceForBundleAndHardwareForLeadPlanIds.forEach(priceForBundleAndHardware -> {
-
-			if (priceForBundleAndHardware != null && priceForBundleAndHardware.getHardwarePrice() != null
-					&& priceForBundleAndHardware.getHardwarePrice().getOneOffPrice() != null) {
-				leadPlanIdPriceMap.put(priceForBundleAndHardware.getHardwarePrice().getHardwareId(),
-						priceForBundleAndHardware);
-			}
-		});
-	}
-
-	/**
-	 * 
 	 * @param nonLeadPlanIdPriceMap
 	 * @param listOfPriceForBundleAndHardwareForNonLeadPlanIds
 	 */
