@@ -107,7 +107,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware;
 		log.info( "Get the price details for Bundle and Hardware list from Pricing API");
 		listOfPriceForBundleAndHardware = commonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode,
-				journeyType);
+				journeyType,null);
 		return listOfPriceForBundleAndHardware;
 	}
 
@@ -169,12 +169,12 @@ public class DeviceDaoImpl implements DeviceDao {
 	@Override
 	public CompletableFuture<List<PriceForBundleAndHardware>> getPriceForBundleAndHardwareListFromTupleListAsync(
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType,
-			String version) {
+			String version, String groupType) {
 		log.info( "Start -->  calling  getPriceForBundleAndHardwareListFromTupleList_PriceAPI");
 
 		return CompletableFuture.supplyAsync(() -> {
 			CatalogServiceAspect.CATALOG_VERSION.set(version);
-			return commonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode,journeyType);
+			return commonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode,journeyType, groupType);
 		});
 
 	}

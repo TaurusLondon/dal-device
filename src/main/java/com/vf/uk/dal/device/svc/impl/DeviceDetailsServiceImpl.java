@@ -39,7 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 public class DeviceDetailsServiceImpl implements DeviceDetailsService {
-	public static final String PAYG_DEVICE = "Mobile Phones";
+	public static final String PAYG_DEVICE = "Mobile Phones, Data Devices";
 	public static final String DATE_FORMAT_COHERENCE = "yyyy-MM-dd HH:mm:ss.SSS";
 	public static final String STRING_HANDSET = "Handset";
 	public static final String STRING_FOR_MEDIA_TYPE = "URL";
