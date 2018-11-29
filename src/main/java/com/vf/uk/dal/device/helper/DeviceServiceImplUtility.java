@@ -58,7 +58,7 @@ public class DeviceServiceImplUtility {
 	public static final String STRING_DEVICE_PAYG = "DEVICE_PAYG";
 	public static final String DATE_FORMAT = "yyyy-MM-dd";
 	public static final String STRING_HANDSET = "Handset";
-	public static final String PAYG_DEVICE = "Mobile Phones";
+	public static final String PAYG_DEVICE = "Mobile Phones, Data Devices";
 	public static final String LIMITED_TIME_DISCOUNT = "limited_time";
 	public static final String FULL_DURATION_DISCOUNT = "full_duration";
 	public static final String STRING_DATA_DEVICE = "Data Device";
@@ -948,7 +948,7 @@ public class DeviceServiceImplUtility {
 		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = null;
 		if (bundleAndHardwareTupleList != null && !bundleAndHardwareTupleList.isEmpty()) {
 			listOfPriceForBundleAndHardware = commonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode,
-					journeyTypeLocal);
+					journeyTypeLocal,null);
 		}
 		return listOfPriceForBundleAndHardware;
 	}
