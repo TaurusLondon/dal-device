@@ -45,7 +45,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 	public static final String STRING_PRICE_ESTABLISHED_LABEL = "merchandisingPromotions.merchandisingPromotion.priceEstablishedLabel";
 	public static final String STRING_PRICE_PROMOTION_MEDIA = "merchandisingPromotions.merchandisingPromotion.promotionMedia";
 	public static final String DATE_FORMAT_COHERENCE = "yyyy-MM-dd HH:mm:ss.SSS";
-	public static final String PAYG_DEVICE = "Mobile Phones";
+	public static final String PAYG_DEVICE = "Mobile Phones, Data Devices";
 	public static final String STRING_PROMOTION_MEDIA = "merchandisingPromotions.merchandisingPromotion.PromotionMedia";
 	public static final String STRING_OFFERS_LABEL = "merchandisingPromotions.merchandisingPromotion.label";
 	public static final String STRING_OFFERS_DESCRIPTION = "merchandisingPromotions.merchandisingPromotion.description";

@@ -110,9 +110,11 @@ public class CommonUtility {
 	 * @return List<PriceForBundleAndHardware>
 	 */
 	public List<PriceForBundleAndHardware> getPriceDetails(List<BundleAndHardwareTuple> bundleAndHardwareTupleList,
-			String offerCode, String journeyType) {
+			String offerCode, String journeyType, String groupType) {
 		RequestForBundleAndHardware requestForBundleAndHardware = new RequestForBundleAndHardware();
+		String billingType=getBillingType(groupType);
 		requestForBundleAndHardware.setBundleAndHardwareList(bundleAndHardwareTupleList);
+		requestForBundleAndHardware.setBillingType(billingType);
 		requestForBundleAndHardware.setOfferCode(offerCode);
 		requestForBundleAndHardware.setPackageType(journeyType);
 		PriceForBundleAndHardware[] client = new PriceForBundleAndHardware[7000];
@@ -254,18 +256,20 @@ public class CommonUtility {
 	 * @return List<PriceForBundleAndHardware>
 	 */
 	public List<PriceForBundleAndHardware> getPriceDetailsUsingBundleHarwareTrouple(
-			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType) {
+			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType, String groupType) {
 		List<PriceForBundleAndHardware> priceList = null;
 		HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
 		try {
 			RequestForBundleAndHardware requestForBundleAndHardware = new RequestForBundleAndHardware();
+			String billingType=getBillingType(groupType);
+			requestForBundleAndHardware.setBillingType(billingType);
 			requestForBundleAndHardware.setBundleAndHardwareList(bundleAndHardwareTupleList);
 			requestForBundleAndHardware.setOfferCode(offerCode);
 			requestForBundleAndHardware.setPackageType(journeyType);
 			log.info("Start --> Calling  Price.calculateForBundleAndHardware journeyType " + journeyType + " OfferCode "
 					+ offerCode + " Index Version " + CatalogServiceAspect.CATALOG_VERSION.get());
 			/**
-			 * Price API throwing timeout exception while calling PAYG price to
+			 * Price API throwing timeout exception while calling PAYG price t
 			 * handle that override timeout
 			 */
 			factory.setConnectTimeout(300000);
@@ -1078,6 +1082,14 @@ public class CommonUtility {
 					merchandisingMedia.add(mediaLink);
 				}
 			}
+		}
+	}
+
+	private String getBillingType(String groupType) {
+		if (StringUtils.equalsIgnoreCase(groupType, "DEVICE_PAYG")) {
+			return "payg";
+		} else {
+			return "paym";
 		}
 	}
 }

@@ -150,7 +150,6 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			}
 
 			if (commercialProductsMatchedMemList != null && !commercialProductsMatchedMemList.isEmpty()) {
-
 				if (listOfDeviceGroupMember != null && !listOfDeviceGroupMember.isEmpty()) {
 					String leadMemberId = deviceServiceCommonUtility
 							.getMemeberBasedOnRules_Implementation(listOfDeviceGroupMember, journeyType);
@@ -158,6 +157,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 						deviceTile.setDeviceId(leadMemberId);
 						deviceTile.setRating(deviceServiceCommonUtility.getDeviceTileRating(leadMemberId));
 					}
+					
 					List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = new ArrayList<>();
 					List<BundleAndHardwarePromotions> listOfBundleAndHardPromo = null;
 					Map<String, BundleAndHardwarePromotions> bundleAndHardwarePromotionsMap = new HashMap<>();
@@ -166,7 +166,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 							&& !bundleAndHardwareTupleList.isEmpty()) {
 						CompletableFuture<List<PriceForBundleAndHardware>> calculatePriceTask = deviceDao
 								.getPriceForBundleAndHardwareListFromTupleListAsync(bundleAndHardwareTupleList,
-										offerCode, journeyType, CatalogServiceAspect.CATALOG_VERSION.get());
+										offerCode, journeyType, CatalogServiceAspect.CATALOG_VERSION.get(),groupType);
 						CompletableFuture<List<com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions>> promotionTask = deviceDao
 								.getBundleAndHardwarePromotionsListFromBundleListAsync(bundleAndHardwareTupleList,
 										journeyType, CatalogServiceAspect.CATALOG_VERSION.get());
@@ -457,7 +457,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			// Calling Pricing Api
 			if (bundleAndHardwareTupleListPAYG != null && !bundleAndHardwareTupleListPAYG.isEmpty()) {
 				listOfPriceForBundleAndHardware = commonUtility.getPriceDetails(new ArrayList<>(bundleAndHardwareTupleListPAYG), null,
-						null);
+						null, groupType);
 			}
 			Map<String, BundleAndHardwarePromotions> bundleAndHardwarePromotionsMap = new HashMap<>();
 			if (bundleAndHardwareTupleListPAYG != null && !bundleAndHardwareTupleListPAYG.isEmpty()) {
@@ -567,11 +567,11 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 					if (isConditionalAcceptJourney && commercialProduct != null) {
 						isConditional = true;
 						if (isLeadPlanWithinCreditLimit_Implementation(commercialProduct, creditLimit,
-								listOfPriceForBundleAndHardwareLocal, journeyType)) {
+								listOfPriceForBundleAndHardwareLocal, journeyType,groupType)) {
 							comBundle = deviceEs.getCommercialBundle(commercialProduct.getLeadPlanId());
 						} else {
 							comBundle = getLeadBundleBasedOnAllPlans_Implementation(creditLimit, commercialProduct,
-									listOfPriceForBundleAndHardwareLocal, journeyType);
+									listOfPriceForBundleAndHardwareLocal, journeyType, groupType);
 						}
 						List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
 						if (comBundle != null) {
@@ -729,7 +729,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 	 * @return
 	 */
 	public boolean isLeadPlanWithinCreditLimit_Implementation(CommercialProduct product, Double creditLimit,
-			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware, String journeyType) {
+			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware, String journeyType, String groupType) {
 		List<BundleAndHardwareTuple> bundles = new ArrayList<>();
 
 		BundleAndHardwareTuple tuple = new BundleAndHardwareTuple();
@@ -739,7 +739,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 		bundles.add(tuple);
 
 		List<PriceForBundleAndHardware> priceForBundleAndHardwares = commonUtility.getPriceDetails(bundles, null,
-				journeyType);
+				journeyType,groupType);
 
 		if (DeviceServiceImplUtility.isPlanPriceWithinCreditLimit_Implementation(creditLimit,
 				priceForBundleAndHardwares, product.getLeadPlanId())) {
@@ -763,7 +763,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 	 */
 	public CommercialBundle getLeadBundleBasedOnAllPlans_Implementation(Double creditLimit,
 			CommercialProduct commercialProduct, List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware,
-			String journeyType) {
+			String journeyType, String groupType) {
 
 		if (CollectionUtils.isNotEmpty(commercialProduct.getListOfCompatiblePlanIds())) {
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList = new ArrayList<>();
@@ -782,7 +782,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			List<PriceForBundleAndHardware> priceForBundleAndHardwares = null;
 			if (CollectionUtils.isNotEmpty(bundleAndHardwareTupleList)) {
 				priceForBundleAndHardwares = commonUtility.getPriceDetails(bundleAndHardwareTupleList, null,
-						journeyType);
+						journeyType, groupType);
 			}
 			if (priceForBundleAndHardwares != null && CollectionUtils.isNotEmpty(priceForBundleAndHardwares)) {
 				Iterator<PriceForBundleAndHardware> iterator = priceForBundleAndHardwares.iterator();

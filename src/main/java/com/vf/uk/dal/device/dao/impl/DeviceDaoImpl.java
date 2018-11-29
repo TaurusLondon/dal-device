@@ -8,9 +8,6 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.http.entity.ContentType;
-import org.apache.http.message.BasicHeader;
-import org.apache.http.protocol.HTTP;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
@@ -107,7 +104,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware;
 		log.info( "Get the price details for Bundle and Hardware list from Pricing API");
 		listOfPriceForBundleAndHardware = commonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode,
-				journeyType);
+				journeyType,null);
 		return listOfPriceForBundleAndHardware;
 	}
 
@@ -169,12 +166,12 @@ public class DeviceDaoImpl implements DeviceDao {
 	@Override
 	public CompletableFuture<List<PriceForBundleAndHardware>> getPriceForBundleAndHardwareListFromTupleListAsync(
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType,
-			String version) {
+			String version, String groupType) {
 		log.info( "Start -->  calling  getPriceForBundleAndHardwareListFromTupleList_PriceAPI");
 
 		return CompletableFuture.supplyAsync(() -> {
 			CatalogServiceAspect.CATALOG_VERSION.set(version);
-			return commonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode,journeyType);
+			return commonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode,journeyType, groupType);
 		});
 
 	}
@@ -232,7 +229,7 @@ public class DeviceDaoImpl implements DeviceDao {
 
 			UpdateRequest updateRequestForNull = new UpdateRequest(CatalogServiceAspect.CATALOG_VERSION.get(), STRING_MODELS, id)
 					.doc(org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder().startObject().endObject());
-			restClient.update(updateRequestForNull);
+			restClient.update(updateRequestForNull,RequestOptions.DEFAULT);
 		} catch (IOException e) {
 			log.error( "::::::Exception From es ::::::" + e);
 		}
@@ -250,8 +247,9 @@ public class DeviceDaoImpl implements DeviceDao {
 			updateRequestForILSPromo.type(STRING_MODELS);
 			updateRequestForILSPromo.id(id);
 			updateRequestForILSPromo.source(data, XContentType.JSON);
-			restClient.index(updateRequestForILSPromo,
-					new BasicHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString()));
+			/*restClient.index(updateRequestForILSPromo,
+					new BasicHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString()));*/
+			restClient.index(updateRequestForILSPromo,RequestOptions.DEFAULT);
 		} catch (IOException e) {
 			log.error( "::::::Exception From es ::::::" + e);
 		}

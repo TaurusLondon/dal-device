@@ -987,7 +987,7 @@ public class DeviceTest {
 			given(restTemplate.postForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(), ArgumentMatchers.any()))
 					.willReturn(obj);
 			CacheDeviceService.getIlsPriceWithOfferCodeAndJourney(listOfOfferCodesForUpgrade, listOfSecondLineOfferCode,
-					bundleHardwareTroupleMap, new HashMap<>());
+					bundleHardwareTroupleMap, new HashMap<>(),"DEVICE_PAYM");
 		} catch (IOException e) {
 		}
 

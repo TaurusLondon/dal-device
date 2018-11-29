@@ -84,7 +84,7 @@ public interface DeviceDao {
 	 */
 	public CompletableFuture<List<PriceForBundleAndHardware>> getPriceForBundleAndHardwareListFromTupleListAsync(
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String packageType,
-			String version);
+			String version, String groupType);
 
 	/**
 	 * 

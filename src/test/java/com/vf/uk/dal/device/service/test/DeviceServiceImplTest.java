@@ -154,7 +154,7 @@ public class DeviceServiceImplTest {
 		given(response.getListOfCommercialBundleFromJson(ArgumentMatchers.any()))
 				.willReturn(Arrays.asList(CommonMethods.getCommercialBundle()));
 		given(deviceDAOMock.getPriceForBundleAndHardwareListFromTupleListAsync(ArgumentMatchers.anyList(), ArgumentMatchers.anyString(),
-				ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
+				ArgumentMatchers.anyString(), ArgumentMatchers.anyString(),ArgumentMatchers.anyString()))
 						.willReturn(CommonMethods.getPriceForBundleAndHardwareListFromTupleListAsync());
 		given(deviceDAOMock.getBundleAndHardwarePromotionsListFromBundleListAsync(ArgumentMatchers.anyList(),
 				ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
@@ -697,13 +697,13 @@ public class DeviceServiceImplTest {
 		given(response.getListOfCommercialBundleFromJson(ArgumentMatchers.any()))
 				.willReturn(Arrays.asList(CommonMethods.getCommercialBundle()));
 		given(deviceDAOMock.getPriceForBundleAndHardwareListFromTupleListAsync(ArgumentMatchers.anyList(), ArgumentMatchers.anyString(),
-				ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
+				ArgumentMatchers.anyString(), ArgumentMatchers.anyString(),ArgumentMatchers.anyString()))
 						.willReturn(CommonMethods.getPriceForBundleAndHardwareListFromTupleListAsync());
 		given(deviceDAOMock.getBundleAndHardwarePromotionsListFromBundleListAsync(ArgumentMatchers.anyList(),
 				ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
 						.willReturn(CommonMethods.getBundleAndHardwarePromotionsListFromBundleListAsync());
 
-		PriceForBundleAndHardware[] obj = null;
+		PriceForBundleAndHardware[] obj = null; 
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 
@@ -795,13 +795,14 @@ public class DeviceServiceImplTest {
 		} catch (IOException e) {
 
 		}
+		requestForBundleAndHardware.setBillingType("payg");
 		requestForBundleAndHardware.setBundleAndHardwareList(bundleList);
 		requestForBundleAndHardware.setPackageType("Upgrade");
 		given(restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
 				requestForBundleAndHardware, PriceForBundleAndHardware[].class)).willReturn(obj);
 
 		Assert.assertNotNull(deviceMakeAndModelServiceImpl.getLeadBundleBasedOnAllPlans_Implementation((double) (40),
-				CommonMethods.getCommercialProduct(), CommonMethods.getPriceForBundleAndHardware(), "Upgrade"));
+				CommonMethods.getCommercialProduct(), CommonMethods.getPriceForBundleAndHardware(), "Upgrade","DEVICE_PAYG"));
 	}
 
 	@Test
@@ -961,11 +962,9 @@ public class DeviceServiceImplTest {
 
 	@Test
 	public void TestgetDeviceDetailsResponseJourneyUGNull() {
-		try {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
-			Assert.assertNull(deviceDetailsService.getDeviceDetailsResponse("093353", null, JOURNEY_TYPE_UPGRADE, cp));
-		} catch (Exception e) {
-		}
+			Assert.assertNotNull(deviceDetailsService.getDeviceDetailsResponse("093353", null, JOURNEY_TYPE_UPGRADE, cp));
+		
 	}
 
 	@Test
@@ -1054,7 +1053,7 @@ public class DeviceServiceImplTest {
 	@Test
 	public void notNullisLeadPlanWithinCreditLimit_Implementation() {
 		Assert.assertNotNull(deviceMakeAndModelServiceImpl.isLeadPlanWithinCreditLimit_Implementation(CommonMethods.getCommercialProduct(),
-				(double) 40, CommonMethods.getPriceForBundleAndHardware(), "Upgrade"));
+				(double) 40, CommonMethods.getPriceForBundleAndHardware(), "Upgrade","DEVICE_PAYM"));
 	}
 
 	@Test
@@ -1768,7 +1767,7 @@ public class DeviceServiceImplTest {
 	public void getPriceDetailsUsingBundleHarwareTrouple() {
 		try{
 			commonUtility.getPriceDetailsUsingBundleHarwareTrouple
-			(null, "121", "Acquisition");
+			(null, "121", "Acquisition","DEVICE_PAYM");
 			}
 			catch(Exception e){
 				Assert.assertEquals(ExceptionMessages.PRICING_API_EXCEPTION, e.getMessage());
