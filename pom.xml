@@ -216,16 +216,15 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<sonar.coverage.exclusions>
 			**/dao/**,
-			**/utils/ResponseMappingHelper.java,
+			**/converter/ResponseMappingHelper.java,
 			**/utils/ElasticSearchUtils.java,
 			**/utils/BazaarVoiceCache.java,
 			**/utils/ExceptionMessages.java,
-			**/config/SwaggerConfiguration.java,
-			**/conf/ElasticsearchRestCient.java,
+			**/configuration/SwaggerConfiguration.java,
+			**/configuration/ElasticsearchRestCient.java,
 			**/DeviceApplication.java,
-			**/datamodel/**,
-			**/device/entity/**,
-			**/utility/**
+			**/model/**,
+			**/entity/**,
 		</sonar.coverage.exclusions>
 		<swaggerVersion>10.2.0</swaggerVersion>
 	</properties>
