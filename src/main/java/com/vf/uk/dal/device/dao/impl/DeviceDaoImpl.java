@@ -8,9 +8,6 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.http.entity.ContentType;
-import org.apache.http.message.BasicHeader;
-import org.apache.http.protocol.HTTP;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
@@ -232,7 +229,7 @@ public class DeviceDaoImpl implements DeviceDao {
 
 			UpdateRequest updateRequestForNull = new UpdateRequest(CatalogServiceAspect.CATALOG_VERSION.get(), STRING_MODELS, id)
 					.doc(org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder().startObject().endObject());
-			restClient.update(updateRequestForNull);
+			restClient.update(updateRequestForNull,RequestOptions.DEFAULT);
 		} catch (IOException e) {
 			log.error( "::::::Exception From es ::::::" + e);
 		}
@@ -250,8 +247,9 @@ public class DeviceDaoImpl implements DeviceDao {
 			updateRequestForILSPromo.type(STRING_MODELS);
 			updateRequestForILSPromo.id(id);
 			updateRequestForILSPromo.source(data, XContentType.JSON);
-			restClient.index(updateRequestForILSPromo,
-					new BasicHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString()));
+			/*restClient.index(updateRequestForILSPromo,
+					new BasicHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString()));*/
+			restClient.index(updateRequestForILSPromo,RequestOptions.DEFAULT);
 		} catch (IOException e) {
 			log.error( "::::::Exception From es ::::::" + e);
 		}
