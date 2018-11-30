@@ -21,77 +21,77 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vf.uk.dal.device.datamodel.bundle.Allowance;
-import com.vf.uk.dal.device.datamodel.bundle.Availability;
-import com.vf.uk.dal.device.datamodel.bundle.BundleControl;
-import com.vf.uk.dal.device.datamodel.bundle.BundleModel;
-import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
-import com.vf.uk.dal.device.datamodel.bundle.Commitment;
-import com.vf.uk.dal.device.datamodel.bundle.DevicePrice;
-import com.vf.uk.dal.device.datamodel.bundle.ImageURL;
-import com.vf.uk.dal.device.datamodel.bundle.LineRental;
-import com.vf.uk.dal.device.datamodel.bundle.ServiceProduct;
-import com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotionModel;
-import com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceModel;
-import com.vf.uk.dal.device.datamodel.product.BazaarVoice;
-import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
-import com.vf.uk.dal.device.datamodel.product.DeviceFinancingOption;
-import com.vf.uk.dal.device.datamodel.product.Duration;
-import com.vf.uk.dal.device.datamodel.product.Equipment;
-import com.vf.uk.dal.device.datamodel.product.MediaURL;
-import com.vf.uk.dal.device.datamodel.product.PriceDetail;
-import com.vf.uk.dal.device.datamodel.product.ProductAvailability;
-import com.vf.uk.dal.device.datamodel.product.ProductControl;
-import com.vf.uk.dal.device.datamodel.product.ProductGroups;
-import com.vf.uk.dal.device.datamodel.product.ProductModel;
-import com.vf.uk.dal.device.datamodel.product.PromoteAs;
-import com.vf.uk.dal.device.datamodel.productgroups.Count;
-import com.vf.uk.dal.device.datamodel.productgroups.FacetField;
-import com.vf.uk.dal.device.datamodel.productgroups.Group;
-import com.vf.uk.dal.device.datamodel.productgroups.Member;
-import com.vf.uk.dal.device.datamodel.productgroups.ProductGroupFacetModel;
-import com.vf.uk.dal.device.datamodel.productgroups.ProductGroupModel;
-import com.vf.uk.dal.device.entity.Accessory;
-import com.vf.uk.dal.device.entity.AccessoryTileGroup;
-import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
-import com.vf.uk.dal.device.entity.BundlePrice;
-import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
-import com.vf.uk.dal.device.entity.Colour;
-import com.vf.uk.dal.device.entity.Device;
-import com.vf.uk.dal.device.entity.DeviceDetails;
-import com.vf.uk.dal.device.entity.DeviceSummary;
-import com.vf.uk.dal.device.entity.DeviceTile;
-import com.vf.uk.dal.device.entity.Discount;
-import com.vf.uk.dal.device.entity.FacetedDevice;
-import com.vf.uk.dal.device.entity.HardwarePrice;
-import com.vf.uk.dal.device.entity.MediaLink;
-import com.vf.uk.dal.device.entity.MerchandisingControl;
-import com.vf.uk.dal.device.entity.MerchandisingPromotion;
-import com.vf.uk.dal.device.entity.MerchandisingPromotionsPackage;
-import com.vf.uk.dal.device.entity.MerchandisingPromotionsWrapper;
-import com.vf.uk.dal.device.entity.MetaData;
-import com.vf.uk.dal.device.entity.Price;
-import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
-import com.vf.uk.dal.device.entity.ProductGroupDetailsForDeviceList;
-import com.vf.uk.dal.device.entity.SourcePackageSummary;
-import com.vf.uk.dal.device.entity.Specification;
-import com.vf.uk.dal.device.entity.SpecificationGroup;
-import com.vf.uk.dal.device.entity.StepPricingInfo;
-import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
-import com.vf.uk.dal.utility.entity.BundleDetails;
-import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
-import com.vf.uk.dal.utility.entity.BundleDeviceAndProductsList;
-import com.vf.uk.dal.utility.entity.BundleHeader;
-import com.vf.uk.dal.utility.entity.InstalledProduct;
-import com.vf.uk.dal.utility.entity.Preferences;
-import com.vf.uk.dal.utility.entity.PriceForProduct;
-import com.vf.uk.dal.utility.entity.RecommendedProductListRequest;
-import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
-import com.vf.uk.dal.utility.solr.entity.Media;
-import com.vf.uk.dal.utility.solr.entity.OfferAppliedPriceDetails;
-import com.vf.uk.dal.utility.solr.entity.OneOffDiscountPrice;
-import com.vf.uk.dal.utility.solr.entity.OneOffPrice;
-import com.vf.uk.dal.utility.solr.entity.PriceInfo;
+import com.vf.uk.dal.device.client.entity.bundle.Allowance;
+import com.vf.uk.dal.device.client.entity.bundle.Availability;
+import com.vf.uk.dal.device.client.entity.bundle.BundleControl;
+import com.vf.uk.dal.device.client.entity.bundle.BundleDetails;
+import com.vf.uk.dal.device.client.entity.bundle.BundleDetailsForAppSrv;
+import com.vf.uk.dal.device.client.entity.bundle.BundleHeader;
+import com.vf.uk.dal.device.client.entity.bundle.BundleModel;
+import com.vf.uk.dal.device.client.entity.bundle.CommercialBundle;
+import com.vf.uk.dal.device.client.entity.bundle.Commitment;
+import com.vf.uk.dal.device.client.entity.bundle.DevicePrice;
+import com.vf.uk.dal.device.client.entity.bundle.ImageURL;
+import com.vf.uk.dal.device.client.entity.bundle.LineRental;
+import com.vf.uk.dal.device.client.entity.bundle.ServiceProduct;
+import com.vf.uk.dal.device.client.entity.customer.InstalledProduct;
+import com.vf.uk.dal.device.client.entity.customer.Preferences;
+import com.vf.uk.dal.device.client.entity.customer.RecommendedProductListRequest;
+import com.vf.uk.dal.device.client.entity.customer.SourcePackageSummary;
+import com.vf.uk.dal.device.client.entity.price.BundleAndHardwareTuple;
+import com.vf.uk.dal.device.client.entity.price.BundleDeviceAndProductsList;
+import com.vf.uk.dal.device.client.entity.price.BundlePrice;
+import com.vf.uk.dal.device.client.entity.price.HardwarePrice;
+import com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion;
+import com.vf.uk.dal.device.client.entity.price.Price;
+import com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware;
+import com.vf.uk.dal.device.client.entity.price.PriceForProduct;
+import com.vf.uk.dal.device.client.entity.price.StepPricingInfo;
+import com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwarePromotions;
+import com.vf.uk.dal.device.model.Accessory;
+import com.vf.uk.dal.device.model.AccessoryTileGroup;
+import com.vf.uk.dal.device.model.CacheDeviceTileResponse;
+import com.vf.uk.dal.device.model.Colour;
+import com.vf.uk.dal.device.model.Device;
+import com.vf.uk.dal.device.model.DeviceDetails;
+import com.vf.uk.dal.device.model.DeviceSummary;
+import com.vf.uk.dal.device.model.DeviceTile;
+import com.vf.uk.dal.device.model.Discount;
+import com.vf.uk.dal.device.model.FacetedDevice;
+import com.vf.uk.dal.device.model.MediaLink;
+import com.vf.uk.dal.device.model.MerchandisingControl;
+import com.vf.uk.dal.device.model.MerchandisingPromotionsPackage;
+import com.vf.uk.dal.device.model.MerchandisingPromotionsWrapper;
+import com.vf.uk.dal.device.model.MetaData;
+import com.vf.uk.dal.device.model.ProductGroupDetailsForDeviceList;
+import com.vf.uk.dal.device.model.Specification;
+import com.vf.uk.dal.device.model.SpecificationGroup;
+import com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotionModel;
+import com.vf.uk.dal.device.model.merchandisingpromotion.OfferAppliedPriceModel;
+import com.vf.uk.dal.device.model.product.BazaarVoice;
+import com.vf.uk.dal.device.model.product.CommercialProduct;
+import com.vf.uk.dal.device.model.product.DeviceFinancingOption;
+import com.vf.uk.dal.device.model.product.Duration;
+import com.vf.uk.dal.device.model.product.Equipment;
+import com.vf.uk.dal.device.model.product.MediaURL;
+import com.vf.uk.dal.device.model.product.PriceDetail;
+import com.vf.uk.dal.device.model.product.ProductAvailability;
+import com.vf.uk.dal.device.model.product.ProductControl;
+import com.vf.uk.dal.device.model.product.ProductGroups;
+import com.vf.uk.dal.device.model.product.ProductModel;
+import com.vf.uk.dal.device.model.product.PromoteAs;
+import com.vf.uk.dal.device.model.productgroups.Count;
+import com.vf.uk.dal.device.model.productgroups.FacetField;
+import com.vf.uk.dal.device.model.productgroups.Group;
+import com.vf.uk.dal.device.model.productgroups.Member;
+import com.vf.uk.dal.device.model.productgroups.ProductGroupFacetModel;
+import com.vf.uk.dal.device.model.productgroups.ProductGroupModel;
+import com.vf.uk.dal.device.model.solr.DevicePreCalculatedData;
+import com.vf.uk.dal.device.model.solr.Media;
+import com.vf.uk.dal.device.model.solr.OfferAppliedPriceDetails;
+import com.vf.uk.dal.device.model.solr.OneOffDiscountPrice;
+import com.vf.uk.dal.device.model.solr.OneOffPrice;
+import com.vf.uk.dal.device.model.solr.PriceInfo;
 
 public class CommonMethods {
 	public static Timestamp timeStamp;
@@ -429,28 +429,28 @@ public class CommonMethods {
 		listmedia.add(media);
 		device.setMedia(listmedia);
 		PriceInfo price = new PriceInfo();
-		com.vf.uk.dal.utility.solr.entity.BundlePrice bundlePrice = new com.vf.uk.dal.utility.solr.entity.BundlePrice();
+		com.vf.uk.dal.device.model.solr.BundlePrice bundlePrice = new com.vf.uk.dal.device.model.solr.BundlePrice();
 		bundlePrice.setBundleId("110154");
-		com.vf.uk.dal.utility.solr.entity.MonthlyDiscountPrice monthly = new com.vf.uk.dal.utility.solr.entity.MonthlyDiscountPrice();
+		com.vf.uk.dal.device.model.solr.MonthlyDiscountPrice monthly = new com.vf.uk.dal.device.model.solr.MonthlyDiscountPrice();
 		monthly.setGross("12.0");
 		monthly.setNet("18");
 		monthly.setVat("11.5");
 		bundlePrice.setMonthlyDiscountPrice(monthly);
-		com.vf.uk.dal.utility.solr.entity.MonthlyPrice monthlyPrice = new com.vf.uk.dal.utility.solr.entity.MonthlyPrice();
+		com.vf.uk.dal.device.model.solr.MonthlyPrice monthlyPrice = new com.vf.uk.dal.device.model.solr.MonthlyPrice();
 		monthlyPrice.setGross("10.3");
 		monthlyPrice.setNet("12.4");
 		monthlyPrice.setVat("11");
 		bundlePrice.setMonthlyPrice(monthlyPrice);
 		price.setBundlePrice(bundlePrice);
 
-		com.vf.uk.dal.utility.solr.entity.HardwarePrice hardware = new com.vf.uk.dal.utility.solr.entity.HardwarePrice();
+		com.vf.uk.dal.device.model.solr.HardwarePrice hardware = new com.vf.uk.dal.device.model.solr.HardwarePrice();
 		hardware.setHardwareId("092660");
-		com.vf.uk.dal.utility.solr.entity.OneOffDiscountPrice oneOff = new OneOffDiscountPrice();
+		com.vf.uk.dal.device.model.solr.OneOffDiscountPrice oneOff = new OneOffDiscountPrice();
 		oneOff.setGross("10");
 		oneOff.setNet("11.3");
 		oneOff.setVat("12.5");
 		hardware.setOneOffDiscountPrice(oneOff);
-		com.vf.uk.dal.utility.solr.entity.OneOffPrice oneOffPrice = new OneOffPrice();
+		com.vf.uk.dal.device.model.solr.OneOffPrice oneOffPrice = new OneOffPrice();
 		oneOffPrice.setGross("9");
 		oneOffPrice.setNet("12.8");
 		oneOffPrice.setVat("16.6");
@@ -474,28 +474,28 @@ public class CommonMethods {
 		listmedia1.add(media);
 		device1.setMedia(listmedia);
 		PriceInfo price1 = new PriceInfo();
-		com.vf.uk.dal.utility.solr.entity.BundlePrice bundlePrice1 = new com.vf.uk.dal.utility.solr.entity.BundlePrice();
+		com.vf.uk.dal.device.model.solr.BundlePrice bundlePrice1 = new com.vf.uk.dal.device.model.solr.BundlePrice();
 		bundlePrice1.setBundleId("110154");
-		com.vf.uk.dal.utility.solr.entity.MonthlyDiscountPrice monthly1 = new com.vf.uk.dal.utility.solr.entity.MonthlyDiscountPrice();
+		com.vf.uk.dal.device.model.solr.MonthlyDiscountPrice monthly1 = new com.vf.uk.dal.device.model.solr.MonthlyDiscountPrice();
 		monthly1.setGross("12.0");
 		monthly1.setNet("18");
 		monthly1.setVat("11.5");
 		bundlePrice.setMonthlyDiscountPrice(monthly1);
-		com.vf.uk.dal.utility.solr.entity.MonthlyPrice monthlyPrice1 = new com.vf.uk.dal.utility.solr.entity.MonthlyPrice();
+		com.vf.uk.dal.device.model.solr.MonthlyPrice monthlyPrice1 = new com.vf.uk.dal.device.model.solr.MonthlyPrice();
 		monthlyPrice1.setGross("10.3");
 		monthlyPrice1.setNet("12.4");
 		monthlyPrice1.setVat("11");
 		bundlePrice.setMonthlyPrice(monthlyPrice1);
 		price1.setBundlePrice(bundlePrice1);
 
-		com.vf.uk.dal.utility.solr.entity.HardwarePrice hardware1 = new com.vf.uk.dal.utility.solr.entity.HardwarePrice();
+		com.vf.uk.dal.device.model.solr.HardwarePrice hardware1 = new com.vf.uk.dal.device.model.solr.HardwarePrice();
 		hardware1.setHardwareId("095597");
-		com.vf.uk.dal.utility.solr.entity.OneOffDiscountPrice oneOff1 = new OneOffDiscountPrice();
+		com.vf.uk.dal.device.model.solr.OneOffDiscountPrice oneOff1 = new OneOffDiscountPrice();
 		oneOff1.setGross("10");
 		oneOff1.setNet("11.3");
 		oneOff1.setVat("12.5");
 		hardware.setOneOffDiscountPrice(oneOff1);
-		com.vf.uk.dal.utility.solr.entity.OneOffPrice oneOffPrice1 = new OneOffPrice();
+		com.vf.uk.dal.device.model.solr.OneOffPrice oneOffPrice1 = new OneOffPrice();
 		oneOffPrice1.setGross("9");
 		oneOffPrice1.setNet("12.8");
 		oneOffPrice1.setVat("16.6");
@@ -661,7 +661,7 @@ public class CommonMethods {
 		List<StepPricingInfo> stepPricesList = new ArrayList<StepPricingInfo>();
 		StepPricingInfo stePrices = new StepPricingInfo();
 
-		com.vf.uk.dal.device.entity.Duration duration = new com.vf.uk.dal.device.entity.Duration();
+		com.vf.uk.dal.device.client.entity.price.Duration duration = new com.vf.uk.dal.device.client.entity.price.Duration();
 		duration.setUom("UOM");
 		duration.setValue("124");
 		stePrices.setDuration(duration);
@@ -726,9 +726,9 @@ public class CommonMethods {
 		productAvailability.setSalesExpired(false);
 		productAvailability.setStart(null);
 		commercialProduct.setProductAvailability(productAvailability);
-		List<com.vf.uk.dal.device.datamodel.product.Group> specificationGroupsList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Group>();
-		com.vf.uk.dal.device.datamodel.product.Group gr = new com.vf.uk.dal.device.datamodel.product.Group();
-		com.vf.uk.dal.device.datamodel.product.Group group = new com.vf.uk.dal.device.datamodel.product.Group();
+		List<com.vf.uk.dal.device.model.product.Group> specificationGroupsList = new ArrayList<com.vf.uk.dal.device.model.product.Group>();
+		com.vf.uk.dal.device.model.product.Group gr = new com.vf.uk.dal.device.model.product.Group();
+		com.vf.uk.dal.device.model.product.Group group = new com.vf.uk.dal.device.model.product.Group();
 		group.setComparable(true);
 		group.setGroupName("Capacity");
 		group.setPriority((long) 1);
@@ -736,10 +736,10 @@ public class CommonMethods {
 		gr.setComparable(true);
 		gr.setGroupName("Colour");
 		gr.setPriority((long) 1);
-		List<com.vf.uk.dal.device.datamodel.product.Specification> specificationList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Specification>();
-		com.vf.uk.dal.device.datamodel.product.Specification specification = new com.vf.uk.dal.device.datamodel.product.Specification();
-		com.vf.uk.dal.device.datamodel.product.Specification specification1 = new com.vf.uk.dal.device.datamodel.product.Specification();
-		com.vf.uk.dal.device.datamodel.product.Specification specification2 = new com.vf.uk.dal.device.datamodel.product.Specification();
+		List<com.vf.uk.dal.device.model.product.Specification> specificationList = new ArrayList<com.vf.uk.dal.device.model.product.Specification>();
+		com.vf.uk.dal.device.model.product.Specification specification = new com.vf.uk.dal.device.model.product.Specification();
+		com.vf.uk.dal.device.model.product.Specification specification1 = new com.vf.uk.dal.device.model.product.Specification();
+		com.vf.uk.dal.device.model.product.Specification specification2 = new com.vf.uk.dal.device.model.product.Specification();
 		specification.setComparable(true);
 		specification.setIsKey(true);
 		specification.setName("Colour");
@@ -783,8 +783,8 @@ public class CommonMethods {
 		mediaUrlList.add(mediaUrl1);
 		commercialProduct.setListOfmediaURLs(mediaUrlList);
 
-		List<com.vf.uk.dal.device.datamodel.product.ImageURL> listOfimageURLs = new ArrayList<com.vf.uk.dal.device.datamodel.product.ImageURL>();
-		com.vf.uk.dal.device.datamodel.product.ImageURL imageURL = new com.vf.uk.dal.device.datamodel.product.ImageURL();
+		List<com.vf.uk.dal.device.model.product.ImageURL> listOfimageURLs = new ArrayList<com.vf.uk.dal.device.model.product.ImageURL>();
+		com.vf.uk.dal.device.model.product.ImageURL imageURL = new com.vf.uk.dal.device.model.product.ImageURL();
 		imageURL.setImageName("images.left");
 		imageURL.setImageURL("URL");
 		listOfimageURLs.add(imageURL);
@@ -795,7 +795,7 @@ public class CommonMethods {
 		duration.setUom("MB");
 		duration.setValue("30");
 		commercialProduct.setDuration(duration);
-		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
+		com.vf.uk.dal.device.model.product.Discount discount = new com.vf.uk.dal.device.model.product.Discount();
 		discount.setType("Percentage");
 		discount.setAmount(10.20);
 		commercialProduct.setDiscount(discount);
@@ -828,8 +828,8 @@ public class CommonMethods {
 	}
 
 	public static List<Member> getMemberList() {
-		List<com.vf.uk.dal.device.datamodel.productgroups.Member> productGroupMember = new ArrayList<com.vf.uk.dal.device.datamodel.productgroups.Member>();
-		com.vf.uk.dal.device.datamodel.productgroups.Member productMember = new Member();
+		List<com.vf.uk.dal.device.model.productgroups.Member> productGroupMember = new ArrayList<com.vf.uk.dal.device.model.productgroups.Member>();
+		com.vf.uk.dal.device.model.productgroups.Member productMember = new Member();
 		productMember.setId("1");
 		productMember.setPriority((long) 7346);
 		productGroupMember.add(productMember);
@@ -979,7 +979,7 @@ public class CommonMethods {
 		listOfAllowances.add(roamingAllowances);
 		bundle.setAllowances(listOfAllowances);
 		List<String> listOfPromoteAs = new ArrayList<>();
-		com.vf.uk.dal.device.datamodel.bundle.PromoteAs promoteAs = new com.vf.uk.dal.device.datamodel.bundle.PromoteAs();
+		com.vf.uk.dal.device.client.entity.bundle.PromoteAs promoteAs = new com.vf.uk.dal.device.client.entity.bundle.PromoteAs();
 		listOfPromoteAs.add("EXTRA.1GB.DATA");
 		listOfPromoteAs.add("W_HH_PAYM_OC_01");
 		promoteAs.setPromotionName(listOfPromoteAs);
@@ -1119,7 +1119,7 @@ public class CommonMethods {
 		discount.setTag("AllPhone.limit.2017");
 		discountList.add(discount);
 		// stePrices.setDiscountsApplicable(discountList);
-		com.vf.uk.dal.device.entity.Duration duration = new com.vf.uk.dal.device.entity.Duration();
+		com.vf.uk.dal.device.client.entity.price.Duration duration = new com.vf.uk.dal.device.client.entity.price.Duration();
 		duration.setUom("UOM");
 		duration.setValue("124");
 		stePrices.setDuration(duration);
@@ -1303,35 +1303,35 @@ public class CommonMethods {
 		if (bundleClass.equals("SIMO")) {
 			List<BundleHeader> bundleHeaderList = new ArrayList<BundleHeader>();
 			BundleHeader bundleHeader = new BundleHeader();
-			List<com.vf.uk.dal.utility.entity.MediaLink> mediaLinkList = new ArrayList<>();
-			com.vf.uk.dal.utility.entity.MediaLink mediaLink = new com.vf.uk.dal.utility.entity.MediaLink();
+			List<com.vf.uk.dal.device.client.entity.bundle.MediaLink> mediaLinkList = new ArrayList<>();
+			com.vf.uk.dal.device.client.entity.bundle.MediaLink mediaLink = new com.vf.uk.dal.device.client.entity.bundle.MediaLink();
 			mediaLink.setId("SIMO.JAN.2017");
 			mediaLink.setType("MMS");
 			mediaLink.setValue("URL");
 			mediaLinkList.add(mediaLink);
-			List<com.vf.uk.dal.utility.entity.BundleAllowance> bundleAllowanceList = new ArrayList<>();
-			com.vf.uk.dal.utility.entity.BundleAllowance bundleAllowance = new com.vf.uk.dal.utility.entity.BundleAllowance();
+			List<com.vf.uk.dal.device.client.entity.bundle.BundleAllowance> bundleAllowanceList = new ArrayList<>();
+			com.vf.uk.dal.device.client.entity.bundle.BundleAllowance bundleAllowance = new com.vf.uk.dal.device.client.entity.bundle.BundleAllowance();
 			bundleAllowance.setType("Red Bundle");
 			bundleAllowance.setUom("Months");
 			bundleAllowance.setValue("10Gb");
 			bundleAllowanceList.add(bundleAllowance);
-			com.vf.uk.dal.device.entity.Price price = new com.vf.uk.dal.device.entity.Price();
+			com.vf.uk.dal.device.client.entity.price.Price price = new com.vf.uk.dal.device.client.entity.price.Price();
 			price.setGross("22");
 			price.setNet("20");
 			price.setVat("2");
-			com.vf.uk.dal.utility.entity.Price price1 = new com.vf.uk.dal.utility.entity.Price();
+			com.vf.uk.dal.device.client.entity.price.Price price1 = new com.vf.uk.dal.device.client.entity.price.Price();
 			price1.setGross("22");
 			price1.setNet("20");
 			price1.setVat("2");
-			com.vf.uk.dal.device.entity.BundlePrice bundlePrice = new com.vf.uk.dal.device.entity.BundlePrice();
+			com.vf.uk.dal.device.client.entity.price.BundlePrice bundlePrice = new com.vf.uk.dal.device.client.entity.price.BundlePrice();
 			bundlePrice.setBundleId("110154");
 			bundlePrice.setMonthlyDiscountPrice(price);
 			bundlePrice.setMonthlyPrice(price);
-			com.vf.uk.dal.utility.entity.HardwarePrice hardwarePrice = new com.vf.uk.dal.utility.entity.HardwarePrice();
+			com.vf.uk.dal.device.client.entity.price.HardwarePrice hardwarePrice = new com.vf.uk.dal.device.client.entity.price.HardwarePrice();
 			hardwarePrice.setHardwareId("093353");
 			hardwarePrice.setOneOffPrice(price1);
 			hardwarePrice.setOneOffDiscountPrice(price1);
-			com.vf.uk.dal.utility.entity.PriceForBundleAndHardware priceInfo = new com.vf.uk.dal.utility.entity.PriceForBundleAndHardware();
+			com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware priceInfo = new com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware();
 			priceInfo.setBundlePrice(bundlePrice);
 			priceInfo.setMonthlyPrice(price1);
 			priceInfo.setOneOffPrice(price1);
@@ -1352,35 +1352,35 @@ public class CommonMethods {
 			bundleHeader.setPlanCoupleLable("Double the data and get entertainment for just 12 pounds more!");
 
 			BundleHeader bundleHeader1 = new BundleHeader();
-			List<com.vf.uk.dal.utility.entity.MediaLink> mediaLinkList1 = new ArrayList<>();
-			com.vf.uk.dal.utility.entity.MediaLink mediaLink1 = new com.vf.uk.dal.utility.entity.MediaLink();
+			List<com.vf.uk.dal.device.client.entity.bundle.MediaLink> mediaLinkList1 = new ArrayList<>();
+			com.vf.uk.dal.device.client.entity.bundle.MediaLink mediaLink1 = new com.vf.uk.dal.device.client.entity.bundle.MediaLink();
 			mediaLink1.setId("SIMO.JAN.2017");
 			mediaLink1.setType("MMS");
 			mediaLink1.setValue("URL");
 			mediaLinkList1.add(mediaLink1);
-			List<com.vf.uk.dal.utility.entity.BundleAllowance> bundleAllowanceList1 = new ArrayList<>();
-			com.vf.uk.dal.utility.entity.BundleAllowance bundleAllowance1 = new com.vf.uk.dal.utility.entity.BundleAllowance();
+			List<com.vf.uk.dal.device.client.entity.bundle.BundleAllowance> bundleAllowanceList1 = new ArrayList<>();
+			com.vf.uk.dal.device.client.entity.bundle.BundleAllowance bundleAllowance1 = new com.vf.uk.dal.device.client.entity.bundle.BundleAllowance();
 			bundleAllowance1.setType("Red Bundle");
 			bundleAllowance1.setUom("Months");
 			bundleAllowance1.setValue("10Gb");
 			bundleAllowanceList1.add(bundleAllowance1);
-			com.vf.uk.dal.device.entity.Price price2 = new com.vf.uk.dal.device.entity.Price();
+			com.vf.uk.dal.device.client.entity.price.Price price2 = new com.vf.uk.dal.device.client.entity.price.Price();
 			price2.setGross("20");
 			price2.setNet("21");
 			price2.setVat("2");
-			com.vf.uk.dal.utility.entity.Price price3 = new com.vf.uk.dal.utility.entity.Price();
+			com.vf.uk.dal.device.client.entity.price.Price price3 = new com.vf.uk.dal.device.client.entity.price.Price();
 			price3.setGross("18");
 			price3.setNet("16");
 			price3.setVat("2");
-			com.vf.uk.dal.device.entity.BundlePrice bundlePrice1 = new com.vf.uk.dal.device.entity.BundlePrice();
+			com.vf.uk.dal.device.client.entity.price.BundlePrice bundlePrice1 = new com.vf.uk.dal.device.client.entity.price.BundlePrice();
 			bundlePrice1.setBundleId("110154");
 			bundlePrice1.setMonthlyDiscountPrice(price2);
 			bundlePrice1.setMonthlyPrice(price2);
-			com.vf.uk.dal.utility.entity.HardwarePrice hardwarePrice1 = new com.vf.uk.dal.utility.entity.HardwarePrice();
+			com.vf.uk.dal.device.client.entity.price.HardwarePrice hardwarePrice1 = new com.vf.uk.dal.device.client.entity.price.HardwarePrice();
 			hardwarePrice1.setHardwareId("093353");
 			hardwarePrice1.setOneOffPrice(price3);
 			hardwarePrice1.setOneOffDiscountPrice(price3);
-			com.vf.uk.dal.utility.entity.PriceForBundleAndHardware priceInfo1 = new com.vf.uk.dal.utility.entity.PriceForBundleAndHardware();
+			com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware priceInfo1 = new com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware();
 			priceInfo1.setBundlePrice(bundlePrice1);
 			priceInfo1.setMonthlyPrice(price3);
 			priceInfo1.setOneOffPrice(price3);
@@ -1411,8 +1411,8 @@ public class CommonMethods {
 
 	
 
-	public static com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion getMemPro() {
-		com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mem = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion();
+	public static com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotion getMemPro() {
+		com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotion mem = new com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotion();
 		mem.setTag("handset.limited.GBP");
 		mem.setType("full_duration");
 		return mem;
@@ -1457,15 +1457,15 @@ public class CommonMethods {
 		return leadMemberMap;
 	}
 
-	public static List<com.vf.uk.dal.device.entity.PriceForBundleAndHardware> getPrice() {
-		List<com.vf.uk.dal.device.entity.PriceForBundleAndHardware> priceForBundleAndHardwareList = new ArrayList<com.vf.uk.dal.device.entity.PriceForBundleAndHardware>();
+	public static List<com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware> getPrice() {
+		List<com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware> priceForBundleAndHardwareList = new ArrayList<com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware>();
 
-		com.vf.uk.dal.device.entity.PriceForBundleAndHardware priceInfo = new com.vf.uk.dal.device.entity.PriceForBundleAndHardware();
+		com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware priceInfo = new com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware();
 
-		com.vf.uk.dal.device.entity.BundlePrice bundlePrice = new com.vf.uk.dal.device.entity.BundlePrice();
+		com.vf.uk.dal.device.client.entity.price.BundlePrice bundlePrice = new com.vf.uk.dal.device.client.entity.price.BundlePrice();
 		bundlePrice.setBundleId("183099");
-		List<com.vf.uk.dal.device.entity.MerchandisingPromotion> merchandisingPromotionsList = new ArrayList<com.vf.uk.dal.device.entity.MerchandisingPromotion>();
-		com.vf.uk.dal.device.entity.MerchandisingPromotion merchandisingPromotions = new com.vf.uk.dal.device.entity.MerchandisingPromotion();
+		List<com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion> merchandisingPromotionsList = new ArrayList<com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion>();
+		com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion merchandisingPromotions = new com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion();
 		merchandisingPromotions.setDiscountId("107531");
 		merchandisingPromotions.setLabel("20% off with any handset");
 		merchandisingPromotions.setTag("AllPhone.full.2017");
@@ -1475,29 +1475,29 @@ public class CommonMethods {
 
 		merchandisingPromotionsList.add(merchandisingPromotions);
 		bundlePrice.setMerchandisingPromotions(merchandisingPromotions);
-		com.vf.uk.dal.device.entity.Price monthlyDiscountPrice = new com.vf.uk.dal.device.entity.Price();
+		com.vf.uk.dal.device.client.entity.price.Price monthlyDiscountPrice = new com.vf.uk.dal.device.client.entity.price.Price();
 		monthlyDiscountPrice.setGross("10.11");
 		monthlyDiscountPrice.setNet("11.23");
 		monthlyDiscountPrice.setVat("14.56");
 
-		com.vf.uk.dal.device.entity.Price oneOffDiscountPrice = new com.vf.uk.dal.device.entity.Price();
+		com.vf.uk.dal.device.client.entity.price.Price oneOffDiscountPrice = new com.vf.uk.dal.device.client.entity.price.Price();
 		oneOffDiscountPrice.setGross("9.11");
 		oneOffDiscountPrice.setNet("91.23");
 		oneOffDiscountPrice.setVat("10.56");
 
-		com.vf.uk.dal.device.entity.Price monthlyPrice = new com.vf.uk.dal.device.entity.Price();
+		com.vf.uk.dal.device.client.entity.price.Price monthlyPrice = new com.vf.uk.dal.device.client.entity.price.Price();
 		monthlyPrice.setGross("13.64");
 		monthlyPrice.setNet("12.5");
 		monthlyPrice.setVat("8.56");
 
-		com.vf.uk.dal.device.entity.Price oneOffPrice = new com.vf.uk.dal.device.entity.Price();
+		com.vf.uk.dal.device.client.entity.price.Price oneOffPrice = new com.vf.uk.dal.device.client.entity.price.Price();
 		oneOffPrice.setGross("5.11");
 		oneOffPrice.setNet("9.23");
 		oneOffPrice.setVat("22.56");
 		bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
 		bundlePrice.setMonthlyPrice(monthlyPrice);
 		priceInfo.setBundlePrice(bundlePrice);
-		com.vf.uk.dal.device.entity.HardwarePrice hardwarePrice = new com.vf.uk.dal.device.entity.HardwarePrice();
+		com.vf.uk.dal.device.client.entity.price.HardwarePrice hardwarePrice = new com.vf.uk.dal.device.client.entity.price.HardwarePrice();
 		hardwarePrice.setHardwareId("093353");
 		hardwarePrice.setMerchandisingPromotions(merchandisingPromotions);
 		hardwarePrice.setOneOffDiscountPrice(oneOffDiscountPrice);
@@ -1508,8 +1508,8 @@ public class CommonMethods {
 		priceInfo.setMonthlyPrice(monthlyPrice);
 		priceInfo.setOneOffDiscountPrice(monthlyDiscountPrice);
 		priceInfo.setOneOffPrice(oneOffPrice);
-		List<com.vf.uk.dal.device.entity.StepPricingInfo> stepPricesList = new ArrayList<com.vf.uk.dal.device.entity.StepPricingInfo>();
-		com.vf.uk.dal.device.entity.StepPricingInfo stePrices = new com.vf.uk.dal.device.entity.StepPricingInfo();
+		List<com.vf.uk.dal.device.client.entity.price.StepPricingInfo> stepPricesList = new ArrayList<com.vf.uk.dal.device.client.entity.price.StepPricingInfo>();
+		com.vf.uk.dal.device.client.entity.price.StepPricingInfo stePrices = new com.vf.uk.dal.device.client.entity.price.StepPricingInfo();
 
 		List<Discount> discountList = new ArrayList<Discount>();
 		Discount discount = new Discount();
@@ -1517,7 +1517,7 @@ public class CommonMethods {
 		discount.setTag("AllPhone.limit.2017");
 		discountList.add(discount);
 		// stePrices.setDiscountsApplicable(discountList);
-		com.vf.uk.dal.device.entity.Duration duration = new com.vf.uk.dal.device.entity.Duration();
+		com.vf.uk.dal.device.client.entity.price.Duration duration = new com.vf.uk.dal.device.client.entity.price.Duration();
 		duration.setUom("UOM");
 		duration.setValue("124");
 		stePrices.setDuration(duration);
@@ -1544,22 +1544,22 @@ public class CommonMethods {
 	}
 
 
-	public static com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion getMerchPromotion() {
-		com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mem = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion();
+	public static com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotion getMerchPromotion() {
+		com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotion mem = new com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotion();
 		mem.setTag("EXTRA.1GB.DATA");
 		mem.setType("entertainment");
 		return mem;
 	}
 
-	public static com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion getMerchPromotion1() {
-		com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mem = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion();
+	public static com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotion getMerchPromotion1() {
+		com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotion mem = new com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotion();
 		mem.setTag("qwerty");
 		mem.setType("entertainment");
 		return mem;
 	}
 
-	public static com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion getMerchPromotionForListOfDevicedetails() {
-		com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mem = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion();
+	public static com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotion getMerchPromotionForListOfDevicedetails() {
+		com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotion mem = new com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotion();
 		mem.setTag("sash.banner");
 		mem.setType("entertainment");
 		return mem;
@@ -1618,9 +1618,9 @@ public class CommonMethods {
 		productAvailability.setSalesExpired(false);
 		productAvailability.setStart(null);
 		commercialProduct.setProductAvailability(productAvailability);
-		List<com.vf.uk.dal.device.datamodel.product.Group> specificationGroupsList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Group>();
-		com.vf.uk.dal.device.datamodel.product.Group gr = new com.vf.uk.dal.device.datamodel.product.Group();
-		com.vf.uk.dal.device.datamodel.product.Group group = new com.vf.uk.dal.device.datamodel.product.Group();
+		List<com.vf.uk.dal.device.model.product.Group> specificationGroupsList = new ArrayList<com.vf.uk.dal.device.model.product.Group>();
+		com.vf.uk.dal.device.model.product.Group gr = new com.vf.uk.dal.device.model.product.Group();
+		com.vf.uk.dal.device.model.product.Group group = new com.vf.uk.dal.device.model.product.Group();
 		group.setComparable(true);
 		group.setGroupName("Capacity");
 		group.setPriority((long) 1);
@@ -1628,10 +1628,10 @@ public class CommonMethods {
 		gr.setComparable(true);
 		gr.setGroupName("Colour");
 		gr.setPriority((long) 1);
-		List<com.vf.uk.dal.device.datamodel.product.Specification> specificationList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Specification>();
-		com.vf.uk.dal.device.datamodel.product.Specification specification = new com.vf.uk.dal.device.datamodel.product.Specification();
-		com.vf.uk.dal.device.datamodel.product.Specification specification1 = new com.vf.uk.dal.device.datamodel.product.Specification();
-		com.vf.uk.dal.device.datamodel.product.Specification specification2 = new com.vf.uk.dal.device.datamodel.product.Specification();
+		List<com.vf.uk.dal.device.model.product.Specification> specificationList = new ArrayList<com.vf.uk.dal.device.model.product.Specification>();
+		com.vf.uk.dal.device.model.product.Specification specification = new com.vf.uk.dal.device.model.product.Specification();
+		com.vf.uk.dal.device.model.product.Specification specification1 = new com.vf.uk.dal.device.model.product.Specification();
+		com.vf.uk.dal.device.model.product.Specification specification2 = new com.vf.uk.dal.device.model.product.Specification();
 		specification.setComparable(true);
 		specification.setIsKey(true);
 		specification.setName("Colour");
@@ -1675,8 +1675,8 @@ public class CommonMethods {
 		mediaUrlList.add(mediaUrl1);
 		commercialProduct.setListOfmediaURLs(mediaUrlList);
 
-		List<com.vf.uk.dal.device.datamodel.product.ImageURL> listOfimageURLs = new ArrayList<com.vf.uk.dal.device.datamodel.product.ImageURL>();
-		com.vf.uk.dal.device.datamodel.product.ImageURL imageURL = new com.vf.uk.dal.device.datamodel.product.ImageURL();
+		List<com.vf.uk.dal.device.model.product.ImageURL> listOfimageURLs = new ArrayList<com.vf.uk.dal.device.model.product.ImageURL>();
+		com.vf.uk.dal.device.model.product.ImageURL imageURL = new com.vf.uk.dal.device.model.product.ImageURL();
 		imageURL.setImageName("images.left");
 		imageURL.setImageURL("URL");
 		listOfimageURLs.add(imageURL);
@@ -1687,7 +1687,7 @@ public class CommonMethods {
 		duration.setUom("MB");
 		duration.setValue("30");
 		commercialProduct.setDuration(duration);
-		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
+		com.vf.uk.dal.device.model.product.Discount discount = new com.vf.uk.dal.device.model.product.Discount();
 		discount.setType("Percentage");
 		discount.setAmount(10.20);
 		commercialProduct.setDiscount(discount);
@@ -1712,7 +1712,7 @@ public class CommonMethods {
 
 		BundlePrice bundlePrice = new BundlePrice();
 		bundlePrice.setBundleId("183099");
-		com.vf.uk.dal.device.entity.MerchandisingPromotion merchandisingPromotions = new com.vf.uk.dal.device.entity.MerchandisingPromotion();
+		com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion merchandisingPromotions = new com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion();
 
 		merchandisingPromotions.setDiscountId("107531");
 		merchandisingPromotions.setLabel("20% off with any handset");
@@ -1722,7 +1722,7 @@ public class CommonMethods {
 		merchandisingPromotions.setPromotionMedia("promotionMedia");
 		merchandisingPromotions.setMpType(CONDITIONAL_FULL_DISCOUNT);
 		bundlePrice.setMerchandisingPromotions(merchandisingPromotions);
-		com.vf.uk.dal.device.entity.Price monthlyDiscountPrice = new com.vf.uk.dal.device.entity.Price();
+		com.vf.uk.dal.device.client.entity.price.Price monthlyDiscountPrice = new com.vf.uk.dal.device.client.entity.price.Price();
 		monthlyDiscountPrice.setGross("10.11");
 		monthlyDiscountPrice.setNet("11.23");
 		monthlyDiscountPrice.setVat("14.56");
@@ -1732,12 +1732,12 @@ public class CommonMethods {
 		oneOffDiscountPrice.setNet("91.23");
 		oneOffDiscountPrice.setVat("10.56");
 
-		com.vf.uk.dal.device.entity.Price monthlyPrice = new com.vf.uk.dal.device.entity.Price();
+		com.vf.uk.dal.device.client.entity.price.Price monthlyPrice = new com.vf.uk.dal.device.client.entity.price.Price();
 		monthlyPrice.setGross("13.64");
 		monthlyPrice.setNet("12.5");
 		monthlyPrice.setVat("8.56");
 
-		com.vf.uk.dal.device.entity.Price oneOffPrice = new com.vf.uk.dal.device.entity.Price();
+		com.vf.uk.dal.device.client.entity.price.Price oneOffPrice = new com.vf.uk.dal.device.client.entity.price.Price();
 		oneOffPrice.setGross("5.11");
 		oneOffPrice.setNet("9.23");
 		oneOffPrice.setVat("22.56");
@@ -1755,8 +1755,8 @@ public class CommonMethods {
 		priceInfo.setMonthlyPrice(monthlyPrice);
 		priceInfo.setOneOffDiscountPrice(monthlyDiscountPrice);
 		priceInfo.setOneOffPrice(oneOffPrice);
-		List<com.vf.uk.dal.device.entity.StepPricingInfo> stepPricesList = new ArrayList<com.vf.uk.dal.device.entity.StepPricingInfo>();
-		com.vf.uk.dal.device.entity.StepPricingInfo stePrices = new com.vf.uk.dal.device.entity.StepPricingInfo();
+		List<com.vf.uk.dal.device.client.entity.price.StepPricingInfo> stepPricesList = new ArrayList<com.vf.uk.dal.device.client.entity.price.StepPricingInfo>();
+		com.vf.uk.dal.device.client.entity.price.StepPricingInfo stePrices = new com.vf.uk.dal.device.client.entity.price.StepPricingInfo();
 
 		List<Discount> discountList = new ArrayList<Discount>();
 		Discount discount = new Discount();
@@ -1764,7 +1764,7 @@ public class CommonMethods {
 		discount.setTag("AllPhone.limit.2017");
 		discountList.add(discount);
 		// stePrices.setDiscountsApplicable(discountList);
-		com.vf.uk.dal.device.entity.Duration duration = new com.vf.uk.dal.device.entity.Duration();
+		com.vf.uk.dal.device.client.entity.price.Duration duration = new com.vf.uk.dal.device.client.entity.price.Duration();
 		duration.setUom("UOM");
 		duration.setValue("124");
 		stePrices.setDuration(duration);
@@ -1828,9 +1828,9 @@ public class CommonMethods {
 		productAvailability.setSalesExpired(false);
 		productAvailability.setStart(null);
 		commercialProduct.setProductAvailability(productAvailability);
-		List<com.vf.uk.dal.device.datamodel.product.Group> specificationGroupsList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Group>();
-		com.vf.uk.dal.device.datamodel.product.Group gr = new com.vf.uk.dal.device.datamodel.product.Group();
-		com.vf.uk.dal.device.datamodel.product.Group group = new com.vf.uk.dal.device.datamodel.product.Group();
+		List<com.vf.uk.dal.device.model.product.Group> specificationGroupsList = new ArrayList<com.vf.uk.dal.device.model.product.Group>();
+		com.vf.uk.dal.device.model.product.Group gr = new com.vf.uk.dal.device.model.product.Group();
+		com.vf.uk.dal.device.model.product.Group group = new com.vf.uk.dal.device.model.product.Group();
 		group.setComparable(true);
 		group.setGroupName("Capacity");
 		group.setPriority((long) 1);
@@ -1838,10 +1838,10 @@ public class CommonMethods {
 		gr.setComparable(true);
 		gr.setGroupName("Colour");
 		gr.setPriority((long) 1);
-		List<com.vf.uk.dal.device.datamodel.product.Specification> specificationList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Specification>();
-		com.vf.uk.dal.device.datamodel.product.Specification specification = new com.vf.uk.dal.device.datamodel.product.Specification();
-		com.vf.uk.dal.device.datamodel.product.Specification specification1 = new com.vf.uk.dal.device.datamodel.product.Specification();
-		com.vf.uk.dal.device.datamodel.product.Specification specification2 = new com.vf.uk.dal.device.datamodel.product.Specification();
+		List<com.vf.uk.dal.device.model.product.Specification> specificationList = new ArrayList<com.vf.uk.dal.device.model.product.Specification>();
+		com.vf.uk.dal.device.model.product.Specification specification = new com.vf.uk.dal.device.model.product.Specification();
+		com.vf.uk.dal.device.model.product.Specification specification1 = new com.vf.uk.dal.device.model.product.Specification();
+		com.vf.uk.dal.device.model.product.Specification specification2 = new com.vf.uk.dal.device.model.product.Specification();
 		specification.setComparable(true);
 		specification.setIsKey(true);
 		specification.setName("Colour");
@@ -1885,8 +1885,8 @@ public class CommonMethods {
 		mediaUrlList.add(mediaUrl1);
 		commercialProduct.setListOfmediaURLs(mediaUrlList);
 
-		List<com.vf.uk.dal.device.datamodel.product.ImageURL> listOfimageURLs = new ArrayList<com.vf.uk.dal.device.datamodel.product.ImageURL>();
-		com.vf.uk.dal.device.datamodel.product.ImageURL imageURL = new com.vf.uk.dal.device.datamodel.product.ImageURL();
+		List<com.vf.uk.dal.device.model.product.ImageURL> listOfimageURLs = new ArrayList<com.vf.uk.dal.device.model.product.ImageURL>();
+		com.vf.uk.dal.device.model.product.ImageURL imageURL = new com.vf.uk.dal.device.model.product.ImageURL();
 		imageURL.setImageName("images.left");
 		imageURL.setImageURL("URL");
 		listOfimageURLs.add(imageURL);
@@ -1897,7 +1897,7 @@ public class CommonMethods {
 		duration.setUom("MB");
 		duration.setValue("30");
 		commercialProduct.setDuration(duration);
-		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
+		com.vf.uk.dal.device.model.product.Discount discount = new com.vf.uk.dal.device.model.product.Discount();
 		discount.setType("Percentage");
 		discount.setAmount(10.20);
 		commercialProduct.setDiscount(discount);
@@ -1958,9 +1958,9 @@ public class CommonMethods {
 		productAvailability.setSalesExpired(false);
 		productAvailability.setStart(null);
 		commercialProduct.setProductAvailability(productAvailability);
-		List<com.vf.uk.dal.device.datamodel.product.Group> specificationGroupsList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Group>();
-		com.vf.uk.dal.device.datamodel.product.Group gr = new com.vf.uk.dal.device.datamodel.product.Group();
-		com.vf.uk.dal.device.datamodel.product.Group group = new com.vf.uk.dal.device.datamodel.product.Group();
+		List<com.vf.uk.dal.device.model.product.Group> specificationGroupsList = new ArrayList<com.vf.uk.dal.device.model.product.Group>();
+		com.vf.uk.dal.device.model.product.Group gr = new com.vf.uk.dal.device.model.product.Group();
+		com.vf.uk.dal.device.model.product.Group group = new com.vf.uk.dal.device.model.product.Group();
 		group.setComparable(true);
 		group.setGroupName("Capacity");
 		group.setPriority((long) 1);
@@ -1968,10 +1968,10 @@ public class CommonMethods {
 		gr.setComparable(true);
 		gr.setGroupName("Colour");
 		gr.setPriority((long) 1);
-		List<com.vf.uk.dal.device.datamodel.product.Specification> specificationList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Specification>();
-		com.vf.uk.dal.device.datamodel.product.Specification specification = new com.vf.uk.dal.device.datamodel.product.Specification();
-		com.vf.uk.dal.device.datamodel.product.Specification specification1 = new com.vf.uk.dal.device.datamodel.product.Specification();
-		com.vf.uk.dal.device.datamodel.product.Specification specification2 = new com.vf.uk.dal.device.datamodel.product.Specification();
+		List<com.vf.uk.dal.device.model.product.Specification> specificationList = new ArrayList<com.vf.uk.dal.device.model.product.Specification>();
+		com.vf.uk.dal.device.model.product.Specification specification = new com.vf.uk.dal.device.model.product.Specification();
+		com.vf.uk.dal.device.model.product.Specification specification1 = new com.vf.uk.dal.device.model.product.Specification();
+		com.vf.uk.dal.device.model.product.Specification specification2 = new com.vf.uk.dal.device.model.product.Specification();
 		specification.setComparable(true);
 		specification.setIsKey(true);
 		specification.setName("Colour");
@@ -2015,8 +2015,8 @@ public class CommonMethods {
 		mediaUrlList.add(mediaUrl1);
 		commercialProduct.setListOfmediaURLs(mediaUrlList);
 
-		List<com.vf.uk.dal.device.datamodel.product.ImageURL> listOfimageURLs = new ArrayList<com.vf.uk.dal.device.datamodel.product.ImageURL>();
-		com.vf.uk.dal.device.datamodel.product.ImageURL imageURL = new com.vf.uk.dal.device.datamodel.product.ImageURL();
+		List<com.vf.uk.dal.device.model.product.ImageURL> listOfimageURLs = new ArrayList<com.vf.uk.dal.device.model.product.ImageURL>();
+		com.vf.uk.dal.device.model.product.ImageURL imageURL = new com.vf.uk.dal.device.model.product.ImageURL();
 		imageURL.setImageName("images.left");
 		imageURL.setImageURL("URL");
 		listOfimageURLs.add(imageURL);
@@ -2027,7 +2027,7 @@ public class CommonMethods {
 		duration.setUom("MB");
 		duration.setValue("30");
 		commercialProduct.setDuration(duration);
-		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
+		com.vf.uk.dal.device.model.product.Discount discount = new com.vf.uk.dal.device.model.product.Discount();
 		discount.setType("Percentage");
 		discount.setAmount(10.20);
 		commercialProduct.setDiscount(discount);
@@ -2084,26 +2084,26 @@ public class CommonMethods {
 		productAvailability.setStart(null);
 		commercialProduct.setProductAvailability(productAvailability);
 		ProductGroups pgs = new ProductGroups();
-		List<com.vf.uk.dal.device.datamodel.product.ProductGroup> listOfProductGroup = new ArrayList<>();
-		com.vf.uk.dal.device.datamodel.product.ProductGroup pg = new com.vf.uk.dal.device.datamodel.product.ProductGroup();
+		List<com.vf.uk.dal.device.model.product.ProductGroup> listOfProductGroup = new ArrayList<>();
+		com.vf.uk.dal.device.model.product.ProductGroup pg = new com.vf.uk.dal.device.model.product.ProductGroup();
 		pg.setProductGroupRole("Compatible Insurance");
 		pg.setProductGroupName("DEVICE_PAYM");
 		listOfProductGroup.add(pg);
 		pgs.setProductGroup(listOfProductGroup);
 		commercialProduct.setProductGroups(pgs);
-		List<com.vf.uk.dal.device.datamodel.product.Group> specificationGroupsList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Group>();
-		com.vf.uk.dal.device.datamodel.product.Group gr = new com.vf.uk.dal.device.datamodel.product.Group();
-		com.vf.uk.dal.device.datamodel.product.Group group = new com.vf.uk.dal.device.datamodel.product.Group();
+		List<com.vf.uk.dal.device.model.product.Group> specificationGroupsList = new ArrayList<com.vf.uk.dal.device.model.product.Group>();
+		com.vf.uk.dal.device.model.product.Group gr = new com.vf.uk.dal.device.model.product.Group();
+		com.vf.uk.dal.device.model.product.Group group = new com.vf.uk.dal.device.model.product.Group();
 		group.setComparable(true);
 		group.setGroupName("Capacity");
 		group.setPriority((long) 1);
 		gr.setComparable(true);
 		gr.setGroupName("Colour");
 		gr.setPriority((long) 1);
-		List<com.vf.uk.dal.device.datamodel.product.Specification> specificationList = new ArrayList<com.vf.uk.dal.device.datamodel.product.Specification>();
-		com.vf.uk.dal.device.datamodel.product.Specification specification = new com.vf.uk.dal.device.datamodel.product.Specification();
-		com.vf.uk.dal.device.datamodel.product.Specification specification1 = new com.vf.uk.dal.device.datamodel.product.Specification();
-		com.vf.uk.dal.device.datamodel.product.Specification specification2 = new com.vf.uk.dal.device.datamodel.product.Specification();
+		List<com.vf.uk.dal.device.model.product.Specification> specificationList = new ArrayList<com.vf.uk.dal.device.model.product.Specification>();
+		com.vf.uk.dal.device.model.product.Specification specification = new com.vf.uk.dal.device.model.product.Specification();
+		com.vf.uk.dal.device.model.product.Specification specification1 = new com.vf.uk.dal.device.model.product.Specification();
+		com.vf.uk.dal.device.model.product.Specification specification2 = new com.vf.uk.dal.device.model.product.Specification();
 		specification.setComparable(true);
 		specification.setIsKey(true);
 		specification.setName("Colour");
@@ -2147,8 +2147,8 @@ public class CommonMethods {
 		mediaUrlList.add(mediaUrl1);
 		commercialProduct.setListOfmediaURLs(mediaUrlList);
 
-		List<com.vf.uk.dal.device.datamodel.product.ImageURL> listOfimageURLs = new ArrayList<com.vf.uk.dal.device.datamodel.product.ImageURL>();
-		com.vf.uk.dal.device.datamodel.product.ImageURL imageURL = new com.vf.uk.dal.device.datamodel.product.ImageURL();
+		List<com.vf.uk.dal.device.model.product.ImageURL> listOfimageURLs = new ArrayList<com.vf.uk.dal.device.model.product.ImageURL>();
+		com.vf.uk.dal.device.model.product.ImageURL imageURL = new com.vf.uk.dal.device.model.product.ImageURL();
 		imageURL.setImageName("images.left");
 		imageURL.setImageURL("URL");
 		listOfimageURLs.add(imageURL);
@@ -2159,7 +2159,7 @@ public class CommonMethods {
 		duration.setUom("MB");
 		duration.setValue("30");
 		commercialProduct.setDuration(duration);
-		com.vf.uk.dal.device.datamodel.product.Discount discount = new com.vf.uk.dal.device.datamodel.product.Discount();
+		com.vf.uk.dal.device.model.product.Discount discount = new com.vf.uk.dal.device.model.product.Discount();
 		discount.setType("Percentage");
 		discount.setAmount(10.20);
 		commercialProduct.setDiscount(discount);
@@ -2269,28 +2269,28 @@ public class CommonMethods {
 	 * @author manoj.bera
 	 * @return
 	 */
-	public static com.vf.uk.dal.device.entity.PriceForBundleAndHardware getUtilityPriceForBundleAndHardware() {
-		List<com.vf.uk.dal.device.entity.BundleAllowance> bundleAllowanceList = new ArrayList<>();
-		com.vf.uk.dal.device.entity.BundleAllowance bundleAllowance = new com.vf.uk.dal.device.entity.BundleAllowance();
+	public static com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware getUtilityPriceForBundleAndHardware() {
+		List<com.vf.uk.dal.device.model.BundleAllowance> bundleAllowanceList = new ArrayList<>();
+		com.vf.uk.dal.device.model.BundleAllowance bundleAllowance = new com.vf.uk.dal.device.model.BundleAllowance();
 		bundleAllowance.setType("Red Bundle");
 		bundleAllowance.setUom("Months");
 		bundleAllowance.setValue("10Gb");
 		bundleAllowanceList.add(bundleAllowance);
-		com.vf.uk.dal.device.entity.Price price = new com.vf.uk.dal.device.entity.Price();
+		com.vf.uk.dal.device.client.entity.price.Price price = new com.vf.uk.dal.device.client.entity.price.Price();
 		price.setGross("22");
 		price.setNet("20");
 		price.setVat("2");
-		com.vf.uk.dal.device.entity.BundlePrice bundlePrice = new com.vf.uk.dal.device.entity.BundlePrice();
+		com.vf.uk.dal.device.client.entity.price.BundlePrice bundlePrice = new com.vf.uk.dal.device.client.entity.price.BundlePrice();
 		bundlePrice.setBundleId("110154");
 		/*
 		 * bundlePrice.setMonthlyDiscountPrice(price);
 		 * bundlePrice.setMonthlyPrice(price);
 		 */
-		com.vf.uk.dal.device.entity.HardwarePrice hardwarePrice = new com.vf.uk.dal.device.entity.HardwarePrice();
+		com.vf.uk.dal.device.client.entity.price.HardwarePrice hardwarePrice = new com.vf.uk.dal.device.client.entity.price.HardwarePrice();
 		hardwarePrice.setHardwareId("093353");
 		hardwarePrice.setOneOffPrice(price);
 		hardwarePrice.setOneOffDiscountPrice(price);
-		com.vf.uk.dal.device.entity.PriceForBundleAndHardware priceInfo = new com.vf.uk.dal.device.entity.PriceForBundleAndHardware();
+		com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware priceInfo = new com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware();
 		priceInfo.setBundlePrice(bundlePrice);
 		priceInfo.setMonthlyPrice(price);
 		priceInfo.setOneOffPrice(price);
@@ -2780,9 +2780,9 @@ public class CommonMethods {
 		return null;
 	}
 
-	public static List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion> getMerchandisingPromotion_One() {
-		List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion> merchandisingPromotionsList = new ArrayList<com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion>();
-		com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion merchandisingPromotions = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion();
+	public static List<com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotion> getMerchandisingPromotion_One() {
+		List<com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotion> merchandisingPromotionsList = new ArrayList<com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotion>();
+		com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotion merchandisingPromotions = new com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotion();
 		merchandisingPromotions.setLabel("20% off with any handset");
 		merchandisingPromotions.setTag("AllPhone.full.2017");
 		merchandisingPromotions.setDescription("description");
@@ -2839,8 +2839,8 @@ public class CommonMethods {
 	
 	
 
-	public static CompletableFuture<List<com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions>> getBundleAndHardwarePromotionsListFromBundleListAsync() {
-		CompletableFuture<List<com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions>> future = new CompletableFuture<>();
+	public static CompletableFuture<List<com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwarePromotions>> getBundleAndHardwarePromotionsListFromBundleListAsync() {
+		CompletableFuture<List<com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwarePromotions>> future = new CompletableFuture<>();
 		try {
 
 			ObjectMapper mapper = new ObjectMapper();
@@ -2851,7 +2851,7 @@ public class CommonMethods {
 					BundleAndHardwarePromotions[].class);
 
 			future.complete(mapper.convertValue(promotionList,
-					new TypeReference<List<com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions>>() {
+					new TypeReference<List<com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwarePromotions>>() {
 					}));
 		} catch (IOException e) {
 
@@ -3080,9 +3080,9 @@ public class CommonMethods {
 		return null;
 	}
 
-	public static List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.DevicePreCalculatedData> getDevicePreCalculatedDataFromSolr() {
-		List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.DevicePreCalculatedData> deviceList = new ArrayList<>();
-		com.vf.uk.dal.device.datamodel.merchandisingpromotion.DevicePreCalculatedData device = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.DevicePreCalculatedData();
+	public static List<com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData> getDevicePreCalculatedDataFromSolr() {
+		List<com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData> deviceList = new ArrayList<>();
+		com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData device = new com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData();
 		device.setDeviceId("093353");
 		device.setRating(2.0F);
 		device.setLeadPlanId("110154");
@@ -3096,8 +3096,8 @@ public class CommonMethods {
 		device.setNonUpgradeLeadPlanId("110154");
 		device.setUpgradeLeadDeviceId("110154");
 
-		List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.Media> listmedia = new ArrayList<>();
-		com.vf.uk.dal.device.datamodel.merchandisingpromotion.Media media = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.Media();
+		List<com.vf.uk.dal.device.model.merchandisingpromotion.Media> listmedia = new ArrayList<>();
+		com.vf.uk.dal.device.model.merchandisingpromotion.Media media = new com.vf.uk.dal.device.model.merchandisingpromotion.Media();
 		media.setId("hardware_discount.merchandisingPromotions.merchandisingPromotion.label");
 		media.setValue("25% off the device");
 		media.setType("TEXT&&110588&&HW&&handset.hardware.percentage");
@@ -3108,42 +3108,42 @@ public class CommonMethods {
 
 		listmedia.add(media);
 		device.setMedia(listmedia);
-		com.vf.uk.dal.device.datamodel.merchandisingpromotion.PriceInfo price = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.PriceInfo();
-		com.vf.uk.dal.device.datamodel.merchandisingpromotion.BundlePrice bundlePrice = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.BundlePrice();
+		com.vf.uk.dal.device.model.merchandisingpromotion.PriceInfo price = new com.vf.uk.dal.device.model.merchandisingpromotion.PriceInfo();
+		com.vf.uk.dal.device.model.merchandisingpromotion.BundlePrice bundlePrice = new com.vf.uk.dal.device.model.merchandisingpromotion.BundlePrice();
 		bundlePrice.setBundleId("110154");
-		com.vf.uk.dal.device.datamodel.merchandisingpromotion.MonthlyDiscountPrice monthly = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.MonthlyDiscountPrice();
+		com.vf.uk.dal.device.model.merchandisingpromotion.MonthlyDiscountPrice monthly = new com.vf.uk.dal.device.model.merchandisingpromotion.MonthlyDiscountPrice();
 		monthly.setGross(12.0F);
 		monthly.setNet(18F);
 		monthly.setVat(11.5F);
 		bundlePrice.setMonthlyDiscountPrice(monthly);
-		com.vf.uk.dal.device.datamodel.merchandisingpromotion.MonthlyPrice monthlyPrice = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.MonthlyPrice();
+		com.vf.uk.dal.device.model.merchandisingpromotion.MonthlyPrice monthlyPrice = new com.vf.uk.dal.device.model.merchandisingpromotion.MonthlyPrice();
 		monthlyPrice.setGross(10.30F);
 		monthlyPrice.setNet(12.4F);
 		monthlyPrice.setVat(11F);
 		bundlePrice.setMonthlyPrice(monthlyPrice);
 		price.setBundlePrice(bundlePrice);
 
-		com.vf.uk.dal.device.datamodel.merchandisingpromotion.HardwarePrice hardware = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.HardwarePrice();
+		com.vf.uk.dal.device.model.merchandisingpromotion.HardwarePrice hardware = new com.vf.uk.dal.device.model.merchandisingpromotion.HardwarePrice();
 		hardware.setHardwareId("092660");
-		com.vf.uk.dal.device.datamodel.merchandisingpromotion.OneOffDiscountPrice oneOff = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.OneOffDiscountPrice();
+		com.vf.uk.dal.device.model.merchandisingpromotion.OneOffDiscountPrice oneOff = new com.vf.uk.dal.device.model.merchandisingpromotion.OneOffDiscountPrice();
 		oneOff.setGross(10F);
 		oneOff.setNet(11.3F);
 		oneOff.setVat(12.5F);
 		hardware.setOneOffDiscountPrice(oneOff);
-		com.vf.uk.dal.device.datamodel.merchandisingpromotion.OneOffPrice oneOffPrice = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.OneOffPrice();
+		com.vf.uk.dal.device.model.merchandisingpromotion.OneOffPrice oneOffPrice = new com.vf.uk.dal.device.model.merchandisingpromotion.OneOffPrice();
 		oneOffPrice.setGross(9F);
 		oneOffPrice.setNet(12.8F);
 		oneOffPrice.setVat(16.6F);
 		hardware.setOneOffPrice(oneOffPrice);
 		price.setHardwarePrice(hardware);
-		List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceDetails> listOfofferAppliedPrice = new ArrayList<>();
-		com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceDetails offerAppliedPriceDetails = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceDetails();
+		List<com.vf.uk.dal.device.model.merchandisingpromotion.OfferAppliedPriceDetails> listOfofferAppliedPrice = new ArrayList<>();
+		com.vf.uk.dal.device.model.merchandisingpromotion.OfferAppliedPriceDetails offerAppliedPriceDetails = new com.vf.uk.dal.device.model.merchandisingpromotion.OfferAppliedPriceDetails();
 		offerAppliedPriceDetails.setBundlePrice(bundlePrice);
 		offerAppliedPriceDetails.setHardwarePrice(hardware);
 		offerAppliedPriceDetails.setJourneyType("Upgrade");
 		offerAppliedPriceDetails.setOfferCode("W_HH_OC_01");
 		offerAppliedPriceDetails.setDeviceId("093353");
-		com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceDetails offerAppliedPriceDetails1 = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceDetails();
+		com.vf.uk.dal.device.model.merchandisingpromotion.OfferAppliedPriceDetails offerAppliedPriceDetails1 = new com.vf.uk.dal.device.model.merchandisingpromotion.OfferAppliedPriceDetails();
 		offerAppliedPriceDetails1.setBundlePrice(bundlePrice);
 		offerAppliedPriceDetails1.setHardwarePrice(hardware);
 		offerAppliedPriceDetails1.setJourneyType("Upgrade");
@@ -3154,7 +3154,7 @@ public class CommonMethods {
 		price.setOfferAppliedPrices(listOfofferAppliedPrice);
 		device.setPriceInfo(price);
 
-		com.vf.uk.dal.device.datamodel.merchandisingpromotion.DevicePreCalculatedData device1 = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.DevicePreCalculatedData();
+		com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData device1 = new com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData();
 		device1.setDeviceId("093354");
 		device1.setRating(2.0F);
 		device1.setLeadPlanId("110154");
@@ -3303,7 +3303,7 @@ public class CommonMethods {
 		listOfAllowances.add(roamingAllowances);
 		bundle.setAllowances(listOfAllowances);
 		List<String> listOfPromoteAs = new ArrayList<>();
-		com.vf.uk.dal.device.datamodel.bundle.PromoteAs promoteAs = new com.vf.uk.dal.device.datamodel.bundle.PromoteAs();
+		com.vf.uk.dal.device.client.entity.bundle.PromoteAs promoteAs = new com.vf.uk.dal.device.client.entity.bundle.PromoteAs();
 		listOfPromoteAs.add("EXTRA.1GB.DATA");
 		listOfPromoteAs.add("W_HH_PAYM_OC_01");
 		promoteAs.setPromotionName(listOfPromoteAs);
@@ -3389,7 +3389,7 @@ public class CommonMethods {
 		listOfAllowances.add(roamingAllowances);
 		bundle.setAllowances(listOfAllowances);
 		List<String> listOfPromoteAs = new ArrayList<>();
-		com.vf.uk.dal.device.datamodel.bundle.PromoteAs promoteAs = new com.vf.uk.dal.device.datamodel.bundle.PromoteAs();
+		com.vf.uk.dal.device.client.entity.bundle.PromoteAs promoteAs = new com.vf.uk.dal.device.client.entity.bundle.PromoteAs();
 		listOfPromoteAs.add("EXTRA.1GB.DATA");
 		listOfPromoteAs.add("W_HH_PAYM_OC_01");
 		promoteAs.setPromotionName(listOfPromoteAs);
@@ -3440,27 +3440,27 @@ public class CommonMethods {
 
 	public static List<OfferAppliedPriceDetails> getOfferAppliedPriceDetails() {
 		List<OfferAppliedPriceDetails> listOfofferAppliedPrice = new ArrayList<>();
-		com.vf.uk.dal.utility.solr.entity.BundlePrice bundlePrice = new com.vf.uk.dal.utility.solr.entity.BundlePrice();
+		com.vf.uk.dal.device.model.solr.BundlePrice bundlePrice = new com.vf.uk.dal.device.model.solr.BundlePrice();
 		bundlePrice.setBundleId("110154");
-		com.vf.uk.dal.utility.solr.entity.MonthlyDiscountPrice monthly = new com.vf.uk.dal.utility.solr.entity.MonthlyDiscountPrice();
+		com.vf.uk.dal.device.model.solr.MonthlyDiscountPrice monthly = new com.vf.uk.dal.device.model.solr.MonthlyDiscountPrice();
 		monthly.setGross("12.0");
 		monthly.setNet("18");
 		monthly.setVat("11.5");
 		bundlePrice.setMonthlyDiscountPrice(monthly);
-		com.vf.uk.dal.utility.solr.entity.MonthlyPrice monthlyPrice = new com.vf.uk.dal.utility.solr.entity.MonthlyPrice();
+		com.vf.uk.dal.device.model.solr.MonthlyPrice monthlyPrice = new com.vf.uk.dal.device.model.solr.MonthlyPrice();
 		monthlyPrice.setGross("10.30");
 		monthlyPrice.setNet("12.4");
 		monthlyPrice.setVat("11");
 		bundlePrice.setMonthlyPrice(monthlyPrice);
 
-		com.vf.uk.dal.utility.solr.entity.HardwarePrice hardware = new com.vf.uk.dal.utility.solr.entity.HardwarePrice();
+		com.vf.uk.dal.device.model.solr.HardwarePrice hardware = new com.vf.uk.dal.device.model.solr.HardwarePrice();
 		hardware.setHardwareId("092660");
-		com.vf.uk.dal.utility.solr.entity.OneOffDiscountPrice oneOff = new com.vf.uk.dal.utility.solr.entity.OneOffDiscountPrice();
+		com.vf.uk.dal.device.model.solr.OneOffDiscountPrice oneOff = new com.vf.uk.dal.device.model.solr.OneOffDiscountPrice();
 		oneOff.setGross("10");
 		oneOff.setNet("11.3");
 		oneOff.setVat("12.5");
 		hardware.setOneOffDiscountPrice(oneOff);
-		com.vf.uk.dal.utility.solr.entity.OneOffPrice oneOffPrice = new com.vf.uk.dal.utility.solr.entity.OneOffPrice();
+		com.vf.uk.dal.device.model.solr.OneOffPrice oneOffPrice = new com.vf.uk.dal.device.model.solr.OneOffPrice();
 		oneOffPrice.setGross("9");
 		oneOffPrice.setNet("12.8");
 		oneOffPrice.setVat("16.6");
@@ -3482,29 +3482,29 @@ public class CommonMethods {
 		return listOfofferAppliedPrice;
 	}
 
-	public static com.vf.uk.dal.utility.solr.entity.PriceInfo getPriceinforForSorl() {
-		com.vf.uk.dal.utility.solr.entity.PriceInfo priceInfo = new com.vf.uk.dal.utility.solr.entity.PriceInfo();
-		com.vf.uk.dal.utility.solr.entity.BundlePrice bundlePrice = new com.vf.uk.dal.utility.solr.entity.BundlePrice();
+	public static com.vf.uk.dal.device.model.solr.PriceInfo getPriceinforForSorl() {
+		com.vf.uk.dal.device.model.solr.PriceInfo priceInfo = new com.vf.uk.dal.device.model.solr.PriceInfo();
+		com.vf.uk.dal.device.model.solr.BundlePrice bundlePrice = new com.vf.uk.dal.device.model.solr.BundlePrice();
 		bundlePrice.setBundleId("110154");
-		com.vf.uk.dal.utility.solr.entity.MonthlyDiscountPrice monthly = new com.vf.uk.dal.utility.solr.entity.MonthlyDiscountPrice();
+		com.vf.uk.dal.device.model.solr.MonthlyDiscountPrice monthly = new com.vf.uk.dal.device.model.solr.MonthlyDiscountPrice();
 		monthly.setGross("12.0");
 		monthly.setNet("18");
 		monthly.setVat("11.5");
 		bundlePrice.setMonthlyDiscountPrice(monthly);
-		com.vf.uk.dal.utility.solr.entity.MonthlyPrice monthlyPrice = new com.vf.uk.dal.utility.solr.entity.MonthlyPrice();
+		com.vf.uk.dal.device.model.solr.MonthlyPrice monthlyPrice = new com.vf.uk.dal.device.model.solr.MonthlyPrice();
 		monthlyPrice.setGross("10.30");
 		monthlyPrice.setNet("12.4");
 		monthlyPrice.setVat("11");
 		bundlePrice.setMonthlyPrice(monthlyPrice);
 
-		com.vf.uk.dal.utility.solr.entity.HardwarePrice hardware = new com.vf.uk.dal.utility.solr.entity.HardwarePrice();
+		com.vf.uk.dal.device.model.solr.HardwarePrice hardware = new com.vf.uk.dal.device.model.solr.HardwarePrice();
 		hardware.setHardwareId("092660");
-		com.vf.uk.dal.utility.solr.entity.OneOffDiscountPrice oneOff = new com.vf.uk.dal.utility.solr.entity.OneOffDiscountPrice();
+		com.vf.uk.dal.device.model.solr.OneOffDiscountPrice oneOff = new com.vf.uk.dal.device.model.solr.OneOffDiscountPrice();
 		oneOff.setGross("10");
 		oneOff.setNet("11.3");
 		oneOff.setVat("12.5");
 		hardware.setOneOffDiscountPrice(oneOff);
-		com.vf.uk.dal.utility.solr.entity.OneOffPrice oneOffPrice = new com.vf.uk.dal.utility.solr.entity.OneOffPrice();
+		com.vf.uk.dal.device.model.solr.OneOffPrice oneOffPrice = new com.vf.uk.dal.device.model.solr.OneOffPrice();
 		oneOffPrice.setGross("9");
 		oneOffPrice.setNet("12.8");
 		oneOffPrice.setVat("16.6");
@@ -3515,9 +3515,9 @@ public class CommonMethods {
 		return priceInfo;
 	}
 
-	public static List<com.vf.uk.dal.utility.solr.entity.Media> getmediaForSorl() {
-		List<com.vf.uk.dal.utility.solr.entity.Media> listOfMedia = new ArrayList<>();
-		com.vf.uk.dal.utility.solr.entity.Media media = new com.vf.uk.dal.utility.solr.entity.Media();
+	public static List<com.vf.uk.dal.device.model.solr.Media> getmediaForSorl() {
+		List<com.vf.uk.dal.device.model.solr.Media> listOfMedia = new ArrayList<>();
+		com.vf.uk.dal.device.model.solr.Media media = new com.vf.uk.dal.device.model.solr.Media();
 		media.setDescription("description");
 		media.setDiscountId("discountId");
 		media.setId("id");
@@ -3613,8 +3613,8 @@ public class CommonMethods {
 		return device;
 	}
 
-	public static com.vf.uk.dal.device.entity.MerchandisingPromotion getMP() {
-		com.vf.uk.dal.device.entity.MerchandisingPromotion merchandisingPromotions = new com.vf.uk.dal.device.entity.MerchandisingPromotion();
+	public static com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion getMP() {
+		com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion merchandisingPromotions = new com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion();
 		merchandisingPromotions.setDiscountId("107531");
 		merchandisingPromotions.setLabel("20% off with any handset");
 		merchandisingPromotions.setTag("AllPhone.full.2017");
@@ -3693,10 +3693,10 @@ public class CommonMethods {
 
 	}
 
-	public static List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware> getForUtilityPriceForBundleAndHardware() {
-		List<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware> priceForBundleAndHardwareList = new ArrayList<com.vf.uk.dal.utility.entity.PriceForBundleAndHardware>();
+	public static List<PriceForBundleAndHardware> getForUtilityPriceForBundleAndHardware() {
+		List<PriceForBundleAndHardware> priceForBundleAndHardwareList = new ArrayList<>();
 
-		com.vf.uk.dal.utility.entity.PriceForBundleAndHardware priceInfo = new com.vf.uk.dal.utility.entity.PriceForBundleAndHardware();
+		PriceForBundleAndHardware priceInfo = new PriceForBundleAndHardware();
 
 		BundlePrice bundlePrice = new BundlePrice();
 		bundlePrice.setBundleId("183099");
@@ -3729,26 +3729,26 @@ public class CommonMethods {
 		oneOffPrice.setNet("9.23");
 		oneOffPrice.setVat("22.56");
 
-		com.vf.uk.dal.utility.entity.Price monthlyDiscountPrice1 = new com.vf.uk.dal.utility.entity.Price();
+		Price monthlyDiscountPrice1 = new Price();
 		monthlyDiscountPrice1.setGross("10.11");
 		monthlyDiscountPrice1.setNet("11.23");
 		monthlyDiscountPrice1.setVat("14.56");
 
-		com.vf.uk.dal.utility.entity.Price oneOffDiscountPrice1 = new com.vf.uk.dal.utility.entity.Price();
+		Price oneOffDiscountPrice1 = new Price();
 		oneOffDiscountPrice1.setGross("9.11");
 		oneOffDiscountPrice1.setNet("91.23");
 		oneOffDiscountPrice1.setVat("10.56");
 
-		com.vf.uk.dal.utility.entity.Price monthlyPrice1 = new com.vf.uk.dal.utility.entity.Price();
+		Price monthlyPrice1 = new Price();
 		monthlyPrice1.setGross("13.64");
 		monthlyPrice1.setNet("12.5");
 		monthlyPrice1.setVat("8.56");
 
-		com.vf.uk.dal.utility.entity.Price oneOffPrice1 = new com.vf.uk.dal.utility.entity.Price();
+		Price oneOffPrice1 = new Price();
 		oneOffPrice1.setGross("5.11");
 		oneOffPrice1.setNet("9.23");
 		oneOffPrice1.setVat("22.56");
-		com.vf.uk.dal.utility.entity.MerchandisingPromotion merchandisingPromotions1 = new com.vf.uk.dal.utility.entity.MerchandisingPromotion();
+		MerchandisingPromotion merchandisingPromotions1 = new MerchandisingPromotion();
 		merchandisingPromotions1.setDiscountId("107531");
 		merchandisingPromotions1.setLabel("20% off with any handset");
 		merchandisingPromotions1.setTag("AllPhone.full.2017");
@@ -3759,7 +3759,7 @@ public class CommonMethods {
 		bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
 		bundlePrice.setMonthlyPrice(monthlyPrice);
 		priceInfo.setBundlePrice(bundlePrice);
-		com.vf.uk.dal.utility.entity.HardwarePrice hardwarePrice = new com.vf.uk.dal.utility.entity.HardwarePrice();
+		HardwarePrice hardwarePrice = new HardwarePrice();
 		hardwarePrice.setHardwareId("093353");
 		hardwarePrice.setMerchandisingPromotions(merchandisingPromotions1);
 		hardwarePrice.setOneOffDiscountPrice(oneOffDiscountPrice1);
@@ -3771,7 +3771,7 @@ public class CommonMethods {
 		priceInfo.setMonthlyPrice(monthlyPrice1);
 		priceInfo.setOneOffDiscountPrice(monthlyDiscountPrice1);
 		priceInfo.setOneOffPrice(oneOffPrice1);
-		List<com.vf.uk.dal.utility.entity.StepPricingInfo> stepPricesList = new ArrayList<com.vf.uk.dal.utility.entity.StepPricingInfo>();
+		List<StepPricingInfo> stepPricesList = new ArrayList<>();
 		StepPricingInfo stePrices = new StepPricingInfo();
 
 		List<Discount> discountList = new ArrayList<Discount>();
@@ -3780,7 +3780,7 @@ public class CommonMethods {
 		discount.setTag("AllPhone.limit.2017");
 		discountList.add(discount);
 		// stePrices.setDiscountsApplicable(discountList);
-		com.vf.uk.dal.device.entity.Duration duration = new com.vf.uk.dal.device.entity.Duration();
+		com.vf.uk.dal.device.client.entity.price.Duration duration = new com.vf.uk.dal.device.client.entity.price.Duration();
 		duration.setUom("UOM");
 		duration.setValue("124");
 		stePrices.setDuration(duration);
@@ -3799,7 +3799,7 @@ public class CommonMethods {
 
 		BundlePrice bundlePrice = new BundlePrice();
 		bundlePrice.setBundleId("183099");
-		com.vf.uk.dal.device.entity.MerchandisingPromotion merchandisingPromotions = new com.vf.uk.dal.device.entity.MerchandisingPromotion();
+		com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion merchandisingPromotions = new com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion();
 
 		merchandisingPromotions.setDiscountId("107531");
 		merchandisingPromotions.setLabel("20% off with any handset");
@@ -3809,7 +3809,7 @@ public class CommonMethods {
 		merchandisingPromotions.setPromotionMedia("promotionMedia");
 		merchandisingPromotions.setMpType(CONDITIONAL_FULL_DISCOUNT);
 		bundlePrice.setMerchandisingPromotions(merchandisingPromotions);
-		com.vf.uk.dal.device.entity.Price monthlyDiscountPrice = new com.vf.uk.dal.device.entity.Price();
+		com.vf.uk.dal.device.client.entity.price.Price monthlyDiscountPrice = new com.vf.uk.dal.device.client.entity.price.Price();
 		monthlyDiscountPrice.setGross("13.11");
 		monthlyDiscountPrice.setNet("12.23");
 		monthlyDiscountPrice.setVat("1.56");
@@ -3819,12 +3819,12 @@ public class CommonMethods {
 		oneOffDiscountPrice.setNet("7.23");
 		oneOffDiscountPrice.setVat("1.56");
 
-		com.vf.uk.dal.device.entity.Price monthlyPrice = new com.vf.uk.dal.device.entity.Price();
+		com.vf.uk.dal.device.client.entity.price.Price monthlyPrice = new com.vf.uk.dal.device.client.entity.price.Price();
 		monthlyPrice.setGross("12.64");
 		monthlyPrice.setNet("11.5");
 		monthlyPrice.setVat("1.56");
 
-		com.vf.uk.dal.device.entity.Price oneOffPrice = new com.vf.uk.dal.device.entity.Price();
+		com.vf.uk.dal.device.client.entity.price.Price oneOffPrice = new com.vf.uk.dal.device.client.entity.price.Price();
 		oneOffPrice.setGross("15.11");
 		oneOffPrice.setNet("9.23");
 		oneOffPrice.setVat("6.56");
@@ -3843,8 +3843,8 @@ public class CommonMethods {
 		priceInfo.setMonthlyPrice(monthlyPrice);
 		priceInfo.setOneOffDiscountPrice(monthlyDiscountPrice);
 		priceInfo.setOneOffPrice(oneOffPrice);
-		List<com.vf.uk.dal.device.entity.StepPricingInfo> stepPricesList = new ArrayList<com.vf.uk.dal.device.entity.StepPricingInfo>();
-		com.vf.uk.dal.device.entity.StepPricingInfo stePrices = new com.vf.uk.dal.device.entity.StepPricingInfo();
+		List<com.vf.uk.dal.device.client.entity.price.StepPricingInfo> stepPricesList = new ArrayList<com.vf.uk.dal.device.client.entity.price.StepPricingInfo>();
+		com.vf.uk.dal.device.client.entity.price.StepPricingInfo stePrices = new com.vf.uk.dal.device.client.entity.price.StepPricingInfo();
 
 		List<Discount> discountList = new ArrayList<Discount>();
 		Discount discount = new Discount();
@@ -3852,7 +3852,7 @@ public class CommonMethods {
 		discount.setTag("AllPhone.limit.2017");
 		discountList.add(discount);
 		// stePrices.setDiscountsApplicable(discountList);
-		com.vf.uk.dal.device.entity.Duration duration = new com.vf.uk.dal.device.entity.Duration();
+		com.vf.uk.dal.device.client.entity.price.Duration duration = new com.vf.uk.dal.device.client.entity.price.Duration();
 		duration.setUom("UOM");
 		duration.setValue("124");
 		stePrices.setDuration(duration);
@@ -3872,12 +3872,12 @@ public class CommonMethods {
 		finance.setDeviceFinancingId("OVCTYUVZRR");
 		finance.setFinanceProvider("PayPal");
 		finance.setFinanceTerm("24");
-		com.vf.uk.dal.device.datamodel.product.Price deviceMonthlyPrice = new com.vf.uk.dal.device.datamodel.product.Price();
+		com.vf.uk.dal.device.model.product.Price deviceMonthlyPrice = new com.vf.uk.dal.device.model.product.Price();
 		deviceMonthlyPrice.setGross("14.41");
 		deviceMonthlyPrice.setNet("12");
 		deviceMonthlyPrice.setVat("2.40");
 		finance.setMonthlyPrice(deviceMonthlyPrice);
-		com.vf.uk.dal.device.datamodel.product.Price totalPriceWithInterest = new com.vf.uk.dal.device.datamodel.product.Price();
+		com.vf.uk.dal.device.model.product.Price totalPriceWithInterest = new com.vf.uk.dal.device.model.product.Price();
 		totalPriceWithInterest.setGross("345.68");
 		totalPriceWithInterest.setNet("288.07");
 		totalPriceWithInterest.setVat("57.61");
@@ -3886,19 +3886,19 @@ public class CommonMethods {
 		return financeOptions;
 	}
 
-	public static List<com.vf.uk.dal.device.entity.DeviceFinancingOption> getDeviceFinaceOptions1() {
-		List<com.vf.uk.dal.device.entity.DeviceFinancingOption> financeOptions = new ArrayList<>();
-		com.vf.uk.dal.device.entity.DeviceFinancingOption finance = new com.vf.uk.dal.device.entity.DeviceFinancingOption();
+	public static List<com.vf.uk.dal.device.client.entity.price.DeviceFinancingOption> getDeviceFinaceOptions1() {
+		List<com.vf.uk.dal.device.client.entity.price.DeviceFinancingOption> financeOptions = new ArrayList<>();
+		com.vf.uk.dal.device.client.entity.price.DeviceFinancingOption finance = new com.vf.uk.dal.device.client.entity.price.DeviceFinancingOption();
 		finance.setApr("16.9");
 		finance.setDeviceFinancingId("OVCTYUVZRR");
 		finance.setFinanceProvider("PayPal");
 		finance.setFinanceTerm("24");
-		com.vf.uk.dal.device.entity.Price deviceMonthlyPrice = new com.vf.uk.dal.device.entity.Price();
+		com.vf.uk.dal.device.client.entity.price.Price deviceMonthlyPrice = new com.vf.uk.dal.device.client.entity.price.Price();
 		deviceMonthlyPrice.setGross("14.41");
 		deviceMonthlyPrice.setNet("12");
 		deviceMonthlyPrice.setVat("2.40");
 		finance.setMonthlyPrice(deviceMonthlyPrice);
-		com.vf.uk.dal.device.entity.Price totalPriceWithInterest = new com.vf.uk.dal.device.entity.Price();
+		com.vf.uk.dal.device.client.entity.price.Price totalPriceWithInterest = new com.vf.uk.dal.device.client.entity.price.Price();
 		totalPriceWithInterest.setGross("345.68");
 		totalPriceWithInterest.setNet("288.07");
 		totalPriceWithInterest.setVat("57.61");
@@ -3907,19 +3907,19 @@ public class CommonMethods {
 		return financeOptions;
 	}
 
-	public static List<com.vf.uk.dal.utility.entity.DeviceFinancingOption> getDeviceFinaceOptions2() {
-		List<com.vf.uk.dal.utility.entity.DeviceFinancingOption> financeOptions = new ArrayList<>();
-		com.vf.uk.dal.utility.entity.DeviceFinancingOption finance = new com.vf.uk.dal.utility.entity.DeviceFinancingOption();
+	public static List<com.vf.uk.dal.device.client.entity.price.DeviceFinancingOption> getDeviceFinaceOptions2() {
+		List<com.vf.uk.dal.device.client.entity.price.DeviceFinancingOption> financeOptions = new ArrayList<>();
+		com.vf.uk.dal.device.client.entity.price.DeviceFinancingOption finance = new com.vf.uk.dal.device.client.entity.price.DeviceFinancingOption();
 		finance.setApr("16.9");
 		finance.setDeviceFinancingId("OVCTYUVZRR");
 		finance.setFinanceProvider("PayPal");
 		finance.setFinanceTerm("24");
-		com.vf.uk.dal.utility.entity.Price deviceMonthlyPrice = new com.vf.uk.dal.utility.entity.Price();
+		com.vf.uk.dal.device.client.entity.price.Price deviceMonthlyPrice = new com.vf.uk.dal.device.client.entity.price.Price();
 		deviceMonthlyPrice.setGross("14.41");
 		deviceMonthlyPrice.setNet("12");
 		deviceMonthlyPrice.setVat("2.40");
 		finance.setMonthlyPrice(deviceMonthlyPrice);
-		com.vf.uk.dal.utility.entity.Price totalPriceWithInterest = new com.vf.uk.dal.utility.entity.Price();
+		com.vf.uk.dal.device.client.entity.price.Price totalPriceWithInterest = new com.vf.uk.dal.device.client.entity.price.Price();
 		totalPriceWithInterest.setGross("345.68");
 		totalPriceWithInterest.setNet("288.07");
 		totalPriceWithInterest.setVat("57.61");
@@ -3994,7 +3994,7 @@ public class CommonMethods {
 		List<StepPricingInfo> stepPricesList = new ArrayList<StepPricingInfo>();
 		StepPricingInfo stePrices = new StepPricingInfo();
 
-		com.vf.uk.dal.device.entity.Duration duration = new com.vf.uk.dal.device.entity.Duration();
+		com.vf.uk.dal.device.client.entity.price.Duration duration = new com.vf.uk.dal.device.client.entity.price.Duration();
 		duration.setUom("UOM");
 		duration.setValue("124");
 		stePrices.setDuration(duration);
@@ -4074,7 +4074,7 @@ public class CommonMethods {
 		List<StepPricingInfo> stepPricesList = new ArrayList<StepPricingInfo>();
 		StepPricingInfo stePrices = new StepPricingInfo();
 
-		com.vf.uk.dal.device.entity.Duration duration = new com.vf.uk.dal.device.entity.Duration();
+		com.vf.uk.dal.device.client.entity.price.Duration duration = new com.vf.uk.dal.device.client.entity.price.Duration();
 		duration.setUom("UOM");
 		duration.setValue("124");
 		stePrices.setDuration(duration);
@@ -4102,9 +4102,9 @@ public class CommonMethods {
 		return bundleAndHardwareTuple;
 	}
 
-	public static List<com.vf.uk.dal.device.entity.Member> getMemberListPojo() {
-		List<com.vf.uk.dal.device.entity.Member> memberList = new ArrayList<>();
-		com.vf.uk.dal.device.entity.Member member = new com.vf.uk.dal.device.entity.Member();
+	public static List<com.vf.uk.dal.device.model.Member> getMemberListPojo() {
+		List<com.vf.uk.dal.device.model.Member> memberList = new ArrayList<>();
+		com.vf.uk.dal.device.model.Member member = new com.vf.uk.dal.device.model.Member();
 		member.setId("123");
 		member.setPriority("12");
 		memberList.add(member);

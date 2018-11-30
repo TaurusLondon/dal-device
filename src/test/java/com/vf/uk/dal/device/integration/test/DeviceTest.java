@@ -34,11 +34,20 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vf.uk.dal.common.context.ServiceContext;
-import com.vf.uk.dal.common.context.URLParamContext;
-import com.vf.uk.dal.common.urlparams.PaginationCriteria;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
 import com.vf.uk.dal.device.beans.test.DeviceTestBeans;
+import com.vf.uk.dal.device.client.converter.ResponseMappingHelper;
+import com.vf.uk.dal.device.client.entity.bundle.BundleDetailsForAppSrv;
+import com.vf.uk.dal.device.client.entity.bundle.CommercialBundle;
+import com.vf.uk.dal.device.client.entity.customer.RecommendedProductListResponse;
+import com.vf.uk.dal.device.client.entity.customer.SourcePackageSummary;
+import com.vf.uk.dal.device.client.entity.price.BundleAndHardwareTuple;
+import com.vf.uk.dal.device.client.entity.price.BundleDeviceAndProductsList;
+import com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware;
+import com.vf.uk.dal.device.client.entity.price.PriceForProduct;
+import com.vf.uk.dal.device.client.entity.price.RequestForBundleAndHardware;
+import com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwarePromotions;
+import com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwareRequest;
 import com.vf.uk.dal.device.common.test.CommonMethods;
 import com.vf.uk.dal.device.controller.AccessoryInsuranceController;
 import com.vf.uk.dal.device.controller.CacheDeviceAndReviewController;
@@ -46,40 +55,27 @@ import com.vf.uk.dal.device.controller.DeviceController;
 import com.vf.uk.dal.device.controller.DeviceDetailsController;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.dao.DeviceTileCacheDAO;
-import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
-import com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceModel;
-import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
-import com.vf.uk.dal.device.entity.AccessoryTileGroup;
-import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
-import com.vf.uk.dal.device.entity.DeviceDetails;
-import com.vf.uk.dal.device.entity.FacetedDevice;
-import com.vf.uk.dal.device.entity.Insurances;
-import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
-import com.vf.uk.dal.device.entity.ProductGroupDetailsForDeviceList;
-import com.vf.uk.dal.device.entity.RequestForBundleAndHardware;
-import com.vf.uk.dal.device.entity.SourcePackageSummary;
-import com.vf.uk.dal.device.helper.DeviceESHelper;
-import com.vf.uk.dal.device.helper.DeviceServiceCommonUtility;
-import com.vf.uk.dal.device.helper.DeviceServiceImplUtility;
-import com.vf.uk.dal.device.svc.CacheDeviceService;
-import com.vf.uk.dal.device.svc.DeviceRecommendationService;
-import com.vf.uk.dal.device.svc.DeviceService;
+import com.vf.uk.dal.device.model.AccessoryTileGroup;
+import com.vf.uk.dal.device.model.DeviceDetails;
+import com.vf.uk.dal.device.model.FacetedDevice;
+import com.vf.uk.dal.device.model.Insurances;
+import com.vf.uk.dal.device.model.ProductGroupDetailsForDeviceList;
+import com.vf.uk.dal.device.model.merchandisingpromotion.OfferAppliedPriceModel;
+import com.vf.uk.dal.device.model.product.CommercialProduct;
+import com.vf.uk.dal.device.model.solr.DevicePreCalculatedData;
+import com.vf.uk.dal.device.service.CacheDeviceService;
+import com.vf.uk.dal.device.service.DeviceRecommendationService;
+import com.vf.uk.dal.device.service.DeviceService;
 import com.vf.uk.dal.device.utils.AccessoriesAndInsurancedaoUtils;
 import com.vf.uk.dal.device.utils.CacheDeviceDaoUtils;
 import com.vf.uk.dal.device.utils.DeviceDetailsMakeAndModelVaiantDaoUtils;
+import com.vf.uk.dal.device.utils.DeviceESHelper;
+import com.vf.uk.dal.device.utils.DeviceServiceCommonUtility;
+import com.vf.uk.dal.device.utils.DeviceServiceImplUtility;
 import com.vf.uk.dal.device.utils.DeviceTilesDaoUtils;
 import com.vf.uk.dal.device.utils.DeviceUtils;
 import com.vf.uk.dal.device.utils.ListOfDeviceDetailsDaoUtils;
-import com.vf.uk.dal.device.utils.ResponseMappingHelper;
-import com.vf.uk.dal.device.validator.Validator;
-import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
-import com.vf.uk.dal.utility.entity.BundleAndHardwareRequest;
-import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
-import com.vf.uk.dal.utility.entity.BundleDeviceAndProductsList;
-import com.vf.uk.dal.utility.entity.CurrentJourney;
-import com.vf.uk.dal.utility.entity.PriceForProduct;
-import com.vf.uk.dal.utility.entity.RecommendedProductListResponse;
-import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
+import com.vf.uk.dal.device.utils.Validator;
 
 /**
  * In order to run the controller class a bean of the ProductController is
@@ -145,15 +141,10 @@ public class DeviceTest {
 	@Before
 	public void setupMockBehaviour() throws Exception {
 		aspect.beforeAdvice(null);
-		String jsonString = new String(CommonMethods.readFile("\\rest-mock\\COMMON-V1.json"));
-		CurrentJourney obj = new ObjectMapper().readValue(jsonString, CurrentJourney.class);
 		given(restTemplate
 				.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId="
 						+ "093353" + "&journeyType=" + null, BundleDetailsForAppSrv.class))
 								.willReturn(CommonMethods.getCoupledBundleListForDevice());
-		given(restTemplate.getForObject(
-				"http://COMMON-V1/common/journey/" + "c1a42269-6562-4c96-b3be-1ca2a6681d57" + "/queries/currentJourney",
-				CurrentJourney.class)).willReturn(obj);
 		given(response.getMerchandisingPromotion(ArgumentMatchers.any())).willReturn(CommonMethods.getMemPro());
 		given(response.getCommercialProduct(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getCommercialProductsListOfMakeAndModel().get(0));
@@ -362,9 +353,7 @@ public class DeviceTest {
 		FacetedDevice deviceDetailsList = null;
 		try {
 			// given()
-			PaginationCriteria paginationCriteria = new PaginationCriteria(9, 0);
 
-			ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
 			given(response.getListOfProductGroupModel(ArgumentMatchers.any()))
 					.willReturn(CommonMethods.getListOfProductGroupMode());
 			given(response.getFacetField(ArgumentMatchers.any())).willReturn(CommonMethods.getListOfFacetField());
@@ -409,8 +398,7 @@ public class DeviceTest {
 			deviceDetailsList = deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple",
 					"iPhone-7", "White", "iOS 9", "32 GB", null, "Great Camera", "SecondLine", null, null, null);
 			Assert.assertNotNull(deviceDetailsList);
-			ServiceContext.URL_PARAM_CONTEXT.remove();
-			ServiceContext.setURLParamContext(new URLParamContext("-Priority", "", null, paginationCriteria));
+			
 			deviceDetailsList = deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "-Priority", 1, 9, "Apple",
 					"iPhone-7", "White", "iOS 9", "32 GB", null, "Great Camera", "SecondLine", null, null, null);
 			Assert.assertNotNull(deviceDetailsList);
@@ -446,15 +434,11 @@ public class DeviceTest {
 					"iPhone-7", "White", "iOS 9", "32 GB", null, "Great Camera", null, null, "W_HH_PAYM_01", null);
 		} catch (Exception e) {
 		}
-		ServiceContext.URL_PARAM_CONTEXT.remove();
-
 	}
 
 	@Test
 	public void nullOfferCodeforDeviceList() {
 		try {
-			PaginationCriteria paginationCriteria = new PaginationCriteria(9, 0);
-			ServiceContext.setURLParamContext(new URLParamContext("Priority", "", null, paginationCriteria));
 			deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple", "iPhone-7", "White",
 					"iOS 9", "32 GB", null, "Great Camera", "Upgrade", null, null, "W_HH_OC_02");
 
@@ -1099,7 +1083,7 @@ public class DeviceTest {
 
 	@Test
 	public void testForGetListOfOfferAppliedPriceDetails() {
-		List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceDetails> listOfferAppliedPriceDetails = CacheDeviceDaoUtils
+		List<com.vf.uk.dal.device.model.merchandisingpromotion.OfferAppliedPriceDetails> listOfferAppliedPriceDetails = CacheDeviceDaoUtils
 				.getListOfOfferAppliedPriceDetails(CommonMethods.getOfferAppliedPriceDetails());
 
 		Assert.assertNotNull(listOfferAppliedPriceDetails);
@@ -1107,7 +1091,7 @@ public class DeviceTest {
 
 	@Test
 	public void testForGetPriceForSolr() {
-		com.vf.uk.dal.device.datamodel.merchandisingpromotion.PriceInfo listOfferAppliedPriceDetails = CacheDeviceDaoUtils
+		com.vf.uk.dal.device.model.merchandisingpromotion.PriceInfo listOfferAppliedPriceDetails = CacheDeviceDaoUtils
 				.getPriceForSolr(CommonMethods.getPriceinforForSorl());
 
 		Assert.assertNotNull(listOfferAppliedPriceDetails);
@@ -1115,7 +1099,7 @@ public class DeviceTest {
 
 	@Test
 	public void testForGetListOfSolrMedia() {
-		List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.Media> listOfferAppliedPriceDetails = CacheDeviceDaoUtils
+		List<com.vf.uk.dal.device.model.merchandisingpromotion.Media> listOfferAppliedPriceDetails = CacheDeviceDaoUtils
 				.getListOfSolrMedia(CommonMethods.getmediaForSorl());
 
 		Assert.assertNotNull(listOfferAppliedPriceDetails);

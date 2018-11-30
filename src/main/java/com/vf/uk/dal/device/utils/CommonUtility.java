@@ -13,40 +13,37 @@ import org.apache.commons.lang.StringUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vf.uk.dal.common.exception.ApplicationException;
-import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
-import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
-import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
-import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
-import com.vf.uk.dal.device.entity.MediaLink;
-import com.vf.uk.dal.device.entity.MerchandisingPromotionsPackage;
-import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
-import com.vf.uk.dal.device.entity.RequestForBundleAndHardware;
-import com.vf.uk.dal.device.entity.SourcePackageSummary;
-import com.vf.uk.dal.device.helper.DeviceServiceImplUtility;
-import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
-import com.vf.uk.dal.utility.entity.BundleAndHardwareRequest;
-import com.vf.uk.dal.utility.entity.BundleDetails;
-import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
-import com.vf.uk.dal.utility.entity.BundleDeviceAndProductsList;
-import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareAccessory;
-import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareDataAllowances;
-import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks;
-import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareExtras;
-import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions;
-import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareSash;
-import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareSecureNet;
-import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForHardwareSash;
-import com.vf.uk.dal.utility.entity.PriceForProduct;
-import com.vf.uk.dal.utility.entity.RecommendedProductListRequest;
-import com.vf.uk.dal.utility.entity.RecommendedProductListResponse;
+import com.vf.uk.dal.device.client.BundleServiceClient;
+import com.vf.uk.dal.device.client.CustomerServiceClient;
+import com.vf.uk.dal.device.client.PriceServiceClient;
+import com.vf.uk.dal.device.client.PromotionServiceClient;
+import com.vf.uk.dal.device.client.entity.bundle.BundleDetails;
+import com.vf.uk.dal.device.client.entity.bundle.BundleDetailsForAppSrv;
+import com.vf.uk.dal.device.client.entity.bundle.CommercialBundle;
+import com.vf.uk.dal.device.client.entity.customer.RecommendedProductListRequest;
+import com.vf.uk.dal.device.client.entity.customer.RecommendedProductListResponse;
+import com.vf.uk.dal.device.client.entity.price.BundleAndHardwareTuple;
+import com.vf.uk.dal.device.client.entity.price.BundleDeviceAndProductsList;
+import com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware;
+import com.vf.uk.dal.device.client.entity.price.PriceForProduct;
+import com.vf.uk.dal.device.client.entity.price.RequestForBundleAndHardware;
+import com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwarePromotions;
+import com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwareRequest;
+import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesForBundleAndHardwareAccessory;
+import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesForBundleAndHardwareDataAllowances;
+import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks;
+import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesForBundleAndHardwareExtras;
+import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions;
+import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesForBundleAndHardwareSash;
+import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesForBundleAndHardwareSecureNet;
+import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesForHardwareSash;
+import com.vf.uk.dal.device.model.MediaLink;
+import com.vf.uk.dal.device.model.MerchandisingPromotionsPackage;
+import com.vf.uk.dal.device.model.product.CommercialProduct;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -73,6 +70,18 @@ public class CommonUtility {
 
 	@Autowired
 	RestTemplate restTemplate;
+	
+	@Autowired
+	BundleServiceClient bundleServiceClient;
+	
+	@Autowired
+	PriceServiceClient priceServiceClient;
+	
+	@Autowired
+	PromotionServiceClient promotionServiceClient;
+	
+	@Autowired
+	CustomerServiceClient customerServiceClient;
 
 	/**
 	 * Round off price to two decimal points
@@ -100,7 +109,21 @@ public class CommonUtility {
 		}
 		return formatdate;
 	}
-
+	
+	/**
+	 * Gets the bundle details from complans listing API.
+	 *
+	 * @param deviceId
+	 *            the device id
+	 * @param registryClient
+	 *            the registry client
+	 * @return the bundle details from complans listing API
+	 */
+	public BundleDetails getBundleDetailsFromComplansListingAPI(String deviceId, String sortCriteria) {
+		return bundleServiceClient.getBundleDetailsFromComplansListingAPI(deviceId, sortCriteria);
+	}
+	
+	
 	/**
 	 * 
 	 * @param bundleAndHardwareTupleList
@@ -117,19 +140,7 @@ public class CommonUtility {
 		requestForBundleAndHardware.setBillingType(billingType);
 		requestForBundleAndHardware.setOfferCode(offerCode);
 		requestForBundleAndHardware.setPackageType(journeyType);
-		PriceForBundleAndHardware[] client = new PriceForBundleAndHardware[7000];
-		try {
-			log.info("Start --> Calling  Price.calculateForBundleAndHardware");
-			client = restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
-					requestForBundleAndHardware, PriceForBundleAndHardware[].class);
-			log.info("End --> Calling  Price.calculateForBundleAndHardware");
-		} catch (Exception e) {
-			log.error("PRICE API of PriceForBundleAndHardware Exception---------------" + e);
-			throw new ApplicationException(ExceptionMessages.PRICING_API_EXCEPTION);
-		}
-		ObjectMapper mapper = new ObjectMapper();
-		return mapper.convertValue(client, new TypeReference<List<PriceForBundleAndHardware>>() {
-		});
+		return priceServiceClient.getPriceDetails(requestForBundleAndHardware);
 	}
 
 	/**
@@ -139,8 +150,7 @@ public class CommonUtility {
 	 * @return RecommendedProductListResponse
 	 */
 	public RecommendedProductListResponse getRecommendedProductList(RecommendedProductListRequest recomProductList) {
-		return restTemplate.postForObject("http://CUSTOMER-V1/customer/getRecommendedProductList/", recomProductList,
-				RecommendedProductListResponse.class);
+		return customerServiceClient.getRecommendedProductList(recomProductList);
 	}
 
 	/**
@@ -151,44 +161,7 @@ public class CommonUtility {
 	 * @return BundleDetailsForAppSrv
 	 */
 	public BundleDetailsForAppSrv getPriceDetailsForCompatibaleBundle(String deviceId, String journeyType) {
-		try {
-			log.info("Start --> Calling  Bundle.getCoupledBundleList");
-			return restTemplate
-					.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId="
-							+ deviceId + "&journeyType=" + journeyType, BundleDetailsForAppSrv.class);
-		} catch (Exception e) {
-			log.error("" + e);
-			throw new ApplicationException(ExceptionMessages.COUPLEBUNDLELIST_API_EXCEPTION);
-			// return null;
-		}
-	}
-
-	/**
-	 * Gets the bundle details from complans listing API.
-	 *
-	 * @param deviceId
-	 *            the device id
-	 * @param registryClient
-	 *            the registry client
-	 * @return the bundle details from complans listing API
-	 */
-	public BundleDetails getBundleDetailsFromComplansListingAPI(String deviceId, String sortCriteria) {
-		log.info("Start -->  calling  Bundle.GetCompatibleListAPI");
-		String URL = "http://BUNDLES-V1/bundles/catalogue/bundle/queries/byDeviceId/" + deviceId + "/";
-		if (sortCriteria != null && StringUtils.isNotBlank(sortCriteria)) {
-			URL += "/?sort=" + sortCriteria;
-		}
-		BundleDetails client = new BundleDetails();
-		try {
-			client = restTemplate.getForObject(URL, BundleDetails.class);
-			log.info("End -->  calling  Bundle.GetCompatibleListAPI");
-		} catch (Exception e) {
-			log.error("getBundleDetailsFromGetCompatibleListAPI API Exception---------------" + e);
-			throw new ApplicationException(ExceptionMessages.BUNDLECOMPATIBLELIST_API_EXCEPTION);
-		}
-		ObjectMapper mapper = new ObjectMapper();
-		return mapper.convertValue(client, new TypeReference<BundleDetails>() {
-		});
+		return bundleServiceClient.getPriceDetailsForCompatibaleBundle(deviceId, journeyType);
 	}
 
 	/**
@@ -231,20 +204,7 @@ public class CommonUtility {
 	 * @return PriceForProduct
 	 */
 	public PriceForProduct getAccessoryPriceDetails(BundleDeviceAndProductsList bundleDeviceAndProductsList) {
-		PriceForProduct client;
-		try {
-			log.info("Start -->  calling  Price.product");
-			client = restTemplate.postForObject("http://PRICE-V1/price/product", bundleDeviceAndProductsList,
-					PriceForProduct.class);
-			log.info("End -->  calling  Price.product");
-		} catch (Exception e) {
-			log.error("getAccessoryPriceDetails API Exception---------------" + e);
-			throw new ApplicationException(ExceptionMessages.PRICING_API_EXCEPTION);
-		}
-		ObjectMapper mapper = new ObjectMapper();
-		return mapper.convertValue(client, new TypeReference<PriceForProduct>() {
-		});
-
+		return priceServiceClient.getAccessoryPriceDetails(bundleDeviceAndProductsList);
 	}
 
 	/**
@@ -257,38 +217,8 @@ public class CommonUtility {
 	 */
 	public List<PriceForBundleAndHardware> getPriceDetailsUsingBundleHarwareTrouple(
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType, String groupType) {
-		List<PriceForBundleAndHardware> priceList = null;
-		HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-		try {
-			RequestForBundleAndHardware requestForBundleAndHardware = new RequestForBundleAndHardware();
-			String billingType=getBillingType(groupType);
-			requestForBundleAndHardware.setBillingType(billingType);
-			requestForBundleAndHardware.setBundleAndHardwareList(bundleAndHardwareTupleList);
-			requestForBundleAndHardware.setOfferCode(offerCode);
-			requestForBundleAndHardware.setPackageType(journeyType);
-			log.info("Start --> Calling  Price.calculateForBundleAndHardware journeyType " + journeyType + " OfferCode "
-					+ offerCode + " Index Version " + CatalogServiceAspect.CATALOG_VERSION.get());
-			/**
-			 * Price API throwing timeout exception while calling PAYG price t
-			 * handle that override timeout
-			 */
-			factory.setConnectTimeout(300000);
-			restTemplate.setRequestFactory(factory);
-			PriceForBundleAndHardware[] client = restTemplate.postForObject(
-					"http://PRICE-V1/price/calculateForBundleAndHardware", requestForBundleAndHardware,
-					PriceForBundleAndHardware[].class);
-			log.info("End --> Calling  Price.calculateForBundleAndHardware");
-			ObjectMapper mapper = new ObjectMapper();
-			priceList = mapper.convertValue(client, new TypeReference<List<PriceForBundleAndHardware>>() {
-			});
-		} catch (Exception e) {
-			log.error("" + e);
-			throw new ApplicationException(ExceptionMessages.PRICING_API_EXCEPTION);
-		} finally {
-			factory.setConnectTimeout(61000);
-			restTemplate.setRequestFactory(factory);
-		}
-		return priceList;
+		String billingType=getBillingType(groupType);
+		return priceServiceClient.getPriceDetailsUsingBundleHarwareTrouple(bundleAndHardwareTupleList, offerCode, journeyType, groupType, billingType);
 	}
 
 	/**
@@ -300,29 +230,7 @@ public class CommonUtility {
 	 * @return SubscriptionBundleId
 	 */
 	public String getSubscriptionBundleId(String subscriptionId, String subscriptionType) {
-
-		String bundleId = null;
-
-		try {
-			String url = "http://CUSTOMER-V1/customer/subscription/" + subscriptionType + ":" + subscriptionId
-					+ "/sourcePackageSummary";
-			SourcePackageSummary sourcePackageSummary = restTemplate.getForObject(url, SourcePackageSummary.class);
-
-			if (null != sourcePackageSummary && null != sourcePackageSummary.getPromotionId()) {
-				bundleId = sourcePackageSummary.getPromotionId();
-
-				if (StringUtils.isBlank(bundleId))
-					log.info("No bundleId retrived from getSubscriptionAPI for the given MSISDN");
-			} else {
-				log.info("Unable to get Subscriptions from GetSubscriptionbyMSISDN servcie for subscriptionId"
-						+ subscriptionId);
-			}
-
-		} catch (Exception e) {
-			log.error("getBundleId API failed to get bundle from customer subscription : " + e);
-		}
-		return bundleId;
-
+		return customerServiceClient.getSubscriptionBundleId(subscriptionId, subscriptionType);
 	}
 
 	/**
@@ -475,20 +383,7 @@ public class CommonUtility {
 		BundleAndHardwareRequest request = new BundleAndHardwareRequest();
 		request.setBundleAndHardwareList(bundleHardwareTupleList);
 		request.setJourneyType(journeyType);
-		BundleAndHardwarePromotions[] response = null;
-		try {
-			log.info("http://PROMOTION-V1/promotion/queries/ForBundleAndHardware------POST URL\n"
-					+ "PayLoad\n Start calling");
-			response = restTemplate.postForObject("http://PROMOTION-V1/promotion/queries/ForBundleAndHardware", request,
-					BundleAndHardwarePromotions[].class);
-		} catch (RestClientException e) {
-			// Stanley - Added error logging
-			log.error(e + "");
-			throw new ApplicationException(ExceptionMessages.PROMOTION_API_EXCEPTION);
-		}
-		ObjectMapper mapper = new ObjectMapper();
-		return mapper.convertValue(response, new TypeReference<List<BundleAndHardwarePromotions>>() {
-		});
+		return promotionServiceClient.getPromotionsForBundleAndHardWarePromotions(request);
 	}
 
 	/**
@@ -1062,7 +957,7 @@ public class CommonUtility {
 			String cdnDomain) {
 		MediaLink mediaLink;
 		if (commercialProduct.getListOfimageURLs() != null) {
-			for (com.vf.uk.dal.device.datamodel.product.ImageURL imageURL : commercialProduct.getListOfimageURLs()) {
+			for (com.vf.uk.dal.device.model.product.ImageURL imageURL : commercialProduct.getListOfimageURLs()) {
 				if (StringUtils.isNotBlank(imageURL.getImageURL())) {
 					mediaLink = new MediaLink();
 					mediaLink.setId(imageURL.getImageName());
@@ -1073,7 +968,7 @@ public class CommonUtility {
 			}
 		}
 		if (commercialProduct.getListOfmediaURLs() != null) {
-			for (com.vf.uk.dal.device.datamodel.product.MediaURL mediaURL : commercialProduct.getListOfmediaURLs()) {
+			for (com.vf.uk.dal.device.model.product.MediaURL mediaURL : commercialProduct.getListOfmediaURLs()) {
 				if (StringUtils.isNotBlank(mediaURL.getMediaURL())) {
 					mediaLink = new MediaLink();
 					mediaLink.setId(mediaURL.getMediaName());

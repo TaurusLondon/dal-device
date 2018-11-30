@@ -1,17 +1,16 @@
 package com.vf.uk.dal.device.dao;
 
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 
-import com.vf.uk.dal.device.datamodel.product.BazaarVoice;
-import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
-import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
-import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
-import com.vf.uk.dal.utility.entity.BundleDetails;
+import com.vf.uk.dal.device.client.entity.bundle.BundleDetails;
+import com.vf.uk.dal.device.client.entity.price.BundleAndHardwareTuple;
+import com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware;
+import com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwarePromotions;
+import com.vf.uk.dal.device.model.product.BazaarVoice;
 
 /**
  * 
@@ -71,7 +70,7 @@ public interface DeviceDao {
 	 *            the promotion as tags
 	 * @return the merchandising promotions entity from solr model
 	 */
-	public Map<String, com.vf.uk.dal.device.entity.MerchandisingPromotion> getMerchandisingPromotionsEntityFromRepo(
+	public List<com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotion> getMerchandisingPromotionsEntityFromRepo(
 			List<String> promotionAsTags);
 
 	/**
