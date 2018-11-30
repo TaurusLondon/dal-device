@@ -300,7 +300,7 @@ public class DeviceServiceImpl implements DeviceService {
 		// Calling Pricing Api
 		if (bundleAndHardwareTupleList != null && !bundleAndHardwareTupleList.isEmpty()) {
 			listOfPriceForBundleAndHardware = commonUtility.getPriceDetails(bundleAndHardwareTupleList, offerCode,
-					 journeyType);
+					 journeyType, null);
 		}
 
 		String leadPlanId = null;
