@@ -15,8 +15,9 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vf.uk.dal.device.datamodel.productgroups.Count;
-import com.vf.uk.dal.device.datamodel.productgroups.FacetField;
+import com.vf.uk.dal.device.client.converter.SingletonMapperUtility;
+import com.vf.uk.dal.device.model.productgroups.Count;
+import com.vf.uk.dal.device.model.productgroups.FacetField;
 
 import lombok.extern.slf4j.Slf4j;
 

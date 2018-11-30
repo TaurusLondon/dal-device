@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
-import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
-import com.vf.uk.dal.device.datamodel.productgroups.Group;
-import com.vf.uk.dal.device.datamodel.productgroups.ProductGroupModelMap;
-import com.vf.uk.dal.device.svc.DeviceEntityService;
+import com.vf.uk.dal.device.model.product.CommercialProduct;
+import com.vf.uk.dal.device.model.productgroups.Group;
+import com.vf.uk.dal.device.model.productgroups.ProductGroupModelMap;
+import com.vf.uk.dal.device.service.DeviceEntityService;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 
 import io.swagger.annotations.Api;
@@ -80,10 +80,10 @@ public class DeviceEntityController {
 	@ApiOperation(value = "The service gets the details of the commercial Product in the response.", notes = "The service gets the details of the commercial Product in the response.", response = CommercialProduct.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Success", response = CommercialProduct.class, responseContainer = "List"),
-			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
+			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.model.Error.class),
+			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.model.Error.class),
+			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.model.Error.class),
+			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.model.Error.class) })
 	@RequestMapping(value = "/product", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
 	public List<CommercialProduct> getCommercialProduct(
 			@ApiParam(value = "Device Id for getting commercial product to displayed. possible value can be comma separated device Id like 093353,080004") @RequestParam(value = "productId", required = false) String productId,
@@ -115,10 +115,10 @@ public class DeviceEntityController {
 	@ApiOperation(value = "The service gets the details of the Product group in the response.", notes = "The service gets the details of the Product group in the response.", response = Group.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Success", response = Group.class, responseContainer = "List"),
-			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
+			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.model.Error.class),
+			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.model.Error.class),
+			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.model.Error.class),
+			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.model.Error.class) })
 	@RequestMapping(value = "/productGroup", method = RequestMethod.GET, produces = {
 			MediaType.APPLICATION_JSON_VALUE })
 	public List<Group> getProductGroupByGroupType(
@@ -147,10 +147,10 @@ public class DeviceEntityController {
 	 */
 	@ApiOperation(value = "Handles requests to return the Map of Product Group Model from Product Catalog. It takes Product Id(s) as input.", notes = "This is an Entity API which will return Map of Product Group Model with applying small business logic.", response = ProductGroupModelMap.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = ProductGroupModelMap.class),
-			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
+			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.model.Error.class),
+			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.model.Error.class),
+			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.model.Error.class),
+			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.model.Error.class) })
 	@RequestMapping(value = "/device/getDeliveryMethod/getProductGroupModel", method = RequestMethod.GET, produces = {
 			MediaType.APPLICATION_JSON_VALUE })
 	public ProductGroupModelMap getProductGroupModel(

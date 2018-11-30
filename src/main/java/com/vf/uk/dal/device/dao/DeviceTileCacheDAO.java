@@ -3,10 +3,10 @@ package com.vf.uk.dal.device.dao;
 import java.util.List;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
-import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
-import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
-import com.vf.uk.dal.utility.solr.entity.Media;
-import com.vf.uk.dal.utility.solr.entity.OfferAppliedPriceDetails;
+import com.vf.uk.dal.device.model.CacheDeviceTileResponse;
+import com.vf.uk.dal.device.model.solr.DevicePreCalculatedData;
+import com.vf.uk.dal.device.model.solr.Media;
+import com.vf.uk.dal.device.model.solr.OfferAppliedPriceDetails;
 /**
  * 
  * Device Tile Cache Dao

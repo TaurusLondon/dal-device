@@ -16,16 +16,16 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
 import com.vf.uk.dal.device.beans.test.DeviceTestBeans;
+import com.vf.uk.dal.device.client.entity.customer.InstalledProduct;
+import com.vf.uk.dal.device.client.entity.customer.RecommendedProduct;
+import com.vf.uk.dal.device.client.entity.customer.RecommendedProductListRequest;
+import com.vf.uk.dal.device.client.entity.customer.RecommendedProductListResponse;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.dao.DeviceTileCacheDAO;
-import com.vf.uk.dal.device.entity.Device;
-import com.vf.uk.dal.device.entity.FacetedDevice;
-import com.vf.uk.dal.device.svc.DeviceRecommendationService;
+import com.vf.uk.dal.device.model.Device;
+import com.vf.uk.dal.device.model.FacetedDevice;
+import com.vf.uk.dal.device.service.DeviceRecommendationService;
 import com.vf.uk.dal.device.utils.CommonUtility;
-import com.vf.uk.dal.utility.entity.InstalledProduct;
-import com.vf.uk.dal.utility.entity.RecommendedProduct;
-import com.vf.uk.dal.utility.entity.RecommendedProductListRequest;
-import com.vf.uk.dal.utility.entity.RecommendedProductListResponse;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = DeviceTestBeans.class)

@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
-import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
-import com.vf.uk.dal.device.svc.CacheDeviceService;
+import com.vf.uk.dal.device.model.CacheDeviceTileResponse;
+import com.vf.uk.dal.device.service.CacheDeviceService;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
-import com.vf.uk.dal.device.validator.Validator;
+import com.vf.uk.dal.device.utils.Validator;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -77,11 +77,11 @@ public class CacheDeviceAndReviewController {
 	 */
 	@ApiOperation(value = "Cache the Device Tile Details in Solr.", notes = "Cache the Device Tile Details in Solr.", response = CacheDeviceTileResponse.class)
 	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
+			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.model.Error.class),
+			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.model.Error.class),
 			@ApiResponse(code = 201, message = "Success", response = CacheDeviceTileResponse.class),
-			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
+			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.model.Error.class),
+			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.model.Error.class) })
 
 	@RequestMapping(value = "/deviceTile/cacheDeviceTile", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CacheDeviceTileResponse> cacheDeviceTile(
@@ -112,10 +112,10 @@ public class CacheDeviceAndReviewController {
 	 */
 	@ApiOperation(value = "Get the Cache Device Tile job status.", notes = "Get the Cache Device Tile job status.", response = CacheDeviceTileResponse.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = CacheDeviceTileResponse.class),
-			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
+			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.model.Error.class),
+			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.model.Error.class),
+			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.model.Error.class),
+			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.model.Error.class) })
 
 	@RequestMapping(value = "/deviceTile/cacheDeviceTile/{jobId}/status", method = RequestMethod.GET, produces = {
 			MediaType.APPLICATION_JSON_VALUE })
@@ -134,10 +134,10 @@ public class CacheDeviceAndReviewController {
 	 */
 	@ApiOperation(value = "Get the reviews for a specific device Id. Response is coming from Bazar Voice(third party) API.", notes = "The service gets the reviews of a particular device variant")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
-			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
+			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.model.Error.class),
+			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.model.Error.class),
+			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.model.Error.class),
+			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.model.Error.class) })
 	@RequestMapping(value = "/device/{deviceId}/review", method = RequestMethod.GET, produces = {
 			MediaType.APPLICATION_JSON_VALUE })
 	public JSONObject getDeviceReviewDetails(

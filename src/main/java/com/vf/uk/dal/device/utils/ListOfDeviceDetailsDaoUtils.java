@@ -5,9 +5,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import com.vf.uk.dal.device.datamodel.productgroups.ProductGroupModel;
-import com.vf.uk.dal.device.entity.Member;
-import com.vf.uk.dal.device.entity.ProductGroup;
+import com.vf.uk.dal.device.model.Member;
+import com.vf.uk.dal.device.model.ProductGroup;
+import com.vf.uk.dal.device.model.productgroups.ProductGroupModel;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,16 +20,16 @@ public class ListOfDeviceDetailsDaoUtils {
 	 * @param listOfPriceForBundleHeader
 	 * @return bundleHeaderForDevice1
 	 */
-	public com.vf.uk.dal.utility.entity.BundleHeader getListOfPriceForBundleAndHardwareForDevice(
-			List<com.vf.uk.dal.utility.entity.BundleHeader> listOfPriceForBundleHeader) {
-		List<com.vf.uk.dal.utility.entity.BundleHeader> listOfBundelMonthlyPriceForBundleHeader = null;
-		com.vf.uk.dal.utility.entity.BundleHeader bundleHeaderForDevice1 = null;
+	public com.vf.uk.dal.device.client.entity.bundle.BundleHeader getListOfPriceForBundleAndHardwareForDevice(
+			List<com.vf.uk.dal.device.client.entity.bundle.BundleHeader> listOfPriceForBundleHeader) {
+		List<com.vf.uk.dal.device.client.entity.bundle.BundleHeader> listOfBundelMonthlyPriceForBundleHeader = null;
+		com.vf.uk.dal.device.client.entity.bundle.BundleHeader bundleHeaderForDevice1 = null;
 		String gross = null;
 
 		try {
 
 			if (listOfPriceForBundleHeader != null && !listOfPriceForBundleHeader.isEmpty()) {
-				List<com.vf.uk.dal.utility.entity.BundleHeader> listOfOneOffPriceForBundleHeader = getAscendingOrderForOneoffPrice1(
+				List<com.vf.uk.dal.device.client.entity.bundle.BundleHeader> listOfOneOffPriceForBundleHeader = getAscendingOrderForOneoffPrice1(
 						listOfPriceForBundleHeader);
 				if (listOfOneOffPriceForBundleHeader != null && !listOfOneOffPriceForBundleHeader.isEmpty()) {
 					if (listOfOneOffPriceForBundleHeader.get(0).getPriceInfo().getHardwarePrice()
@@ -40,8 +40,8 @@ public class ListOfDeviceDetailsDaoUtils {
 						gross = listOfOneOffPriceForBundleHeader.get(0).getPriceInfo().getHardwarePrice()
 								.getOneOffPrice().getGross();
 					}
-					List<com.vf.uk.dal.utility.entity.BundleHeader> listOfEqualOneOffPriceForBundleHeader = new ArrayList<>();
-					for (com.vf.uk.dal.utility.entity.BundleHeader bundleHeaderForDevice : listOfOneOffPriceForBundleHeader) {
+					List<com.vf.uk.dal.device.client.entity.bundle.BundleHeader> listOfEqualOneOffPriceForBundleHeader = new ArrayList<>();
+					for (com.vf.uk.dal.device.client.entity.bundle.BundleHeader bundleHeaderForDevice : listOfOneOffPriceForBundleHeader) {
 						if (bundleHeaderForDevice.getPriceInfo() != null
 								&& bundleHeaderForDevice.getPriceInfo().getHardwarePrice() != null
 								&& (bundleHeaderForDevice.getPriceInfo().getHardwarePrice()
@@ -92,18 +92,18 @@ public class ListOfDeviceDetailsDaoUtils {
 	 * @param bundleHeaderForDeviceSorted
 	 * @return bundleHeaderForDeviceSorted
 	 */
-	public List<com.vf.uk.dal.utility.entity.BundleHeader> getAscendingOrderForBundlePrice1(
-			List<com.vf.uk.dal.utility.entity.BundleHeader> bundleHeaderForDeviceSorted) {
+	public List<com.vf.uk.dal.device.client.entity.bundle.BundleHeader> getAscendingOrderForBundlePrice1(
+			List<com.vf.uk.dal.device.client.entity.bundle.BundleHeader> bundleHeaderForDeviceSorted) {
 		Collections.sort(bundleHeaderForDeviceSorted, new SortedBundlePriceList1());
 
 		return bundleHeaderForDeviceSorted;
 	}
 
-	class SortedBundlePriceList1 implements Comparator<com.vf.uk.dal.utility.entity.BundleHeader> {
+	class SortedBundlePriceList1 implements Comparator<com.vf.uk.dal.device.client.entity.bundle.BundleHeader> {
 
 		@Override
-		public int compare(com.vf.uk.dal.utility.entity.BundleHeader bundleHeaderList,
-				com.vf.uk.dal.utility.entity.BundleHeader bundleHeaderList1) {
+		public int compare(com.vf.uk.dal.device.client.entity.bundle.BundleHeader bundleHeaderList,
+				com.vf.uk.dal.device.client.entity.bundle.BundleHeader bundleHeaderList1) {
 			String gross = null;
 			String gross1 = null;
 			if (bundleHeaderList.getPriceInfo() != null && bundleHeaderList1.getPriceInfo() != null
@@ -141,18 +141,18 @@ public class ListOfDeviceDetailsDaoUtils {
 	 * @param bundleHeaderForDeviceSorted
 	 * @return bundleHeaderForDeviceSorted
 	 */
-	public List<com.vf.uk.dal.utility.entity.BundleHeader> getAscendingOrderForOneoffPrice1(
-			List<com.vf.uk.dal.utility.entity.BundleHeader> bundleHeaderForDeviceSorted) {
+	public List<com.vf.uk.dal.device.client.entity.bundle.BundleHeader> getAscendingOrderForOneoffPrice1(
+			List<com.vf.uk.dal.device.client.entity.bundle.BundleHeader> bundleHeaderForDeviceSorted) {
 		Collections.sort(bundleHeaderForDeviceSorted, new SortedOneOffPriceList1());
 
 		return bundleHeaderForDeviceSorted;
 	}
 
-	class SortedOneOffPriceList1 implements Comparator<com.vf.uk.dal.utility.entity.BundleHeader> {
+	class SortedOneOffPriceList1 implements Comparator<com.vf.uk.dal.device.client.entity.bundle.BundleHeader> {
 
 		@Override
-		public int compare(com.vf.uk.dal.utility.entity.BundleHeader bundleHeaderList,
-				com.vf.uk.dal.utility.entity.BundleHeader bundleHeaderList1) {
+		public int compare(com.vf.uk.dal.device.client.entity.bundle.BundleHeader bundleHeaderList,
+				com.vf.uk.dal.device.client.entity.bundle.BundleHeader bundleHeaderList1) {
 			String gross = null;
 			String gross1 = null;
 			if (bundleHeaderList.getPriceInfo() != null && bundleHeaderList1.getPriceInfo() != null

@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
-import com.vf.uk.dal.device.entity.DeviceTile;
-import com.vf.uk.dal.device.entity.FacetedDevice;
-import com.vf.uk.dal.device.svc.DeviceService;
+import com.vf.uk.dal.device.model.DeviceTile;
+import com.vf.uk.dal.device.model.FacetedDevice;
+import com.vf.uk.dal.device.service.DeviceService;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
-import com.vf.uk.dal.device.validator.Validator;
+import com.vf.uk.dal.device.utils.Validator;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -78,10 +78,10 @@ public class DeviceController {
 	@ApiOperation(value = "Get the device tile details for the given device tile Id.", notes = "The service gets the details of the device required to be dispalyed on deviceTile.", response = DeviceTile.class, responseContainer = "List")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Success", response = DeviceTile.class, responseContainer = "List"),
-			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
+			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.model.Error.class),
+			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.model.Error.class),
+			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.model.Error.class),
+			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.model.Error.class) })
 	@RequestMapping(value = "/deviceTile/queries/byDeviceVariant/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<DeviceTile> getDeviceTileById(
 			@NotNull @ApiParam(value = "Device Id of the device tile being requested", required = true) @RequestParam(value = "deviceId", required = true) String deviceId,
@@ -120,10 +120,10 @@ public class DeviceController {
 	 */
 	@ApiOperation(value = "Get the list of devices based on the filter criteria, like productGroup brand Name. Pagination, sorting, filteration also defined", notes = "The service gets the details of the device list from Solr based on the filter criteria in the response.", response = FacetedDevice.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = FacetedDevice.class),
-			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
+			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.model.Error.class),
+			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.model.Error.class),
+			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.model.Error.class),
+			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.model.Error.class) })
 	@RequestMapping(value = "/deviceTile", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public FacetedDevice getDeviceList(
 			@NotNull @ApiParam(value = "Values on which the attributes should be filtered upon.", required = true) @RequestParam(value = "productClass", required = true) String productClass,
