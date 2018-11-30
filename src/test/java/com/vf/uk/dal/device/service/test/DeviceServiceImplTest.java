@@ -31,50 +31,51 @@ import com.vf.uk.dal.common.configuration.ConfigHelper;
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
 import com.vf.uk.dal.device.beans.test.DeviceTestBeans;
+import com.vf.uk.dal.device.client.BundleServiceClient;
+import com.vf.uk.dal.device.client.converter.ResponseMappingHelper;
+import com.vf.uk.dal.device.client.entity.bundle.BundleDetails;
+import com.vf.uk.dal.device.client.entity.bundle.BundleModelAndPrice;
+import com.vf.uk.dal.device.client.entity.bundle.CommercialBundle;
+import com.vf.uk.dal.device.client.entity.customer.SourcePackageSummary;
+import com.vf.uk.dal.device.client.entity.price.BundleAndHardwareTuple;
+import com.vf.uk.dal.device.client.entity.price.BundlePrice;
+import com.vf.uk.dal.device.client.entity.price.HardwarePrice;
+import com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion;
+import com.vf.uk.dal.device.client.entity.price.Price;
+import com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware;
+import com.vf.uk.dal.device.client.entity.price.PriceForProduct;
+import com.vf.uk.dal.device.client.entity.price.RequestForBundleAndHardware;
+import com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwarePromotions;
+import com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwareRequest;
 import com.vf.uk.dal.device.common.test.CommonMethods;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.dao.DeviceTileCacheDAO;
-import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
-import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
-import com.vf.uk.dal.device.datamodel.product.ProductGroup;
-import com.vf.uk.dal.device.datamodel.product.ProductGroups;
-import com.vf.uk.dal.device.datamodel.product.PromoteAs;
-import com.vf.uk.dal.device.datamodel.productgroups.Group;
-import com.vf.uk.dal.device.datamodel.productgroups.Member;
-import com.vf.uk.dal.device.entity.AccessoryTileGroup;
-import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
-import com.vf.uk.dal.device.entity.BundlePrice;
-import com.vf.uk.dal.device.entity.DeviceDetails;
-import com.vf.uk.dal.device.entity.DeviceSummary;
-import com.vf.uk.dal.device.entity.FacetedDevice;
-import com.vf.uk.dal.device.entity.HardwarePrice;
-import com.vf.uk.dal.device.entity.Insurance;
-import com.vf.uk.dal.device.entity.Insurances;
-import com.vf.uk.dal.device.entity.MediaLink;
-import com.vf.uk.dal.device.entity.MerchandisingPromotion;
-import com.vf.uk.dal.device.entity.Price;
-import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
-import com.vf.uk.dal.device.entity.RequestForBundleAndHardware;
-import com.vf.uk.dal.device.entity.SourcePackageSummary;
-import com.vf.uk.dal.device.helper.DeviceConditionallHelper;
-import com.vf.uk.dal.device.helper.DeviceServiceCommonUtility;
-import com.vf.uk.dal.device.helper.DeviceServiceImplUtility;
-import com.vf.uk.dal.device.svc.DeviceRecommendationService;
-import com.vf.uk.dal.device.svc.DeviceService;
-import com.vf.uk.dal.device.svc.impl.AccessoryInsuranceServiceImpl;
-import com.vf.uk.dal.device.svc.impl.DeviceDetailsServiceImpl;
-import com.vf.uk.dal.device.svc.impl.DeviceMakeAndModelServiceImpl;
+import com.vf.uk.dal.device.model.AccessoryTileGroup;
+import com.vf.uk.dal.device.model.DeviceDetails;
+import com.vf.uk.dal.device.model.DeviceSummary;
+import com.vf.uk.dal.device.model.FacetedDevice;
+import com.vf.uk.dal.device.model.Insurance;
+import com.vf.uk.dal.device.model.Insurances;
+import com.vf.uk.dal.device.model.MediaLink;
+import com.vf.uk.dal.device.model.product.CommercialProduct;
+import com.vf.uk.dal.device.model.product.ProductGroup;
+import com.vf.uk.dal.device.model.product.ProductGroups;
+import com.vf.uk.dal.device.model.product.PromoteAs;
+import com.vf.uk.dal.device.model.productgroups.Group;
+import com.vf.uk.dal.device.model.productgroups.Member;
+import com.vf.uk.dal.device.service.AccessoryInsuranceServiceImpl;
+import com.vf.uk.dal.device.service.DeviceDetailsServiceImpl;
+import com.vf.uk.dal.device.service.DeviceMakeAndModelServiceImpl;
+import com.vf.uk.dal.device.service.DeviceRecommendationService;
+import com.vf.uk.dal.device.service.DeviceService;
 import com.vf.uk.dal.device.utils.CommonUtility;
+import com.vf.uk.dal.device.utils.DeviceConditionallHelper;
 import com.vf.uk.dal.device.utils.DeviceDetailsMakeAndModelVaiantDaoUtils;
+import com.vf.uk.dal.device.utils.DeviceServiceCommonUtility;
+import com.vf.uk.dal.device.utils.DeviceServiceImplUtility;
 import com.vf.uk.dal.device.utils.DeviceUtils;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
-import com.vf.uk.dal.device.utils.ResponseMappingHelper;
-import com.vf.uk.dal.device.validator.Validator;
-import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
-import com.vf.uk.dal.utility.entity.BundleAndHardwareRequest;
-import com.vf.uk.dal.utility.entity.BundleDetails;
-import com.vf.uk.dal.utility.entity.BundleModelAndPrice;
-import com.vf.uk.dal.utility.entity.PriceForProduct;
+import com.vf.uk.dal.device.utils.Validator;
 
 
 @RunWith(SpringRunner.class)
@@ -138,6 +139,9 @@ public class DeviceServiceImplTest {
 	@Autowired
 	DeviceUtils deviceUtils;
 	
+	@Autowired
+	BundleServiceClient bundleServiceClient;
+	
 	@Value("${cdn.domain.host}")
 	private String cdnDomain;
 
@@ -159,8 +163,6 @@ public class DeviceServiceImplTest {
 		given(deviceDAOMock.getBundleAndHardwarePromotionsListFromBundleListAsync(ArgumentMatchers.anyList(),
 				ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
 						.willReturn(CommonMethods.getBundleAndHardwarePromotionsListFromBundleListAsync());
-		given(response.getCommercialProduct(ArgumentMatchers.any()))
-				.willReturn(CommonMethods.getCommercialProductByDeviceId_093353_PAYG());
 		given(response.getListOfGroupFromJson(ArgumentMatchers.any())).willReturn(CommonMethods.getGroup());
 		given(response.getCommercialProductFromJson(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getCommercialProductsListOfAccessories());
@@ -807,6 +809,7 @@ public class DeviceServiceImplTest {
 
 	@Test
 	public void TestgetDeviceDetails_Implementation() {
+		given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(null);
 		try {
 			Assert.assertNull(deviceDetailsService.getDeviceDetails_Implementation("093353", JOURNEY_TYPE_SECONDLINE, "abc"));
 		} catch (Exception e) {
@@ -878,7 +881,7 @@ public class DeviceServiceImplTest {
 	public void TestgetDeviceDetails_ImplementationInvalidCPPCInvalid1() {
 		try {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
-			cp.setProductClass(STRING_DATA_DEVICE);
+			cp.setProductClass("accessories1");
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNull(deviceDetailsService.getDeviceDetails_Implementation("093353", JOURNEY_TYPE_SECONDLINE, "abc"));
 		} catch (Exception e) {
@@ -1003,8 +1006,8 @@ public class DeviceServiceImplTest {
 
 	@Test
 	public void getDeviceSummery_Implementation() {
-		List<com.vf.uk.dal.device.entity.Member> member = new ArrayList<com.vf.uk.dal.device.entity.Member>();
-		com.vf.uk.dal.device.entity.Member productGroupMember = new com.vf.uk.dal.device.entity.Member();
+		List<com.vf.uk.dal.device.model.Member> member = new ArrayList<com.vf.uk.dal.device.model.Member>();
+		com.vf.uk.dal.device.model.Member productGroupMember = new com.vf.uk.dal.device.model.Member();
 		productGroupMember.setPriority("1");
 		productGroupMember.setId("093353");
 		member.add(productGroupMember);
@@ -1351,7 +1354,7 @@ public class DeviceServiceImplTest {
 	@Test
 	public void TestgetMediaListForDeviceCPNMP() {
 		try {
-			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mp = CommonMethods.getMemPro();
+			com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotion mp = CommonMethods.getMemPro();
 			mp.setType("conditional_full_discount");
 			given(response.getMerchandisingPromotion(ArgumentMatchers.any())).willReturn(mp);
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
@@ -1368,7 +1371,7 @@ public class DeviceServiceImplTest {
 	@Test
 	public void TestgetMediaListForDeviceCPNMPPN() {
 		try {
-			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mp = CommonMethods.getMemPro();
+			com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotion mp = CommonMethods.getMemPro();
 			mp.setType("conditional_full_discount");
 			given(response.getMerchandisingPromotion(ArgumentMatchers.any())).willReturn(mp);
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
@@ -1385,7 +1388,7 @@ public class DeviceServiceImplTest {
 	@Test
 	public void TestgetMediaListForDeviceCPNMPPN1() {
 		try {
-			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mp = CommonMethods.getMemPro();
+			com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotion mp = CommonMethods.getMemPro();
 			mp.setType("conditional_full_discount");
 			given(response.getMerchandisingPromotion(ArgumentMatchers.any())).willReturn(mp);
 			CommercialProduct cp = CommonMethods.getCommercialProductsListOfAccessoriesWithEndDate_One();
@@ -1402,7 +1405,7 @@ public class DeviceServiceImplTest {
 	@Test
 	public void TestgetMediaListForDeviceCPNMP1() {
 		try {
-			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mp = CommonMethods.getMemPro();
+			com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotion mp = CommonMethods.getMemPro();
 			mp.setType("conditional_limited_discount");
 			given(response.getMerchandisingPromotion(ArgumentMatchers.any())).willReturn(mp);
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
@@ -1419,7 +1422,7 @@ public class DeviceServiceImplTest {
 	@Test
 	public void TestgetMediaListForDeviceCPNMP2() {
 		try {
-			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mp = CommonMethods.getMemPro();
+			com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotion mp = CommonMethods.getMemPro();
 			mp.setType("limited_time");
 			given(response.getMerchandisingPromotion(ArgumentMatchers.any())).willReturn(mp);
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
@@ -1524,7 +1527,7 @@ public class DeviceServiceImplTest {
 	@Test
 	public void TestvalidateOfferValidForDevice_Implementatio() {
 		try {
-			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MerchandisingPromotion mp = CommonMethods.getMemPro();
+			com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotion mp = CommonMethods.getMemPro();
 			mp.setType("conditional_full_discount");
 			given(response.getMerchandisingPromotion(ArgumentMatchers.any())).willReturn(CommonMethods.getMemPro());
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
@@ -1578,10 +1581,10 @@ public class DeviceServiceImplTest {
 	}
 	@Test
 	public void testgetDiscountTypeAndComparePrice_Implementation(){
-		com.vf.uk.dal.device.entity.BundlePrice bundlePrice = new com.vf.uk.dal.device.entity.BundlePrice();
+		com.vf.uk.dal.device.client.entity.price.BundlePrice bundlePrice = new com.vf.uk.dal.device.client.entity.price.BundlePrice();
 		bundlePrice.setBundleId("110154");
 		
-		com.vf.uk.dal.device.entity.Price monthlyPrice = new com.vf.uk.dal.device.entity.Price();
+		com.vf.uk.dal.device.client.entity.price.Price monthlyPrice = new com.vf.uk.dal.device.client.entity.price.Price();
 		monthlyPrice.setGross("10.3");
 		monthlyPrice.setNet("12.4");
 		monthlyPrice.setVat("11");
@@ -1688,7 +1691,7 @@ public class DeviceServiceImplTest {
 	}
 	@Test
 	public void testgetBundleDetailsFromComplansListingAPI(){
-		commonUtility.getBundleDetailsFromComplansListingAPI("093353","-sort");
+		bundleServiceClient.getBundleDetailsFromComplansListingAPI("093353","-sort");
 	}
 	@Test
 	public void testappendPrefixString(){
@@ -1727,7 +1730,7 @@ public class DeviceServiceImplTest {
 		String url = "http://BUNDLES-V1/bundles/catalogue/bundle/queries/byDeviceId/093353//?sort=abc";
 		given(restTemplate.getForObject(url, BundleDetails.class))
 		.willReturn(CommonMethods.getCompatibleBundleListJson());
-		 Assert.assertNotNull(commonUtility.getBundleDetailsFromComplansListingAPI
+		 Assert.assertNotNull(bundleServiceClient.getBundleDetailsFromComplansListingAPI
 		 ("093353", "abc"));
 	}
 	@Test
