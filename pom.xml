@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>com.vf.uk.dal</groupId>
 	<artifactId>dal-device-svc</artifactId>
-	<version>11.4.0</version>
+	<version>11.5.0</version>
 	<packaging>jar</packaging>
 	<build>  
 		<plugins>
@@ -29,6 +29,26 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<configuration>
+					<useSystemClassLoader>false</useSystemClassLoader>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<includes>
+						<include>**/*Tests.java</include>
+						<include>**/*Test.java</include>
+					</includes>
+					<excludes>
+						<exclude>**/Abstract*.java</exclude>
+					</excludes>
+					<useSystemClassLoader>false</useSystemClassLoader>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -196,16 +216,15 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<sonar.coverage.exclusions>
 			**/dao/**,
-			**/utils/ResponseMappingHelper.java,
+			**/converter/ResponseMappingHelper.java,
 			**/utils/ElasticSearchUtils.java,
 			**/utils/BazaarVoiceCache.java,
 			**/utils/ExceptionMessages.java,
-			**/config/SwaggerConfiguration.java,
-			**/conf/ElasticsearchRestCient.java,
+			**/configuration/SwaggerConfiguration.java,
+			**/configuration/ElasticsearchRestCient.java,
 			**/DeviceApplication.java,
-			**/datamodel/**,
-			**/device/entity/**,
-			**/utility/**
+			**/model/**,
+			**/entity/**,
 		</sonar.coverage.exclusions>
 		<swaggerVersion>10.2.0</swaggerVersion>
 	</properties>

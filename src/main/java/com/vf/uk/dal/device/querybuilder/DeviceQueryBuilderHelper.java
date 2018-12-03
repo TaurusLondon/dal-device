@@ -97,8 +97,8 @@ public class DeviceQueryBuilderHelper {
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(size);
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
-			qb.must(QueryBuilders.termQuery(STRING_MAKE + STRING_KEY_WORD, make));
-			qb.must(QueryBuilders.termQuery(STRING_MODEL + STRING_KEY_WORD, model));
+			qb.must(QueryBuilders.matchPhraseQuery(STRING_MAKE, make));
+			qb.must(QueryBuilders.matchPhraseQuery(STRING_MODEL, model));
 			searchRequestBuilder.query(qb);
 			log.info(" <-----  Setting up Elasticsearch parameters and query   ----->");
 			searchRequest.source(searchRequestBuilder);
@@ -122,7 +122,7 @@ public class DeviceQueryBuilderHelper {
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(size);
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
-			qb.must(QueryBuilders.termQuery(STRING_GROUP_TYPE + STRING_KEY_WORD, groupType));
+			qb.must(QueryBuilders.matchPhraseQuery(STRING_GROUP_TYPE, groupType));
 			searchRequestBuilder.query(qb);
 			log.info(" <-----  Setting up Elasticsearch parameters and query ----->");
 			searchRequest.source(searchRequestBuilder);
@@ -147,8 +147,8 @@ public class DeviceQueryBuilderHelper {
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(size);
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
-			qb.must(QueryBuilders.termQuery(STRING_GROUP_NAME + STRING_KEY_WORD, groupName));
-			qb.must(QueryBuilders.termQuery(STRING_GROUP_TYPE + STRING_KEY_WORD, groupType));
+			qb.must(QueryBuilders.matchPhraseQuery(STRING_GROUP_NAME, groupName));
+			qb.must(QueryBuilders.matchPhraseQuery(STRING_GROUP_TYPE, groupType));
 			searchRequestBuilder.query(qb);
 			log.info(" <------ Setting up Elasticsearch parameters and query  ----->");
 			searchRequest.source(searchRequestBuilder);
@@ -172,8 +172,8 @@ public class DeviceQueryBuilderHelper {
 		try {
 			log.info("<------Elasticsearch query mapping----->");
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
-			qb.must(QueryBuilders.termsQuery(STRING_ID + STRING_KEY_WORD, Id));
-			qb.must(QueryBuilders.termsQuery(STRING_ALL_TYPE + STRING_KEY_WORD, STRING_RAW + type));
+			qb.must(QueryBuilders.termQuery(STRING_ID + STRING_KEY_WORD, Id));
+			qb.must(QueryBuilders.termQuery(STRING_ALL_TYPE + STRING_KEY_WORD, STRING_RAW + type));
 			searchRequestBuilder.query(qb);
 			log.info(" <-----  Setting up Elasticsearch parameters and query ----->");
 			searchRequest.source(searchRequestBuilder);

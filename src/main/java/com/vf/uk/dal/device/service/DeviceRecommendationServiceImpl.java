@@ -1,0 +1,171 @@
+package com.vf.uk.dal.device.service;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.vf.uk.dal.device.client.entity.customer.InstalledProduct;
+import com.vf.uk.dal.device.client.entity.customer.Preferences;
+import com.vf.uk.dal.device.client.entity.customer.RecommendedProduct;
+import com.vf.uk.dal.device.client.entity.customer.RecommendedProductListRequest;
+import com.vf.uk.dal.device.client.entity.customer.RecommendedProductListResponse;
+import com.vf.uk.dal.device.model.Device;
+import com.vf.uk.dal.device.model.FacetedDevice;
+import com.vf.uk.dal.device.utils.CommonUtility;
+
+import lombok.extern.slf4j.Slf4j;
+
+/**
+ * Provides recommended devices for a logged in user.
+ * 
+ * @author rajendra.swarna
+ */
+@Slf4j
+@Component("deviceRecommendationService")
+public class DeviceRecommendationServiceImpl implements DeviceRecommendationService {
+
+	public static final String ACCOUNT_CATEGORY_INDIVIDUAL = "Individual";
+	public static final String STRING_TARIFF = "TARIFF";
+	public static final String PREFERENCE_NAME_UPGRADE = "UPGRADE_TYPE";
+	public static final String PREFERENCE_DATATYPE_CODE_GENERAL = "GENERAL";
+	public static final String PREFERENCE_NAME_HANDSET = "HANDSET";
+	public static final String PREFERENCE_DATATYPE_CODE_PREFERENCE = "PREFERENCE";
+	public static final String PREFERENCE_NAME_RECOMMIT = "RECOMMIT";
+	public static final String PREFERENCE_DATATYPE_ELIGIBILITY_CRITERIA = "ELIGIBILITY_CRITERIA";
+	public static final String PREFERENCE_NAME_SEGMENT = "SEGMENT";
+	
+	@Autowired
+	CommonUtility commonUtility;
+	
+
+	/**
+	 * Returns recommended device list from chordiant.
+	 * 
+	 * @param journeyId
+	 * @param facetedDevice
+	 * @return FacetedDevice
+	 */
+	public FacetedDevice getRecommendedDeviceList(String msisdn, String deviceId, FacetedDevice facetedDevice) {
+
+		RecommendedProductListResponse recommendedProductListResponse = null;
+		FacetedDevice sortedFacetedDevice = new FacetedDevice();
+		try {
+			RecommendedProductListRequest recomProductListReq = this.getRecommendedDeviceListRequest(msisdn, deviceId);
+			recommendedProductListResponse = commonUtility.getRecommendedProductList(recomProductListReq);
+
+			if (recommendedProductListResponse != null) {
+				sortedFacetedDevice = sortList(facetedDevice, recommendedProductListResponse);
+			} else {
+				log.error( "Unable to retrieve recommended device list from chordiant.");
+			}
+
+		} catch (Exception e) {
+			log.error( "Failed to get recommended device list " + e);
+			sortedFacetedDevice.setMessage("RECOMMENDATIONS_NOT_AVAILABLE_GRPL_SERVICE_FAILURE");
+		}
+		return sortedFacetedDevice;
+	}
+
+	/**
+	 * Returns request object for getRecommendedDeviceList
+	 * 
+	 * @param msisdn
+	 * @param deviceId
+	 * @return RecommendedProductListRequest
+	 */
+	public RecommendedProductListRequest getRecommendedDeviceListRequest(String msisdn, String deviceId) {
+
+		RecommendedProductListRequest recomProdListReq = new RecommendedProductListRequest();
+
+		recomProdListReq.setSerialNumber(msisdn);
+		recomProdListReq.setAccountCategory(ACCOUNT_CATEGORY_INDIVIDUAL);
+
+		List<InstalledProduct> instProds = new ArrayList<>();
+		InstalledProduct instProd = new InstalledProduct();
+		instProd.setId(deviceId);
+		instProd.setTypeCode(STRING_TARIFF);
+		instProd.setAmount("220000.00");
+		instProds.add(instProd);
+		recomProdListReq.setInstalledProducts(instProds);
+
+		List<Preferences> prefs = new ArrayList<>();
+		Preferences handsetPref = new Preferences();
+		handsetPref.setName(PREFERENCE_NAME_HANDSET);
+		handsetPref.setDataTypeCode(PREFERENCE_DATATYPE_CODE_PREFERENCE);
+		handsetPref.setValue("all");
+		prefs.add(handsetPref);
+
+		Preferences upgradePref = new Preferences();
+		upgradePref.setName(PREFERENCE_NAME_UPGRADE);
+		upgradePref.setDataTypeCode(PREFERENCE_DATATYPE_CODE_GENERAL);
+		upgradePref.setValue("SIMOFLEX");
+		prefs.add(upgradePref);
+
+		Preferences recommitPref = new Preferences();
+		recommitPref.setName(PREFERENCE_NAME_RECOMMIT);
+		recommitPref.setDataTypeCode(PREFERENCE_DATATYPE_CODE_GENERAL);
+		recommitPref.setValue("FALSE");
+		prefs.add(recommitPref);
+
+		Preferences segmentPref = new Preferences();
+		segmentPref.setName(PREFERENCE_NAME_SEGMENT);
+		segmentPref.setDataTypeCode(PREFERENCE_DATATYPE_ELIGIBILITY_CRITERIA);
+		segmentPref.setValue("cbu");
+		prefs.add(segmentPref);
+
+		recomProdListReq.setPreferences(prefs);
+
+		List<String> recomPrdTypes;
+		recomPrdTypes = new ArrayList<>();
+		recomPrdTypes.add(PREFERENCE_NAME_HANDSET);
+
+		recomProdListReq.setBasketItems(null);
+		recomProdListReq.setNoOfRecommendations("100");
+
+		recomProdListReq.setRecommendedProductTypes(recomPrdTypes);
+
+		return recomProdListReq;
+	}
+
+	/**
+	 * @param objectsToOrder
+	 * @param orderedObjects
+	 * @return FacetedDevice
+	 * 
+	 */
+	public FacetedDevice sortList(FacetedDevice objectsToOrder, RecommendedProductListResponse orderedObjects) {
+		HashMap<String, Integer> indexMap = new HashMap<>();
+		int index = 0;
+		for (RecommendedProduct object : orderedObjects.getRecommendedProductList()) {
+			indexMap.put(object.getId(), index);
+			index++;
+		}
+		List<Device> listOfDevice = objectsToOrder.getDevice();
+		Collections.sort(listOfDevice, new Comparator<Device>() {
+			public int compare(Device left, Device right) {
+				Integer leftIndex = indexMap.get(left.getDeviceId());
+				Integer rightIndex = indexMap.get(right.getDeviceId());
+				if (leftIndex == null && rightIndex == null) {
+
+					return 1;
+				}
+				if (leftIndex == null) {
+
+					return 1;
+				}
+				if (rightIndex == null) {
+
+					return -1;
+				}
+				return Integer.compare(leftIndex, rightIndex);
+			}
+		});
+		return objectsToOrder;
+	}
+
+}

@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
-import com.vf.uk.dal.device.entity.DeviceDetails;
-import com.vf.uk.dal.device.svc.DeviceDetailsService;
+import com.vf.uk.dal.device.model.DeviceDetails;
+import com.vf.uk.dal.device.service.DeviceDetailsService;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
-import com.vf.uk.dal.device.validator.Validator;
+import com.vf.uk.dal.device.utils.Validator;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -84,10 +84,10 @@ public class DeviceDetailsController {
 	@ApiOperation(value = "Get the device details for the given device Id", notes = "The service gets the details of the device specially price, equipment, specification, features, merchandising, etc in the response.", response = DeviceDetails.class)
 	@RequestMapping(value = "/device/{deviceId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = DeviceDetails.class),
-			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.entity.Error.class),
-			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.entity.Error.class) })
+			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.model.Error.class),
+			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.model.Error.class),
+			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.model.Error.class),
+			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.model.Error.class) })
 	public DeviceDetails getDeviceDetails(
 			@NotNull @ApiParam(value = "Unique Id of the device being requested", required = true) @PathVariable("deviceId") String deviceId,
 			@ApiParam(value = "Type of journey that the user undertakes e.g. \"Acquisition\", \"upgrade\", \"ils\" etc.") @RequestParam(value = "journeyType", required = false) String journeyType,

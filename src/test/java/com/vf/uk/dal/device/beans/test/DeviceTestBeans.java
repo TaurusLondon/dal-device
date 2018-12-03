@@ -3,9 +3,13 @@ package com.vf.uk.dal.device.beans.test;
 import org.springframework.context.annotation.Bean;
 
 import com.vf.uk.dal.common.beans.Environment;
-import com.vf.uk.dal.common.configuration.ConfigHelper;
 import com.vf.uk.dal.common.configuration.DataSourceInitializer;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
+import com.vf.uk.dal.device.client.BundleServiceClient;
+import com.vf.uk.dal.device.client.CustomerServiceClient;
+import com.vf.uk.dal.device.client.PriceServiceClient;
+import com.vf.uk.dal.device.client.PromotionServiceClient;
+import com.vf.uk.dal.device.client.converter.ResponseMappingHelper;
 import com.vf.uk.dal.device.controller.AccessoryInsuranceController;
 import com.vf.uk.dal.device.controller.CacheDeviceAndReviewController;
 import com.vf.uk.dal.device.controller.DeviceController;
@@ -13,24 +17,23 @@ import com.vf.uk.dal.device.controller.DeviceDetailsController;
 import com.vf.uk.dal.device.controller.DeviceEntityController;
 import com.vf.uk.dal.device.controller.DeviceMakeAndModelController;
 import com.vf.uk.dal.device.dao.DeviceDao;
-import com.vf.uk.dal.device.dao.impl.DeviceDaoImpl;
-import com.vf.uk.dal.device.dao.impl.DeviceTileCacheDAOImpl;
-import com.vf.uk.dal.device.helper.DeviceConditionallHelper;
-import com.vf.uk.dal.device.helper.DeviceESHelper;
-import com.vf.uk.dal.device.helper.DeviceServiceCommonUtility;
-import com.vf.uk.dal.device.helper.DeviceServiceImplUtility;
-import com.vf.uk.dal.device.svc.DeviceRecommendationService;
-import com.vf.uk.dal.device.svc.impl.AccessoryInsuranceServiceImpl;
-import com.vf.uk.dal.device.svc.impl.CacheDeviceServiceImpl;
-import com.vf.uk.dal.device.svc.impl.DeviceDetailsServiceImpl;
-import com.vf.uk.dal.device.svc.impl.DeviceEntityServiceImpl;
-import com.vf.uk.dal.device.svc.impl.DeviceMakeAndModelServiceImpl;
-import com.vf.uk.dal.device.svc.impl.DeviceRecommendationServiceImpl;
-import com.vf.uk.dal.device.svc.impl.DeviceServiceImpl;
+import com.vf.uk.dal.device.dao.DeviceDaoImpl;
+import com.vf.uk.dal.device.dao.DeviceTileCacheDAOImpl;
+import com.vf.uk.dal.device.service.AccessoryInsuranceServiceImpl;
+import com.vf.uk.dal.device.service.CacheDeviceServiceImpl;
+import com.vf.uk.dal.device.service.DeviceDetailsServiceImpl;
+import com.vf.uk.dal.device.service.DeviceEntityServiceImpl;
+import com.vf.uk.dal.device.service.DeviceMakeAndModelServiceImpl;
+import com.vf.uk.dal.device.service.DeviceRecommendationService;
+import com.vf.uk.dal.device.service.DeviceRecommendationServiceImpl;
+import com.vf.uk.dal.device.service.DeviceServiceImpl;
 import com.vf.uk.dal.device.utils.CommonUtility;
+import com.vf.uk.dal.device.utils.DeviceConditionallHelper;
+import com.vf.uk.dal.device.utils.DeviceESHelper;
+import com.vf.uk.dal.device.utils.DeviceServiceCommonUtility;
+import com.vf.uk.dal.device.utils.DeviceServiceImplUtility;
 import com.vf.uk.dal.device.utils.DeviceUtils;
 import com.vf.uk.dal.device.utils.ElasticSearchUtils;
-import com.vf.uk.dal.device.utils.ResponseMappingHelper;
 
  public class DeviceTestBeans {
 	// ** Bean for the controller class is created here **//*
@@ -157,6 +160,26 @@ import com.vf.uk.dal.device.utils.ResponseMappingHelper;
 	
 	@Bean public CacheDeviceAndReviewController getCacheDeviceAndReviewController() {
 		return new CacheDeviceAndReviewController();
+	}
+	
+	@Bean public BundleServiceClient getBundleServiceClient()
+	{
+		return new BundleServiceClient();
+	}
+	
+	@Bean public CustomerServiceClient getCustomerServiceClient()
+	{
+		return new CustomerServiceClient();
+	}
+	
+	@Bean public PriceServiceClient getPriceServiceClient()
+	{
+		return new PriceServiceClient();
+	}
+	
+	@Bean public PromotionServiceClient getPromotionServiceClient()
+	{
+		return new PromotionServiceClient();
 	}
 	
 }

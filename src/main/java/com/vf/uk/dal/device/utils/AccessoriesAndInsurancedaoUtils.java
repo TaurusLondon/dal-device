@@ -6,17 +6,17 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
-import com.vf.uk.dal.device.datamodel.product.ItemAttribute;
-import com.vf.uk.dal.device.entity.Accessory;
-import com.vf.uk.dal.device.entity.Attributes;
-import com.vf.uk.dal.device.entity.Insurance;
-import com.vf.uk.dal.device.entity.Insurances;
-import com.vf.uk.dal.device.entity.MediaLink;
-import com.vf.uk.dal.device.entity.Price;
-import com.vf.uk.dal.device.entity.Specification;
-import com.vf.uk.dal.device.entity.SpecificationGroup;
-import com.vf.uk.dal.utility.entity.PriceForAccessory;
+import com.vf.uk.dal.device.client.entity.price.Price;
+import com.vf.uk.dal.device.client.entity.price.PriceForAccessory;
+import com.vf.uk.dal.device.model.Accessory;
+import com.vf.uk.dal.device.model.Attributes;
+import com.vf.uk.dal.device.model.Insurance;
+import com.vf.uk.dal.device.model.Insurances;
+import com.vf.uk.dal.device.model.MediaLink;
+import com.vf.uk.dal.device.model.Specification;
+import com.vf.uk.dal.device.model.SpecificationGroup;
+import com.vf.uk.dal.device.model.product.CommercialProduct;
+import com.vf.uk.dal.device.model.product.ItemAttribute;
 
 public class AccessoriesAndInsurancedaoUtils {
 
@@ -40,7 +40,7 @@ public class AccessoriesAndInsurancedaoUtils {
 		List<MediaLink> merchandisingMedia = new ArrayList<>();
 		if (commercialProduct != null && priceForAccessory != null) {
 
-			com.vf.uk.dal.utility.entity.HardwarePrice hardwarePrice = priceForAccessory.getHardwarePrice();
+			com.vf.uk.dal.device.client.entity.price.HardwarePrice hardwarePrice = priceForAccessory.getHardwarePrice();
 			if (hardwarePrice != null && hardwarePrice.getHardwareId().equalsIgnoreCase(commercialProduct.getId())) {
 				List<MediaLink> mediList = setPriceMerchandisingPromotion(hardwarePrice);
 				if (mediList != null && !mediList.isEmpty()) {
@@ -57,15 +57,15 @@ public class AccessoriesAndInsurancedaoUtils {
 			}
 
 			if (accessory != null) {
-				List<com.vf.uk.dal.device.datamodel.product.Group> listOfSpecificationGroups = commercialProduct
+				List<com.vf.uk.dal.device.model.product.Group> listOfSpecificationGroups = commercialProduct
 						.getSpecificationGroups();
 				if (listOfSpecificationGroups != null && !listOfSpecificationGroups.isEmpty()) {
-					for (com.vf.uk.dal.device.datamodel.product.Group specificationGroup : listOfSpecificationGroups) {
+					for (com.vf.uk.dal.device.model.product.Group specificationGroup : listOfSpecificationGroups) {
 						if (specificationGroup.getGroupName().equalsIgnoreCase(STRING_COLOUR)) {
-							List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup
+							List<com.vf.uk.dal.device.model.product.Specification> listOfSpec = specificationGroup
 									.getSpecifications();
 							if (listOfSpec != null && !listOfSpec.isEmpty()) {
-								for (com.vf.uk.dal.device.datamodel.product.Specification spec : listOfSpec) {
+								for (com.vf.uk.dal.device.model.product.Specification spec : listOfSpec) {
 									if (spec.getName().equalsIgnoreCase(STRING_COLOUR)) {
 										accessory.setColour(spec.getValue());
 									}
@@ -115,9 +115,9 @@ public class AccessoriesAndInsurancedaoUtils {
 	 * @return List<MediaLink>
 	 */
 	public static List<MediaLink> setPriceMerchandisingPromotion(
-			com.vf.uk.dal.utility.entity.HardwarePrice hardwarePrice) {
+			com.vf.uk.dal.device.client.entity.price.HardwarePrice hardwarePrice) {
 		List<MediaLink> merchandisingMedia = new ArrayList<>();
-		com.vf.uk.dal.utility.entity.MerchandisingPromotion merchandisingPromotions = hardwarePrice
+		com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion merchandisingPromotions = hardwarePrice
 				.getMerchandisingPromotions();
 		if (merchandisingPromotions != null) {
 			if (StringUtils.isNotBlank(merchandisingPromotions.getLabel())) {
@@ -206,23 +206,23 @@ public class AccessoriesAndInsurancedaoUtils {
 
 			insurance.setMerchandisingMedia(merchandisingMedia);
 
-			List<com.vf.uk.dal.device.datamodel.product.Group> listOfSpecificationGroups = insuranceProduct
+			List<com.vf.uk.dal.device.model.product.Group> listOfSpecificationGroups = insuranceProduct
 					.getSpecificationGroups();
 			List<Specification> listOfSpecification;
 			List<SpecificationGroup> listOfSpecificationGroup = new ArrayList<>();
 			SpecificationGroup specificationGroups;
 			if (listOfSpecificationGroups != null && !listOfSpecificationGroups.isEmpty()) {
-				for (com.vf.uk.dal.device.datamodel.product.Group specificationGroup : listOfSpecificationGroups) {
+				for (com.vf.uk.dal.device.model.product.Group specificationGroup : listOfSpecificationGroups) {
 					specificationGroups = new SpecificationGroup();
 					specificationGroups.setGroupName(specificationGroup.getGroupName());
 					specificationGroups.setPriority(specificationGroup.getPriority().intValue());
 					specificationGroups.setComparable(specificationGroup.isComparable());
 					listOfSpecification = new ArrayList<>();
-					List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup
+					List<com.vf.uk.dal.device.model.product.Specification> listOfSpec = specificationGroup
 							.getSpecifications();
 					Specification specification;
 					if (listOfSpec != null && !listOfSpec.isEmpty()) {
-						for (com.vf.uk.dal.device.datamodel.product.Specification spec : listOfSpec) {
+						for (com.vf.uk.dal.device.model.product.Specification spec : listOfSpec) {
 							specification = new Specification();
 							specification.setName(spec.getName());
 							specification.setValue(spec.getValue());
