@@ -9,18 +9,18 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.vf.uk.dal.device.entity.BundlePrice;
-import com.vf.uk.dal.device.entity.DeviceFinancingOption;
-import com.vf.uk.dal.device.entity.HardwarePrice;
-import com.vf.uk.dal.device.entity.Price;
-import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
-import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
-import com.vf.uk.dal.utility.solr.entity.Media;
-import com.vf.uk.dal.utility.solr.entity.MonthlyDiscountPrice;
-import com.vf.uk.dal.utility.solr.entity.MonthlyPrice;
-import com.vf.uk.dal.utility.solr.entity.OfferAppliedPriceDetails;
-import com.vf.uk.dal.utility.solr.entity.OneOffDiscountPrice;
-import com.vf.uk.dal.utility.solr.entity.OneOffPrice;
+import com.vf.uk.dal.device.client.entity.price.BundlePrice;
+import com.vf.uk.dal.device.client.entity.price.DeviceFinancingOption;
+import com.vf.uk.dal.device.client.entity.price.HardwarePrice;
+import com.vf.uk.dal.device.client.entity.price.Price;
+import com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware;
+import com.vf.uk.dal.device.model.solr.DevicePreCalculatedData;
+import com.vf.uk.dal.device.model.solr.Media;
+import com.vf.uk.dal.device.model.solr.MonthlyDiscountPrice;
+import com.vf.uk.dal.device.model.solr.MonthlyPrice;
+import com.vf.uk.dal.device.model.solr.OfferAppliedPriceDetails;
+import com.vf.uk.dal.device.model.solr.OneOffDiscountPrice;
+import com.vf.uk.dal.device.model.solr.OneOffPrice;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -114,11 +114,11 @@ public class CacheDeviceDaoUtils {
 			productGroupForDeviceListing.setLeadPlanId(leadPlanId);
 			Map<String, Object> priceMediaMap = getPriceInfoForSolr(priceForBundleAndHardware1,
 					listOfPriceForBundleAndHardwareWithOfferCode);
-			com.vf.uk.dal.utility.solr.entity.PriceInfo priceInfo = (com.vf.uk.dal.utility.solr.entity.PriceInfo) priceMediaMap
+			com.vf.uk.dal.device.model.solr.PriceInfo priceInfo = (com.vf.uk.dal.device.model.solr.PriceInfo) priceMediaMap
 					.get("price");
 			productGroupForDeviceListing.setPriceInfo(priceInfo);
 			@SuppressWarnings("unchecked")
-			List<com.vf.uk.dal.utility.solr.entity.Media> listOfMedia = (List<com.vf.uk.dal.utility.solr.entity.Media>) priceMediaMap
+			List<com.vf.uk.dal.device.model.solr.Media> listOfMedia = (List<com.vf.uk.dal.device.model.solr.Media>) priceMediaMap
 					.get("media");
 			productGroupForDeviceListing.setMedia(listOfMedia);
 		}
@@ -136,7 +136,7 @@ public class CacheDeviceDaoUtils {
 			Map<String, List<PriceForBundleAndHardware>> listOfPriceForBundleAndHardwareWithOfferCode) {
 
 		Map<String, Object> result = new ConcurrentHashMap<>();
-		List<com.vf.uk.dal.utility.solr.entity.Media> listOfMedia = new ArrayList<>();
+		List<com.vf.uk.dal.device.model.solr.Media> listOfMedia = new ArrayList<>();
 		BundlePrice bundlePrice = priceForBundleAndHardware.getBundlePrice();
 		Price monthlyPrice = null;
 		Price monthlyDiscountPrice = null;
@@ -145,7 +145,7 @@ public class CacheDeviceDaoUtils {
 				&& bundlePrice.getMonthlyPrice().getGross() != null) {
 			bundleId = bundlePrice.getBundleId();
 			if (bundlePrice.getMerchandisingPromotions() != null) {
-				com.vf.uk.dal.utility.solr.entity.Media mediaLink = new com.vf.uk.dal.utility.solr.entity.Media();
+				com.vf.uk.dal.device.model.solr.Media mediaLink = new com.vf.uk.dal.device.model.solr.Media();
 				mediaLink.setId(
 						bundlePrice.getMerchandisingPromotions().getMpType() + "." + STRING_OFFERS_LABEL);
 				String type = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&"
@@ -165,7 +165,7 @@ public class CacheDeviceDaoUtils {
 				String description = null;
 				if (bundlePrice.getMerchandisingPromotions().getDescription() != null) {
 					description = bundlePrice.getMerchandisingPromotions().getDescription();
-					com.vf.uk.dal.utility.solr.entity.Media mediaLinkForDescription = new com.vf.uk.dal.utility.solr.entity.Media();
+					com.vf.uk.dal.device.model.solr.Media mediaLinkForDescription = new com.vf.uk.dal.device.model.solr.Media();
 					mediaLinkForDescription.setId(bundlePrice.getMerchandisingPromotions().getMpType() + "."
 							+ STRING_OFFERS_DESCRIPTION);
 					String type1 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&"
@@ -186,7 +186,7 @@ public class CacheDeviceDaoUtils {
 				listOfMedia.add(mediaLink);
 				if (StringUtils.isNotBlank(bundlePrice.getMerchandisingPromotions().getPriceEstablishedLabel())) {
 					// PriceEstablishedLabel
-					com.vf.uk.dal.utility.solr.entity.Media mediaLinkForPriceEstablished = new com.vf.uk.dal.utility.solr.entity.Media();
+					com.vf.uk.dal.device.model.solr.Media mediaLinkForPriceEstablished = new com.vf.uk.dal.device.model.solr.Media();
 					mediaLinkForPriceEstablished.setId(bundlePrice.getMerchandisingPromotions().getMpType() + "."
 							+ STRING_PRICE_ESTABLISHED_LABEL);
 					String type3 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&"
@@ -208,7 +208,7 @@ public class CacheDeviceDaoUtils {
 				}
 				if (StringUtils.isNotBlank(bundlePrice.getMerchandisingPromotions().getPromotionMedia())) {
 					// PromotionMedia
-					com.vf.uk.dal.utility.solr.entity.Media mediaLinkForPromotionMedia = new com.vf.uk.dal.utility.solr.entity.Media();
+					com.vf.uk.dal.device.model.solr.Media mediaLinkForPromotionMedia = new com.vf.uk.dal.device.model.solr.Media();
 					mediaLinkForPromotionMedia.setId(bundlePrice.getMerchandisingPromotions().getMpType() + "."
 							+ STRING_PRICE_PROMOTION_MEDIA);
 					String type4 = STRING_URL_ALLOWANCE + "&&" + bundleId + "&&"
@@ -237,7 +237,7 @@ public class CacheDeviceDaoUtils {
 		String hardwareId = hardwarePrice.getHardwareId();
 
 		if (hardwarePrice.getMerchandisingPromotions() != null) {
-			com.vf.uk.dal.utility.solr.entity.Media mediaLink1 = new com.vf.uk.dal.utility.solr.entity.Media();
+			com.vf.uk.dal.device.model.solr.Media mediaLink1 = new com.vf.uk.dal.device.model.solr.Media();
 			mediaLink1.setId(
 					hardwarePrice.getMerchandisingPromotions().getMpType() + "." + STRING_OFFERS_LABEL);
 			String type2 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&"
@@ -256,7 +256,7 @@ public class CacheDeviceDaoUtils {
 			String description = null;
 			if (hardwarePrice.getMerchandisingPromotions().getDescription() != null) {
 				description = hardwarePrice.getMerchandisingPromotions().getDescription();
-				com.vf.uk.dal.utility.solr.entity.Media mediaLinkForDescription1 = new com.vf.uk.dal.utility.solr.entity.Media();
+				com.vf.uk.dal.device.model.solr.Media mediaLinkForDescription1 = new com.vf.uk.dal.device.model.solr.Media();
 				mediaLinkForDescription1.setId(hardwarePrice.getMerchandisingPromotions().getMpType() + "."
 						+ STRING_OFFERS_DESCRIPTION);
 				String type3 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&"
@@ -277,7 +277,7 @@ public class CacheDeviceDaoUtils {
 			listOfMedia.add(mediaLink1);
 			if (StringUtils.isNotBlank(hardwarePrice.getMerchandisingPromotions().getPriceEstablishedLabel())) {
 				// PriceEstablishedLabel
-				com.vf.uk.dal.utility.solr.entity.Media mediaLinkForPriceLabel = new com.vf.uk.dal.utility.solr.entity.Media();
+				com.vf.uk.dal.device.model.solr.Media mediaLinkForPriceLabel = new com.vf.uk.dal.device.model.solr.Media();
 				mediaLinkForPriceLabel.setId(hardwarePrice.getMerchandisingPromotions().getMpType() + "."
 						+ STRING_PRICE_ESTABLISHED_LABEL);
 				String type3 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&"
@@ -297,7 +297,7 @@ public class CacheDeviceDaoUtils {
 			}
 			if (StringUtils.isNotBlank(hardwarePrice.getMerchandisingPromotions().getPromotionMedia())) {
 				// PromotionMedia
-				com.vf.uk.dal.utility.solr.entity.Media mediaLinkForPromotionMedia = new com.vf.uk.dal.utility.solr.entity.Media();
+				com.vf.uk.dal.device.model.solr.Media mediaLinkForPromotionMedia = new com.vf.uk.dal.device.model.solr.Media();
 				mediaLinkForPromotionMedia.setId(hardwarePrice.getMerchandisingPromotions().getMpType() + "."
 						+ STRING_PRICE_PROMOTION_MEDIA);
 				String type4 = STRING_URL_ALLOWANCE + "&&" + bundleId + "&&"
@@ -321,23 +321,23 @@ public class CacheDeviceDaoUtils {
 		Price oneoffPrice = hardwarePrice.getOneOffPrice();
 		Price oneOffDisPrice = hardwarePrice.getOneOffDiscountPrice();
 		List<DeviceFinancingOption> deviceFinancingOption = hardwarePrice.getFinancingOptions();
-		List<com.vf.uk.dal.utility.solr.entity.DeviceFinancingOption> financeOptions = null;
+		List<com.vf.uk.dal.device.model.solr.DeviceFinancingOption> financeOptions = null;
 		if (deviceFinancingOption != null && !deviceFinancingOption.isEmpty()) {
 			financeOptions = new ArrayList<>();
 			for (DeviceFinancingOption financsOption : deviceFinancingOption) {
-				com.vf.uk.dal.utility.solr.entity.DeviceFinancingOption finance = new com.vf.uk.dal.utility.solr.entity.DeviceFinancingOption();
+				com.vf.uk.dal.device.model.solr.DeviceFinancingOption finance = new com.vf.uk.dal.device.model.solr.DeviceFinancingOption();
 				finance.setApr(financsOption.getApr());
 				finance.setDeviceFinancingId(financsOption.getDeviceFinancingId());
 				finance.setFinanceProvider(financsOption.getFinanceProvider());
 				finance.setFinanceTerm(financsOption.getFinanceTerm());
-				com.vf.uk.dal.device.entity.Price monthly = financsOption.getMonthlyPrice();
-				com.vf.uk.dal.utility.solr.entity.Price deviceMonthlyPrice = new com.vf.uk.dal.utility.solr.entity.Price();
+				com.vf.uk.dal.device.client.entity.price.Price monthly = financsOption.getMonthlyPrice();
+				com.vf.uk.dal.device.model.solr.Price deviceMonthlyPrice = new com.vf.uk.dal.device.model.solr.Price();
 				deviceMonthlyPrice.setGross(monthly.getGross());
 				deviceMonthlyPrice.setNet(monthly.getNet());
 				deviceMonthlyPrice.setVat(monthly.getVat());
 				finance.setMonthlyPrice(deviceMonthlyPrice);
-				com.vf.uk.dal.device.entity.Price totalInterest = financsOption.getTotalPriceWithInterest();
-				com.vf.uk.dal.utility.solr.entity.Price totalPriceWithInterest = new com.vf.uk.dal.utility.solr.entity.Price();
+				com.vf.uk.dal.device.client.entity.price.Price totalInterest = financsOption.getTotalPriceWithInterest();
+				com.vf.uk.dal.device.model.solr.Price totalPriceWithInterest = new com.vf.uk.dal.device.model.solr.Price();
 				totalPriceWithInterest.setGross(totalInterest.getGross());
 				totalPriceWithInterest.setNet(totalInterest.getNet());
 				totalPriceWithInterest.setVat(totalInterest.getVat());
@@ -359,7 +359,7 @@ public class CacheDeviceDaoUtils {
 			mnthlyDiscPrice.setNet(monthlyDiscountPrice.getNet());
 			mnthlyDiscPrice.setVat(monthlyDiscountPrice.getVat());
 		}
-		com.vf.uk.dal.utility.solr.entity.BundlePrice bp = new com.vf.uk.dal.utility.solr.entity.BundlePrice();
+		com.vf.uk.dal.device.model.solr.BundlePrice bp = new com.vf.uk.dal.device.model.solr.BundlePrice();
 		bp.setBundleId(DATA_NOT_FOUND.equalsIgnoreCase(bundleId) ? null : bundleId);
 		bp.setMonthlyPrice(mnthlyPrice);
 		bp.setMonthlyDiscountPrice(mnthlyDiscPrice);
@@ -379,12 +379,12 @@ public class CacheDeviceDaoUtils {
 			onffDiscPrice.setVat(oneOffDisPrice.getVat());
 			log.info( hardwareId+"One Off Disc Price Gross"+oneOffDisPrice.getGross());
 		}
-		com.vf.uk.dal.utility.solr.entity.HardwarePrice hw = new com.vf.uk.dal.utility.solr.entity.HardwarePrice();
+		com.vf.uk.dal.device.model.solr.HardwarePrice hw = new com.vf.uk.dal.device.model.solr.HardwarePrice();
 		hw.setHardwareId(hardwareId);
 		hw.setOneOffPrice(onffPrice);
 		hw.setOneOffDiscountPrice(onffDiscPrice);
 		hw.setFinancingOptions(financeOptions);
-		com.vf.uk.dal.utility.solr.entity.PriceInfo priceinfo = new com.vf.uk.dal.utility.solr.entity.PriceInfo();
+		com.vf.uk.dal.device.model.solr.PriceInfo priceinfo = new com.vf.uk.dal.device.model.solr.PriceInfo();
 		priceinfo.setBundlePrice(bp);
 		priceinfo.setHardwarePrice(hw);
 
@@ -405,7 +405,7 @@ public class CacheDeviceDaoUtils {
 
 		Map<String, Object> result = new HashMap<>();
 		List<OfferAppliedPriceDetails> listOfOfferAppliedPriceDetails = new ArrayList<>();
-		List<com.vf.uk.dal.utility.solr.entity.Media> listOfMedia = new ArrayList<>();
+		List<com.vf.uk.dal.device.model.solr.Media> listOfMedia = new ArrayList<>();
 		for (Entry<String, Map<String, Map<String, List<PriceForBundleAndHardware>>>> ilsJourneyEntry : ilsPriceForBundleAndHardwareMap
 				.entrySet()) {
 			String journeyType = ilsJourneyEntry.getKey();
@@ -437,7 +437,7 @@ public class CacheDeviceDaoUtils {
 							monthlyPrice = bundlePrice.getMonthlyPrice();
 							monthlyDiscountPrice = bundlePrice.getMonthlyDiscountPrice();
 							if (bundlePrice.getMerchandisingPromotions() != null) {
-								com.vf.uk.dal.utility.solr.entity.Media mediaLink = new com.vf.uk.dal.utility.solr.entity.Media();
+								com.vf.uk.dal.device.model.solr.Media mediaLink = new com.vf.uk.dal.device.model.solr.Media();
 								mediaLink.setId(bundlePrice.getMerchandisingPromotions().getMpType() + "."
 										+ STRING_OFFERS_LABEL);
 								String type4 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&"
@@ -456,7 +456,7 @@ public class CacheDeviceDaoUtils {
 								String description = null;
 								if (bundlePrice.getMerchandisingPromotions().getDescription() != null) {
 									description = bundlePrice.getMerchandisingPromotions().getDescription();
-									com.vf.uk.dal.utility.solr.entity.Media mediaLinkForDescription = new com.vf.uk.dal.utility.solr.entity.Media();
+									com.vf.uk.dal.device.model.solr.Media mediaLinkForDescription = new com.vf.uk.dal.device.model.solr.Media();
 									mediaLinkForDescription.setId(bundlePrice.getMerchandisingPromotions().getMpType()
 											+ "." + STRING_OFFERS_DESCRIPTION);
 									String type5 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&"
@@ -480,7 +480,7 @@ public class CacheDeviceDaoUtils {
 								if (StringUtils.isNotBlank(
 										bundlePrice.getMerchandisingPromotions().getPriceEstablishedLabel())) {
 									// PriceEstablished Label
-									com.vf.uk.dal.utility.solr.entity.Media mediaLinkForPriceEstablishedLabel = new com.vf.uk.dal.utility.solr.entity.Media();
+									com.vf.uk.dal.device.model.solr.Media mediaLinkForPriceEstablishedLabel = new com.vf.uk.dal.device.model.solr.Media();
 									mediaLinkForPriceEstablishedLabel
 											.setId(bundlePrice.getMerchandisingPromotions().getMpType() + "."
 													+ STRING_PRICE_ESTABLISHED_LABEL);
@@ -506,7 +506,7 @@ public class CacheDeviceDaoUtils {
 								if (StringUtils
 										.isNotBlank(bundlePrice.getMerchandisingPromotions().getPromotionMedia())) {
 									// PromotionMedia Label
-									com.vf.uk.dal.utility.solr.entity.Media mediaLinkForPromotionMedia = new com.vf.uk.dal.utility.solr.entity.Media();
+									com.vf.uk.dal.device.model.solr.Media mediaLinkForPromotionMedia = new com.vf.uk.dal.device.model.solr.Media();
 									mediaLinkForPromotionMedia
 											.setId(bundlePrice.getMerchandisingPromotions().getMpType() + "."
 													+ STRING_PRICE_PROMOTION_MEDIA);
@@ -532,7 +532,7 @@ public class CacheDeviceDaoUtils {
 							}
 						}
 						HardwarePrice hardwarePrice = priceForBundleAndHardwareWithOfferCode.getHardwarePrice();
-						List<com.vf.uk.dal.utility.solr.entity.DeviceFinancingOption> financeOptions = null;
+						List<com.vf.uk.dal.device.model.solr.DeviceFinancingOption> financeOptions = null;
 						if (hardwarePrice != null) {
 							hardwareId = hardwarePrice.getHardwareId();
 							oneoffPrice = hardwarePrice.getOneOffPrice();
@@ -541,20 +541,20 @@ public class CacheDeviceDaoUtils {
 							if (deviceFinancingOption != null && !deviceFinancingOption.isEmpty()) {
 								financeOptions = new ArrayList<>();
 								for (DeviceFinancingOption financsOption : deviceFinancingOption) {
-									com.vf.uk.dal.utility.solr.entity.DeviceFinancingOption finance = new com.vf.uk.dal.utility.solr.entity.DeviceFinancingOption();
+									com.vf.uk.dal.device.model.solr.DeviceFinancingOption finance = new com.vf.uk.dal.device.model.solr.DeviceFinancingOption();
 									finance.setApr(financsOption.getApr());
 									finance.setDeviceFinancingId(financsOption.getDeviceFinancingId());
 									finance.setFinanceProvider(financsOption.getFinanceProvider());
 									finance.setFinanceTerm(financsOption.getFinanceTerm());
-									com.vf.uk.dal.device.entity.Price monthly = financsOption.getMonthlyPrice();
-									com.vf.uk.dal.utility.solr.entity.Price deviceMonthlyPrice = new com.vf.uk.dal.utility.solr.entity.Price();
+									com.vf.uk.dal.device.client.entity.price.Price monthly = financsOption.getMonthlyPrice();
+									com.vf.uk.dal.device.model.solr.Price deviceMonthlyPrice = new com.vf.uk.dal.device.model.solr.Price();
 									deviceMonthlyPrice.setGross(monthly.getGross());
 									deviceMonthlyPrice.setNet(monthly.getNet());
 									deviceMonthlyPrice.setVat(monthly.getVat());
 									finance.setMonthlyPrice(deviceMonthlyPrice);
-									com.vf.uk.dal.device.entity.Price totalInterest = financsOption
+									com.vf.uk.dal.device.client.entity.price.Price totalInterest = financsOption
 											.getTotalPriceWithInterest();
-									com.vf.uk.dal.utility.solr.entity.Price totalPriceWithInterest = new com.vf.uk.dal.utility.solr.entity.Price();
+									com.vf.uk.dal.device.model.solr.Price totalPriceWithInterest = new com.vf.uk.dal.device.model.solr.Price();
 									totalPriceWithInterest.setGross(totalInterest.getGross());
 									totalPriceWithInterest.setNet(totalInterest.getNet());
 									totalPriceWithInterest.setVat(totalInterest.getVat());
@@ -563,7 +563,7 @@ public class CacheDeviceDaoUtils {
 								}
 							}
 							if (hardwarePrice.getMerchandisingPromotions() != null) {
-								com.vf.uk.dal.utility.solr.entity.Media mediaLink1 = new com.vf.uk.dal.utility.solr.entity.Media();
+								com.vf.uk.dal.device.model.solr.Media mediaLink1 = new com.vf.uk.dal.device.model.solr.Media();
 								mediaLink1.setId(hardwarePrice.getMerchandisingPromotions().getMpType() + "."
 										+ STRING_OFFERS_LABEL);
 								String type6 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&"
@@ -585,7 +585,7 @@ public class CacheDeviceDaoUtils {
 								String description = null;
 								if (hardwarePrice.getMerchandisingPromotions().getDescription() != null) {
 									description = hardwarePrice.getMerchandisingPromotions().getDescription();
-									com.vf.uk.dal.utility.solr.entity.Media mediaLinkForDescription1 = new com.vf.uk.dal.utility.solr.entity.Media();
+									com.vf.uk.dal.device.model.solr.Media mediaLinkForDescription1 = new com.vf.uk.dal.device.model.solr.Media();
 									mediaLinkForDescription1
 											.setId(hardwarePrice.getMerchandisingPromotions().getMpType() + "."
 													+ STRING_OFFERS_DESCRIPTION);
@@ -611,7 +611,7 @@ public class CacheDeviceDaoUtils {
 								if (StringUtils.isNotBlank(
 										hardwarePrice.getMerchandisingPromotions().getPriceEstablishedLabel())) {
 									// PriceEstablished Label
-									com.vf.uk.dal.utility.solr.entity.Media mediaLinkForPriceEstablished = new com.vf.uk.dal.utility.solr.entity.Media();
+									com.vf.uk.dal.device.model.solr.Media mediaLinkForPriceEstablished = new com.vf.uk.dal.device.model.solr.Media();
 									mediaLinkForPriceEstablished
 											.setId(hardwarePrice.getMerchandisingPromotions().getMpType() + "."
 													+ STRING_PRICE_ESTABLISHED_LABEL);
@@ -637,7 +637,7 @@ public class CacheDeviceDaoUtils {
 								if (StringUtils
 										.isNotBlank(hardwarePrice.getMerchandisingPromotions().getPromotionMedia())) {
 									// PromotionMedia Label
-									com.vf.uk.dal.utility.solr.entity.Media mediaLinkForPromotionMedia = new com.vf.uk.dal.utility.solr.entity.Media();
+									com.vf.uk.dal.device.model.solr.Media mediaLinkForPromotionMedia = new com.vf.uk.dal.device.model.solr.Media();
 									mediaLinkForPromotionMedia
 											.setId(hardwarePrice.getMerchandisingPromotions().getMpType() + "."
 													+ STRING_PRICE_PROMOTION_MEDIA);
@@ -676,7 +676,7 @@ public class CacheDeviceDaoUtils {
 							mnthlyDiscPrice.setNet(monthlyDiscountPrice.getNet());
 							mnthlyDiscPrice.setVat(monthlyDiscountPrice.getVat());
 						}
-						com.vf.uk.dal.utility.solr.entity.BundlePrice bp = new com.vf.uk.dal.utility.solr.entity.BundlePrice();
+						com.vf.uk.dal.device.model.solr.BundlePrice bp = new com.vf.uk.dal.device.model.solr.BundlePrice();
 						bp.setBundleId(bundleId);
 						bp.setMonthlyPrice(mnthlyPrice);
 						bp.setMonthlyDiscountPrice(mnthlyDiscPrice);
@@ -694,7 +694,7 @@ public class CacheDeviceDaoUtils {
 							onffDiscPrice.setNet(oneOffDisPrice.getNet());
 							onffDiscPrice.setVat(oneOffDisPrice.getVat());
 						}
-						com.vf.uk.dal.utility.solr.entity.HardwarePrice hw = new com.vf.uk.dal.utility.solr.entity.HardwarePrice();
+						com.vf.uk.dal.device.model.solr.HardwarePrice hw = new com.vf.uk.dal.device.model.solr.HardwarePrice();
 						hw.setHardwareId(hardwareId);
 						hw.setOneOffPrice(onffPrice);
 						hw.setOneOffDiscountPrice(onffDiscPrice);
@@ -725,7 +725,7 @@ public class CacheDeviceDaoUtils {
 			Map<String, Map<String, List<PriceForBundleAndHardware>>> ilsPriceForBundleAndHardwareMap) {
 		Map<String, Object> result = new HashMap<>();
 		List<OfferAppliedPriceDetails> listOfOfferAppliedPriceDetails = new ArrayList<>();
-		List<com.vf.uk.dal.utility.solr.entity.Media> listOfMedia = new ArrayList<>();
+		List<com.vf.uk.dal.device.model.solr.Media> listOfMedia = new ArrayList<>();
 
 		for (Entry<String, Map<String, List<PriceForBundleAndHardware>>> entry : ilsPriceForBundleAndHardwareMap
 				.entrySet()) {
@@ -763,7 +763,7 @@ public class CacheDeviceDaoUtils {
 						monthlyPrice = bundlePrice.getMonthlyPrice();
 						monthlyDiscountPrice = bundlePrice.getMonthlyDiscountPrice();
 						if (bundlePrice.getMerchandisingPromotions() != null) {
-							com.vf.uk.dal.utility.solr.entity.Media mediaLink = new com.vf.uk.dal.utility.solr.entity.Media();
+							com.vf.uk.dal.device.model.solr.Media mediaLink = new com.vf.uk.dal.device.model.solr.Media();
 							mediaLink.setId(bundlePrice.getMerchandisingPromotions().getMpType() + "."
 									+ STRING_OFFERS_LABEL);
 							String type4 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&"
@@ -782,7 +782,7 @@ public class CacheDeviceDaoUtils {
 							String description = null;
 							if (bundlePrice.getMerchandisingPromotions().getDescription() != null) {
 								description = bundlePrice.getMerchandisingPromotions().getDescription();
-								com.vf.uk.dal.utility.solr.entity.Media mediaLinkForDescription = new com.vf.uk.dal.utility.solr.entity.Media();
+								com.vf.uk.dal.device.model.solr.Media mediaLinkForDescription = new com.vf.uk.dal.device.model.solr.Media();
 								mediaLinkForDescription.setId(bundlePrice.getMerchandisingPromotions().getMpType() + "."
 										+ STRING_OFFERS_DESCRIPTION);
 								String type5 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&"
@@ -805,7 +805,7 @@ public class CacheDeviceDaoUtils {
 							if (StringUtils
 									.isNotBlank(bundlePrice.getMerchandisingPromotions().getPriceEstablishedLabel())) {
 								// PriceEstablished Label
-								com.vf.uk.dal.utility.solr.entity.Media mediaLinkForPriceEstablishedLabel = new com.vf.uk.dal.utility.solr.entity.Media();
+								com.vf.uk.dal.device.model.solr.Media mediaLinkForPriceEstablishedLabel = new com.vf.uk.dal.device.model.solr.Media();
 								mediaLinkForPriceEstablishedLabel
 										.setId(bundlePrice.getMerchandisingPromotions().getMpType() + "."
 												+ STRING_PRICE_ESTABLISHED_LABEL);
@@ -828,7 +828,7 @@ public class CacheDeviceDaoUtils {
 							}
 							if (StringUtils.isNotBlank(bundlePrice.getMerchandisingPromotions().getPromotionMedia())) {
 								// PromotionMedia
-								com.vf.uk.dal.utility.solr.entity.Media mediaLinkForPromotionMedia = new com.vf.uk.dal.utility.solr.entity.Media();
+								com.vf.uk.dal.device.model.solr.Media mediaLinkForPromotionMedia = new com.vf.uk.dal.device.model.solr.Media();
 								mediaLinkForPromotionMedia.setId(bundlePrice.getMerchandisingPromotions().getMpType()
 										+ "." + STRING_PRICE_PROMOTION_MEDIA);
 								String type7 = STRING_URL_ALLOWANCE + "&&" + bundleId + "&&"
@@ -851,7 +851,7 @@ public class CacheDeviceDaoUtils {
 						}
 					}
 					HardwarePrice hardwarePrice = priceForBundleAndHardwareWithOfferCode.getHardwarePrice();
-					List<com.vf.uk.dal.utility.solr.entity.DeviceFinancingOption> financeOptions = null;
+					List<com.vf.uk.dal.device.model.solr.DeviceFinancingOption> financeOptions = null;
 					if (hardwarePrice != null) {
 						hardwareId = hardwarePrice.getHardwareId();
 						oneoffPrice = hardwarePrice.getOneOffPrice();
@@ -860,20 +860,20 @@ public class CacheDeviceDaoUtils {
 						if (deviceFinancingOption != null && !deviceFinancingOption.isEmpty()) {
 							financeOptions = new ArrayList<>();
 							for (DeviceFinancingOption financsOption : deviceFinancingOption) {
-								com.vf.uk.dal.utility.solr.entity.DeviceFinancingOption finance = new com.vf.uk.dal.utility.solr.entity.DeviceFinancingOption();
+								com.vf.uk.dal.device.model.solr.DeviceFinancingOption finance = new com.vf.uk.dal.device.model.solr.DeviceFinancingOption();
 								finance.setApr(financsOption.getApr());
 								finance.setDeviceFinancingId(financsOption.getDeviceFinancingId());
 								finance.setFinanceProvider(financsOption.getFinanceProvider());
 								finance.setFinanceTerm(financsOption.getFinanceTerm());
-								com.vf.uk.dal.device.entity.Price monthly = financsOption.getMonthlyPrice();
-								com.vf.uk.dal.utility.solr.entity.Price deviceMonthlyPrice = new com.vf.uk.dal.utility.solr.entity.Price();
+								com.vf.uk.dal.device.client.entity.price.Price monthly = financsOption.getMonthlyPrice();
+								com.vf.uk.dal.device.model.solr.Price deviceMonthlyPrice = new com.vf.uk.dal.device.model.solr.Price();
 								deviceMonthlyPrice.setGross(monthly.getGross());
 								deviceMonthlyPrice.setNet(monthly.getNet());
 								deviceMonthlyPrice.setVat(monthly.getVat());
 								finance.setMonthlyPrice(deviceMonthlyPrice);
-								com.vf.uk.dal.device.entity.Price totalInterest = financsOption
+								com.vf.uk.dal.device.client.entity.price.Price totalInterest = financsOption
 										.getTotalPriceWithInterest();
-								com.vf.uk.dal.utility.solr.entity.Price totalPriceWithInterest = new com.vf.uk.dal.utility.solr.entity.Price();
+								com.vf.uk.dal.device.model.solr.Price totalPriceWithInterest = new com.vf.uk.dal.device.model.solr.Price();
 								totalPriceWithInterest.setGross(totalInterest.getGross());
 								totalPriceWithInterest.setNet(totalInterest.getNet());
 								totalPriceWithInterest.setVat(totalInterest.getVat());
@@ -883,7 +883,7 @@ public class CacheDeviceDaoUtils {
 						}
 
 						if (hardwarePrice.getMerchandisingPromotions() != null) {
-							com.vf.uk.dal.utility.solr.entity.Media mediaLink1 = new com.vf.uk.dal.utility.solr.entity.Media();
+							com.vf.uk.dal.device.model.solr.Media mediaLink1 = new com.vf.uk.dal.device.model.solr.Media();
 							mediaLink1.setId(hardwarePrice.getMerchandisingPromotions().getMpType() + "."
 									+ STRING_OFFERS_LABEL);
 							String type6 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&"
@@ -903,7 +903,7 @@ public class CacheDeviceDaoUtils {
 							String description = null;
 							if (hardwarePrice.getMerchandisingPromotions().getDescription() != null) {
 								description = hardwarePrice.getMerchandisingPromotions().getDescription();
-								com.vf.uk.dal.utility.solr.entity.Media mediaLinkForDescription1 = new com.vf.uk.dal.utility.solr.entity.Media();
+								com.vf.uk.dal.device.model.solr.Media mediaLinkForDescription1 = new com.vf.uk.dal.device.model.solr.Media();
 								mediaLinkForDescription1.setId(hardwarePrice.getMerchandisingPromotions().getMpType()
 										+ "." + STRING_OFFERS_DESCRIPTION);
 								String type7 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&"
@@ -927,7 +927,7 @@ public class CacheDeviceDaoUtils {
 							if (StringUtils.isNotBlank(
 									hardwarePrice.getMerchandisingPromotions().getPriceEstablishedLabel())) {
 								// PriceEstablished Label
-								com.vf.uk.dal.utility.solr.entity.Media mediaLinkForPriceEstablished = new com.vf.uk.dal.utility.solr.entity.Media();
+								com.vf.uk.dal.device.model.solr.Media mediaLinkForPriceEstablished = new com.vf.uk.dal.device.model.solr.Media();
 								mediaLinkForPriceEstablished
 										.setId(hardwarePrice.getMerchandisingPromotions().getMpType() + "."
 												+ STRING_PRICE_ESTABLISHED_LABEL);
@@ -952,7 +952,7 @@ public class CacheDeviceDaoUtils {
 							if (StringUtils
 									.isNotBlank(hardwarePrice.getMerchandisingPromotions().getPromotionMedia())) {
 								// PromotionMedia
-								com.vf.uk.dal.utility.solr.entity.Media mediaLinkForPromotionMedia = new com.vf.uk.dal.utility.solr.entity.Media();
+								com.vf.uk.dal.device.model.solr.Media mediaLinkForPromotionMedia = new com.vf.uk.dal.device.model.solr.Media();
 								mediaLinkForPromotionMedia.setId(hardwarePrice.getMerchandisingPromotions().getMpType()
 										+ "." + STRING_PRICE_PROMOTION_MEDIA);
 								String type9 = STRING_URL_ALLOWANCE + "&&" + bundleId + "&&"
@@ -989,7 +989,7 @@ public class CacheDeviceDaoUtils {
 						mnthlyDiscPrice.setNet(monthlyDiscountPrice.getNet());
 						mnthlyDiscPrice.setVat(monthlyDiscountPrice.getVat());
 					}
-					com.vf.uk.dal.utility.solr.entity.BundlePrice bp = new com.vf.uk.dal.utility.solr.entity.BundlePrice();
+					com.vf.uk.dal.device.model.solr.BundlePrice bp = new com.vf.uk.dal.device.model.solr.BundlePrice();
 					bp.setBundleId(bundleId);
 					bp.setMonthlyPrice(mnthlyPrice);
 					bp.setMonthlyDiscountPrice(mnthlyDiscPrice);
@@ -1007,7 +1007,7 @@ public class CacheDeviceDaoUtils {
 						onffDiscPrice.setNet(oneOffDisPrice.getNet());
 						onffDiscPrice.setVat(oneOffDisPrice.getVat());
 					}
-					com.vf.uk.dal.utility.solr.entity.HardwarePrice hw = new com.vf.uk.dal.utility.solr.entity.HardwarePrice();
+					com.vf.uk.dal.device.model.solr.HardwarePrice hw = new com.vf.uk.dal.device.model.solr.HardwarePrice();
 					hw.setHardwareId(hardwareId);
 					hw.setOneOffPrice(onffPrice);
 					hw.setOneOffDiscountPrice(onffDiscPrice);
@@ -1032,21 +1032,21 @@ public class CacheDeviceDaoUtils {
 	 * @param preCalcPlanList
 	 * @return DevicePreCalculatedData
 	 */
-	public static List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.DevicePreCalculatedData> convertDevicePreCalDataToSolrData(
+	public static List<com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData> convertDevicePreCalDataToSolrData(
 			List<DevicePreCalculatedData> preCalcPlanList) {
-		List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.DevicePreCalculatedData> deviceListObjectList = new ArrayList<>();
+		List<com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData> deviceListObjectList = new ArrayList<>();
 
 		preCalcPlanList.forEach(preCalList -> {
-			com.vf.uk.dal.device.datamodel.merchandisingpromotion.DevicePreCalculatedData deviceListObject = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.DevicePreCalculatedData();
+			com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData deviceListObject = new com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData();
 
-			List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.Media> mediaList = null;
+			List<com.vf.uk.dal.device.model.merchandisingpromotion.Media> mediaList = null;
 			List<Media> listOfMedia = preCalList.getMedia();
 			if (listOfMedia != null && !listOfMedia.isEmpty()) {
 				mediaList = getListOfSolrMedia(listOfMedia);
 
 			}
 
-			com.vf.uk.dal.device.datamodel.merchandisingpromotion.PriceInfo priceInfoObject = null;
+			com.vf.uk.dal.device.model.merchandisingpromotion.PriceInfo priceInfoObject = null;
 			if (preCalList.getPriceInfo() != null) {
 				priceInfoObject = getPriceForSolr(preCalList.getPriceInfo());
 			}
@@ -1076,11 +1076,11 @@ public class CacheDeviceDaoUtils {
 	 * @param listOfMedia
 	 * @return List<Media>
 	 */
-	public static List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.Media> getListOfSolrMedia(
+	public static List<com.vf.uk.dal.device.model.merchandisingpromotion.Media> getListOfSolrMedia(
 			List<Media> listOfMedia) {
-		List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.Media> mediaList = new ArrayList<>();
+		List<com.vf.uk.dal.device.model.merchandisingpromotion.Media> mediaList = new ArrayList<>();
 		listOfMedia.forEach(media -> {
-			com.vf.uk.dal.device.datamodel.merchandisingpromotion.Media mediaObject = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.Media();
+			com.vf.uk.dal.device.model.merchandisingpromotion.Media mediaObject = new com.vf.uk.dal.device.model.merchandisingpromotion.Media();
 
 			mediaObject.setId(media.getId());
 
@@ -1102,23 +1102,23 @@ public class CacheDeviceDaoUtils {
 	 * @param priceInfo
 	 * @return
 	 */
-	public static com.vf.uk.dal.device.datamodel.merchandisingpromotion.PriceInfo getPriceForSolr(
-			com.vf.uk.dal.utility.solr.entity.PriceInfo priceInfo) {
-		com.vf.uk.dal.device.datamodel.merchandisingpromotion.PriceInfo priceInfoObject = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.PriceInfo();
+	public static com.vf.uk.dal.device.model.merchandisingpromotion.PriceInfo getPriceForSolr(
+			com.vf.uk.dal.device.model.solr.PriceInfo priceInfo) {
+		com.vf.uk.dal.device.model.merchandisingpromotion.PriceInfo priceInfoObject = new com.vf.uk.dal.device.model.merchandisingpromotion.PriceInfo();
 
-		List<com.vf.uk.dal.utility.solr.entity.OfferAppliedPriceDetails> listOfOfferAppliedPriceDetails = priceInfo
+		List<com.vf.uk.dal.device.model.solr.OfferAppliedPriceDetails> listOfOfferAppliedPriceDetails = priceInfo
 				.getOfferAppliedPrices();
-		List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceDetails> listOfOfferAppliedPriceDetailsForSolr = null;
+		List<com.vf.uk.dal.device.model.merchandisingpromotion.OfferAppliedPriceDetails> listOfOfferAppliedPriceDetailsForSolr = null;
 		if (listOfOfferAppliedPriceDetails != null && !listOfOfferAppliedPriceDetails.isEmpty()) {
 			listOfOfferAppliedPriceDetailsForSolr = getListOfOfferAppliedPriceDetails(listOfOfferAppliedPriceDetails);
 		}
 
-		com.vf.uk.dal.utility.solr.entity.BundlePrice bundlePrice1 = priceInfo.getBundlePrice();
-		com.vf.uk.dal.device.datamodel.merchandisingpromotion.BundlePrice bundlePrice = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.BundlePrice();
+		com.vf.uk.dal.device.model.solr.BundlePrice bundlePrice1 = priceInfo.getBundlePrice();
+		com.vf.uk.dal.device.model.merchandisingpromotion.BundlePrice bundlePrice = new com.vf.uk.dal.device.model.merchandisingpromotion.BundlePrice();
 		if (bundlePrice1 != null) {
-			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MonthlyPrice monthlyPrice = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.MonthlyPrice();
+			com.vf.uk.dal.device.model.merchandisingpromotion.MonthlyPrice monthlyPrice = new com.vf.uk.dal.device.model.merchandisingpromotion.MonthlyPrice();
 
-			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MonthlyDiscountPrice monthlyDiscountPrice = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.MonthlyDiscountPrice();
+			com.vf.uk.dal.device.model.merchandisingpromotion.MonthlyDiscountPrice monthlyDiscountPrice = new com.vf.uk.dal.device.model.merchandisingpromotion.MonthlyDiscountPrice();
 
 			MonthlyPrice mnthlyPrice = bundlePrice1.getMonthlyPrice();
 
@@ -1142,11 +1142,11 @@ public class CacheDeviceDaoUtils {
 			bundlePrice.setBundleId(bundlePrice1.getBundleId());
 			bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
 		}
-		com.vf.uk.dal.device.datamodel.merchandisingpromotion.HardwarePrice hardwarePrice = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.HardwarePrice();
+		com.vf.uk.dal.device.model.merchandisingpromotion.HardwarePrice hardwarePrice = new com.vf.uk.dal.device.model.merchandisingpromotion.HardwarePrice();
 
-		com.vf.uk.dal.utility.solr.entity.HardwarePrice hardwarePrice1 = priceInfo.getHardwarePrice();
+		com.vf.uk.dal.device.model.solr.HardwarePrice hardwarePrice1 = priceInfo.getHardwarePrice();
 		if (hardwarePrice1 != null) {
-			com.vf.uk.dal.device.datamodel.merchandisingpromotion.OneOffPrice oneOffPrice = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.OneOffPrice();
+			com.vf.uk.dal.device.model.merchandisingpromotion.OneOffPrice oneOffPrice = new com.vf.uk.dal.device.model.merchandisingpromotion.OneOffPrice();
 
 			OneOffPrice oneOffPrice1 = hardwarePrice1.getOneOffPrice();
 
@@ -1159,7 +1159,7 @@ public class CacheDeviceDaoUtils {
 			}
 			hardwarePrice.setOneOffPrice(oneOffPrice);
 
-			com.vf.uk.dal.device.datamodel.merchandisingpromotion.OneOffDiscountPrice oneOffDiscountPrice = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.OneOffDiscountPrice();
+			com.vf.uk.dal.device.model.merchandisingpromotion.OneOffDiscountPrice oneOffDiscountPrice = new com.vf.uk.dal.device.model.merchandisingpromotion.OneOffDiscountPrice();
 
 			OneOffDiscountPrice OneOffDiscountPrice1 = hardwarePrice1.getOneOffDiscountPrice();
 
@@ -1173,25 +1173,25 @@ public class CacheDeviceDaoUtils {
 
 			hardwarePrice.setOneOffDiscountPrice(oneOffDiscountPrice);
 
-			List<com.vf.uk.dal.utility.solr.entity.DeviceFinancingOption> deviceFinancingOption = hardwarePrice1
+			List<com.vf.uk.dal.device.model.solr.DeviceFinancingOption> deviceFinancingOption = hardwarePrice1
 					.getFinancingOptions();
-			List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.DeviceFinancingOption> financeOptions = null;
+			List<com.vf.uk.dal.device.model.merchandisingpromotion.DeviceFinancingOption> financeOptions = null;
 			if (deviceFinancingOption != null && !deviceFinancingOption.isEmpty()) {
 				financeOptions = new ArrayList<>();
-				for (com.vf.uk.dal.utility.solr.entity.DeviceFinancingOption financsOption : deviceFinancingOption) {
-					com.vf.uk.dal.device.datamodel.merchandisingpromotion.DeviceFinancingOption finance = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.DeviceFinancingOption();
+				for (com.vf.uk.dal.device.model.solr.DeviceFinancingOption financsOption : deviceFinancingOption) {
+					com.vf.uk.dal.device.model.merchandisingpromotion.DeviceFinancingOption finance = new com.vf.uk.dal.device.model.merchandisingpromotion.DeviceFinancingOption();
 					finance.setApr(financsOption.getApr());
 					finance.setDeviceFinancingId(financsOption.getDeviceFinancingId());
 					finance.setFinanceProvider(financsOption.getFinanceProvider());
 					finance.setFinanceTerm(financsOption.getFinanceTerm());
-					com.vf.uk.dal.utility.solr.entity.Price monthly = financsOption.getMonthlyPrice();
-					com.vf.uk.dal.device.datamodel.merchandisingpromotion.Price deviceMonthlyPrice = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.Price();
+					com.vf.uk.dal.device.model.solr.Price monthly = financsOption.getMonthlyPrice();
+					com.vf.uk.dal.device.model.merchandisingpromotion.Price deviceMonthlyPrice = new com.vf.uk.dal.device.model.merchandisingpromotion.Price();
 					deviceMonthlyPrice.setGross(monthly.getGross());
 					deviceMonthlyPrice.setNet(monthly.getNet());
 					deviceMonthlyPrice.setVat(monthly.getVat());
 					finance.setMonthlyPrice(deviceMonthlyPrice);
-					com.vf.uk.dal.utility.solr.entity.Price totalInterest = financsOption.getTotalPriceWithInterest();
-					com.vf.uk.dal.device.datamodel.merchandisingpromotion.Price totalPriceWithInterest = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.Price();
+					com.vf.uk.dal.device.model.solr.Price totalInterest = financsOption.getTotalPriceWithInterest();
+					com.vf.uk.dal.device.model.merchandisingpromotion.Price totalPriceWithInterest = new com.vf.uk.dal.device.model.merchandisingpromotion.Price();
 					totalPriceWithInterest.setGross(totalInterest.getGross());
 					totalPriceWithInterest.setNet(totalInterest.getNet());
 					totalPriceWithInterest.setVat(totalInterest.getVat());
@@ -1214,15 +1214,15 @@ public class CacheDeviceDaoUtils {
 	 * @param offerAppliedPriceList
 	 * @return List<OfferAppliedPriceDetails>
 	 */
-	public static List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceDetails> getListOfOfferAppliedPriceDetails(
+	public static List<com.vf.uk.dal.device.model.merchandisingpromotion.OfferAppliedPriceDetails> getListOfOfferAppliedPriceDetails(
 			List<OfferAppliedPriceDetails> offerAppliedPriceList) {
-		List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceDetails> OfferAppliedListForSolr = new ArrayList<>();
+		List<com.vf.uk.dal.device.model.merchandisingpromotion.OfferAppliedPriceDetails> OfferAppliedListForSolr = new ArrayList<>();
 		for (OfferAppliedPriceDetails offerAppliedPrice : offerAppliedPriceList) {
-			com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceDetails OfferAppliedPriceDetails = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceDetails();
-			com.vf.uk.dal.utility.solr.entity.BundlePrice bundlePrice1 = offerAppliedPrice.getBundlePrice();
-			com.vf.uk.dal.device.datamodel.merchandisingpromotion.BundlePrice bundlePrice = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.BundlePrice();
+			com.vf.uk.dal.device.model.merchandisingpromotion.OfferAppliedPriceDetails OfferAppliedPriceDetails = new com.vf.uk.dal.device.model.merchandisingpromotion.OfferAppliedPriceDetails();
+			com.vf.uk.dal.device.model.solr.BundlePrice bundlePrice1 = offerAppliedPrice.getBundlePrice();
+			com.vf.uk.dal.device.model.merchandisingpromotion.BundlePrice bundlePrice = new com.vf.uk.dal.device.model.merchandisingpromotion.BundlePrice();
 
-			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MonthlyPrice monthlyPrice = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.MonthlyPrice();
+			com.vf.uk.dal.device.model.merchandisingpromotion.MonthlyPrice monthlyPrice = new com.vf.uk.dal.device.model.merchandisingpromotion.MonthlyPrice();
 
 			MonthlyPrice mnthlyPrice = bundlePrice1.getMonthlyPrice();
 
@@ -1234,7 +1234,7 @@ public class CacheDeviceDaoUtils {
 				monthlyPrice.setVat(Float.valueOf(mnthlyPrice.getVat()));
 			}
 			bundlePrice.setMonthlyPrice(monthlyPrice);
-			com.vf.uk.dal.device.datamodel.merchandisingpromotion.MonthlyDiscountPrice monthlyDiscountPrice = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.MonthlyDiscountPrice();
+			com.vf.uk.dal.device.model.merchandisingpromotion.MonthlyDiscountPrice monthlyDiscountPrice = new com.vf.uk.dal.device.model.merchandisingpromotion.MonthlyDiscountPrice();
 
 			MonthlyDiscountPrice mnthlydiscPrice = bundlePrice1.getMonthlyDiscountPrice();
 			if (mnthlydiscPrice != null && mnthlydiscPrice.getGross() != null) {
@@ -1248,11 +1248,11 @@ public class CacheDeviceDaoUtils {
 			}
 			bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
 
-			com.vf.uk.dal.device.datamodel.merchandisingpromotion.HardwarePrice hardwarePrice = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.HardwarePrice();
+			com.vf.uk.dal.device.model.merchandisingpromotion.HardwarePrice hardwarePrice = new com.vf.uk.dal.device.model.merchandisingpromotion.HardwarePrice();
 
-			com.vf.uk.dal.utility.solr.entity.HardwarePrice hardwarePrice1 = offerAppliedPrice.getHardwarePrice();
+			com.vf.uk.dal.device.model.solr.HardwarePrice hardwarePrice1 = offerAppliedPrice.getHardwarePrice();
 
-			com.vf.uk.dal.device.datamodel.merchandisingpromotion.OneOffPrice oneOffPrice = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.OneOffPrice();
+			com.vf.uk.dal.device.model.merchandisingpromotion.OneOffPrice oneOffPrice = new com.vf.uk.dal.device.model.merchandisingpromotion.OneOffPrice();
 
 			OneOffPrice oneOffPrice1 = hardwarePrice1.getOneOffPrice();
 
@@ -1265,7 +1265,7 @@ public class CacheDeviceDaoUtils {
 			}
 			hardwarePrice.setOneOffPrice(oneOffPrice);
 
-			com.vf.uk.dal.device.datamodel.merchandisingpromotion.OneOffDiscountPrice oneOffDiscountPrice = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.OneOffDiscountPrice();
+			com.vf.uk.dal.device.model.merchandisingpromotion.OneOffDiscountPrice oneOffDiscountPrice = new com.vf.uk.dal.device.model.merchandisingpromotion.OneOffDiscountPrice();
 
 			OneOffDiscountPrice OneOffDiscountPrice1 = hardwarePrice1.getOneOffDiscountPrice();
 
@@ -1278,25 +1278,25 @@ public class CacheDeviceDaoUtils {
 			}
 
 			hardwarePrice.setOneOffDiscountPrice(oneOffDiscountPrice);
-			List<com.vf.uk.dal.utility.solr.entity.DeviceFinancingOption> deviceFinancingOption = hardwarePrice1
+			List<com.vf.uk.dal.device.model.solr.DeviceFinancingOption> deviceFinancingOption = hardwarePrice1
 					.getFinancingOptions();
-			List<com.vf.uk.dal.device.datamodel.merchandisingpromotion.DeviceFinancingOption> financeOptions = null;
+			List<com.vf.uk.dal.device.model.merchandisingpromotion.DeviceFinancingOption> financeOptions = null;
 			if (deviceFinancingOption != null && !deviceFinancingOption.isEmpty()) {
 				financeOptions = new ArrayList<>();
-				for (com.vf.uk.dal.utility.solr.entity.DeviceFinancingOption financsOption : deviceFinancingOption) {
-					com.vf.uk.dal.device.datamodel.merchandisingpromotion.DeviceFinancingOption finance = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.DeviceFinancingOption();
+				for (com.vf.uk.dal.device.model.solr.DeviceFinancingOption financsOption : deviceFinancingOption) {
+					com.vf.uk.dal.device.model.merchandisingpromotion.DeviceFinancingOption finance = new com.vf.uk.dal.device.model.merchandisingpromotion.DeviceFinancingOption();
 					finance.setApr(financsOption.getApr());
 					finance.setDeviceFinancingId(financsOption.getDeviceFinancingId());
 					finance.setFinanceProvider(financsOption.getFinanceProvider());
 					finance.setFinanceTerm(financsOption.getFinanceTerm());
-					com.vf.uk.dal.utility.solr.entity.Price monthly = financsOption.getMonthlyPrice();
-					com.vf.uk.dal.device.datamodel.merchandisingpromotion.Price deviceMonthlyPrice = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.Price();
+					com.vf.uk.dal.device.model.solr.Price monthly = financsOption.getMonthlyPrice();
+					com.vf.uk.dal.device.model.merchandisingpromotion.Price deviceMonthlyPrice = new com.vf.uk.dal.device.model.merchandisingpromotion.Price();
 					deviceMonthlyPrice.setGross(monthly.getGross());
 					deviceMonthlyPrice.setNet(monthly.getNet());
 					deviceMonthlyPrice.setVat(monthly.getVat());
 					finance.setMonthlyPrice(deviceMonthlyPrice);
-					com.vf.uk.dal.utility.solr.entity.Price totalInterest = financsOption.getTotalPriceWithInterest();
-					com.vf.uk.dal.device.datamodel.merchandisingpromotion.Price totalPriceWithInterest = new com.vf.uk.dal.device.datamodel.merchandisingpromotion.Price();
+					com.vf.uk.dal.device.model.solr.Price totalInterest = financsOption.getTotalPriceWithInterest();
+					com.vf.uk.dal.device.model.merchandisingpromotion.Price totalPriceWithInterest = new com.vf.uk.dal.device.model.merchandisingpromotion.Price();
 					totalPriceWithInterest.setGross(totalInterest.getGross());
 					totalPriceWithInterest.setNet(totalInterest.getNet());
 					totalPriceWithInterest.setVat(totalInterest.getVat());

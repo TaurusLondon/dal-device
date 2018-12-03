@@ -10,15 +10,15 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
-import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
-import com.vf.uk.dal.device.datamodel.product.ProductModel;
-import com.vf.uk.dal.device.datamodel.productgroups.Group;
-import com.vf.uk.dal.device.datamodel.productgroups.Member;
-import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
-import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
-import com.vf.uk.dal.utility.solr.entity.DevicePreCalculatedData;
-import com.vf.uk.dal.utility.solr.entity.OfferAppliedPriceDetails;
+import com.vf.uk.dal.device.client.entity.bundle.CommercialBundle;
+import com.vf.uk.dal.device.client.entity.price.BundleAndHardwareTuple;
+import com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware;
+import com.vf.uk.dal.device.model.product.CommercialProduct;
+import com.vf.uk.dal.device.model.product.ProductModel;
+import com.vf.uk.dal.device.model.productgroups.Group;
+import com.vf.uk.dal.device.model.productgroups.Member;
+import com.vf.uk.dal.device.model.solr.DevicePreCalculatedData;
+import com.vf.uk.dal.device.model.solr.OfferAppliedPriceDetails;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -181,11 +181,11 @@ public class DeviceUtils {
 	 * @param groupname
 	 */
 	public static void getMemberForCaceDevice(List<String> listOfDeviceId, Map<String, String> groupIdAndNameMap,
-			Group productGroup, List<com.vf.uk.dal.device.entity.Member> listOfDeviceGroupMember, String groupId,
+			Group productGroup, List<com.vf.uk.dal.device.model.Member> listOfDeviceGroupMember, String groupId,
 			String groupname) {
-		com.vf.uk.dal.device.entity.Member entityMember;
+		com.vf.uk.dal.device.model.Member entityMember;
 		for (Member member : productGroup.getMembers()) {
-			entityMember = new com.vf.uk.dal.device.entity.Member();
+			entityMember = new com.vf.uk.dal.device.model.Member();
 			entityMember.setId(member.getId());
 			entityMember.setPriority(String.valueOf(member.getPriority()));
 			listOfDeviceGroupMember.add(entityMember);
@@ -506,18 +506,18 @@ public class DeviceUtils {
 			Map<String, Map<String, Map<String, List<PriceForBundleAndHardware>>>> ilsOfferPriceWithJourneyAware,
 			Map<String, Map<String, List<PriceForBundleAndHardware>>> mapOfIlsPriceWithoutOfferCode,
 			Map<String, String> ratingsReviewMap, DevicePreCalculatedData deviceDataRating) {
-		com.vf.uk.dal.utility.solr.entity.PriceInfo priceInfo = deviceDataRating.getPriceInfo();
+		com.vf.uk.dal.device.model.solr.PriceInfo priceInfo = deviceDataRating.getPriceInfo();
 		Map<String, Object> offeredPriceMediaMap = CacheDeviceDaoUtils
 				.getListOfOfferAppliedPrice(deviceDataRating.getDeviceId(), ilsOfferPriceWithJourneyAware);
 		List<OfferAppliedPriceDetails> iLSPrice = (List<OfferAppliedPriceDetails>) offeredPriceMediaMap
 				.get("offeredPrice");
-		List<com.vf.uk.dal.utility.solr.entity.Media> listOfOfferdMedia = (List<com.vf.uk.dal.utility.solr.entity.Media>) offeredPriceMediaMap
+		List<com.vf.uk.dal.device.model.solr.Media> listOfOfferdMedia = (List<com.vf.uk.dal.device.model.solr.Media>) offeredPriceMediaMap
 				.get("media");
 		Map<String, Object> withoutOfferedPriceMediaMap = CacheDeviceDaoUtils
 				.getListOfIlsPriceWithoutOfferCode(deviceDataRating.getDeviceId(), mapOfIlsPriceWithoutOfferCode);
 		List<OfferAppliedPriceDetails> iLSPriceWithoutOfferCode = (List<OfferAppliedPriceDetails>) withoutOfferedPriceMediaMap
 				.get("offeredPrice");
-		List<com.vf.uk.dal.utility.solr.entity.Media> listOfdMediaWithoutOfferCode = (List<com.vf.uk.dal.utility.solr.entity.Media>) withoutOfferedPriceMediaMap
+		List<com.vf.uk.dal.device.model.solr.Media> listOfdMediaWithoutOfferCode = (List<com.vf.uk.dal.device.model.solr.Media>) withoutOfferedPriceMediaMap
 				.get("media");
 		if (iLSPriceWithoutOfferCode != null && !iLSPriceWithoutOfferCode.isEmpty()) {
 			iLSPrice.addAll(iLSPriceWithoutOfferCode);
@@ -527,7 +527,7 @@ public class DeviceUtils {
 		}
 		if (iLSPrice != null && !iLSPrice.isEmpty()) {
 			if (priceInfo == null) {
-				com.vf.uk.dal.utility.solr.entity.PriceInfo priceInfoLocal = new com.vf.uk.dal.utility.solr.entity.PriceInfo();
+				com.vf.uk.dal.device.model.solr.PriceInfo priceInfoLocal = new com.vf.uk.dal.device.model.solr.PriceInfo();
 				priceInfoLocal.setOfferAppliedPrices(iLSPrice);
 				deviceDataRating.setPriceInfo(priceInfoLocal);
 			} else {
@@ -536,7 +536,7 @@ public class DeviceUtils {
 
 		}
 		if (listOfOfferdMedia != null && !listOfOfferdMedia.isEmpty()) {
-			List<com.vf.uk.dal.utility.solr.entity.Media> listOfMedia = deviceDataRating.getMedia();
+			List<com.vf.uk.dal.device.model.solr.Media> listOfMedia = deviceDataRating.getMedia();
 			if (listOfMedia == null) {
 				deviceDataRating.setMedia(listOfOfferdMedia);
 			} else {

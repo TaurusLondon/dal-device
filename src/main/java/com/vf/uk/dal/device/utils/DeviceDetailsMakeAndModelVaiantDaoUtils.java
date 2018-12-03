@@ -8,34 +8,34 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
-import com.vf.uk.dal.device.datamodel.bundle.Allowance;
-import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
-import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
-import com.vf.uk.dal.device.entity.DeviceDetails;
-import com.vf.uk.dal.device.entity.DeviceSummary;
-import com.vf.uk.dal.device.entity.Equipment;
-import com.vf.uk.dal.device.entity.HardwarePrice;
-import com.vf.uk.dal.device.entity.MediaLink;
-import com.vf.uk.dal.device.entity.MerchandisingControl;
-import com.vf.uk.dal.device.entity.MerchandisingPromotion;
-import com.vf.uk.dal.device.entity.MerchandisingPromotions;
-import com.vf.uk.dal.device.entity.MerchandisingPromotionsPackage;
-import com.vf.uk.dal.device.entity.MerchandisingPromotionsWrapper;
-import com.vf.uk.dal.device.entity.MetaData;
-import com.vf.uk.dal.device.entity.Price;
-import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
-import com.vf.uk.dal.device.entity.ProductAvailability1;
-import com.vf.uk.dal.device.entity.Specification;
-import com.vf.uk.dal.device.entity.SpecificationGroup;
-import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
-import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareAccessory;
-import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareDataAllowances;
-import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks;
-import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareExtras;
-import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions;
-import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareSash;
-import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareSecureNet;
-import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForHardwareSash;
+import com.vf.uk.dal.device.client.entity.bundle.Allowance;
+import com.vf.uk.dal.device.client.entity.bundle.CommercialBundle;
+import com.vf.uk.dal.device.client.entity.price.HardwarePrice;
+import com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion;
+import com.vf.uk.dal.device.client.entity.price.Price;
+import com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware;
+import com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwarePromotions;
+import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesForBundleAndHardwareAccessory;
+import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesForBundleAndHardwareDataAllowances;
+import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks;
+import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesForBundleAndHardwareExtras;
+import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions;
+import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesForBundleAndHardwareSash;
+import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesForBundleAndHardwareSecureNet;
+import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesForHardwareSash;
+import com.vf.uk.dal.device.model.DeviceDetails;
+import com.vf.uk.dal.device.model.DeviceSummary;
+import com.vf.uk.dal.device.model.Equipment;
+import com.vf.uk.dal.device.model.MediaLink;
+import com.vf.uk.dal.device.model.MerchandisingControl;
+import com.vf.uk.dal.device.model.MerchandisingPromotions;
+import com.vf.uk.dal.device.model.MerchandisingPromotionsPackage;
+import com.vf.uk.dal.device.model.MerchandisingPromotionsWrapper;
+import com.vf.uk.dal.device.model.MetaData;
+import com.vf.uk.dal.device.model.ProductAvailability1;
+import com.vf.uk.dal.device.model.Specification;
+import com.vf.uk.dal.device.model.SpecificationGroup;
+import com.vf.uk.dal.device.model.product.CommercialProduct;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -141,7 +141,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 
 		MediaLink mediaLink;
 		if (cohProduct.getListOfimageURLs() != null) {
-			for (com.vf.uk.dal.device.datamodel.product.ImageURL imageURL : cohProduct.getListOfimageURLs()) {
+			for (com.vf.uk.dal.device.model.product.ImageURL imageURL : cohProduct.getListOfimageURLs()) {
 				if (StringUtils.isNotBlank(imageURL.getImageURL())) {
 					mediaLink = new MediaLink();
 					mediaLink.setId(imageURL.getImageName());
@@ -152,7 +152,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 			}
 		}
 		if (cohProduct.getListOfmediaURLs() != null) {
-			for (com.vf.uk.dal.device.datamodel.product.MediaURL mediaURL : cohProduct.getListOfmediaURLs()) {
+			for (com.vf.uk.dal.device.model.product.MediaURL mediaURL : cohProduct.getListOfmediaURLs()) {
 				if (StringUtils.isNotBlank(mediaURL.getMediaURL())) {
 					mediaLink = new MediaLink();
 					mediaLink.setId(mediaURL.getMediaName());
@@ -172,23 +172,23 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 			CommonUtility.getNonPricingPromotions(promotions, merchandisingMedia);
 		}
 
-		List<com.vf.uk.dal.device.datamodel.product.Group> listOfSpecificationGroups = cohProduct
+		List<com.vf.uk.dal.device.model.product.Group> listOfSpecificationGroups = cohProduct
 				.getSpecificationGroups();
 		List<Specification> listOfSpecification;
 		List<SpecificationGroup> listOfSpecificationGroup = new ArrayList<>();
 		SpecificationGroup specificationGroups;
 		if (listOfSpecificationGroups != null && !listOfSpecificationGroups.isEmpty()) {
-			for (com.vf.uk.dal.device.datamodel.product.Group specificationGroup : listOfSpecificationGroups) {
+			for (com.vf.uk.dal.device.model.product.Group specificationGroup : listOfSpecificationGroups) {
 				specificationGroups = new SpecificationGroup();
 				specificationGroups.setGroupName(specificationGroup.getGroupName());
 				specificationGroups.setPriority(specificationGroup.getPriority().intValue());
 				specificationGroups.setComparable(specificationGroup.isComparable());
 				listOfSpecification = new ArrayList<>();
-				List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup
+				List<com.vf.uk.dal.device.model.product.Specification> listOfSpec = specificationGroup
 						.getSpecifications();
 				Specification specification;
 				if (listOfSpec != null && !listOfSpec.isEmpty()) {
-					for (com.vf.uk.dal.device.datamodel.product.Specification spec : listOfSpec) {
+					for (com.vf.uk.dal.device.model.product.Specification spec : listOfSpec) {
 						specification = new Specification();
 						specification.setName(spec.getName());
 						specification.setValue(spec.getValue());
@@ -413,16 +413,16 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		}
 		deviceSummary.setDisplayDescription(commercialProduct.getPreDesc());
 
-		List<com.vf.uk.dal.device.datamodel.product.Group> listOfSpecificationGroups = commercialProduct
+		List<com.vf.uk.dal.device.model.product.Group> listOfSpecificationGroups = commercialProduct
 				.getSpecificationGroups();
 
 		if (listOfSpecificationGroups != null && !listOfSpecificationGroups.isEmpty()) {
-			for (com.vf.uk.dal.device.datamodel.product.Group specificationGroup : listOfSpecificationGroups) {
+			for (com.vf.uk.dal.device.model.product.Group specificationGroup : listOfSpecificationGroups) {
 				if (specificationGroup.getGroupName().equalsIgnoreCase(STRING_COLOUR)) {
-					List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup
+					List<com.vf.uk.dal.device.model.product.Specification> listOfSpec = specificationGroup
 							.getSpecifications();
 					if (listOfSpec != null && !listOfSpec.isEmpty()) {
-						for (com.vf.uk.dal.device.datamodel.product.Specification spec : listOfSpec) {
+						for (com.vf.uk.dal.device.model.product.Specification spec : listOfSpec) {
 							if (spec.getName().equalsIgnoreCase(STRING_COLOUR)) {
 								deviceSummary.setColourName(spec.getValue());
 							}
@@ -433,10 +433,10 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 					}
 				}
 				if (specificationGroup.getGroupName().equalsIgnoreCase(STRING_CAPACITY)) {
-					List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup
+					List<com.vf.uk.dal.device.model.product.Specification> listOfSpec = specificationGroup
 							.getSpecifications();
 					if (listOfSpec != null && !listOfSpec.isEmpty()) {
-						for (com.vf.uk.dal.device.datamodel.product.Specification spec : listOfSpec) {
+						for (com.vf.uk.dal.device.model.product.Specification spec : listOfSpec) {
 							if (spec.getName().equalsIgnoreCase(STRING_CAPACITY)) {
 								deviceSummary.setMemory(spec.getValue() + spec.getValueUOM());
 							}
@@ -581,7 +581,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		}
 		deviceSummary.setMerchandisingMedia(merchandisingMedia);
 
-		com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions bundleAndHardwarePromotion=CollectionUtils.isNotEmpty(listOfOfferPacks)?listOfOfferPacks.get(0):null;
+		com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwarePromotions bundleAndHardwarePromotion=CollectionUtils.isNotEmpty(listOfOfferPacks)?listOfOfferPacks.get(0):null;
 		deviceSummary.setPromotionsPackage(
 				assembleMechandisingPromotionsPackageGeneric(bundleAndHardwarePromotion, priceforBundleAndHardware));
 		
@@ -675,16 +675,16 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 
 		deviceSummary.setDisplayDescription(commercialProduct.getPreDesc());
 
-		List<com.vf.uk.dal.device.datamodel.product.Group> listOfSpecificationGroups = commercialProduct
+		List<com.vf.uk.dal.device.model.product.Group> listOfSpecificationGroups = commercialProduct
 				.getSpecificationGroups();
 
 		if (listOfSpecificationGroups != null && !listOfSpecificationGroups.isEmpty()) {
-			for (com.vf.uk.dal.device.datamodel.product.Group specificationGroup : listOfSpecificationGroups) {
+			for (com.vf.uk.dal.device.model.product.Group specificationGroup : listOfSpecificationGroups) {
 				if (specificationGroup.getGroupName().equalsIgnoreCase(STRING_COLOUR)) {
-					List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup
+					List<com.vf.uk.dal.device.model.product.Specification> listOfSpec = specificationGroup
 							.getSpecifications();
 					if (listOfSpec != null && !listOfSpec.isEmpty()) {
-						for (com.vf.uk.dal.device.datamodel.product.Specification spec : listOfSpec) {
+						for (com.vf.uk.dal.device.model.product.Specification spec : listOfSpec) {
 							if (spec.getName().equalsIgnoreCase(STRING_COLOUR)) {
 								deviceSummary.setColourName(spec.getValue());
 							}
@@ -695,10 +695,10 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 					}
 				}
 				if (specificationGroup.getGroupName().equalsIgnoreCase(STRING_CAPACITY)) {
-					List<com.vf.uk.dal.device.datamodel.product.Specification> listOfSpec = specificationGroup
+					List<com.vf.uk.dal.device.model.product.Specification> listOfSpec = specificationGroup
 							.getSpecifications();
 					if (listOfSpec != null && !listOfSpec.isEmpty()) {
-						for (com.vf.uk.dal.device.datamodel.product.Specification spec : listOfSpec) {
+						for (com.vf.uk.dal.device.model.product.Specification spec : listOfSpec) {
 							if (spec.getName().equalsIgnoreCase(STRING_CAPACITY)) {
 								deviceSummary.setMemory(spec.getValue() + spec.getValueUOM());
 							}
@@ -783,7 +783,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 	 * @return the merchandising promotions package
 	 */
 	public static MerchandisingPromotionsPackage assembleMechandisingPromotionsPackageGeneric(
-			com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions bundleAndHardwarePromotion,
+			com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwarePromotions bundleAndHardwarePromotion,
 			PriceForBundleAndHardware priceForBundleAndHardware) {
 		MerchandisingPromotionsPackage promotionsPackage = null;
 		promotionsPackage = new MerchandisingPromotionsPackage();

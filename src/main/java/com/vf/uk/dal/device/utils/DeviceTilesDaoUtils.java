@@ -9,39 +9,39 @@ import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
-import com.vf.uk.dal.device.datamodel.bundle.BundleModel;
-import com.vf.uk.dal.device.datamodel.bundle.CommercialBundle;
-import com.vf.uk.dal.device.datamodel.merchandisingpromotion.OfferAppliedPriceModel;
-import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
-import com.vf.uk.dal.device.datamodel.product.DeviceFinancingOption;
-import com.vf.uk.dal.device.datamodel.product.ProductModel;
-import com.vf.uk.dal.device.datamodel.productgroups.Count;
-import com.vf.uk.dal.device.datamodel.productgroups.FacetField;
-import com.vf.uk.dal.device.entity.BundlePrice;
-import com.vf.uk.dal.device.entity.Device;
-import com.vf.uk.dal.device.entity.Facet;
-import com.vf.uk.dal.device.entity.FacetWithCount;
-import com.vf.uk.dal.device.entity.FacetedDevice;
-import com.vf.uk.dal.device.entity.HardwarePrice;
-import com.vf.uk.dal.device.entity.Make;
-import com.vf.uk.dal.device.entity.MediaLink;
-import com.vf.uk.dal.device.entity.MerchandisingControl;
-import com.vf.uk.dal.device.entity.MerchandisingPromotion;
-import com.vf.uk.dal.device.entity.MerchandisingPromotionsPackage;
-import com.vf.uk.dal.device.entity.MerchandisingPromotionsWrapper;
-import com.vf.uk.dal.device.entity.NewFacet;
-import com.vf.uk.dal.device.entity.Price;
-import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
-import com.vf.uk.dal.device.entity.ProductGroupDetailsForDeviceList;
-import com.vf.uk.dal.utility.entity.BundleAndHardwarePromotions;
-import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareAccessory;
-import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareDataAllowances;
-import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks;
-import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareExtras;
-import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions;
-import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareSash;
-import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForBundleAndHardwareSecureNet;
-import com.vf.uk.dal.utility.entity.CataloguepromotionqueriesForHardwareSash;
+import com.vf.uk.dal.device.client.entity.bundle.BundleModel;
+import com.vf.uk.dal.device.client.entity.bundle.CommercialBundle;
+import com.vf.uk.dal.device.client.entity.price.BundlePrice;
+import com.vf.uk.dal.device.client.entity.price.HardwarePrice;
+import com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion;
+import com.vf.uk.dal.device.client.entity.price.Price;
+import com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware;
+import com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwarePromotions;
+import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesForBundleAndHardwareAccessory;
+import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesForBundleAndHardwareDataAllowances;
+import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks;
+import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesForBundleAndHardwareExtras;
+import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions;
+import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesForBundleAndHardwareSash;
+import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesForBundleAndHardwareSecureNet;
+import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesForHardwareSash;
+import com.vf.uk.dal.device.model.Device;
+import com.vf.uk.dal.device.model.Facet;
+import com.vf.uk.dal.device.model.FacetWithCount;
+import com.vf.uk.dal.device.model.FacetedDevice;
+import com.vf.uk.dal.device.model.Make;
+import com.vf.uk.dal.device.model.MediaLink;
+import com.vf.uk.dal.device.model.MerchandisingControl;
+import com.vf.uk.dal.device.model.MerchandisingPromotionsPackage;
+import com.vf.uk.dal.device.model.MerchandisingPromotionsWrapper;
+import com.vf.uk.dal.device.model.NewFacet;
+import com.vf.uk.dal.device.model.ProductGroupDetailsForDeviceList;
+import com.vf.uk.dal.device.model.merchandisingpromotion.OfferAppliedPriceModel;
+import com.vf.uk.dal.device.model.product.CommercialProduct;
+import com.vf.uk.dal.device.model.product.DeviceFinancingOption;
+import com.vf.uk.dal.device.model.product.ProductModel;
+import com.vf.uk.dal.device.model.productgroups.Count;
+import com.vf.uk.dal.device.model.productgroups.FacetField;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -218,10 +218,10 @@ public class DeviceTilesDaoUtils {
 	 * @param listOfDeviceGroupMember
 	 * @return listOfDeviceGroupMember
 	 */
-	public List<com.vf.uk.dal.device.entity.Member> getAscendingOrderForMembers(
-			List<com.vf.uk.dal.device.entity.Member> listOfDeviceGroupMember) {
+	public List<com.vf.uk.dal.device.model.Member> getAscendingOrderForMembers(
+			List<com.vf.uk.dal.device.model.Member> listOfDeviceGroupMember) {
 		Collections.sort(listOfDeviceGroupMember,
-				(com.vf.uk.dal.device.entity.Member member1, com.vf.uk.dal.device.entity.Member member2) -> {
+				(com.vf.uk.dal.device.model.Member member1, com.vf.uk.dal.device.model.Member member2) -> {
 					if (member1.getPriority() != null && member2.getPriority() != null) {
 						if (Integer.valueOf(member1.getPriority()) < Integer.valueOf(member2.getPriority())) {
 							return -1;
@@ -266,7 +266,7 @@ public class DeviceTilesDaoUtils {
 	 * @param discountType
 	 * @return monthlyPrice
 	 */
-	public static Double getBundlePriceBasedOnDiscountDuration(com.vf.uk.dal.device.entity.BundlePrice bundlePrice,
+	public static Double getBundlePriceBasedOnDiscountDuration(com.vf.uk.dal.device.client.entity.price.BundlePrice bundlePrice,
 			String discountType) {
 		Double monthlyPrice = null;
 		if (null != discountType && discountType.equals(FULL_DURATION_DISCOUNT)) {
@@ -289,7 +289,7 @@ public class DeviceTilesDaoUtils {
 	 * @param bundlePrice
 	 * @return
 	 */
-	public static String isPartialOrFullTenureDiscount(com.vf.uk.dal.device.entity.BundlePrice bundlePrice) {
+	public static String isPartialOrFullTenureDiscount(com.vf.uk.dal.device.client.entity.price.BundlePrice bundlePrice) {
 		if (null != bundlePrice.getMerchandisingPromotions()
 				&& null != bundlePrice.getMerchandisingPromotions().getMpType()) {
 			if (bundlePrice.getMerchandisingPromotions().getMpType().equalsIgnoreCase(FULL_DURATION_DISCOUNT)
@@ -515,8 +515,8 @@ public class DeviceTilesDaoUtils {
 						}
 						// Media Link
 						List<MediaLink> mediaList = new ArrayList<>();
-						com.vf.uk.dal.device.entity.MerchandisingPromotion bundleMerchandising = null;
-						com.vf.uk.dal.device.entity.MerchandisingPromotion hardwareMerchandising = null;
+						com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion bundleMerchandising = null;
+						com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion hardwareMerchandising = null;
 						// Merchandising Media
 						String bundleTag = null;
 						String bundleLabel = null;
@@ -576,7 +576,7 @@ public class DeviceTilesDaoUtils {
 												bundlePriceEstablishedLabel = mediaStrList[i + 1];
 											}
 
-											com.vf.uk.dal.device.entity.MerchandisingPromotion bundleMerchecdising = new MerchandisingPromotion();
+											com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion bundleMerchecdising = new MerchandisingPromotion();
 											bundleMerchecdising.setDescription(bundleDescription);
 											bundleMerchecdising.setDiscountId(bundleDiscountId);
 											bundleMerchecdising.setLabel(bundleLabel);
@@ -613,7 +613,7 @@ public class DeviceTilesDaoUtils {
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePriceEstablishedLabel = mediaStrList[i + 1];
 											}
-											com.vf.uk.dal.device.entity.MerchandisingPromotion hardwareMerchecdising = new MerchandisingPromotion();
+											com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion hardwareMerchecdising = new MerchandisingPromotion();
 											hardwareMerchecdising.setDescription(hardwareDescription);
 											hardwareMerchecdising.setDiscountId(hardwareDiscountId);
 											hardwareMerchecdising.setLabel(hardwareLabel);
@@ -675,7 +675,7 @@ public class DeviceTilesDaoUtils {
 														&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 													bundlePriceEstablishedLabel = mediaStrList[i + 1];
 												}
-												com.vf.uk.dal.device.entity.MerchandisingPromotion bundleMerchecdising = new MerchandisingPromotion();
+												com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion bundleMerchecdising = new MerchandisingPromotion();
 												bundleMerchecdising.setDescription(bundleDescription);
 												bundleMerchecdising.setDiscountId(bundleDiscountId);
 												bundleMerchecdising.setLabel(bundleLabel);
@@ -714,7 +714,7 @@ public class DeviceTilesDaoUtils {
 														&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 													hardwarePriceEstablishedLabel = mediaStrList[i + 1];
 												}
-												com.vf.uk.dal.device.entity.MerchandisingPromotion hardwareMerchecdising = new MerchandisingPromotion();
+												com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion hardwareMerchecdising = new MerchandisingPromotion();
 												hardwareMerchecdising.setDescription(hardwareDescription);
 												hardwareMerchecdising.setDiscountId(hardwareDiscountId);
 												hardwareMerchecdising.setLabel(hardwareLabel);
@@ -767,7 +767,7 @@ public class DeviceTilesDaoUtils {
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												bundlePriceEstablishedLabel = mediaStrList[i + 1];
 											}
-											com.vf.uk.dal.device.entity.MerchandisingPromotion bundleMerchecdising = new MerchandisingPromotion();
+											com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion bundleMerchecdising = new MerchandisingPromotion();
 											bundleMerchecdising.setDescription(bundleDescription);
 											bundleMerchecdising.setDiscountId(bundleDiscountId);
 											bundleMerchecdising.setLabel(bundleLabel);
@@ -804,7 +804,7 @@ public class DeviceTilesDaoUtils {
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePriceEstablishedLabel = mediaStrList[i + 1];
 											}
-											com.vf.uk.dal.device.entity.MerchandisingPromotion hardwareMerchecdising = new MerchandisingPromotion();
+											com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion hardwareMerchecdising = new MerchandisingPromotion();
 											hardwareMerchecdising.setDescription(hardwareDescription);
 											hardwareMerchecdising.setDiscountId(hardwareDiscountId);
 											hardwareMerchecdising.setLabel(hardwareLabel);
@@ -855,7 +855,7 @@ public class DeviceTilesDaoUtils {
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												bundlePriceEstablishedLabel = mediaStrList[i + 1];
 											}
-											com.vf.uk.dal.device.entity.MerchandisingPromotion bundleMerchecdising = new MerchandisingPromotion();
+											com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion bundleMerchecdising = new MerchandisingPromotion();
 											bundleMerchecdising.setDescription(bundleDescription);
 											bundleMerchecdising.setDiscountId(bundleDiscountId);
 											bundleMerchecdising.setLabel(bundleLabel);
@@ -892,7 +892,7 @@ public class DeviceTilesDaoUtils {
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePriceEstablishedLabel = mediaStrList[i + 1];
 											}
-											com.vf.uk.dal.device.entity.MerchandisingPromotion hardwareMerchecdising = new MerchandisingPromotion();
+											com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion hardwareMerchecdising = new MerchandisingPromotion();
 											hardwareMerchecdising.setDescription(hardwareDescription);
 											hardwareMerchecdising.setDiscountId(hardwareDiscountId);
 											hardwareMerchecdising.setLabel(hardwareLabel);
@@ -944,7 +944,7 @@ public class DeviceTilesDaoUtils {
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												bundlePriceEstablishedLabel = mediaStrList[i + 1];
 											}
-											com.vf.uk.dal.device.entity.MerchandisingPromotion bundleMerchecdising = new MerchandisingPromotion();
+											com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion bundleMerchecdising = new MerchandisingPromotion();
 											bundleMerchecdising.setDescription(bundleDescription);
 											bundleMerchecdising.setDiscountId(bundleDiscountId);
 											bundleMerchecdising.setLabel(bundleLabel);
@@ -981,7 +981,7 @@ public class DeviceTilesDaoUtils {
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePriceEstablishedLabel = mediaStrList[i + 1];
 											}
-											com.vf.uk.dal.device.entity.MerchandisingPromotion hardwareMerchecdising = new MerchandisingPromotion();
+											com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion hardwareMerchecdising = new MerchandisingPromotion();
 											hardwareMerchecdising.setDescription(hardwareDescription);
 											hardwareMerchecdising.setDiscountId(hardwareDiscountId);
 											hardwareMerchecdising.setLabel(hardwareLabel);
@@ -1039,7 +1039,7 @@ public class DeviceTilesDaoUtils {
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												promotionMedia = mediaStrList[i + 1];
 											}
-											com.vf.uk.dal.device.entity.MerchandisingPromotion bundleMerchecdising = new MerchandisingPromotion();
+											com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion bundleMerchecdising = new MerchandisingPromotion();
 											bundleMerchecdising.setDescription(bundleDescription);
 											bundleMerchecdising.setDiscountId(bundleDiscountId);
 											bundleMerchecdising.setLabel(bundleLabel);
@@ -1076,7 +1076,7 @@ public class DeviceTilesDaoUtils {
 													&& !"null".equalsIgnoreCase(mediaStrList[i + 1])) {
 												hardwarePromotionMedia = mediaStrList[i + 1];
 											}
-											com.vf.uk.dal.device.entity.MerchandisingPromotion hardwareMerchecdising = new MerchandisingPromotion();
+											com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion hardwareMerchecdising = new MerchandisingPromotion();
 											hardwareMerchecdising.setDescription(hardwareDescription);
 											hardwareMerchecdising.setDiscountId(hardwareDiscountId);
 											hardwareMerchecdising.setLabel(hardwareLabel);
@@ -1290,7 +1290,7 @@ public class DeviceTilesDaoUtils {
 		if (null != priceForBundleAndHardware && null != bundlePrice
 				&& null != priceForBundleAndHardware.getBundlePrice()
 				&& priceForBundleAndHardware.getBundlePrice().getBundleId().equals(bundlePrice.getBundleId())) {
-			com.vf.uk.dal.device.entity.BundlePrice priceInfo = priceForBundleAndHardware.getBundlePrice();
+			com.vf.uk.dal.device.client.entity.price.BundlePrice priceInfo = priceForBundleAndHardware.getBundlePrice();
 			if (null != priceInfo.getMonthlyPrice() && null != bundlePrice.getMonthlyPrice()
 					&& null == priceInfo.getMerchandisingPromotions()
 					&& null != bundlePrice.getMerchandisingPromotions()
@@ -1347,25 +1347,25 @@ public class DeviceTilesDaoUtils {
 	 * @param deviceFinancingOption
 	 * @return List <DeviceFinancingOption>
 	 */
-	public static List<com.vf.uk.dal.device.entity.DeviceFinancingOption> getDeviceFinaceOptions(
+	public static List<com.vf.uk.dal.device.client.entity.price.DeviceFinancingOption> getDeviceFinaceOptions(
 			List<DeviceFinancingOption> deviceFinancingOption) {
-		List<com.vf.uk.dal.device.entity.DeviceFinancingOption> financeOptions = null;
+		List<com.vf.uk.dal.device.client.entity.price.DeviceFinancingOption> financeOptions = null;
 		if (deviceFinancingOption != null && !deviceFinancingOption.isEmpty()) {
 			financeOptions = new ArrayList<>();
 			for (DeviceFinancingOption financsOption : deviceFinancingOption) {
-				com.vf.uk.dal.device.entity.DeviceFinancingOption finance = new com.vf.uk.dal.device.entity.DeviceFinancingOption();
+				com.vf.uk.dal.device.client.entity.price.DeviceFinancingOption finance = new com.vf.uk.dal.device.client.entity.price.DeviceFinancingOption();
 				finance.setApr(financsOption.getApr());
 				finance.setDeviceFinancingId(financsOption.getDeviceFinancingId());
 				finance.setFinanceProvider(financsOption.getFinanceProvider());
 				finance.setFinanceTerm(financsOption.getFinanceTerm());
-				com.vf.uk.dal.device.datamodel.product.Price monthly = financsOption.getMonthlyPrice();
-				com.vf.uk.dal.device.entity.Price deviceMonthlyPrice = new com.vf.uk.dal.device.entity.Price();
+				com.vf.uk.dal.device.model.product.Price monthly = financsOption.getMonthlyPrice();
+				com.vf.uk.dal.device.client.entity.price.Price deviceMonthlyPrice = new com.vf.uk.dal.device.client.entity.price.Price();
 				deviceMonthlyPrice.setGross(monthly.getGross());
 				deviceMonthlyPrice.setNet(monthly.getNet());
 				deviceMonthlyPrice.setVat(monthly.getVat());
 				finance.setMonthlyPrice(deviceMonthlyPrice);
-				com.vf.uk.dal.device.datamodel.product.Price totalInterest = financsOption.getTotalPriceWithInterest();
-				com.vf.uk.dal.device.entity.Price totalPriceWithInterest = new com.vf.uk.dal.device.entity.Price();
+				com.vf.uk.dal.device.model.product.Price totalInterest = financsOption.getTotalPriceWithInterest();
+				com.vf.uk.dal.device.client.entity.price.Price totalPriceWithInterest = new com.vf.uk.dal.device.client.entity.price.Price();
 				totalPriceWithInterest.setGross(totalInterest.getGross());
 				totalPriceWithInterest.setNet(totalInterest.getNet());
 				totalPriceWithInterest.setVat(totalInterest.getVat());
@@ -1386,7 +1386,7 @@ public class DeviceTilesDaoUtils {
 			String leadPlanId) {
 		PriceForBundleAndHardware priceForBundleAndHardware = new PriceForBundleAndHardware();
 		HardwarePrice hardwarePrice = new HardwarePrice();
-		com.vf.uk.dal.device.entity.BundlePrice bundlePrice = new com.vf.uk.dal.device.entity.BundlePrice();
+		com.vf.uk.dal.device.client.entity.price.BundlePrice bundlePrice = new com.vf.uk.dal.device.client.entity.price.BundlePrice();
 		if (offers != null && !offers.isEmpty()) {
 			offers.forEach(offer -> {
 				if (offer.getBundleId() != null && leadPlanId != null && offer.getBundleId().equals(leadPlanId)) {
@@ -1484,7 +1484,7 @@ public class DeviceTilesDaoUtils {
 			BundleModel bundleModel, String leadPlanId) {
 		PriceForBundleAndHardware priceForBundleAndHardware = new PriceForBundleAndHardware();
 		HardwarePrice hardwarePrice = new HardwarePrice();
-		com.vf.uk.dal.device.entity.BundlePrice bundlePrice = new com.vf.uk.dal.device.entity.BundlePrice();
+		com.vf.uk.dal.device.client.entity.price.BundlePrice bundlePrice = new com.vf.uk.dal.device.client.entity.price.BundlePrice();
 		if (productModel != null) {
 			if (productModel.getOneOffDiscountedGrossPrice() != null && productModel.getOneOffGrossPrice() != null
 					&& productModel.getOneOffGrossPrice().equals(productModel.getOneOffDiscountedGrossPrice())) {

@@ -23,6 +23,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vf.uk.dal.device.DeviceApplication;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
+import com.vf.uk.dal.device.client.converter.ResponseMappingHelper;
+import com.vf.uk.dal.device.client.entity.bundle.BundleDetailsForAppSrv;
+import com.vf.uk.dal.device.client.entity.customer.RecommendedProductListResponse;
+import com.vf.uk.dal.device.client.entity.price.PriceForProduct;
 import com.vf.uk.dal.device.common.test.CommonMethods;
 import com.vf.uk.dal.device.controller.AccessoryInsuranceController;
 import com.vf.uk.dal.device.controller.CacheDeviceAndReviewController;
@@ -30,16 +34,11 @@ import com.vf.uk.dal.device.controller.DeviceController;
 import com.vf.uk.dal.device.controller.DeviceDetailsController;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.dao.DeviceTileCacheDAO;
-import com.vf.uk.dal.device.helper.DeviceESHelper;
-import com.vf.uk.dal.device.helper.DeviceServiceCommonUtility;
-import com.vf.uk.dal.device.svc.CacheDeviceService;
-import com.vf.uk.dal.device.svc.DeviceRecommendationService;
-import com.vf.uk.dal.device.svc.DeviceService;
-import com.vf.uk.dal.device.utils.ResponseMappingHelper;
-import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
-import com.vf.uk.dal.utility.entity.CurrentJourney;
-import com.vf.uk.dal.utility.entity.PriceForProduct;
-import com.vf.uk.dal.utility.entity.RecommendedProductListResponse;
+import com.vf.uk.dal.device.service.CacheDeviceService;
+import com.vf.uk.dal.device.service.DeviceRecommendationService;
+import com.vf.uk.dal.device.service.DeviceService;
+import com.vf.uk.dal.device.utils.DeviceESHelper;
+import com.vf.uk.dal.device.utils.DeviceServiceCommonUtility;
 /**
  * In order to run the controller class a bean of the ProductController is
  * initialized in @SpringBootTest
@@ -101,15 +100,10 @@ public class DeviceIntegrationTest {
 	public void setupMockBehaviour() throws Exception {
 		aspect.beforeAdvice(null);
 		this.mockMvc = webAppContextSetup(WebApplicationContext).build();
-		String jsonString = new String(CommonMethods.readFile("\\rest-mock\\COMMON-V1.json"));
-		CurrentJourney obj = new ObjectMapper().readValue(jsonString, CurrentJourney.class);
 		given(restTemplate
 				.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId="
 						+ "093353" + "&journeyType=" + null, BundleDetailsForAppSrv.class))
 								.willReturn(CommonMethods.getCoupledBundleListForDevice());
-		given(restTemplate.getForObject(
-				"http://COMMON-V1/common/journey/" + "c1a42269-6562-4c96-b3be-1ca2a6681d57" + "/queries/currentJourney",
-				CurrentJourney.class)).willReturn(obj);
 		given(response.getMerchandisingPromotion(ArgumentMatchers.any())).willReturn(CommonMethods.getMemPro());
 		given(response.getCommercialProduct(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getCommercialProductsListOfMakeAndModel().get(0));

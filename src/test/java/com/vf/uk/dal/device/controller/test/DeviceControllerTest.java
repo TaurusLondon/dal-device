@@ -19,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
 import com.vf.uk.dal.device.beans.test.DeviceTestBeans;
+import com.vf.uk.dal.device.client.converter.ResponseMappingHelper;
 import com.vf.uk.dal.device.common.test.CommonMethods;
 import com.vf.uk.dal.device.controller.AccessoryInsuranceController;
 import com.vf.uk.dal.device.controller.CacheDeviceAndReviewController;
@@ -28,13 +29,12 @@ import com.vf.uk.dal.device.controller.DeviceEntityController;
 import com.vf.uk.dal.device.controller.DeviceMakeAndModelController;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.dao.DeviceTileCacheDAO;
-import com.vf.uk.dal.device.entity.AccessoryTileGroup;
-import com.vf.uk.dal.device.entity.Insurances;
-import com.vf.uk.dal.device.svc.AccessoryInsuranceService;
-import com.vf.uk.dal.device.svc.impl.CacheDeviceServiceImpl;
-import com.vf.uk.dal.device.svc.impl.DeviceMakeAndModelServiceImpl;
-import com.vf.uk.dal.device.svc.impl.DeviceServiceImpl;
-import com.vf.uk.dal.device.utils.ResponseMappingHelper;
+import com.vf.uk.dal.device.model.AccessoryTileGroup;
+import com.vf.uk.dal.device.model.Insurances;
+import com.vf.uk.dal.device.service.AccessoryInsuranceService;
+import com.vf.uk.dal.device.service.CacheDeviceServiceImpl;
+import com.vf.uk.dal.device.service.DeviceMakeAndModelServiceImpl;
+import com.vf.uk.dal.device.service.DeviceServiceImpl;
 
 /**
  * In order to run the controller class a bean of the ProductController is

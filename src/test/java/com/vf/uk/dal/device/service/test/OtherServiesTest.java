@@ -27,35 +27,34 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
 import com.vf.uk.dal.device.beans.test.DeviceTestBeans;
+import com.vf.uk.dal.device.client.converter.ResponseMappingHelper;
+import com.vf.uk.dal.device.client.entity.bundle.BundleDetailsForAppSrv;
+import com.vf.uk.dal.device.client.entity.bundle.BundleModelAndPrice;
+import com.vf.uk.dal.device.client.entity.customer.RecommendedProductListResponse;
+import com.vf.uk.dal.device.client.entity.price.BundleAndHardwareTuple;
+import com.vf.uk.dal.device.client.entity.price.BundlePrice;
+import com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion;
+import com.vf.uk.dal.device.client.entity.price.Price;
+import com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware;
 import com.vf.uk.dal.device.common.test.CommonMethods;
 import com.vf.uk.dal.device.controller.CacheDeviceAndReviewController;
 import com.vf.uk.dal.device.controller.DeviceController;
 import com.vf.uk.dal.device.controller.DeviceDetailsController;
 import com.vf.uk.dal.device.controller.DeviceEntityController;
 import com.vf.uk.dal.device.dao.DeviceDao;
-import com.vf.uk.dal.device.dao.impl.DeviceTileCacheDAOImpl;
-import com.vf.uk.dal.device.datamodel.product.CommercialProduct;
-import com.vf.uk.dal.device.datamodel.product.ProductControl;
-import com.vf.uk.dal.device.datamodel.product.ProductModel;
-import com.vf.uk.dal.device.entity.BundleAndHardwareTuple;
-import com.vf.uk.dal.device.entity.BundlePrice;
-import com.vf.uk.dal.device.entity.CacheDeviceTileResponse;
-import com.vf.uk.dal.device.entity.Device;
-import com.vf.uk.dal.device.entity.DeviceDetails;
-import com.vf.uk.dal.device.entity.DeviceSummary;
-import com.vf.uk.dal.device.entity.MerchandisingPromotion;
-import com.vf.uk.dal.device.entity.Price;
-import com.vf.uk.dal.device.entity.PriceForBundleAndHardware;
-import com.vf.uk.dal.device.helper.DeviceConditionallHelper;
-import com.vf.uk.dal.device.helper.DeviceServiceImplUtility;
-import com.vf.uk.dal.device.svc.DeviceService;
+import com.vf.uk.dal.device.dao.DeviceTileCacheDAOImpl;
+import com.vf.uk.dal.device.model.CacheDeviceTileResponse;
+import com.vf.uk.dal.device.model.Device;
+import com.vf.uk.dal.device.model.DeviceDetails;
+import com.vf.uk.dal.device.model.DeviceSummary;
+import com.vf.uk.dal.device.model.product.CommercialProduct;
+import com.vf.uk.dal.device.model.product.ProductControl;
+import com.vf.uk.dal.device.model.product.ProductModel;
+import com.vf.uk.dal.device.service.DeviceService;
+import com.vf.uk.dal.device.utils.DeviceConditionallHelper;
+import com.vf.uk.dal.device.utils.DeviceServiceImplUtility;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
-import com.vf.uk.dal.device.utils.ResponseMappingHelper;
-import com.vf.uk.dal.device.validator.Validator;
-import com.vf.uk.dal.utility.entity.BundleDetailsForAppSrv;
-import com.vf.uk.dal.utility.entity.BundleModelAndPrice;
-import com.vf.uk.dal.utility.entity.CurrentJourney;
-import com.vf.uk.dal.utility.entity.RecommendedProductListResponse;
+import com.vf.uk.dal.device.utils.Validator;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = DeviceTestBeans.class)
@@ -111,15 +110,10 @@ public class OtherServiesTest {
 	@Before
 	public void setupMockBehaviour() throws Exception {
 		catalogServiceAspect.beforeAdvice(null);
-		String jsonString = new String(CommonMethods.readFile("\\rest-mock\\COMMON-V1.json"));
-		CurrentJourney obj = new ObjectMapper().readValue(jsonString, CurrentJourney.class);
 		given(restTemplate
 				.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId="
 						+ "093353" + "&journeyType=" + null, BundleDetailsForAppSrv.class))
 								.willReturn(CommonMethods.getCoupledBundleListForDevice());
-		given(restTemplate.getForObject(
-				"http://COMMON-V1/common/journey/" + "c1a42269-6562-4c96-b3be-1ca2a6681d57" + "/queries/currentJourney",
-				CurrentJourney.class)).willReturn(obj);
 		given(response.getMerchandisingPromotion(ArgumentMatchers.any())).willReturn(CommonMethods.getMemPro());
 		given(response.getCommercialProduct(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getCommercialProductsListOfMakeAndModel().get(0));
