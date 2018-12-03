@@ -103,7 +103,7 @@ public class CommercialProduct {
 	private List<Allowance> allowanceDisplay;
 
 	@JsonProperty("ageRestricted")
-	private boolean ageRestricted;
+	private String ageRestricted;
 
 	@JsonProperty("delivery")
 	private Delivery delivery;
