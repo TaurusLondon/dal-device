@@ -156,11 +156,10 @@ public class DeviceIntegrationTest {
 				new TypeReference<List<AccessoryTileGroup>>() {
 				});
 		assertNotNull(accessoryDetails);
-		assertEquals(accessoryDetails.get(0).getGroupName(), "Apple iPhone 6s cover");
-		assertEquals(accessoryDetails.get(0).getAccessories().get(0).getSkuId(), "093329");
-		assertEquals(accessoryDetails.get(0).getAccessories().get(0).getName(),
-				"Apple iPhone 7 Silicone Case Midnight Blue");
-		assertEquals(accessoryDetails.get(0).getAccessories().get(0).getColour(), "Midnight Blue");
+		assertEquals( "Apple iPhone 6s cover",accessoryDetails.get(0).getGroupName());
+		assertEquals( "093329",accessoryDetails.get(0).getAccessories().get(0).getSkuId());
+		assertEquals("Apple iPhone 7 Silicone Case Midnight Blue",accessoryDetails.get(0).getAccessories().get(0).getName());
+		assertEquals("Midnight Blue",accessoryDetails.get(0).getAccessories().get(0).getColour());
 	}
 
 	@Test
@@ -191,10 +190,10 @@ public class DeviceIntegrationTest {
 				new TypeReference<Insurances>() {
 				});
 		assertNotNull(insurances);
-		assertEquals(insurances.getMinCost(), "20");
-		assertEquals(insurances.getInsuranceList().get(0).getId(), "093329");
-		assertEquals(insurances.getInsuranceList().get(0).getName(), "Apple iPhone 7 Silicone Case Midnight Blue");
-		assertEquals(insurances.getInsuranceList().get(0).getPrice().getGross(), "35");
+		assertEquals("20",insurances.getMinCost());
+		assertEquals( "093329",insurances.getInsuranceList().get(0).getId());
+		assertEquals( "Apple iPhone 7 Silicone Case Midnight Blue",insurances.getInsuranceList().get(0).getName());
+		assertEquals("35",insurances.getInsuranceList().get(0).getPrice().getGross());
 	}
 
 	@Test
@@ -246,11 +245,11 @@ public class DeviceIntegrationTest {
 				new TypeReference<DeviceDetails>() {
 				});
 		assertNotNull(deviceDetails);
-		assertEquals(deviceDetails.getDeviceId(), "092572");
-		assertEquals(deviceDetails.getLeadPlanId(), "110104");
-		assertEquals(deviceDetails.getProductClass(), "Handset");
-		assertEquals(deviceDetails.getName(), "Apple iPhone 7 Plus 128GB silver");
-		assertEquals(deviceDetails.getEquipmentDetail().getMake(), "apple");
-		assertEquals(deviceDetails.getEquipmentDetail().getModel(), "iphone-7-plus");
+		assertEquals( "092572",deviceDetails.getDeviceId());
+		assertEquals("110104",deviceDetails.getLeadPlanId() );
+		assertEquals("Handset",deviceDetails.getProductClass() );
+		assertEquals( "Apple iPhone 7 Plus 128GB silver",deviceDetails.getName());
+		assertEquals( "apple",deviceDetails.getEquipmentDetail().getMake());
+		assertEquals( "iphone-7-plus",deviceDetails.getEquipmentDetail().getModel());
 	}
 }

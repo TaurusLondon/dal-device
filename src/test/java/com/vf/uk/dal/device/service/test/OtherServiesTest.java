@@ -174,7 +174,7 @@ public class OtherServiesTest {
 		queryparams.put("deviceId", "093353");
 		List<DeviceDetails> device = deviceDetailsController.getListOfDeviceDetails(queryparams);
 		assertNotNull(device);
-		assertEquals(device.get(0).getDeviceId(), "092572");
+		assertEquals( "092572",device.get(0).getDeviceId());
 	}
 
 	@Test
@@ -185,7 +185,7 @@ public class OtherServiesTest {
 		queryparams.put("deviceId", "093353");
 		List<DeviceDetails> device = deviceDetailsController.getListOfDeviceDetails(queryparams);
 		assertNotNull(device);
-		assertEquals(device.get(0).getDeviceId(), "092572");
+		assertEquals( "092572",device.get(0).getDeviceId());
 	}
 
 	@Test
@@ -196,7 +196,7 @@ public class OtherServiesTest {
 			queryparams.put("offerCode", "W_HH_OC_01");
 			deviceDetailsController.getListOfDeviceDetails(queryparams);
 		} catch (Exception e) {
-			assertEquals(e.getMessage(), "Invalid input request received. Missing Device Id");
+			assertEquals( "Invalid input request received. Missing Device Id",e.getMessage());
 		}
 	}
 
@@ -209,7 +209,7 @@ public class OtherServiesTest {
 		deviceDetails = deviceDetailsController
 				.getListOfDeviceDetails(CommonMethods.getQueryParamsMapForDeviceDetails("093353"));
 		Assert.assertNotNull(deviceDetails);
-		assertEquals(deviceDetails.get(0).getDeviceId(), "092572");
+		assertEquals("092572",deviceDetails.get(0).getDeviceId());
 	}
 
 	@Test
@@ -226,7 +226,7 @@ public class OtherServiesTest {
 		deviceDetails = deviceDetailsController
 				.getListOfDeviceDetails(CommonMethods.getQueryParamsMapForDeviceDetails("093353"));
 		Assert.assertNotNull(deviceDetails);
-		assertEquals(deviceDetails.get(0).getDeviceId(), "093353");
+		assertEquals( "093353",deviceDetails.get(0).getDeviceId());
 	}
 
 	@Test
@@ -250,7 +250,7 @@ public class OtherServiesTest {
 			Map<String, String> map = new HashMap<>();
 			deviceDetails = deviceDetailsController.getListOfDeviceDetails(map);
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "Invalid query parameters");
+			Assert.assertEquals( "Invalid query parameters",e.getMessage());
 		}
 		Assert.assertNull(deviceDetails);
 	}
@@ -262,7 +262,7 @@ public class OtherServiesTest {
 			deviceDetails = deviceDetailsController
 					.getListOfDeviceDetails(CommonMethods.getQueryParamsMapForDeviceDetails(null, null));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "Invalid input request received. Missing Device Id");
+			Assert.assertEquals( "Invalid input request received. Missing Device Id",e.getMessage());
 		}
 		Assert.assertNull(deviceDetails);
 	}
@@ -292,7 +292,7 @@ public class OtherServiesTest {
 			given(this.deviceDAOMock.getDeviceReviewDetails("093353")).willReturn(null);
 			cacheDeviceAndReviewController.getDeviceReviewDetails("093353");
 		} catch (Exception exception) {
-			assertEquals(exception.getMessage(), "No reviews found for the given deviceId");
+			assertEquals( "No reviews found for the given deviceId",exception.getMessage());
 		}
 	}
 
@@ -301,14 +301,14 @@ public class OtherServiesTest {
 		List<CommercialProduct> cp = deviceEntityController.getCommercialProduct("093353", null);
 		Assert.assertNotNull(deviceEntityController.getCommercialProduct("093353,093329", null));
 		Assert.assertNotNull(deviceEntityController.getCommercialProduct(null, "iPhone 7 Silicone Case mid blue"));
-		assertEquals(cp.get(0).getId(), "093329");
-		assertEquals(cp.get(0).getOrder(), 179050, 0);
-		assertEquals(cp.get(0).getName(), "iPhone 7 Silicone Case mid blue");
-		assertEquals(cp.get(0).getProductClass(), "Accessories");
+		assertEquals( "093329",cp.get(0).getId());
+		assertEquals( 179050,cp.get(0).getOrder(), 0);
+		assertEquals( "iPhone 7 Silicone Case mid blue",cp.get(0).getName());
+		assertEquals( "Accessories",cp.get(0).getProductClass());
 		try {
 			deviceEntityController.getCommercialProduct(null, null);
 		} catch (Exception e) {
-			assertEquals(e.getMessage(), "Invalid query parameters");
+			assertEquals( "Invalid query parameters",e.getMessage());
 		}
 		try {
 			given(response.getCommercialProductFromJson(ArgumentMatchers.any())).willReturn(Collections.emptyList());
@@ -323,19 +323,19 @@ public class OtherServiesTest {
 		List<com.vf.uk.dal.device.model.productgroups.Group> group = deviceEntityController
 				.getProductGroupByGroupType("DEVICE_PAYM");
 		assertNotNull(group);
-		assertEquals(group.get(0).getName(), "Apple iPhone 6s");
-		assertEquals(group.get(0).getGroupPriority(), 3, 0);
-		assertEquals(group.get(0).getGroupType(), "DEVICE");
+		assertEquals( "Apple iPhone 6s",group.get(0).getName());
+		assertEquals( 3,group.get(0).getGroupPriority(), 0);
+		assertEquals( "DEVICE",group.get(0).getGroupType());
 		try {
 			deviceEntityController.getProductGroupByGroupType(null);
 		} catch (Exception e) {
-			assertEquals(e.getMessage(), "Invalid query parameters");
+			assertEquals( "Invalid query parameters",e.getMessage());
 		}
 		try {
 			given(response.getListOfGroupFromJson(ArgumentMatchers.any())).willReturn(Collections.emptyList());
 			deviceEntityController.getProductGroupByGroupType("DEVICE_PAYM");
 		} catch (Exception e) {
-			assertEquals(e.getMessage(), "Received Null Values for the given product group type");
+			assertEquals( "Received Null Values for the given product group type",e.getMessage());
 		}
 	}
 
@@ -348,14 +348,14 @@ public class OtherServiesTest {
 		try {
 			deviceEntityController.getProductGroupModel(null);
 		} catch (Exception e) {
-			assertEquals(e.getMessage(), "Invalid query parameters");
+			assertEquals( "Invalid query parameters",e.getMessage());
 		}
 		try {
 			given(response.getListOfProductModel(ArgumentMatchers.any())).willReturn(CommonMethods.getProductModel());
 			given(response.getListOfProductGroupModel(ArgumentMatchers.any())).willReturn(new ArrayList<>());
 			deviceEntityController.getProductGroupModel("093353,092660");
 		} catch (Exception e) {
-			assertEquals(e.getMessage(), "Received Null Values for the given device id");
+			assertEquals("Received Null Values for the given device id",e.getMessage());
 		}
 	}
 
@@ -363,14 +363,14 @@ public class OtherServiesTest {
 	public void testDeviceServiceImplUtility() {
 		String journey = DeviceServiceImplUtility.getJourney("");
 		assertNotNull(journey);
-		assertEquals(journey, "Acquisition");
+		assertEquals("Acquisition",journey);
 	}
 
 	@Test
 	public void testDeviceServiceImplUtilitySecondLine() {
 		String journey = DeviceServiceImplUtility.getJourney(JOURNEY_TYPE_SECONDLINE);
 		assertNotNull(journey);
-		assertEquals(journey, JOURNEY_TYPE_SECONDLINE);
+		assertEquals( JOURNEY_TYPE_SECONDLINE,journey);
 	}
 
 	@Test
@@ -526,7 +526,7 @@ public class OtherServiesTest {
 		pm.setProductStartDate("12-11-2017");
 		Date date = DeviceServiceImplUtility.getStartdateFromProductModel(pm);
 		assertNotNull(date);
-		assertEquals(date.toString(), "Tue May 10 00:00:00 UTC 18");
+		assertEquals( "Tue May 10 00:00:00 UTC 18",date.toString());
 	}
 
 	@Test
@@ -548,7 +548,7 @@ public class OtherServiesTest {
 		ProductModel pm = new ProductModel();
 		pm.setProductEndDate("12-11-2017");
 		Date date = DeviceServiceImplUtility.getEndDateFromProductModel(pm);
-		assertEquals(date.toString(), "Tue May 10 00:00:00 UTC 18");
+		assertEquals( "Tue May 10 00:00:00 UTC 18",date.toString());
 	}
 
 	@Test
@@ -925,10 +925,10 @@ public class OtherServiesTest {
 		List<String> sorthyphen = DeviceServiceImplUtility.getSortCriteriaForList("-");
 		assertNotNull(sort);
 		assertNotNull(sorthyphen);
-		assertEquals(sort.get(0), "asc");
-		assertEquals(sort.get(1), "++adadad");
-		assertEquals(sorthyphen.get(0), "desc");
-		assertEquals(sorthyphen.get(1), "");
+		assertEquals( "asc",sort.get(0));
+		assertEquals( "++adadad",sort.get(1));
+		assertEquals( "desc",sorthyphen.get(0));
+		assertEquals( "",sorthyphen.get(1));
 	}
 
 	@Test
@@ -1104,17 +1104,17 @@ public class OtherServiesTest {
 		try {
 			Validator.validateDeviceId("");
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
+			Assert.assertEquals( ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID,e.getMessage());
 		}
 		try {
 			Validator.validateDeviceId("9854");
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), ExceptionMessages.INVALID_DEVICE_ID);
+			Assert.assertEquals( ExceptionMessages.INVALID_DEVICE_ID,e.getMessage());
 		}
 		try {
 			Validator.validateDeviceId("09854");
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), ExceptionMessages.INVALID_DEVICE_ID);
+			Assert.assertEquals( ExceptionMessages.INVALID_DEVICE_ID,e.getMessage());
 		}
 		try {
 			Validator.validateDeviceId("093353");
@@ -1123,12 +1123,12 @@ public class OtherServiesTest {
 		try {
 			Validator.validateDeviceId("985451");
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), ExceptionMessages.INVALID_DEVICE_ID);
+			Assert.assertEquals( ExceptionMessages.INVALID_DEVICE_ID,e.getMessage());
 		}
 		try {
 			Validator.validateIncludeRecommendation("false");
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), ExceptionMessages.INVALID_INCLUDERECOMMENDATION);
+			Assert.assertEquals( ExceptionMessages.INVALID_INCLUDERECOMMENDATION,e.getMessage());
 		}
 		try {
 			Validator.validateMSISDN("1312312312", "false");
@@ -1137,7 +1137,7 @@ public class OtherServiesTest {
 		try {
 			Validator.validateForCreditLimit("07896das");
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), ExceptionMessages.INVALID_CREDIT_LIMIT);
+			Assert.assertEquals( ExceptionMessages.INVALID_CREDIT_LIMIT,e.getMessage());
 		}
 
 	}
