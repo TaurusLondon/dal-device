@@ -186,8 +186,8 @@ public class DeviceControllerTest {
 		Assert.assertNotNull(commercialProd);
 		Assert.assertNotNull(deviceEntityController.getCommercialProduct("093353,093329", null));
 		Assert.assertNotNull(deviceEntityController.getCommercialProduct(null, "iPhone 7 Silicone Case mid blue"));
-		Assert.assertEquals(commercialProd.get(0).getId(), "093329");
-		Assert.assertEquals(commercialProd.get(0).getName(), "iPhone 7 Silicone Case mid blue");
+		Assert.assertEquals( "093329",commercialProd.get(0).getId());
+		Assert.assertEquals( "iPhone 7 Silicone Case mid blue",commercialProd.get(0).getName());
 		try {
 			deviceEntityController.getCommercialProduct(null, null);
 		} catch (Exception e) {
