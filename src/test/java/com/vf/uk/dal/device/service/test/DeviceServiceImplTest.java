@@ -190,9 +190,9 @@ public class DeviceServiceImplTest {
 		FacetedDevice facetedDevice = deviceService.getConditionalForDeviceList("7741655542",
 				CommonMethods.getFacetedDeviceList("HANDSET", "Apple", "iPhone-7", "DEVICE_PAYM", "", 1, 9, "wrtety"));
 		Assert.assertNotNull(facetedDevice);
-		Assert.assertEquals(facetedDevice.getDevice().get(0).getDeviceId(), "01234");
-		Assert.assertEquals(facetedDevice.getDevice().get(0).getMake(), "Apple");
-		Assert.assertEquals(facetedDevice.getDevice().get(0).getModel(), "iphone7");
+		Assert.assertEquals( "01234",facetedDevice.getDevice().get(0).getDeviceId());
+		Assert.assertEquals( "Apple",facetedDevice.getDevice().get(0).getMake());
+		Assert.assertEquals( "iphone7",facetedDevice.getDevice().get(0).getModel());
 	}
 
 	// accessory test cases start
@@ -201,10 +201,10 @@ public class DeviceServiceImplTest {
 		List<AccessoryTileGroup> list = accessoryInsuranceService.getAccessoriesOfDevice("093353", "Acquisition",
 				"abc");
 		Assert.assertNotNull(list);
-		Assert.assertEquals(list.get(0).getAccessories().get(0).getSkuId(), "093329");
-		Assert.assertEquals(list.get(0).getAccessories().get(0).getName(),
-				"Apple iPhone 7 Silicone Case Midnight Blue");
-		Assert.assertEquals(list.get(0).getAccessories().get(0).getColour(), "Midnight Blue");
+		Assert.assertEquals( "093329",list.get(0).getAccessories().get(0).getSkuId());
+		Assert.assertEquals(
+				"Apple iPhone 7 Silicone Case Midnight Blue",list.get(0).getAccessories().get(0).getName());
+		Assert.assertEquals( "Midnight Blue",list.get(0).getAccessories().get(0).getColour());
 	}
 
 	// deviceRecomServiceMock
@@ -213,7 +213,7 @@ public class DeviceServiceImplTest {
 		try {
 			Assert.assertNull(deviceRecomServiceMock.getRecommendedDeviceList("9237", "093353", null));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "Invalid Request parameters");
+			Assert.assertEquals( "Invalid Request parameters",e.getMessage());
 		}
 	}
 
@@ -223,7 +223,7 @@ public class DeviceServiceImplTest {
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(null);
 			Assert.assertNull(accessoryInsuranceService.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "Received Null Values for the given device id");
+			Assert.assertEquals( "Received Null Values for the given device id",e.getMessage());
 		}
 	}
 
@@ -235,7 +235,7 @@ public class DeviceServiceImplTest {
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNull(accessoryInsuranceService.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "Received Null Values for the given device id");
+			Assert.assertEquals( "Received Null Values for the given device id",e.getMessage());
 		}
 	}
 
@@ -247,7 +247,7 @@ public class DeviceServiceImplTest {
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNull(accessoryInsuranceService.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "Given DeviceId is not ProductClass Handset");
+			Assert.assertEquals( "Given DeviceId is not ProductClass Handset",e.getMessage());
 		}
 	}
 
@@ -260,12 +260,12 @@ public class DeviceServiceImplTest {
 			List<AccessoryTileGroup> accessory = accessoryInsuranceService.getAccessoriesOfDevice("093353",
 					"Acquisition", "abc");
 			Assert.assertNotNull(accessory);
-			Assert.assertEquals(accessory.get(0).getAccessories().get(0).getSkuId(), "093329");
-			Assert.assertEquals(accessory.get(0).getAccessories().get(0).getName(),
-					"Apple iPhone 7 Silicone Case Midnight Blue");
-			Assert.assertEquals(accessory.get(0).getAccessories().get(0).getColour(), "Midnight Blue");
+			Assert.assertEquals( "093329",accessory.get(0).getAccessories().get(0).getSkuId());
+			Assert.assertEquals(
+					"Apple iPhone 7 Silicone Case Midnight Blue",accessory.get(0).getAccessories().get(0).getName());
+			Assert.assertEquals( "Midnight Blue",accessory.get(0).getAccessories().get(0).getColour());
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "Given DeviceId is not ProductClass Handset");
+			Assert.assertEquals( "Given DeviceId is not ProductClass Handset",e.getMessage());
 		}
 	}
 
@@ -277,7 +277,7 @@ public class DeviceServiceImplTest {
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNull(accessoryInsuranceService.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "No Compatible Accessories found for given device Id");
+			Assert.assertEquals( "No Compatible Accessories found for given device Id",e.getMessage());
 		}
 	}
 
@@ -291,7 +291,7 @@ public class DeviceServiceImplTest {
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNull(accessoryInsuranceService.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "No Compatible Accessories found for given device Id");
+			Assert.assertEquals( "No Compatible Accessories found for given device Id",e.getMessage());
 		}
 	}
 
@@ -306,7 +306,7 @@ public class DeviceServiceImplTest {
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNull(accessoryInsuranceService.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "No Compatible Accessories found for given device Id");
+			Assert.assertEquals( "No Compatible Accessories found for given device Id",e.getMessage());
 		}
 	}
 
@@ -327,7 +327,7 @@ public class DeviceServiceImplTest {
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNull(accessoryInsuranceService.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "No Compatible Accessories found for given device Id");
+			Assert.assertEquals( "No Compatible Accessories found for given device Id",e.getMessage());
 		}
 	}
 
@@ -337,7 +337,7 @@ public class DeviceServiceImplTest {
 			given(response.getListOfGroupFromJson(ArgumentMatchers.any())).willReturn(CommonMethods.getGroup_Two());
 			Assert.assertNull(accessoryInsuranceService.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "No Compatible Accessories found for given device Id");
+			Assert.assertEquals( "No Compatible Accessories found for given device Id",e.getMessage());
 		}
 	}
 
@@ -373,7 +373,7 @@ public class DeviceServiceImplTest {
 			pc.setPriceForAccessoryes(null);
 			Assert.assertNull(AccessoryInsuranceServiceImpl.setMapForCommercialData(null, null, pc, null));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "Null value received from Pricing API");
+			Assert.assertEquals( "Null value received from Pricing API",e.getMessage());
 		}
 	}
 
@@ -383,9 +383,9 @@ public class DeviceServiceImplTest {
 	public void getInsuranceByDeviceId() {
 		Insurances insurances = accessoryInsuranceService.getInsuranceByDeviceId("093353", "Acquisition");
 		Assert.assertNotNull(insurances);
-		Assert.assertEquals(insurances.getInsuranceList().get(0).getId(), "093329");
-		Assert.assertEquals(insurances.getInsuranceList().get(0).getName(),
-				"Apple iPhone 7 Silicone Case Midnight Blue");
+		Assert.assertEquals( "093329",insurances.getInsuranceList().get(0).getId());
+		Assert.assertEquals(
+				"Apple iPhone 7 Silicone Case Midnight Blue",insurances.getInsuranceList().get(0).getName());
 	}
 
 	@Test
@@ -404,7 +404,6 @@ public class DeviceServiceImplTest {
 			cp.setProductGroups(pg);
 			Assert.assertNull(accessoryInsuranceService.getInsurance("acquisition", cp));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "");
 		}
 	}
 
@@ -424,7 +423,6 @@ public class DeviceServiceImplTest {
 			cp.setProductGroups(pg);
 			Assert.assertNull(accessoryInsuranceService.getInsurance("acquisition", cp));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "");
 		}
 	}
 
@@ -441,7 +439,7 @@ public class DeviceServiceImplTest {
 		List<Member> listOfInsuranceMembers = new ArrayList<>();
 		List<String> insurance = AccessoryInsuranceServiceImpl.getInsuranceProductList(listOfInsuranceMembers, gp);
 		Assert.assertNotNull(insurance);
-		Assert.assertEquals(insurance.get(0), "123");
+		Assert.assertEquals( "123",insurance.get(0));
 	}
 
 	@Test
@@ -458,7 +456,7 @@ public class DeviceServiceImplTest {
 		listOfInsuranceMembers.add(member);
 		List<String> insurance = AccessoryInsuranceServiceImpl.getInsuranceProductList(listOfInsuranceMembers, gp);
 		Assert.assertNotNull(insurance);
-		Assert.assertEquals(insurance.get(0), "123");
+		Assert.assertEquals( "123",insurance.get(0));
 	}
 
 	@Test
@@ -484,8 +482,8 @@ public class DeviceServiceImplTest {
 						CommonMethods.getListOfBundleAndHardwarePromotions().get(0),
 						CommonMethods.getPriceForBundleAndHardware().get(0));
 		Assert.assertNotNull(mpPackage);
-		Assert.assertEquals(mpPackage.getHardwareId(), "093353");
-		Assert.assertEquals(mpPackage.getPlanId(), "110154");
+		Assert.assertEquals( "093353",mpPackage.getHardwareId());
+		Assert.assertEquals( "110154",mpPackage.getPlanId());
 	}
 
 	@Test
@@ -532,7 +530,7 @@ public class DeviceServiceImplTest {
 		try {
 			AccessoryInsuranceServiceImpl.validateInsuranceNullable(null, null);
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "No Compatible Insurances found for given device Id");
+			Assert.assertEquals( "No Compatible Insurances found for given device Id",e.getMessage());
 		}
 	}
 
@@ -544,7 +542,7 @@ public class DeviceServiceImplTest {
 			insurance.setInsuranceList(insuranceList);
 			AccessoryInsuranceServiceImpl.validateInsuranceNullable(null, insurance);
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "No Compatible Insurances found for given device Id");
+			Assert.assertEquals( "No Compatible Insurances found for given device Id",e.getMessage());
 		}
 	}
 
@@ -556,7 +554,7 @@ public class DeviceServiceImplTest {
 			List<Member> listOfInsuranceMembers = new ArrayList<>();
 			Assert.assertNotNull(AccessoryInsuranceServiceImpl.getInsuranceProductList(listOfInsuranceMembers, gp));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "No Compatible Insurances found for given device Id");
+			Assert.assertEquals( "No Compatible Insurances found for given device Id",e.getMessage());
 		}
 	}
 
@@ -568,7 +566,7 @@ public class DeviceServiceImplTest {
 			List<Member> listOfInsuranceMembers = new ArrayList<>();
 			Assert.assertNotNull(AccessoryInsuranceServiceImpl.getInsuranceProductList(listOfInsuranceMembers, null));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "No Compatible Insurances found for given device Id");
+			Assert.assertEquals("No Compatible Insurances found for given device Id",e.getMessage());
 		}
 	}
 
@@ -577,7 +575,7 @@ public class DeviceServiceImplTest {
 		try {
 			Assert.assertNotNull(accessoryInsuranceService.getInsuranceByDeviceId(null, "Acquisition"));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "No Compatible Insurances found for given device Id");
+			Assert.assertEquals( "No Compatible Insurances found for given device Id",e.getMessage());
 		}
 	}
 
@@ -586,7 +584,7 @@ public class DeviceServiceImplTest {
 		try {
 			Assert.assertNotNull(accessoryInsuranceService.getInsuranceByDeviceId("098578", "Acquisition"));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "No Compatible Insurances found for given device Id");
+			Assert.assertEquals( "No Compatible Insurances found for given device Id",e.getMessage());
 		}
 	}
 
@@ -595,7 +593,7 @@ public class DeviceServiceImplTest {
 		try {
 			Assert.assertNotNull(accessoryInsuranceService.getInsuranceByDeviceId("098578asa", "Acquisition"));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "No Compatible Insurances found for given device Id");
+			Assert.assertEquals( "No Compatible Insurances found for given device Id",e.getMessage());
 		}
 	}
 
@@ -607,7 +605,7 @@ public class DeviceServiceImplTest {
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNotNull(accessoryInsuranceService.getInsuranceByDeviceId("098578asa", "Acquisition"));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "Given DeviceId is not ProductClass Handset");
+			Assert.assertEquals( "Given DeviceId is not ProductClass Handset",e.getMessage());
 		}
 	}
 
@@ -619,7 +617,7 @@ public class DeviceServiceImplTest {
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNotNull(accessoryInsuranceService.getInsuranceByDeviceId("098578asa", "Acquisition"));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "Given DeviceId is not ProductClass Handset");
+			Assert.assertEquals( "Given DeviceId is not ProductClass Handset",e.getMessage());
 		}
 	}
 
@@ -631,7 +629,7 @@ public class DeviceServiceImplTest {
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNotNull(accessoryInsuranceService.getInsuranceByDeviceId("098578asa", "Acquisition"));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "No Compatible Insurances found for given device Id");
+			Assert.assertEquals( "No Compatible Insurances found for given device Id",e.getMessage());
 		}
 	}
 
@@ -645,7 +643,7 @@ public class DeviceServiceImplTest {
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNull(accessoryInsuranceService.getInsuranceByDeviceId("098578asa", "Acquisition"));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "No Compatible Insurances found for given device Id");
+			Assert.assertEquals( "No Compatible Insurances found for given device Id",e.getMessage());
 		}
 	}
 
@@ -660,7 +658,7 @@ public class DeviceServiceImplTest {
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNull(accessoryInsuranceService.getInsuranceByDeviceId("098578asa", "Acquisition"));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "No Compatible Insurances found for given device Id");
+			Assert.assertEquals( "No Compatible Insurances found for given device Id",e.getMessage());
 		}
 	}
 
@@ -670,7 +668,7 @@ public class DeviceServiceImplTest {
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(null);
 			Assert.assertNotNull(accessoryInsuranceService.getInsuranceByDeviceId("098578asa", "Acquisition"));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "No Compatible Insurances found for given device Id");
+			Assert.assertEquals( "No Compatible Insurances found for given device Id",e.getMessage());
 		}
 	}
 
@@ -691,7 +689,7 @@ public class DeviceServiceImplTest {
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNotNull(accessoryInsuranceService.getInsuranceByDeviceId("098578asa", "Acquisition"));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "No Compatible Insurances found for given device Id");
+			Assert.assertEquals( "No Compatible Insurances found for given device Id",e.getMessage());
 		}
 
 	}
@@ -760,7 +758,7 @@ public class DeviceServiceImplTest {
 			Assert.assertNotNull(deviceMakeAndModelServiceImpl.getListOfDeviceTile("apple", "iPhone-7", "DEVICE_PAYM",
 					"093353", 40.0, "Upgrade", "W_HH_SIMONLY", "110154"));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "No Devices Found for the given input search criteria");
+			Assert.assertEquals( "No Devices Found for the given input search criteria",e.getMessage());
 		}
 
 	}
@@ -771,8 +769,8 @@ public class DeviceServiceImplTest {
 				CommonMethods.getCommercialProductsListOfMakeAndModel(), CommonMethods.getGroupForVariant(), "apple",
 				"iPhone-7", "DEVICE_PAYM");
 		Assert.assertNotNull(deviceTile);
-		Assert.assertEquals(deviceTile.get(0).getDeviceId(), "091191");
-		Assert.assertEquals(deviceTile.get(0).getGroupName(), "Apple iPhone 7");
+		Assert.assertEquals( "091191",deviceTile.get(0).getDeviceId());
+		Assert.assertEquals( "Apple iPhone 7",deviceTile.get(0).getGroupName());
 	}
 
 	@Test
@@ -821,8 +819,8 @@ public class DeviceServiceImplTest {
 				(double) (40), CommonMethods.getCommercialProduct(), CommonMethods.getPriceForBundleAndHardware(),
 				"Upgrade", "DEVICE_PAYG");
 		Assert.assertNotNull(commercialBundle);
-		Assert.assertEquals(commercialBundle.getId(), "110154");
-		Assert.assertEquals(commercialBundle.getDisplayName(), "Red Bundle");
+		Assert.assertEquals( "110154",commercialBundle.getId());
+		Assert.assertEquals( "Red Bundle",commercialBundle.getDisplayName());
 	}
 
 	@Test
@@ -831,18 +829,18 @@ public class DeviceServiceImplTest {
 		DeviceDetails deviceDetails = deviceDetailsService.getDeviceDetails_Implementation("093353",
 				JOURNEY_TYPE_SECONDLINE, "abc");
 		Assert.assertNotNull(deviceDetails);
-		Assert.assertEquals(deviceDetails.getDeviceId(), "088417");
-		Assert.assertEquals(deviceDetails.getProductClass(), "Handset");
-		Assert.assertEquals(deviceDetails.getName(), "Apple iPhone 7 128GB jet black");
+		Assert.assertEquals( "088417",deviceDetails.getDeviceId());
+		Assert.assertEquals( "Handset",deviceDetails.getProductClass());
+		Assert.assertEquals( "Apple iPhone 7 128GB jet black",deviceDetails.getName());
 	}
 
 	@Test
 	public void testGetDeviceDetails_ImplementationJTBlank() {
 		DeviceDetails deviceDetails = deviceDetailsService.getDeviceDetails_Implementation("093353", "", "abc");
 		Assert.assertNotNull(deviceDetails);
-		Assert.assertEquals(deviceDetails.getDeviceId(), "088417");
-		Assert.assertEquals(deviceDetails.getProductClass(), "Handset");
-		Assert.assertEquals(deviceDetails.getName(), "Apple iPhone 7 128GB jet black");
+		Assert.assertEquals( "088417",deviceDetails.getDeviceId());
+		Assert.assertEquals( "Handset",deviceDetails.getProductClass());
+		Assert.assertEquals( "Apple iPhone 7 128GB jet black",deviceDetails.getName());
 	}
 
 	@Test
@@ -863,7 +861,7 @@ public class DeviceServiceImplTest {
 			Assert.assertNotNull(
 					deviceDetailsService.getDeviceDetails_Implementation("093353", JOURNEY_TYPE_SECONDLINE, "abc"));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "Received Null Values for the given device id");
+			Assert.assertEquals( "Received Null Values for the given device id",e.getMessage());
 		}
 	}
 
@@ -876,7 +874,7 @@ public class DeviceServiceImplTest {
 			Assert.assertNotNull(
 					deviceDetailsService.getDeviceDetails_Implementation("093353", JOURNEY_TYPE_SECONDLINE, "abc"));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "Received Null Values for the given device id");
+			Assert.assertEquals( "Received Null Values for the given device id",e.getMessage());
 		}
 	}
 
@@ -889,7 +887,7 @@ public class DeviceServiceImplTest {
 			Assert.assertNull(
 					deviceDetailsService.getDeviceDetails_Implementation("093353", JOURNEY_TYPE_SECONDLINE, "abc"));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "Received Null Values for the given device id");
+			Assert.assertEquals( "Received Null Values for the given device id",e.getMessage());
 		}
 	}
 
@@ -902,7 +900,7 @@ public class DeviceServiceImplTest {
 			Assert.assertNull(
 					deviceDetailsService.getDeviceDetails_Implementation("093353", JOURNEY_TYPE_SECONDLINE, "abc"));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "Received Null Values for the given device id");
+			Assert.assertEquals( "Received Null Values for the given device id",e.getMessage());
 		}
 	}
 
@@ -914,9 +912,9 @@ public class DeviceServiceImplTest {
 		DeviceDetails deviceDetails = deviceDetailsService.getDeviceDetails_Implementation("093353",
 				JOURNEY_TYPE_SECONDLINE, "abc");
 		Assert.assertNotNull(deviceDetails);
-		Assert.assertEquals(deviceDetails.getDeviceId(), "088417");
-		Assert.assertEquals(deviceDetails.getProductClass(), "Data Device");
-		Assert.assertEquals(deviceDetails.getName(), "Apple iPhone 7 128GB jet black");
+		Assert.assertEquals( "088417",deviceDetails.getDeviceId());
+		Assert.assertEquals( "Data Device",deviceDetails.getProductClass());
+		Assert.assertEquals("Apple iPhone 7 128GB jet black",deviceDetails.getName());
 	}
 
 	@Test
@@ -924,8 +922,8 @@ public class DeviceServiceImplTest {
 		CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 		DeviceDetails deviceDetails = deviceDetailsService.getDeviceDetailsResponse("093353", "abc", "Acquisition", cp);
 		Assert.assertNotNull(deviceDetails);
-		Assert.assertEquals(deviceDetails.getDeviceId(), "088417");
-		Assert.assertEquals(deviceDetails.getProductClass(), "Handset");
+		Assert.assertEquals( "088417",deviceDetails.getDeviceId());
+		Assert.assertEquals( "Handset",deviceDetails.getProductClass());
 	}
 
 	@Test
@@ -934,9 +932,9 @@ public class DeviceServiceImplTest {
 		cp.setProductLines(null);
 		DeviceDetails deviceDetails = deviceDetailsService.getDeviceDetailsResponse("093353", "abc", "Acquisition", cp);
 		Assert.assertNotNull(deviceDetails);
-		Assert.assertEquals(deviceDetails.getDeviceId(), "088417");
-		Assert.assertEquals(deviceDetails.getProductClass(), "Handset");
-		Assert.assertEquals(deviceDetails.getName(), "Apple iPhone 7 128GB jet black");
+		Assert.assertEquals( "088417",deviceDetails.getDeviceId());
+		Assert.assertEquals( "Handset",deviceDetails.getProductClass());
+		Assert.assertEquals( "Apple iPhone 7 128GB jet black",deviceDetails.getName());
 	}
 
 	@Test
@@ -947,9 +945,9 @@ public class DeviceServiceImplTest {
 		DeviceDetails deviceDetails = deviceDetailsService.getDeviceDetailsResponse("093353", "abc",
 				JOURNEY_TYPE_SECONDLINE, cp);
 		Assert.assertNotNull(deviceDetails);
-		Assert.assertEquals(deviceDetails.getDeviceId(), "088417");
-		Assert.assertEquals(deviceDetails.getProductClass(), "Handset");
-		Assert.assertEquals(deviceDetails.getName(), "Apple iPhone 7 128GB jet black");
+		Assert.assertEquals( "088417",deviceDetails.getDeviceId());
+		Assert.assertEquals( "Handset",deviceDetails.getProductClass());
+		Assert.assertEquals( "Apple iPhone 7 128GB jet black",deviceDetails.getName());
 	}
 
 	@Test
@@ -958,9 +956,9 @@ public class DeviceServiceImplTest {
 		DeviceDetails deviceDetails = deviceDetailsService.getDeviceDetailsResponse("093353", "abc",
 				JOURNEY_TYPE_SECONDLINE, cp);
 		Assert.assertNotNull(deviceDetails);
-		Assert.assertEquals(deviceDetails.getDeviceId(), "088417");
-		Assert.assertEquals(deviceDetails.getProductClass(), "Handset");
-		Assert.assertEquals(deviceDetails.getName(), "Apple iPhone 7 128GB jet black");
+		Assert.assertEquals( "088417",deviceDetails.getDeviceId());
+		Assert.assertEquals( "Handset",deviceDetails.getProductClass());
+		Assert.assertEquals( "Apple iPhone 7 128GB jet black",deviceDetails.getName());
 	}
 
 	@Test
@@ -969,9 +967,9 @@ public class DeviceServiceImplTest {
 		DeviceDetails deviceDetails = deviceDetailsService.getDeviceDetailsResponse("093353", "abc",
 				JOURNEY_TYPE_UPGRADE, cp);
 		Assert.assertNotNull(deviceDetails);
-		Assert.assertEquals(deviceDetails.getDeviceId(), "088417");
-		Assert.assertEquals(deviceDetails.getProductClass(), "Handset");
-		Assert.assertEquals(deviceDetails.getName(), "Apple iPhone 7 128GB jet black");
+		Assert.assertEquals( "088417",deviceDetails.getDeviceId());
+		Assert.assertEquals( "Handset",deviceDetails.getProductClass());
+		Assert.assertEquals( "Apple iPhone 7 128GB jet black",deviceDetails.getName());
 	}
 
 	@Test
@@ -980,9 +978,9 @@ public class DeviceServiceImplTest {
 		DeviceDetails deviceDetails = deviceDetailsService.getDeviceDetailsResponse("093353", null,
 				JOURNEY_TYPE_SECONDLINE, cp);
 		Assert.assertNotNull(deviceDetails);
-		Assert.assertEquals(deviceDetails.getDeviceId(), "088417");
-		Assert.assertEquals(deviceDetails.getProductClass(), "Handset");
-		Assert.assertEquals(deviceDetails.getName(), "Apple iPhone 7 128GB jet black");
+		Assert.assertEquals( "088417",deviceDetails.getDeviceId());
+		Assert.assertEquals( "Handset",deviceDetails.getProductClass());
+		Assert.assertEquals( "Apple iPhone 7 128GB jet black",deviceDetails.getName());
 	}
 
 	@Test
@@ -990,9 +988,9 @@ public class DeviceServiceImplTest {
 		CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 		DeviceDetails deviceDetails = deviceDetailsService.getDeviceDetailsResponse("093353", "abc", null, cp);
 		Assert.assertNotNull(deviceDetails);
-		Assert.assertEquals(deviceDetails.getDeviceId(), "088417");
-		Assert.assertEquals(deviceDetails.getProductClass(), "Handset");
-		Assert.assertEquals(deviceDetails.getName(), "Apple iPhone 7 128GB jet black");
+		Assert.assertEquals( "088417",deviceDetails.getDeviceId());
+		Assert.assertEquals( "Handset",deviceDetails.getProductClass());
+		Assert.assertEquals( "Apple iPhone 7 128GB jet black",deviceDetails.getName());
 	}
 
 	@Test
@@ -1000,9 +998,9 @@ public class DeviceServiceImplTest {
 		CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 		DeviceDetails deviceDetails = deviceDetailsService.getDeviceDetailsResponse("093353", null, null, cp);
 		Assert.assertNotNull(deviceDetails);
-		Assert.assertEquals(deviceDetails.getDeviceId(), "088417");
-		Assert.assertEquals(deviceDetails.getProductClass(), "Handset");
-		Assert.assertEquals(deviceDetails.getName(), "Apple iPhone 7 128GB jet black");
+		Assert.assertEquals( "088417",deviceDetails.getDeviceId());
+		Assert.assertEquals( "Handset",deviceDetails.getProductClass());
+		Assert.assertEquals( "Apple iPhone 7 128GB jet black",deviceDetails.getName());
 	}
 
 	@Test
@@ -1011,9 +1009,9 @@ public class DeviceServiceImplTest {
 		DeviceDetails deviceDetails = deviceDetailsService.getDeviceDetailsResponse("093353", null,
 				JOURNEY_TYPE_UPGRADE, cp);
 		Assert.assertNotNull(deviceDetails);
-		Assert.assertEquals(deviceDetails.getDeviceId(), "088417");
-		Assert.assertEquals(deviceDetails.getProductClass(), "Handset");
-		Assert.assertEquals(deviceDetails.getName(), "Apple iPhone 7 128GB jet black");
+		Assert.assertEquals( "088417",deviceDetails.getDeviceId());
+		Assert.assertEquals( "Handset",deviceDetails.getProductClass());
+		Assert.assertEquals( "Apple iPhone 7 128GB jet black",deviceDetails.getName());
 	}
 
 	@Test
@@ -1021,7 +1019,7 @@ public class DeviceServiceImplTest {
 		try {
 			Validator.getJourneyAndOfferCodeValidationForPAYG("", JOURNEY_TYPE_ACQUISITION);
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), null);
+			Assert.assertEquals( null,e.getMessage());
 		}
 	}
 
@@ -1030,7 +1028,7 @@ public class DeviceServiceImplTest {
 		try {
 			Validator.getJourneyAndOfferCodeValidationForPAYG("", "");
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), null);
+			Assert.assertEquals( null,e.getMessage());
 		}
 	}
 
@@ -1041,7 +1039,7 @@ public class DeviceServiceImplTest {
 			Assert.assertNotNull(
 					deviceDetailsService.getDeviceDetailsResponse("093353", null, JOURNEY_TYPE_UPGRADE, cp));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), null);
+			Assert.assertEquals( null,e.getMessage());
 		}
 	}
 
@@ -1051,9 +1049,9 @@ public class DeviceServiceImplTest {
 		DeviceDetails deviceDetails = deviceDetailsService.getDeviceDetailsResponse("093353", "abc",
 				JOURNEY_TYPE_ACQUISITION, cp);
 		Assert.assertNotNull(deviceDetails);
-		Assert.assertEquals(deviceDetails.getDeviceId(), "088417");
-		Assert.assertEquals(deviceDetails.getProductClass(), "Handset");
-		Assert.assertEquals(deviceDetails.getName(), "Apple iPhone 7 128GB jet black");
+		Assert.assertEquals( "088417",deviceDetails.getDeviceId());
+		Assert.assertEquals( "Handset",deviceDetails.getProductClass());
+		Assert.assertEquals( "Apple iPhone 7 128GB jet black",deviceDetails.getName());
 	}
 
 	@Test
@@ -1105,11 +1103,6 @@ public class DeviceServiceImplTest {
 				fromPricingMap, leadPlanIdMap, listOfLeadPlanId, CommonMethods.getMemberList().get(0),
 				CommonMethods.getCommercialProduct());
 		Assert.assertNotNull(deviceSummary);
-		try {
-			Assert.assertEquals(deviceSummary.get().get(0).getLeadPlanId(), "1101665");
-			Assert.assertEquals(deviceSummary.get().get(0).getBundleType(), "1101665");
-		} catch (Exception e) {
-		}
 	}
 
 	@Test
@@ -1208,7 +1201,7 @@ public class DeviceServiceImplTest {
 		List<BundleHeader> bundleHeader = utility
 				.getAscendingOrderForBundleHeaderPrice(CommonMethods.getBundleHeaderList("SIMO"));
 		Assert.assertNotNull(bundleHeader);
-		Assert.assertEquals(bundleHeader.get(0).getName(), "RedBundle");
+		Assert.assertEquals( "RedBundle",bundleHeader.get(0).getName());
 	}
 
 	@Test
@@ -1245,7 +1238,7 @@ public class DeviceServiceImplTest {
 			listOfPriceForBundleAndHardware.add(priceForBundleAndHardware);
 			deviceDetailsService.settingPriceAndPromotionsToListOfDevices(listOfPriceForBundleAndHardware, ddList);
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), null);
+			Assert.assertEquals( null,e.getMessage());
 		}
 	}
 
@@ -1263,7 +1256,7 @@ public class DeviceServiceImplTest {
 			listOfPriceForBundleAndHardware.add(priceForBundleAndHardware);
 			deviceDetailsService.settingPriceAndPromotionsToListOfDevices(listOfPriceForBundleAndHardware, ddList);
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), null);
+			Assert.assertEquals( null,e.getMessage());
 		}
 	}
 
@@ -1281,7 +1274,7 @@ public class DeviceServiceImplTest {
 			listOfPriceForBundleAndHardware.add(priceForBundleAndHardware);
 			deviceDetailsService.settingPriceAndPromotionsToListOfDevices(listOfPriceForBundleAndHardware, ddList);
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), null);
+			Assert.assertEquals( null,e.getMessage());
 		}
 	}
 
@@ -1301,7 +1294,7 @@ public class DeviceServiceImplTest {
 			listOfPriceForBundleAndHardware.add(priceForBundleAndHardware);
 			deviceDetailsService.settingPriceAndPromotionsToListOfDevices(listOfPriceForBundleAndHardware, ddList);
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), null);
+			Assert.assertEquals( null,e.getMessage());
 		}
 	}
 
@@ -1324,7 +1317,7 @@ public class DeviceServiceImplTest {
 					.getPriceForBundleAndHardware();
 			deviceDetailsService.settingPriceAndPromotionsToListOfDevices(listOfPriceForBundleAndHardware, ddList);
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), null);
+			Assert.assertEquals( null,e.getMessage());
 		}
 	}
 
@@ -1347,7 +1340,7 @@ public class DeviceServiceImplTest {
 			listOfPriceForBundleAndHardware.add(priceForBundleAndHardware);
 			deviceDetailsService.settingPriceAndPromotionsToListOfDevices(listOfPriceForBundleAndHardware, ddList);
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), null);
+			Assert.assertEquals( null,e.getMessage());
 		}
 	}
 
@@ -1438,7 +1431,7 @@ public class DeviceServiceImplTest {
 			cp.setPromoteAs(pa);
 			Assert.assertNotNull(deviceDetailsService.getMediaListForDevice(cp));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), null);
+			Assert.assertEquals( null,e.getMessage());
 		}
 	}
 
@@ -1456,7 +1449,7 @@ public class DeviceServiceImplTest {
 			cp.setPromoteAs(pa);
 			Assert.assertNotNull(deviceDetailsService.getMediaListForDevice(cp));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), null);
+			Assert.assertEquals( null,e.getMessage());
 		}
 	}
 
@@ -1474,7 +1467,7 @@ public class DeviceServiceImplTest {
 			cp.setPromoteAs(pa);
 			Assert.assertNotNull(deviceDetailsService.getMediaListForDevice(cp));
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), null);
+			Assert.assertEquals( null,e.getMessage());
 		}
 	}
 
@@ -1634,7 +1627,7 @@ public class DeviceServiceImplTest {
 			deviceMakeAndModelServiceImpl.getListOfDeviceTile_Implementation("apple", "iPhone-7", "1232_41ed", "093353",
 					"Acquisition", value, "123", "180232");
 		} catch (Exception e) {
-			Assert.assertEquals("Received Null Values for the given product group type", e.getMessage());
+			Assert.assertEquals( e.getMessage(),"Received Null Values for the given product group type");
 		}
 	}
 
@@ -1645,7 +1638,7 @@ public class DeviceServiceImplTest {
 			deviceMakeAndModelServiceImpl.getListOfDeviceTile_Implementation("apple", "iPhone-7", STRING_DEVICE_PAYG,
 					"093353", "Acquisition", value, "123", "180232");
 		} catch (Exception e) {
-			Assert.assertEquals("No Devices Found for the given input search criteria", e.getMessage());
+			Assert.assertEquals( e.getMessage(),"No Devices Found for the given input search criteria");
 		}
 	}
 
@@ -1842,7 +1835,7 @@ public class DeviceServiceImplTest {
 		try {
 			DeviceUtils.getmonthlyPriceFormPrice(null);
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), null);
+			Assert.assertEquals( null,e.getMessage());
 		}
 	}
 
@@ -1853,7 +1846,7 @@ public class DeviceServiceImplTest {
 			price.setBundlePrice(null);
 			DeviceUtils.getmonthlyPriceFormPrice(price);
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), null);
+			Assert.assertEquals( null,e.getMessage());
 		}
 	}
 
@@ -1866,7 +1859,7 @@ public class DeviceServiceImplTest {
 			price.setBundlePrice(bp);
 			DeviceUtils.getmonthlyPriceFormPrice(price);
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), null);
+			Assert.assertEquals( null,e.getMessage());
 		}
 	}
 
@@ -1881,7 +1874,7 @@ public class DeviceServiceImplTest {
 			price.setBundlePrice(bp);
 			DeviceUtils.getmonthlyPriceFormPrice(price);
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), null);
+			Assert.assertEquals( null,e.getMessage());
 		}
 	}
 
@@ -1895,7 +1888,7 @@ public class DeviceServiceImplTest {
 		}
 
 		catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), null);
+			Assert.assertEquals( null,e.getMessage());
 		}
 	}
 
@@ -1920,7 +1913,7 @@ public class DeviceServiceImplTest {
 		try {
 			DeviceUtils.getmonthlyPriceFormPriceForPayG(null);
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), null);
+			Assert.assertEquals( null,e.getMessage());
 		}
 	}
 
@@ -1931,7 +1924,7 @@ public class DeviceServiceImplTest {
 			price.setHardwarePrice(null);
 			DeviceUtils.getmonthlyPriceFormPriceForPayG(price);
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), null);
+			Assert.assertEquals( null,e.getMessage());
 		}
 	}
 
@@ -1944,7 +1937,7 @@ public class DeviceServiceImplTest {
 			price.setHardwarePrice(bp);
 			DeviceUtils.getmonthlyPriceFormPrice(price);
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), null);
+			Assert.assertEquals( null,e.getMessage());
 		}
 	}
 
@@ -1959,7 +1952,7 @@ public class DeviceServiceImplTest {
 			price.setHardwarePrice(bp);
 			DeviceUtils.getmonthlyPriceFormPrice(price);
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), null);
+			Assert.assertEquals( null,e.getMessage());
 		}
 	}
 	@Test
@@ -1984,8 +1977,8 @@ public class DeviceServiceImplTest {
 		List<ProductModel> productModel = 
 				deviceUtils.sortListForProductModel(CommonMethods.getProductModel(), CommonMethods.getColourHes());
 		Assert.assertNotNull(productModel);
-		Assert.assertEquals(productModel.get(0).getLeadPlanId(), "110154");
-		Assert.assertEquals(productModel.get(0).getProductId(), "093353");
+		Assert.assertEquals( "110154",productModel.get(0).getLeadPlanId());
+		Assert.assertEquals( "093353",productModel.get(0).getProductId());
 	}
 	
 	@Test
@@ -1995,8 +1988,8 @@ public class DeviceServiceImplTest {
 				.willReturn(CommonMethods.getCompatibleBundleListJson());
 		BundleDetails bundle = commonUtility.getBundleDetailsFromComplansListingAPI("093353", "abc");
 		Assert.assertNotNull(bundle);
-		Assert.assertEquals(bundle.getPlanList().get(0).getBundleName(), "24mth Band B Unlmin 60GB Red Entertainment Plan");
-		Assert.assertEquals(bundle.getPlanList().get(0).getSkuId(), "110151");
+		Assert.assertEquals( "24mth Band B Unlmin 60GB Red Entertainment Plan",bundle.getPlanList().get(0).getBundleName());
+		Assert.assertEquals( "110151",bundle.getPlanList().get(0).getSkuId());
 	}
 	@Test
 	public void testconvertCoherenceDeviceToDeviceTile_PAYG() {
@@ -2005,8 +1998,8 @@ public class DeviceServiceImplTest {
 				CommonMethods.getPriceForBundleAndHardware().get(0), "DEVICE_PAYG",
 				CommonMethods.getListOfBundleAndHardwarePromotions().get(0), cdnDomain);
 		Assert.assertNotNull(deviceSummary);
-		Assert.assertEquals(deviceSummary.getDeviceId(), "093353");
-		Assert.assertEquals(deviceSummary.getPriority(), "1");
+		Assert.assertEquals("093353",deviceSummary.getDeviceId());
+		Assert.assertEquals("1",deviceSummary.getPriority());
 	}
 
 	@Test
@@ -2016,12 +2009,12 @@ public class DeviceServiceImplTest {
 				CommonMethods.getUtilityPriceForBundleAndHardware(),
 				CommonMethods.getListOfBundleAndHardwarePromotions(), "DEVICE_PAYG", true, null, cdnDomain);
 		Assert.assertNotNull(deviceSummary);
-		Assert.assertEquals(deviceSummary.getDeviceId(), "093353");
+		Assert.assertEquals("093353",deviceSummary.getDeviceId());
 	}
 	@Test
 	public void testappendPrefixString() {
 		String deviceId = CommonUtility.appendPrefixString("093353");
 		Assert.assertNotNull(deviceId);
-		Assert.assertEquals(deviceId, "sku93353");
+		Assert.assertEquals( "sku93353",deviceId);
 	}
 }

@@ -105,7 +105,7 @@ public class DeviceRecommendationServiceTest {
 
 		Assert.assertTrue(fd.getNoOfRecordsFound() > 0);
 		Assert.assertNotNull(fd);
-		Assert.assertEquals(fd.getDevice().get(0).getDeviceId(), "109382");
+		Assert.assertEquals( "109382",fd.getDevice().get(0).getDeviceId());
 	}
 
 }

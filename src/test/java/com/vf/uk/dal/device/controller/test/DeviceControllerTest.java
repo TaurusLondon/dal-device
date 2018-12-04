@@ -119,8 +119,8 @@ public class DeviceControllerTest {
 		List<DeviceTile> deviceTile = deviceMakeAndModelController.getListOfDeviceTile("apple", "iPhone-7",
 				"DIVICE_PAYM", "UPGRADE", "W_HH_SIMONLY", "110154", "093353", "40");
 		Assert.assertNotNull(deviceTile);
-		Assert.assertEquals(deviceTile.get(0).getDeviceId(), "93353");
-		Assert.assertEquals(deviceTile.get(0).getGroupName(), "Apple iPhone 6s");
+		Assert.assertEquals("93353",deviceTile.get(0).getDeviceId());
+		Assert.assertEquals( "Apple iPhone 6s",deviceTile.get(0).getGroupName());
 	}
 
 	@Test
@@ -167,8 +167,8 @@ public class DeviceControllerTest {
 	public void getDeviceTileById() {
 		List<DeviceTile> deviceTile = deviceController.getDeviceTileById("093353", "Upgrade", "W_HH_SIMONLY");
 		Assert.assertNotNull(deviceTile);
-		Assert.assertEquals(deviceTile.get(0).getDeviceId(), "93353");
-		Assert.assertEquals(deviceTile.get(0).getGroupName(), "Apple iPhone 6s");
+		Assert.assertEquals("93353",deviceTile.get(0).getDeviceId());
+		Assert.assertEquals( "Apple iPhone 6s",deviceTile.get(0).getGroupName());
 	}
 
 	@Test
@@ -191,7 +191,7 @@ public class DeviceControllerTest {
 		try {
 			deviceEntityController.getCommercialProduct(null, null);
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "Invalid query parameters");
+			Assert.assertEquals("Invalid query parameters",e.getMessage());
 		}
 	}
 
@@ -199,11 +199,11 @@ public class DeviceControllerTest {
 	public void notProductGroupByGroupType() {
 		List<Group> group = deviceEntityController.getProductGroupByGroupType("DEVICE_PAYM");
 		Assert.assertNotNull(group);
-		Assert.assertEquals(group.get(0).getName(), "Apple iPhone 6s");
+		Assert.assertEquals("Apple iPhone 6s",group.get(0).getName());
 		try {
 			deviceEntityController.getProductGroupByGroupType(null);
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "Invalid query parameters");
+			Assert.assertEquals("Invalid query parameters",e.getMessage());
 		}
 	}
 
@@ -333,8 +333,8 @@ public class DeviceControllerTest {
 		CacheDeviceTileResponse response =cacheDevice.getBody();
 		Assert.assertNotNull(response);
 		Assert.assertNotNull(cacheDevice);
-		Assert.assertEquals(response.getJobId(), "1234");
-		Assert.assertEquals(response.getJobStatus(), "Success");
+		Assert.assertEquals("1234",response.getJobId());
+		Assert.assertEquals("Success",response.getJobStatus());
 	}
 	// Accessory test cases START
 
@@ -368,7 +368,7 @@ public class DeviceControllerTest {
 		try {
 			insurance = accessoryInsuranceController.getInsuranceById(null, null);
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "Invalid input request received. Missing Device Id");
+			Assert.assertEquals( "Invalid input request received. Missing Device Id",e.getMessage());
 		}
 		Assert.assertNull(insurance);
 	}
@@ -379,7 +379,7 @@ public class DeviceControllerTest {
 		try {
 			insurance = accessoryInsuranceController.getInsuranceById("0933as5", null);
 		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(), "Invalid Device Id Sent In Request");
+			Assert.assertEquals( "Invalid Device Id Sent In Request",e.getMessage());
 		}
 		Assert.assertNull(insurance);
 	}
