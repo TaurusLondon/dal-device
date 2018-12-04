@@ -44,7 +44,7 @@ import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.dao.DeviceTileCacheDAO;
 import com.vf.uk.dal.device.model.AccessoryTileGroup;
 import com.vf.uk.dal.device.model.DeviceDetails;
-import com.vf.uk.dal.device.model.Error;
+import com.vf.uk.dal.device.model.ErrorPopulation;
 import com.vf.uk.dal.device.model.Insurances;
 import com.vf.uk.dal.device.service.CacheDeviceService;
 import com.vf.uk.dal.device.service.DeviceRecommendationService;
@@ -172,7 +172,7 @@ public class DeviceIntegrationTest {
 				.perform(MockMvcRequestBuilders.get("/accessory/queries/byDeviceId/?deviceId=093353")
 						.accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().isNotFound()).andReturn();
-		Error error = mapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<Error>() {
+		ErrorPopulation error = mapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<ErrorPopulation>() {
 		});
 		assertNotNull(error);
 		assertEquals("No Compatible Accessories found for given device Id", error.getMessage());
@@ -203,7 +203,7 @@ public class DeviceIntegrationTest {
 				.perform(MockMvcRequestBuilders.get("/insurance/queries/byDeviceId/?deviceId=093353")
 						.accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().isNotFound()).andReturn();
-		Error error = mapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<Error>() {
+		ErrorPopulation error = mapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<ErrorPopulation>() {
 		});
 		assertNotNull(error);
 		assertEquals("No Compatible Insurances found for given device Id", error.getMessage());
@@ -218,7 +218,7 @@ public class DeviceIntegrationTest {
 				.perform(MockMvcRequestBuilders.get("/deviceTile/queries/byMakeModel/?groupType=DEVICE_PAYM&make=apple&model=iPhone-7&journeyType=Upgrade")
 						.accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().isNotFound()).andReturn();
-		Error error = mapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<Error>() {
+		ErrorPopulation error = mapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<ErrorPopulation>() {
 		});
 		assertNotNull(error);
 		assertEquals("No Devices Found for the given input search criteria", error.getMessage());
@@ -230,7 +230,7 @@ public class DeviceIntegrationTest {
 		MvcResult mvcResult = mockMvc
 				.perform(MockMvcRequestBuilders.get("/deviceTile/queries/byDeviceVariant/?deviceId=093353").accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isNotFound()).andReturn();
-		Error error = mapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<Error>() {
+		ErrorPopulation error = mapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<ErrorPopulation>() {
 		});
 		assertNotNull(error);
 		assertEquals("No details found for given criteria", error.getMessage());
