@@ -1,10 +1,13 @@
 package com.vf.uk.dal.device.integration.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+import java.util.List;
+
+import org.elasticsearch.action.search.SearchResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,10 +19,15 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vf.uk.dal.device.DeviceApplication;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
@@ -34,18 +42,24 @@ import com.vf.uk.dal.device.controller.DeviceController;
 import com.vf.uk.dal.device.controller.DeviceDetailsController;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.dao.DeviceTileCacheDAO;
+import com.vf.uk.dal.device.model.AccessoryTileGroup;
+import com.vf.uk.dal.device.model.DeviceDetails;
+import com.vf.uk.dal.device.model.Error;
+import com.vf.uk.dal.device.model.Insurances;
 import com.vf.uk.dal.device.service.CacheDeviceService;
 import com.vf.uk.dal.device.service.DeviceRecommendationService;
 import com.vf.uk.dal.device.service.DeviceService;
 import com.vf.uk.dal.device.utils.DeviceESHelper;
 import com.vf.uk.dal.device.utils.DeviceServiceCommonUtility;
+
 /**
  * In order to run the controller class a bean of the ProductController is
  * initialized in @SpringBootTest
  */
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT,classes = {DeviceApplication.class,DeviceDetailsController.class})
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = { DeviceApplication.class,
+		DeviceDetailsController.class })
 public class DeviceIntegrationTest {
 	private MockMvc mockMvc;
 
@@ -90,16 +104,19 @@ public class DeviceIntegrationTest {
 
 	@Autowired
 	DeviceServiceCommonUtility deviceServiceCommonUtility;
-	
+
 	@Autowired
 	private WebApplicationContext WebApplicationContext;
 
-	
-	
+	private ObjectMapper mapper;
+
 	@Before
 	public void setupMockBehaviour() throws Exception {
 		aspect.beforeAdvice(null);
 		this.mockMvc = webAppContextSetup(WebApplicationContext).build();
+		mapper = new ObjectMapper();
+		mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		given(restTemplate
 				.getForObject("http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId="
 						+ "093353" + "&journeyType=" + null, BundleDetailsForAppSrv.class))
@@ -117,7 +134,6 @@ public class DeviceIntegrationTest {
 		String jsonString1 = new String(CommonMethods.readFile("\\rest-mock\\CUSTOMER-V1.json"));
 		RecommendedProductListResponse obj1 = new ObjectMapper().readValue(jsonString1,
 				RecommendedProductListResponse.class);
-		//given(registry.getRestTemplate()).willReturn(restTemplate);
 		given(restTemplate.postForObject("http://CUSTOMER-V1/customer/getRecommendedProductList/",
 				CommonMethods.getRecommendedDeviceListRequest("7741655541", "109381"),
 				RecommendedProductListResponse.class)).willReturn(obj1);
@@ -126,56 +142,115 @@ public class DeviceIntegrationTest {
 	}
 
 	@Test
-	public void notNullTestForgetDeviceDetailsWithJourneyType()  throws JsonProcessingException, Exception  {
-		mockMvc.perform(get("/device/093353").accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON)).andExpect(
-		status().is(200));
-	}
-	@Test
-	public void NotNullTestForAccessory()  throws JsonProcessingException, Exception  {
+	public void notNullTestForAccessory() throws JsonProcessingException, Exception {
 		given(response.getCommercialProduct(ArgumentMatchers.any()))
-		.willReturn(CommonMethods.getCommercialProductByDeviceIdForAccessory());
+				.willReturn(CommonMethods.getCommercialProductByDeviceIdForAccessory());
 		given(restTemplate.postForObject("http://PRICE-V1/price/product",
-				CommonMethods.bundleDeviceAndProductsList_For_GetAccessoriesOfDeviceIntegration(), PriceForProduct.class))
-						.willReturn(CommonMethods.getPriceForProduct_For_GetAccessoriesForDevice());
-		mockMvc.perform(get("/accessory/queries/byDeviceId/?deviceId=093353").accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON)).andExpect(
-		status().is(200));
+				CommonMethods.bundleDeviceAndProductsList_For_GetAccessoriesOfDeviceIntegration(),
+				PriceForProduct.class)).willReturn(CommonMethods.getPriceForProduct_For_GetAccessoriesForDevice());
+		MvcResult mvcResult = mockMvc
+				.perform(MockMvcRequestBuilders.get("/accessory/queries/byDeviceId/?deviceId=093353")
+						.accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+		List<AccessoryTileGroup> accessoryDetails = mapper.readValue(mvcResult.getResponse().getContentAsString(),
+				new TypeReference<List<AccessoryTileGroup>>() {
+				});
+		assertNotNull(accessoryDetails);
+		assertEquals(accessoryDetails.get(0).getGroupName(), "Apple iPhone 6s cover");
+		assertEquals(accessoryDetails.get(0).getAccessories().get(0).getSkuId(), "093329");
+		assertEquals(accessoryDetails.get(0).getAccessories().get(0).getName(),
+				"Apple iPhone 7 Silicone Case Midnight Blue");
+		assertEquals(accessoryDetails.get(0).getAccessories().get(0).getColour(), "Midnight Blue");
 	}
-	@Test
-	public void NullTestForAccessory()  throws JsonProcessingException, Exception  {
-		
-		mockMvc.perform(get("/accessory/queries/byDeviceId/?deviceId=093353").accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON)).andExpect(
-		status().is(404));
-	}
-	@Test
-	public void NotNullTestForInsurance()  throws JsonProcessingException, Exception  {
-		given(response.getCommercialProduct(ArgumentMatchers.any()))
-		.willReturn(CommonMethods.getCommercialProductForInsurance());
-		mockMvc.perform(get("/insurance/queries/byDeviceId/?deviceId=093353").accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON)).andExpect(
-		status().is(200));
-	}
-	@Test
-	public void NullTestForInsurance()  throws JsonProcessingException, Exception  {
-		mockMvc.perform(get("/insurance/queries/byDeviceId/?deviceId=093353").accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON)).andExpect(
-		status().is(404));
-	}
-	@Test
-	public void NullTestForgetDeviceTileMakeAndModel()  throws JsonProcessingException, Exception  {
-		given(response.getCommercialProductFromJson(ArgumentMatchers.any()))
-		.willReturn(CommonMethods.getCommercialProductsListOfMakeAndModel());
-		mockMvc.perform(get("/deviceTile/queries/byMakeModel/?groupType=DEVICE_PAYM&make=apple&model=iPhone-7&journeyType=Upgrade").accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON)).andExpect(
-		status().is(404));
-	}
-	@Test
-	public void NullTestForgetDeviceTileById()  throws JsonProcessingException, Exception  {
-		mockMvc.perform(get("/deviceTile/queries/byDeviceVariant/?deviceId=093353").accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON));
-	}
-	
-}
 
+	@Test
+	public void nullTestForAccessory() throws JsonProcessingException, Exception {
+		SearchResponse responseSearch = new SearchResponse();
+		given(response.getCommercialProduct(responseSearch))
+				.willReturn(CommonMethods.getCommercialProductByDeviceIdForAccessory());
+		MvcResult mvcResult = mockMvc
+				.perform(MockMvcRequestBuilders.get("/accessory/queries/byDeviceId/?deviceId=093353")
+						.accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isNotFound()).andReturn();
+		Error error = mapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<Error>() {
+		});
+		assertNotNull(error);
+		assertEquals("No Compatible Accessories found for given device Id", error.getMessage());
+		assertEquals("DEVICE_INVALID_INPUT_011", error.getCode());
+	}
+
+	@Test
+	public void notNullTestForInsurance() throws JsonProcessingException, Exception {
+		given(response.getCommercialProduct(ArgumentMatchers.any()))
+				.willReturn(CommonMethods.getCommercialProductForInsurance());
+		MvcResult mvcResult = mockMvc
+				.perform(MockMvcRequestBuilders.get("/insurance/queries/byDeviceId/?deviceId=093353")
+						.accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+		Insurances insurances = mapper.readValue(mvcResult.getResponse().getContentAsString(),
+				new TypeReference<Insurances>() {
+				});
+		assertNotNull(insurances);
+		assertEquals(insurances.getMinCost(), "20");
+		assertEquals(insurances.getInsuranceList().get(0).getId(), "093329");
+		assertEquals(insurances.getInsuranceList().get(0).getName(), "Apple iPhone 7 Silicone Case Midnight Blue");
+		assertEquals(insurances.getInsuranceList().get(0).getPrice().getGross(), "35");
+	}
+
+	@Test
+	public void nullTestForInsurance() throws JsonProcessingException, Exception {
+		MvcResult mvcResult = mockMvc
+				.perform(MockMvcRequestBuilders.get("/insurance/queries/byDeviceId/?deviceId=093353")
+						.accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isNotFound()).andReturn();
+		Error error = mapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<Error>() {
+		});
+		assertNotNull(error);
+		assertEquals("No Compatible Insurances found for given device Id", error.getMessage());
+		assertEquals("DEVICE_INVALID_INPUT_052", error.getCode());
+	}
+
+	@Test
+	public void nullTestForgetDeviceTileMakeAndModel() throws JsonProcessingException, Exception {
+		given(response.getCommercialProductFromJson(ArgumentMatchers.any()))
+				.willReturn(CommonMethods.getCommercialProductsListOfMakeAndModel());
+		MvcResult mvcResult = mockMvc
+				.perform(MockMvcRequestBuilders.get("/deviceTile/queries/byMakeModel/?groupType=DEVICE_PAYM&make=apple&model=iPhone-7&journeyType=Upgrade")
+						.accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isNotFound()).andReturn();
+		Error error = mapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<Error>() {
+		});
+		assertNotNull(error);
+		assertEquals("No Devices Found for the given input search criteria", error.getMessage());
+		assertEquals("DEVICE_INVALID_INPUT_013", error.getCode());
+	}
+
+	@Test
+	public void nullTestForgetDeviceTileById() throws JsonProcessingException, Exception {
+		MvcResult mvcResult = mockMvc
+				.perform(MockMvcRequestBuilders.get("/deviceTile/queries/byDeviceVariant/?deviceId=093353").accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isNotFound()).andReturn();
+		Error error = mapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<Error>() {
+		});
+		assertNotNull(error);
+		assertEquals("No details found for given criteria", error.getMessage());
+		assertEquals("DEVICE_INVALID_INPUT_053", error.getCode());
+	}
+
+	@Test
+	public void notNullTestForgetDeviceDetailsWithJourneyType() throws JsonProcessingException, Exception {
+		MvcResult mvcResult = mockMvc
+				.perform(MockMvcRequestBuilders.get("/device/093353").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+		DeviceDetails deviceDetails = mapper.readValue(mvcResult.getResponse().getContentAsString(),
+				new TypeReference<DeviceDetails>() {
+				});
+		assertNotNull(deviceDetails);
+		assertEquals(deviceDetails.getDeviceId(), "092572");
+		assertEquals(deviceDetails.getLeadPlanId(), "110104");
+		assertEquals(deviceDetails.getProductClass(), "Handset");
+		assertEquals(deviceDetails.getName(), "Apple iPhone 7 Plus 128GB silver");
+		assertEquals(deviceDetails.getEquipmentDetail().getMake(), "apple");
+		assertEquals(deviceDetails.getEquipmentDetail().getModel(), "iphone-7-plus");
+	}
+}

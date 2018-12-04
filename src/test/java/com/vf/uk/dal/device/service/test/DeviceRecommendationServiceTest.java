@@ -72,6 +72,7 @@ public class DeviceRecommendationServiceTest {
 		for (InstalledProduct instProd : instProds) {
 			prodId = instProd.getId();
 		}
+		Assert.assertNotNull(req);
 		Assert.assertEquals(msisdn, serialNum);
 		Assert.assertEquals(deviceId, prodId);
 	}
@@ -103,6 +104,8 @@ public class DeviceRecommendationServiceTest {
 		fd = deviceRecommendationService.getRecommendedDeviceList(msisdn, deviceId, fd);
 
 		Assert.assertTrue(fd.getNoOfRecordsFound() > 0);
+		Assert.assertNotNull(fd);
+		Assert.assertEquals(fd.getDevice().get(0).getDeviceId(), "109382");
 	}
 
 }
