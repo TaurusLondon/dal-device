@@ -1576,7 +1576,7 @@ public class DeviceServiceImplTest {
 	public void testGetDoubleFrmString() {
 		Double price = DeviceUtils.getDoubleFrmString("2.5");
 		Assert.assertNotNull(price);
-		Assert.assertEquals(price, 2.5, 0);
+		Assert.assertEquals( 2.5,price, 0);
 	}
 
 	@Test
@@ -1627,7 +1627,7 @@ public class DeviceServiceImplTest {
 			deviceMakeAndModelServiceImpl.getListOfDeviceTile_Implementation("apple", "iPhone-7", "1232_41ed", "093353",
 					"Acquisition", value, "123", "180232");
 		} catch (Exception e) {
-			Assert.assertEquals( e.getMessage(),"Received Null Values for the given product group type");
+			Assert.assertEquals("Received Null Values for the given product group type", e.getMessage());
 		}
 	}
 
@@ -1638,7 +1638,7 @@ public class DeviceServiceImplTest {
 			deviceMakeAndModelServiceImpl.getListOfDeviceTile_Implementation("apple", "iPhone-7", STRING_DEVICE_PAYG,
 					"093353", "Acquisition", value, "123", "180232");
 		} catch (Exception e) {
-			Assert.assertEquals( e.getMessage(),"No Devices Found for the given input search criteria");
+			Assert.assertEquals("No Devices Found for the given input search criteria", e.getMessage());
 		}
 	}
 

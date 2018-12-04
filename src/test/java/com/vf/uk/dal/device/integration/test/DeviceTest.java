@@ -341,10 +341,10 @@ public class DeviceTest {
 			Insurances insurance = null;
 			insurance = accessoryInsuranceController.getInsuranceById("093353", null);
 			Assert.assertNotNull(insurance);
-			assertEquals(insurance.getMinCost(), "");
-			assertEquals(insurance.getInsuranceList().get(0).getId(), "");
-			assertEquals(insurance.getInsuranceList().get(0).getName(), "");
-			assertEquals(insurance.getInsuranceList().get(0).getPrice().getGross(), "");
+			assertEquals("",insurance.getMinCost());
+			assertEquals("",insurance.getInsuranceList().get(0).getId());
+			assertEquals("",insurance.getInsuranceList().get(0).getName());
+			assertEquals("",insurance.getInsuranceList().get(0).getPrice().getGross());
 			insurance = accessoryInsuranceController.getInsuranceById("93353", null);
 		} catch (Exception e) {
 			assertEquals( "No Compatible Insurances found for given device Id",e.getMessage());
@@ -871,7 +871,7 @@ public class DeviceTest {
 		ResponseEntity<CacheDeviceTileResponse> cacheResponse = cacheDeviceAndReviewController
 				.cacheDeviceTile("DEVICE_PAYM");
 		assertNotNull(cacheResponse);
-		assertEquals(cacheResponse.getStatusCodeValue(), 201);
+		assertEquals( 201,cacheResponse.getStatusCodeValue());
 		assertEquals( "1234",cacheResponse.getBody().getJobId());
 		assertEquals( "Success",cacheResponse.getBody().getJobStatus());
 	}
@@ -1004,7 +1004,7 @@ public class DeviceTest {
 		try {
 			cacheDeviceAndReviewController.cacheDeviceTile("");
 		} catch (Exception e) {
-			assertEquals(e.getMessage(),"Group Type is null or Empty String.");
+			assertEquals("Group Type is null or Empty String.",e.getMessage());
 			try {
 				cacheDeviceAndReviewController.cacheDeviceTile("INVALID_GT");
 			} catch (Exception ex) {

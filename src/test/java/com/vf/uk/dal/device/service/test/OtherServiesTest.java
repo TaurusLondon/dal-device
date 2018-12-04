@@ -1036,7 +1036,7 @@ public class OtherServiesTest {
 			ds.setPriceInfo(pb);
 			Double price = DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds, FULL_DURATION_DISCOUNT);
 			assertNotNull(price);
-			assertEquals(price,1212.0,0);
+			assertEquals(1212.0,price,0);
 		} catch (Exception e) {
 		}
 		try {
