@@ -13,6 +13,7 @@ import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.client.RestTemplate;
@@ -30,7 +31,11 @@ import com.vf.uk.dal.device.controller.DeviceMakeAndModelController;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.dao.DeviceTileCacheDAO;
 import com.vf.uk.dal.device.model.AccessoryTileGroup;
+import com.vf.uk.dal.device.model.CacheDeviceTileResponse;
+import com.vf.uk.dal.device.model.DeviceTile;
 import com.vf.uk.dal.device.model.Insurances;
+import com.vf.uk.dal.device.model.product.CommercialProduct;
+import com.vf.uk.dal.device.model.productgroups.Group;
 import com.vf.uk.dal.device.service.AccessoryInsuranceService;
 import com.vf.uk.dal.device.service.CacheDeviceServiceImpl;
 import com.vf.uk.dal.device.service.DeviceMakeAndModelServiceImpl;
@@ -111,8 +116,11 @@ public class DeviceControllerTest {
 
 	@Test
 	public void getListOfDeviceTileNotNull() {
-		Assert.assertNotNull(deviceMakeAndModelController.getListOfDeviceTile("apple", "iPhone-7", "DIVICE_PAYM",
-				"UPGRADE", "W_HH_SIMONLY", "110154", "093353", "40"));
+		List<DeviceTile> deviceTile = deviceMakeAndModelController.getListOfDeviceTile("apple", "iPhone-7",
+				"DIVICE_PAYM", "UPGRADE", "W_HH_SIMONLY", "110154", "093353", "40");
+		Assert.assertNotNull(deviceTile);
+		Assert.assertEquals(deviceTile.get(0).getDeviceId(), "93353");
+		Assert.assertEquals(deviceTile.get(0).getGroupName(), "Apple iPhone 6s");
 	}
 
 	@Test
@@ -157,8 +165,10 @@ public class DeviceControllerTest {
 
 	@Test
 	public void getDeviceTileById() {
-		Assert.assertNotNull(deviceController.getDeviceTileById("093353", "Upgrade", "W_HH_SIMONLY"));
-
+		List<DeviceTile> deviceTile = deviceController.getDeviceTileById("093353", "Upgrade", "W_HH_SIMONLY");
+		Assert.assertNotNull(deviceTile);
+		Assert.assertEquals(deviceTile.get(0).getDeviceId(), "93353");
+		Assert.assertEquals(deviceTile.get(0).getGroupName(), "Apple iPhone 6s");
 	}
 
 	@Test
@@ -172,21 +182,28 @@ public class DeviceControllerTest {
 
 	@Test
 	public void notNullgetCommercialProduct() {
-		Assert.assertNotNull(deviceEntityController.getCommercialProduct("093353", null));
+		List<CommercialProduct> commercialProd = deviceEntityController.getCommercialProduct("093353", null);
+		Assert.assertNotNull(commercialProd);
 		Assert.assertNotNull(deviceEntityController.getCommercialProduct("093353,093329", null));
 		Assert.assertNotNull(deviceEntityController.getCommercialProduct(null, "iPhone 7 Silicone Case mid blue"));
+		Assert.assertEquals(commercialProd.get(0).getId(), "093329");
+		Assert.assertEquals(commercialProd.get(0).getName(), "iPhone 7 Silicone Case mid blue");
 		try {
 			deviceEntityController.getCommercialProduct(null, null);
 		} catch (Exception e) {
+			Assert.assertEquals(e.getMessage(), "Invalid query parameters");
 		}
 	}
 
 	@Test
 	public void notProductGroupByGroupType() {
-		Assert.assertNotNull(deviceEntityController.getProductGroupByGroupType("DEVICE_PAYM"));
+		List<Group> group = deviceEntityController.getProductGroupByGroupType("DEVICE_PAYM");
+		Assert.assertNotNull(group);
+		Assert.assertEquals(group.get(0).getName(), "Apple iPhone 6s");
 		try {
 			deviceEntityController.getProductGroupByGroupType(null);
 		} catch (Exception e) {
+			Assert.assertEquals(e.getMessage(), "Invalid query parameters");
 		}
 	}
 
@@ -203,7 +220,7 @@ public class DeviceControllerTest {
 			Assert.assertEquals("Invalid query parameters", e.getMessage());
 		}
 		try {
-			
+
 			deviceEntityController.getProductGroupModel("093353,092660");
 		} catch (Exception e) {
 			Assert.assertEquals("Received Null Values for the given device id", e.getMessage());
@@ -312,25 +329,19 @@ public class DeviceControllerTest {
 
 	@Test
 	public void NotnullTestForCacheDeviceTile() {
-		try {
-			cacheDeviceAndReviewController.cacheDeviceTile("DEVICE_PAYM");
-		} catch (Exception e) {
-			Assert.assertEquals("Invalid Group Type sent in the request", e.getMessage());
-		}
+		ResponseEntity<CacheDeviceTileResponse> cacheDevice =cacheDeviceAndReviewController.cacheDeviceTile("DEVICE_PAYM");
+		CacheDeviceTileResponse response =cacheDevice.getBody();
+		Assert.assertNotNull(response);
+		Assert.assertNotNull(cacheDevice);
+		Assert.assertEquals(response.getJobId(), "1234");
+		Assert.assertEquals(response.getJobStatus(), "Success");
 	}
 	// Accessory test cases START
 
 	@Test
 	public void notNullTestForAccessoriesOfDevice() {
-		try {
-			List<AccessoryTileGroup> accessoryDetails = new ArrayList<>();
-			accessoryDetails = accessoryInsuranceController.getAccessoriesOfDevice("093353", "Upgrade",
-					"W_HH_PAYM_OC_02");
-			Assert.assertNotNull(accessoryDetails);
-		} catch (Exception e) {
-			Assert.assertEquals("Invalid Group Type sent in the request", e.getMessage());
-
-		}
+		List<AccessoryTileGroup> accessoryDetails = accessoryInsuranceController.getAccessoriesOfDevice("093353", "Upgrade", "W_HH_PAYM_OC_02");
+		Assert.assertNotNull(accessoryDetails);
 	}
 
 	@Test
@@ -357,7 +368,7 @@ public class DeviceControllerTest {
 		try {
 			insurance = accessoryInsuranceController.getInsuranceById(null, null);
 		} catch (Exception e) {
-
+			Assert.assertEquals(e.getMessage(), "Invalid input request received. Missing Device Id");
 		}
 		Assert.assertNull(insurance);
 	}
@@ -368,7 +379,7 @@ public class DeviceControllerTest {
 		try {
 			insurance = accessoryInsuranceController.getInsuranceById("0933as5", null);
 		} catch (Exception e) {
-
+			Assert.assertEquals(e.getMessage(), "Invalid Device Id Sent In Request");
 		}
 		Assert.assertNull(insurance);
 	}

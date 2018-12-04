@@ -1,5 +1,9 @@
 package com.vf.uk.dal.device.service.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.BDDMockito.given;
 
 import java.text.SimpleDateFormat;
@@ -10,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.simple.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -73,7 +78,7 @@ public class OtherServiesTest {
 	public static final String STRING_DEVICE_NEARLY_NEW = "DEVICE_NEARLY_NEW";
 	public static final String STRING_DATADEVICE_PAYM = "DATA_DEVICE_PAYM";
 	public static final String STRING_DATADEVICE_PAYG = "DATA_DEVICE_PAYG";
-	
+
 	@MockBean
 	DeviceTileCacheDAOImpl deviceCacheDAOMock;
 
@@ -144,8 +149,8 @@ public class OtherServiesTest {
 		BundleModelAndPrice bundleModelAndPrice = new BundleModelAndPrice();
 		bundleModelAndPrice.setBundleModel(CommonMethods.getBundleModelListForBundleList().get(0));
 		bundleModelAndPrice.setBundlePrice(CommonMethods.getBundlePrice());
-		given(deviceConditionallHelper.calculatePlan(ArgumentMatchers.anyFloat(), ArgumentMatchers.any(), ArgumentMatchers.any()))
-				.willReturn(bundleModelAndPrice);
+		given(deviceConditionallHelper.calculatePlan(ArgumentMatchers.anyFloat(), ArgumentMatchers.any(),
+				ArgumentMatchers.any())).willReturn(bundleModelAndPrice);
 		List<String> variantsList = new ArrayList<String>();
 		variantsList.add("093353|1");
 		variantsList.add("092660|5");
@@ -162,46 +167,53 @@ public class OtherServiesTest {
 	}
 
 	@Test
-	public void nullTestgetListOfDeviceDetailsForException_One() {
+	public void nulltestGetListOfDeviceDetailsForExceptionWithOffer() {
 		Map<String, String> queryparams = new HashMap<>();
 		queryparams.put("journeyType", "journeyType");
 		queryparams.put("offerCode", "W_HH_OC_01");
 		queryparams.put("deviceId", "093353");
-		deviceDetailsController.getListOfDeviceDetails(queryparams);
+		List<DeviceDetails> device = deviceDetailsController.getListOfDeviceDetails(queryparams);
+		assertNotNull(device);
+		assertEquals(device.get(0).getDeviceId(), "092572");
 	}
 
 	@Test
-	public void nullTestgetListOfDeviceDetailsForException() {
+	public void nulltestGetListOfDeviceDetailsForException() {
 		Map<String, String> queryparams = new HashMap<>();
 		queryparams.put("journeyType", null);
 		queryparams.put("offerCode", "W_HH_OC_01");
 		queryparams.put("deviceId", "093353");
-		deviceDetailsController.getListOfDeviceDetails(queryparams);
+		List<DeviceDetails> device = deviceDetailsController.getListOfDeviceDetails(queryparams);
+		assertNotNull(device);
+		assertEquals(device.get(0).getDeviceId(), "092572");
 	}
 
 	@Test
-	public void nullDeviceIdTestgetListOfDeviceDetailsForException_One() {
+	public void nullDeviceIdtestGetListOfDeviceDetailsForExceptionWithoutDeviceId() {
 		try {
 			Map<String, String> queryparams = new HashMap<>();
 			queryparams.put("journeyType", "journeyType");
 			queryparams.put("offerCode", "W_HH_OC_01");
 			deviceDetailsController.getListOfDeviceDetails(queryparams);
 		} catch (Exception e) {
+			assertEquals(e.getMessage(), "Invalid input request received. Missing Device Id");
 		}
 	}
 
 	@Test
-	public void notNullTestForgetListOfDeviceDetails() {
+	public void notNullTestForGetListOfDeviceDetails() {
 		List<DeviceDetails> deviceDetails;
 		given(deviceDAOMock.getPriceForBundleAndHardware(ArgumentMatchers.anyList(), ArgumentMatchers.anyString(),
-				ArgumentMatchers.anyString())).willReturn(CommonMethods.getPriceForBundleAndHardwareListFromTupleList());
+				ArgumentMatchers.anyString()))
+						.willReturn(CommonMethods.getPriceForBundleAndHardwareListFromTupleList());
 		deviceDetails = deviceDetailsController
 				.getListOfDeviceDetails(CommonMethods.getQueryParamsMapForDeviceDetails("093353"));
 		Assert.assertNotNull(deviceDetails);
+		assertEquals(deviceDetails.get(0).getDeviceId(), "092572");
 	}
 
 	@Test
-	public void notNullTestForgetListOfDeviceDetailsWithoutLeadPlanId() {
+	public void notNullTestForGetListOfDeviceDetailsWithoutLeadPlanId() {
 		List<DeviceDetails> deviceDetails;
 		CommercialProduct commercial = CommonMethods.getCommercialProductByDeviceId_093353();
 		commercial.setLeadPlanId(null);
@@ -209,14 +221,16 @@ public class OtherServiesTest {
 		given(response.getMerchandisingPromotion(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getMerchPromotionForListOfDevicedetails());
 		given(deviceDAOMock.getPriceForBundleAndHardware(ArgumentMatchers.anyList(), ArgumentMatchers.anyString(),
-				ArgumentMatchers.anyString())).willReturn(CommonMethods.getPriceForBundleAndHardwareListFromTupleList());
+				ArgumentMatchers.anyString()))
+						.willReturn(CommonMethods.getPriceForBundleAndHardwareListFromTupleList());
 		deviceDetails = deviceDetailsController
 				.getListOfDeviceDetails(CommonMethods.getQueryParamsMapForDeviceDetails("093353"));
 		Assert.assertNotNull(deviceDetails);
+		assertEquals(deviceDetails.get(0).getDeviceId(), "093353");
 	}
 
 	@Test
-	public void nuullTestForgetListOfDeviceDetailsWithoutLeadPlanId() {
+	public void nullTestForGetListOfDeviceDetailsWithoutLeadPlanId() {
 		given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(null);
 		given(response.getMerchandisingPromotion(ArgumentMatchers.any())).willReturn(null);
 		given(deviceDAOMock.getPriceForBundleAndHardware(ArgumentMatchers.anyList(), ArgumentMatchers.anyString(),
@@ -230,33 +244,28 @@ public class OtherServiesTest {
 	}
 
 	@Test
-	public void emptyParamTestForgetListOfDeviceDetails() throws Exception {
+	public void emptyParamTestForGetListOfDeviceDetails() throws Exception {
 		List<DeviceDetails> deviceDetails = null;
 		try {
 			Map<String, String> map = new HashMap<>();
-			deviceDetails = deviceDetailsController
-					.getListOfDeviceDetails(map);
+			deviceDetails = deviceDetailsController.getListOfDeviceDetails(map);
 		} catch (Exception e) {
-
+			Assert.assertEquals(e.getMessage(), "Invalid query parameters");
 		}
 		Assert.assertNull(deviceDetails);
 	}
 
 	@Test
-	public void invalidParamTestForgetListOfDeviceDetails() throws Exception {
+	public void invalidParamTestForGetListOfDeviceDetails() throws Exception {
 		List<DeviceDetails> deviceDetails = null;
 		try {
 			deviceDetails = deviceDetailsController
 					.getListOfDeviceDetails(CommonMethods.getQueryParamsMapForDeviceDetails(null, null));
 		} catch (Exception e) {
-
+			Assert.assertEquals(e.getMessage(), "Invalid input request received. Missing Device Id");
 		}
 		Assert.assertNull(deviceDetails);
 	}
-
-	
-
-	
 
 	/**
 	 * Start test suit for getDeviceReviewDetails API
@@ -271,27 +280,35 @@ public class OtherServiesTest {
 		try {
 			given(deviceDAOMock.getDeviceReviewDetails(ArgumentMatchers.anyString()))
 					.willReturn(CommonMethods.getReviewsJson());
-			cacheDeviceAndReviewController.getDeviceReviewDetails("093353");
+			JSONObject json = cacheDeviceAndReviewController.getDeviceReviewDetails("093353");
+			assertNotNull(json);
 		} catch (Exception exception) {
-			// assertEquals("com.vf.uk.dal.common.exception.ApplicationException:
-			// No reviews found for the given deviceId", exception.toString());
 		}
 	}
 
-	@Test(expected = ApplicationException.class)
+	@Test
 	public void testGetDeviceReviewDetailsNull() {
-		given(this.deviceDAOMock.getDeviceReviewDetails("093353")).willReturn(null);
-		cacheDeviceAndReviewController.getDeviceReviewDetails("093353");
+		try {
+			given(this.deviceDAOMock.getDeviceReviewDetails("093353")).willReturn(null);
+			cacheDeviceAndReviewController.getDeviceReviewDetails("093353");
+		} catch (Exception exception) {
+			assertEquals(exception.getMessage(), "No reviews found for the given deviceId");
+		}
 	}
 
 	@Test
 	public void notNullgetCommercialProduct() {
-		Assert.assertNotNull(deviceEntityController.getCommercialProduct("093353", null));
+		List<CommercialProduct> cp = deviceEntityController.getCommercialProduct("093353", null);
 		Assert.assertNotNull(deviceEntityController.getCommercialProduct("093353,093329", null));
 		Assert.assertNotNull(deviceEntityController.getCommercialProduct(null, "iPhone 7 Silicone Case mid blue"));
+		assertEquals(cp.get(0).getId(), "093329");
+		assertEquals(cp.get(0).getOrder(), 179050, 0);
+		assertEquals(cp.get(0).getName(), "iPhone 7 Silicone Case mid blue");
+		assertEquals(cp.get(0).getProductClass(), "Accessories");
 		try {
 			deviceEntityController.getCommercialProduct(null, null);
 		} catch (Exception e) {
+			assertEquals(e.getMessage(), "Invalid query parameters");
 		}
 		try {
 			given(response.getCommercialProductFromJson(ArgumentMatchers.any())).willReturn(Collections.emptyList());
@@ -303,367 +320,310 @@ public class OtherServiesTest {
 
 	@Test
 	public void notProductGroupByGroupType() {
-		Assert.assertNotNull(deviceEntityController.getProductGroupByGroupType("DEVICE_PAYM"));
+		List<com.vf.uk.dal.device.model.productgroups.Group> group = deviceEntityController
+				.getProductGroupByGroupType("DEVICE_PAYM");
+		assertNotNull(group);
+		assertEquals(group.get(0).getName(), "Apple iPhone 6s");
+		assertEquals(group.get(0).getGroupPriority(), 3, 0);
+		assertEquals(group.get(0).getGroupType(), "DEVICE");
 		try {
 			deviceEntityController.getProductGroupByGroupType(null);
 		} catch (Exception e) {
+			assertEquals(e.getMessage(), "Invalid query parameters");
 		}
 		try {
 			given(response.getListOfGroupFromJson(ArgumentMatchers.any())).willReturn(Collections.emptyList());
 			deviceEntityController.getProductGroupByGroupType("DEVICE_PAYM");
 		} catch (Exception e) {
+			assertEquals(e.getMessage(), "Received Null Values for the given product group type");
 		}
 	}
 
 	@Test
 	public void notGetProductGroupModel() {
-		try {
-			given(response.getListOfProductModel(ArgumentMatchers.any())).willReturn(CommonMethods.getProductModel());
-			given(response.getListOfProductGroupModel(ArgumentMatchers.any()))
-					.willReturn(CommonMethods.getProductGroupModelForDeliveryMethod());
-			Assert.assertNotNull(deviceEntityController.getProductGroupModel("093353,092660"));
-		} catch (Exception e1) {
-		}
+		given(response.getListOfProductModel(ArgumentMatchers.any())).willReturn(CommonMethods.getProductModel());
+		given(response.getListOfProductGroupModel(ArgumentMatchers.any()))
+				.willReturn(CommonMethods.getProductGroupModelForDeliveryMethod());
+		Assert.assertNotNull(deviceEntityController.getProductGroupModel("093353,092660"));
 		try {
 			deviceEntityController.getProductGroupModel(null);
 		} catch (Exception e) {
+			assertEquals(e.getMessage(), "Invalid query parameters");
 		}
 		try {
 			given(response.getListOfProductModel(ArgumentMatchers.any())).willReturn(CommonMethods.getProductModel());
 			given(response.getListOfProductGroupModel(ArgumentMatchers.any())).willReturn(new ArrayList<>());
 			deviceEntityController.getProductGroupModel("093353,092660");
 		} catch (Exception e) {
+			assertEquals(e.getMessage(), "Received Null Values for the given device id");
 		}
 	}
 
 	@Test
-	public void TestDeviceServiceImplUtility() {
-		try {
-			DeviceServiceImplUtility.getJourney("");
-		} catch (Exception e) {
-		}
+	public void testDeviceServiceImplUtility() {
+		String journey = DeviceServiceImplUtility.getJourney("");
+		assertNotNull(journey);
+		assertEquals(journey, "Acquisition");
 	}
 
 	@Test
-	public void TestDeviceServiceImplUtility_One() {
-		try {
-			DeviceServiceImplUtility.getJourney(JOURNEY_TYPE_SECONDLINE);
-		} catch (Exception e) {
-		}
+	public void testDeviceServiceImplUtilitySecondLine() {
+		String journey = DeviceServiceImplUtility.getJourney(JOURNEY_TYPE_SECONDLINE);
+		assertNotNull(journey);
+		assertEquals(journey, JOURNEY_TYPE_SECONDLINE);
 	}
 
 	@Test
-	public void TestDeviceServiceImplUtility_Two() {
-		try {
-			Device device = CommonMethods.getDevice();
-			Map<String, MerchandisingPromotion> map = new HashMap<>();
-			DeviceServiceImplUtility.getPromotionForDeviceList(map, device);
-		} catch (Exception e) {
-		}
+	public void testDeviceServiceImplUtilityGetPromotion() {
+		Device device = CommonMethods.getDevice();
+		Map<String, MerchandisingPromotion> map = new HashMap<>();
+		DeviceServiceImplUtility.getPromotionForDeviceList(map, device);
 	}
 
 	@Test
-	public void TestDeviceServiceImplUtility_Three() {
-		try {
-			Map<String, MerchandisingPromotion> map = new HashMap<>();
-			map.put("1234", CommonMethods.getMP());
-			Device device2 = CommonMethods.getDevice_Two();
-			DeviceServiceImplUtility.getPromotionForDeviceList(map, device2);
-		} catch (Exception e) {
-		}
+	public void testDeviceServiceImplUtilityGetPromotionWithMp() {
+		Map<String, MerchandisingPromotion> map = new HashMap<>();
+		map.put("1234", CommonMethods.getMP());
+		Device device2 = CommonMethods.getDevice_Two();
+		DeviceServiceImplUtility.getPromotionForDeviceList(map, device2);
 	}
 
 	@Test
-	public void TestDeviceServiceImplUtility_Four() {
-		try {
-			Map<String, MerchandisingPromotion> map = new HashMap<>();
-			map.put("1234", CommonMethods.getMP());
-			Device device1 = CommonMethods.getDevice_One();
-			DeviceServiceImplUtility.getPromotionForDeviceList(map, device1);
-		} catch (Exception e) {
-		}
+	public void testDeviceServiceImplUtilityGetPromotionWithMpAndDevice() {
+		Map<String, MerchandisingPromotion> map = new HashMap<>();
+		map.put("1234", CommonMethods.getMP());
+		Device device1 = CommonMethods.getDevice_One();
+		DeviceServiceImplUtility.getPromotionForDeviceList(map, device1);
 	}
 
 	@Test
-	public void TestDeviceServiceImplUtilityHW_Two() {
-		try {
-			Device device = CommonMethods.getDeviceHW();
-			Map<String, MerchandisingPromotion> map = new HashMap<>();
-			DeviceServiceImplUtility.getPromotionForDeviceList(map, device);
-		} catch (Exception e) {
-		}
+	public void testDeviceServiceImplUtilityGetPromotionWithHardwareDevice() {
+		Device device = CommonMethods.getDeviceHW();
+		Map<String, MerchandisingPromotion> map = new HashMap<>();
+		DeviceServiceImplUtility.getPromotionForDeviceList(map, device);
 	}
 
 	@Test
-	public void TestDeviceServiceImplUtilityHW_Three() {
-		try {
-			Map<String, MerchandisingPromotion> map = new HashMap<>();
-			map.put("1234", CommonMethods.getMP());
-			Device device2 = CommonMethods.getDeviceHW_Two();
-			DeviceServiceImplUtility.getPromotionForDeviceList(map, device2);
-		} catch (Exception e) {
-		}
+	public void testDeviceServiceImplUtilityHWGetPromotionWithMp() {
+		Map<String, MerchandisingPromotion> map = new HashMap<>();
+		map.put("1234", CommonMethods.getMP());
+		Device device2 = CommonMethods.getDeviceHW_Two();
+		DeviceServiceImplUtility.getPromotionForDeviceList(map, device2);
 	}
 
 	@Test
-	public void TestDeviceServiceImplUtilityHW_Four() {
-		try {
-			Map<String, MerchandisingPromotion> map = new HashMap<>();
-			map.put("1234", CommonMethods.getMP());
-			Device device1 = CommonMethods.getDeviceHW_One();
-			DeviceServiceImplUtility.getPromotionForDeviceList(map, device1);
-		} catch (Exception e) {
-		}
+	public void testDeviceServiceImplUtilityGetPromotionWithMpHWDevice() {
+		Map<String, MerchandisingPromotion> map = new HashMap<>();
+		map.put("1234", CommonMethods.getMP());
+		Device device1 = CommonMethods.getDeviceHW_One();
+		DeviceServiceImplUtility.getPromotionForDeviceList(map, device1);
 	}
 
 	@Test
-	public void TestDeviceServiceImplUtilityWithDATA_Four() {
-		try {
-			Map<String, MerchandisingPromotion> map = new HashMap<>();
-			map.put("1234", CommonMethods.getMP());
-			Device device1 = CommonMethods.getDeviceWithDetails_One();
-			DeviceServiceImplUtility.getPromotionForDeviceList(map, device1);
-		} catch (Exception e) {
-		}
+	public void testDeviceServiceImplUtilityWithDATAGetPromotionWithMp() {
+		Map<String, MerchandisingPromotion> map = new HashMap<>();
+		map.put("1234", CommonMethods.getMP());
+		Device device1 = CommonMethods.getDeviceWithDetails_One();
+		DeviceServiceImplUtility.getPromotionForDeviceList(map, device1);
 	}
 
 	@Test
-	public void TestDeviceServiceImplUtilityHWWithDATA_Two() {
-		try {
-			Device device = CommonMethods.getDeviceWithDetails_Two();
-			Map<String, MerchandisingPromotion> map = new HashMap<>();
-			map.put("1234", CommonMethods.getMP());
-			DeviceServiceImplUtility.getPromotionForDeviceList(map, device);
-		} catch (Exception e) {
-		}
+	public void testDeviceServiceImplUtilityHWWithDATAGetPromotionWithMp() {
+		Device device = CommonMethods.getDeviceWithDetails_Two();
+		Map<String, MerchandisingPromotion> map = new HashMap<>();
+		map.put("1234", CommonMethods.getMP());
+		DeviceServiceImplUtility.getPromotionForDeviceList(map, device);
 	}
 
 	@Test
-	public void TestDeviceServiceImplUtilityyy() {
-		try {
-			Device device = CommonMethods.getDeviceWithDetails_Two();
-			device.setPromotionsPackage(null);
-			List<Device> deviceList = new ArrayList<>();
-			deviceList.add(device);
-			List<String> promoteAsTags = new ArrayList<>();
-			DeviceServiceImplUtility.getPromoteAsForDevice(deviceList, promoteAsTags);
-			// DeviceServiceImplUtility.getBundleAndHardwareList(groupType,
-			// journeyType, bundleHardwareTupleList, productModel);
-		} catch (Exception e) {
-		}
+	public void testDeviceServiceImplUtilityGetPromoteAs() {
+		Device device = CommonMethods.getDeviceWithDetails_Two();
+		device.setPromotionsPackage(null);
+		List<Device> deviceList = new ArrayList<>();
+		deviceList.add(device);
+		List<String> promoteAsTags = new ArrayList<>();
+		DeviceServiceImplUtility.getPromoteAsForDevice(deviceList, promoteAsTags);
 	}
 
 	@Test
-	public void TestgetBundleAndHardwareList() {
-		try {
-			ProductModel pm = new ProductModel();
-			pm.setUpgradeLeadPlanId("");
-			pm.setNonUpgradeLeadPlanId("");
-			List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
-			DeviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYM, "", bundleHardwareTupleList,
-					pm);
-		} catch (Exception e) {
-		}
+	public void testGetBundleAndHardwareList() {
+		ProductModel pm = new ProductModel();
+		pm.setUpgradeLeadPlanId("");
+		pm.setNonUpgradeLeadPlanId("");
+		List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
+		DeviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYM, "", bundleHardwareTupleList, pm);
 	}
 
 	@Test
-	public void TestgetBundleAndHardwareList_One() {
-		try {
-			ProductModel pm = new ProductModel();
-			pm.setUpgradeLeadPlanId("1212");
-			pm.setNonUpgradeLeadPlanId("1212");
-			List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
-			DeviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYM, "", bundleHardwareTupleList,
-					pm);
-		} catch (Exception e) {
-		}
+	public void testGetBundleAndHardwareListWithPlanId() {
+		ProductModel pm = new ProductModel();
+		pm.setUpgradeLeadPlanId("1212");
+		pm.setNonUpgradeLeadPlanId("1212");
+		List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
+		DeviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYM, "", bundleHardwareTupleList, pm);
 	}
 
 	@Test
-	public void TestgetBundleAndHardwareList_Two() {
-		try {
-			ProductModel pm = new ProductModel();
-			pm.setUpgradeLeadPlanId("1212");
-			pm.setNonUpgradeLeadPlanId("1212");
-			List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
-			DeviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYM, "Acquisition",
-					bundleHardwareTupleList, pm);
-		} catch (Exception e) {
-		}
+	public void testGetBundleAndHardwareListAcquistion() {
+		ProductModel pm = new ProductModel();
+		pm.setUpgradeLeadPlanId("1212");
+		pm.setNonUpgradeLeadPlanId("1212");
+		List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
+		DeviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYM, "Acquisition", bundleHardwareTupleList,
+				pm);
 	}
 
 	@Test
-	public void TestgetBundleAndHardwareList_Three() {
-		try {
-			ProductModel pm = new ProductModel();
-			pm.setUpgradeLeadPlanId("1212");
-			pm.setNonUpgradeLeadPlanId("1212");
-			List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
-			DeviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYM,
-					JOURNEY_TYPE_UPGRADE, bundleHardwareTupleList, pm);
-		} catch (Exception e) {
-		}
+	public void testGetBundleAndHardwareListUpgrade() {
+		ProductModel pm = new ProductModel();
+		pm.setUpgradeLeadPlanId("1212");
+		pm.setNonUpgradeLeadPlanId("1212");
+		List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
+		DeviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYM, JOURNEY_TYPE_UPGRADE,
+				bundleHardwareTupleList, pm);
 	}
 
 	@Test
-	public void TestgetBundleAndHardwareList_OneTwo() {
-		try {
-			ProductModel pm = new ProductModel();
-			pm.setUpgradeLeadPlanId("");
-			pm.setNonUpgradeLeadPlanId("");
-			List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
-			DeviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYM,
-					JOURNEY_TYPE_UPGRADE, bundleHardwareTupleList, pm);
-		} catch (Exception e) {
-		}
+	public void testGetBundleAndHardwareListBlankPlanId() {
+		ProductModel pm = new ProductModel();
+		pm.setUpgradeLeadPlanId("");
+		pm.setNonUpgradeLeadPlanId("");
+		List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
+		DeviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYM, JOURNEY_TYPE_UPGRADE,
+				bundleHardwareTupleList, pm);
 	}
 
 	@Test
-	public void TestgetBundleAndHardwareList_Four() {
-		try {
-			ProductModel pm = new ProductModel();
-			pm.setUpgradeLeadPlanId("1212");
-			pm.setNonUpgradeLeadPlanId("1212");
-			List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
-			DeviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYG,
-					JOURNEY_TYPE_ACQUISITION, bundleHardwareTupleList, pm);
-		} catch (Exception e) {
-		}
+	public void testGetBundleAndHardwareListPayG() {
+		ProductModel pm = new ProductModel();
+		pm.setUpgradeLeadPlanId("1212");
+		pm.setNonUpgradeLeadPlanId("1212");
+		List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
+		DeviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYG, JOURNEY_TYPE_ACQUISITION,
+				bundleHardwareTupleList, pm);
 	}
 
 	@Test
-	public void TestgetBundleAndHardwareList_Five() {
-		try {
-			ProductModel pm = new ProductModel();
-			pm.setUpgradeLeadPlanId("1212");
-			pm.setNonUpgradeLeadPlanId("1212");
-			List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
-			DeviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYM,
-					JOURNEY_TYPE_ACQUISITION, bundleHardwareTupleList, pm);
-		} catch (Exception e) {
-		}
+	public void testGetBundleAndHardwareListPaymAcquisition() {
+		ProductModel pm = new ProductModel();
+		pm.setUpgradeLeadPlanId("1212");
+		pm.setNonUpgradeLeadPlanId("1212");
+		List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
+		DeviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYM, JOURNEY_TYPE_ACQUISITION,
+				bundleHardwareTupleList, pm);
 	}
 
 	@Test
-	public void TestgetStartdateFromProductModel() {
-		try {
-			ProductModel pm = new ProductModel();
-			pm.setProductStartDate(null);
-			DeviceServiceImplUtility.getStartdateFromProductModel(pm);
-		} catch (Exception e) {
-		}
+	public void testGetStartdateFromProductModelNull() {
+		ProductModel pm = new ProductModel();
+		pm.setProductStartDate(null);
+		DeviceServiceImplUtility.getStartdateFromProductModel(pm);
 	}
 
 	@Test
-	public void TestgetStartdateFromProductModel_One() {
-		try {
-			ProductModel pm = new ProductModel();
-			pm.setProductStartDate("12-11-2017");
-			DeviceServiceImplUtility.getStartdateFromProductModel(pm);
-		} catch (Exception e) {
-		}
+	public void testGetStartdateFromProductModel() {
+		ProductModel pm = new ProductModel();
+		pm.setProductStartDate("12-11-2017");
+		Date date = DeviceServiceImplUtility.getStartdateFromProductModel(pm);
+		assertNotNull(date);
+		assertEquals(date.toString(), "Tue May 10 00:00:00 UTC 18");
 	}
 
 	@Test
-	public void TestgetStartdateFromProductModel_Two() {
-		try {
-			ProductModel pm = new ProductModel();
-			pm.setProductStartDate("adasdasd");
-			DeviceServiceImplUtility.getStartdateFromProductModel(pm);
-		} catch (Exception e) {
-		}
+	public void testGetStartdateFromProductModelInvalid() {
+		ProductModel pm = new ProductModel();
+		pm.setProductStartDate("adasdasd");
+		DeviceServiceImplUtility.getStartdateFromProductModel(pm);
 	}
 
 	@Test
-	public void TestgetEnddateFromProductModel() {
-		try {
-			ProductModel pm = new ProductModel();
-			pm.setProductEndDate(null);
-			DeviceServiceImplUtility.getEndDateFromProductModel(pm);
-		} catch (Exception e) {
-		}
+	public void testGetEnddateFromProductModelNull() {
+		ProductModel pm = new ProductModel();
+		pm.setProductEndDate(null);
+		DeviceServiceImplUtility.getEndDateFromProductModel(pm);
 	}
 
 	@Test
-	public void TestgetEnddateFromProductModel_One() {
-		try {
-			ProductModel pm = new ProductModel();
-			pm.setProductEndDate("12-11-2017");
-			DeviceServiceImplUtility.getEndDateFromProductModel(pm);
-		} catch (Exception e) {
-		}
+	public void testGetEnddateFromProductModel() {
+		ProductModel pm = new ProductModel();
+		pm.setProductEndDate("12-11-2017");
+		Date date = DeviceServiceImplUtility.getEndDateFromProductModel(pm);
+		assertEquals(date.toString(), "Tue May 10 00:00:00 UTC 18");
 	}
 
 	@Test
-	public void TestgetEnddateFromProductModel_Two() {
-		try {
-			ProductModel pm = new ProductModel();
-			pm.setProductEndDate("adasdasd");
-			DeviceServiceImplUtility.getEndDateFromProductModel(pm);
-		} catch (Exception e) {
-		}
+	public void testGetEnddateFromProductModelInvalid() {
+		ProductModel pm = new ProductModel();
+		pm.setProductEndDate("adasdasd");
+		DeviceServiceImplUtility.getEndDateFromProductModel(pm);
 	}
 
 	@Test
-	public void TestdateValidation() {
+	public void testDateValidation() {
 		try {
 			Date startDate = new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017");
 			Date endDate = new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000");
-			DeviceServiceImplUtility.dateValidation(null, null, false);
-			DeviceServiceImplUtility.dateValidation(null, null, true);
-			DeviceServiceImplUtility.dateValidation(startDate, null, true);
-			DeviceServiceImplUtility.dateValidation(startDate, null, false);
-			DeviceServiceImplUtility.dateValidation(startDate, endDate, true);
-			DeviceServiceImplUtility.dateValidation(startDate, endDate, false);
-			DeviceServiceImplUtility.dateValidation(null, endDate, true);
-			DeviceServiceImplUtility.dateValidation(null, endDate, false);
-			DeviceServiceImplUtility.dateValidation(endDate, null, true);
-			DeviceServiceImplUtility.dateValidation(endDate, null, false);
-			DeviceServiceImplUtility.dateValidation(endDate, startDate, false);
-			DeviceServiceImplUtility.dateValidation(null, startDate, false);
-			DeviceServiceImplUtility.dateValidation(null, startDate, true);
-			DeviceServiceImplUtility.dateValidation(new SimpleDateFormat(DATE_FORMAT).parse("21-11-2018"),
-					startDate, true);
-			DeviceServiceImplUtility.dateValidation(new SimpleDateFormat(DATE_FORMAT).parse("21-11-2018"),
-					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"), true);
-			DeviceServiceImplUtility.dateValidation(new SimpleDateFormat(DATE_FORMAT).parse("21-11-2018"),
-					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2019"), true);
+			assertTrue(DeviceServiceImplUtility.dateValidation(null, null, false));
+			assertTrue(DeviceServiceImplUtility.dateValidation(null, null, true));
+			assertTrue(DeviceServiceImplUtility.dateValidation(startDate, null, true));
+			assertTrue(DeviceServiceImplUtility.dateValidation(startDate, null, false));
+			assertFalse(DeviceServiceImplUtility.dateValidation(startDate, endDate, true));
+			assertFalse(DeviceServiceImplUtility.dateValidation(startDate, endDate, false));
+			assertFalse(DeviceServiceImplUtility.dateValidation(null, endDate, true));
+			assertFalse(DeviceServiceImplUtility.dateValidation(null, endDate, false));
+			assertTrue(DeviceServiceImplUtility.dateValidation(endDate, null, true));
+			assertTrue(DeviceServiceImplUtility.dateValidation(endDate, null, false));
+			assertFalse(DeviceServiceImplUtility.dateValidation(endDate, startDate, false));
+			assertFalse(DeviceServiceImplUtility.dateValidation(null, startDate, false));
+			assertFalse(DeviceServiceImplUtility.dateValidation(null, startDate, true));
+			assertFalse(DeviceServiceImplUtility.dateValidation(new SimpleDateFormat(DATE_FORMAT).parse("21-11-2018"),
+					startDate, true));
+			assertFalse(DeviceServiceImplUtility.dateValidation(new SimpleDateFormat(DATE_FORMAT).parse("21-11-2018"),
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"), true));
+			assertFalse(DeviceServiceImplUtility.dateValidation(new SimpleDateFormat(DATE_FORMAT).parse("21-11-2018"),
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2019"), true));
 			Date currentDate = new Date();
-			DeviceServiceImplUtility.getDateForValidation(currentDate, startDate, endDate);
-			DeviceServiceImplUtility.getDateForValidation(currentDate, startDate, endDate);
-			DeviceServiceImplUtility.getDateForValidation(currentDate, endDate, startDate);
-			DeviceServiceImplUtility.getDateForValidation(currentDate, currentDate, startDate);
-			DeviceServiceImplUtility.getDateForValidation(currentDate, currentDate, currentDate);
-			DeviceServiceImplUtility.getDateForValidation(currentDate, startDate, currentDate);
-			DeviceServiceImplUtility.getDateForValidation(currentDate, startDate, endDate);
-			DeviceServiceImplUtility.getDateForValidation(currentDate,
-					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), startDate);
-			DeviceServiceImplUtility.getDateForValidation(currentDate,
+			assertFalse(DeviceServiceImplUtility.getDateForValidation(currentDate, startDate, endDate));
+			assertFalse(DeviceServiceImplUtility.getDateForValidation(currentDate, startDate, endDate));
+			assertFalse(DeviceServiceImplUtility.getDateForValidation(currentDate, endDate, startDate));
+			assertFalse(DeviceServiceImplUtility.getDateForValidation(currentDate, currentDate, startDate));
+			assertTrue(DeviceServiceImplUtility.getDateForValidation(currentDate, currentDate, currentDate));
+			assertTrue(DeviceServiceImplUtility.getDateForValidation(currentDate, startDate, currentDate));
+			assertFalse(DeviceServiceImplUtility.getDateForValidation(currentDate, startDate, endDate));
+			assertFalse(DeviceServiceImplUtility.getDateForValidation(currentDate,
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), startDate));
+			assertFalse(DeviceServiceImplUtility.getDateForValidation(currentDate,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"),
-					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"));
-			DeviceServiceImplUtility.getDateForValidation(currentDate,
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017")));
+			assertFalse(DeviceServiceImplUtility.getDateForValidation(currentDate,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"),
-					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"));
-			DeviceServiceImplUtility.getDateForValidation(currentDate,
-					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), currentDate);
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000")));
+			assertTrue(DeviceServiceImplUtility.getDateForValidation(currentDate,
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), currentDate));
 
-			DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, null, "//");
-			DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, null, "//");
-			DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-2017", null, "//");
-			DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-2017", null, "//");
-			DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-2017", "21-11-3000", "//");
-			DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-2017", "21-11-3000", "//");
-			DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, "21-11-3000", "//");
-			DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, "21-11-3000", "//");
-			DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-3000", null, "//");
-			DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-3000", null, "//");
-			DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-3000", "21-11-2017", "//");
-			DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, "21-11-2017", "//");
-			DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, "21-11-2017", "//");
-			DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-2018", "21-11-2017", "//");
-			DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-2018", "21-11-2017", "//");
-			DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-2018", "21-11-2019", "//");
-			DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, null, "//");
+			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, null, "//"));
+			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, null, "//"));
+			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-2017", null, "//"));
+			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-2017", null, "//"));
+			assertTrue(
+					DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-2017", "21-11-3000", "//"));
+			assertTrue(
+					DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-2017", "21-11-3000", "//"));
+			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, "21-11-3000", "//"));
+			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, "21-11-3000", "//"));
+			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-3000", null, "//"));
+			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-3000", null, "//"));
+			assertTrue(
+					DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-3000", "21-11-2017", "//"));
+			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, "21-11-2017", "//"));
+			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, "21-11-2017", "//"));
+			assertTrue(
+					DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-2018", "21-11-2017", "//"));
+			assertTrue(
+					DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-2018", "21-11-2017", "//"));
+			assertTrue(
+					DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-2018", "21-11-2019", "//"));
+			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, null, "//"));
 
 		} catch (Exception e) {
 		}
@@ -689,380 +649,354 @@ public class OtherServiesTest {
 	}
 
 	@Test
-	public void TestisMember() {
+	public void testIsMember() {
 		try {
 			ProductModel pm = new ProductModel();
 			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("true");
 			pm.setIsSellableRet("true");
-			DeviceServiceImplUtility.isMember(JOURNEY_TYPE_UPGRADE,
+			assertFalse(DeviceServiceImplUtility.isMember(JOURNEY_TYPE_UPGRADE,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
-					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true);
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true));
 		} catch (Exception e) {
 		}
 	}
 
 	@Test
-	public void TestisMember_One() {
+	public void testIsMemberAcquisition() {
 		try {
 			ProductModel pm = new ProductModel();
 			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("true");
 			pm.setIsSellableRet("true");
-			DeviceServiceImplUtility.isMember(JOURNEY_TYPE_ACQUISITION,
+			assertFalse(DeviceServiceImplUtility.isMember(JOURNEY_TYPE_ACQUISITION,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
-					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true);
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true));
 		} catch (Exception e) {
 		}
 	}
 
 	@Test
-	public void TestisMember_Two() {
+	public void testIsMemberAccessory() {
 		try {
 			ProductModel pm = new ProductModel();
 			pm.setProductClass(STRING_ACCESSORY);
 			pm.setIsDisplayableRet("true");
 			pm.setIsSellableRet("true");
-			DeviceServiceImplUtility.isMember(JOURNEY_TYPE_UPGRADE,
+			assertFalse(DeviceServiceImplUtility.isMember(JOURNEY_TYPE_UPGRADE,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
-					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true);
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true));
 		} catch (Exception e) {
 		}
 	}
 
 	@Test
-	public void TestisMember_Three() {
+	public void testIsMemberDisplayableFalse() {
 		try {
 			ProductModel pm = new ProductModel();
 			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("false");
 			pm.setIsSellableRet("true");
-			DeviceServiceImplUtility.isMember(JOURNEY_TYPE_UPGRADE,
+			assertFalse(DeviceServiceImplUtility.isMember(JOURNEY_TYPE_UPGRADE,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
-					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true);
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true));
 		} catch (Exception e) {
 		}
 	}
 
 	@Test
-	public void TestisUpgrade() {
+	public void testIsUpgrade() {
 		try {
 			ProductModel pm = new ProductModel();
 			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("true");
 			pm.setIsSellableRet("true");
-			DeviceServiceImplUtility.isUpgradeCheck(JOURNEY_TYPE_UPGRADE,
+			assertFalse(DeviceServiceImplUtility.isUpgradeCheck(JOURNEY_TYPE_UPGRADE,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
-					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true);
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true));
 		} catch (Exception e) {
 		}
 	}
 
 	@Test
-	public void TestisUpgradeCheck_One() {
+	public void testIsUpgradeCheckInvalid() {
 		try {
 			ProductModel pm = new ProductModel();
 			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("true");
 			pm.setIsSellableRet("true");
-			DeviceServiceImplUtility.isUpgradeCheck(JOURNEY_TYPE_ACQUISITION,
+			assertFalse(DeviceServiceImplUtility.isUpgradeCheck(JOURNEY_TYPE_ACQUISITION,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
-					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true);
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true));
 		} catch (Exception e) {
 		}
 	}
 
 	@Test
-	public void TestisUpgradeCheck_Two() {
+	public void testIsUpgradeCheckAccessory() {
 		try {
 			ProductModel pm = new ProductModel();
 			pm.setProductClass(STRING_ACCESSORY);
 			pm.setIsDisplayableRet("true");
 			pm.setIsSellableRet("true");
-			DeviceServiceImplUtility.isUpgradeCheck(JOURNEY_TYPE_UPGRADE,
+			assertFalse(DeviceServiceImplUtility.isUpgradeCheck(JOURNEY_TYPE_UPGRADE,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
-					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true);
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true));
 		} catch (Exception e) {
 		}
 	}
 
 	@Test
-	public void TestisUpgradeCheck_Three() {
+	public void testIsUpgradeCheckDisplayableFalse() {
 		try {
 			ProductModel pm = new ProductModel();
 			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("false");
 			pm.setIsSellableRet("true");
-			DeviceServiceImplUtility.isUpgradeCheck(JOURNEY_TYPE_UPGRADE,
+			assertFalse(DeviceServiceImplUtility.isUpgradeCheck(JOURNEY_TYPE_UPGRADE,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
-					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true);
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true));
 		} catch (Exception e) {
 		}
 	}
 
 	@Test
-	public void TestisUpgradeCheck_Four() {
+	public void testIsUpgradeCheckSellableFalse() {
 		try {
 			ProductModel pm = new ProductModel();
 			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("false");
 			pm.setIsSellableRet("false");
-			DeviceServiceImplUtility.isUpgradeCheck(JOURNEY_TYPE_UPGRADE,
+			assertFalse(DeviceServiceImplUtility.isUpgradeCheck(JOURNEY_TYPE_UPGRADE,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"),
-					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"), pm, true);
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"), pm, true));
 		} catch (Exception e) {
 		}
 	}
 
 	@Test
-	public void TestisNonUpgrade() {
+	public void testIsNonUpgrade() {
 		try {
 			ProductModel pm = new ProductModel();
 			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("true");
 			pm.setIsSellableRet("true");
-			DeviceServiceImplUtility.isNonUpgradeCheck(JOURNEY_TYPE_ACQUISITION,
+			assertFalse(DeviceServiceImplUtility.isNonUpgradeCheck(JOURNEY_TYPE_ACQUISITION,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
-					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true);
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true));
 		} catch (Exception e) {
 		}
 	}
 
 	@Test
-	public void TestisNonUpgradeCheck_One() {
+	public void testIsNonUpgradeCheckUpgrade() {
 		try {
 			ProductModel pm = new ProductModel();
 			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("true");
 			pm.setIsSellableRet("true");
-			DeviceServiceImplUtility.isNonUpgradeCheck(JOURNEY_TYPE_UPGRADE,
+			assertFalse(DeviceServiceImplUtility.isNonUpgradeCheck(JOURNEY_TYPE_UPGRADE,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
-					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true);
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true));
 		} catch (Exception e) {
 		}
 	}
 
 	@Test
-	public void TestisNonUpgradeCheck_Two() {
+	public void testIsNonUpgradeCheckAccessory() {
 		try {
 			ProductModel pm = new ProductModel();
 			pm.setProductClass(STRING_ACCESSORY);
 			pm.setIsDisplayableAcq("true");
 			pm.setIsSellableAcq("true");
-			DeviceServiceImplUtility.isNonUpgradeCheck(JOURNEY_TYPE_ACQUISITION,
+			assertFalse(DeviceServiceImplUtility.isNonUpgradeCheck(JOURNEY_TYPE_ACQUISITION,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
-					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true);
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true));
 		} catch (Exception e) {
 		}
 	}
 
 	@Test
-	public void TestisNonUpgradeCheck_Three() {
+	public void testIsNonUpgradeCheckDisplayableFalse() {
 		try {
 			ProductModel pm = new ProductModel();
 			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableAcq("false");
 			pm.setIsSellableAcq("true");
-			DeviceServiceImplUtility.isNonUpgradeCheck(JOURNEY_TYPE_ACQUISITION,
+			assertFalse(DeviceServiceImplUtility.isNonUpgradeCheck(JOURNEY_TYPE_ACQUISITION,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
-					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true);
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true));
 		} catch (Exception e) {
 		}
 	}
 
 	@Test
-	public void TestisNonUpgradeCheck_Four() {
+	public void testIsNonUpgradeCheckHandset() {
 		try {
 			ProductModel pm = new ProductModel();
 			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableAcq("false");
 			pm.setIsSellableAcq("true");
-			DeviceServiceImplUtility.isNonUpgradeCheck(JOURNEY_TYPE_ACQUISITION,
+			assertFalse(DeviceServiceImplUtility.isNonUpgradeCheck(JOURNEY_TYPE_ACQUISITION,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"),
-					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"), pm, true);
+					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"), pm, true));
 		} catch (Exception e) {
 		}
 	}
 
 	@Test
-	public void TestisRet() {
-		try {
-			ProductModel pm = new ProductModel();
-			pm.setProductClass(STRING_HANDSET);
-			pm.setIsDisplayableRet("true");
-			pm.setIsSellableRet("true");
-			DeviceServiceImplUtility.isRet(pm);
-		} catch (Exception e) {
-		}
+	public void testIsRet() {
+		ProductModel pm = new ProductModel();
+		pm.setProductClass(STRING_HANDSET);
+		pm.setIsDisplayableRet("true");
+		pm.setIsSellableRet("true");
+		assertTrue(DeviceServiceImplUtility.isRet(pm));
 	}
 
 	@Test
-	public void TestisRet_One() {
-		try {
-			ProductModel pm = new ProductModel();
-			pm.setProductClass(STRING_HANDSET);
-			pm.setIsDisplayableRet("true");
-			pm.setIsSellableRet("false");
-			DeviceServiceImplUtility.isRet(pm);
-		} catch (Exception e) {
-		}
+	public void testIsRetSellableFalse() {
+		ProductModel pm = new ProductModel();
+		pm.setProductClass(STRING_HANDSET);
+		pm.setIsDisplayableRet("true");
+		pm.setIsSellableRet("false");
+		assertFalse(DeviceServiceImplUtility.isRet(pm));
 	}
 
 	@Test
-	public void TestisRet_Two() {
-		try {
-			ProductModel pm = new ProductModel();
-			pm.setProductClass(STRING_HANDSET);
-			pm.setIsDisplayableRet("false");
-			pm.setIsSellableRet("false");
-			DeviceServiceImplUtility.isRet(pm);
-		} catch (Exception e) {
-		}
+	public void testIsRetDisplayableFalse() {
+		ProductModel pm = new ProductModel();
+		pm.setProductClass(STRING_HANDSET);
+		pm.setIsDisplayableRet("false");
+		pm.setIsSellableRet("false");
+		DeviceServiceImplUtility.isRet(pm);
 	}
 
 	@Test
-	public void TestisRet_Three() {
-		try {
-			ProductModel pm = new ProductModel();
-			pm.setProductClass(STRING_HANDSET);
-			pm.setIsDisplayableRet("false");
-			pm.setIsSellableRet("true");
-			DeviceServiceImplUtility.isRet(pm);
-		} catch (Exception e) {
-		}
+	public void testIsRetHandset() {
+		ProductModel pm = new ProductModel();
+		pm.setProductClass(STRING_HANDSET);
+		pm.setIsDisplayableRet("false");
+		pm.setIsSellableRet("true");
+		assertFalse(DeviceServiceImplUtility.isRet(pm));
 	}
 
 	@Test
-	public void TestisAcq() {
-		try {
-			ProductModel pm = new ProductModel();
-			pm.setProductClass(STRING_HANDSET);
-			pm.setIsDisplayableAcq("true");
-			pm.setIsSellableAcq("true");
-			DeviceServiceImplUtility.isAcq(pm);
-		} catch (Exception e) {
-		}
+	public void testIsAcq() {
+		ProductModel pm = new ProductModel();
+		pm.setProductClass(STRING_HANDSET);
+		pm.setIsDisplayableAcq("true");
+		pm.setIsSellableAcq("true");
+		assertTrue(DeviceServiceImplUtility.isAcq(pm));
 	}
 
 	@Test
-	public void TestisAcq_One() {
-		try {
-			ProductModel pm = new ProductModel();
-			pm.setProductClass(STRING_HANDSET);
-			pm.setIsDisplayableAcq("true");
-			pm.setIsSellableAcq("false");
-			DeviceServiceImplUtility.isAcq(pm);
-		} catch (Exception e) {
-		}
+	public void testIsAcqSellableFalse() {
+		ProductModel pm = new ProductModel();
+		pm.setProductClass(STRING_HANDSET);
+		pm.setIsDisplayableAcq("true");
+		pm.setIsSellableAcq("false");
+		assertFalse(DeviceServiceImplUtility.isAcq(pm));
 	}
 
 	@Test
-	public void TestisAcq_Two() {
-		try {
-			ProductModel pm = new ProductModel();
-			pm.setProductClass(STRING_HANDSET);
-			pm.setIsDisplayableAcq("false");
-			pm.setIsSellableAcq("false");
-			DeviceServiceImplUtility.isAcq(pm);
-		} catch (Exception e) {
-		}
+	public void testIsAcqDisplayableFalse() {
+		ProductModel pm = new ProductModel();
+		pm.setProductClass(STRING_HANDSET);
+		pm.setIsDisplayableAcq("false");
+		pm.setIsSellableAcq("false");
+		assertFalse(DeviceServiceImplUtility.isAcq(pm));
 	}
 
 	@Test
-	public void TestisAcq_Three() {
-		try {
-			ProductModel pm = new ProductModel();
-			pm.setProductClass(STRING_HANDSET);
-			pm.setIsDisplayableAcq("false");
-			pm.setIsSellableAcq("true");
-			DeviceServiceImplUtility.isAcq(pm);
-		} catch (Exception e) {
-		}
+	public void testIsAcqHandset() {
+		ProductModel pm = new ProductModel();
+		pm.setProductClass(STRING_HANDSET);
+		pm.setIsDisplayableAcq("false");
+		pm.setIsSellableAcq("true");
+		assertFalse(DeviceServiceImplUtility.isAcq(pm));
 	}
 
 	@Test
-	public void TestisNonUpgrade_Two() {
-		try {
-			DeviceServiceImplUtility.isNonUpgrade("");
-			DeviceServiceImplUtility.isNonUpgrade("asa");
-			DeviceServiceImplUtility.getSortCriteriaForList(null);
-			DeviceServiceImplUtility.getSortCriteriaForList("++adadad");
-			DeviceServiceImplUtility.getSortCriteriaForList("-");
-		} catch (Exception e) {
-		}
+	public void testIsNonUpgradeSort() {
+		assertTrue(DeviceServiceImplUtility.isNonUpgrade(""));
+		assertTrue(DeviceServiceImplUtility.isNonUpgrade("asa"));
+		DeviceServiceImplUtility.getSortCriteriaForList(null);
+		List<String> sort = DeviceServiceImplUtility.getSortCriteriaForList("++adadad");
+		List<String> sorthyphen = DeviceServiceImplUtility.getSortCriteriaForList("-");
+		assertNotNull(sort);
+		assertNotNull(sorthyphen);
+		assertEquals(sort.get(0), "asc");
+		assertEquals(sort.get(1), "++adadad");
+		assertEquals(sorthyphen.get(0), "desc");
+		assertEquals(sorthyphen.get(1), "");
 	}
 
 	@Test
-	public void TestvalidateGroupType() {
-		try {
-			DeviceServiceImplUtility.validateGroupType(STRING_DEVICE_PAYM);
-			DeviceServiceImplUtility.validateGroupType(STRING_DEVICE_PAYG);
-			DeviceServiceImplUtility.validateGroupType("abc");
-			DeviceServiceImplUtility.validateGroupType(STRING_DEVICE_NEARLY_NEW);
-			DeviceServiceImplUtility.validateGroupType(STRING_DATADEVICE_PAYM);
-			DeviceServiceImplUtility.validateGroupType(STRING_DATADEVICE_PAYG);
-			DeviceServiceImplUtility.getJourneyForMakeAndModel("");
-			DeviceServiceImplUtility.getJourneyForMakeAndModel(JOURNEY_TYPE_ACQUISITION);
-			DeviceServiceImplUtility.getJourneyForMakeAndModel(JOURNEY_TYPE_UPGRADE);
-			DeviceServiceImplUtility.getJourneyForMakeAndModel(JOURNEY_TYPE_SECONDLINE);
-			DeviceServiceImplUtility.getJourneyForMakeAndModel("avcv");
-			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353();
-			cp.setProductControl(null);
-			DeviceServiceImplUtility.isNonUpgradeCommercialProduct(cp);
-			ProductControl pc = new ProductControl();
-			pc.setDisplayableAcq(false);
-			pc.setSellableAcq(false);
-			cp.setProductControl(pc);
-			DeviceServiceImplUtility.isNonUpgradeCommercialProduct(cp);
-			pc.setDisplayableAcq(true);
-			pc.setSellableAcq(false);
-			cp.setProductControl(pc);
-			DeviceServiceImplUtility.isNonUpgradeCommercialProduct(cp);
-			pc.setDisplayableAcq(true);
-			pc.setSellableAcq(true);
-			cp.setProductControl(pc);
-			DeviceServiceImplUtility.isNonUpgradeCommercialProduct(cp);
-			pc.setDisplayableAcq(false);
-			pc.setSellableAcq(true);
-			cp.setProductControl(pc);
-			DeviceServiceImplUtility.isNonUpgradeCommercialProduct(cp);
+	public void testValidateGroupType() {
+		assertTrue(DeviceServiceImplUtility.validateGroupType(STRING_DEVICE_PAYM));
+		assertTrue(DeviceServiceImplUtility.validateGroupType(STRING_DEVICE_PAYG));
+		assertFalse(DeviceServiceImplUtility.validateGroupType("abc"));
+		assertTrue(DeviceServiceImplUtility.validateGroupType(STRING_DEVICE_NEARLY_NEW));
+		assertTrue(DeviceServiceImplUtility.validateGroupType(STRING_DATADEVICE_PAYM));
+		assertTrue(DeviceServiceImplUtility.validateGroupType(STRING_DATADEVICE_PAYG));
+		assertTrue(DeviceServiceImplUtility.getJourneyForMakeAndModel(""));
+		assertFalse(DeviceServiceImplUtility.getJourneyForMakeAndModel(JOURNEY_TYPE_ACQUISITION));
+		assertFalse(DeviceServiceImplUtility.getJourneyForMakeAndModel(JOURNEY_TYPE_UPGRADE));
+		assertFalse(DeviceServiceImplUtility.getJourneyForMakeAndModel(JOURNEY_TYPE_SECONDLINE));
+		assertTrue(DeviceServiceImplUtility.getJourneyForMakeAndModel("avcv"));
+		CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353();
+		cp.setProductControl(null);
+		assertFalse(DeviceServiceImplUtility.isNonUpgradeCommercialProduct(cp));
+		ProductControl pc = new ProductControl();
+		pc.setDisplayableAcq(false);
+		pc.setSellableAcq(false);
+		cp.setProductControl(pc);
+		assertFalse(DeviceServiceImplUtility.isNonUpgradeCommercialProduct(cp));
+		pc.setDisplayableAcq(true);
+		pc.setSellableAcq(false);
+		cp.setProductControl(pc);
+		assertFalse(DeviceServiceImplUtility.isNonUpgradeCommercialProduct(cp));
+		pc.setDisplayableAcq(true);
+		pc.setSellableAcq(true);
+		cp.setProductControl(pc);
+		assertTrue(DeviceServiceImplUtility.isNonUpgradeCommercialProduct(cp));
+		pc.setDisplayableAcq(false);
+		pc.setSellableAcq(true);
+		cp.setProductControl(pc);
+		assertFalse(DeviceServiceImplUtility.isNonUpgradeCommercialProduct(cp));
 
-			cp.setProductControl(null);
-			DeviceServiceImplUtility.isUpgradeFromCommercialProduct(cp);
-			pc.setDisplayableRet(false);
-			pc.setSellableRet(false);
-			cp.setProductControl(pc);
-			DeviceServiceImplUtility.isUpgradeFromCommercialProduct(cp);
-			pc.setDisplayableRet(true);
-			pc.setSellableRet(false);
-			cp.setProductControl(pc);
-			DeviceServiceImplUtility.isUpgradeFromCommercialProduct(cp);
-			pc.setDisplayableRet(true);
-			pc.setSellableRet(true);
-			cp.setProductControl(pc);
-			DeviceServiceImplUtility.isUpgradeFromCommercialProduct(cp);
-			pc.setDisplayableRet(false);
-			pc.setSellableRet(true);
-			cp.setProductControl(pc);
-			DeviceServiceImplUtility.isUpgradeFromCommercialProduct(cp);
-		} catch (Exception e) {
-		}
+		cp.setProductControl(null);
+		assertFalse(DeviceServiceImplUtility.isUpgradeFromCommercialProduct(cp));
+		pc.setDisplayableRet(false);
+		pc.setSellableRet(false);
+		cp.setProductControl(pc);
+		assertFalse(DeviceServiceImplUtility.isUpgradeFromCommercialProduct(cp));
+		pc.setDisplayableRet(true);
+		pc.setSellableRet(false);
+		cp.setProductControl(pc);
+		assertFalse(DeviceServiceImplUtility.isUpgradeFromCommercialProduct(cp));
+		pc.setDisplayableRet(true);
+		pc.setSellableRet(true);
+		cp.setProductControl(pc);
+		assertTrue(DeviceServiceImplUtility.isUpgradeFromCommercialProduct(cp));
+		pc.setDisplayableRet(false);
+		pc.setSellableRet(true);
+		cp.setProductControl(pc);
+		assertFalse(DeviceServiceImplUtility.isUpgradeFromCommercialProduct(cp));
 	}
 
 	@Test
-	public void TestgetBundlePriceBasedOnDiscountDuration_Implementation() {
+	public void testGetBundlePriceBasedOnDiscountDuration_Implementation() {
 		try {
 			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(null, null);
 		} catch (Exception e) {
 		}
 		try {
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(null,
-					FULL_DURATION_DISCOUNT);
+			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(null, FULL_DURATION_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(null,
-					LIMITED_TIME_DISCOUNT);
+			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(null, LIMITED_TIME_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
@@ -1076,8 +1010,7 @@ public class OtherServiesTest {
 			bp.setMonthlyDiscountPrice(null);
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds,
-					FULL_DURATION_DISCOUNT);
+			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds, FULL_DURATION_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
@@ -1089,8 +1022,7 @@ public class OtherServiesTest {
 			bp.setMonthlyDiscountPrice(mp);
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds,
-					FULL_DURATION_DISCOUNT);
+			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds, FULL_DURATION_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
@@ -1102,8 +1034,9 @@ public class OtherServiesTest {
 			bp.setMonthlyDiscountPrice(mp);
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds,
-					FULL_DURATION_DISCOUNT);
+			Double price = DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds, FULL_DURATION_DISCOUNT);
+			assertNotNull(price);
+			assertEquals(price,1212.0,0);
 		} catch (Exception e) {
 		}
 		try {
@@ -1115,8 +1048,7 @@ public class OtherServiesTest {
 			bp.setMonthlyDiscountPrice(mp);
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds,
-					LIMITED_TIME_DISCOUNT);
+			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds, LIMITED_TIME_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
@@ -1126,8 +1058,7 @@ public class OtherServiesTest {
 			bp.setMonthlyDiscountPrice(null);
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds,
-					LIMITED_TIME_DISCOUNT);
+			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds, LIMITED_TIME_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
@@ -1139,8 +1070,7 @@ public class OtherServiesTest {
 			bp.setMonthlyDiscountPrice(mp);
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds,
-					LIMITED_TIME_DISCOUNT);
+			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds, LIMITED_TIME_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
@@ -1152,8 +1082,7 @@ public class OtherServiesTest {
 			bp.setMonthlyDiscountPrice(mp);
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds,
-					LIMITED_TIME_DISCOUNT);
+			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds, LIMITED_TIME_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
@@ -1165,8 +1094,7 @@ public class OtherServiesTest {
 			bp.setMonthlyDiscountPrice(mp);
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds,
-					LIMITED_TIME_DISCOUNT);
+			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds, LIMITED_TIME_DISCOUNT);
 		} catch (Exception e) {
 		}
 	}
@@ -1211,7 +1139,7 @@ public class OtherServiesTest {
 		} catch (Exception e) {
 			Assert.assertEquals(e.getMessage(), ExceptionMessages.INVALID_CREDIT_LIMIT);
 		}
-		
+
 	}
-	
+
 }
