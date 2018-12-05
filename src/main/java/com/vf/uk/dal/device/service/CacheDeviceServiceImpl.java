@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
@@ -624,6 +625,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 	public void indexPrecalData(
 			List<com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData> preCalcDataList) {
 		try {
+			mapper.setSerializationInclusion(Include.NON_NULL);
 			Map<String, CacheProductGroupModel> productModelMap = Collections.synchronizedMap(new HashMap<>());
 			for (com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData deviceListObject : preCalcDataList) {
 				CacheProductModel productModel = new CacheProductModel();
@@ -644,22 +646,42 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 				if (deviceListObject.getPriceInfo() != null
 						&& deviceListObject.getPriceInfo().getHardwarePrice() != null
 						&& deviceListObject.getPriceInfo().getHardwarePrice().getOneOffPrice() != null) {
+					if(StringUtils.equalsIgnoreCase(deviceListObject.getGroupType(), STRING_DEVICE_PAYM))
+					{
 					productModel.setOneOffGrossPrice(
 							deviceListObject.getPriceInfo().getHardwarePrice().getOneOffPrice().getGross());
 					productModel.setOneOffNetPrice(
 							deviceListObject.getPriceInfo().getHardwarePrice().getOneOffPrice().getNet());
 					productModel.setOneOffVatPrice(
 							deviceListObject.getPriceInfo().getHardwarePrice().getOneOffPrice().getVat());
+					}else if (StringUtils.equalsIgnoreCase(deviceListObject.getGroupType(), STRING_DEVICE_PAYG))
+					{
+						productModel.setPaygOneOffGrossPrice(
+								deviceListObject.getPriceInfo().getHardwarePrice().getOneOffPrice().getGross());
+						productModel.setPaygOneOffNetPrice(
+								deviceListObject.getPriceInfo().getHardwarePrice().getOneOffPrice().getNet());
+						productModel.setPaygOneOffVatPrice(
+								deviceListObject.getPriceInfo().getHardwarePrice().getOneOffPrice().getVat());
+					}
 				}
 				if (deviceListObject.getPriceInfo() != null
 						&& deviceListObject.getPriceInfo().getHardwarePrice() != null
 						&& deviceListObject.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice() != null) {
-					productModel.setOneOffDiscountedGrossPrice(
-							deviceListObject.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice().getGross());
-					productModel.setOneOffDiscountedNetPrice(
-							deviceListObject.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice().getNet());
-					productModel.setOneOffDiscountedVatPrice(
-							deviceListObject.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice().getVat());
+					if (StringUtils.equalsIgnoreCase(deviceListObject.getGroupType(), STRING_DEVICE_PAYM)) {
+						productModel.setOneOffDiscountedGrossPrice(
+								deviceListObject.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice().getGross());
+						productModel.setOneOffDiscountedNetPrice(
+								deviceListObject.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice().getNet());
+						productModel.setOneOffDiscountedVatPrice(
+								deviceListObject.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice().getVat());
+					} else if (StringUtils.equalsIgnoreCase(deviceListObject.getGroupType(), STRING_DEVICE_PAYG)) {
+						productModel.setPaygOneOffDiscountedGrossPrice(
+								deviceListObject.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice().getGross());
+						productModel.setPaygOneOffDiscountedNetPrice(
+								deviceListObject.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice().getNet());
+						productModel.setPaygOneOffDiscountedVatPrice(
+								deviceListObject.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice().getVat());
+					}
 				}
 				if (deviceListObject.getPriceInfo() != null
 						&& deviceListObject.getPriceInfo().getHardwarePrice() != null) {

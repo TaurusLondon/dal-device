@@ -79,4 +79,22 @@ public class CacheProductModel {
 	
 	@JsonProperty("paygProductGroupId")
 	private String paygProductGroupId;
+	
+	@JsonProperty("paygOneOffGrossPrice")
+	private Float paygOneOffGrossPrice;
+
+	@JsonProperty("paygOneOffNetPrice")
+	private Float paygOneOffNetPrice;
+
+	@JsonProperty("paygOneOffVatPrice")
+	private Float paygOneOffVatPrice;
+
+	@JsonProperty("paygOneOffDiscountedGrossPrice")
+	private Float paygOneOffDiscountedGrossPrice;
+
+	@JsonProperty("paygOneOffDiscountedNetPrice")
+	private Float paygOneOffDiscountedNetPrice;
+
+	@JsonProperty("paygOneOffDiscountedVatPrice")
+	private Float paygOneOffDiscountedVatPrice;
 }
