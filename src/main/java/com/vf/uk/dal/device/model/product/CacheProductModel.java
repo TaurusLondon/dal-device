@@ -26,9 +26,6 @@ public class CacheProductModel {
 	@JsonProperty("productGroupName")
 	private String productGroupName;
 
-	@JsonProperty("productGroupId")
-	private String productGroupId;
-
 	@JsonProperty("upgradeLeadPlanId")
 	private String upgradeLeadPlanId;
 
@@ -76,4 +73,10 @@ public class CacheProductModel {
 
 	@JsonProperty("financingOptions")
 	private List<DeviceFinancingOption> financingOptions = null;
+	
+	@JsonProperty("paymProductGroupId")
+	private String paymProductGroupId;
+	
+	@JsonProperty("paygProductGroupId")
+	private String paygProductGroupId;
 }

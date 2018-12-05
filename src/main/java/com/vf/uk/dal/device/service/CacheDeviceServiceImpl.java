@@ -624,7 +624,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 	public void indexPrecalData(
 			List<com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData> preCalcDataList) {
 		try {
-			Map<String, CacheProductGroupModel> productModelMap = new ConcurrentHashMap<>();
+			Map<String, CacheProductGroupModel> productModelMap = Collections.synchronizedMap(new HashMap<>());
 			for (com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData deviceListObject : preCalcDataList) {
 				CacheProductModel productModel = new CacheProductModel();
 
@@ -633,7 +633,11 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 				productModel.setRating(deviceListObject.getRating());
 				productModel.setLeadPlanId(deviceListObject.getLeadPlanId());
 				productModel.setProductGroupName(deviceListObject.getProductGroupName());
-				productModel.setProductGroupId(deviceListObject.getProductGroupId());
+				if(StringUtils.equalsIgnoreCase(deviceListObject.getGroupType(), STRING_DEVICE_PAYM)){
+				productModel.setPaymProductGroupId(deviceListObject.getPaymProductGroupId());
+				}else if(StringUtils.equalsIgnoreCase(deviceListObject.getGroupType(), STRING_DEVICE_PAYG)){
+					productModel.setPaygProductGroupId(deviceListObject.getPaygProductGroupId());
+				}
 				productModel.setUpgradeLeadPlanId(deviceListObject.getUpgradeLeadPlanId());
 				productModel.setNonUpgradeLeadPlanId(deviceListObject.getNonUpgradeLeadPlanId());
 
@@ -721,8 +725,14 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 						+ deviceListObject.getDeviceId();
 				deviceDao.getUpdateElasticSearch(productIdForUpdate, mapper.writeValueAsString(productModel));
 
-				if (StringUtils.isNotBlank(deviceListObject.getProductGroupId())) {
-					String productGroupId = deviceListObject.getProductGroupId();
+				if (StringUtils.isNotBlank(deviceListObject.getPaymProductGroupId())
+						|| StringUtils.isNotBlank(deviceListObject.getPaygProductGroupId())) {
+					String productGroupId=null;
+					if(deviceListObject.getPaymProductGroupId()!=null && StringUtils.equalsIgnoreCase(deviceListObject.getGroupType(), STRING_DEVICE_PAYM)){
+						productGroupId=deviceListObject.getPaymProductGroupId();
+						}else if(deviceListObject.getPaygProductGroupId()!=null && StringUtils.equalsIgnoreCase(deviceListObject.getGroupType(), STRING_DEVICE_PAYG)){
+							productGroupId=deviceListObject.getPaygProductGroupId();
+						}
 					if (productModelMap.containsKey(productGroupId)) {
 						CacheProductGroupModel productgroupModel = productModelMap.get(productGroupId);
 						if (StringUtils.isNotBlank(deviceListObject.getLeadPlanId())) {
@@ -748,10 +758,10 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 						if (StringUtils.isNotBlank(deviceListObject.getNonUpgradeLeadDeviceId())) {
 							productgroupModel.setNonUpgradeLeadDeviceId(deviceListObject.getNonUpgradeLeadDeviceId());
 						}
-						if (StringUtils.isNotBlank(deviceListObject.getUpgradeLeadPlanId())) {
+						if (StringUtils.isNotBlank(deviceListObject.getUpgradeLeadDeviceId()) && StringUtils.isNotBlank(deviceListObject.getUpgradeLeadPlanId())) {
 							productgroupModel.setUpgradeLeadPlanId(deviceListObject.getUpgradeLeadPlanId());
 						}
-						if (StringUtils.isNotBlank(deviceListObject.getNonUpgradeLeadPlanId())) {
+						if (StringUtils.isNotBlank(deviceListObject.getNonUpgradeLeadDeviceId()) && StringUtils.isNotBlank(deviceListObject.getNonUpgradeLeadPlanId())) {
 							productgroupModel.setNonUpgradeLeadPlanId(deviceListObject.getNonUpgradeLeadPlanId());
 						}
 						productModelMap.put(productGroupId, productgroupModel);
