@@ -85,6 +85,7 @@ public class PriceServiceClient {
 			requestForBundleAndHardware.setBundleAndHardwareList(bundleAndHardwareTupleList);
 			requestForBundleAndHardware.setOfferCode(offerCode);
 			requestForBundleAndHardware.setPackageType(journeyType);
+			ObjectMapper mapper = new ObjectMapper();
 			log.info("Start --> Calling  Price.calculateForBundleAndHardware journeyType " + journeyType + " OfferCode "
 					+ offerCode + " Index Version " + CatalogServiceAspect.CATALOG_VERSION.get());
 			/**
@@ -97,7 +98,7 @@ public class PriceServiceClient {
 					"http://PRICE-V1/price/calculateForBundleAndHardware", requestForBundleAndHardware,
 					PriceForBundleAndHardware[].class);
 			log.info("End --> Calling  Price.calculateForBundleAndHardware");
-			ObjectMapper mapper = new ObjectMapper();
+			//ObjectMapper mapper = new ObjectMapper();
 			priceList = mapper.convertValue(client, new TypeReference<List<PriceForBundleAndHardware>>() {
 			});
 		} catch (Exception e) {

@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
@@ -624,7 +625,8 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 	public void indexPrecalData(
 			List<com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData> preCalcDataList) {
 		try {
-			Map<String, CacheProductGroupModel> productModelMap = new ConcurrentHashMap<>();
+			mapper.setSerializationInclusion(Include.NON_NULL);
+			Map<String, CacheProductGroupModel> productModelMap = Collections.synchronizedMap(new HashMap<>());
 			for (com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData deviceListObject : preCalcDataList) {
 				CacheProductModel productModel = new CacheProductModel();
 
@@ -633,29 +635,53 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 				productModel.setRating(deviceListObject.getRating());
 				productModel.setLeadPlanId(deviceListObject.getLeadPlanId());
 				productModel.setProductGroupName(deviceListObject.getProductGroupName());
-				productModel.setProductGroupId(deviceListObject.getProductGroupId());
+				if(StringUtils.equalsIgnoreCase(deviceListObject.getGroupType(), STRING_DEVICE_PAYM)){
+				productModel.setPaymProductGroupId(deviceListObject.getPaymProductGroupId());
+				}else if(StringUtils.equalsIgnoreCase(deviceListObject.getGroupType(), STRING_DEVICE_PAYG)){
+					productModel.setPaygProductGroupId(deviceListObject.getPaygProductGroupId());
+				}
 				productModel.setUpgradeLeadPlanId(deviceListObject.getUpgradeLeadPlanId());
 				productModel.setNonUpgradeLeadPlanId(deviceListObject.getNonUpgradeLeadPlanId());
 
 				if (deviceListObject.getPriceInfo() != null
 						&& deviceListObject.getPriceInfo().getHardwarePrice() != null
 						&& deviceListObject.getPriceInfo().getHardwarePrice().getOneOffPrice() != null) {
+					if(StringUtils.equalsIgnoreCase(deviceListObject.getGroupType(), STRING_DEVICE_PAYM))
+					{
 					productModel.setOneOffGrossPrice(
 							deviceListObject.getPriceInfo().getHardwarePrice().getOneOffPrice().getGross());
 					productModel.setOneOffNetPrice(
 							deviceListObject.getPriceInfo().getHardwarePrice().getOneOffPrice().getNet());
 					productModel.setOneOffVatPrice(
 							deviceListObject.getPriceInfo().getHardwarePrice().getOneOffPrice().getVat());
+					}else if (StringUtils.equalsIgnoreCase(deviceListObject.getGroupType(), STRING_DEVICE_PAYG))
+					{
+						productModel.setPaygOneOffGrossPrice(
+								deviceListObject.getPriceInfo().getHardwarePrice().getOneOffPrice().getGross());
+						productModel.setPaygOneOffNetPrice(
+								deviceListObject.getPriceInfo().getHardwarePrice().getOneOffPrice().getNet());
+						productModel.setPaygOneOffVatPrice(
+								deviceListObject.getPriceInfo().getHardwarePrice().getOneOffPrice().getVat());
+					}
 				}
 				if (deviceListObject.getPriceInfo() != null
 						&& deviceListObject.getPriceInfo().getHardwarePrice() != null
 						&& deviceListObject.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice() != null) {
-					productModel.setOneOffDiscountedGrossPrice(
-							deviceListObject.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice().getGross());
-					productModel.setOneOffDiscountedNetPrice(
-							deviceListObject.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice().getNet());
-					productModel.setOneOffDiscountedVatPrice(
-							deviceListObject.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice().getVat());
+					if (StringUtils.equalsIgnoreCase(deviceListObject.getGroupType(), STRING_DEVICE_PAYM)) {
+						productModel.setOneOffDiscountedGrossPrice(
+								deviceListObject.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice().getGross());
+						productModel.setOneOffDiscountedNetPrice(
+								deviceListObject.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice().getNet());
+						productModel.setOneOffDiscountedVatPrice(
+								deviceListObject.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice().getVat());
+					} else if (StringUtils.equalsIgnoreCase(deviceListObject.getGroupType(), STRING_DEVICE_PAYG)) {
+						productModel.setPaygOneOffDiscountedGrossPrice(
+								deviceListObject.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice().getGross());
+						productModel.setPaygOneOffDiscountedNetPrice(
+								deviceListObject.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice().getNet());
+						productModel.setPaygOneOffDiscountedVatPrice(
+								deviceListObject.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice().getVat());
+					}
 				}
 				if (deviceListObject.getPriceInfo() != null
 						&& deviceListObject.getPriceInfo().getHardwarePrice() != null) {
@@ -721,8 +747,14 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 						+ deviceListObject.getDeviceId();
 				deviceDao.getUpdateElasticSearch(productIdForUpdate, mapper.writeValueAsString(productModel));
 
-				if (StringUtils.isNotBlank(deviceListObject.getProductGroupId())) {
-					String productGroupId = deviceListObject.getProductGroupId();
+				if (StringUtils.isNotBlank(deviceListObject.getPaymProductGroupId())
+						|| StringUtils.isNotBlank(deviceListObject.getPaygProductGroupId())) {
+					String productGroupId=null;
+					if(deviceListObject.getPaymProductGroupId()!=null && StringUtils.equalsIgnoreCase(deviceListObject.getGroupType(), STRING_DEVICE_PAYM)){
+						productGroupId=deviceListObject.getPaymProductGroupId();
+						}else if(deviceListObject.getPaygProductGroupId()!=null && StringUtils.equalsIgnoreCase(deviceListObject.getGroupType(), STRING_DEVICE_PAYG)){
+							productGroupId=deviceListObject.getPaygProductGroupId();
+						}
 					if (productModelMap.containsKey(productGroupId)) {
 						CacheProductGroupModel productgroupModel = productModelMap.get(productGroupId);
 						if (StringUtils.isNotBlank(deviceListObject.getLeadPlanId())) {
@@ -748,10 +780,10 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 						if (StringUtils.isNotBlank(deviceListObject.getNonUpgradeLeadDeviceId())) {
 							productgroupModel.setNonUpgradeLeadDeviceId(deviceListObject.getNonUpgradeLeadDeviceId());
 						}
-						if (StringUtils.isNotBlank(deviceListObject.getUpgradeLeadPlanId())) {
+						if (StringUtils.isNotBlank(deviceListObject.getUpgradeLeadDeviceId()) && StringUtils.isNotBlank(deviceListObject.getUpgradeLeadPlanId())) {
 							productgroupModel.setUpgradeLeadPlanId(deviceListObject.getUpgradeLeadPlanId());
 						}
-						if (StringUtils.isNotBlank(deviceListObject.getNonUpgradeLeadPlanId())) {
+						if (StringUtils.isNotBlank(deviceListObject.getNonUpgradeLeadDeviceId()) && StringUtils.isNotBlank(deviceListObject.getNonUpgradeLeadPlanId())) {
 							productgroupModel.setNonUpgradeLeadPlanId(deviceListObject.getNonUpgradeLeadPlanId());
 						}
 						productModelMap.put(productGroupId, productgroupModel);
