@@ -417,7 +417,7 @@ public class CommonMethods {
 		DevicePreCalculatedData device = new DevicePreCalculatedData();
 		device.setDeviceId("093353");
 		device.setLeadPlanId("092660");
-		device.setProductGroupId("084253");
+		device.setPaygProductGroupId("084253");
 		device.setProductGroupName("GROUP_PAYM");
 		device.setIsLeadMember("Y");
 		device.setMinimumCost("5.20");
@@ -462,7 +462,7 @@ public class CommonMethods {
 		DevicePreCalculatedData device1 = new DevicePreCalculatedData();
 		device1.setDeviceId("095597");
 		device1.setLeadPlanId("092660");
-		device1.setProductGroupId("084253");
+		device1.setPaymProductGroupId("084253");
 		device1.setProductGroupName("GROUP_PAYM");
 		device1.setIsLeadMember("Y");
 		device1.setMinimumCost("5.20");
@@ -3086,7 +3086,7 @@ public class CommonMethods {
 		device.setDeviceId("093353");
 		device.setRating(2.0F);
 		device.setLeadPlanId("110154");
-		device.setProductGroupId("084253");
+		device.setPaygProductGroupId("084253");
 		device.setProductGroupName("GROUP_PAYM");
 		device.setIsLeadMember("Y");
 		device.setMinimumCost(5.20F);
@@ -3158,7 +3158,7 @@ public class CommonMethods {
 		device1.setDeviceId("093354");
 		device1.setRating(2.0F);
 		device1.setLeadPlanId("110154");
-		device1.setProductGroupId("084253");
+		device1.setPaymProductGroupId("084253");
 		device1.setProductGroupName("GROUP_PAYM");
 		device1.setIsLeadMember("Y");
 		device1.setMinimumCost(4.20F);
