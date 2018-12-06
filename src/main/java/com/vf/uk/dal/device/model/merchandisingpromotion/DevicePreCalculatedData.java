@@ -21,8 +21,6 @@ public class DevicePreCalculatedData {
 	private String leadPlanId;
 	@JsonProperty("productGroupName")
 	private String productGroupName;
-	@JsonProperty("productGroupId")
-	private String productGroupId;
 	@JsonProperty("media")
 	private List<Media> media;
 	@JsonProperty("priceInfo")
@@ -41,6 +39,13 @@ public class DevicePreCalculatedData {
 	private String upgradeLeadPlanId;
 	@JsonProperty("nonUpgradeLeadPlanId")
 	private String nonUpgradeLeadPlanId;
+	@JsonProperty("groupType")
+	private String groupType;
+	@JsonProperty("paymProductGroupId")
+	private String paymProductGroupId;
+	@JsonProperty("paygProductGroupId")
+	private String paygProductGroupId;
+
 
 	
 }

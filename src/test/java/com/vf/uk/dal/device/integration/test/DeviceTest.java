@@ -1149,7 +1149,7 @@ public class DeviceTest {
 		Assert.assertNotNull(productGroupForDeviceListing);
 		assertEquals("093353",productGroupForDeviceListing.getDeviceId());
 		assertEquals("groupname",productGroupForDeviceListing.getProductGroupName());
-		assertEquals("groupId",productGroupForDeviceListing.getProductGroupId());
+		assertEquals("groupId",productGroupForDeviceListing.getPaygProductGroupId());
 		assertEquals("093353",productGroupForDeviceListing.getNonUpgradeLeadDeviceId());
 		assertEquals("093353",productGroupForDeviceListing.getUpgradeLeadDeviceId());
 	}
@@ -1165,7 +1165,7 @@ public class DeviceTest {
 		Assert.assertNotNull(productGroupForDeviceListing);
 		assertEquals("093353",productGroupForDeviceListing.getDeviceId());
 		assertEquals("groupname",productGroupForDeviceListing.getProductGroupName());
-		assertEquals("groupId",productGroupForDeviceListing.getProductGroupId());
+		assertEquals("groupId",productGroupForDeviceListing.getPaymProductGroupId());
 		assertEquals("093353",productGroupForDeviceListing.getNonUpgradeLeadDeviceId());
 		assertEquals("093353",productGroupForDeviceListing.getUpgradeLeadDeviceId());
 	}
@@ -1454,10 +1454,14 @@ public class DeviceTest {
 
 	@Test
 	public void notNullTestForGetBundleAndHardwarePriceFromSolrWithoutOfferCode() {
-		PriceForBundleAndHardware priceForBundle = DeviceTilesDaoUtils.getBundleAndHardwarePriceFromSolrWithoutOfferCode(null,
-				CommonMethods.getBundleModelListForBundleListForDeviceList().get(0), "110154");
-		PriceForBundleAndHardware price = DeviceTilesDaoUtils.getBundleAndHardwarePriceFromSolrWithoutOfferCode(null,
-				CommonMethods.getBundleModelListForBundleListForDeviceList().get(1), "110154");
+		PriceForBundleAndHardware priceForBundle = DeviceTilesDaoUtils.getBundleAndHardwarePriceFromSolrWithoutOfferCode(CommonMethods.getProductModel().get(0),
+				CommonMethods.getBundleModelListForBundleListForDeviceList().get(0), "110154","DEVICE_PAYM");
+		PriceForBundleAndHardware price = DeviceTilesDaoUtils.getBundleAndHardwarePriceFromSolrWithoutOfferCode(CommonMethods.getProductModel().get(0),
+				CommonMethods.getBundleModelListForBundleListForDeviceList().get(1), "110154","DEVICE_PAYM");
+		DeviceTilesDaoUtils.getBundleAndHardwarePriceFromSolrWithoutOfferCode(null,
+				CommonMethods.getBundleModelListForBundleListForDeviceList().get(0), "110154","DEVICE_PAYG");
+		DeviceTilesDaoUtils.getBundleAndHardwarePriceFromSolrWithoutOfferCode(null,
+				CommonMethods.getBundleModelListForBundleListForDeviceList().get(1), "110154","DEVICE_PAYG");
 		assertNotNull(priceForBundle);
 		assertNotNull(price);
 		assertEquals("109373",priceForBundle.getBundlePrice().getBundleId());

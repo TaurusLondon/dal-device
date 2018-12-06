@@ -92,8 +92,13 @@ public class CacheDeviceDaoUtils {
 		DevicePreCalculatedData productGroupForDeviceListing = null;
 		productGroupForDeviceListing = new DevicePreCalculatedData();
 		productGroupForDeviceListing.setDeviceId(deviceId);
+		productGroupForDeviceListing.setGroupType(groupType);
 		productGroupForDeviceListing.setProductGroupName(groupname);
-		productGroupForDeviceListing.setProductGroupId(groupId);
+		if(StringUtils.equalsIgnoreCase(groupType, STRING_DEVICE_PAYM)){
+			productGroupForDeviceListing.setPaymProductGroupId(groupId);
+			}if(StringUtils.equalsIgnoreCase(groupType, STRING_DEVICE_PAYG)){
+				productGroupForDeviceListing.setPaygProductGroupId(groupId);
+			}
 		productGroupForDeviceListing.setUpgradeLeadPlanId(upgradeLeadPlanId);
 		// isLeadMember not removed need to revisit
 		if (leadMemberMap.containsKey(deviceId)) {
@@ -1050,7 +1055,8 @@ public class CacheDeviceDaoUtils {
 			if (preCalList.getPriceInfo() != null) {
 				priceInfoObject = getPriceForSolr(preCalList.getPriceInfo());
 			}
-			// Need to revist after solr changes done
+			
+			deviceListObject.setGroupType(preCalList.getGroupType());
 			deviceListObject.setPriceInfo(priceInfoObject);
 			deviceListObject.setDeviceId(preCalList.getDeviceId());
 			deviceListObject.setRating(preCalList.getRating());
@@ -1058,11 +1064,15 @@ public class CacheDeviceDaoUtils {
 			deviceListObject.setNonUpgradeLeadPlanId(preCalList.getNonUpgradeLeadPlanId());
 			deviceListObject.setUpgradeLeadPlanId(preCalList.getUpgradeLeadPlanId());
 			deviceListObject.setProductGroupName(preCalList.getProductGroupName());
-			deviceListObject.setProductGroupId(preCalList.getProductGroupId());
+			if(preCalList.getPaymProductGroupId()!=null &&StringUtils.equalsIgnoreCase(preCalList.getGroupType(), STRING_DEVICE_PAYM)){
+				deviceListObject.setPaymProductGroupId(preCalList.getPaymProductGroupId());
+				}if(preCalList.getPaygProductGroupId()!=null&&StringUtils.equalsIgnoreCase(preCalList.getGroupType(), STRING_DEVICE_PAYG)){
+					deviceListObject.setPaygProductGroupId(preCalList.getPaygProductGroupId());
+				}
 			deviceListObject.setMedia(mediaList);
 			deviceListObject.setNonUpgradeLeadDeviceId(preCalList.getNonUpgradeLeadDeviceId());
 			deviceListObject.setUpgradeLeadDeviceId(preCalList.getUpgradeLeadDeviceId());
-			deviceListObject.setIsLeadMember(preCalList.getIsLeadMember());// preCalList.getIsLeadMember()
+			deviceListObject.setIsLeadMember(preCalList.getIsLeadMember());
 			if (preCalList.getMinimumCost() != null) {
 				deviceListObject.setMinimumCost(Float.valueOf(preCalList.getMinimumCost()));
 			}
