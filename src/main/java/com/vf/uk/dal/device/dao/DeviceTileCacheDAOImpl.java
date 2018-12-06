@@ -113,7 +113,7 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 				ps.setString(2, String.valueOf(productGroupForDeviceListing.getRating()));
 				ps.setString(3, productGroupForDeviceListing.getLeadPlanId());
 				ps.setString(4, productGroupForDeviceListing.getProductGroupName());
-				ps.setString(5, productGroupForDeviceListing.getProductGroupId());
+				ps.setString(5, productGroupForDeviceListing.getPaymProductGroupId());
 				setPreparedStatementOnBundlePrice(ps, priceInfo);
 				setPreparedStatementOnHardwarePrice(ps, priceInfo);
 				Timestamp timestamp = new Timestamp(System.currentTimeMillis());

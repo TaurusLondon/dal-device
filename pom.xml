@@ -170,7 +170,7 @@
 			</exclusions>
 		</dependency>
 	</dependencies>
-	<dependencyManagement>
+		<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
@@ -188,7 +188,7 @@
 			<url>http://uk.maven.org/maven2</url>
 		</repository>
 		<repository>
-			<id>vfuk-digital-visualstudio.com-digital</id>
+			<id>vfuk-digital-visualstudio-com-vfuk-digital-digital</id>
 			<url>https://vfuk-digital.pkgs.visualstudio.com/_packaging/Digital/maven/v1</url>
 			<releases>
 				<enabled>true</enabled>
@@ -200,7 +200,7 @@
 	</repositories>
 	<distributionManagement>
 		<repository>
-			<id>vfuk-digital-visualstudio.com-digital</id>
+			<id>vfuk-digital-visualstudio-com-vfuk-digital-digital</id>
 			<url>https://vfuk-digital.pkgs.visualstudio.com/_packaging/Digital/maven/v1</url>
 			<releases>
 				<enabled>true</enabled>

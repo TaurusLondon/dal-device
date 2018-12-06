@@ -564,5 +564,29 @@ public class ProductModel {
 
 	@JsonProperty("financingOptions")
 	private List<DeviceFinancingOption> financingOptions = null;
+	
+	@JsonProperty("paymProductGroupId")
+	private String paymProductGroupId;
+	
+	@JsonProperty("paygProductGroupId")
+	private String paygProductGroupId;
+	
+	@JsonProperty("paygOneOffGrossPrice")
+	private Float paygOneOffGrossPrice;
+
+	@JsonProperty("paygOneOffNetPrice")
+	private Float paygOneOffNetPrice;
+
+	@JsonProperty("paygOneOffVatPrice")
+	private Float paygOneOffVatPrice;
+
+	@JsonProperty("paygOneOffDiscountedGrossPrice")
+	private Float paygOneOffDiscountedGrossPrice;
+
+	@JsonProperty("paygOneOffDiscountedNetPrice")
+	private Float paygOneOffDiscountedNetPrice;
+
+	@JsonProperty("paygOneOffDiscountedVatPrice")
+	private Float paygOneOffDiscountedVatPrice;
 
 }
