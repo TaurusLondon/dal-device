@@ -945,7 +945,7 @@ public class CommonUtility {
 				freeExtrasForPlans, freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares,
 				sashBundleConditional));
 		return DeviceTilesDaoUtils.assembleMerchandisingPromotion(promotions, entertainmentPacks, dataAllowances,
-				planCouplingPromotions, sash, secureNet, sashBannerForHardware, freeExtras, freeAccessories,
+				sash, secureNet, sashBannerForHardware,
 				freeExtrasForPlans, freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares,
 				sashBundleConditional);
 	}

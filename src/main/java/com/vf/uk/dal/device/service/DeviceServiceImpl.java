@@ -513,7 +513,7 @@ public class DeviceServiceImpl implements DeviceService {
 			List<FacetField> facetFields = (null != productGroupFacetModelForFacets)
 					? productGroupFacetModelForFacets.getListOfFacetsFields() : null;
 			facetedDevice = DeviceTilesDaoUtils.convertProductModelListToDeviceList(listOfProductModel, listOfProducts,
-					facetFields, groupType, null, null, offerPriceMap, offerCode, groupNameWithProdId, null,
+					facetFields, groupType,  null, offerPriceMap, offerCode, groupNameWithProdId, null,
 					promotionmap, isLeadMemberFromSolr, withoutOfferPriceMap, journeyType, productGroupdetailsMap,
 					cdnDomain);
 
@@ -546,8 +546,6 @@ public class DeviceServiceImpl implements DeviceService {
 		log.info("Entering getDeviceListForConditionalAccept ");
 
 		FacetedDevice facetedDevice;
-		List<CommercialProduct> ls = null;
-
 		Map<String, BundleModel> bundleModelMap = new HashMap<>();
 		Map<String, com.vf.uk.dal.device.client.entity.price.BundlePrice> bundleModelAndPriceMap = new HashMap<>();
 		List<ProductModel> listOfProductModel = new ArrayList<>();
@@ -585,7 +583,7 @@ public class DeviceServiceImpl implements DeviceService {
 						? Collections.emptyList() : productGroupFacetModelForFacets.getListOfFacetsFields();
 			}
 			facetedDevice = DeviceTilesDaoUtils.convertProductModelListToDeviceList(listOfProductModel, listOfProducts,
-					listOfFacetField, groupType, ls, bundleModelMap, null, null, groupNameWithProdId,
+					listOfFacetField, groupType, bundleModelMap, null, null, groupNameWithProdId,
 					bundleModelAndPriceMap, null, isLeadMemberFromSolr, null, journeyType, Collections.emptyMap(),
 					cdnDomain);
 			log.info("exiting convertProductModelListToDeviceList ");

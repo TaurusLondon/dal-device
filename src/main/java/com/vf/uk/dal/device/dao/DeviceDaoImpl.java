@@ -173,9 +173,9 @@ public class DeviceDaoImpl implements DeviceDao {
 		try {
 			response = restClient.search(searchRequest, RequestOptions.DEFAULT);
 		} catch (Exception e) {
-			if (StringUtils.containsIgnoreCase(e.getMessage(), ExceptionMessages.Index_NOT_FOUND_EXCEPTION)) {
-				log.error( ExceptionMessages.Index_NOT_FOUND_EXCEPTION);
-				throw new ApplicationException(ExceptionMessages.Index_NOT_FOUND_EXCEPTION);
+			if (StringUtils.containsIgnoreCase(e.getMessage(), ExceptionMessages.INDEX_NOT_FOUND_EXCEPTION)) {
+				log.error( ExceptionMessages.INDEX_NOT_FOUND_EXCEPTION);
+				throw new ApplicationException(ExceptionMessages.INDEX_NOT_FOUND_EXCEPTION);
 			}
 			log.error( "::::::Exception occured while querieng bundle models from ES " + e);
 		}
