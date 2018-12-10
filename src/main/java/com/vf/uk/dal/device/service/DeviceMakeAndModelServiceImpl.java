@@ -82,7 +82,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			Double creditLimit, String journeyType, String offerCode, String bundleId) {
 		List<DeviceTile> deviceTileList;
 		String journeyTypeLocal = Validator.validateAllParameters(make, model, groupType, journeyType);
-		deviceTileList = getListOfDeviceTile_Implementation(make, model, groupType, deviceId, journeyTypeLocal,
+		deviceTileList = getListOfDeviceTileImplementation(make, model, groupType, deviceId, journeyTypeLocal,
 				creditLimit, offerCode, bundleId);
 
 		return deviceTileList;
@@ -104,7 +104,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 	 * @param groupName
 	 * @return List<DeviceTile> performance improved by @author manoj.bera
 	 */
-	public List<DeviceTile> getListOfDeviceTile_Implementation(String make, String model, String groupType,
+	public List<DeviceTile> getListOfDeviceTileImplementation(String make, String model, String groupType,
 			String deviceId, String journeyTypeInput, Double creditLimit, String offerCode, String bundleId) {
 		boolean isConditionalAcceptJourney = (null != creditLimit) ? true : false;
 		String journeyType;
@@ -116,20 +116,12 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 		List<com.vf.uk.dal.device.model.Member> listOfDeviceGroupMember = new ArrayList<>();
 
 		List<CommercialProduct> listOfCommercialProducts = null;
-		if (DeviceServiceImplUtility.validateGroupType(groupType)) {
-			log.info( "Start -->  calling  CommericalProduct.getByMakeAndModel");
-			listOfCommercialProducts = deviceEs.getListOfCommercialProductByMakeAndModel(make, model);
-			log.info( "End -->  After calling  CommericalProduct.getByMakeAndModel");
-
-		} else {
-			log.error( NO_DATA_FOUND_FOR_GROUP_TYPE + groupType);
-			throw new ApplicationException(ExceptionMessages.NULL_VALUE_GROUP_TYPE);
-		}
+		listOfCommercialProducts = getListOfCommercialProducts(make, model, groupType);
 		List<Group> listOfProductGroup = deviceEs.getProductGroupByType(groupType);
 		if (groupType.equals(STRING_DEVICE_PAYG)) {
 			listOfDeviceTile = getDeviceTileByMakeAndModelForPAYG(listOfCommercialProducts, listOfProductGroup, make,
 					model, groupType);
-		} else if (!groupType.equals(STRING_DEVICE_PAYG)) {
+		} else {
 			List<CommercialProduct> commercialProductsMatchedMemList = new ArrayList<>();
 			Map<String, CommercialProduct> commerProdMemMap = new HashMap<>();
 			Map<String, CommercialBundle> commerBundleIdMap = new HashMap<>();
@@ -138,102 +130,170 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			Map<String, Boolean> fromPricingMap = new HashMap<>();
 			Map<String, String> leadPlanIdMap = new HashMap<>();
 			List<String> listofLeadPlan = new ArrayList<>();
-			if (CollectionUtils.isNotEmpty(listOfCommercialProducts)) {
-				getCommercialBundleMap(make, model, journeyType, listOfCommercialProducts, commerProdMemMap,
-						commerBundleIdMap);
-				if (listOfProductGroup != null && !listOfProductGroup.isEmpty()) {
-					groupName = getMembersForGroup(bundleId, journeyType, listOfDeviceGroupMember, listOfProductGroup,
-							commercialProductsMatchedMemList, commerProdMemMap, commerBundleIdMap,
-							bundleAndHardwareTupleList, bundleIdMap, fromPricingMap, leadPlanIdMap, listofLeadPlan,make,model);
-				}
-			}
+			groupName = getGroupName(make, model, bundleId, journeyType, listOfDeviceGroupMember,
+					listOfCommercialProducts, listOfProductGroup, commercialProductsMatchedMemList, commerProdMemMap,
+					commerBundleIdMap, bundleAndHardwareTupleList, bundleIdMap, fromPricingMap, leadPlanIdMap,
+					listofLeadPlan);
 
-			if (commercialProductsMatchedMemList != null && !commercialProductsMatchedMemList.isEmpty()) {
-				if (listOfDeviceGroupMember != null && !listOfDeviceGroupMember.isEmpty()) {
-					String leadMemberId = deviceServiceCommonUtility
-							.getMemeberBasedOnRules_Implementation(listOfDeviceGroupMember, journeyType);
-					if (leadMemberId != null) {
-						deviceTile.setDeviceId(leadMemberId);
-						deviceTile.setRating(deviceServiceCommonUtility.getDeviceTileRating(leadMemberId));
-					}
-					
-					List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = new ArrayList<>();
-					List<BundleAndHardwarePromotions> listOfBundleAndHardPromo = null;
-					Map<String, BundleAndHardwarePromotions> bundleAndHardwarePromotionsMap = new HashMap<>();
-					Map<String, PriceForBundleAndHardware> priceMapForParticularDevice = new HashMap<>();
-					if (!groupType.equals(STRING_DEVICE_PAYG) && bundleAndHardwareTupleList != null
-							&& !bundleAndHardwareTupleList.isEmpty()) {
-						CompletableFuture<List<PriceForBundleAndHardware>> calculatePriceTask = deviceDao
-								.getPriceForBundleAndHardwareListFromTupleListAsync(bundleAndHardwareTupleList,
-										offerCode, journeyType, CatalogServiceAspect.CATALOG_VERSION.get(),groupType);
-						CompletableFuture<List<com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwarePromotions>> promotionTask = deviceDao
-								.getBundleAndHardwarePromotionsListFromBundleListAsync(bundleAndHardwareTupleList,
-										journeyType, CatalogServiceAspect.CATALOG_VERSION.get());
-
-						try {
-							CompletableFuture.allOf(calculatePriceTask, promotionTask).get();
-							listOfPriceForBundleAndHardware = calculatePriceTask.get();
-							listOfBundleAndHardPromo = promotionTask.get();
-						} catch (Exception e) {
-							log.error( EXCEPTION_OCCURED_WHILE_EXECUTING_THREAD_POOL + e);
-							throw new ApplicationException(ExceptionMessages.ERROR_IN_FUTURE_TASK);
-						}
-					}
-
-					if (listOfPriceForBundleAndHardware != null && !listOfPriceForBundleAndHardware.isEmpty()) {
-						getBundleAndHardwarePromotions(journeyType, commerBundleIdMap, fromPricingMap, leadPlanIdMap,
-								listofLeadPlan, listOfPriceForBundleAndHardware, listOfBundleAndHardPromo,
-								bundleAndHardwarePromotionsMap, priceMapForParticularDevice);
-					}
-					Map<String, CommercialBundle> commercialBundleMap = new HashMap<>();
-					if (!listofLeadPlan.isEmpty()) {
-						List<CommercialBundle> comBundle = deviceEs
-								.getListOfCommercialBundle(new ArrayList<>(listofLeadPlan));
-						if (comBundle != null && !comBundle.isEmpty()) {
-							comBundle.forEach(commercialBundle -> commercialBundleMap.put(commercialBundle.getId(),
-									commercialBundle));
-						}
-					}
-					deviceTile.setGroupName(groupName);
-					deviceTile.setGroupType(groupType);
-					CompletableFuture<List<DeviceSummary>> future1 = getDeviceSummery_Implementation(
-							listOfDeviceGroupMember, listOfPriceForBundleAndHardware, commerProdMemMap,
-							isConditionalAcceptJourney, journeyType, creditLimit, commercialBundleMap, bundleIdMap,
-							bundleId, bundleAndHardwarePromotionsMap, leadPlanIdMap, groupType,
-							priceMapForParticularDevice, fromPricingMap, CatalogServiceAspect.CATALOG_VERSION.get());
-					List<DeviceSummary> listOfDeviceSummary;
-					try {
-						listOfDeviceSummary = future1.get();
-					} catch (Exception e) {
-						log.error( EXCEPTION_OCCURED_WHILE_EXECUTING_THREAD_POOL + e);
-						throw new ApplicationException(ExceptionMessages.ERROR_IN_FUTURE_TASK);
-					}
-					resetDeviceId_Implementation(isConditionalAcceptJourney, deviceTile, listOfDeviceSummary, deviceId);
-					if (isConditionalAcceptJourney) {
-						if (null != deviceTile.getDeviceId()) {
-							deviceTile.setDeviceSummary(listOfDeviceSummary);
-							listOfDeviceTile.add(deviceTile);
-						}
-					} else {
-						deviceTile.setDeviceSummary(listOfDeviceSummary);
-						listOfDeviceTile.add(deviceTile);
-					}
-				} else {
-					log.error( "Requested Make and Model Not found in given group type:" + groupType);
-					throw new ApplicationException(ExceptionMessages.MAKE_AND_MODEL_NOT_FOUND_IN_GROUPTYPE);
-				}
-			} else {
-				log.error( NO_DATA_FOUND_FOR_GIVEN_MAKE_AND_MMODEL2 + make + AND + model);
-				throw new ApplicationException(
-						ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST);
-			}
+			setDeviceTile(make, model, groupType, deviceId, creditLimit, offerCode, bundleId,
+					isConditionalAcceptJourney, journeyType, listOfDeviceTile, deviceTile, groupName,
+					listOfDeviceGroupMember, commercialProductsMatchedMemList, commerProdMemMap, commerBundleIdMap,
+					bundleAndHardwareTupleList, bundleIdMap, fromPricingMap, leadPlanIdMap, listofLeadPlan);
 		}
 		if (CollectionUtils.isEmpty(listOfDeviceTile)) {
-			log.error( NO_DATA_FOUND_FOR_GIVEN_MAKE_AND_MMODEL2 + make + AND + model);
+			log.error(NO_DATA_FOUND_FOR_GIVEN_MAKE_AND_MMODEL2 + make + AND + model);
 			throw new ApplicationException(ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST);
 		}
 		return listOfDeviceTile;
 
+	}
+
+	private void setDeviceTile(String make, String model, String groupType, String deviceId, Double creditLimit,
+			String offerCode, String bundleId, boolean isConditionalAcceptJourney, String journeyType,
+			List<DeviceTile> listOfDeviceTile, DeviceTile deviceTile, String groupName,
+			List<com.vf.uk.dal.device.model.Member> listOfDeviceGroupMember,
+			List<CommercialProduct> commercialProductsMatchedMemList, Map<String, CommercialProduct> commerProdMemMap,
+			Map<String, CommercialBundle> commerBundleIdMap, List<BundleAndHardwareTuple> bundleAndHardwareTupleList,
+			Map<String, Boolean> bundleIdMap, Map<String, Boolean> fromPricingMap, Map<String, String> leadPlanIdMap,
+			List<String> listofLeadPlan) {
+		if (commercialProductsMatchedMemList != null && !commercialProductsMatchedMemList.isEmpty()) {
+			if (listOfDeviceGroupMember != null && !listOfDeviceGroupMember.isEmpty()) {
+				String leadMemberId = deviceServiceCommonUtility
+						.getMemeberBasedOnRulesImplementation(listOfDeviceGroupMember, journeyType);
+				setRatingAndDeviceId(deviceTile, leadMemberId);
+
+				CompletableFuture<List<DeviceSummary>> future1 = setListOfPriceForBundleAndHardwareAndPromo(groupType,
+						creditLimit, offerCode, bundleId, isConditionalAcceptJourney, journeyType, deviceTile,
+						groupName, listOfDeviceGroupMember, commerProdMemMap, commerBundleIdMap,
+						bundleAndHardwareTupleList, bundleIdMap, fromPricingMap, leadPlanIdMap, listofLeadPlan);
+				List<DeviceSummary> listOfDeviceSummary;
+				try {
+					listOfDeviceSummary = future1.get();
+				} catch (Exception e) {
+					log.error(EXCEPTION_OCCURED_WHILE_EXECUTING_THREAD_POOL + e);
+					throw new ApplicationException(ExceptionMessages.ERROR_IN_FUTURE_TASK);
+				}
+				resetDeviceIdImplementation(isConditionalAcceptJourney, deviceTile, listOfDeviceSummary, deviceId);
+				setListOfDeviceTile(isConditionalAcceptJourney, listOfDeviceTile, deviceTile, listOfDeviceSummary);
+			} else {
+				log.error("Requested Make and Model Not found in given group type:" + groupType);
+				throw new ApplicationException(ExceptionMessages.MAKE_AND_MODEL_NOT_FOUND_IN_GROUPTYPE);
+			}
+		} else {
+			log.error(NO_DATA_FOUND_FOR_GIVEN_MAKE_AND_MMODEL2 + make + AND + model);
+			throw new ApplicationException(ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST);
+		}
+	}
+
+	private CompletableFuture<List<DeviceSummary>> setListOfPriceForBundleAndHardwareAndPromo(String groupType,
+			Double creditLimit, String offerCode, String bundleId, boolean isConditionalAcceptJourney,
+			String journeyType, DeviceTile deviceTile, String groupName,
+			List<com.vf.uk.dal.device.model.Member> listOfDeviceGroupMember,
+			Map<String, CommercialProduct> commerProdMemMap, Map<String, CommercialBundle> commerBundleIdMap,
+			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, Map<String, Boolean> bundleIdMap,
+			Map<String, Boolean> fromPricingMap, Map<String, String> leadPlanIdMap, List<String> listofLeadPlan) {
+		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = new ArrayList<>();
+		List<BundleAndHardwarePromotions> listOfBundleAndHardPromo = null;
+		Map<String, BundleAndHardwarePromotions> bundleAndHardwarePromotionsMap = new HashMap<>();
+		Map<String, PriceForBundleAndHardware> priceMapForParticularDevice = new HashMap<>();
+		if (!groupType.equals(STRING_DEVICE_PAYG) && bundleAndHardwareTupleList != null
+				&& !bundleAndHardwareTupleList.isEmpty()) {
+			CompletableFuture<List<PriceForBundleAndHardware>> calculatePriceTask = deviceDao
+					.getPriceForBundleAndHardwareListFromTupleListAsync(bundleAndHardwareTupleList, offerCode,
+							journeyType, CatalogServiceAspect.CATALOG_VERSION.get(), groupType);
+			CompletableFuture<List<com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwarePromotions>> promotionTask = deviceDao
+					.getBundleAndHardwarePromotionsListFromBundleListAsync(bundleAndHardwareTupleList, journeyType,
+							CatalogServiceAspect.CATALOG_VERSION.get());
+
+			try {
+				CompletableFuture.allOf(calculatePriceTask, promotionTask).get();
+				listOfPriceForBundleAndHardware = calculatePriceTask.get();
+				listOfBundleAndHardPromo = promotionTask.get();
+			} catch (Exception e) {
+				log.error(EXCEPTION_OCCURED_WHILE_EXECUTING_THREAD_POOL + e);
+				throw new ApplicationException(ExceptionMessages.ERROR_IN_FUTURE_TASK);
+			}
+		}
+
+		if (listOfPriceForBundleAndHardware != null && !listOfPriceForBundleAndHardware.isEmpty()) {
+			getBundleAndHardwarePromotions(journeyType, commerBundleIdMap, fromPricingMap, leadPlanIdMap,
+					listofLeadPlan, listOfPriceForBundleAndHardware, listOfBundleAndHardPromo,
+					bundleAndHardwarePromotionsMap, priceMapForParticularDevice);
+		}
+		Map<String, CommercialBundle> commercialBundleMap = setCommercialBundleMap(listofLeadPlan);
+		deviceTile.setGroupName(groupName);
+		deviceTile.setGroupType(groupType);
+		return getDeviceSummeryImplementation(listOfDeviceGroupMember, listOfPriceForBundleAndHardware,
+				commerProdMemMap, isConditionalAcceptJourney, journeyType, creditLimit, commercialBundleMap,
+				bundleIdMap, bundleId, bundleAndHardwarePromotionsMap, leadPlanIdMap, groupType,
+				priceMapForParticularDevice, fromPricingMap, CatalogServiceAspect.CATALOG_VERSION.get());
+	}
+
+	private void setListOfDeviceTile(boolean isConditionalAcceptJourney, List<DeviceTile> listOfDeviceTile,
+			DeviceTile deviceTile, List<DeviceSummary> listOfDeviceSummary) {
+		if (isConditionalAcceptJourney) {
+			if (null != deviceTile.getDeviceId()) {
+				deviceTile.setDeviceSummary(listOfDeviceSummary);
+				listOfDeviceTile.add(deviceTile);
+			}
+		} else {
+			deviceTile.setDeviceSummary(listOfDeviceSummary);
+			listOfDeviceTile.add(deviceTile);
+		}
+	}
+
+	private Map<String, CommercialBundle> setCommercialBundleMap(List<String> listofLeadPlan) {
+		Map<String, CommercialBundle> commercialBundleMap = new HashMap<>();
+		if (!listofLeadPlan.isEmpty()) {
+			List<CommercialBundle> comBundle = deviceEs.getListOfCommercialBundle(new ArrayList<>(listofLeadPlan));
+			if (comBundle != null && !comBundle.isEmpty()) {
+				comBundle.forEach(
+						commercialBundle -> commercialBundleMap.put(commercialBundle.getId(), commercialBundle));
+			}
+		}
+		return commercialBundleMap;
+	}
+
+	private void setRatingAndDeviceId(DeviceTile deviceTile, String leadMemberId) {
+		if (leadMemberId != null) {
+			deviceTile.setDeviceId(leadMemberId);
+			deviceTile.setRating(deviceServiceCommonUtility.getDeviceTileRating(leadMemberId));
+		}
+	}
+
+	private String getGroupName(String make, String model, String bundleId, String journeyType,
+			List<com.vf.uk.dal.device.model.Member> listOfDeviceGroupMember,
+			List<CommercialProduct> listOfCommercialProducts, List<Group> listOfProductGroup,
+			List<CommercialProduct> commercialProductsMatchedMemList, Map<String, CommercialProduct> commerProdMemMap,
+			Map<String, CommercialBundle> commerBundleIdMap, List<BundleAndHardwareTuple> bundleAndHardwareTupleList,
+			Map<String, Boolean> bundleIdMap, Map<String, Boolean> fromPricingMap, Map<String, String> leadPlanIdMap,
+			List<String> listofLeadPlan) {
+		String groupName = null;
+		if (CollectionUtils.isNotEmpty(listOfCommercialProducts)) {
+			getCommercialBundleMap(make, model, journeyType, listOfCommercialProducts, commerProdMemMap,
+					commerBundleIdMap);
+			if (listOfProductGroup != null && !listOfProductGroup.isEmpty()) {
+				groupName = getMembersForGroup(bundleId, journeyType, listOfDeviceGroupMember, listOfProductGroup,
+						commercialProductsMatchedMemList, commerProdMemMap, commerBundleIdMap,
+						bundleAndHardwareTupleList, bundleIdMap, fromPricingMap, leadPlanIdMap, listofLeadPlan, make,
+						model);
+			}
+		}
+		return groupName;
+	}
+
+	private List<CommercialProduct> getListOfCommercialProducts(String make, String model, String groupType) {
+		List<CommercialProduct> listOfCommercialProducts = null;
+		if (DeviceServiceImplUtility.validateGroupType(groupType)) {
+			log.info("Start -->  calling  CommericalProduct.getByMakeAndModel");
+			listOfCommercialProducts = deviceEs.getListOfCommercialProductByMakeAndModel(make, model);
+			log.info("End -->  After calling  CommericalProduct.getByMakeAndModel");
+
+		} else {
+			log.error(NO_DATA_FOUND_FOR_GROUP_TYPE + groupType);
+			throw new ApplicationException(ExceptionMessages.NULL_VALUE_GROUP_TYPE);
+		}
+		return listOfCommercialProducts;
 	}
 
 	/**
@@ -310,22 +370,9 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			PriceForBundleAndHardware priceForBundleAndHardware = deviceServiceCommonUtility
 					.identifyLowestPriceOfPlanForDevice(listOfpriceForBundleANdHardware, commerBundleIdMap,
 							journeyType);
-			if (priceForBundleAndHardware != null) {
-				priceMapForParticularDevice.put(priceForBundleAndHardware.getHardwarePrice().getHardwareId(),
-						priceForBundleAndHardware);
-				leadPlanIdMap.put(priceForBundleAndHardware.getHardwarePrice().getHardwareId(),
-						priceForBundleAndHardware.getBundlePrice().getBundleId());
-				listofLeadPlan.add(priceForBundleAndHardware.getBundlePrice().getBundleId());
-			}
-			if (!promotionsMap.isEmpty() && promotionsMap.containsKey(hardwareID)) {
-				List<BundleAndHardwarePromotions> listOfPromotionLocal = promotionsMap.get(hardwareID);
-				listOfPromotionLocal.forEach(promotion -> {
-					if (promotion.getBundleId()
-							.equalsIgnoreCase(priceForBundleAndHardware.getBundlePrice().getBundleId()))
-						bundleAndHardwarePromotionsMap.put(promotion.getHardwareId(), promotion);
-
-				});
-			}
+			setLeadPlanMap(leadPlanIdMap, listofLeadPlan, priceMapForParticularDevice, priceForBundleAndHardware);
+			setBundleAndHardwarePromotionsMap(bundleAndHardwarePromotionsMap, promotionsMap, hardwareID,
+					priceForBundleAndHardware);
 		} else {
 			PriceForBundleAndHardware priceForBundleAndHardware = priceMap.containsKey(hardwareID)
 					? priceMap.get(hardwareID).get(0) : null;
@@ -341,6 +388,32 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 				bundleAndHardwarePromotionsMap.put(promotion.getHardwareId(), promotion);
 			}
 
+		}
+	}
+
+	private void setBundleAndHardwarePromotionsMap(
+			Map<String, BundleAndHardwarePromotions> bundleAndHardwarePromotionsMap,
+			Map<String, List<BundleAndHardwarePromotions>> promotionsMap, String hardwareID,
+			PriceForBundleAndHardware priceForBundleAndHardware) {
+		if (!promotionsMap.isEmpty() && promotionsMap.containsKey(hardwareID)) {
+			List<BundleAndHardwarePromotions> listOfPromotionLocal = promotionsMap.get(hardwareID);
+			listOfPromotionLocal.forEach(promotion -> {
+				if (promotion.getBundleId().equalsIgnoreCase(priceForBundleAndHardware.getBundlePrice().getBundleId()))
+					bundleAndHardwarePromotionsMap.put(promotion.getHardwareId(), promotion);
+
+			});
+		}
+	}
+
+	private void setLeadPlanMap(Map<String, String> leadPlanIdMap, List<String> listofLeadPlan,
+			Map<String, PriceForBundleAndHardware> priceMapForParticularDevice,
+			PriceForBundleAndHardware priceForBundleAndHardware) {
+		if (priceForBundleAndHardware != null) {
+			priceMapForParticularDevice.put(priceForBundleAndHardware.getHardwarePrice().getHardwareId(),
+					priceForBundleAndHardware);
+			leadPlanIdMap.put(priceForBundleAndHardware.getHardwarePrice().getHardwareId(),
+					priceForBundleAndHardware.getBundlePrice().getBundleId());
+			listofLeadPlan.add(priceForBundleAndHardware.getBundlePrice().getBundleId());
 		}
 	}
 
@@ -383,52 +456,79 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 		DeviceTile deviceTile = new DeviceTile();
 		String groupName = null;
 		Set<com.vf.uk.dal.device.model.Member> listOfDeviceGroupMember = new HashSet<>();
-		com.vf.uk.dal.device.model.Member entityMember;
 		List<CommercialProduct> commercialProductsMatchedMemListForPAYG = new ArrayList<>();
 		Map<String, CommercialProduct> commerProdMemMapPAYG = new HashMap<>();
 		Set<BundleAndHardwareTuple> bundleAndHardwareTupleListPAYG = new HashSet<>();
-		BundleAndHardwareTuple bundleAndHardwareTuple;
 		if (!CollectionUtils.isEmpty(listOfCommercialProducts)) {
-			listOfCommercialProducts.forEach(commercialProduct -> {
-				if (DeviceServiceImplUtility.getProductclassValidation(commercialProduct)
-						&& commercialProduct.getEquipment().getMake().equalsIgnoreCase(make)
-						&& commercialProduct.getEquipment().getModel().equalsIgnoreCase(model)
-						&& DeviceServiceImplUtility.isNonUpgradeCommercialProduct(commercialProduct)) {
-					commerProdMemMapPAYG.put(commercialProduct.getId(), commercialProduct);
-				}
-
-			});
-			if (listOfProductGroup != null && !listOfProductGroup.isEmpty()) {
-				for (Group productGroupPAYG : listOfProductGroup) {
-					if (StringUtils.equalsIgnoreCase(productGroupPAYG.getEquipmentMake(),make) && StringUtils.equalsIgnoreCase(productGroupPAYG.getEquipmentModel(),model)&& productGroupPAYG.getMembers() != null && !productGroupPAYG.getMembers().isEmpty()) {
-						for (Member member : productGroupPAYG.getMembers()) {
-							if (commerProdMemMapPAYG.containsKey(member.getId())) {
-								groupName = productGroupPAYG.getName();
-								entityMember = new com.vf.uk.dal.device.model.Member();
-								entityMember.setId(member.getId());
-								entityMember.setPriority(String.valueOf(member.getPriority()));
-								listOfDeviceGroupMember.add(entityMember);
-								CommercialProduct commercialProduct = commerProdMemMapPAYG.get(member.getId());
-								commercialProductsMatchedMemListForPAYG.add(commercialProduct);
-								bundleAndHardwareTuple = new BundleAndHardwareTuple();
-								bundleAndHardwareTuple.setBundleId(null);
-								bundleAndHardwareTuple.setHardwareId(commercialProduct.getId());
-								bundleAndHardwareTupleListPAYG.add(bundleAndHardwareTuple);
-							}
-						}
-					}
-				}
-			}
+			listOfCommercialProducts.forEach(
+					commercialProduct -> setCommerProdMemMapPAYG(make, model, commerProdMemMapPAYG, commercialProduct));
+			groupName = setBundleAndHardwareTupleList(listOfProductGroup, make, model, listOfDeviceGroupMember,
+					commercialProductsMatchedMemListForPAYG, commerProdMemMapPAYG, bundleAndHardwareTupleListPAYG);
 		}
 		if (!commercialProductsMatchedMemListForPAYG.isEmpty()) {
-			getMemberByRules(groupType, listOfDeviceTile, deviceTile, groupName, new ArrayList<>(listOfDeviceGroupMember),
-					commerProdMemMapPAYG, bundleAndHardwareTupleListPAYG);
+			getMemberByRules(groupType, listOfDeviceTile, deviceTile, groupName,
+					new ArrayList<>(listOfDeviceGroupMember), commerProdMemMapPAYG, bundleAndHardwareTupleListPAYG);
 		} else {
-			log.error( NO_DATA_FOUND_FOR_GIVEN_MAKE_AND_MMODEL2 + make + AND + model);
+			log.error(NO_DATA_FOUND_FOR_GIVEN_MAKE_AND_MMODEL2 + make + AND + model);
 			throw new ApplicationException(ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST);
 		}
 		return listOfDeviceTile;
 
+	}
+
+	private String setBundleAndHardwareTupleList(List<Group> listOfProductGroup, String make, String model,
+			Set<com.vf.uk.dal.device.model.Member> listOfDeviceGroupMember,
+			List<CommercialProduct> commercialProductsMatchedMemListForPAYG,
+			Map<String, CommercialProduct> commerProdMemMapPAYG,
+			Set<BundleAndHardwareTuple> bundleAndHardwareTupleListPAYG) {
+		String groupName = null;
+		if (listOfProductGroup != null && !listOfProductGroup.isEmpty()) {
+			for (Group productGroupPAYG : listOfProductGroup) {
+				if (StringUtils.equalsIgnoreCase(productGroupPAYG.getEquipmentMake(), make)
+						&& StringUtils.equalsIgnoreCase(productGroupPAYG.getEquipmentModel(), model)
+						&& productGroupPAYG.getMembers() != null && !productGroupPAYG.getMembers().isEmpty()) {
+					for (Member member : productGroupPAYG.getMembers()) {
+						groupName = setBundleAndHardwareTupleListPAYG(listOfDeviceGroupMember,
+								commercialProductsMatchedMemListForPAYG, commerProdMemMapPAYG,
+								bundleAndHardwareTupleListPAYG, productGroupPAYG, member);
+					}
+				}
+			}
+		}
+		return groupName;
+	}
+
+	private String setBundleAndHardwareTupleListPAYG(Set<com.vf.uk.dal.device.model.Member> listOfDeviceGroupMember,
+			List<CommercialProduct> commercialProductsMatchedMemListForPAYG,
+			Map<String, CommercialProduct> commerProdMemMapPAYG,
+			Set<BundleAndHardwareTuple> bundleAndHardwareTupleListPAYG, Group productGroupPAYG, Member member) {
+		com.vf.uk.dal.device.model.Member entityMember;
+		String groupName = null;
+		BundleAndHardwareTuple bundleAndHardwareTuple;
+		if (commerProdMemMapPAYG.containsKey(member.getId())) {
+			groupName = productGroupPAYG.getName();
+			entityMember = new com.vf.uk.dal.device.model.Member();
+			entityMember.setId(member.getId());
+			entityMember.setPriority(String.valueOf(member.getPriority()));
+			listOfDeviceGroupMember.add(entityMember);
+			CommercialProduct commercialProduct = commerProdMemMapPAYG.get(member.getId());
+			commercialProductsMatchedMemListForPAYG.add(commercialProduct);
+			bundleAndHardwareTuple = new BundleAndHardwareTuple();
+			bundleAndHardwareTuple.setBundleId(null);
+			bundleAndHardwareTuple.setHardwareId(commercialProduct.getId());
+			bundleAndHardwareTupleListPAYG.add(bundleAndHardwareTuple);
+		}
+		return groupName;
+	}
+
+	private void setCommerProdMemMapPAYG(String make, String model, Map<String, CommercialProduct> commerProdMemMapPAYG,
+			CommercialProduct commercialProduct) {
+		if (DeviceServiceImplUtility.getProductclassValidation(commercialProduct)
+				&& commercialProduct.getEquipment().getMake().equalsIgnoreCase(make)
+				&& commercialProduct.getEquipment().getModel().equalsIgnoreCase(model)
+				&& DeviceServiceImplUtility.isNonUpgradeCommercialProduct(commercialProduct)) {
+			commerProdMemMapPAYG.put(commercialProduct.getId(), commercialProduct);
+		}
 	}
 
 	/**
@@ -446,60 +546,66 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			Set<BundleAndHardwareTuple> bundleAndHardwareTupleListPAYG) {
 		if (listOfDeviceGroupMember != null && !listOfDeviceGroupMember.isEmpty()) {
 			String leadMemberId = deviceServiceCommonUtility
-					.getMemeberBasedOnRules_Implementation(listOfDeviceGroupMember, null);
-			if (leadMemberId != null) {
-				deviceTile.setDeviceId(leadMemberId);
-				deviceTile.setRating(deviceServiceCommonUtility.getDeviceTileRating(leadMemberId));
-			}
+					.getMemeberBasedOnRulesImplementation(listOfDeviceGroupMember, null);
+			setRatingAndDeviceId(deviceTile, leadMemberId);
 
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = null;
-			// Calling Pricing Api
 			if (bundleAndHardwareTupleListPAYG != null && !bundleAndHardwareTupleListPAYG.isEmpty()) {
-				listOfPriceForBundleAndHardware = commonUtility.getPriceDetails(new ArrayList<>(bundleAndHardwareTupleListPAYG), null,
-						null, groupType);
+				listOfPriceForBundleAndHardware = commonUtility
+						.getPriceDetails(new ArrayList<>(bundleAndHardwareTupleListPAYG), null, null, groupType);
 			}
-			Map<String, BundleAndHardwarePromotions> bundleAndHardwarePromotionsMap = new HashMap<>();
-			if (bundleAndHardwareTupleListPAYG != null && !bundleAndHardwareTupleListPAYG.isEmpty()) {
-				List<BundleAndHardwarePromotions> allPromotions = commonUtility
-						.getPromotionsForBundleAndHardWarePromotions(new ArrayList<>(bundleAndHardwareTupleListPAYG), null);
-				if (allPromotions != null && !allPromotions.isEmpty()) {
-					allPromotions.forEach(
-							promotion -> bundleAndHardwarePromotionsMap.put(promotion.getHardwareId(), promotion));
-				}
-			}
+			Map<String, BundleAndHardwarePromotions> bundleAndHardwarePromotionsMap = setBundleAndHardwarePromotionsMaps(
+					bundleAndHardwareTupleListPAYG);
 			Map<String, PriceForBundleAndHardware> priceMapForParticularDevice = new HashMap<>();
-			if (listOfPriceForBundleAndHardware != null && !listOfPriceForBundleAndHardware.isEmpty()) {
-				listOfPriceForBundleAndHardware.forEach(priceForBundleAndHardware->{
-					if(priceForBundleAndHardware != null && priceForBundleAndHardware.getHardwarePrice() != null && 
-							StringUtils.isNotBlank(priceForBundleAndHardware.getHardwarePrice().getHardwareId())
-							&& priceForBundleAndHardware.getHardwarePrice().getOneOffPrice()!=null){
-						priceMapForParticularDevice
-						.put(priceForBundleAndHardware.getHardwarePrice().getHardwareId(), priceForBundleAndHardware);
-					}
-					else{
-						log.error( "PAYG PRICE Coming as null from Pricing API---------------");
-					}
-				});
-			}
-
+			setPriceMapForParticularDevice(listOfPriceForBundleAndHardware, priceMapForParticularDevice);
 			deviceTile.setGroupName(groupName);
 			deviceTile.setGroupType(groupType);
-			CompletableFuture<List<DeviceSummary>> future1 = getDeviceSummery_Implementation_PAYG(
-					listOfDeviceGroupMember, commerProdMemMapPAYG, groupType, priceMapForParticularDevice,
+			CompletableFuture<List<DeviceSummary>> future1 = getDeviceSummeryImplementationPAYG(
+					listOfDeviceGroupMember, commerProdMemMapPAYG, priceMapForParticularDevice,
 					bundleAndHardwarePromotionsMap, CatalogServiceAspect.CATALOG_VERSION.get());
 			List<DeviceSummary> listOfDeviceSummary;
 			try {
 				listOfDeviceSummary = future1.get();
 			} catch (Exception e) {
-				log.error( EXCEPTION_OCCURED_WHILE_EXECUTING_THREAD_POOL + e);
+				log.error(EXCEPTION_OCCURED_WHILE_EXECUTING_THREAD_POOL + e);
 				throw new ApplicationException(ExceptionMessages.ERROR_IN_FUTURE_TASK);
 			}
 			deviceTile.setDeviceSummary(listOfDeviceSummary);
 			listOfDeviceTile.add(deviceTile);
 		} else {
-			log.error( "Requested Make and Model Not found in given group type:" + groupType);
+			log.error("Requested Make and Model Not found in given group type:" + groupType);
 			throw new ApplicationException(ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST);
 		}
+	}
+
+	private void setPriceMapForParticularDevice(List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware,
+			Map<String, PriceForBundleAndHardware> priceMapForParticularDevice) {
+		if (listOfPriceForBundleAndHardware != null && !listOfPriceForBundleAndHardware.isEmpty()) {
+			listOfPriceForBundleAndHardware.forEach(priceForBundleAndHardware -> {
+				if (priceForBundleAndHardware != null && priceForBundleAndHardware.getHardwarePrice() != null
+						&& StringUtils.isNotBlank(priceForBundleAndHardware.getHardwarePrice().getHardwareId())
+						&& priceForBundleAndHardware.getHardwarePrice().getOneOffPrice() != null) {
+					priceMapForParticularDevice.put(priceForBundleAndHardware.getHardwarePrice().getHardwareId(),
+							priceForBundleAndHardware);
+				} else {
+					log.error("PAYG PRICE Coming as null from Pricing API---------------");
+				}
+			});
+		}
+	}
+
+	private Map<String, BundleAndHardwarePromotions> setBundleAndHardwarePromotionsMaps(
+			Set<BundleAndHardwareTuple> bundleAndHardwareTupleListPAYG) {
+		Map<String, BundleAndHardwarePromotions> bundleAndHardwarePromotionsMap = new HashMap<>();
+		if (bundleAndHardwareTupleListPAYG != null && !bundleAndHardwareTupleListPAYG.isEmpty()) {
+			List<BundleAndHardwarePromotions> allPromotions = commonUtility
+					.getPromotionsForBundleAndHardWarePromotions(new ArrayList<>(bundleAndHardwareTupleListPAYG), null);
+			if (allPromotions != null && !allPromotions.isEmpty()) {
+				allPromotions
+						.forEach(promotion -> bundleAndHardwarePromotionsMap.put(promotion.getHardwareId(), promotion));
+			}
+		}
+		return bundleAndHardwarePromotionsMap;
 	}
 
 	/**
@@ -538,7 +644,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 	 * @param fromPricingMap
 	 * @return CompletableFuture<List<DeviceSummary>>
 	 */
-	public CompletableFuture<List<DeviceSummary>> getDeviceSummery_Implementation(
+	public CompletableFuture<List<DeviceSummary>> getDeviceSummeryImplementation(
 			List<com.vf.uk.dal.device.model.Member> listOfDeviceGroupMember,
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareLocal,
 			Map<String, CommercialProduct> commerProdMemMap, boolean isConditionalAcceptJourney, String journeyType,
@@ -565,44 +671,21 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 					List<BundleAndHardwarePromotions> promotions = null;
 					if (isConditionalAcceptJourney && commercialProduct != null) {
 						isConditional = true;
-						if (isLeadPlanWithinCreditLimit_Implementation(commercialProduct, creditLimit,
-								listOfPriceForBundleAndHardwareLocal, journeyType,groupType)) {
-							comBundle = deviceEs.getCommercialBundle(commercialProduct.getLeadPlanId());
-						} else {
-							comBundle = getLeadBundleBasedOnAllPlans_Implementation(creditLimit, commercialProduct,
-									listOfPriceForBundleAndHardwareLocal, journeyType, groupType);
-						}
-						List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
-						if (comBundle != null) {
-							BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
-							bundleAndHardwareTuple.setBundleId(comBundle.getId());
-							bundleAndHardwareTuple.setHardwareId(member.getId());
-							bundleHardwareTupleList.add(bundleAndHardwareTuple);
-						}
-						if (!bundleHardwareTupleList.isEmpty()) {
-							promotions = commonUtility
-									.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList, journeyType);
-						}
+						comBundle = setCommercialBundle(listOfPriceForBundleAndHardwareLocal, journeyType, creditLimit,
+								groupType, commercialProduct);
+						promotions = setBundleAndHardwarePromotionListAndPromotios(journeyType, member, comBundle);
 
 					} else if (StringUtils.isNotBlank(bundleId) && commercialProduct != null
 							&& bundleIdMap.get(member.getId())) {
-						if (commercialBundleMap.containsKey(bundleId)) {
-							comBundle = commercialBundleMap.get(bundleId);
-						}
-						if (bundleAndHardwarePromotionsMap.containsKey(member.getId())) {
-							promotions = Arrays.asList(bundleAndHardwarePromotionsMap.get(member.getId()));
-						}
+						comBundle = setCommBundle(commercialBundleMap, bundleId);
+						promotions = setPromoIfBundleIdPresent(bundleAndHardwarePromotionsMap, member);
 					} else {
 						String planId = null;
 						if (!leadPlanIdMap.isEmpty() && leadPlanIdMap.containsKey(member.getId())) {
 							planId = leadPlanIdMap.get(member.getId());
 						}
-						if (commercialBundleMap.containsKey(planId)) {
-							comBundle = commercialBundleMap.get(planId);
-						}
-						if (bundleAndHardwarePromotionsMap.containsKey(member.getId())) {
-							promotions = Arrays.asList(bundleAndHardwarePromotionsMap.get(member.getId()));
-						}
+						comBundle = setCommBundle(commercialBundleMap, planId);
+						promotions = setPromoIfBundleIdPresent(bundleAndHardwarePromotionsMap, member);
 					}
 					if (isConditional) {
 						priceForBundleAndHardware = !listOfPriceForBundleAndHardwareLocal.isEmpty()
@@ -614,18 +697,74 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 							memberPriority, commercialProduct, comBundle, priceForBundleAndHardware, promotions,
 							groupType, isConditionalAcceptJourney, fromPricingMap, cdnDomain);
 
-					if (null != deviceSummary && commercialProduct != null) {
-						DeviceServiceImplUtility.isPlanAffordable_Implementation(deviceSummary, comBundle, creditLimit,
-								isConditionalAcceptJourney);
-						if (StringUtils.isNotBlank(bundleId))
-							if (bundleIdMap.get(member.getId()))
-								deviceSummary.setIsCompatible(true);
-							else
-								deviceSummary.setIsCompatible(false);
-						listOfDeviceSummaryLocal.add(deviceSummary);
-					}
+					setlistOfDeviceSummaryLocal(isConditionalAcceptJourney, creditLimit, bundleIdMap, bundleId, member,
+							commercialProduct, comBundle);
 				}
 				return listOfDeviceSummaryLocal;
+			}
+
+			private List<BundleAndHardwarePromotions> setPromoIfBundleIdPresent(
+					Map<String, BundleAndHardwarePromotions> bundleAndHardwarePromotionsMap,
+					com.vf.uk.dal.device.model.Member member) {
+				List<BundleAndHardwarePromotions> promotions = null;
+				if (bundleAndHardwarePromotionsMap.containsKey(member.getId())) {
+					promotions = Arrays.asList(bundleAndHardwarePromotionsMap.get(member.getId()));
+				}
+				return promotions;
+			}
+
+			private CommercialBundle setCommBundle(Map<String, CommercialBundle> commercialBundleMap, String bundleId) {
+				CommercialBundle comBundle = null;
+				if (commercialBundleMap.containsKey(bundleId)) {
+					comBundle = commercialBundleMap.get(bundleId);
+				}
+				return comBundle;
+			}
+
+			private List<BundleAndHardwarePromotions> setBundleAndHardwarePromotionListAndPromotios(String journeyType,
+					com.vf.uk.dal.device.model.Member member, CommercialBundle comBundle) {
+				List<BundleAndHardwarePromotions> promotions = null;
+				List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
+				if (comBundle != null) {
+					BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
+					bundleAndHardwareTuple.setBundleId(comBundle.getId());
+					bundleAndHardwareTuple.setHardwareId(member.getId());
+					bundleHardwareTupleList.add(bundleAndHardwareTuple);
+				}
+				if (!bundleHardwareTupleList.isEmpty()) {
+					promotions = commonUtility.getPromotionsForBundleAndHardWarePromotions(bundleHardwareTupleList,
+							journeyType);
+				}
+				return promotions;
+			}
+
+			private CommercialBundle setCommercialBundle(
+					List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareLocal, String journeyType,
+					Double creditLimit, String groupType, CommercialProduct commercialProduct) {
+				CommercialBundle comBundle;
+				if (isLeadPlanWithinCreditLimit_Implementation(commercialProduct, creditLimit,
+						listOfPriceForBundleAndHardwareLocal, journeyType, groupType)) {
+					comBundle = deviceEs.getCommercialBundle(commercialProduct.getLeadPlanId());
+				} else {
+					comBundle = getLeadBundleBasedOnAllPlansImplementation(creditLimit, commercialProduct,
+							listOfPriceForBundleAndHardwareLocal, journeyType, groupType);
+				}
+				return comBundle;
+			}
+
+			private void setlistOfDeviceSummaryLocal(boolean isConditionalAcceptJourney, Double creditLimit,
+					Map<String, Boolean> bundleIdMap, String bundleId, com.vf.uk.dal.device.model.Member member,
+					CommercialProduct commercialProduct, CommercialBundle comBundle) {
+				if (null != deviceSummary && commercialProduct != null) {
+					DeviceServiceImplUtility.isPlanAffordableImplementation(deviceSummary, comBundle, creditLimit,
+							isConditionalAcceptJourney);
+					if (StringUtils.isNotBlank(bundleId))
+						if (bundleIdMap.get(member.getId()))
+							deviceSummary.setIsCompatible(true);
+						else
+							deviceSummary.setIsCompatible(false);
+					listOfDeviceSummaryLocal.add(deviceSummary);
+				}
 			}
 		});
 
@@ -639,20 +778,12 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 	 * @param deviceTile
 	 * @param listOfDeviceSummary
 	 */
-	public void resetDeviceId_Implementation(boolean isConditionalAcceptJourney, DeviceTile deviceTile,
+	public void resetDeviceIdImplementation(boolean isConditionalAcceptJourney, DeviceTile deviceTile,
 			List<DeviceSummary> listOfDeviceSummary, String selectedDeviceId) {
 
 		boolean resetDeviceId = false;
 		if (isConditionalAcceptJourney) {
-			if (StringUtils.isNotBlank(selectedDeviceId)) {
-				for (DeviceSummary deviceSummary : listOfDeviceSummary) {
-					if (deviceSummary.getIsAffordable() && deviceSummary.getDeviceId().equals(selectedDeviceId)) {
-						deviceTile.setDeviceId(deviceSummary.getDeviceId());
-						resetDeviceId = true;
-						break;
-					}
-				}
-			}
+			resetDeviceId = resetDeviceId(deviceTile, listOfDeviceSummary, selectedDeviceId);
 
 			if (!resetDeviceId) {
 				for (DeviceSummary deviceSummary : listOfDeviceSummary) {
@@ -672,6 +803,21 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 
 	}
 
+	private boolean resetDeviceId(DeviceTile deviceTile, List<DeviceSummary> listOfDeviceSummary,
+			String selectedDeviceId) {
+		boolean resetDeviceId = false;
+		if (StringUtils.isNotBlank(selectedDeviceId)) {
+			for (DeviceSummary deviceSummary : listOfDeviceSummary) {
+				if (deviceSummary.getIsAffordable() && deviceSummary.getDeviceId().equals(selectedDeviceId)) {
+					deviceTile.setDeviceId(deviceSummary.getDeviceId());
+					resetDeviceId = true;
+					break;
+				}
+			}
+		}
+		return resetDeviceId;
+	}
+
 	/**
 	 * 
 	 * @param listOfDeviceGroupMember
@@ -680,9 +826,9 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 	 * @param priceMapForParticularDevice
 	 * @return CompletableFuture<List<DeviceSummary>>
 	 */
-	public CompletableFuture<List<DeviceSummary>> getDeviceSummery_Implementation_PAYG(
+	public CompletableFuture<List<DeviceSummary>> getDeviceSummeryImplementationPAYG(
 			List<com.vf.uk.dal.device.model.Member> listOfDeviceGroupMember,
-			Map<String, CommercialProduct> commerProdMemMap, String groupType,
+			Map<String, CommercialProduct> commerProdMemMap,
 			Map<String, PriceForBundleAndHardware> priceMapForParticularDevice,
 			Map<String, BundleAndHardwarePromotions> promotions, String version) {
 		return CompletableFuture.supplyAsync(new Supplier<List<DeviceSummary>>() {
@@ -701,14 +847,14 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 						PriceForBundleAndHardware priceForBundleAndHardware = null;
 						if (priceMapForParticularDevice.containsKey(member.getId())) {
 							priceForBundleAndHardware = priceMapForParticularDevice.get(member.getId());
-							deviceSummary = DeviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceTile_PAYG(
-									memberPriority, commercialProduct, priceForBundleAndHardware, groupType, promotion,
-									cdnDomain);
+							deviceSummary = DeviceDetailsMakeAndModelVaiantDaoUtils
+									.convertCoherenceDeviceToDeviceTilePAYG(memberPriority, commercialProduct,
+											priceForBundleAndHardware, promotion, cdnDomain);
 						}
-						
+
 						if (deviceSummary != null) {
 							listOfDeviceSummaryLocal.add(deviceSummary);
-							deviceSummary=null;
+							deviceSummary = null;
 						}
 					}
 
@@ -738,9 +884,9 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 		bundles.add(tuple);
 
 		List<PriceForBundleAndHardware> priceForBundleAndHardwares = commonUtility.getPriceDetails(bundles, null,
-				journeyType,groupType);
+				journeyType, groupType);
 
-		if (DeviceServiceImplUtility.isPlanPriceWithinCreditLimit_Implementation(creditLimit,
+		if (DeviceServiceImplUtility.isPlanPriceWithinCreditLimitImplementation(creditLimit,
 				priceForBundleAndHardwares, product.getLeadPlanId())) {
 			listOfPriceForBundleAndHardware.clear();
 			listOfPriceForBundleAndHardware.addAll(priceForBundleAndHardwares);
@@ -760,7 +906,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 	 * @param commercialBundleRepository
 	 * @return CommercialBundle
 	 */
-	public CommercialBundle getLeadBundleBasedOnAllPlans_Implementation(Double creditLimit,
+	public CommercialBundle getLeadBundleBasedOnAllPlansImplementation(Double creditLimit,
 			CommercialProduct commercialProduct, List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware,
 			String journeyType, String groupType) {
 
@@ -768,21 +914,10 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList = new ArrayList<>();
 			List<String> compatiblePlanIds = commercialProduct.getListOfCompatiblePlanIds();
 
-			for (String planId : compatiblePlanIds) {
-				BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
-				if (StringUtils.isBlank(commercialProduct.getLeadPlanId())
-						|| (StringUtils.isNotBlank(commercialProduct.getLeadPlanId())
-								&& !commercialProduct.getLeadPlanId().equalsIgnoreCase(planId))) {
-					bundleAndHardwareTuple.setBundleId(planId);
-					bundleAndHardwareTuple.setHardwareId(commercialProduct.getId());
-					bundleAndHardwareTupleList.add(bundleAndHardwareTuple);
-				}
-			}
+			setBundleAndHardwareTupleList(commercialProduct, bundleAndHardwareTupleList, compatiblePlanIds);
 			List<PriceForBundleAndHardware> priceForBundleAndHardwares = null;
-			if (CollectionUtils.isNotEmpty(bundleAndHardwareTupleList)) {
-				priceForBundleAndHardwares = commonUtility.getPriceDetails(bundleAndHardwareTupleList, null,
-						journeyType, groupType);
-			}
+			priceForBundleAndHardwares = setPriceForBundleAndHardwares(journeyType, groupType,
+					bundleAndHardwareTupleList);
 			if (priceForBundleAndHardwares != null && CollectionUtils.isNotEmpty(priceForBundleAndHardwares)) {
 				Iterator<PriceForBundleAndHardware> iterator = priceForBundleAndHardwares.iterator();
 				while (iterator.hasNext()) {
@@ -810,6 +945,30 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 
 	}
 
+	private List<PriceForBundleAndHardware> setPriceForBundleAndHardwares(String journeyType, String groupType,
+			List<BundleAndHardwareTuple> bundleAndHardwareTupleList) {
+		List<PriceForBundleAndHardware> priceForBundleAndHardwares = null;
+		if (CollectionUtils.isNotEmpty(bundleAndHardwareTupleList)) {
+			priceForBundleAndHardwares = commonUtility.getPriceDetails(bundleAndHardwareTupleList, null, journeyType,
+					groupType);
+		}
+		return priceForBundleAndHardwares;
+	}
+
+	private void setBundleAndHardwareTupleList(CommercialProduct commercialProduct,
+			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, List<String> compatiblePlanIds) {
+		for (String planId : compatiblePlanIds) {
+			BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
+			if (StringUtils.isBlank(commercialProduct.getLeadPlanId())
+					|| (StringUtils.isNotBlank(commercialProduct.getLeadPlanId())
+							&& !commercialProduct.getLeadPlanId().equalsIgnoreCase(planId))) {
+				bundleAndHardwareTuple.setBundleId(planId);
+				bundleAndHardwareTuple.setHardwareId(commercialProduct.getId());
+				bundleAndHardwareTupleList.add(bundleAndHardwareTuple);
+			}
+		}
+	}
+
 	/**
 	 * @param bundleId
 	 * @param journeyType
@@ -832,46 +991,66 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			Map<String, CommercialBundle> commerBundleIdMap, List<BundleAndHardwareTuple> bundleAndHardwareTupleList,
 			Map<String, Boolean> bundleIdMap, Map<String, Boolean> fromPricingMap, Map<String, String> leadPlanIdMap,
 			List<String> listofLeadPlan, String make, String model) {
-		com.vf.uk.dal.device.model.Member entityMember;
 		String groupName = null;
 		for (Group productGroup : listOfProductGroup) {
-			if (StringUtils.equalsIgnoreCase(productGroup.getEquipmentMake(),make) && StringUtils.equalsIgnoreCase(productGroup.getEquipmentModel(),model)&&productGroup.getMembers() != null && !productGroup.getMembers().isEmpty()) {
+			if (StringUtils.equalsIgnoreCase(productGroup.getEquipmentMake(), make)
+					&& StringUtils.equalsIgnoreCase(productGroup.getEquipmentModel(), model)
+					&& productGroup.getMembers() != null && !productGroup.getMembers().isEmpty()) {
 				for (Member member : productGroup.getMembers()) {
-					if (commerProdMemMap.containsKey(member.getId())) {
-						groupName = productGroup.getName();
-						entityMember = new com.vf.uk.dal.device.model.Member();
-						entityMember.setId(member.getId());
-						entityMember.setPriority(String.valueOf(member.getPriority()));
-						listOfDeviceGroupMember.add(entityMember);
-						CommercialProduct commercialProduct = commerProdMemMap.get(member.getId());
-						commercialProductsMatchedMemList.add(commercialProduct);
-						List<String> listOfCompatiblePlanIds = commercialProduct.getListOfCompatiblePlanIds() == null
-								? Collections.emptyList() : commercialProduct.getListOfCompatiblePlanIds();
-						if (StringUtils.isNotBlank(bundleId) && listOfCompatiblePlanIds.contains(bundleId)) {
-							getListOfLeadPlan(bundleId, bundleAndHardwareTupleList, bundleIdMap, fromPricingMap,
-									leadPlanIdMap, listofLeadPlan, member, commercialProduct);
-						} else {
-							bundleIdMap.put(commercialProduct.getId(), false);
-							if (StringUtils.isNotBlank(commercialProduct.getLeadPlanId())
-									&& isJourneySpecificLeadPlan(commerBundleIdMap, commercialProduct.getLeadPlanId(),
-											journeyType)
-									&& listOfCompatiblePlanIds.contains(commercialProduct.getLeadPlanId())) {
-								DeviceServiceImplUtility.getPricingMap(bundleAndHardwareTupleList, fromPricingMap,
-										leadPlanIdMap, listofLeadPlan, commercialProduct);
-							} else {
-								if (CollectionUtils.isNotEmpty(commercialProduct.getListOfCompatiblePlanIds()))
-
-								{
-									DeviceServiceImplUtility.getBundleAndHardwareTupleList(bundleAndHardwareTupleList,
-											fromPricingMap, commercialProduct);
-								}
-							}
-						}
-					}
+					groupName = getGroupName(bundleId, journeyType, listOfDeviceGroupMember,
+							commercialProductsMatchedMemList, commerProdMemMap, commerBundleIdMap,
+							bundleAndHardwareTupleList, bundleIdMap, fromPricingMap, leadPlanIdMap, listofLeadPlan,
+							productGroup, member);
 				}
 			}
 		}
 		return groupName;
+	}
+
+	private String getGroupName(String bundleId, String journeyType,
+			List<com.vf.uk.dal.device.model.Member> listOfDeviceGroupMember,
+			List<CommercialProduct> commercialProductsMatchedMemList, Map<String, CommercialProduct> commerProdMemMap,
+			Map<String, CommercialBundle> commerBundleIdMap, List<BundleAndHardwareTuple> bundleAndHardwareTupleList,
+			Map<String, Boolean> bundleIdMap, Map<String, Boolean> fromPricingMap, Map<String, String> leadPlanIdMap,
+			List<String> listofLeadPlan, Group productGroup, Member member) {
+		String groupName = null;
+		com.vf.uk.dal.device.model.Member entityMember;
+		if (commerProdMemMap.containsKey(member.getId())) {
+			groupName = productGroup.getName();
+			entityMember = new com.vf.uk.dal.device.model.Member();
+			entityMember.setId(member.getId());
+			entityMember.setPriority(String.valueOf(member.getPriority()));
+			listOfDeviceGroupMember.add(entityMember);
+			CommercialProduct commercialProduct = commerProdMemMap.get(member.getId());
+			commercialProductsMatchedMemList.add(commercialProduct);
+			List<String> listOfCompatiblePlanIds = commercialProduct.getListOfCompatiblePlanIds() == null
+					? Collections.emptyList() : commercialProduct.getListOfCompatiblePlanIds();
+			if (StringUtils.isNotBlank(bundleId) && listOfCompatiblePlanIds.contains(bundleId)) {
+				getListOfLeadPlan(bundleId, bundleAndHardwareTupleList, bundleIdMap, fromPricingMap, leadPlanIdMap,
+						listofLeadPlan, member, commercialProduct);
+			} else {
+				bundleIdMap.put(commercialProduct.getId(), false);
+				if (StringUtils.isNotBlank(commercialProduct.getLeadPlanId())
+						&& isJourneySpecificLeadPlan(commerBundleIdMap, commercialProduct.getLeadPlanId(), journeyType)
+						&& listOfCompatiblePlanIds.contains(commercialProduct.getLeadPlanId())) {
+					DeviceServiceImplUtility.getPricingMap(bundleAndHardwareTupleList, fromPricingMap, leadPlanIdMap,
+							listofLeadPlan, commercialProduct);
+				} else {
+					getBundleAndHardwareTupleList(bundleAndHardwareTupleList, fromPricingMap, commercialProduct);
+				}
+			}
+		}
+		return groupName;
+	}
+
+	private void getBundleAndHardwareTupleList(List<BundleAndHardwareTuple> bundleAndHardwareTupleList,
+			Map<String, Boolean> fromPricingMap, CommercialProduct commercialProduct) {
+		if (CollectionUtils.isNotEmpty(commercialProduct.getListOfCompatiblePlanIds()))
+
+		{
+			DeviceServiceImplUtility.getBundleAndHardwareTupleList(bundleAndHardwareTupleList,
+					fromPricingMap, commercialProduct);
+		}
 	}
 
 	/**

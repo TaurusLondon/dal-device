@@ -1139,11 +1139,9 @@ public class DeviceTest {
 
 	@Test
 	public void testForConvertBundleHeaderForDeviceToProductGroupForDeviceListingNullLeadPlanId() {
-		Map<String, List<PriceForBundleAndHardware>> iLSPriceMap = new HashMap<>();
-		iLSPriceMap.put("093353", CommonMethods.getOfferAppliedPrice());
 		DevicePreCalculatedData productGroupForDeviceListing = CacheDeviceDaoUtils
 				.convertBundleHeaderForDeviceToProductGroupForDeviceListing("093353", null, "groupname", "groupId",
-						CommonMethods.getPrice(), CommonMethods.getleadMemberMap(), iLSPriceMap,
+						CommonMethods.getPrice(), CommonMethods.getleadMemberMap(),
 						CommonMethods.getleadMemberMap(), null, STRING_DEVICE_PAYG);
 
 		Assert.assertNotNull(productGroupForDeviceListing);
@@ -1156,11 +1154,9 @@ public class DeviceTest {
 
 	@Test
 	public void testForConvertBundleHeaderForDeviceToProductGroupForDeviceListing() {
-		Map<String, List<PriceForBundleAndHardware>> iLSPriceMap = new HashMap<>();
-		iLSPriceMap.put("093353", CommonMethods.getOfferAppliedPrice());
 		DevicePreCalculatedData productGroupForDeviceListing = CacheDeviceDaoUtils
 				.convertBundleHeaderForDeviceToProductGroupForDeviceListing("093353", "leadPlanId", "groupname",
-						"groupId", CommonMethods.getPrice(), CommonMethods.getleadMemberMap(), iLSPriceMap,
+						"groupId", CommonMethods.getPrice(), CommonMethods.getleadMemberMap(),
 						CommonMethods.getleadMemberMap(), "upgradeLeadPlanId", STRING_DEVICE_PAYM);
 		Assert.assertNotNull(productGroupForDeviceListing);
 		assertEquals("093353",productGroupForDeviceListing.getDeviceId());
@@ -1230,7 +1226,7 @@ public class DeviceTest {
 	@Test
 	public void testForGetPriceInfoForSolr() {
 
-		Map<String,Object> cachePrice =CacheDeviceDaoUtils.getPriceInfoForSolr(CommonMethods.getOfferAppliedPrice().get(0), new HashMap<>());
+		Map<String,Object> cachePrice =CacheDeviceDaoUtils.getPriceInfoForSolr(CommonMethods.getOfferAppliedPrice().get(0));
 		Assert.assertNotNull(cachePrice);
 	}
 

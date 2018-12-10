@@ -12,9 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,7 +33,7 @@ import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import springfox.documentation.annotations.ApiIgnore;
 
-@Api(tags="DeviceDetails")
+@Api(tags = "DeviceDetails")
 @RestController
 @RequestMapping(value = "")
 @EnableAspectJAutoProxy(proxyTargetClass = true)
@@ -55,7 +55,7 @@ public class DeviceDetailsController {
 	public static final String DEVICE_ID_IS_EMPTY = "Device Id is Empty";
 	@Autowired
 	DeviceDetailsService deviceDetailsService;
-	
+
 	/**
 	 * Handles requests for getDeviceTile Service with input as
 	 * GROUP_NAME,GROUP_TYPE in URL as query. performance improved by @author
@@ -73,6 +73,7 @@ public class DeviceDetailsController {
 				"Missing mandatory parameter " + ex.getParameterName());
 
 	}
+
 	/**
 	 * Handles requests for getDeviceDetails Service with input as deviceId.
 	 * 
@@ -82,7 +83,7 @@ public class DeviceDetailsController {
 	 * @return DeviceDetails
 	 */
 	@ApiOperation(value = "Get the device details for the given device Id", notes = "The service gets the details of the device specially price, equipment, specification, features, merchandising, etc in the response.", response = DeviceDetails.class)
-	@RequestMapping(value = "/device/{deviceId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/device/{deviceId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = DeviceDetails.class),
 			@ApiResponse(code = 400, message = "Bad request", response = com.vf.uk.dal.device.model.Error.class),
 			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.model.Error.class),
@@ -93,14 +94,14 @@ public class DeviceDetailsController {
 			@ApiParam(value = "Type of journey that the user undertakes e.g. \"Acquisition\", \"upgrade\", \"ils\" etc.") @RequestParam(value = "journeyType", required = false) String journeyType,
 			@ApiParam(value = "Offer code that defines what type of promotional discount needs to be displaced.") @RequestParam(value = "offerCode", required = false) String offerCode) {
 		DeviceDetails deviceDetails;
-		log.info( ":::::::Test Logger for VSTS migration And Validate Pipeline Validation::::::::");
+		log.info(":::::::Test Logger for VSTS migration And Validate Pipeline Validation::::::::");
 		Validator.validateDeviceDetails(deviceId);
-		String journeyTypeLocal = StringUtils.isNotBlank(journeyType) ? journeyType
-				: JOURNEY_TYPE_ACQUISITION;
+		String journeyTypeLocal = StringUtils.isNotBlank(journeyType) ? journeyType : JOURNEY_TYPE_ACQUISITION;
 		deviceDetails = deviceDetailsService.getDeviceDetails(deviceId, journeyTypeLocal, offerCode);
 
 		return deviceDetails;
 	}
+
 	/**
 	 * Returns List of Device details for the given List of devices
 	 * 
@@ -108,34 +109,30 @@ public class DeviceDetailsController {
 	 * @return
 	 */
 	@ApiIgnore
-	@RequestMapping(value = "/device/", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@GetMapping(value = "/device/", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public List<DeviceDetails> getListOfDeviceDetails(@RequestParam Map<String, String> queryParams) {
 
 		if (!queryParams.isEmpty() && Validator.validateDeviceId(queryParams)) {
 
-			log.info( "Query parameter(s) passed in the request " + queryParams);
+			log.info("Query parameter(s) passed in the request " + queryParams);
 			List<DeviceDetails> listOfDeviceDetails;
 
-			String deviceId = queryParams.containsKey(DEVICE_ID) ? queryParams.get(DEVICE_ID)
-					: null;
-			String journeyType = queryParams.containsKey(JOURNEY_TYPE)
-					? queryParams.get(JOURNEY_TYPE) : null;
-			String offerCode = queryParams.containsKey(OFFER_CODE) ? queryParams.get(OFFER_CODE)
-					: null;
+			String deviceId = queryParams.containsKey(DEVICE_ID) ? queryParams.get(DEVICE_ID) : null;
+			String journeyType = queryParams.containsKey(JOURNEY_TYPE) ? queryParams.get(JOURNEY_TYPE) : null;
+			String offerCode = queryParams.containsKey(OFFER_CODE) ? queryParams.get(OFFER_CODE) : null;
 
 			if (deviceId != null) {
-				log.info(
-						"Get the list of device details for the device id passed as request params " + deviceId);
-				log.info( "Start -->  calling  getListOfDeviceDetails");
+				log.info("Get the list of device details for the device id passed as request params " + deviceId);
+				log.info("Start -->  calling  getListOfDeviceDetails");
 				listOfDeviceDetails = deviceDetailsService.getListOfDeviceDetails(deviceId, offerCode, journeyType);
-				log.info( "End -->  calling  getListofDeviceDetails");
+				log.info("End -->  calling  getListofDeviceDetails");
 			} else {
-				log.error( DEVICE_ID_IS_EMPTY);
+				log.error(DEVICE_ID_IS_EMPTY);
 				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
 			}
 			return listOfDeviceDetails;
 		} else {
-			log.error( ExceptionMessages.INVALID_QUERY_PARAMS);
+			log.error(ExceptionMessages.INVALID_QUERY_PARAMS);
 			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
 		}
 

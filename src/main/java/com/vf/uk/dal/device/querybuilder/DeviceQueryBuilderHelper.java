@@ -25,6 +25,10 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class DeviceQueryBuilderHelper {
+	
+	private DeviceQueryBuilderHelper(){
+		
+	}
 
 	public static final String ELASTIC_SEARCH_INDEX_SIZE = "ELASTIC_SEARCH_INDEX_SIZE";
 	public static final int DEFAULT_ELASTIC_SEARCH_INDEX_SIZE = 1000;

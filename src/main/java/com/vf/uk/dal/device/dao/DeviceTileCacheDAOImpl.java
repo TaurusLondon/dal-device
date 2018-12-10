@@ -408,7 +408,7 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 			log.error( "Exception occurred while persisting data in intermediate tables" + e);
 		} finally {
 			try {
-				if (conn != null && !conn.isClosed()) {
+				if (!conn.isClosed()) {
 					conn.close();
 				}
 			} catch (SQLException e) {
@@ -426,7 +426,7 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 			log.error( "Exception occurred while persisting data in intermediate tables" + e);
 		} finally {
 			try {
-				if (conn != null && !conn.isClosed()) {
+				if (!conn.isClosed()) {
 					conn.close();
 				}
 			} catch (SQLException e) {
@@ -469,16 +469,16 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 	@Override
 	public void updateCacheDeviceToDb(String jobId, String jobStatus) {
 		jdbcTemplate.setDataSource(datasource);
-		try(Connection conn = DataSourceUtils.getConnection(jdbcTemplate.getDataSource());) {
+		try(Connection connection = DataSourceUtils.getConnection(jdbcTemplate.getDataSource());) {
 			
-			conn.setAutoCommit(false);
+			connection.setAutoCommit(false);
 			String query = "UPDATE DALMS_CACHE_SERVICES SET JOB_STATUS = ?, JOB_END = ?, JOB_LAST_UPDATED = ? WHERE JOB_ID = ?";
 			Object[] params = new Object[] { jobStatus, new Timestamp(new Date().getTime()),
 					new Timestamp(new Date().getTime()), jobId };
 			jdbcTemplate.update(query, params);
 
 			log.info(jobId + " updated with status " + jobStatus + " in DALMS_CACHE_SERVICES_TABLE");
-			conn.commit();
+			connection.commit();
 		} catch (DataAccessException | SQLException e) {
 			log.error( jobId + "==> " + e);
 		}
@@ -490,7 +490,7 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 	 * @return CacheDeviceTileResponse
 	 */
 	@Override
-	public CacheDeviceTileResponse getCacheDeviceJobStatus(String jobId) throws ApplicationException {
+	public CacheDeviceTileResponse getCacheDeviceJobStatus(String jobId){
 
 		CacheDeviceTileResponse response = new CacheDeviceTileResponse();
 		String jobStatus = null;

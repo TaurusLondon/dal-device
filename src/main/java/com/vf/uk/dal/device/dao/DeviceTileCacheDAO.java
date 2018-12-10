@@ -40,7 +40,7 @@ public interface DeviceTileCacheDAO {
 	 * @throws ApplicationException
 	 *             the application exception
 	 */
-	public CacheDeviceTileResponse getCacheDeviceJobStatus(String jobId) throws ApplicationException;
+	public CacheDeviceTileResponse getCacheDeviceJobStatus(String jobId);
 
 	/**
 	 * rollBackTransaction

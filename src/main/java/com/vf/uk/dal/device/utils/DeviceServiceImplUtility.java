@@ -562,7 +562,7 @@ public class DeviceServiceImplUtility {
 	 * @param creditLimit
 	 * @param isConditionalAcceptJourney
 	 */
-	public static void isPlanAffordable_Implementation(DeviceSummary deviceSummary, CommercialBundle comBundle,
+	public static void isPlanAffordableImplementation(DeviceSummary deviceSummary, CommercialBundle comBundle,
 			Double creditLimit, boolean isConditionalAcceptJourney) {
 		if (null == comBundle) {
 			deviceSummary.setIsAffordable(false);
@@ -570,7 +570,7 @@ public class DeviceServiceImplUtility {
 				&& null != deviceSummary.getPriceInfo().getBundlePrice()) {
 			String discountType = DeviceTilesDaoUtils
 					.isPartialOrFullTenureDiscount(deviceSummary.getPriceInfo().getBundlePrice());
-			Double monthlyPrice = getBundlePriceBasedOnDiscountDuration_Implementation(deviceSummary, discountType);
+			Double monthlyPrice = getBundlePriceBasedOnDiscountDurationImplementation(deviceSummary, discountType);
 
 			if (null != monthlyPrice && monthlyPrice > creditLimit) {
 				deviceSummary.setIsAffordable(false);
@@ -590,12 +590,12 @@ public class DeviceServiceImplUtility {
 	 * @param bundleId
 	 * @return
 	 */
-	public static boolean isPlanPriceWithinCreditLimit_Implementation(Double creditLimit,
+	public static boolean isPlanPriceWithinCreditLimitImplementation(Double creditLimit,
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware, String bundleId) {
 		if (CollectionUtils.isNotEmpty(listOfPriceForBundleAndHardware)) {
 			for (PriceForBundleAndHardware priceForBundleAndHardware : listOfPriceForBundleAndHardware) {
 				if (null != priceForBundleAndHardware.getBundlePrice()
-						&& getDiscountTypeAndComparePrice_Implementation(creditLimit,
+						&& getDiscountTypeAndComparePriceImplementation(creditLimit,
 								priceForBundleAndHardware.getBundlePrice())
 						&& bundleId.equals(priceForBundleAndHardware.getBundlePrice().getBundleId())) {
 					return true;
@@ -612,7 +612,7 @@ public class DeviceServiceImplUtility {
 	 * @param bundlePrice
 	 * @return
 	 */
-	public static boolean getDiscountTypeAndComparePrice_Implementation(Double creditLimit,
+	public static boolean getDiscountTypeAndComparePriceImplementation(Double creditLimit,
 			com.vf.uk.dal.device.client.entity.price.BundlePrice bundlePrice) {
 		String discountType = DeviceTilesDaoUtils.isPartialOrFullTenureDiscount(bundlePrice);
 		Double grossPrice = null;
@@ -633,7 +633,7 @@ public class DeviceServiceImplUtility {
 	 * @param discountType
 	 * @return
 	 */
-	public static Double getBundlePriceBasedOnDiscountDuration_Implementation(DeviceSummary deviceSummary,
+	public static Double getBundlePriceBasedOnDiscountDurationImplementation(DeviceSummary deviceSummary,
 			String discountType) {
 		Double monthlyPrice = null;
 		if ((null != discountType && discountType.equals(FULL_DURATION_DISCOUNT))
@@ -866,7 +866,7 @@ public class DeviceServiceImplUtility {
 	 * @param strDateFormat
 	 * @return
 	 */
-	public static Boolean dateValidationForOffers_Implementation(String startDateTime, String endDateTime,
+	public static Boolean dateValidationForOffersImplementation(String startDateTime, String endDateTime,
 			String strDateFormat) {
 		boolean flag = false;
 		SimpleDateFormat dateFormat = new SimpleDateFormat(strDateFormat);

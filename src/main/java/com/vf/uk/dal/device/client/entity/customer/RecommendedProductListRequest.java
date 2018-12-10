@@ -22,16 +22,16 @@ public class RecommendedProductListRequest {
 	private String accountCategory = null;
 
 	@JsonProperty("installedProducts")
-	private List<InstalledProduct> installedProducts = new ArrayList<InstalledProduct>();
+	private List<InstalledProduct> installedProducts = new ArrayList<>();
 
 	@JsonProperty("preferences")
-	private List<Preferences> preferences = new ArrayList<Preferences>();
+	private List<Preferences> preferences = new ArrayList<>();
 
 	@JsonProperty("recommendedProductTypes")
-	private List<String> recommendedProductTypes = new ArrayList<String>();
+	private List<String> recommendedProductTypes = new ArrayList<>();
 
 	@JsonProperty("basketItems")
-	private List<BasketItem> basketItems = new ArrayList<BasketItem>();
+	private List<BasketItem> basketItems = new ArrayList<>();
 
 	@JsonProperty("noOfRecommendations")
 	private String noOfRecommendations = null;

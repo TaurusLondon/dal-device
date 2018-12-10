@@ -601,38 +601,38 @@ public class OtherServiesTest {
 			assertTrue(DeviceServiceImplUtility.getDateForValidation(currentDate,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), currentDate));
 
-			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, null, "//"));
-			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, null, "//"));
-			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-2017", null, "//"));
-			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-2017", null, "//"));
+			assertTrue(DeviceServiceImplUtility.dateValidationForOffersImplementation(null, null, "//"));
+			assertTrue(DeviceServiceImplUtility.dateValidationForOffersImplementation(null, null, "//"));
+			assertTrue(DeviceServiceImplUtility.dateValidationForOffersImplementation("21-11-2017", null, "//"));
+			assertTrue(DeviceServiceImplUtility.dateValidationForOffersImplementation("21-11-2017", null, "//"));
 			assertTrue(
-					DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-2017", "21-11-3000", "//"));
+					DeviceServiceImplUtility.dateValidationForOffersImplementation("21-11-2017", "21-11-3000", "//"));
 			assertTrue(
-					DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-2017", "21-11-3000", "//"));
-			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, "21-11-3000", "//"));
-			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, "21-11-3000", "//"));
-			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-3000", null, "//"));
-			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-3000", null, "//"));
+					DeviceServiceImplUtility.dateValidationForOffersImplementation("21-11-2017", "21-11-3000", "//"));
+			assertTrue(DeviceServiceImplUtility.dateValidationForOffersImplementation(null, "21-11-3000", "//"));
+			assertTrue(DeviceServiceImplUtility.dateValidationForOffersImplementation(null, "21-11-3000", "//"));
+			assertTrue(DeviceServiceImplUtility.dateValidationForOffersImplementation("21-11-3000", null, "//"));
+			assertTrue(DeviceServiceImplUtility.dateValidationForOffersImplementation("21-11-3000", null, "//"));
 			assertTrue(
-					DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-3000", "21-11-2017", "//"));
-			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, "21-11-2017", "//"));
-			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, "21-11-2017", "//"));
+					DeviceServiceImplUtility.dateValidationForOffersImplementation("21-11-3000", "21-11-2017", "//"));
+			assertTrue(DeviceServiceImplUtility.dateValidationForOffersImplementation(null, "21-11-2017", "//"));
+			assertTrue(DeviceServiceImplUtility.dateValidationForOffersImplementation(null, "21-11-2017", "//"));
 			assertTrue(
-					DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-2018", "21-11-2017", "//"));
+					DeviceServiceImplUtility.dateValidationForOffersImplementation("21-11-2018", "21-11-2017", "//"));
 			assertTrue(
-					DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-2018", "21-11-2017", "//"));
+					DeviceServiceImplUtility.dateValidationForOffersImplementation("21-11-2018", "21-11-2017", "//"));
 			assertTrue(
-					DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-2018", "21-11-2019", "//"));
-			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, null, "//"));
+					DeviceServiceImplUtility.dateValidationForOffersImplementation("21-11-2018", "21-11-2019", "//"));
+			assertTrue(DeviceServiceImplUtility.dateValidationForOffersImplementation(null, null, "//"));
 
 		} catch (Exception e) {
 		}
 		try {
-			DeviceServiceImplUtility.dateValidationForOffers_Implementation("adasdas", null, "//");
+			DeviceServiceImplUtility.dateValidationForOffersImplementation("adasdas", null, "//");
 		} catch (Exception e) {
 		}
 		try {
-			DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, "adasdas", "//");
+			DeviceServiceImplUtility.dateValidationForOffersImplementation(null, "adasdas", "//");
 		} catch (Exception e) {
 		}
 		try {
@@ -986,21 +986,21 @@ public class OtherServiesTest {
 	}
 
 	@Test
-	public void testGetBundlePriceBasedOnDiscountDuration_Implementation() {
+	public void testgetBundlePriceBasedOnDiscountDurationImplementation() {
 		try {
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(null, null);
+			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDurationImplementation(null, null);
 		} catch (Exception e) {
 		}
 		try {
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(null, FULL_DURATION_DISCOUNT);
+			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDurationImplementation(null, FULL_DURATION_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(null, LIMITED_TIME_DISCOUNT);
+			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDurationImplementation(null, LIMITED_TIME_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(null, "abc");
+			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDurationImplementation(null, "abc");
 		} catch (Exception e) {
 		}
 		try {
@@ -1010,7 +1010,7 @@ public class OtherServiesTest {
 			bp.setMonthlyDiscountPrice(null);
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds, FULL_DURATION_DISCOUNT);
+			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDurationImplementation(ds, FULL_DURATION_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
@@ -1022,7 +1022,7 @@ public class OtherServiesTest {
 			bp.setMonthlyDiscountPrice(mp);
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds, FULL_DURATION_DISCOUNT);
+			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDurationImplementation(ds, FULL_DURATION_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
@@ -1034,7 +1034,7 @@ public class OtherServiesTest {
 			bp.setMonthlyDiscountPrice(mp);
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
-			Double price = DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds, FULL_DURATION_DISCOUNT);
+			Double price = DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDurationImplementation(ds, FULL_DURATION_DISCOUNT);
 			assertNotNull(price);
 			assertEquals(1212.0,price,0);
 		} catch (Exception e) {
@@ -1048,7 +1048,7 @@ public class OtherServiesTest {
 			bp.setMonthlyDiscountPrice(mp);
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds, LIMITED_TIME_DISCOUNT);
+			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDurationImplementation(ds, LIMITED_TIME_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
@@ -1058,7 +1058,7 @@ public class OtherServiesTest {
 			bp.setMonthlyDiscountPrice(null);
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds, LIMITED_TIME_DISCOUNT);
+			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDurationImplementation(ds, LIMITED_TIME_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
@@ -1070,7 +1070,7 @@ public class OtherServiesTest {
 			bp.setMonthlyDiscountPrice(mp);
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds, LIMITED_TIME_DISCOUNT);
+			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDurationImplementation(ds, LIMITED_TIME_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
@@ -1082,7 +1082,7 @@ public class OtherServiesTest {
 			bp.setMonthlyDiscountPrice(mp);
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds, LIMITED_TIME_DISCOUNT);
+			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDurationImplementation(ds, LIMITED_TIME_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
@@ -1094,7 +1094,7 @@ public class OtherServiesTest {
 			bp.setMonthlyDiscountPrice(mp);
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds, LIMITED_TIME_DISCOUNT);
+			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDurationImplementation(ds, LIMITED_TIME_DISCOUNT);
 		} catch (Exception e) {
 		}
 	}

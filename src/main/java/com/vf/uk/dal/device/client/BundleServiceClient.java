@@ -20,8 +20,7 @@ public class BundleServiceClient {
 
 	@Autowired
 	RestTemplate restTemplate;
-	
-	
+
 	/**
 	 * Gets the bundle details from complans listing API.
 	 *
@@ -49,7 +48,7 @@ public class BundleServiceClient {
 		return mapper.convertValue(client, new TypeReference<BundleDetails>() {
 		});
 	}
-	
+
 	/**
 	 * 
 	 * @param deviceId
@@ -66,7 +65,6 @@ public class BundleServiceClient {
 		} catch (Exception e) {
 			log.error("" + e);
 			throw new ApplicationException(ExceptionMessages.COUPLEBUNDLELIST_API_EXCEPTION);
-			// return null;
 		}
 	}
 }

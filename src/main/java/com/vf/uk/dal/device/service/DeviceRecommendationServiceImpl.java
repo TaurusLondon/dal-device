@@ -2,7 +2,6 @@ package com.vf.uk.dal.device.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -145,26 +144,26 @@ public class DeviceRecommendationServiceImpl implements DeviceRecommendationServ
 			indexMap.put(object.getId(), index);
 			index++;
 		}
+		
 		List<Device> listOfDevice = objectsToOrder.getDevice();
-		Collections.sort(listOfDevice, new Comparator<Device>() {
-			public int compare(Device left, Device right) {
-				Integer leftIndex = indexMap.get(left.getDeviceId());
-				Integer rightIndex = indexMap.get(right.getDeviceId());
-				if (leftIndex == null && rightIndex == null) {
+		Collections.sort(listOfDevice,
+				(Device left,  Device right) -> {
+					Integer leftIndex = indexMap.get(left.getDeviceId());
+					Integer rightIndex = indexMap.get(right.getDeviceId());
+					if (leftIndex == null && rightIndex == null) {
 
-					return 1;
-				}
-				if (leftIndex == null) {
+						return 1;
+					}
+					if (leftIndex == null) {
 
-					return 1;
-				}
-				if (rightIndex == null) {
+						return 1;
+					}
+					if (rightIndex == null) {
 
-					return -1;
-				}
-				return Integer.compare(leftIndex, rightIndex);
-			}
-		});
+						return -1;
+					}
+					return Integer.compare(leftIndex, rightIndex);
+				});
 		return objectsToOrder;
 	}
 

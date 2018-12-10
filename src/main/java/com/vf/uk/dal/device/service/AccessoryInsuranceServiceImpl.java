@@ -83,7 +83,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	@Override
 	public List<AccessoryTileGroup> getAccessoriesOfDevice(String deviceId, String journeyType, String offerCode) {
 		List<AccessoryTileGroup> listOfAccessoryTileGroup;
-		listOfAccessoryTileGroup = getAccessoriesOfDevice_Implementation(deviceId, journeyType, offerCode);
+		listOfAccessoryTileGroup = getAccessoriesOfDeviceImplementation(deviceId, journeyType, offerCode);
 		return listOfAccessoryTileGroup;
 	}
 
@@ -94,7 +94,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	 * @param offerCode
 	 * @return List<AccessoryTileGroup>
 	 */
-	public List<AccessoryTileGroup> getAccessoriesOfDevice_Implementation(String deviceId, String journeyType,
+	public List<AccessoryTileGroup> getAccessoriesOfDeviceImplementation(String deviceId, String journeyType,
 			String offerCode) {
 		List<AccessoryTileGroup> listOfAccessoryTile = new ArrayList<>();
 
@@ -300,12 +300,14 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 			if (member1.getGroupPriority() != null && member2.getGroupPriority() != null) {
 				if (member1.getGroupPriority() < member2.getGroupPriority()) {
 					return -1;
-				} else
+				} else {
 					return 1;
+				}
 			}
 
-			else
+			else {
 				return -1;
+			}
 		}
 
 	}
@@ -320,7 +322,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 		if (productGroup != null && StringUtils.containsIgnoreCase(STRING_ACCESSORY, productGroup.getGroupType())) {
 			listOfAccesoriesMembers.addAll(productGroup.getMembers());
 			if (!listOfAccesoriesMembers.isEmpty()) {
-				listOfAccesoriesMembers = getAccessoryMembersBasedOnPriority_Implementation(listOfAccesoriesMembers);
+				listOfAccesoriesMembers = getAccessoryMembersBasedOnPriorityImplementation(listOfAccesoriesMembers);
 			}
 		}
 		return listOfAccesoriesMembers;
@@ -331,7 +333,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	 * @param listOfDeviceGroupMember
 	 * @return List<Member>
 	 */
-	public static List<Member> getAccessoryMembersBasedOnPriority_Implementation(List<Member> listOfDeviceGroupMember) {
+	public static List<Member> getAccessoryMembersBasedOnPriorityImplementation(List<Member> listOfDeviceGroupMember) {
 		Collections.sort(listOfDeviceGroupMember, new SortedAccessoryPriorityList());
 
 		return listOfDeviceGroupMember;
@@ -345,13 +347,15 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 			if (member1.getPriority() != null && member2.getPriority() != null) {
 				if (member1.getPriority() < member2.getPriority()) {
 					return -1;
-				} else
+				} else {
 					return 1;
+				}
 
 			}
 
-			else
+			else {
 				return -1;
+			}
 		}
 
 	}
@@ -472,7 +476,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	public static void validateInsuranceNullable(String deviceId, Insurances insurance) {
 		if (insurance != null && !insurance.getInsuranceList().isEmpty()) {
 			getFormattedPriceForGetCompatibleInsurances(insurance);
-			insurance.setMinCost(FormatPrice(insurance.getMinCost()));
+			insurance.setMinCost(formatPrice(insurance.getMinCost()));
 		} else {
 			log.error("No Compatible Insurances found for given device Id" + deviceId);
 			throw new ApplicationException(ExceptionMessages.NULL_COMPATIBLE_INSURANCES_FOR_DEVICE_ID);
@@ -501,13 +505,13 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 
 	private static void setValuesForPrice(Price price) {
 		if (StringUtils.isNotBlank(price.getNet())) {
-			price.setNet(FormatPrice(price.getNet()));
+			price.setNet(formatPrice(price.getNet()));
 		}
 		if (StringUtils.isNotBlank(price.getVat())) {
-			price.setVat(FormatPrice(price.getVat()));
+			price.setVat(formatPrice(price.getVat()));
 		}
 		if (StringUtils.isNotBlank(price.getGross())) {
-			price.setGross(FormatPrice(price.getGross()));
+			price.setGross(formatPrice(price.getGross()));
 		}
 	}
 
@@ -516,7 +520,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	 * @param price
 	 * @return
 	 */
-	public static String FormatPrice(String price) {
+	public static String formatPrice(String price) {
 		if (price.contains(".")) {
 			String[] decimalSplit = price.split("\\.");
 			String beforeDecimal = decimalSplit[0];

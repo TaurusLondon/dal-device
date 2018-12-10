@@ -62,7 +62,7 @@ public class DeviceEntityServiceImpl implements DeviceEntityService {
 	 */
 	@Override
 	public ProductGroupModelMap getMapOfProductModelForGetDeliveryMethod(String deviceIds) {
-		ProductGroupModelMap ProductGroupModelMap = null;
+		ProductGroupModelMap productGroupModelMap = null;
 		Map<String, List<ProductGroupModel>> result = new HashMap<>();
 		List<String> deviceId = Arrays.asList(deviceIds.split(","));
 		List<ProductModel> productModels = deviceEs.getListOfProductModel(deviceId);
@@ -76,11 +76,11 @@ public class DeviceEntityServiceImpl implements DeviceEntityService {
 			log.error( ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID + " : " + deviceIds);
 			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID);
 		} else {
-			ProductGroupModelMap = new ProductGroupModelMap();
-			ProductGroupModelMap.setProductgroupMap(result);
+			productGroupModelMap = new ProductGroupModelMap();
+			productGroupModelMap.setProductgroupMap(result);
 		}
 
-		return ProductGroupModelMap;
+		return productGroupModelMap;
 	}
 
 	/**

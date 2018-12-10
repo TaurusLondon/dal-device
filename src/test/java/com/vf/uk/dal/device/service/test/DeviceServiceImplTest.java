@@ -815,7 +815,7 @@ public class DeviceServiceImplTest {
 		given(restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
 				requestForBundleAndHardware, PriceForBundleAndHardware[].class)).willReturn(obj);
 
-		CommercialBundle commercialBundle = deviceMakeAndModelServiceImpl.getLeadBundleBasedOnAllPlans_Implementation(
+		CommercialBundle commercialBundle = deviceMakeAndModelServiceImpl.getLeadBundleBasedOnAllPlansImplementation(
 				(double) (40), CommonMethods.getCommercialProduct(), CommonMethods.getPriceForBundleAndHardware(),
 				"Upgrade", "DEVICE_PAYG");
 		Assert.assertNotNull(commercialBundle);
@@ -824,9 +824,9 @@ public class DeviceServiceImplTest {
 	}
 
 	@Test
-	public void testGetDeviceDetails_Implementation() {
+	public void testgetDeviceDetailsImplementation() {
 
-		DeviceDetails deviceDetails = deviceDetailsService.getDeviceDetails_Implementation("093353",
+		DeviceDetails deviceDetails = deviceDetailsService.getDeviceDetailsImplementation("093353",
 				JOURNEY_TYPE_SECONDLINE, "abc");
 		Assert.assertNotNull(deviceDetails);
 		Assert.assertEquals( "088417",deviceDetails.getDeviceId());
@@ -835,8 +835,8 @@ public class DeviceServiceImplTest {
 	}
 
 	@Test
-	public void testGetDeviceDetails_ImplementationJTBlank() {
-		DeviceDetails deviceDetails = deviceDetailsService.getDeviceDetails_Implementation("093353", "", "abc");
+	public void testgetDeviceDetailsImplementationJTBlank() {
+		DeviceDetails deviceDetails = deviceDetailsService.getDeviceDetailsImplementation("093353", "", "abc");
 		Assert.assertNotNull(deviceDetails);
 		Assert.assertEquals( "088417",deviceDetails.getDeviceId());
 		Assert.assertEquals( "Handset",deviceDetails.getProductClass());
@@ -844,7 +844,7 @@ public class DeviceServiceImplTest {
 	}
 
 	@Test
-	public void testGetDeviceDetails_ImplementationInvalidCP() {
+	public void testgetDeviceDetailsImplementationInvalidCP() {
 		try {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			ProductGroups pg = cp.getProductGroups();
@@ -859,57 +859,57 @@ public class DeviceServiceImplTest {
 			cp.setProductGroups(pg);
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(null);
 			Assert.assertNotNull(
-					deviceDetailsService.getDeviceDetails_Implementation("093353", JOURNEY_TYPE_SECONDLINE, "abc"));
+					deviceDetailsService.getDeviceDetailsImplementation("093353", JOURNEY_TYPE_SECONDLINE, "abc"));
 		} catch (Exception e) {
 			Assert.assertEquals( "Received Null Values for the given device id",e.getMessage());
 		}
 	}
 
 	@Test
-	public void testGetDeviceDetails_ImplementationInvalidCPIdNUll() {
+	public void testgetDeviceDetailsImplementationInvalidCPIdNUll() {
 		try {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			cp.setId(null);
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNotNull(
-					deviceDetailsService.getDeviceDetails_Implementation("093353", JOURNEY_TYPE_SECONDLINE, "abc"));
+					deviceDetailsService.getDeviceDetailsImplementation("093353", JOURNEY_TYPE_SECONDLINE, "abc"));
 		} catch (Exception e) {
 			Assert.assertEquals( "Received Null Values for the given device id",e.getMessage());
 		}
 	}
 
 	@Test
-	public void testGetDeviceDetails_ImplementationInvalidCPDPInvalid() {
+	public void testgetDeviceDetailsImplementationInvalidCPDPInvalid() {
 		try {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			cp.setIsDeviceProduct(false);
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNull(
-					deviceDetailsService.getDeviceDetails_Implementation("093353", JOURNEY_TYPE_SECONDLINE, "abc"));
+					deviceDetailsService.getDeviceDetailsImplementation("093353", JOURNEY_TYPE_SECONDLINE, "abc"));
 		} catch (Exception e) {
 			Assert.assertEquals( "Received Null Values for the given device id",e.getMessage());
 		}
 	}
 
 	@Test
-	public void testGetDeviceDetails_ImplementationInvalidCPPCInvalid() {
+	public void testgetDeviceDetailsImplementationInvalidCPPCInvalid() {
 		try {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			cp.setProductClass("accessories");
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 			Assert.assertNull(
-					deviceDetailsService.getDeviceDetails_Implementation("093353", JOURNEY_TYPE_SECONDLINE, "abc"));
+					deviceDetailsService.getDeviceDetailsImplementation("093353", JOURNEY_TYPE_SECONDLINE, "abc"));
 		} catch (Exception e) {
 			Assert.assertEquals( "Received Null Values for the given device id",e.getMessage());
 		}
 	}
 
 	@Test
-	public void testGetDeviceDetails_ImplementationInvalidCPPCInvalid1() {
+	public void testgetDeviceDetailsImplementationInvalidCPPCInvalid1() {
 		CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 		cp.setProductClass(STRING_DATA_DEVICE);
 		given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
-		DeviceDetails deviceDetails = deviceDetailsService.getDeviceDetails_Implementation("093353",
+		DeviceDetails deviceDetails = deviceDetailsService.getDeviceDetailsImplementation("093353",
 				JOURNEY_TYPE_SECONDLINE, "abc");
 		Assert.assertNotNull(deviceDetails);
 		Assert.assertEquals( "088417",deviceDetails.getDeviceId());
@@ -1055,7 +1055,7 @@ public class DeviceServiceImplTest {
 	}
 
 	@Test
-	public void getDeviceSummery_Implementation() {
+	public void getDeviceSummeryImplementation() {
 		List<com.vf.uk.dal.device.model.Member> member = new ArrayList<com.vf.uk.dal.device.model.Member>();
 		com.vf.uk.dal.device.model.Member productGroupMember = new com.vf.uk.dal.device.model.Member();
 		productGroupMember.setPriority("1");
@@ -1088,7 +1088,7 @@ public class DeviceServiceImplTest {
 		List<BundleAndHardwareTuple> bundleAndHardwareTupleList = new ArrayList<>();
 		bundleAndHardwareTupleList.add(bundleAndHardware);
 		CompletableFuture<List<DeviceSummary>> deviceSummary = deviceMakeAndModelServiceImpl
-				.getDeviceSummery_Implementation(member, CommonMethods.getPriceForBundleAndHardware(), commerProdMemMap,
+				.getDeviceSummeryImplementation(member, CommonMethods.getPriceForBundleAndHardware(), commerProdMemMap,
 						true, "Upgrade", 40.00, commercialBundleMap, bundleIdMap, "110154",
 						bundleAndHardwarePromotionsMap, leadPlanIdMap, "DEVICE_PAYM", priceMapForParticularDevice,
 						fromPricingMap, "1");
@@ -1177,7 +1177,7 @@ public class DeviceServiceImplTest {
 		mediaLink.setValue("283");
 		deviceSummary.setMerchandisingMedia(merchandisingMedia);
 		deviceSummaryList.add(deviceSummary);
-		deviceMakeAndModelServiceImpl.resetDeviceId_Implementation(true,
+		deviceMakeAndModelServiceImpl.resetDeviceIdImplementation(true,
 				CommonMethods.getDeviceTile("Apple", "iPhone-7", "Device_PAYM").get(0), deviceSummaryList, "093353");
 	}
 
@@ -1190,11 +1190,11 @@ public class DeviceServiceImplTest {
 	}
 
 	@Test
-	public void testGetReviewRatingList_Implementation() {
+	public void testgetReviewRatingListImplementation() {
 
 		given(deviceDAOMock.getBazaarVoice(ArgumentMatchers.anyString())).willThrow(new ApplicationException(""));
 		try {
-			utility.getReviewRatingList_Implementation(Arrays.asList("093353"));
+			utility.getReviewRatingListImplementation(Arrays.asList("093353"));
 		} catch (Exception e) {
 
 		}
@@ -1472,28 +1472,28 @@ public class DeviceServiceImplTest {
 	}
 
 	@Test
-	public void testGetListOfPriceForBundleAndHardware_ImplementationWithEmptyId() {
+	public void testgetListOfPriceForBundleAndHardwareImplementationWithEmptyId() {
 		Map<String, CommercialBundle> commerBundleIdMap = new HashMap<>();
 		CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
-		List<BundleAndHardwareTuple> tuple = deviceDetailsService.getListOfPriceForBundleAndHardware_Implementation(cp,
+		List<BundleAndHardwareTuple> tuple = deviceDetailsService.getListOfPriceForBundleAndHardwareImplementation(cp,
 				commerBundleIdMap, "Acquisition");
 		Assert.assertNotNull(tuple);
 	}
 
 	@Test
-	public void testGetListOfPriceForBundleAndHardware_Implementation() {
+	public void testgetListOfPriceForBundleAndHardwareImplementation() {
 		Map<String, CommercialBundle> commerBundleIdMap = new HashMap<>();
 		CommercialBundle cb = CommonMethods.getCommercialBundle();
 		cb.setId("088417");
 		commerBundleIdMap.put("088417", cb);
 		CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
-		List<BundleAndHardwareTuple> tuple = deviceDetailsService.getListOfPriceForBundleAndHardware_Implementation(cp,
+		List<BundleAndHardwareTuple> tuple = deviceDetailsService.getListOfPriceForBundleAndHardwareImplementation(cp,
 				commerBundleIdMap, "Acquisition");
 		Assert.assertNotNull(tuple);
 	}
 
 	@Test
-	public void testGetListOfPriceForBundleAndHardware_ImplementationCpIdBlank() {
+	public void testgetListOfPriceForBundleAndHardwareImplementationCpIdBlank() {
 		Map<String, CommercialBundle> commerBundleIdMap = new HashMap<>();
 		CommercialBundle cb = CommonMethods.getCommercialBundle();
 		cb.setId("088417");
@@ -1501,11 +1501,11 @@ public class DeviceServiceImplTest {
 		CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 		cp.setLeadPlanId("");
 		Assert.assertNotNull(
-				deviceDetailsService.getListOfPriceForBundleAndHardware_Implementation(cp, null, "Acquisition"));
+				deviceDetailsService.getListOfPriceForBundleAndHardwareImplementation(cp, null, "Acquisition"));
 	}
 
 	@Test
-	public void testGetListOfPriceForBundleAndHardware_ImplementationLeadPlanIdnull() {
+	public void testgetListOfPriceForBundleAndHardwareImplementationLeadPlanIdnull() {
 		Map<String, CommercialBundle> commerBundleIdMap = new HashMap<>();
 		CommercialBundle cb = CommonMethods.getCommercialBundle();
 		cb.setId("088417");
@@ -1513,37 +1513,37 @@ public class DeviceServiceImplTest {
 		CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 		cp.setLeadPlanId(null);
 		Assert.assertNotNull(
-				deviceDetailsService.getListOfPriceForBundleAndHardware_Implementation(cp, null, "Acquisition"));
+				deviceDetailsService.getListOfPriceForBundleAndHardwareImplementation(cp, null, "Acquisition"));
 	}
 
 	@Test
-	public void TestvalidateOfferValidForDevice_Implementation() {
+	public void TestvalidateOfferValidForDeviceImplementation() {
 		CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 		cp.setPromoteAs(null);
-		Assert.assertNotNull(deviceDetailsService.validateOfferValidForDevice_Implementation(cp, "Acquisition", "acb"));
+		Assert.assertNotNull(deviceDetailsService.validateOfferValidForDeviceImplementation(cp, "Acquisition", "acb"));
 	}
 
 	@Test
-	public void TestvalidateOfferValidForDevice_Implementation1() {
+	public void TestvalidateOfferValidForDeviceImplementation1() {
 		CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 		PromoteAs pa = cp.getPromoteAs();
 		pa.setPromotionName(null);
 		cp.setPromoteAs(pa);
-		Assert.assertNotNull(deviceDetailsService.validateOfferValidForDevice_Implementation(cp, "Acquisition", "acb"));
+		Assert.assertNotNull(deviceDetailsService.validateOfferValidForDeviceImplementation(cp, "Acquisition", "acb"));
 	}
 
 	@Test
-	public void TestvalidateOfferValidForDevice_ImplementationEmptyPromotionList() {
+	public void TestvalidateOfferValidForDeviceImplementationEmptyPromotionList() {
 		CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 		PromoteAs pa = cp.getPromoteAs();
 		List<String> promotioname = new ArrayList<>();
 		pa.setPromotionName(promotioname);
 		cp.setPromoteAs(pa);
-		Assert.assertNotNull(deviceDetailsService.validateOfferValidForDevice_Implementation(cp, "Acquisition", "acb"));
+		Assert.assertNotNull(deviceDetailsService.validateOfferValidForDeviceImplementation(cp, "Acquisition", "acb"));
 	}
 
 	@Test
-	public void TestvalidateOfferValidForDevice_ImplementationWithPromotionName() {
+	public void TestvalidateOfferValidForDeviceImplementationWithPromotionName() {
 		try {
 			com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotion mp = CommonMethods.getMemPro();
 			mp.setType("conditional_full_discount");
@@ -1555,7 +1555,7 @@ public class DeviceServiceImplTest {
 			pa.setPromotionName(promotioname);
 			cp.setPromoteAs(pa);
 			Assert.assertNotNull(
-					deviceDetailsService.validateOfferValidForDevice_Implementation(cp, "Acquisition", "acb"));
+					deviceDetailsService.validateOfferValidForDeviceImplementation(cp, "Acquisition", "acb"));
 		} catch (Exception e) {
 
 		}
@@ -1599,9 +1599,9 @@ public class DeviceServiceImplTest {
 		monthlyPrice.setVat("11");
 		bundlePrice.setMonthlyPrice(monthlyPrice);
 		Assert.assertNotNull(
-				DeviceServiceImplUtility.getDiscountTypeAndComparePrice_Implementation(112.23, bundlePrice));
+				DeviceServiceImplUtility.getDiscountTypeAndComparePriceImplementation(112.23, bundlePrice));
 		Assert.assertTrue(
-				DeviceServiceImplUtility.getDiscountTypeAndComparePrice_Implementation(112.23, bundlePrice));
+				DeviceServiceImplUtility.getDiscountTypeAndComparePriceImplementation(112.23, bundlePrice));
 	}
 
 	@Test
@@ -1616,7 +1616,7 @@ public class DeviceServiceImplTest {
 		deviceSummary.setLeadPlanDisplayName("Yearly Plan");
 		deviceSummary.setMemory("64GB");
 		deviceSummary.setPreOrderable(false);
-		DeviceServiceImplUtility.isPlanAffordable_Implementation(deviceSummary, CommonMethods.getCommercialBundle(),
+		DeviceServiceImplUtility.isPlanAffordableImplementation(deviceSummary, CommonMethods.getCommercialBundle(),
 				222.3, true);
 	}
 
@@ -1624,7 +1624,7 @@ public class DeviceServiceImplTest {
 	public void getListOfDeviceTileTestInvalidGroupType() {
 		Double value = (double) 12345;
 		try {
-			deviceMakeAndModelServiceImpl.getListOfDeviceTile_Implementation("apple", "iPhone-7", "1232_41ed", "093353",
+			deviceMakeAndModelServiceImpl.getListOfDeviceTileImplementation("apple", "iPhone-7", "1232_41ed", "093353",
 					"Acquisition", value, "123", "180232");
 		} catch (Exception e) {
 			Assert.assertEquals("Received Null Values for the given product group type", e.getMessage());
@@ -1635,7 +1635,7 @@ public class DeviceServiceImplTest {
 	public void getListOfDeviceTileTestInvalidGroupTypeDevice_payg() {
 		Double value = (double) 12345;
 		try {
-			deviceMakeAndModelServiceImpl.getListOfDeviceTile_Implementation("apple", "iPhone-7", STRING_DEVICE_PAYG,
+			deviceMakeAndModelServiceImpl.getListOfDeviceTileImplementation("apple", "iPhone-7", STRING_DEVICE_PAYG,
 					"093353", "Acquisition", value, "123", "180232");
 		} catch (Exception e) {
 			Assert.assertEquals("No Devices Found for the given input search criteria", e.getMessage());
@@ -1645,21 +1645,21 @@ public class DeviceServiceImplTest {
 	@Test
 	public void getMembersForGroupTest() {
 
-		deviceMakeAndModelServiceImpl.resetDeviceId_Implementation(true, CommonMethods.getDeviceTilee(),
+		deviceMakeAndModelServiceImpl.resetDeviceIdImplementation(true, CommonMethods.getDeviceTilee(),
 				CommonMethods.getDeviceSummary(), "122");
 	}
 
 	@Test
 	public void getMembersForGroupBlankId() {
 
-		deviceMakeAndModelServiceImpl.resetDeviceId_Implementation(true, CommonMethods.getDeviceTilee(),
+		deviceMakeAndModelServiceImpl.resetDeviceIdImplementation(true, CommonMethods.getDeviceTilee(),
 				CommonMethods.getDeviceSummary(), "");
 	}
 
 	@Test
 	public void getMembersForGroup() {
 
-		deviceMakeAndModelServiceImpl.resetDeviceId_Implementation(true, CommonMethods.getDeviceTilee(),
+		deviceMakeAndModelServiceImpl.resetDeviceIdImplementation(true, CommonMethods.getDeviceTilee(),
 				CommonMethods.getDeviceSummary(), "122");
 	}
 
@@ -1669,7 +1669,7 @@ public class DeviceServiceImplTest {
 		DeviceSummary ds = dsList.get(0);
 		ds.setIsAffordable(false);
 		dsList.add(ds);
-		deviceMakeAndModelServiceImpl.resetDeviceId_Implementation(true, CommonMethods.getDeviceTilee(), dsList, "122");
+		deviceMakeAndModelServiceImpl.resetDeviceIdImplementation(true, CommonMethods.getDeviceTilee(), dsList, "122");
 	}
 
 	@Test
@@ -1993,9 +1993,9 @@ public class DeviceServiceImplTest {
 	}
 	@Test
 	public void testconvertCoherenceDeviceToDeviceTile_PAYG() {
-		DeviceSummary deviceSummary = DeviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceTile_PAYG(
+		DeviceSummary deviceSummary = DeviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceTilePAYG(
 				Long.valueOf(1), CommonMethods.getCommercialProduct(),
-				CommonMethods.getPriceForBundleAndHardware().get(0), "DEVICE_PAYG",
+				CommonMethods.getPriceForBundleAndHardware().get(0),
 				CommonMethods.getListOfBundleAndHardwarePromotions().get(0), cdnDomain);
 		Assert.assertNotNull(deviceSummary);
 		Assert.assertEquals("093353",deviceSummary.getDeviceId());

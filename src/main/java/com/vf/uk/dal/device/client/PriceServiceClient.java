@@ -23,12 +23,11 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class PriceServiceClient {
-	
+
 	@Autowired
 	RestTemplate restTemplate;
-	
-	public List<PriceForBundleAndHardware> getPriceDetails(RequestForBundleAndHardware requestForBundleAndHardware)
-	{
+
+	public List<PriceForBundleAndHardware> getPriceDetails(RequestForBundleAndHardware requestForBundleAndHardware) {
 		PriceForBundleAndHardware[] client = new PriceForBundleAndHardware[7000];
 		try {
 			log.info("Start --> Calling  Price.calculateForBundleAndHardware");
@@ -43,7 +42,7 @@ public class PriceServiceClient {
 		return mapper.convertValue(client, new TypeReference<List<PriceForBundleAndHardware>>() {
 		});
 	}
-	
+
 	/**
 	 * 
 	 * @param bundleDeviceAndProductsList
@@ -66,7 +65,7 @@ public class PriceServiceClient {
 		});
 
 	}
-	
+
 	/**
 	 * 
 	 * @param bundleAndHardwareTupleList
@@ -76,7 +75,8 @@ public class PriceServiceClient {
 	 * @return List<PriceForBundleAndHardware>
 	 */
 	public List<PriceForBundleAndHardware> getPriceDetailsUsingBundleHarwareTrouple(
-			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType, String groupType, String billingType) {
+			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType,
+			String groupType, String billingType) {
 		List<PriceForBundleAndHardware> priceList = null;
 		HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
 		try {
@@ -98,7 +98,6 @@ public class PriceServiceClient {
 					"http://PRICE-V1/price/calculateForBundleAndHardware", requestForBundleAndHardware,
 					PriceForBundleAndHardware[].class);
 			log.info("End --> Calling  Price.calculateForBundleAndHardware");
-			//ObjectMapper mapper = new ObjectMapper();
 			priceList = mapper.convertValue(client, new TypeReference<List<PriceForBundleAndHardware>>() {
 			});
 		} catch (Exception e) {

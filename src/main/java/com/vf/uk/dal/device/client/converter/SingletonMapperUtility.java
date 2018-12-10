@@ -4,13 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public enum SingletonMapperUtility {
 
-	ObjectMapper;// SearchSourceBuilder;
+	ObjectMapper;
 
 	public static ObjectMapper getObjectMapper() {
 		return new ObjectMapper();
 	}
-	/*
-	 * public static SearchSourceBuilder getSearchSourceBuilder() { return new
-	 * SearchSourceBuilder(); }
-	 */
 }

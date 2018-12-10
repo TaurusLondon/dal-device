@@ -11,8 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,7 +38,7 @@ import lombok.extern.slf4j.Slf4j;
  * services inside the controller.
  * 
  */
-@Api(tags="Device")
+@Api(tags = "Device")
 @RestController
 @RequestMapping(value = "")
 @EnableAspectJAutoProxy(proxyTargetClass = true)
@@ -69,7 +69,8 @@ public class DeviceController {
 
 	/**
 	 *
-	 * Handles requests for getDeviceTile Service with input as deviceId.	
+	 * Handles requests for getDeviceTile Service with input as deviceId.
+	 * 
 	 * @param deviceId
 	 * @param journeyType
 	 * @param offerCode
@@ -82,14 +83,14 @@ public class DeviceController {
 			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.model.Error.class),
 			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.model.Error.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.model.Error.class) })
-	@RequestMapping(value = "/deviceTile/queries/byDeviceVariant/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/deviceTile/queries/byDeviceVariant/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<DeviceTile> getDeviceTileById(
 			@NotNull @ApiParam(value = "Device Id of the device tile being requested", required = true) @RequestParam(value = "deviceId", required = true) String deviceId,
 			@ApiParam(value = "Journey Type") @RequestParam(value = "journeyType", required = false) String journeyType,
 			@ApiParam(value = "Promotional Offer Code that's applicable") @RequestParam(value = "offerCode", required = false) String offerCode) {
 		List<DeviceTile> listOfDeviceTile;
 		if (!deviceId.matches(numberExp)) {
-			log.error( ExceptionMessages.INVALID_DEVICE);
+			log.error(ExceptionMessages.INVALID_DEVICE);
 			throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 		}
 		listOfDeviceTile = deviceService.getDeviceTileById(deviceId, offerCode, journeyType);
@@ -124,7 +125,7 @@ public class DeviceController {
 			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.model.Error.class),
 			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.model.Error.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.model.Error.class) })
-	@RequestMapping(value = "/deviceTile", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/deviceTile", produces = MediaType.APPLICATION_JSON_VALUE)
 	public FacetedDevice getDeviceList(
 			@NotNull @ApiParam(value = "Values on which the attributes should be filtered upon.", required = true) @RequestParam(value = "productClass", required = true) String productClass,
 			@NotNull @ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"DEVICE_PAYM\" or \"DEVICE_PAYG\" or \"DATA_DEVICE_PAYM\".", required = true) @RequestParam(value = "groupType", required = true) String groupType,
@@ -147,9 +148,9 @@ public class DeviceController {
 		if (StringUtils.isNotBlank(includeRecommendations)) {
 			Validator.validateIncludeRecommendation(includeRecommendations);
 		}
-		
+
 		Validator.validatePageSize(pageSize, pageNumber);
-			
+
 		if (StringUtils.isNotBlank(msisdn)) {
 			Validator.validateMSISDN(msisdn, includeRecommendations);
 		}
@@ -159,9 +160,9 @@ public class DeviceController {
 		if (creditLimit != null) {
 			creditLimitparam = Validator.validateForCreditLimit(creditLimit);
 		}
-		facetedDevice = deviceService.getDeviceList(productClass, make, model, groupType, sort, pageNumber,
-				pageSize, capacity, color, operatingSystem, mustHaveFeatures, journeyType, creditLimitparam,
-				offerCode, msisdn, includeRecommendationsParam);
+		facetedDevice = deviceService.getDeviceList(productClass, make, model, groupType, sort, pageNumber, pageSize,
+				capacity, color, operatingSystem, mustHaveFeatures, journeyType, creditLimitparam, offerCode, msisdn,
+				includeRecommendationsParam);
 		return facetedDevice;
 	}
 }

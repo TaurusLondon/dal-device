@@ -58,7 +58,7 @@ public class DeviceServiceCommonUtility {
 	 * @return DeviceTileRating
 	 */
 	public String getDeviceTileRating(String leadMemberId) {
-		Map<String, String> rating = getDeviceReviewRating_Implementation(new ArrayList<>(Arrays.asList(leadMemberId)));
+		Map<String, String> rating = getDeviceReviewRatingImplementation(new ArrayList<>(Arrays.asList(leadMemberId)));
 		String avarageOverallRating = rating.containsKey(CommonUtility.appendPrefixString(leadMemberId))
 				? rating.get(CommonUtility.appendPrefixString(leadMemberId)) : "na";
 		log.info( "AvarageOverallRating for deviceId: " + leadMemberId + " Rating: " + avarageOverallRating);
@@ -70,9 +70,9 @@ public class DeviceServiceCommonUtility {
 	 * @param listMemberIds
 	 * @return DeviceReviewRating_Implementation
 	 */
-	public Map<String, String> getDeviceReviewRating_Implementation(List<String> listMemberIds) {
+	public Map<String, String> getDeviceReviewRatingImplementation(List<String> listMemberIds) {
 
-		List<BazaarVoice> response = getReviewRatingList_Implementation(listMemberIds);
+		List<BazaarVoice> response = getReviewRatingListImplementation(listMemberIds);
 		HashMap<String, String> bvReviewAndRateMap = new HashMap<>();
 		try {
 			for (BazaarVoice bazaarVoice : response) {
@@ -126,7 +126,7 @@ public class DeviceServiceCommonUtility {
 	 * @param listMemberIds
 	 * @return List<BazaarVoice>
 	 */
-	public List<BazaarVoice> getReviewRatingList_Implementation(List<String> listMemberIds) {
+	public List<BazaarVoice> getReviewRatingListImplementation(List<String> listMemberIds) {
 
 		try {
 			log.info( "Start -->  calling  BazaarReviewRepository.get");
@@ -149,14 +149,14 @@ public class DeviceServiceCommonUtility {
 	 * @param listOfDeviceGroupMembers
 	 * @return leadDeviceSkuId
 	 */
-	public String getMemeberBasedOnRules_Implementation(
+	public String getMemeberBasedOnRulesImplementation(
 			List<com.vf.uk.dal.device.model.Member> listOfDeviceGroupMember, String journeyType) {
 		String leadDeviceSkuId = null;
 		DeviceTilesDaoUtils daoUtils = new DeviceTilesDaoUtils();
 		List<com.vf.uk.dal.device.model.Member> listOfSortedMember = daoUtils
 				.getAscendingOrderForMembers(listOfDeviceGroupMember);
 		for (com.vf.uk.dal.device.model.Member member : listOfSortedMember) {
-			if (validateMemeber_Implementation(member.getId(), journeyType)) {
+			if (validateMemeberImplementation(member.getId(), journeyType)) {
 				leadDeviceSkuId = member.getId();
 				break;
 			}
@@ -171,16 +171,16 @@ public class DeviceServiceCommonUtility {
 	 * @param journeyType
 	 * @return memberFlag
 	 */
-	public Boolean validateMemeber_Implementation(String memberId, String journeyType) {
+	public Boolean validateMemeberImplementation(String memberId, String journeyType) {
 		Boolean memberFlag = false;
-
+		boolean preOrderableFlag = false;
 		log.info( " Start -->  calling  CommercialProductRepository.get");
 		CommercialProduct comProduct = deviceEs.getCommercialProduct(memberId);
 		log.info( " End -->  After calling  CommercialProductRepository.get");
 
 		Date startDateTime = comProduct.getProductAvailability().getStart();
 		Date endDateTime = comProduct.getProductAvailability().getEnd();
-		boolean preOrderableFlag = comProduct.getProductControl()==null?false:comProduct.getProductControl().isPreOrderable();
+		preOrderableFlag = comProduct.getProductControl()==null?preOrderableFlag:comProduct.getProductControl().isPreOrderable();
 		boolean isUpgrade = DeviceServiceImplUtility.isUpgrade(journeyType)
 				&& DeviceServiceImplUtility.getProductclassValidation(comProduct)
 				&& DeviceTilesDaoUtils.dateValidation(startDateTime, endDateTime, preOrderableFlag)
