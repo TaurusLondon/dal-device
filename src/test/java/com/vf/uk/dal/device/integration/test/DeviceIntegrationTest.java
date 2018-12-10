@@ -228,7 +228,7 @@ public class DeviceIntegrationTest {
 	public void nullTestForgetDeviceTileById() throws JsonProcessingException, Exception {
 		MvcResult mvcResult = mockMvc
 				.perform(MockMvcRequestBuilders.get("/deviceTile/queries/byDeviceVariant/?deviceId=093353").accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isBadRequest()).andReturn();
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isNotFound()).andReturn();
 		ErrorPopulation error = mapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<ErrorPopulation>() {
 		});
 		assertNotNull(error);
