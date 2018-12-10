@@ -33,6 +33,7 @@ import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
 import com.vf.uk.dal.device.beans.test.DeviceTestBeans;
 import com.vf.uk.dal.device.client.BundleServiceClient;
+import com.vf.uk.dal.device.client.PriceServiceClient;
 import com.vf.uk.dal.device.client.converter.ResponseMappingHelper;
 import com.vf.uk.dal.device.client.entity.bundle.BundleDetails;
 import com.vf.uk.dal.device.client.entity.bundle.BundleHeader;
@@ -144,6 +145,9 @@ public class DeviceServiceImplTest {
 
 	@Autowired
 	BundleServiceClient bundleServiceClient;
+	
+	@Autowired
+	PriceServiceClient priceServiceClient;
 
 	@Value("${cdn.domain.host}")
 	private String cdnDomain;
@@ -765,12 +769,31 @@ public class DeviceServiceImplTest {
 
 	@Test
 	public void getDeviceTileByMakeAndModelForPAYG() {
+		RequestForBundleAndHardware requestForBundleAndHardware = new RequestForBundleAndHardware();
+		List<BundleAndHardwareTuple> bundleList = new ArrayList<>();
+		BundleAndHardwareTuple bundle = new BundleAndHardwareTuple();
+		bundle.setHardwareId("091191");
+		bundleList.add(bundle);
+		PriceForBundleAndHardware[] obj = null;
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+
+			String jsonString = new String(CommonMethods.readFile("\\rest-mock\\PRICE-V1.json"));
+			mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			obj = mapper.readValue(jsonString, PriceForBundleAndHardware[].class);
+		} catch (IOException e) {
+
+		}
+		requestForBundleAndHardware.setBillingType("payg");
+		requestForBundleAndHardware.setBundleAndHardwareList(bundleList);
+		given(restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
+				requestForBundleAndHardware, PriceForBundleAndHardware[].class)).willReturn(obj);
 		List<DeviceTile> deviceTile = deviceMakeAndModelServiceImpl.getDeviceTileByMakeAndModelForPAYG(
 				CommonMethods.getCommercialProductsListOfMakeAndModel(), CommonMethods.getGroupForVariant(), "apple",
 				"iPhone-7", "DEVICE_PAYM");
 		Assert.assertNotNull(deviceTile);
 		Assert.assertEquals( "091191",deviceTile.get(0).getDeviceId());
-		Assert.assertEquals( "Apple iPhone 7",deviceTile.get(0).getGroupName());
 	}
 
 	@Test

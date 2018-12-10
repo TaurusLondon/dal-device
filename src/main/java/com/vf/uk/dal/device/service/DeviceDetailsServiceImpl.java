@@ -475,7 +475,7 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 				&& !commercialProduct.getPromoteAs().getPromotionName().isEmpty()) {
 			for (String promotionName : commercialProduct.getPromoteAs().getPromotionName()) {
 				MerchandisingPromotion merchandisingPromotion = deviceEs.getMerchandisingPromotion(promotionName);
-				if (checkMerchandisingPromotionsType(merchandisingPromotion)) {
+				if (merchandisingPromotion != null && checkMerchandisingPromotionsType(merchandisingPromotion)) {
 					String startDateTime = CommonUtility.getDateToString(merchandisingPromotion.getStartDateTime(),
 							DATE_FORMAT_COHERENCE);
 					String endDateTime = CommonUtility.getDateToString(merchandisingPromotion.getEndDateTime(),
