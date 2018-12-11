@@ -56,7 +56,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class CommonUtility {
 	public static final String PREFIX_SKU = "sku";
-	public static final String zero = "0";
+	public static final String ZERO = "0";
 	public static final String STRING_TEXT_ALLOWANCE = "TEXT";
 	public static final String DATE_FORMAT_COHERENCE = "yyyy-MM-dd HH:mm:ss.SSS";
 	public static final String JOURNEYTYPE_UPGRADE = "UPGRADE";
@@ -193,7 +193,7 @@ public class CommonUtility {
 	public String appendPrefixString(String deviceId) {
 		StringBuilder target = new StringBuilder(PREFIX_SKU);
 		String leadingZero = deviceId.substring(0, 1);
-		if (leadingZero.equals(zero)) {
+		if (leadingZero.equals(ZERO)) {
 			target.append(deviceId.substring(1, deviceId.length()));
 		} else {
 			target.append(deviceId);
@@ -224,7 +224,7 @@ public class CommonUtility {
 			String groupType) {
 		String billingType = getBillingType(groupType);
 		return priceServiceClient.getPriceDetailsUsingBundleHarwareTrouple(bundleAndHardwareTupleList, offerCode,
-				journeyType, groupType, billingType);
+				journeyType, billingType);
 	}
 
 	/**

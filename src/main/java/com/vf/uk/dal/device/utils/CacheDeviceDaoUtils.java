@@ -1114,9 +1114,9 @@ public class CacheDeviceDaoUtils {
 	 */
 	public List<com.vf.uk.dal.device.model.merchandisingpromotion.OfferAppliedPriceDetails> getListOfOfferAppliedPriceDetails(
 			List<OfferAppliedPriceDetails> offerAppliedPriceList) {
-		List<com.vf.uk.dal.device.model.merchandisingpromotion.OfferAppliedPriceDetails> OfferAppliedListForSolr = new ArrayList<>();
+		List<com.vf.uk.dal.device.model.merchandisingpromotion.OfferAppliedPriceDetails> offerAppliedListForSolr = new ArrayList<>();
 		for (OfferAppliedPriceDetails offerAppliedPrice : offerAppliedPriceList) {
-			com.vf.uk.dal.device.model.merchandisingpromotion.OfferAppliedPriceDetails OfferAppliedPriceDetails = new com.vf.uk.dal.device.model.merchandisingpromotion.OfferAppliedPriceDetails();
+			com.vf.uk.dal.device.model.merchandisingpromotion.OfferAppliedPriceDetails offerAppliedPriceDetails = new com.vf.uk.dal.device.model.merchandisingpromotion.OfferAppliedPriceDetails();
 			com.vf.uk.dal.device.model.solr.BundlePrice bundlePrice1 = offerAppliedPrice.getBundlePrice();
 			com.vf.uk.dal.device.model.merchandisingpromotion.BundlePrice bundlePrice = new com.vf.uk.dal.device.model.merchandisingpromotion.BundlePrice();
 
@@ -1147,14 +1147,14 @@ public class CacheDeviceDaoUtils {
 
 			com.vf.uk.dal.device.model.merchandisingpromotion.OneOffDiscountPrice oneOffDiscountPrice = new com.vf.uk.dal.device.model.merchandisingpromotion.OneOffDiscountPrice();
 
-			OneOffDiscountPrice OneOffDiscountPrice1 = hardwarePrice1.getOneOffDiscountPrice();
+			OneOffDiscountPrice oneOffDiscountPrice1 = hardwarePrice1.getOneOffDiscountPrice();
 
-			if (OneOffDiscountPrice1 != null && OneOffDiscountPrice1.getGross() != null) {
-				oneOffDiscountPrice.setGross(Float.valueOf(OneOffDiscountPrice1.getGross()));
+			if (oneOffDiscountPrice1 != null && oneOffDiscountPrice1.getGross() != null) {
+				oneOffDiscountPrice.setGross(Float.valueOf(oneOffDiscountPrice1.getGross()));
 
-				oneOffDiscountPrice.setNet(Float.valueOf(OneOffDiscountPrice1.getNet()));
+				oneOffDiscountPrice.setNet(Float.valueOf(oneOffDiscountPrice1.getNet()));
 
-				oneOffDiscountPrice.setVat(Float.valueOf(OneOffDiscountPrice1.getVat()));
+				oneOffDiscountPrice.setVat(Float.valueOf(oneOffDiscountPrice1.getVat()));
 			}
 
 			hardwarePrice.setOneOffDiscountPrice(oneOffDiscountPrice);
@@ -1186,14 +1186,14 @@ public class CacheDeviceDaoUtils {
 			}
 			hardwarePrice.setFinancingOptions(financeOptions);
 			hardwarePrice.setHardwareId(hardwarePrice1.getHardwareId());
-			OfferAppliedPriceDetails.setBundlePrice(bundlePrice);
-			OfferAppliedPriceDetails.setHardwarePrice(hardwarePrice);
-			OfferAppliedPriceDetails.setDeviceId(offerAppliedPrice.getDeviceId());
-			OfferAppliedPriceDetails.setOfferCode(offerAppliedPrice.getOfferCode());
-			OfferAppliedPriceDetails.setJourneyType(offerAppliedPrice.getJourneyType());
-			OfferAppliedListForSolr.add(OfferAppliedPriceDetails);
+			offerAppliedPriceDetails.setBundlePrice(bundlePrice);
+			offerAppliedPriceDetails.setHardwarePrice(hardwarePrice);
+			offerAppliedPriceDetails.setDeviceId(offerAppliedPrice.getDeviceId());
+			offerAppliedPriceDetails.setOfferCode(offerAppliedPrice.getOfferCode());
+			offerAppliedPriceDetails.setJourneyType(offerAppliedPrice.getJourneyType());
+			offerAppliedListForSolr.add(offerAppliedPriceDetails);
 		}
-		return OfferAppliedListForSolr;
+		return offerAppliedListForSolr;
 	}
 
 	private com.vf.uk.dal.device.model.merchandisingpromotion.MonthlyDiscountPrice setMonthlyDiscountPriceForAppliedPrice(

@@ -103,9 +103,6 @@ public class OtherServiesTest {
 	ListOfDeviceDetailsDaoUtils listOfDeviceDetailsDaoUtils;
 	
 	@Autowired
-	CommonMethods commonMethods;
-	
-	@Autowired
 	DeviceServiceImplUtility deviceServiceImplUtility;
 
 	@Autowired

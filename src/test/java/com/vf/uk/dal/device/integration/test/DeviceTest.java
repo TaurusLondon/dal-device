@@ -119,9 +119,6 @@ public class DeviceTest {
 	ListOfDeviceDetailsDaoUtils listOfDeviceDetailsDaoUtils;
 	
 	@Autowired
-	CommonMethods commonMethods;
-	
-	@Autowired
 	DeviceServiceImplUtility deviceServiceImplUtility;
 
 	@Autowired
@@ -1576,7 +1573,7 @@ public class DeviceTest {
 	@Test
 	public void notNullTestForSetPriceMerchandisingPromotion() {
 		List<MediaLink> mediaLink = accessoriesAndInsurancedaoUtils.setPriceMerchandisingPromotion(
-				commonMethods.getForUtilityPriceForBundleAndHardware().get(0).getHardwarePrice());
+				CommonMethods.getForUtilityPriceForBundleAndHardware().get(0).getHardwarePrice());
 		assertNotNull(mediaLink);
 		assertEquals("limited_discount.merchandisingPromotions.merchandisingPromotion.label", mediaLink.get(0).getId());
 		assertEquals("TEXT", mediaLink.get(0).getType());

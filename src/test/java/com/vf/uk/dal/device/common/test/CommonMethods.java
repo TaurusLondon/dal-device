@@ -3693,7 +3693,7 @@ public class CommonMethods {
 
 	}
 
-	public List<PriceForBundleAndHardware> getForUtilityPriceForBundleAndHardware() {
+	public static List<PriceForBundleAndHardware> getForUtilityPriceForBundleAndHardware() {
 		List<PriceForBundleAndHardware> priceForBundleAndHardwareList = new ArrayList<>();
 
 		PriceForBundleAndHardware priceInfo = new PriceForBundleAndHardware();

@@ -492,7 +492,7 @@ public class DeviceTilesDaoUtils {
 
 								String[] typeArray = mediaStrList[i + 2].split("&&");
 								if (StringUtils.isNotBlank(offerCode) && offerFlag && checkOfferCodNullForMedia(
-										offerCode, leadPlanId, offerFlag, mediaStrList, i, typeArray)) {
+										offerCode, leadPlanId, mediaStrList, i, typeArray)) {
 									MediaLink mediaLink = new MediaLink();
 									mediaLink.setId(mediaStrList[i]);
 									mediaLink.setValue(mediaStrList[i + 1]);
@@ -1174,7 +1174,7 @@ public class DeviceTilesDaoUtils {
 		return facetedDevice;
 	}
 
-	private boolean checkOfferCodNullForMedia(String offerCode, String leadPlanId, boolean offerFlag,
+	private boolean checkOfferCodNullForMedia(String offerCode, String leadPlanId,
 			String[] mediaStrList, int i, String[] typeArray) {
 		return !DATA_NOT_FOUND.equalsIgnoreCase(mediaStrList[i + 4])
 				&& PROMO_CATEGORY_PRICING_DISCOUNT.equalsIgnoreCase(mediaStrList[i + 3])

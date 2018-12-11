@@ -116,9 +116,6 @@ public class DeviceServiceImplTest {
 	ListOfDeviceDetailsDaoUtils listOfDeviceDetailsDaoUtils;
 	
 	@Autowired
-	CommonMethods commonMethods;
-	
-	@Autowired
 	DeviceServiceImplUtility deviceServiceImplUtility;
 
 	@Autowired

@@ -45,7 +45,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DeviceController {
 
-	public static final String numberExp = "[0-9]{6}";
+	public static final String NUMBEREXP = "[0-9]{6}";
 	@Autowired
 	DeviceService deviceService;
 
@@ -91,7 +91,7 @@ public class DeviceController {
 			@ApiParam(value = "Journey Type") @RequestParam(value = "journeyType", required = false) String journeyType,
 			@ApiParam(value = "Promotional Offer Code that's applicable") @RequestParam(value = "offerCode", required = false) String offerCode) {
 		List<DeviceTile> listOfDeviceTile;
-		if (!deviceId.matches(numberExp)) {
+		if (!deviceId.matches(NUMBEREXP)) {
 			log.error(ExceptionMessages.INVALID_DEVICE);
 			throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 		}

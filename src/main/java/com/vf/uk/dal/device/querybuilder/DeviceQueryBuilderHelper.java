@@ -42,7 +42,7 @@ public class DeviceQueryBuilderHelper {
 	public static final String STRING_ID = "id";
 	public static final String SEARCH_FOR_VODAFONE5_INDEX = "_search";
 	public static final String STRING_KEY_WORD = ".keyword";
-	public static final String STRING_Tag = "tag";
+	public static final String STRING_TAG = "tag";
 	public static final String STRING_ALL_TYPE = "__type";
 	public static final String STRING_RAW = "raw_";
 	public static final String STRING_OPT = "opt_";
@@ -170,13 +170,13 @@ public class DeviceQueryBuilderHelper {
 	 * @param type
 	 * @return
 	 */
-	public static SearchRequest searchQueryForCommercialProductAndCommercialBundle(String Id, String type) {
+	public static SearchRequest searchQueryForCommercialProductAndCommercialBundle(String id, String type) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
 		try {
 			log.info("<------Elasticsearch query mapping----->");
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
-			qb.must(QueryBuilders.termQuery(STRING_ID + STRING_KEY_WORD, Id));
+			qb.must(QueryBuilders.termQuery(STRING_ID + STRING_KEY_WORD, id));
 			qb.must(QueryBuilders.termQuery(STRING_ALL_TYPE + STRING_KEY_WORD, STRING_RAW + type));
 			searchRequestBuilder.query(qb);
 			log.info(" <-----  Setting up Elasticsearch parameters and query ----->");
@@ -284,7 +284,7 @@ public class DeviceQueryBuilderHelper {
 			searchRequestBuilder.from(from);
 			searchRequestBuilder.size(promotionAsTags.size());
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
-			qb.must(QueryBuilders.termsQuery(STRING_Tag + STRING_KEY_WORD, promotionAsTags.toArray()));
+			qb.must(QueryBuilders.termsQuery(STRING_TAG + STRING_KEY_WORD, promotionAsTags.toArray()));
 			qb.must(QueryBuilders.termQuery(STRING_ALL_TYPE + STRING_KEY_WORD, STRING_RAW + STRING_PROMOTION));
 			searchRequestBuilder.query(qb);
 			log.info(" <-------  Setting up Elasticsearch parameters and query  ----->");
@@ -307,7 +307,7 @@ public class DeviceQueryBuilderHelper {
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
 		try {
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
-			qb.must(QueryBuilders.matchPhraseQuery(STRING_Tag, promotionAsTag));
+			qb.must(QueryBuilders.matchPhraseQuery(STRING_TAG, promotionAsTag));
 			qb.must(QueryBuilders.termQuery(STRING_ALL_TYPE + STRING_KEY_WORD, STRING_RAW + STRING_PROMOTION));
 			searchRequestBuilder.query(qb);
 			log.info(" <------  Setting up Elasticsearch parameters and query  ----->");
@@ -621,7 +621,7 @@ public class DeviceQueryBuilderHelper {
 	 * @param type
 	 * @return SearchRequest
 	 */
-	public static SearchRequest searchQueryForCommercialBundle(String Id, String type) {
+	public static SearchRequest searchQueryForCommercialBundle(String id, String type) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
 
@@ -629,7 +629,7 @@ public class DeviceQueryBuilderHelper {
 		try {
 			log.info("<------Elasticsearch query mapping------>");
 			BoolQueryBuilder qb = QueryBuilders.boolQuery();
-			qb.must(QueryBuilders.termQuery(STRING_ID + STRING_KEY_WORD, Id));
+			qb.must(QueryBuilders.termQuery(STRING_ID + STRING_KEY_WORD, id));
 			qb.must(QueryBuilders.termQuery(STRING_ALL_TYPE + STRING_KEY_WORD, STRING_RAW + type));
 			searchRequestBuilder.query(qb);
 			log.info(" <-----  Setting up Elasticsearch parameters and query  ----->");

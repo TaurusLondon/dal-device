@@ -76,7 +76,7 @@ public class PriceServiceClient {
 	 */
 	public List<PriceForBundleAndHardware> getPriceDetailsUsingBundleHarwareTrouple(
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType,
-			String groupType, String billingType) {
+			String billingType) {
 		List<PriceForBundleAndHardware> priceList = null;
 		HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
 		try {
