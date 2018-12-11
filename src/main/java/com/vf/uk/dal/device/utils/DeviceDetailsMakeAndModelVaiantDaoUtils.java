@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.client.entity.bundle.Allowance;
@@ -40,6 +42,7 @@ import com.vf.uk.dal.device.model.product.CommercialProduct;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Component
 public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 
 	public static final String STRING_PRICE_ESTABLISHED_LABEL = "merchandisingPromotions.merchandisingPromotion.priceEstablishedLabel";
@@ -56,9 +59,18 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 	public static final String STRING_DATA_AlLOWANCE = "DATA";
 	public static final String STRING_DEVICE_PAYG = "DEVICE_PAYG";
 
-	private DeviceDetailsMakeAndModelVaiantDaoUtils() {
+	public DeviceDetailsMakeAndModelVaiantDaoUtils() {
+		/**
+		 * constructor
+		 */
 	};
 
+	@Autowired
+	CommonUtility commonUtility;
+	
+	@Autowired
+	DeviceTilesDaoUtils deviceTilesDaoUtils;
+	
 	/**
 	 * 
 	 * @param cohProduct
@@ -66,7 +78,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 	 * @param listOfOfferPacks
 	 * @return DeviceDetails
 	 */
-	public static DeviceDetails convertCoherenceDeviceToDeviceDetails(CommercialProduct cohProduct,
+	public DeviceDetails convertCoherenceDeviceToDeviceDetails(CommercialProduct cohProduct,
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware,
 			List<BundleAndHardwarePromotions> listOfOfferPacks, String cdnDomain) {
 		ProductAvailability1 productAvailability = new ProductAvailability1();
@@ -121,7 +133,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		if (listOfOfferPacks != null && !listOfOfferPacks.isEmpty()) {
 
 			BundleAndHardwarePromotions promotions = listOfOfferPacks.get(0);
-			CommonUtility.getNonPricingPromotions(promotions, merchandisingMedia);
+			commonUtility.getNonPricingPromotions(promotions, merchandisingMedia);
 		}
 
 		List<com.vf.uk.dal.device.model.product.Group> listOfSpecificationGroups = cohProduct.getSpecificationGroups();
@@ -181,7 +193,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		return deviceDetails;
 	}
 
-	private static void setMonthlyDiscountPrice(PriceForBundleAndHardware priceForBundleAndHardware) {
+	private void setMonthlyDiscountPrice(PriceForBundleAndHardware priceForBundleAndHardware) {
 		if (priceForBundleAndHardware.getBundlePrice() != null
 				&& getMonthlyPriceCheckForBundleAndHardware(priceForBundleAndHardware)
 				&& priceForBundleAndHardware.getBundlePrice().getMonthlyDiscountPrice().getGross()
@@ -195,7 +207,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		}
 	}
 
-	private static void setMerchandisingMediaForHardware(List<MediaLink> merchandisingMedia,
+	private void setMerchandisingMediaForHardware(List<MediaLink> merchandisingMedia,
 			MerchandisingPromotion merchPromoForHardware) {
 		MediaLink priceMediaLinkLabel = new MediaLink();
 		if (merchPromoForHardware != null && StringUtils.isNotBlank(merchPromoForHardware.getMpType())) {
@@ -228,7 +240,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		}
 	}
 
-	private static void setMerchandisingMediaForBundle(List<MediaLink> merchandisingMedia,
+	private void setMerchandisingMediaForBundle(List<MediaLink> merchandisingMedia,
 			MerchandisingPromotion merchPromoForBundle) {
 		if (merchPromoForBundle != null && merchPromoForBundle.getMpType() != null) {
 			if (StringUtils.isNotBlank(merchPromoForBundle.getLabel())) {
@@ -262,7 +274,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		}
 	}
 
-	private static List<SpecificationGroup> setListOfSpecifications(
+	private List<SpecificationGroup> setListOfSpecifications(
 			List<com.vf.uk.dal.device.model.product.Group> listOfSpecificationGroups) {
 		List<Specification> listOfSpecification;
 		List<SpecificationGroup> listOfSpecificationGroup = new ArrayList<>();
@@ -283,7 +295,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		return listOfSpecificationGroup;
 	}
 
-	private static void setSpecificationGroups(List<Specification> listOfSpecification,
+	private void setSpecificationGroups(List<Specification> listOfSpecification,
 			SpecificationGroup specificationGroups, List<com.vf.uk.dal.device.model.product.Specification> listOfSpec) {
 		Specification specification;
 		if (listOfSpec != null && !listOfSpec.isEmpty()) {
@@ -309,7 +321,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		}
 	}
 
-	private static void setMerchandisingMedia(CommercialProduct cohProduct, String cdnDomain,
+	private void setMerchandisingMedia(CommercialProduct cohProduct, String cdnDomain,
 			List<MediaLink> merchandisingMedia) {
 		MediaLink mediaLink;
 		if (cohProduct.getListOfimageURLs() != null) {
@@ -318,7 +330,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 					mediaLink = new MediaLink();
 					mediaLink.setId(imageURL.getImageName());
 					mediaLink.setType(STRING_FOR_MEDIA_TYPE);
-					mediaLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain, imageURL.getImageURL()));
+					mediaLink.setValue(commonUtility.getImageMediaUrl(cdnDomain, imageURL.getImageURL()));
 					merchandisingMedia.add(mediaLink);
 				}
 			}
@@ -329,26 +341,26 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 					mediaLink = new MediaLink();
 					mediaLink.setId(mediaURL.getMediaName());
 					mediaLink.setType(STRING_FOR_MEDIA_TYPE);
-					mediaLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain, mediaURL.getMediaURL()));
+					mediaLink.setValue(commonUtility.getImageMediaUrl(cdnDomain, mediaURL.getMediaURL()));
 					merchandisingMedia.add(mediaLink);
 				}
 			}
 		}
 	}
 
-	private static void setStartEndDate(CommercialProduct cohProduct, ProductAvailability1 productAvailability,
+	private void setStartEndDate(CommercialProduct cohProduct, ProductAvailability1 productAvailability,
 			String dateFormat) {
 		if (cohProduct.getProductAvailability().getEnd() != null) {
 			productAvailability.setEndDate(
-					CommonUtility.getDateToString(cohProduct.getProductAvailability().getEnd(), dateFormat));
+					commonUtility.getDateToString(cohProduct.getProductAvailability().getEnd(), dateFormat));
 		}
 		if (cohProduct.getProductAvailability().getStart() != null) {
 			productAvailability.setStartDate(
-					CommonUtility.getDateToString(cohProduct.getProductAvailability().getStart(), dateFormat));
+					commonUtility.getDateToString(cohProduct.getProductAvailability().getStart(), dateFormat));
 		}
 	}
 
-	private static void setLeadPlanid(CommercialProduct cohProduct, DeviceDetails deviceDetails) {
+	private void setLeadPlanid(CommercialProduct cohProduct, DeviceDetails deviceDetails) {
 		if (cohProduct.getProductLines() != null && !cohProduct.getProductLines().isEmpty()
 				&& !cohProduct.getProductLines().contains(PAYG_DEVICE)) {
 			deviceDetails.setLeadPlanId(cohProduct.getLeadPlanId());
@@ -357,7 +369,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		}
 	}
 
-	private static void setListOfMerchandisingPromotion(CommercialProduct cohProduct,
+	private void setListOfMerchandisingPromotion(CommercialProduct cohProduct,
 			List<MerchandisingPromotions> listOfMerchandisingPromotion) {
 		if (cohProduct.getPromoteAs() != null && (cohProduct.getPromoteAs().getPromotionName() != null
 				&& !cohProduct.getPromoteAs().getPromotionName().isEmpty())) {
@@ -369,11 +381,11 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		}
 	}
 
-	private static void setAvailableFrom(CommercialProduct cohProduct, MerchandisingControl merchandisingControl,
+	private void setAvailableFrom(CommercialProduct cohProduct, MerchandisingControl merchandisingControl,
 			String dateFormat) {
 		if (cohProduct.getProductControl().getAvailableFrom() != null) {
 			merchandisingControl.setAvailableFrom(
-					CommonUtility.getDateToString(cohProduct.getProductControl().getAvailableFrom(), dateFormat));
+					commonUtility.getDateToString(cohProduct.getProductControl().getAvailableFrom(), dateFormat));
 		}
 	}
 
@@ -382,7 +394,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 	 * @param priceForBundleAndHardware
 	 * @return
 	 */
-	public static boolean getMonthlyPriceCheckForBundleAndHardware(
+	public boolean getMonthlyPriceCheckForBundleAndHardware(
 			PriceForBundleAndHardware priceForBundleAndHardware) {
 		return priceForBundleAndHardware.getBundlePrice().getMonthlyDiscountPrice() != null
 				&& priceForBundleAndHardware.getBundlePrice().getMonthlyDiscountPrice().getGross() != null
@@ -395,7 +407,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 	 * @param priceForBundleAndHardware
 	 * @return
 	 */
-	public static boolean getOnePriceCheckForPriceForBundleAndHarware(
+	public boolean getOnePriceCheckForPriceForBundleAndHarware(
 			PriceForBundleAndHardware priceForBundleAndHardware) {
 		boolean result = priceForBundleAndHardware.getHardwarePrice().getOneOffDiscountPrice() != null
 				&& priceForBundleAndHardware.getHardwarePrice().getOneOffPrice() != null
@@ -417,7 +429,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 	 * @param fromPricingMap
 	 * @return DeviceSummary
 	 */
-	public static DeviceSummary convertCoherenceDeviceToDeviceTile(Long memberPriority,
+	public DeviceSummary convertCoherenceDeviceToDeviceTile(Long memberPriority,
 			CommercialProduct commercialProduct, CommercialBundle comBundle,
 			PriceForBundleAndHardware priceforBundleAndHardware, List<BundleAndHardwarePromotions> listOfOfferPacks,
 			String groupType, boolean isConditionalAcceptJourney, Map<String, Boolean> fromPricingMap,
@@ -439,7 +451,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 				.getSpecificationGroups();
 		setMemoryAndColourHex(deviceSummary, listOfSpecificationGroups);
 		List<MediaLink> merchandisingMedia = new ArrayList<>();
-		CommonUtility.getImageMediaLink(commercialProduct, merchandisingMedia, cdnDomain);
+		commonUtility.getImageMediaLink(commercialProduct, merchandisingMedia, cdnDomain);
 
 		/**
 		 * @author manoj.bera
@@ -489,7 +501,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 			priceInfo.setHardwarePrice(hardwarePrice);
 			deviceSummary.setPriceInfo(priceInfo);
 		} else {
-			PriceForBundleAndHardware priceForBundleAndHardware = DeviceTilesDaoUtils.getBundleAndHardwarePrice(
+			PriceForBundleAndHardware priceForBundleAndHardware = deviceTilesDaoUtils.getBundleAndHardwarePrice(
 					priceforBundleAndHardware, commercialProduct.getId(), isConditionalAcceptJourney, comBundle);
 			if (null == priceForBundleAndHardware || null == priceForBundleAndHardware.getBundlePrice()
 					|| null == priceForBundleAndHardware.getBundlePrice().getMonthlyPrice()) {
@@ -502,7 +514,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		return deviceSummary;
 	}
 
-	private static void setUomAndValue(CommercialBundle comBundle, DeviceSummary deviceSummary) {
+	private void setUomAndValue(CommercialBundle comBundle, DeviceSummary deviceSummary) {
 		if (comBundle != null) {
 			deviceSummary.setLeadPlanId(comBundle.getId());
 			deviceSummary.setBundleType(comBundle.getDisplayGroup());
@@ -519,7 +531,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		}
 	}
 
-	private static void setMerchansidingMediaForPromoBundel(List<MediaLink> merchandisingMedia,
+	private void setMerchansidingMediaForPromoBundel(List<MediaLink> merchandisingMedia,
 			MerchandisingPromotion merchPromoForBundle) {
 		if (merchPromoForBundle != null && merchPromoForBundle.getMpType() != null) {
 			if (StringUtils.isNotBlank(merchPromoForBundle.getLabel())) {
@@ -561,7 +573,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		}
 	}
 
-	private static void setMerchandisingMediaForPromoForHardware(List<MediaLink> merchandisingMedia,
+	private void setMerchandisingMediaForPromoForHardware(List<MediaLink> merchandisingMedia,
 			MerchandisingPromotion merchPromoForHardware) {
 		MediaLink priceMediaLinkLabel = new MediaLink();
 		if (merchPromoForHardware != null && StringUtils.isNotBlank(merchPromoForHardware.getMpType())) {
@@ -602,7 +614,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		}
 	}
 
-	private static void setMerchandisingMediaForPromotions(List<BundleAndHardwarePromotions> listOfOfferPacks,
+	private void setMerchandisingMediaForPromotions(List<BundleAndHardwarePromotions> listOfOfferPacks,
 			List<MediaLink> merchandisingMedia) {
 		if (listOfOfferPacks != null && !listOfOfferPacks.isEmpty()) {
 
@@ -632,14 +644,14 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 					.getFreeAccForHardware();
 			List<CataloguepromotionqueriesForBundleAndHardwareSash> sashBundleConditional = listOfOfferPacks.get(0)
 					.getConditionalSashBanner();
-			merchandisingMedia.addAll(CommonUtility.getMediaListForBundleAndHardware(entertainmentPacks, dataAllowances,
+			merchandisingMedia.addAll(commonUtility.getMediaListForBundleAndHardware(entertainmentPacks, dataAllowances,
 					planCouplingPromotions, sash, secureNet, sashBannerForHardware, freeExtras, freeAccessories,
 					freeExtrasForPlans, freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares,
 					sashBundleConditional));
 		}
 	}
 
-	private static void setMemoryAndColourHex(DeviceSummary deviceSummary,
+	private void setMemoryAndColourHex(DeviceSummary deviceSummary,
 			List<com.vf.uk.dal.device.model.product.Group> listOfSpecificationGroups) {
 		if (listOfSpecificationGroups != null && !listOfSpecificationGroups.isEmpty()) {
 			for (com.vf.uk.dal.device.model.product.Group specificationGroup : listOfSpecificationGroups) {
@@ -658,7 +670,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		}
 	}
 
-	private static void setMemory(DeviceSummary deviceSummary,
+	private void setMemory(DeviceSummary deviceSummary,
 			List<com.vf.uk.dal.device.model.product.Specification> listOfSpec) {
 		if (listOfSpec != null && !listOfSpec.isEmpty()) {
 			for (com.vf.uk.dal.device.model.product.Specification spec : listOfSpec) {
@@ -669,7 +681,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		}
 	}
 
-	private static void setColourNameAndHex(DeviceSummary deviceSummary,
+	private void setColourNameAndHex(DeviceSummary deviceSummary,
 			List<com.vf.uk.dal.device.model.product.Specification> listOfSpec) {
 		if (listOfSpec != null && !listOfSpec.isEmpty()) {
 			for (com.vf.uk.dal.device.model.product.Specification spec : listOfSpec) {
@@ -683,7 +695,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		}
 	}
 
-	private static void setPriorityAndFromPricing(Long memberPriority, CommercialProduct commercialProduct,
+	private void setPriorityAndFromPricing(Long memberPriority, CommercialProduct commercialProduct,
 			Map<String, Boolean> fromPricingMap, DeviceSummary deviceSummary) {
 		if (memberPriority != null) {
 			deviceSummary.setPriority(String.valueOf(memberPriority));
@@ -693,13 +705,13 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		}
 	}
 
-	private static void setPreorderableAndAvailableFrom(CommercialProduct commercialProduct,
+	private void setPreorderableAndAvailableFrom(CommercialProduct commercialProduct,
 			DeviceSummary deviceSummary) {
 		if (commercialProduct.getProductControl() != null && commercialProduct.getProductControl().isPreOrderable()) {
 			String startDateTime;
-			startDateTime = CommonUtility.getDateToString(commercialProduct.getProductControl().getAvailableFrom(),
+			startDateTime = commonUtility.getDateToString(commercialProduct.getProductControl().getAvailableFrom(),
 					DATE_FORMAT_COHERENCE);
-			if (startDateTime != null && CommonUtility.dateValidationForProduct(startDateTime, DATE_FORMAT_COHERENCE)) {
+			if (startDateTime != null && commonUtility.dateValidationForProduct(startDateTime, DATE_FORMAT_COHERENCE)) {
 				deviceSummary.setPreOrderable(true);
 				deviceSummary.setAvailableFrom(startDateTime);
 			} else {
@@ -718,7 +730,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 	 * @param groupType
 	 * @return DeviceSummary
 	 */
-	public static DeviceSummary convertCoherenceDeviceToDeviceTilePAYG(Long memberPriority,
+	public DeviceSummary convertCoherenceDeviceToDeviceTilePAYG(Long memberPriority,
 			CommercialProduct commercialProduct, PriceForBundleAndHardware priceforBundleAndHardware,
 			BundleAndHardwarePromotions promotions, String cdnDomain) {
 
@@ -734,7 +746,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		}
 		List<MediaLink> merchandisingMedia = new ArrayList<>();
 		if (promotions != null) {
-			CommonUtility.getNonPricingPromotions(promotions, merchandisingMedia);
+			commonUtility.getNonPricingPromotions(promotions, merchandisingMedia);
 		}
 
 		deviceSummary.setFromPricing(null);
@@ -746,11 +758,11 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 
 		setMemoryAndColourHex(deviceSummary, listOfSpecificationGroups);
 
-		CommonUtility.getImageMediaLink(commercialProduct, merchandisingMedia, cdnDomain);
+		commonUtility.getImageMediaLink(commercialProduct, merchandisingMedia, cdnDomain);
 
 		// MediaLink for PricePromotions
 		if (priceforBundleAndHardware != null) {
-			deviceSummary.setPriceInfo(DeviceTilesDaoUtils.getCalculatedPrice(priceforBundleAndHardware));
+			deviceSummary.setPriceInfo(deviceTilesDaoUtils.getCalculatedPrice(priceforBundleAndHardware));
 			// Hardware Promotion
 			if (priceforBundleAndHardware.getHardwarePrice() != null) {
 
@@ -788,7 +800,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 	 *            the price for bundle and hardware
 	 * @return the merchandising promotions package
 	 */
-	public static MerchandisingPromotionsPackage assembleMechandisingPromotionsPackageGeneric(
+	public MerchandisingPromotionsPackage assembleMechandisingPromotionsPackageGeneric(
 			com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwarePromotions bundleAndHardwarePromotion,
 			PriceForBundleAndHardware priceForBundleAndHardware) {
 		MerchandisingPromotionsPackage promotionsPackage = null;
@@ -830,7 +842,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		return promotionsPackage;
 	}
 
-	private static void setFreeExtraPromotionForHardware(
+	private void setFreeExtraPromotionForHardware(
 			com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwarePromotions bundleAndHardwarePromotion,
 			MerchandisingPromotionsWrapper hardwarePromotions) {
 		if (CollectionUtils.isNotEmpty(bundleAndHardwarePromotion.getFreeExtrasForHardware())) {
@@ -853,7 +865,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		}
 	}
 
-	private static void setFreeAccessoryPromotionForHardware(
+	private void setFreeAccessoryPromotionForHardware(
 			com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwarePromotions bundleAndHardwarePromotion,
 			MerchandisingPromotionsWrapper hardwarePromotions) {
 		if (CollectionUtils.isNotEmpty(bundleAndHardwarePromotion.getFreeAccForHardware())) {
@@ -876,7 +888,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		}
 	}
 
-	private static void setSashBannerForHardware(
+	private void setSashBannerForHardware(
 			com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwarePromotions bundleAndHardwarePromotion,
 			MerchandisingPromotionsWrapper hardwarePromotions) {
 		if (CollectionUtils.isNotEmpty(bundleAndHardwarePromotion.getSashBannerForHardware())) {
@@ -899,7 +911,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		}
 	}
 
-	private static void setFreeAccessoryPromotion(
+	private void setFreeAccessoryPromotion(
 			com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwarePromotions bundleAndHardwarePromotion,
 			MerchandisingPromotionsWrapper bundlePromotions) {
 		if (CollectionUtils.isNotEmpty(bundleAndHardwarePromotion.getFreeAccForPlan())) {
@@ -922,7 +934,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		}
 	}
 
-	private static void setFreeExtraPromotion(
+	private void setFreeExtraPromotion(
 			com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwarePromotions bundleAndHardwarePromotion,
 			MerchandisingPromotionsWrapper bundlePromotions) {
 		if (CollectionUtils.isNotEmpty(bundleAndHardwarePromotion.getFreeExtrasForPlan())) {
@@ -945,7 +957,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		}
 	}
 
-	private static void setEntertainmentPackPromotion(
+	private void setEntertainmentPackPromotion(
 			com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwarePromotions bundleAndHardwarePromotion,
 			MerchandisingPromotionsWrapper bundlePromotions) {
 		if (CollectionUtils.isNotEmpty(bundleAndHardwarePromotion.getEntertainmentPacks())) {
@@ -966,7 +978,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		}
 	}
 
-	private static void setConditionalSashBannerPromotion(
+	private void setConditionalSashBannerPromotion(
 			com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwarePromotions bundleAndHardwarePromotion,
 			MerchandisingPromotionsWrapper bundlePromotions) {
 		if (CollectionUtils.isNotEmpty(bundleAndHardwarePromotion.getConditionalSashBanner())) {
@@ -989,7 +1001,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		}
 	}
 
-	private static void setSashBannerPromotion(
+	private void setSashBannerPromotion(
 			com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwarePromotions bundleAndHardwarePromotion,
 			MerchandisingPromotionsWrapper bundlePromotions) {
 		if (CollectionUtils.isNotEmpty(bundleAndHardwarePromotion.getSashBannerForPlan())) {
@@ -1012,7 +1024,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		}
 	}
 
-	private static void setSecureNetPromotion(
+	private void setSecureNetPromotion(
 			com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwarePromotions bundleAndHardwarePromotion,
 			MerchandisingPromotionsWrapper bundlePromotions) {
 		if (CollectionUtils.isNotEmpty(bundleAndHardwarePromotion.getSecureNet())) {
@@ -1035,7 +1047,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 		}
 	}
 
-	private static void setDataPromotion(
+	private void setDataPromotion(
 			com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwarePromotions bundleAndHardwarePromotion,
 			MerchandisingPromotionsWrapper bundlePromotions) {
 		if (CollectionUtils.isNotEmpty(bundleAndHardwarePromotion.getDataAllowances())) {

@@ -51,6 +51,7 @@ import com.vf.uk.dal.device.service.DeviceRecommendationService;
 import com.vf.uk.dal.device.service.DeviceService;
 import com.vf.uk.dal.device.utils.DeviceESHelper;
 import com.vf.uk.dal.device.utils.DeviceServiceCommonUtility;
+import com.vf.uk.dal.device.utils.Validator;
 
 /**
  * In order to run the controller class a bean of the ProductController is
@@ -105,6 +106,9 @@ public class DeviceIntegrationTest {
 	@Autowired
 	DeviceServiceCommonUtility deviceServiceCommonUtility;
 
+	@Autowired
+	Validator validator; 
+	
 	@Autowired
 	private WebApplicationContext WebApplicationContext;
 

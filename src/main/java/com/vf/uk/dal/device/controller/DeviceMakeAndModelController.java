@@ -41,6 +41,8 @@ public class DeviceMakeAndModelController {
 	@Autowired
 	DeviceMakeAndModelService deviceMakeAndModelService;
 
+	@Autowired
+	Validator validator;
 	/**
 	 * Handles requests for getDeviceTile Service with input as
 	 * GROUP_NAME,GROUP_TYPE in URL as query. performance improved by @author
@@ -90,7 +92,7 @@ public class DeviceMakeAndModelController {
 			@ApiParam(value = "creditLimit applicable for the customer in case of conditional accept state") @RequestParam(value = "creditLimit", required = false) String creditLimit) {
 
 		List<DeviceTile> listOfDeviceTile;
-		Double creditLimitParam = Validator.validateCreditLimitAndIds(make, model, bundleId, deviceId, creditLimit);
+		Double creditLimitParam = validator.validateCreditLimitAndIds(make, model, bundleId, deviceId, creditLimit);
 		listOfDeviceTile = deviceMakeAndModelService.getListOfDeviceTile(make, model, groupType, deviceId,
 				creditLimitParam, journeyType, offerCode, bundleId);
 		return listOfDeviceTile;

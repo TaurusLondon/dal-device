@@ -17,7 +17,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.client.entity.bundle.CommercialBundle;
@@ -43,7 +43,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Slf4j
-@Service
+@Component
 public class DeviceServiceImplUtility {
 	
 	public static final String JOURNEY_TYPE_ACQUISITION = "Acquisition";
@@ -68,6 +68,11 @@ public class DeviceServiceImplUtility {
 	@Autowired
 	CommonUtility commonUtility;
 	
+	@Autowired
+	DeviceDetailsMakeAndModelVaiantDaoUtils deviceDetailsMakeAndModelVaiantDaoUtils;
+	@Autowired
+	DeviceTilesDaoUtils deviceTilesDaoUtils;
+	
 	@Value("${cdn.domain.host}")
 	private String cdnDomain;
 	/**
@@ -75,7 +80,7 @@ public class DeviceServiceImplUtility {
 	 * @param journeyType
 	 * @return
 	 */
-	public static String getJourney(String journeyType) {
+	public String getJourney(String journeyType) {
 		boolean nonValidJourney = !JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyType)
 				&& !JOURNEY_TYPE_UPGRADE.equalsIgnoreCase(journeyType)
 				&& !JOURNEY_TYPE_SECONDLINE.equalsIgnoreCase(journeyType);
@@ -98,7 +103,7 @@ public class DeviceServiceImplUtility {
 	 * @param promotionMap
 	 * @param device
 	 */
-	public static void getPromotionForDeviceList(
+	public void getPromotionForDeviceList(
 			Map<String, com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion> promotionMap, Device device) {
 		if (device.getPromotionsPackage().getBundlePromotions() != null
 				&& device.getPromotionsPackage().getBundlePromotions().getPricePromotion() != null && promotionMap.get(
@@ -123,7 +128,7 @@ public class DeviceServiceImplUtility {
 	 * @param deviceList
 	 * @param promoteAsTags
 	 */
-	public static void getPromoteAsForDevice(List<Device> deviceList, List<String> promoteAsTags) {
+	public void getPromoteAsForDevice(List<Device> deviceList, List<String> promoteAsTags) {
 		deviceList.forEach(device -> {
 			if (device.getPromotionsPackage() != null) {
 				if (device.getPromotionsPackage().getBundlePromotions() != null
@@ -144,7 +149,7 @@ public class DeviceServiceImplUtility {
 	 * @param sortCriteria
 	 * @return SortCriteria
 	 */
-	public static String getSortCriteria(String sortCriteria) {
+	public String getSortCriteria(String sortCriteria) {
 		String sortCriteriaLocal;
 		if (StringUtils.isNotBlank(sortCriteria) && sortCriteria.startsWith(SORT_HYPEN)) {
 			sortCriteriaLocal = sortCriteria.substring(1);
@@ -160,7 +165,7 @@ public class DeviceServiceImplUtility {
 	 * @param productGroupdetailsMap
 	 * @param deviceId
 	 */
-	public static void getProductGroupdetailsMap(ProductGroupModel productGroupModel,
+	public void getProductGroupdetailsMap(ProductGroupModel productGroupModel,
 			Map<String, ProductGroupDetailsForDeviceList> productGroupdetailsMap, String deviceId) {
 		ProductGroupDetailsForDeviceList groupDetails = new ProductGroupDetailsForDeviceList();
 		List<String> colourHex=productGroupModel.getHexCode();
@@ -189,7 +194,7 @@ public class DeviceServiceImplUtility {
 	 * @param variantsList
 	 * @return ListOfEntityMembers
 	 */
-	public static List<com.vf.uk.dal.device.model.Member> getListOfMembers(List<String> variantsList) {
+	public List<com.vf.uk.dal.device.model.Member> getListOfMembers(List<String> variantsList) {
 		com.vf.uk.dal.device.model.Member member;
 		List<com.vf.uk.dal.device.model.Member> listOfMember = new ArrayList<>();
 		for (String variants : variantsList) {
@@ -209,7 +214,7 @@ public class DeviceServiceImplUtility {
 	 * @param bundleHardwareTupleList
 	 * @param productModel
 	 */
-	public static void getBundleAndHardwareList(String groupType, String journeyType,
+	public void getBundleAndHardwareList(String groupType, String journeyType,
 			List<BundleAndHardwareTuple> bundleHardwareTupleList, ProductModel productModel) {
 		if (StringUtils.isNotBlank(journeyType)
 				&& StringUtils.equalsIgnoreCase(journeyType, JOURNEY_TYPE_UPGRADE)
@@ -240,7 +245,7 @@ public class DeviceServiceImplUtility {
 	 * @param journeyType
 	 * @return
 	 */
-	public static boolean getJourneyTypevalidationForDeviceList(String journeyType) {
+	public boolean getJourneyTypevalidationForDeviceList(String journeyType) {
 		return isNonUpgrade(journeyType);
 	}
 
@@ -250,7 +255,7 @@ public class DeviceServiceImplUtility {
 	 * @param productModel2
 	 * @return StartdateFromProductModel
 	 */
-	public static Date getStartdateFromProductModel(ProductModel productModel2) {
+	public Date getStartdateFromProductModel(ProductModel productModel2) {
 		Date startDateTime = null;
 		if (productModel2.getProductStartDate() != null) {
 			try {
@@ -268,7 +273,7 @@ public class DeviceServiceImplUtility {
 	 * @param productModel2
 	 * @return EndDateFromProductModel
 	 */
-	public static Date getEndDateFromProductModel(ProductModel productModel2) {
+	public Date getEndDateFromProductModel(ProductModel productModel2) {
 		Date endDateTime = null;
 		if (productModel2.getProductEndDate() != null) {
 			try {
@@ -288,7 +293,7 @@ public class DeviceServiceImplUtility {
 	 * @param preOrderableFlag
 	 * @return flag
 	 */
-	public static Boolean dateValidation(Date startDateTime, Date endDateTime, boolean preOrderableFlag) {
+	public Boolean dateValidation(Date startDateTime, Date endDateTime, boolean preOrderableFlag) {
 		Date currentDate = new Date();
 		boolean flag = false;
 
@@ -326,7 +331,7 @@ public class DeviceServiceImplUtility {
 	 * @param preOrderableFlag
 	 * @return
 	 */
-	public static Boolean isMember(String journeyType, Date startDateTime, Date endDateTime, ProductModel productModel2,
+	public Boolean isMember(String journeyType, Date startDateTime, Date endDateTime, ProductModel productModel2,
 			boolean preOrderableFlag) {
 		Boolean memberFlag = false;
 		if (isNonUpgradeCheck(journeyType, startDateTime, endDateTime, productModel2, preOrderableFlag)
@@ -345,10 +350,10 @@ public class DeviceServiceImplUtility {
 	 * @param preOrderableFlag
 	 * @return
 	 */
-	public static boolean isUpgradeCheck(String journeyType, Date startDateTime, Date endDateTime,
+	public boolean isUpgradeCheck(String journeyType, Date startDateTime, Date endDateTime,
 			ProductModel productModel2, boolean preOrderableFlag) {
 		return isUpgrade(journeyType) && productModel2.getProductClass().equalsIgnoreCase(STRING_HANDSET)
-				&& DeviceServiceImplUtility.dateValidation(startDateTime, endDateTime, preOrderableFlag)
+				&& dateValidation(startDateTime, endDateTime, preOrderableFlag)
 				&& isRet(productModel2);
 	}
 
@@ -361,10 +366,10 @@ public class DeviceServiceImplUtility {
 	 * @param preOrderableFlag
 	 * @return
 	 */
-	public static boolean isNonUpgradeCheck(String journeyType, Date startDateTime, Date endDateTime,
+	public boolean isNonUpgradeCheck(String journeyType, Date startDateTime, Date endDateTime,
 			ProductModel productModel2, boolean preOrderableFlag) {
 		return isNonUpgrade(journeyType) && productModel2.getProductClass().equalsIgnoreCase(STRING_HANDSET)
-				&& DeviceServiceImplUtility.dateValidation(startDateTime, endDateTime, preOrderableFlag)
+				&& dateValidation(startDateTime, endDateTime, preOrderableFlag)
 				&& isAcq(productModel2);
 	}
 
@@ -373,7 +378,7 @@ public class DeviceServiceImplUtility {
 	 * @param journeyType
 	 * @return
 	 */
-	public static boolean isUpgrade(String journeyType) {
+	public boolean isUpgrade(String journeyType) {
 		return StringUtils.isNotBlank(journeyType)
 				&& StringUtils.equalsIgnoreCase(journeyType, JOURNEY_TYPE_UPGRADE);
 	}
@@ -383,7 +388,7 @@ public class DeviceServiceImplUtility {
 	 * @param productModel2
 	 * @return
 	 */
-	public static boolean isRet(ProductModel productModel2) {
+	public boolean isRet(ProductModel productModel2) {
 		return STRING_TRUE.equalsIgnoreCase(productModel2.getIsDisplayableRet())
 				&& STRING_TRUE.equalsIgnoreCase(productModel2.getIsSellableRet());
 	}
@@ -393,7 +398,7 @@ public class DeviceServiceImplUtility {
 	 * @param productModel2
 	 * @return
 	 */
-	public static boolean isAcq(ProductModel productModel2) {
+	public boolean isAcq(ProductModel productModel2) {
 		return STRING_TRUE.equalsIgnoreCase(productModel2.getIsDisplayableAcq())
 				&& STRING_TRUE.equalsIgnoreCase(productModel2.getIsSellableAcq());
 	}
@@ -403,7 +408,7 @@ public class DeviceServiceImplUtility {
 	 * @param journeyType
 	 * @return
 	 */
-	public static boolean isNonUpgrade(String journeyType) {
+	public boolean isNonUpgrade(String journeyType) {
 		return StringUtils.isBlank(journeyType) || (StringUtils.isNotBlank(journeyType)
 				&& !StringUtils.equalsIgnoreCase(journeyType, JOURNEY_TYPE_UPGRADE));
 	}
@@ -413,7 +418,7 @@ public class DeviceServiceImplUtility {
 	 * @param sortCriteria
 	 * @return
 	 */
-	public static List<String> getSortCriteriaForList(String sortCriteria) {
+	public List<String> getSortCriteriaForList(String sortCriteria) {
 		String sortBy = null;
 		String sortOption = null;
 		List<String> criteria = new ArrayList<>();
@@ -435,7 +440,7 @@ public class DeviceServiceImplUtility {
 	 * @param groupType
 	 * @return
 	 */
-	public static boolean validateGroupType(String groupType) {
+	public boolean validateGroupType(String groupType) {
 		boolean result = groupType.equalsIgnoreCase(STRING_DEVICE_PAYM)
 				|| groupType.equalsIgnoreCase(STRING_DEVICE_PAYG);
 		boolean result1 = groupType.equalsIgnoreCase(STRING_DEVICE_NEARLY_NEW)
@@ -448,7 +453,7 @@ public class DeviceServiceImplUtility {
 	 * @param journeyTypeInput
 	 * @return
 	 */
-	public static boolean getJourneyForMakeAndModel(String journeyTypeInput) {
+	public boolean getJourneyForMakeAndModel(String journeyTypeInput) {
 		return StringUtils.isBlank(journeyTypeInput)
 				|| (!JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyTypeInput)
 						&& !JOURNEY_TYPE_UPGRADE.equalsIgnoreCase(journeyTypeInput)
@@ -460,7 +465,7 @@ public class DeviceServiceImplUtility {
 	 * @param comProduct
 	 * @return
 	 */
-	public static boolean getProductclassValidation(CommercialProduct comProduct) {
+	public boolean getProductclassValidation(CommercialProduct comProduct) {
 		return comProduct.getProductClass().equalsIgnoreCase(STRING_HANDSET)
 				|| comProduct.getProductClass().equalsIgnoreCase(STRING_DATA_DEVICE);
 	}
@@ -470,7 +475,7 @@ public class DeviceServiceImplUtility {
 	 * @param comProduct
 	 * @return
 	 */
-	public static boolean isNonUpgradeCommercialProduct(CommercialProduct comProduct) {
+	public boolean isNonUpgradeCommercialProduct(CommercialProduct comProduct) {
 		return comProduct.getProductControl() != null && comProduct.getProductControl().isDisplayableAcq()
 				&& comProduct.getProductControl().isSellableAcq();
 	}
@@ -480,7 +485,7 @@ public class DeviceServiceImplUtility {
 	 * @param comProduct
 	 * @return
 	 */
-	public static boolean isUpgradeFromCommercialProduct(CommercialProduct comProduct) {
+	public boolean isUpgradeFromCommercialProduct(CommercialProduct comProduct) {
 		return comProduct.getProductControl() != null && comProduct.getProductControl().isSellableRet()
 				&& comProduct.getProductControl().isDisplayableRet();
 	}
@@ -489,7 +494,7 @@ public class DeviceServiceImplUtility {
 	 * @param journeyTypeInput
 	 * @return JourneyForVariant
 	 */
-	public static String getJourneyForVariant(String journeyTypeInput) {
+	public String getJourneyForVariant(String journeyTypeInput) {
 		String journeyType;
 		if (StringUtils.isBlank(journeyTypeInput)
 				|| (!JOURNEY_TYPE_ACQUISITION.equalsIgnoreCase(journeyTypeInput)
@@ -509,7 +514,7 @@ public class DeviceServiceImplUtility {
 	 * @param listOfProductGroup
 	 * @return
 	 */
-	public static Long getDevicevariantMemberPriority(String id, DeviceTile deviceTile,
+	public Long getDevicevariantMemberPriority(String id, DeviceTile deviceTile,
 			List<Group> listOfProductGroup) {
 		Long memberPriority = null;
 		for (Group productGroup : listOfProductGroup) {
@@ -532,9 +537,9 @@ public class DeviceServiceImplUtility {
 	 * @param iterator
 	 * @param priceForBundleAndHardware
 	 */
-	public static void calculateDiscount(Double creditLimit, Iterator<PriceForBundleAndHardware> iterator,
+	public void calculateDiscount(Double creditLimit, Iterator<PriceForBundleAndHardware> iterator,
 			PriceForBundleAndHardware priceForBundleAndHardware) {
-		String discountType = DeviceTilesDaoUtils
+		String discountType = deviceTilesDaoUtils
 				.isPartialOrFullTenureDiscount(priceForBundleAndHardware.getBundlePrice());
 
 		if ((null != discountType && discountType.equals(FULL_DURATION_DISCOUNT))
@@ -562,13 +567,13 @@ public class DeviceServiceImplUtility {
 	 * @param creditLimit
 	 * @param isConditionalAcceptJourney
 	 */
-	public static void isPlanAffordableImplementation(DeviceSummary deviceSummary, CommercialBundle comBundle,
+	public void isPlanAffordableImplementation(DeviceSummary deviceSummary, CommercialBundle comBundle,
 			Double creditLimit, boolean isConditionalAcceptJourney) {
 		if (null == comBundle) {
 			deviceSummary.setIsAffordable(false);
 		} else if (isConditionalAcceptJourney && null != deviceSummary.getPriceInfo()
 				&& null != deviceSummary.getPriceInfo().getBundlePrice()) {
-			String discountType = DeviceTilesDaoUtils
+			String discountType = deviceTilesDaoUtils
 					.isPartialOrFullTenureDiscount(deviceSummary.getPriceInfo().getBundlePrice());
 			Double monthlyPrice = getBundlePriceBasedOnDiscountDurationImplementation(deviceSummary, discountType);
 
@@ -590,7 +595,7 @@ public class DeviceServiceImplUtility {
 	 * @param bundleId
 	 * @return
 	 */
-	public static boolean isPlanPriceWithinCreditLimitImplementation(Double creditLimit,
+	public boolean isPlanPriceWithinCreditLimitImplementation(Double creditLimit,
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware, String bundleId) {
 		if (CollectionUtils.isNotEmpty(listOfPriceForBundleAndHardware)) {
 			for (PriceForBundleAndHardware priceForBundleAndHardware : listOfPriceForBundleAndHardware) {
@@ -612,9 +617,9 @@ public class DeviceServiceImplUtility {
 	 * @param bundlePrice
 	 * @return
 	 */
-	public static boolean getDiscountTypeAndComparePriceImplementation(Double creditLimit,
+	public boolean getDiscountTypeAndComparePriceImplementation(Double creditLimit,
 			com.vf.uk.dal.device.client.entity.price.BundlePrice bundlePrice) {
-		String discountType = DeviceTilesDaoUtils.isPartialOrFullTenureDiscount(bundlePrice);
+		String discountType = deviceTilesDaoUtils.isPartialOrFullTenureDiscount(bundlePrice);
 		Double grossPrice = null;
 		if (null != discountType && discountType.equals(FULL_DURATION_DISCOUNT)) {
 			if (null != bundlePrice.getMonthlyDiscountPrice()
@@ -633,7 +638,7 @@ public class DeviceServiceImplUtility {
 	 * @param discountType
 	 * @return
 	 */
-	public static Double getBundlePriceBasedOnDiscountDurationImplementation(DeviceSummary deviceSummary,
+	public Double getBundlePriceBasedOnDiscountDurationImplementation(DeviceSummary deviceSummary,
 			String discountType) {
 		Double monthlyPrice = null;
 		if ((null != discountType && discountType.equals(FULL_DURATION_DISCOUNT))
@@ -658,7 +663,7 @@ public class DeviceServiceImplUtility {
 	 * @param commerProdMemMap
 	 * @return listofLeadBundleId
 	 */
-	public static Set<String> getlistofLeadBundleId(List<CommercialProduct> listOfCommercialProducts, String make,
+	public Set<String> getlistofLeadBundleId(List<CommercialProduct> listOfCommercialProducts, String make,
 			String model, String journeyType, Map<String, CommercialProduct> commerProdMemMap) {
 		Set<String> listofLeadBundleId = new HashSet<>();
 		listOfCommercialProducts.forEach(commercialProduct -> {
@@ -666,12 +671,12 @@ public class DeviceServiceImplUtility {
 				String leadPlanFromCommercialProduct = commercialProduct.getLeadPlanId();
 				List<String> compatiblePlans = commercialProduct.getListOfCompatiblePlanIds() == null
 						? Collections.emptyList() : commercialProduct.getListOfCompatiblePlanIds();
-				if (DeviceServiceImplUtility.isUpgrade(journeyType)
-						&& DeviceServiceImplUtility.isUpgradeFromCommercialProduct(commercialProduct)) {
+				if (isUpgrade(journeyType)
+						&& isUpgradeFromCommercialProduct(commercialProduct)) {
 					commerProdMemMap.put(commercialProduct.getId(), commercialProduct);
 					listofLeadBundleId.addAll(compatiblePlans);
-				} else if (DeviceServiceImplUtility.isNonUpgrade(journeyType)
-						&& DeviceServiceImplUtility.isNonUpgradeCommercialProduct(commercialProduct)) {
+				} else if (isNonUpgrade(journeyType)
+						&& isNonUpgradeCommercialProduct(commercialProduct)) {
 					commerProdMemMap.put(commercialProduct.getId(), commercialProduct);
 					if (StringUtils.isNotBlank(leadPlanFromCommercialProduct)) {
 						listofLeadBundleId.add(leadPlanFromCommercialProduct);
@@ -692,9 +697,9 @@ public class DeviceServiceImplUtility {
 	 * @param model
 	 * @return
 	 */
-	public static boolean isDataDevice(CommercialProduct commercialProduct, String make, String model) {
+	public boolean isDataDevice(CommercialProduct commercialProduct, String make, String model) {
 		boolean result = false;
-		if (DeviceServiceImplUtility.getProductclassValidation(commercialProduct)
+		if (getProductclassValidation(commercialProduct)
 				&& commercialProduct.getEquipment().getMake().equalsIgnoreCase(make)
 				&& commercialProduct.getEquipment().getModel().equalsIgnoreCase(model)
 				&& commercialProduct.getProductControl() != null) {
@@ -708,7 +713,7 @@ public class DeviceServiceImplUtility {
 	 * @param commercialBundle
 	 * @return
 	 */
-	public static boolean isNonUpgradeCommercialBundle(CommercialBundle commercialBundle) {
+	public boolean isNonUpgradeCommercialBundle(CommercialBundle commercialBundle) {
 		return commercialBundle.getBundleControl() != null && commercialBundle.getBundleControl().isSellableAcq()
 				&& commercialBundle.getBundleControl().isDisplayableAcq();
 	}
@@ -718,7 +723,7 @@ public class DeviceServiceImplUtility {
 	 * @param commercialBundle
 	 * @return
 	 */
-	public static boolean isUpgradeFromCommercialBundle(CommercialBundle commercialBundle) {
+	public boolean isUpgradeFromCommercialBundle(CommercialBundle commercialBundle) {
 		return commercialBundle.getBundleControl() != null && commercialBundle.getBundleControl().isSellableRet()
 				&& commercialBundle.getBundleControl().isDisplayableRet();
 	}
@@ -731,7 +736,7 @@ public class DeviceServiceImplUtility {
 	 * @param deviceId
 	 * @return BundleAndHardwareTuple
 	 */
-	public static Set<BundleAndHardwareTuple> getBundleHardwarePriceMap(String leadPlanFromCommercialProduct,
+	public Set<BundleAndHardwareTuple> getBundleHardwarePriceMap(String leadPlanFromCommercialProduct,
 			List<String> compatiblePlans, String deviceId) {
 		Set<BundleAndHardwareTuple> setOfBundleAndHardwareTuple = new HashSet<>();
 		if (StringUtils.isNotBlank(leadPlanFromCommercialProduct)) {
@@ -757,7 +762,7 @@ public class DeviceServiceImplUtility {
 	 * @param listofLeadPlan
 	 * @param commercialProduct
 	 */
-	public static void getPricingMap(List<BundleAndHardwareTuple> bundleAndHardwareTupleList,
+	public void getPricingMap(List<BundleAndHardwareTuple> bundleAndHardwareTupleList,
 			Map<String, Boolean> fromPricingMap, Map<String, String> leadPlanIdMap, List<String> listofLeadPlan,
 			CommercialProduct commercialProduct) {
 		Set<BundleAndHardwareTuple> setOfBundleAndHardwareTuple = getBundleHardwarePriceMap(
@@ -773,7 +778,7 @@ public class DeviceServiceImplUtility {
 	 * @param fromPricingMap
 	 * @param commercialProduct
 	 */
-	public static void getBundleAndHardwareTupleList(List<BundleAndHardwareTuple> bundleAndHardwareTupleList,
+	public void getBundleAndHardwareTupleList(List<BundleAndHardwareTuple> bundleAndHardwareTupleList,
 			Map<String, Boolean> fromPricingMap, CommercialProduct commercialProduct) {
 		Set<BundleAndHardwareTuple> setOfBundleAndHardwareTuple = getBundleHardwarePriceMap(null,
 				commercialProduct.getListOfCompatiblePlanIds(), commercialProduct.getId());
@@ -786,7 +791,7 @@ public class DeviceServiceImplUtility {
 	 * @param bundleHeaderForDevice
 	 * @return
 	 */
-	public static boolean getoneOffPrice(com.vf.uk.dal.device.client.entity.bundle.BundleHeader bundleHeaderForDevice) {
+	public boolean getoneOffPrice(com.vf.uk.dal.device.client.entity.bundle.BundleHeader bundleHeaderForDevice) {
 		return bundleHeaderForDevice.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice() != null
 				|| bundleHeaderForDevice.getPriceInfo().getHardwarePrice().getOneOffPrice() != null;
 	}
@@ -797,17 +802,17 @@ public class DeviceServiceImplUtility {
 	 * @param sellableCheck
 	 * @return
 	 */
-	public static boolean isSellable(String journeyType, CommercialBundle commercialBundle) {
+	public boolean isSellable(String journeyType, CommercialBundle commercialBundle) {
 		boolean sellableCheck = false;
 		if (commercialBundle != null) {
 			if (JOURNEY_TYPE_UPGRADE.equalsIgnoreCase(journeyType)
-					&& DeviceServiceImplUtility.isUpgradeFromCommercialBundle(commercialBundle)
+					&& isUpgradeFromCommercialBundle(commercialBundle)
 					&& !commercialBundle.getAvailability().getSalesExpired()) {
 				sellableCheck = true;
 			}
 			if (!JOURNEY_TYPE_UPGRADE.equalsIgnoreCase(journeyType)
 					&& commercialBundle.getBundleControl() != null
-					&& DeviceServiceImplUtility.isNonUpgradeCommercialBundle(commercialBundle)
+					&& isNonUpgradeCommercialBundle(commercialBundle)
 					&& !commercialBundle.getAvailability().getSalesExpired()) {
 				sellableCheck = true;
 			}
@@ -820,7 +825,7 @@ public class DeviceServiceImplUtility {
 	 * @param commercialProduct
 	 * @param bundleAndHardwareTupleList
 	 */
-	public static void getBundleHardwareTrupleList(CommercialProduct commercialProduct,
+	public void getBundleHardwareTrupleList(CommercialProduct commercialProduct,
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList) {
 		BundleAndHardwareTuple bundleAndHardwareTuple;
 		bundleAndHardwareTuple = new BundleAndHardwareTuple();
@@ -834,7 +839,7 @@ public class DeviceServiceImplUtility {
 	 * @param productIdOrName
 	 * @return
 	 */
-	public static List<String> getListOfProductIdsOrNames(String productIdOrName) {
+	public List<String> getListOfProductIdsOrNames(String productIdOrName) {
 		List<String> listOfProdIdsOrNames = new ArrayList<>();
 		if (productIdOrName.contains(",")) {
 			String[] prodIdsOrNames = productIdOrName.split(",");
@@ -849,9 +854,9 @@ public class DeviceServiceImplUtility {
 	 * @param journeyTypeInput
 	 * @return
 	 */
-	public static String getJourneyTypeForVariantAndList(String journeyTypeInput) {
+	public String getJourneyTypeForVariantAndList(String journeyTypeInput) {
 		String journeyType;
-		if (DeviceServiceImplUtility.getJourneyForMakeAndModel(journeyTypeInput)) {
+		if (getJourneyForMakeAndModel(journeyTypeInput)) {
 			journeyType = JOURNEY_TYPE_ACQUISITION;
 		} else {
 			journeyType = journeyTypeInput;
@@ -866,7 +871,7 @@ public class DeviceServiceImplUtility {
 	 * @param strDateFormat
 	 * @return
 	 */
-	public static Boolean dateValidationForOffersImplementation(String startDateTime, String endDateTime,
+	public Boolean dateValidationForOffersImplementation(String startDateTime, String endDateTime,
 			String strDateFormat) {
 		boolean flag = false;
 		SimpleDateFormat dateFormat = new SimpleDateFormat(strDateFormat);
@@ -926,7 +931,7 @@ public class DeviceServiceImplUtility {
 	 * @param endDate
 	 * @return
 	 */
-	public static boolean getDateForValidation(Date currentDate, Date startDate, Date endDate) {
+	public boolean getDateForValidation(Date currentDate, Date startDate, Date endDate) {
 		return (currentDate.after(startDate) || currentDate.equals(startDate))
 				&& (currentDate.before(endDate) || currentDate.equals(endDate));
 	}
@@ -954,7 +959,7 @@ public class DeviceServiceImplUtility {
 	 * @param bundleAndHardwareTupleList
 	 * @return LeadPlanId
 	 */
-	public static String getLeadPlanId(List<BundleAndHardwareTuple> bundleAndHardwareTupleList) {
+	public String getLeadPlanId(List<BundleAndHardwareTuple> bundleAndHardwareTupleList) {
 		String leadPlanId = null;
 		if (bundleAndHardwareTupleList != null && !bundleAndHardwareTupleList.isEmpty()) {
 			leadPlanId = bundleAndHardwareTupleList.get(0).getBundleId();
@@ -969,7 +974,7 @@ public class DeviceServiceImplUtility {
 	 * @param commercialBundle
 	 * @return List<BundleAndHardwareTuple>
 	 */
-	public static List<BundleAndHardwareTuple> getBundleAndHardwareTuple(String deviceId,
+	public List<BundleAndHardwareTuple> getBundleAndHardwareTuple(String deviceId,
 			CommercialProduct commercialProduct, CommercialBundle commercialBundle) {
 		List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
 		if (commercialBundle != null) {
@@ -1008,7 +1013,7 @@ public class DeviceServiceImplUtility {
 		}
 		if ((isUpgrade(journeyTypeLocal) && isUpgradeFromCommercialProduct(commercialProduct))
 				|| (isNonUpgrade(journeyTypeLocal) && isNonUpgradeCommercialProduct(commercialProduct))) {
-			deviceDetails = DeviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceDetails(
+			deviceDetails = deviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceDetails(
 					commercialProduct, listOfPriceForBundleAndHardware, promotions,cdnDomain);
 		} else {
 			log.error( "No data found for given journeyType :" + deviceId);

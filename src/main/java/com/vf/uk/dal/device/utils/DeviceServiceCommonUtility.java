@@ -44,6 +44,16 @@ public class DeviceServiceCommonUtility {
 	DeviceDao deviceDao;
 
 	@Autowired
+	DeviceUtils deviceUtils;
+	
+	
+	@Autowired
+	DeviceServiceImplUtility deviceServiceImplUtility;
+	
+	@Autowired
+	DeviceTilesDaoUtils deviceTilesDaoUtils;
+	
+	@Autowired
 	DeviceESHelper deviceEs;
 
 	@Autowired
@@ -59,8 +69,8 @@ public class DeviceServiceCommonUtility {
 	 */
 	public String getDeviceTileRating(String leadMemberId) {
 		Map<String, String> rating = getDeviceReviewRatingImplementation(new ArrayList<>(Arrays.asList(leadMemberId)));
-		String avarageOverallRating = rating.containsKey(CommonUtility.appendPrefixString(leadMemberId))
-				? rating.get(CommonUtility.appendPrefixString(leadMemberId)) : "na";
+		String avarageOverallRating = rating.containsKey(commonUtility.appendPrefixString(leadMemberId))
+				? rating.get(commonUtility.appendPrefixString(leadMemberId)) : "na";
 		log.info( "AvarageOverallRating for deviceId: " + leadMemberId + " Rating: " + avarageOverallRating);
 		return avarageOverallRating;
 	}
@@ -181,13 +191,13 @@ public class DeviceServiceCommonUtility {
 		Date startDateTime = comProduct.getProductAvailability().getStart();
 		Date endDateTime = comProduct.getProductAvailability().getEnd();
 		preOrderableFlag = comProduct.getProductControl()==null?preOrderableFlag:comProduct.getProductControl().isPreOrderable();
-		boolean isUpgrade = DeviceServiceImplUtility.isUpgrade(journeyType)
-				&& DeviceServiceImplUtility.getProductclassValidation(comProduct)
-				&& DeviceTilesDaoUtils.dateValidation(startDateTime, endDateTime, preOrderableFlag)
-				&& DeviceServiceImplUtility.isUpgradeFromCommercialProduct(comProduct);
-		if (isUpgrade || (DeviceServiceImplUtility.getProductclassValidation(comProduct)
-				&& DeviceTilesDaoUtils.dateValidation(startDateTime, endDateTime, preOrderableFlag)
-				&& DeviceServiceImplUtility.isNonUpgradeCommercialProduct(comProduct))) {
+		boolean isUpgrade = deviceServiceImplUtility.isUpgrade(journeyType)
+				&& deviceServiceImplUtility.getProductclassValidation(comProduct)
+				&& deviceTilesDaoUtils.dateValidation(startDateTime, endDateTime, preOrderableFlag)
+				&& deviceServiceImplUtility.isUpgradeFromCommercialProduct(comProduct);
+		if (isUpgrade || (deviceServiceImplUtility.getProductclassValidation(comProduct)
+				&& deviceTilesDaoUtils.dateValidation(startDateTime, endDateTime, preOrderableFlag)
+				&& deviceServiceImplUtility.isNonUpgradeCommercialProduct(comProduct))) {
 			memberFlag = true;
 		}
 
@@ -210,7 +220,7 @@ public class DeviceServiceCommonUtility {
 		productLinesList.add(STRING_MOBILE_PHONE_SERVICE_SELLABLE);
 		productLinesList.add(STRING_MBB_SELLABLE);
 		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = listOfPriceForBundleHeaderLocal.stream()
-				.filter(price -> CommonUtility.isValidJourneySpecificBundle(price, commercialbundleMap,
+				.filter(price -> commonUtility.isValidJourneySpecificBundle(price, commercialbundleMap,
 						productLinesList, journeyType))
 				.collect(Collectors.toList());
 		if (listOfPriceForBundleAndHardware != null && !listOfPriceForBundleAndHardware.isEmpty()) {
@@ -287,8 +297,8 @@ public class DeviceServiceCommonUtility {
 					Double gross;
 					Double compareGross;
 					if (priceForBundleAndHard.getHardwarePrice() != null && priceForBundleAndHard1.getHardwarePrice() != null) {
-						gross = DeviceUtils.getDoubleFrmString(setHardwareOneOfPriceForComparing(priceForBundleAndHard));
-						compareGross = DeviceUtils.getDoubleFrmString(setHardwareOneOfPriceForComparing(priceForBundleAndHard1));
+						gross = deviceUtils.getDoubleFrmString(setHardwareOneOfPriceForComparing(priceForBundleAndHard));
+						compareGross = deviceUtils.getDoubleFrmString(setHardwareOneOfPriceForComparing(priceForBundleAndHard1));
 						return Double.compare(gross,compareGross);
 					}
 
@@ -457,7 +467,7 @@ public class DeviceServiceCommonUtility {
 			com.vf.uk.dal.device.client.entity.bundle.BundleHeader bundleHeaderForDevice) {
 		if (bundleHeaderForDevice.getPriceInfo() != null
 				&& bundleHeaderForDevice.getPriceInfo().getHardwarePrice() != null
-				&& DeviceServiceImplUtility.getoneOffPrice(bundleHeaderForDevice) && gross != null) {
+				&& deviceServiceImplUtility.getoneOffPrice(bundleHeaderForDevice) && gross != null) {
 			getListOfEqualOneOffPRiceForOneOffPrice(gross, listOfEqualOneOffPriceForBundleHeader, bundleHeaderForDevice);
 		}
 	}
@@ -490,8 +500,8 @@ public class DeviceServiceCommonUtility {
 					if (bundleHeaderList.getPriceInfo() != null && bundleHeaderList1.getPriceInfo() != null
 							&& bundleHeaderList.getPriceInfo().getHardwarePrice() != null
 							&& bundleHeaderList1.getPriceInfo().getHardwarePrice() != null) {
-						gross = DeviceUtils.getDoubleFrmString(setGrossForComparator(bundleHeaderList));
-						compareGross = DeviceUtils.getDoubleFrmString(setGrossForComparator(bundleHeaderList1));
+						gross = deviceUtils.getDoubleFrmString(setGrossForComparator(bundleHeaderList));
+						compareGross = deviceUtils.getDoubleFrmString(setGrossForComparator(bundleHeaderList1));
 						return Double.compare(gross,compareGross);
 
 					}
@@ -534,8 +544,8 @@ public class DeviceServiceCommonUtility {
 					if (bundleHeaderList.getPriceInfo() != null && bundleHeaderList1.getPriceInfo() != null
 							&& bundleHeaderList.getPriceInfo().getBundlePrice() != null
 							&& bundleHeaderList1.getPriceInfo().getBundlePrice() != null) {
-						gross = DeviceUtils.getDoubleFrmString(setBundlePriceForComparing(bundleHeaderList));
-						compareGross = DeviceUtils.getDoubleFrmString(setBundlePriceForComparing(bundleHeaderList1));
+						gross = deviceUtils.getDoubleFrmString(setBundlePriceForComparing(bundleHeaderList));
+						compareGross = deviceUtils.getDoubleFrmString(setBundlePriceForComparing(bundleHeaderList1));
 						return Double.compare(gross, compareGross);
 					}
 

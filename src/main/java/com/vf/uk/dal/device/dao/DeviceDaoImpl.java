@@ -116,7 +116,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	public BazaarVoice getBazaarVoice(String skuId) {
 		BazaarVoice bazaarVoice = new BazaarVoice();
 		bazaarVoice.setSkuId(skuId);
-		bazaarVoice.setJsonsource(getDeviceReviewDetails(CommonUtility.appendPrefixString(skuId)));
+		bazaarVoice.setJsonsource(getDeviceReviewDetails(commonUtility.appendPrefixString(skuId)));
 		return bazaarVoice;
 	}
 

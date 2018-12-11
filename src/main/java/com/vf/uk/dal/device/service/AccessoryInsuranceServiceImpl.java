@@ -54,6 +54,9 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 
 	@Autowired
 	DeviceDao deviceDao;
+	
+	@Autowired
+	AccessoriesAndInsurancedaoUtils accessoriesAndInsurancedaoUtils;
 
 	@Autowired
 	ResponseMappingHelper response;
@@ -187,8 +190,8 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	public List<CommercialProduct> getListOfFilteredAccessories(String journeyType, List<String> finalAccessoryList) {
 		List<CommercialProduct> comercialProductList = deviceEs.getListOfCommercialProduct(finalAccessoryList);
 		return comercialProductList.stream()
-				.filter(commercialProductAccessories -> CommonUtility.isProductNotExpired(commercialProductAccessories)
-						&& CommonUtility.isProductJourneySpecific(commercialProductAccessories, journeyType))
+				.filter(commercialProductAccessories -> commonUtility.isProductNotExpired(commercialProductAccessories)
+						&& commonUtility.isProductJourneySpecific(commercialProductAccessories, journeyType))
 				.collect(Collectors.toList());
 	}
 
@@ -266,7 +269,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 		return insurance;
 	}
 
-	public static BundleDeviceAndProductsList setBundleDeviceAndProductsList(String journeyType, String deviceId,
+	public BundleDeviceAndProductsList setBundleDeviceAndProductsList(String journeyType, String deviceId,
 			String offerCode, List<String> listOfValidAccesoryIds) {
 		BundleDeviceAndProductsList bundleDeviceAndProductsList = new BundleDeviceAndProductsList();
 		bundleDeviceAndProductsList.setAccessoryList(listOfValidAccesoryIds);
@@ -282,7 +285,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	 * @param listOfGroup
 	 * @return List<Group>
 	 */
-	public static List<Group> getGroupBasedOnPriority(List<Group> listOfGroup) {
+	public List<Group> getGroupBasedOnPriority(List<Group> listOfGroup) {
 		Collections.sort(listOfGroup, new SortedExtrasGroupPriorityList());
 
 		return listOfGroup;
@@ -317,7 +320,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	 * @param productGroup
 	 * @return List<Member>
 	 */
-	public static List<Member> getListOfAccessoriesMembers(Group productGroup) {
+	public List<Member> getListOfAccessoriesMembers(Group productGroup) {
 		List<Member> listOfAccesoriesMembers = new ArrayList<>();
 		if (productGroup != null && StringUtils.containsIgnoreCase(STRING_ACCESSORY, productGroup.getGroupType())) {
 			listOfAccesoriesMembers.addAll(productGroup.getMembers());
@@ -333,7 +336,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	 * @param listOfDeviceGroupMember
 	 * @return List<Member>
 	 */
-	public static List<Member> getAccessoryMembersBasedOnPriorityImplementation(List<Member> listOfDeviceGroupMember) {
+	public List<Member> getAccessoryMembersBasedOnPriorityImplementation(List<Member> listOfDeviceGroupMember) {
 		Collections.sort(listOfDeviceGroupMember, new SortedAccessoryPriorityList());
 
 		return listOfDeviceGroupMember;
@@ -366,7 +369,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	 * @param mapForGroupName
 	 * @param productGroup
 	 */
-	public static void getFinalAccessoryList(List<String> finalAccessoryList, Map<String, List<String>> mapForGroupName,
+	public void getFinalAccessoryList(List<String> finalAccessoryList, Map<String, List<String>> mapForGroupName,
 			Group productGroup) {
 		List<Member> listOfAccesoriesMembers = getListOfAccessoriesMembers(productGroup);
 		List<String> accessoryList = new ArrayList<>();
@@ -390,7 +393,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	 * @param mapforPrice
 	 * @param mapforCommercialProduct
 	 */
-	public static void setListOfAccessoryTileGroup(List<AccessoryTileGroup> listOfAccessoryTile,
+	public void setListOfAccessoryTileGroup(List<AccessoryTileGroup> listOfAccessoryTile,
 			Map<String, List<String>> mapForGroupName, Map<String, PriceForAccessory> mapforPrice,
 			Map<String, CommercialProduct> mapforCommercialProduct, String cdnDomain) {
 		for (Map.Entry<String, List<String>> entry : mapForGroupName.entrySet()) {
@@ -400,7 +403,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 			for (String hardwareId : entry.getValue()) {
 				Accessory accessory = null;
 				if (mapforCommercialProduct.containsKey(hardwareId) && mapforPrice.containsKey(hardwareId)) {
-					accessory = AccessoriesAndInsurancedaoUtils.convertCoherenceAccesoryToAccessory(
+					accessory = accessoriesAndInsurancedaoUtils.convertCoherenceAccesoryToAccessory(
 							mapforCommercialProduct.get(hardwareId), mapforPrice.get(hardwareId), cdnDomain);
 				}
 				if (accessory != null) {
@@ -425,7 +428,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	 * @param mapforPrice
 	 * @return CommercialProduct
 	 */
-	public static Map<String, CommercialProduct> setMapForCommercialData(
+	public Map<String, CommercialProduct> setMapForCommercialData(
 			List<CommercialProduct> listOfFilteredAccessories, List<String> listOfValidAccesoryIds,
 			PriceForProduct priceForProduct, Map<String, PriceForAccessory> mapforPrice) {
 		if (priceForProduct != null && priceForProduct.getPriceForAccessoryes() != null) {
@@ -454,7 +457,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	 * @param productGroups
 	 * @param listOfDeviceGroupName
 	 */
-	public static void getListOfDeviceGroupName(String deviceId, ProductGroups productGroups,
+	public void getListOfDeviceGroupName(String deviceId, ProductGroups productGroups,
 			List<String> listOfDeviceGroupName) {
 		for (com.vf.uk.dal.device.model.product.ProductGroup productGroup : productGroups.getProductGroup()) {
 			if (productGroup.getProductGroupRole().equalsIgnoreCase(STRING_COMPATIBLE_ACCESSORIES)) {
@@ -473,7 +476,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	 * @param deviceId
 	 * @param insurance
 	 */
-	public static void validateInsuranceNullable(String deviceId, Insurances insurance) {
+	public void validateInsuranceNullable(String deviceId, Insurances insurance) {
 		if (insurance != null && !insurance.getInsuranceList().isEmpty()) {
 			getFormattedPriceForGetCompatibleInsurances(insurance);
 			insurance.setMinCost(formatPrice(insurance.getMinCost()));
@@ -488,7 +491,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	 * @param insurances
 	 * @return Insurances
 	 */
-	public static Insurances getFormattedPriceForGetCompatibleInsurances(Insurances insurances) {
+	public Insurances getFormattedPriceForGetCompatibleInsurances(Insurances insurances) {
 
 		if (insurances.getInsuranceList() != null && !insurances.getInsuranceList().isEmpty()) {
 			List<Insurance> insuranceList = insurances.getInsuranceList();
@@ -503,7 +506,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 		return insurances;
 	}
 
-	private static void setValuesForPrice(Price price) {
+	private void setValuesForPrice(Price price) {
 		if (StringUtils.isNotBlank(price.getNet())) {
 			price.setNet(formatPrice(price.getNet()));
 		}
@@ -520,7 +523,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	 * @param price
 	 * @return
 	 */
-	public static String formatPrice(String price) {
+	public String formatPrice(String price) {
 		if (price.contains(".")) {
 			String[] decimalSplit = price.split("\\.");
 			String beforeDecimal = decimalSplit[0];
@@ -542,15 +545,15 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	 * @param listOfInsuranceProducts
 	 * @return Insurances
 	 */
-	public static Insurances getListOfFilteredInsurance(String journeyType,
+	public Insurances getListOfFilteredInsurance(String journeyType,
 			List<CommercialProduct> listOfInsuranceProducts, String cdnDomain) {
 		Insurances insurance = null;
 		List<CommercialProduct> listOfFilteredInsurances = listOfInsuranceProducts.stream()
-				.filter(commercialProduct -> CommonUtility.isProductNotExpired(commercialProduct)
-						&& CommonUtility.isProductJourneySpecific(commercialProduct, journeyType))
+				.filter(commercialProduct -> commonUtility.isProductNotExpired(commercialProduct)
+						&& commonUtility.isProductJourneySpecific(commercialProduct, journeyType))
 				.collect(Collectors.toList());
 		if (listOfFilteredInsurances != null && !listOfFilteredInsurances.isEmpty()) {
-			insurance = AccessoriesAndInsurancedaoUtils.convertCommercialProductToInsurance(listOfFilteredInsurances,
+			insurance = accessoriesAndInsurancedaoUtils.convertCommercialProductToInsurance(listOfFilteredInsurances,
 					cdnDomain);
 		}
 		return insurance;
@@ -562,7 +565,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	 * @param productGroup
 	 * @return List<String>
 	 */
-	public static List<String> getInsuranceProductList(List<Member> listOfInsuranceMembers, Group productGroup) {
+	public List<String> getInsuranceProductList(List<Member> listOfInsuranceMembers, Group productGroup) {
 		if (productGroup != null && productGroup.getGroupType() != null
 				&& productGroup.getGroupType().trim().equalsIgnoreCase(STRING_COMPATIBLE_INSURANCE)) {
 			listOfInsuranceMembers.addAll(productGroup.getMembers());

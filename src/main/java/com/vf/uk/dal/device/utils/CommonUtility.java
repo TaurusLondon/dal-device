@@ -13,7 +13,7 @@ import org.apache.commons.lang.StringUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
@@ -53,7 +53,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Slf4j
-@Service
+@Component
 public class CommonUtility {
 	public static final String PREFIX_SKU = "sku";
 	public static final String zero = "0";
@@ -70,26 +70,31 @@ public class CommonUtility {
 
 	@Autowired
 	RestTemplate restTemplate;
-	
+
 	@Autowired
 	BundleServiceClient bundleServiceClient;
-	
+
 	@Autowired
 	PriceServiceClient priceServiceClient;
-	
+
 	@Autowired
 	PromotionServiceClient promotionServiceClient;
-	
+
 	@Autowired
 	CustomerServiceClient customerServiceClient;
 
+	@Autowired
+	DeviceServiceImplUtility deviceServiceImplUtility;
+	@Autowired
+	DeviceTilesDaoUtils deviceTilesDaoUtils;
+	
 	/**
 	 * Round off price to two decimal points
 	 * 
 	 * @return DecimalFormat
 	 */
 
-	public static DecimalFormat getDecimalFormat() {
+	public DecimalFormat getDecimalFormat() {
 		return new DecimalFormat("#0.00");
 	}
 
@@ -101,7 +106,7 @@ public class CommonUtility {
 	 * @return dateToStr
 	 */
 
-	public static String getDateToString(Date date, String strDateFormat) {
+	public String getDateToString(Date date, String strDateFormat) {
 		String formatdate = null;
 		if (date != null) {
 			SimpleDateFormat format = new SimpleDateFormat(strDateFormat);
@@ -109,7 +114,7 @@ public class CommonUtility {
 		}
 		return formatdate;
 	}
-	
+
 	/**
 	 * Gets the bundle details from complans listing API.
 	 *
@@ -122,8 +127,7 @@ public class CommonUtility {
 	public BundleDetails getBundleDetailsFromComplansListingAPI(String deviceId, String sortCriteria) {
 		return bundleServiceClient.getBundleDetailsFromComplansListingAPI(deviceId, sortCriteria);
 	}
-	
-	
+
 	/**
 	 * 
 	 * @param bundleAndHardwareTupleList
@@ -135,7 +139,7 @@ public class CommonUtility {
 	public List<PriceForBundleAndHardware> getPriceDetails(List<BundleAndHardwareTuple> bundleAndHardwareTupleList,
 			String offerCode, String journeyType, String groupType) {
 		RequestForBundleAndHardware requestForBundleAndHardware = new RequestForBundleAndHardware();
-		String billingType=getBillingType(groupType);
+		String billingType = getBillingType(groupType);
 		requestForBundleAndHardware.setBundleAndHardwareList(bundleAndHardwareTupleList);
 		requestForBundleAndHardware.setBillingType(billingType);
 		requestForBundleAndHardware.setOfferCode(offerCode);
@@ -169,7 +173,7 @@ public class CommonUtility {
 	 * @param strTobeConverted
 	 * @return JSONObject
 	 */
-	public static JSONObject getJSONFromString(String strTobeConverted) {
+	public JSONObject getJSONFromString(String strTobeConverted) {
 		JSONParser parser = new JSONParser();
 		JSONObject jsonObject = null;
 		try {
@@ -186,7 +190,7 @@ public class CommonUtility {
 	 * @param deviceId
 	 * @return
 	 */
-	public static String appendPrefixString(String deviceId) {
+	public String appendPrefixString(String deviceId) {
 		StringBuilder target = new StringBuilder(PREFIX_SKU);
 		String leadingZero = deviceId.substring(0, 1);
 		if (leadingZero.equals(zero)) {
@@ -216,8 +220,9 @@ public class CommonUtility {
 	 * @return List<PriceForBundleAndHardware>
 	 */
 	public List<PriceForBundleAndHardware> getPriceDetailsUsingBundleHarwareTrouple(
-			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType, String groupType) {
-		String billingType=getBillingType(groupType);
+			List<BundleAndHardwareTuple> bundleAndHardwareTupleList, String offerCode, String journeyType,
+			String groupType) {
+		String billingType = getBillingType(groupType);
 		return priceServiceClient.getPriceDetailsUsingBundleHarwareTrouple(bundleAndHardwareTupleList, offerCode,
 				journeyType, groupType, billingType);
 	}
@@ -239,7 +244,7 @@ public class CommonUtility {
 	 * @param price
 	 * @return getpriceFormat
 	 */
-	public static String getpriceFormat(Float price) {
+	public String getpriceFormat(Float price) {
 		String formatedPrice = null;
 		String decimalFormat = "#.00";
 		if (price != null) {
@@ -262,7 +267,7 @@ public class CommonUtility {
 	 * @param endDateTime
 	 * @return flag
 	 */
-	public static Boolean dateValidationForOffers(String startDateTime, String endDateTime, String strDateFormat) {
+	public Boolean dateValidationForOffers(String startDateTime, String endDateTime, String strDateFormat) {
 
 		boolean flag = false;
 		SimpleDateFormat dateFormat = new SimpleDateFormat(strDateFormat);
@@ -299,7 +304,8 @@ public class CommonUtility {
 			log.error("ParseException: " + e);
 		}
 
-		if (startDate != null && endDate != null && checkForDateWhenStartAndEndDateNotNull(currentDate, startDate, endDate)) {
+		if (startDate != null && endDate != null
+				&& checkForDateWhenStartAndEndDateNotNull(currentDate, startDate, endDate)) {
 			flag = true;
 		}
 		if (startDate == null && endDate != null && currentDate.before(endDate)) {
@@ -315,7 +321,7 @@ public class CommonUtility {
 		return flag;
 	}
 
-	private static boolean checkForDateWhenStartAndEndDateNotNull(Date currentDate, Date startDate, Date endDate) {
+	private boolean checkForDateWhenStartAndEndDateNotNull(Date currentDate, Date startDate, Date endDate) {
 		return (currentDate.after(startDate) || currentDate.equals(startDate))
 				&& (currentDate.before(endDate) || currentDate.equals(endDate));
 	}
@@ -325,7 +331,7 @@ public class CommonUtility {
 	 * @param commercialProduct
 	 * @return isProductExpired
 	 */
-	public static boolean isProductNotExpired(CommercialProduct commercialProduct) {
+	public boolean isProductNotExpired(CommercialProduct commercialProduct) {
 		boolean isProductExpired = false;
 		String startDateTime = null;
 		String endDateTime = null;
@@ -351,7 +357,7 @@ public class CommonUtility {
 	 * @param journeyType
 	 * @return isProductJourneySpecific
 	 */
-	public static boolean isProductJourneySpecific(CommercialProduct commercialProduct, String journeyType) {
+	public boolean isProductJourneySpecific(CommercialProduct commercialProduct, String journeyType) {
 		boolean isProductJourneySpecific = false;
 		if (StringUtils.isNotBlank(journeyType) && JOURNEYTYPE_UPGRADE.equalsIgnoreCase(journeyType)) {
 			if (commercialProduct.getProductControl() != null && commercialProduct.getProductControl().isSellableRet()
@@ -402,7 +408,7 @@ public class CommonUtility {
 	 * @author manoj.bera
 	 * @SPRINT 6.4
 	 */
-	public static List<MediaLink> getMediaListForBundleAndHardware(
+	public List<MediaLink> getMediaListForBundleAndHardware(
 			List<CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks> entertainmentPacks,
 			List<CataloguepromotionqueriesForBundleAndHardwareDataAllowances> dataAllowances,
 			List<CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions> planCouplingPromotions,
@@ -434,7 +440,7 @@ public class CommonUtility {
 		return mediaList;
 	}
 
-	private static void setMediaListForSecure(List<CataloguepromotionqueriesForBundleAndHardwareSecureNet> secureNet,
+	private void setMediaListForSecure(List<CataloguepromotionqueriesForBundleAndHardwareSecureNet> secureNet,
 			List<MediaLink> mediaList) {
 		if (secureNet != null && !secureNet.isEmpty()) {
 			for (CataloguepromotionqueriesForBundleAndHardwareSecureNet secureNetPromotion : secureNet) {
@@ -454,7 +460,7 @@ public class CommonUtility {
 		}
 	}
 
-	private static void setMediaListForDescriptionSash(List<MediaLink> mediaList,
+	private void setMediaListForDescriptionSash(List<MediaLink> mediaList,
 			CataloguepromotionqueriesForBundleAndHardwareSecureNet secureNetPromotion) {
 		if (StringUtils.isNotBlank(secureNetPromotion.getDescription())) {
 			MediaLink mediaOfferLink = new MediaLink();
@@ -468,7 +474,7 @@ public class CommonUtility {
 		}
 	}
 
-	private static void setMediaListForLabel(List<MediaLink> mediaList,
+	private void setMediaListForLabel(List<MediaLink> mediaList,
 			CataloguepromotionqueriesForBundleAndHardwareSecureNet secureNetPromotion) {
 		if (StringUtils.isNotBlank(secureNetPromotion.getLabel())) {
 			MediaLink mediaOfferLink = new MediaLink();
@@ -482,7 +488,7 @@ public class CommonUtility {
 		}
 	}
 
-	private static void setPlanCoupolingPromotion(
+	private void setPlanCoupolingPromotion(
 			List<CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions> planCouplingPromotions,
 			List<MediaLink> mediaList) {
 		if (planCouplingPromotions != null && !planCouplingPromotions.isEmpty()) {
@@ -503,7 +509,7 @@ public class CommonUtility {
 		}
 	}
 
-	private static void setPlanCouplingMediaListForDescription(List<MediaLink> mediaList,
+	private void setPlanCouplingMediaListForDescription(List<MediaLink> mediaList,
 			CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions planCouplingPromotion) {
 		if (StringUtils.isNotBlank(planCouplingPromotion.getDescription())) {
 			MediaLink mediaOfferLink = new MediaLink();
@@ -517,7 +523,7 @@ public class CommonUtility {
 		}
 	}
 
-	private static void setMediaListForPlanCouplingLabel(List<MediaLink> mediaList,
+	private void setMediaListForPlanCouplingLabel(List<MediaLink> mediaList,
 			CataloguepromotionqueriesForBundleAndHardwarePlanCouplingPromotions planCouplingPromotion) {
 		if (StringUtils.isNotBlank(planCouplingPromotion.getLabel())) {
 			MediaLink mediaOfferLink = new MediaLink();
@@ -531,7 +537,7 @@ public class CommonUtility {
 		}
 	}
 
-	private static void setMediaListForDataAccessory(
+	private void setMediaListForDataAccessory(
 			List<CataloguepromotionqueriesForBundleAndHardwareDataAllowances> dataAllowances,
 			List<MediaLink> mediaList) {
 		if (dataAllowances != null && !dataAllowances.isEmpty()) {
@@ -552,7 +558,7 @@ public class CommonUtility {
 		}
 	}
 
-	private static void setDataAllowanceForDescription(List<MediaLink> mediaList,
+	private void setDataAllowanceForDescription(List<MediaLink> mediaList,
 			CataloguepromotionqueriesForBundleAndHardwareDataAllowances dataAllowance) {
 		if (StringUtils.isNotBlank(dataAllowance.getDescription())) {
 			MediaLink mediaOfferLink = new MediaLink();
@@ -566,7 +572,7 @@ public class CommonUtility {
 		}
 	}
 
-	private static void setDataAllowanceMediaListLabel(List<MediaLink> mediaList,
+	private void setDataAllowanceMediaListLabel(List<MediaLink> mediaList,
 			CataloguepromotionqueriesForBundleAndHardwareDataAllowances dataAllowance) {
 		if (StringUtils.isNotBlank(dataAllowance.getLabel())) {
 			MediaLink mediaOfferLink = new MediaLink();
@@ -580,7 +586,7 @@ public class CommonUtility {
 		}
 	}
 
-	private static void setMediaListForEntertainmentPacks(
+	private void setMediaListForEntertainmentPacks(
 			List<CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks> entertainmentPacks,
 			List<MediaLink> mediaList) {
 		if (entertainmentPacks != null && !entertainmentPacks.isEmpty()) {
@@ -601,7 +607,7 @@ public class CommonUtility {
 		}
 	}
 
-	private static void setEnertainmentDescription(List<MediaLink> mediaList,
+	private void setEnertainmentDescription(List<MediaLink> mediaList,
 			CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks entertainment) {
 		if (StringUtils.isNotBlank(entertainment.getDescription())) {
 			MediaLink mediaOfferLink = new MediaLink();
@@ -615,7 +621,7 @@ public class CommonUtility {
 		}
 	}
 
-	private static void setEntertainmentLabel(List<MediaLink> mediaList,
+	private void setEntertainmentLabel(List<MediaLink> mediaList,
 			CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks entertainment) {
 		if (StringUtils.isNotBlank(entertainment.getLabel())) {
 			MediaLink mediaOfferLink = new MediaLink();
@@ -629,7 +635,7 @@ public class CommonUtility {
 		}
 	}
 
-	private static void setMediaListForSashBannerForHardware(
+	private void setMediaListForSashBannerForHardware(
 			List<CataloguepromotionqueriesForHardwareSash> sashBannerForHardware, List<MediaLink> mediaList) {
 		if (sashBannerForHardware != null && !sashBannerForHardware.isEmpty()) {
 			for (CataloguepromotionqueriesForHardwareSash sashBannerHardware : sashBannerForHardware) {
@@ -649,7 +655,7 @@ public class CommonUtility {
 		}
 	}
 
-	private static void setSashBannerDescription(List<MediaLink> mediaList,
+	private void setSashBannerDescription(List<MediaLink> mediaList,
 			CataloguepromotionqueriesForHardwareSash sashBannerHardware) {
 		if (StringUtils.isNotBlank(sashBannerHardware.getDescription())) {
 			MediaLink mediaOfferLink = new MediaLink();
@@ -663,7 +669,7 @@ public class CommonUtility {
 		}
 	}
 
-	private static void setSashBannerLabel(List<MediaLink> mediaList,
+	private void setSashBannerLabel(List<MediaLink> mediaList,
 			CataloguepromotionqueriesForHardwareSash sashBannerHardware) {
 		if (StringUtils.isNotBlank(sashBannerHardware.getLabel())) {
 			MediaLink mediaOfferLink = new MediaLink();
@@ -677,7 +683,7 @@ public class CommonUtility {
 		}
 	}
 
-	private static void setMediaListForFreeExtrasForHardware(
+	private void setMediaListForFreeExtrasForHardware(
 			List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtrasForHardwares,
 			List<MediaLink> mediaList) {
 		if (freeExtrasForHardwares != null && !freeExtrasForHardwares.isEmpty()) {
@@ -698,7 +704,7 @@ public class CommonUtility {
 		}
 	}
 
-	private static void setFreeExtraForHardwareDescription(List<MediaLink> mediaList,
+	private void setFreeExtraForHardwareDescription(List<MediaLink> mediaList,
 			CataloguepromotionqueriesForBundleAndHardwareExtras freeExtrasForHardware) {
 		if (StringUtils.isNotBlank(freeExtrasForHardware.getDescription())) {
 			MediaLink mediaOfferLink = new MediaLink();
@@ -712,7 +718,7 @@ public class CommonUtility {
 		}
 	}
 
-	private static void setFreeExtraForHardwareLabel(List<MediaLink> mediaList,
+	private void setFreeExtraForHardwareLabel(List<MediaLink> mediaList,
 			CataloguepromotionqueriesForBundleAndHardwareExtras freeExtrasForHardware) {
 		if (StringUtils.isNotBlank(freeExtrasForHardware.getLabel())) {
 			MediaLink mediaOfferLink = new MediaLink();
@@ -726,7 +732,7 @@ public class CommonUtility {
 		}
 	}
 
-	private static void setMediaListForFreeAccForHardware(
+	private void setMediaListForFreeAccForHardware(
 			List<CataloguepromotionqueriesForBundleAndHardwareAccessory> freeAccForHardwares,
 			List<MediaLink> mediaList) {
 		if (freeAccForHardwares != null && !freeAccForHardwares.isEmpty()) {
@@ -747,7 +753,7 @@ public class CommonUtility {
 		}
 	}
 
-	private static void setMediaListForDescription(List<MediaLink> mediaList,
+	private void setMediaListForDescription(List<MediaLink> mediaList,
 			CataloguepromotionqueriesForBundleAndHardwareAccessory freeAccForHardware) {
 		if (StringUtils.isNotBlank(freeAccForHardware.getDescription())) {
 			MediaLink mediaOfferLink = new MediaLink();
@@ -761,7 +767,7 @@ public class CommonUtility {
 		}
 	}
 
-	private static void setMediaListForLabel(List<MediaLink> mediaList,
+	private void setMediaListForLabel(List<MediaLink> mediaList,
 			CataloguepromotionqueriesForBundleAndHardwareAccessory freeAccForHardware) {
 		if (StringUtils.isNotBlank(freeAccForHardware.getLabel())) {
 			MediaLink mediaOfferLink = new MediaLink();
@@ -775,8 +781,8 @@ public class CommonUtility {
 		}
 	}
 
-	private static void setConditionalSashBanner(
-			List<CataloguepromotionqueriesForBundleAndHardwareSash> sashBundleConditional, List<MediaLink> mediaList) {
+	private void setConditionalSashBanner(List<CataloguepromotionqueriesForBundleAndHardwareSash> sashBundleConditional,
+			List<MediaLink> mediaList) {
 		if (sashBundleConditional != null && !sashBundleConditional.isEmpty()) {
 			for (CataloguepromotionqueriesForBundleAndHardwareSash sashPromotion : sashBundleConditional) {
 				getConditionalSashBanner(mediaList, sashPromotion);
@@ -784,7 +790,7 @@ public class CommonUtility {
 		}
 	}
 
-	private static void getConditionalSashBanner(List<MediaLink> mediaList,
+	private void getConditionalSashBanner(List<MediaLink> mediaList,
 			CataloguepromotionqueriesForBundleAndHardwareSash sashPromotion) {
 		if (StringUtils.isNotBlank(sashPromotion.getLabel())) {
 			MediaLink mediaOfferLink = new MediaLink();
@@ -824,7 +830,7 @@ public class CommonUtility {
 	 * @param strDateFormat
 	 * @return dateValidationForProduct
 	 */
-	public static Boolean dateValidationForProduct(String availableFromDate, String strDateFormat) {
+	public Boolean dateValidationForProduct(String availableFromDate, String strDateFormat) {
 		boolean flag = false;
 		SimpleDateFormat dateFormat = new SimpleDateFormat(strDateFormat);
 		Date currentDate = new Date();
@@ -854,7 +860,7 @@ public class CommonUtility {
 	 * @param journeyType
 	 * @return isValidJourneySpecificBundle
 	 */
-	public static boolean isValidJourneySpecificBundle(PriceForBundleAndHardware price,
+	public boolean isValidJourneySpecificBundle(PriceForBundleAndHardware price,
 			Map<String, CommercialBundle> commercialBundleMap, List<String> productLinesList, String journeyType) {
 		boolean flag = false;
 		String bundleId = price.getBundlePrice().getBundleId();
@@ -870,7 +876,7 @@ public class CommonUtility {
 			}
 			boolean isCompatible = commercialBundle.getProductLines().stream()
 					.anyMatch(productLinesList.get(0)::equalsIgnoreCase) ? true
-							: checkproductLines(commercialBundle,productLinesList);
+							: checkproductLines(commercialBundle, productLinesList);
 			boolean isSalesExpire = dateValidationForOffers(startDateTime, endDateTime, DATE_FORMAT_COHERENCE)
 					&& !commercialBundle.getAvailability().getSalesExpired();
 			flag = setFlag(journeyType, commercialBundle, isCompatible, isSalesExpire);
@@ -878,30 +884,31 @@ public class CommonUtility {
 		return flag;
 	}
 
-	private static boolean checkproductLines(CommercialBundle commercialBundle, List<String> productLinesList) {
-		return commercialBundle.getProductLines().stream()
-				.anyMatch(productLinesList.get(1)::equalsIgnoreCase) ? true : false;
+	private boolean checkproductLines(CommercialBundle commercialBundle, List<String> productLinesList) {
+		return commercialBundle.getProductLines().stream().anyMatch(productLinesList.get(1)::equalsIgnoreCase) ? true
+				: false;
 	}
 
-	private static boolean setFlag(String journeyType, CommercialBundle commercialBundle,
-			boolean isCompatible, boolean isSalesExpire) {
+	private boolean setFlag(String journeyType, CommercialBundle commercialBundle, boolean isCompatible,
+			boolean isSalesExpire) {
 		boolean flag = false;
-		if (checkForNonUpgrade(journeyType, commercialBundle, isCompatible, isSalesExpire) || checkForUpgrade(journeyType, commercialBundle, isCompatible, isSalesExpire)) {
+		if (checkForNonUpgrade(journeyType, commercialBundle, isCompatible, isSalesExpire)
+				|| checkForUpgrade(journeyType, commercialBundle, isCompatible, isSalesExpire)) {
 			flag = true;
 		}
 		return flag;
 	}
 
-	private static boolean checkForNonUpgrade(String journeyType, CommercialBundle commercialBundle,
-			boolean isCompatible, boolean isSalesExpire) {
-		return DeviceServiceImplUtility.isNonUpgrade(journeyType) && isCompatible && isSalesExpire
-				&& DeviceServiceImplUtility.isNonUpgradeCommercialBundle(commercialBundle);
+	private boolean checkForNonUpgrade(String journeyType, CommercialBundle commercialBundle, boolean isCompatible,
+			boolean isSalesExpire) {
+		return deviceServiceImplUtility.isNonUpgrade(journeyType) && isCompatible && isSalesExpire
+				&& deviceServiceImplUtility.isNonUpgradeCommercialBundle(commercialBundle);
 	}
 
-	private static boolean checkForUpgrade(String journeyType, CommercialBundle commercialBundle, boolean isCompatible,
+	private boolean checkForUpgrade(String journeyType, CommercialBundle commercialBundle, boolean isCompatible,
 			boolean isSalesExpire) {
-		return DeviceServiceImplUtility.isUpgrade(journeyType) && isCompatible && isSalesExpire
-				&& DeviceServiceImplUtility.isUpgradeFromCommercialBundle(commercialBundle);
+		return deviceServiceImplUtility.isUpgrade(journeyType) && isCompatible && isSalesExpire
+				&& deviceServiceImplUtility.isUpgradeFromCommercialBundle(commercialBundle);
 	}
 
 	/**
@@ -909,7 +916,7 @@ public class CommonUtility {
 	 * @param image
 	 * @return
 	 */
-	public static String getImageMediaUrl(String cdnDomain, String image) {
+	public String getImageMediaUrl(String cdnDomain, String image) {
 		return StringUtils.isNotBlank(cdnDomain) ? cdnDomain + image : image;
 	}
 
@@ -918,7 +925,7 @@ public class CommonUtility {
 	 * @param listOfOfferPacks
 	 * @param merchandisingMedia
 	 */
-	public static MerchandisingPromotionsPackage getNonPricingPromotions(BundleAndHardwarePromotions promotions,
+	public MerchandisingPromotionsPackage getNonPricingPromotions(BundleAndHardwarePromotions promotions,
 			List<MediaLink> merchandisingMedia) {
 		List<CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks> entertainmentPacks = promotions
 				.getEntertainmentPacks();
@@ -940,14 +947,13 @@ public class CommonUtility {
 				.getFreeAccForHardware();
 		List<CataloguepromotionqueriesForBundleAndHardwareSash> sashBundleConditional = promotions
 				.getConditionalSashBanner();
-		merchandisingMedia.addAll(CommonUtility.getMediaListForBundleAndHardware(entertainmentPacks, dataAllowances,
-				planCouplingPromotions, sash, secureNet, sashBannerForHardware, freeExtras, freeAccessories,
-				freeExtrasForPlans, freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares,
-				sashBundleConditional));
-		return DeviceTilesDaoUtils.assembleMerchandisingPromotion(promotions, entertainmentPacks, dataAllowances,
-				sash, secureNet, sashBannerForHardware,
-				freeExtrasForPlans, freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares,
-				sashBundleConditional);
+		merchandisingMedia
+				.addAll(getMediaListForBundleAndHardware(entertainmentPacks, dataAllowances, planCouplingPromotions,
+						sash, secureNet, sashBannerForHardware, freeExtras, freeAccessories, freeExtrasForPlans,
+						freeAccForPlans, freeExtrasForHardwares, freeAccForHardwares, sashBundleConditional));
+		return deviceTilesDaoUtils.assembleMerchandisingPromotion(promotions, entertainmentPacks, dataAllowances, sash,
+				secureNet, sashBannerForHardware, freeExtrasForPlans, freeAccForPlans, freeExtrasForHardwares,
+				freeAccForHardwares, sashBundleConditional);
 	}
 
 	/**
@@ -955,7 +961,7 @@ public class CommonUtility {
 	 * @param commercialProduct
 	 * @param merchandisingMedia
 	 */
-	public static void getImageMediaLink(CommercialProduct commercialProduct, List<MediaLink> merchandisingMedia,
+	public void getImageMediaLink(CommercialProduct commercialProduct, List<MediaLink> merchandisingMedia,
 			String cdnDomain) {
 		MediaLink mediaLink;
 		if (commercialProduct.getListOfimageURLs() != null) {

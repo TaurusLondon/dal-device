@@ -49,6 +49,8 @@ public class DeviceController {
 	@Autowired
 	DeviceService deviceService;
 
+	@Autowired
+	Validator validator;
 	/**
 	 * Handles requests for getDeviceTile Service with input as
 	 * GROUP_NAME,GROUP_TYPE in URL as query. performance improved by @author
@@ -146,19 +148,19 @@ public class DeviceController {
 
 		FacetedDevice facetedDevice;
 		if (StringUtils.isNotBlank(includeRecommendations)) {
-			Validator.validateIncludeRecommendation(includeRecommendations);
+			validator.validateIncludeRecommendation(includeRecommendations);
 		}
 
-		Validator.validatePageSize(pageSize, pageNumber);
+		validator.validatePageSize(pageSize, pageNumber);
 
 		if (StringUtils.isNotBlank(msisdn)) {
-			Validator.validateMSISDN(msisdn, includeRecommendations);
+			validator.validateMSISDN(msisdn, includeRecommendations);
 		}
 		boolean includeRecommendationsParam = Boolean.parseBoolean(includeRecommendations);
 		Float creditLimitparam = null;
 
 		if (creditLimit != null) {
-			creditLimitparam = Validator.validateForCreditLimit(creditLimit);
+			creditLimitparam = validator.validateForCreditLimit(creditLimit);
 		}
 		facetedDevice = deviceService.getDeviceList(productClass, make, model, groupType, sort, pageNumber, pageSize,
 				capacity, color, operatingSystem, mustHaveFeatures, journeyType, creditLimitparam, offerCode, msisdn,

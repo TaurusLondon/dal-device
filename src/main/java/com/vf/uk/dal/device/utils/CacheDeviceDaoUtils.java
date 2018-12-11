@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.device.client.entity.price.BundlePrice;
 import com.vf.uk.dal.device.client.entity.price.DeviceFinancingOption;
@@ -25,12 +26,15 @@ import com.vf.uk.dal.device.model.solr.OneOffPrice;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Component
 public class CacheDeviceDaoUtils {
 
 	private static final String MEDIA = "media";
 
-	private CacheDeviceDaoUtils() {
-
+	public CacheDeviceDaoUtils() {
+		/**
+		 * constructor
+		 */
 	}
 
 	public static final String STRING_DEVICE_PAYM = "DEVICE_PAYM";
@@ -59,7 +63,7 @@ public class CacheDeviceDaoUtils {
 	 * @param ilsPricewithoutOfferCode
 	 * @return mapOfDevicePrice
 	 */
-	public static Map<String, List<PriceForBundleAndHardware>> getILSPriceWithoutOfferCode(
+	public Map<String, List<PriceForBundleAndHardware>> getILSPriceWithoutOfferCode(
 			List<PriceForBundleAndHardware> ilsPricewithoutOfferCode) {
 		Map<String, List<PriceForBundleAndHardware>> mapOfDevicePrice = new HashMap<>();
 		ilsPricewithoutOfferCode.forEach(price -> {
@@ -88,7 +92,7 @@ public class CacheDeviceDaoUtils {
 	 * @param leadPlanId
 	 * @return DevicePreCalculatedData
 	 */
-	public static DevicePreCalculatedData convertBundleHeaderForDeviceToProductGroupForDeviceListing(String deviceId,
+	public DevicePreCalculatedData convertBundleHeaderForDeviceToProductGroupForDeviceListing(String deviceId,
 			String leadPlanId, String groupname, String groupId,
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware, Map<String, String> leadMemberMap,
 			Map<String, String> leadMemberMapForUpgrade, String upgradeLeadPlanId, String groupType) {
@@ -97,7 +101,7 @@ public class CacheDeviceDaoUtils {
 		productGroupForDeviceListing.setDeviceId(deviceId);
 		productGroupForDeviceListing.setGroupType(groupType);
 		productGroupForDeviceListing.setProductGroupName(groupname);
-		
+
 		if (StringUtils.equalsIgnoreCase(groupType, STRING_DEVICE_PAYM)) {
 			productGroupForDeviceListing.setPaymProductGroupId(groupId);
 		}
@@ -139,7 +143,7 @@ public class CacheDeviceDaoUtils {
 	 * @param listOfPriceForBundleAndHardwareWithOfferCode
 	 * @return PriceInfoForSolr
 	 */
-	public static Map<String, Object> getPriceInfoForSolr(PriceForBundleAndHardware priceForBundleAndHardware) {
+	public Map<String, Object> getPriceInfoForSolr(PriceForBundleAndHardware priceForBundleAndHardware) {
 
 		Map<String, Object> result = new ConcurrentHashMap<>();
 		List<com.vf.uk.dal.device.model.solr.Media> listOfMedia = new ArrayList<>();
@@ -233,12 +237,12 @@ public class CacheDeviceDaoUtils {
 
 	}
 
-	private static void setMediaLinkForPromotionMediaForHardware(
-			List<com.vf.uk.dal.device.model.solr.Media> listOfMedia, String bundleId, HardwarePrice hardwarePrice) {
+	private void setMediaLinkForPromotionMediaForHardware(List<com.vf.uk.dal.device.model.solr.Media> listOfMedia,
+			String bundleId, HardwarePrice hardwarePrice) {
 		if (StringUtils.isNotBlank(hardwarePrice.getMerchandisingPromotions().getPromotionMedia())) {
 			com.vf.uk.dal.device.model.solr.Media mediaLinkForPromotionMedia = new com.vf.uk.dal.device.model.solr.Media();
-			mediaLinkForPromotionMedia.setId(
-					hardwarePrice.getMerchandisingPromotions().getMpType() + "." + STRING_PRICE_PROMOTION_MEDIA);
+			mediaLinkForPromotionMedia
+					.setId(hardwarePrice.getMerchandisingPromotions().getMpType() + "." + STRING_PRICE_PROMOTION_MEDIA);
 			String type4 = STRING_URL_ALLOWANCE + "&&" + bundleId + "&&" + PROMO_TYPE_HARDWAREPROMOTION + "&&"
 					+ hardwarePrice.getMerchandisingPromotions().getTag();
 			mediaLinkForPromotionMedia.setType(type4);
@@ -251,7 +255,7 @@ public class CacheDeviceDaoUtils {
 		}
 	}
 
-	private static void setMediaLinkForPriceLabelForHardware(List<com.vf.uk.dal.device.model.solr.Media> listOfMedia,
+	private void setMediaLinkForPriceLabelForHardware(List<com.vf.uk.dal.device.model.solr.Media> listOfMedia,
 			String bundleId, HardwarePrice hardwarePrice) {
 		if (StringUtils.isNotBlank(hardwarePrice.getMerchandisingPromotions().getPriceEstablishedLabel())) {
 			// PriceEstablishedLabel
@@ -270,14 +274,14 @@ public class CacheDeviceDaoUtils {
 		}
 	}
 
-	private static void setMediaLinkForDescriptionForHardware(List<com.vf.uk.dal.device.model.solr.Media> listOfMedia,
+	private void setMediaLinkForDescriptionForHardware(List<com.vf.uk.dal.device.model.solr.Media> listOfMedia,
 			String bundleId, HardwarePrice hardwarePrice) {
-		String description=null;
+		String description = null;
 		if (hardwarePrice.getMerchandisingPromotions().getDescription() != null) {
 			description = hardwarePrice.getMerchandisingPromotions().getDescription();
 			com.vf.uk.dal.device.model.solr.Media mediaLinkForDescription1 = new com.vf.uk.dal.device.model.solr.Media();
-			mediaLinkForDescription1.setId(
-					hardwarePrice.getMerchandisingPromotions().getMpType() + "." + STRING_OFFERS_DESCRIPTION);
+			mediaLinkForDescription1
+					.setId(hardwarePrice.getMerchandisingPromotions().getMpType() + "." + STRING_OFFERS_DESCRIPTION);
 			String type3 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&" + PROMO_TYPE_HARDWAREPROMOTION + "&&"
 					+ hardwarePrice.getMerchandisingPromotions().getTag();
 			mediaLinkForDescription1.setType(type3);
@@ -290,7 +294,7 @@ public class CacheDeviceDaoUtils {
 		}
 	}
 
-	private static void setMediaLinkDiscountIdForHardwarePrice(HardwarePrice hardwarePrice,
+	private void setMediaLinkDiscountIdForHardwarePrice(HardwarePrice hardwarePrice,
 			com.vf.uk.dal.device.model.solr.Media mediaLink1) {
 		if (StringUtils.isNotBlank(hardwarePrice.getMerchandisingPromotions().getDiscountId())) {
 			mediaLink1.setDiscountId(hardwarePrice.getMerchandisingPromotions().getDiscountId());
@@ -299,13 +303,13 @@ public class CacheDeviceDaoUtils {
 		}
 	}
 
-	private static void addMediaLinkForPromotionMediaInListOfMedia(
-			List<com.vf.uk.dal.device.model.solr.Media> listOfMedia, BundlePrice bundlePrice, String bundleId) {
+	private void addMediaLinkForPromotionMediaInListOfMedia(List<com.vf.uk.dal.device.model.solr.Media> listOfMedia,
+			BundlePrice bundlePrice, String bundleId) {
 		if (StringUtils.isNotBlank(bundlePrice.getMerchandisingPromotions().getPromotionMedia())) {
 			// PromotionMedia
 			com.vf.uk.dal.device.model.solr.Media mediaLinkForPromotionMedia = new com.vf.uk.dal.device.model.solr.Media();
-			mediaLinkForPromotionMedia.setId(
-					bundlePrice.getMerchandisingPromotions().getMpType() + "." + STRING_PRICE_PROMOTION_MEDIA);
+			mediaLinkForPromotionMedia
+					.setId(bundlePrice.getMerchandisingPromotions().getMpType() + "." + STRING_PRICE_PROMOTION_MEDIA);
 			String type4 = STRING_URL_ALLOWANCE + "&&" + bundleId + "&&" + PROMO_TYPE_BUNDLEPROMOTION + "&&"
 					+ bundlePrice.getMerchandisingPromotions().getTag();
 			mediaLinkForPromotionMedia.setType(type4);
@@ -318,17 +322,16 @@ public class CacheDeviceDaoUtils {
 		}
 	}
 
-	private static void addMediaLinkForPriceEstablishedInListOfMedia(
-			List<com.vf.uk.dal.device.model.solr.Media> listOfMedia, BundlePrice bundlePrice, String bundleId) {
+	private void addMediaLinkForPriceEstablishedInListOfMedia(List<com.vf.uk.dal.device.model.solr.Media> listOfMedia,
+			BundlePrice bundlePrice, String bundleId) {
 		if (StringUtils.isNotBlank(bundlePrice.getMerchandisingPromotions().getPriceEstablishedLabel())) {
 			com.vf.uk.dal.device.model.solr.Media mediaLinkForPriceEstablished = new com.vf.uk.dal.device.model.solr.Media();
-			mediaLinkForPriceEstablished.setId(bundlePrice.getMerchandisingPromotions().getMpType() + "."
-					+ STRING_PRICE_ESTABLISHED_LABEL);
+			mediaLinkForPriceEstablished
+					.setId(bundlePrice.getMerchandisingPromotions().getMpType() + "." + STRING_PRICE_ESTABLISHED_LABEL);
 			String type3 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&" + PROMO_TYPE_BUNDLEPROMOTION + "&&"
 					+ bundlePrice.getMerchandisingPromotions().getTag();
 			mediaLinkForPriceEstablished.setType(type3);
-			mediaLinkForPriceEstablished
-					.setValue(bundlePrice.getMerchandisingPromotions().getPriceEstablishedLabel());
+			mediaLinkForPriceEstablished.setValue(bundlePrice.getMerchandisingPromotions().getPriceEstablishedLabel());
 			mediaLinkForPriceEstablished.setDescription(DATA_NOT_FOUND);
 			setMediaLinkDiscountId(bundlePrice, mediaLinkForPriceEstablished);
 			mediaLinkForPriceEstablished.setPromoCategory(PROMO_CATEGORY_PRICING_AUTOMETIC_DISCOUNT);
@@ -337,14 +340,14 @@ public class CacheDeviceDaoUtils {
 		}
 	}
 
-	private static void setListOfMedia(List<com.vf.uk.dal.device.model.solr.Media> listOfMedia, BundlePrice bundlePrice,
+	private void setListOfMedia(List<com.vf.uk.dal.device.model.solr.Media> listOfMedia, BundlePrice bundlePrice,
 			String bundleId) {
-		String description=null;
+		String description = null;
 		if (bundlePrice.getMerchandisingPromotions().getDescription() != null) {
 			description = bundlePrice.getMerchandisingPromotions().getDescription();
 			com.vf.uk.dal.device.model.solr.Media mediaLinkForDescription = new com.vf.uk.dal.device.model.solr.Media();
-			mediaLinkForDescription.setId(
-					bundlePrice.getMerchandisingPromotions().getMpType() + "." + STRING_OFFERS_DESCRIPTION);
+			mediaLinkForDescription
+					.setId(bundlePrice.getMerchandisingPromotions().getMpType() + "." + STRING_OFFERS_DESCRIPTION);
 			String type1 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&" + PROMO_TYPE_BUNDLEPROMOTION + "&&"
 					+ bundlePrice.getMerchandisingPromotions().getTag();
 			mediaLinkForDescription.setType(type1);
@@ -357,8 +360,7 @@ public class CacheDeviceDaoUtils {
 		}
 	}
 
-	private static void setMediaLinkDiscountId(BundlePrice bundlePrice,
-			com.vf.uk.dal.device.model.solr.Media mediaLink) {
+	private void setMediaLinkDiscountId(BundlePrice bundlePrice, com.vf.uk.dal.device.model.solr.Media mediaLink) {
 		if (StringUtils.isNotBlank(bundlePrice.getMerchandisingPromotions().getDiscountId())) {
 			mediaLink.setDiscountId(bundlePrice.getMerchandisingPromotions().getDiscountId());
 		} else {
@@ -372,7 +374,7 @@ public class CacheDeviceDaoUtils {
 	 * @param listOfPriceForBundleAndHardwareMap
 	 * @return ListOfOfferAppliedPrice
 	 */
-	public static Map<String, Object> getListOfOfferAppliedPrice(String deviceId,
+	public Map<String, Object> getListOfOfferAppliedPrice(String deviceId,
 			Map<String, Map<String, Map<String, List<PriceForBundleAndHardware>>>> ilsPriceForBundleAndHardwareMap) {
 
 		Map<String, Object> result = new HashMap<>();
@@ -392,7 +394,7 @@ public class CacheDeviceDaoUtils {
 
 	}
 
-	private static void setListOfOfferAppliedPriceDetails(String deviceId,
+	private void setListOfOfferAppliedPriceDetails(String deviceId,
 			List<OfferAppliedPriceDetails> listOfOfferAppliedPriceDetails,
 			List<com.vf.uk.dal.device.model.solr.Media> listOfMedia, String journeyType,
 			Map<String, Map<String, List<PriceForBundleAndHardware>>> listOfPriceForBundleAndHardwareMap) {
@@ -456,7 +458,7 @@ public class CacheDeviceDaoUtils {
 		}
 	}
 
-	private static OneOffDiscountPrice setOneOffDiscountPrice(Price oneOffDisPrice) {
+	private OneOffDiscountPrice setOneOffDiscountPrice(Price oneOffDisPrice) {
 		OneOffDiscountPrice onffDiscPrice = null;
 		if (oneOffDisPrice != null) {
 			onffDiscPrice = new OneOffDiscountPrice();
@@ -467,7 +469,7 @@ public class CacheDeviceDaoUtils {
 		return onffDiscPrice;
 	}
 
-	private static OneOffPrice setOneOffPriceForOfferAppliedPrice(Price oneoffPrice) {
+	private OneOffPrice setOneOffPriceForOfferAppliedPrice(Price oneoffPrice) {
 		OneOffPrice onffPrice = null;
 		if (oneoffPrice != null) {
 			onffPrice = new OneOffPrice();
@@ -478,7 +480,7 @@ public class CacheDeviceDaoUtils {
 		return onffPrice;
 	}
 
-	private static MonthlyDiscountPrice setMonthlyDiscountPriceForOfferAppliedPrice(Price monthlyDiscountPrice) {
+	private MonthlyDiscountPrice setMonthlyDiscountPriceForOfferAppliedPrice(Price monthlyDiscountPrice) {
 		MonthlyDiscountPrice mnthlyDiscPrice = null;
 		if (monthlyDiscountPrice != null) {
 			mnthlyDiscPrice = new MonthlyDiscountPrice();
@@ -489,7 +491,7 @@ public class CacheDeviceDaoUtils {
 		return mnthlyDiscPrice;
 	}
 
-	private static MonthlyPrice setMonthlyPriceForOfferAppliedPrice(Price monthlyPrice) {
+	private MonthlyPrice setMonthlyPriceForOfferAppliedPrice(Price monthlyPrice) {
 		MonthlyPrice mnthlyPrice = null;
 		if (monthlyPrice != null) {
 			mnthlyPrice = new MonthlyPrice();
@@ -500,14 +502,12 @@ public class CacheDeviceDaoUtils {
 		return mnthlyPrice;
 	}
 
-	private static void setMerchandisingMedia(List<com.vf.uk.dal.device.model.solr.Media> listOfMedia, String offerCode,
+	private void setMerchandisingMedia(List<com.vf.uk.dal.device.model.solr.Media> listOfMedia, String offerCode,
 			String bundleId, HardwarePrice hardwarePrice) {
 		if (hardwarePrice.getMerchandisingPromotions() != null) {
 			com.vf.uk.dal.device.model.solr.Media mediaLink1 = new com.vf.uk.dal.device.model.solr.Media();
-			mediaLink1.setId(hardwarePrice.getMerchandisingPromotions().getMpType() + "."
-					+ STRING_OFFERS_LABEL);
-			String type6 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&"
-					+ PROMO_TYPE_HARDWAREPROMOTION + "&&"
+			mediaLink1.setId(hardwarePrice.getMerchandisingPromotions().getMpType() + "." + STRING_OFFERS_LABEL);
+			String type6 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&" + PROMO_TYPE_HARDWAREPROMOTION + "&&"
 					+ hardwarePrice.getMerchandisingPromotions().getTag();
 			mediaLink1.setType(type6);
 			mediaLink1.setValue(hardwarePrice.getMerchandisingPromotions().getLabel());
@@ -518,23 +518,20 @@ public class CacheDeviceDaoUtils {
 
 			setMediaLinkForDescriptionForOffer(listOfMedia, offerCode, bundleId, hardwarePrice);
 			listOfMedia.add(mediaLink1);
-			setMediaLinkForPriceEstablishedOfferPrice(listOfMedia, offerCode, bundleId,
-					hardwarePrice);
+			setMediaLinkForPriceEstablishedOfferPrice(listOfMedia, offerCode, bundleId, hardwarePrice);
 			setMediaLinkForPromotionMedia(listOfMedia, offerCode, bundleId, hardwarePrice);
 		}
 	}
 
-	private static void setMediaLinkForDescriptionForOffer(List<com.vf.uk.dal.device.model.solr.Media> listOfMedia,
+	private void setMediaLinkForDescriptionForOffer(List<com.vf.uk.dal.device.model.solr.Media> listOfMedia,
 			String offerCode, String bundleId, HardwarePrice hardwarePrice) {
-		String description=null;
+		String description = null;
 		if (hardwarePrice.getMerchandisingPromotions().getDescription() != null) {
 			description = hardwarePrice.getMerchandisingPromotions().getDescription();
 			com.vf.uk.dal.device.model.solr.Media mediaLinkForDescription1 = new com.vf.uk.dal.device.model.solr.Media();
 			mediaLinkForDescription1
-					.setId(hardwarePrice.getMerchandisingPromotions().getMpType() + "."
-							+ STRING_OFFERS_DESCRIPTION);
-			String type7 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&"
-					+ PROMO_TYPE_HARDWAREPROMOTION + "&&"
+					.setId(hardwarePrice.getMerchandisingPromotions().getMpType() + "." + STRING_OFFERS_DESCRIPTION);
+			String type7 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&" + PROMO_TYPE_HARDWAREPROMOTION + "&&"
 					+ hardwarePrice.getMerchandisingPromotions().getTag();
 			mediaLinkForDescription1.setType(type7);
 			mediaLinkForDescription1.setValue(description);
@@ -546,22 +543,18 @@ public class CacheDeviceDaoUtils {
 		}
 	}
 
-	private static void setMediaLinkForPriceEstablishedOfferPrice(
-			List<com.vf.uk.dal.device.model.solr.Media> listOfMedia, String offerCode, String bundleId,
-			HardwarePrice hardwarePrice) {
-		if (StringUtils.isNotBlank(
-				hardwarePrice.getMerchandisingPromotions().getPriceEstablishedLabel())) {
+	private void setMediaLinkForPriceEstablishedOfferPrice(List<com.vf.uk.dal.device.model.solr.Media> listOfMedia,
+			String offerCode, String bundleId, HardwarePrice hardwarePrice) {
+		if (StringUtils.isNotBlank(hardwarePrice.getMerchandisingPromotions().getPriceEstablishedLabel())) {
 			// PriceEstablished Label
 			com.vf.uk.dal.device.model.solr.Media mediaLinkForPriceEstablished = new com.vf.uk.dal.device.model.solr.Media();
-			mediaLinkForPriceEstablished
-					.setId(hardwarePrice.getMerchandisingPromotions().getMpType() + "."
-							+ STRING_PRICE_ESTABLISHED_LABEL);
-			String type8 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&"
-					+ PROMO_TYPE_HARDWAREPROMOTION + "&&"
+			mediaLinkForPriceEstablished.setId(
+					hardwarePrice.getMerchandisingPromotions().getMpType() + "." + STRING_PRICE_ESTABLISHED_LABEL);
+			String type8 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&" + PROMO_TYPE_HARDWAREPROMOTION + "&&"
 					+ hardwarePrice.getMerchandisingPromotions().getTag();
 			mediaLinkForPriceEstablished.setType(type8);
-			mediaLinkForPriceEstablished.setValue(
-					hardwarePrice.getMerchandisingPromotions().getPriceEstablishedLabel());
+			mediaLinkForPriceEstablished
+					.setValue(hardwarePrice.getMerchandisingPromotions().getPriceEstablishedLabel());
 			mediaLinkForPriceEstablished.setDescription(DATA_NOT_FOUND);
 			setMediaLinkDiscountIdForHardwarePrice(hardwarePrice, mediaLinkForPriceEstablished);
 			mediaLinkForPriceEstablished.setPromoCategory(PROMO_CATEGORY_PRICING_DISCOUNT);
@@ -570,21 +563,17 @@ public class CacheDeviceDaoUtils {
 		}
 	}
 
-	private static void setMediaLinkForPromotionMedia(List<com.vf.uk.dal.device.model.solr.Media> listOfMedia,
+	private void setMediaLinkForPromotionMedia(List<com.vf.uk.dal.device.model.solr.Media> listOfMedia,
 			String offerCode, String bundleId, HardwarePrice hardwarePrice) {
-		if (StringUtils
-				.isNotBlank(hardwarePrice.getMerchandisingPromotions().getPromotionMedia())) {
+		if (StringUtils.isNotBlank(hardwarePrice.getMerchandisingPromotions().getPromotionMedia())) {
 			// PromotionMedia Label
 			com.vf.uk.dal.device.model.solr.Media mediaLinkForPromotionMedia = new com.vf.uk.dal.device.model.solr.Media();
 			mediaLinkForPromotionMedia
-					.setId(hardwarePrice.getMerchandisingPromotions().getMpType() + "."
-							+ STRING_PRICE_PROMOTION_MEDIA);
-			String type9 = STRING_URL_ALLOWANCE + "&&" + bundleId + "&&"
-					+ PROMO_TYPE_HARDWAREPROMOTION + "&&"
+					.setId(hardwarePrice.getMerchandisingPromotions().getMpType() + "." + STRING_PRICE_PROMOTION_MEDIA);
+			String type9 = STRING_URL_ALLOWANCE + "&&" + bundleId + "&&" + PROMO_TYPE_HARDWAREPROMOTION + "&&"
 					+ hardwarePrice.getMerchandisingPromotions().getTag();
 			mediaLinkForPromotionMedia.setType(type9);
-			mediaLinkForPromotionMedia
-					.setValue(hardwarePrice.getMerchandisingPromotions().getPromotionMedia());
+			mediaLinkForPromotionMedia.setValue(hardwarePrice.getMerchandisingPromotions().getPromotionMedia());
 			mediaLinkForPromotionMedia.setDescription(DATA_NOT_FOUND);
 			setMediaLinkDiscountIdForHardwarePrice(hardwarePrice, mediaLinkForPromotionMedia);
 			mediaLinkForPromotionMedia.setPromoCategory(PROMO_CATEGORY_PRICING_DISCOUNT);
@@ -593,9 +582,9 @@ public class CacheDeviceDaoUtils {
 		}
 	}
 
-	private static List<com.vf.uk.dal.device.model.solr.DeviceFinancingOption> setFinancingOptionForOfferPrice(
+	private List<com.vf.uk.dal.device.model.solr.DeviceFinancingOption> setFinancingOptionForOfferPrice(
 			List<DeviceFinancingOption> deviceFinancingOption) {
-		List<com.vf.uk.dal.device.model.solr.DeviceFinancingOption> financeOptions= null;
+		List<com.vf.uk.dal.device.model.solr.DeviceFinancingOption> financeOptions = null;
 		if (deviceFinancingOption != null && !deviceFinancingOption.isEmpty()) {
 			financeOptions = new ArrayList<>();
 			for (DeviceFinancingOption financsOption : deviceFinancingOption) {
@@ -604,8 +593,7 @@ public class CacheDeviceDaoUtils {
 				finance.setDeviceFinancingId(financsOption.getDeviceFinancingId());
 				finance.setFinanceProvider(financsOption.getFinanceProvider());
 				finance.setFinanceTerm(financsOption.getFinanceTerm());
-				com.vf.uk.dal.device.client.entity.price.Price monthly = financsOption
-						.getMonthlyPrice();
+				com.vf.uk.dal.device.client.entity.price.Price monthly = financsOption.getMonthlyPrice();
 				com.vf.uk.dal.device.model.solr.Price deviceMonthlyPrice = new com.vf.uk.dal.device.model.solr.Price();
 				deviceMonthlyPrice.setGross(monthly.getGross());
 				deviceMonthlyPrice.setNet(monthly.getNet());
@@ -624,14 +612,12 @@ public class CacheDeviceDaoUtils {
 		return financeOptions;
 	}
 
-	private static void setListOfMediaForOfferPrice(List<com.vf.uk.dal.device.model.solr.Media> listOfMedia,
-			String offerCode, BundlePrice bundlePrice, String bundleId) {
+	private void setListOfMediaForOfferPrice(List<com.vf.uk.dal.device.model.solr.Media> listOfMedia, String offerCode,
+			BundlePrice bundlePrice, String bundleId) {
 		if (bundlePrice.getMerchandisingPromotions() != null) {
 			com.vf.uk.dal.device.model.solr.Media mediaLink = new com.vf.uk.dal.device.model.solr.Media();
-			mediaLink.setId(bundlePrice.getMerchandisingPromotions().getMpType() + "."
-					+ STRING_OFFERS_LABEL);
-			String type4 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&"
-					+ PROMO_TYPE_BUNDLEPROMOTION + "&&"
+			mediaLink.setId(bundlePrice.getMerchandisingPromotions().getMpType() + "." + STRING_OFFERS_LABEL);
+			String type4 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&" + PROMO_TYPE_BUNDLEPROMOTION + "&&"
 					+ bundlePrice.getMerchandisingPromotions().getTag();
 			mediaLink.setType(type4);
 			mediaLink.setValue(bundlePrice.getMerchandisingPromotions().getLabel());
@@ -643,10 +629,9 @@ public class CacheDeviceDaoUtils {
 			if (bundlePrice.getMerchandisingPromotions().getDescription() != null) {
 				description = bundlePrice.getMerchandisingPromotions().getDescription();
 				com.vf.uk.dal.device.model.solr.Media mediaLinkForDescription = new com.vf.uk.dal.device.model.solr.Media();
-				mediaLinkForDescription.setId(bundlePrice.getMerchandisingPromotions().getMpType()
-						+ "." + STRING_OFFERS_DESCRIPTION);
-				String type5 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&"
-						+ PROMO_TYPE_BUNDLEPROMOTION + "&&"
+				mediaLinkForDescription
+						.setId(bundlePrice.getMerchandisingPromotions().getMpType() + "." + STRING_OFFERS_DESCRIPTION);
+				String type5 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&" + PROMO_TYPE_BUNDLEPROMOTION + "&&"
 						+ bundlePrice.getMerchandisingPromotions().getTag();
 				mediaLinkForDescription.setType(type5);
 				mediaLinkForDescription.setValue(description);
@@ -657,38 +642,31 @@ public class CacheDeviceDaoUtils {
 				listOfMedia.add(mediaLinkForDescription);
 			}
 			listOfMedia.add(mediaLink);
-			if (StringUtils.isNotBlank(
-					bundlePrice.getMerchandisingPromotions().getPriceEstablishedLabel())) {
+			if (StringUtils.isNotBlank(bundlePrice.getMerchandisingPromotions().getPriceEstablishedLabel())) {
 				// PriceEstablished Label
 				com.vf.uk.dal.device.model.solr.Media mediaLinkForPriceEstablishedLabel = new com.vf.uk.dal.device.model.solr.Media();
-				mediaLinkForPriceEstablishedLabel
-						.setId(bundlePrice.getMerchandisingPromotions().getMpType() + "."
-								+ STRING_PRICE_ESTABLISHED_LABEL);
-				String type6 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&"
-						+ PROMO_TYPE_BUNDLEPROMOTION + "&&"
+				mediaLinkForPriceEstablishedLabel.setId(
+						bundlePrice.getMerchandisingPromotions().getMpType() + "." + STRING_PRICE_ESTABLISHED_LABEL);
+				String type6 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&" + PROMO_TYPE_BUNDLEPROMOTION + "&&"
 						+ bundlePrice.getMerchandisingPromotions().getTag();
 				mediaLinkForPriceEstablishedLabel.setType(type6);
-				mediaLinkForPriceEstablishedLabel.setValue(
-						bundlePrice.getMerchandisingPromotions().getPriceEstablishedLabel());
+				mediaLinkForPriceEstablishedLabel
+						.setValue(bundlePrice.getMerchandisingPromotions().getPriceEstablishedLabel());
 				mediaLinkForPriceEstablishedLabel.setDescription(DATA_NOT_FOUND);
 				setMediaLinkDiscountId(bundlePrice, mediaLinkForPriceEstablishedLabel);
 				mediaLinkForPriceEstablishedLabel.setPromoCategory(PROMO_CATEGORY_PRICING_DISCOUNT);
 				mediaLinkForPriceEstablishedLabel.setOfferCode(offerCode);
 				listOfMedia.add(mediaLinkForPriceEstablishedLabel);
 			}
-			if (StringUtils
-					.isNotBlank(bundlePrice.getMerchandisingPromotions().getPromotionMedia())) {
+			if (StringUtils.isNotBlank(bundlePrice.getMerchandisingPromotions().getPromotionMedia())) {
 				// PromotionMedia Label
 				com.vf.uk.dal.device.model.solr.Media mediaLinkForPromotionMedia = new com.vf.uk.dal.device.model.solr.Media();
-				mediaLinkForPromotionMedia
-						.setId(bundlePrice.getMerchandisingPromotions().getMpType() + "."
-								+ STRING_PRICE_PROMOTION_MEDIA);
-				String type7 = STRING_URL_ALLOWANCE + "&&" + bundleId + "&&"
-						+ PROMO_TYPE_BUNDLEPROMOTION + "&&"
+				mediaLinkForPromotionMedia.setId(
+						bundlePrice.getMerchandisingPromotions().getMpType() + "." + STRING_PRICE_PROMOTION_MEDIA);
+				String type7 = STRING_URL_ALLOWANCE + "&&" + bundleId + "&&" + PROMO_TYPE_BUNDLEPROMOTION + "&&"
 						+ bundlePrice.getMerchandisingPromotions().getTag();
 				mediaLinkForPromotionMedia.setType(type7);
-				mediaLinkForPromotionMedia
-						.setValue(bundlePrice.getMerchandisingPromotions().getPromotionMedia());
+				mediaLinkForPromotionMedia.setValue(bundlePrice.getMerchandisingPromotions().getPromotionMedia());
 				mediaLinkForPromotionMedia.setDescription(DATA_NOT_FOUND);
 				setMediaLinkDiscountId(bundlePrice, mediaLinkForPromotionMedia);
 				mediaLinkForPromotionMedia.setPromoCategory(PROMO_CATEGORY_PRICING_DISCOUNT);
@@ -704,7 +682,7 @@ public class CacheDeviceDaoUtils {
 	 * @param ilsPriceForBundleAndHardwareMap
 	 * @return ListOfIlsPriceWithoutOfferCode
 	 */
-	public static Map<String, Object> getListOfIlsPriceWithoutOfferCode(String deviceId,
+	public Map<String, Object> getListOfIlsPriceWithoutOfferCode(String deviceId,
 			Map<String, Map<String, List<PriceForBundleAndHardware>>> ilsPriceForBundleAndHardwareMap) {
 		Map<String, Object> result = new HashMap<>();
 		List<OfferAppliedPriceDetails> listOfOfferAppliedPriceDetails = new ArrayList<>();
@@ -730,7 +708,7 @@ public class CacheDeviceDaoUtils {
 		return result;
 	}
 
-	private static void setListOfOfferApplyPriceDetails(List<OfferAppliedPriceDetails> listOfOfferAppliedPriceDetails,
+	private void setListOfOfferApplyPriceDetails(List<OfferAppliedPriceDetails> listOfOfferAppliedPriceDetails,
 			List<com.vf.uk.dal.device.model.solr.Media> listOfMedia, String journeyType, String promoCatagoery,
 			List<PriceForBundleAndHardware> priceForBundleAndHardwareWithOfferCodeList) {
 		for (PriceForBundleAndHardware priceForBundleAndHardwareWithOfferCode : priceForBundleAndHardwareWithOfferCodeList) {
@@ -748,10 +726,9 @@ public class CacheDeviceDaoUtils {
 				monthlyDiscountPrice = bundlePrice.getMonthlyDiscountPrice();
 				if (bundlePrice.getMerchandisingPromotions() != null) {
 					com.vf.uk.dal.device.model.solr.Media mediaLink = new com.vf.uk.dal.device.model.solr.Media();
-					mediaLink.setId(
-							bundlePrice.getMerchandisingPromotions().getMpType() + "." + STRING_OFFERS_LABEL);
-					String type4 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&" + PROMO_TYPE_BUNDLEPROMOTION
-							+ "&&" + bundlePrice.getMerchandisingPromotions().getTag();
+					mediaLink.setId(bundlePrice.getMerchandisingPromotions().getMpType() + "." + STRING_OFFERS_LABEL);
+					String type4 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&" + PROMO_TYPE_BUNDLEPROMOTION + "&&"
+							+ bundlePrice.getMerchandisingPromotions().getTag();
 					mediaLink.setType(type4);
 					mediaLink.setValue(bundlePrice.getMerchandisingPromotions().getLabel());
 					mediaLink.setDescription(DATA_NOT_FOUND);
@@ -771,14 +748,14 @@ public class CacheDeviceDaoUtils {
 				oneoffPrice = hardwarePrice.getOneOffPrice();
 				oneOffDisPrice = hardwarePrice.getOneOffDiscountPrice();
 				List<DeviceFinancingOption> deviceFinancingOption = hardwarePrice.getFinancingOptions();
-				financeOptions = setFinancingOptionForOfferPrice( deviceFinancingOption);
+				financeOptions = setFinancingOptionForOfferPrice(deviceFinancingOption);
 
 				if (hardwarePrice.getMerchandisingPromotions() != null) {
 					com.vf.uk.dal.device.model.solr.Media mediaLink1 = new com.vf.uk.dal.device.model.solr.Media();
-					mediaLink1.setId(
-							hardwarePrice.getMerchandisingPromotions().getMpType() + "." + STRING_OFFERS_LABEL);
-					String type6 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&" + PROMO_TYPE_HARDWAREPROMOTION
-							+ "&&" + hardwarePrice.getMerchandisingPromotions().getTag();
+					mediaLink1
+							.setId(hardwarePrice.getMerchandisingPromotions().getMpType() + "." + STRING_OFFERS_LABEL);
+					String type6 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&" + PROMO_TYPE_HARDWAREPROMOTION + "&&"
+							+ hardwarePrice.getMerchandisingPromotions().getTag();
 					mediaLink1.setType(type6);
 					mediaLink1.setValue(hardwarePrice.getMerchandisingPromotions().getLabel());
 					mediaLink1.setDescription(DATA_NOT_FOUND);
@@ -790,11 +767,10 @@ public class CacheDeviceDaoUtils {
 					if (hardwarePrice.getMerchandisingPromotions().getDescription() != null) {
 						description = hardwarePrice.getMerchandisingPromotions().getDescription();
 						com.vf.uk.dal.device.model.solr.Media mediaLinkForDescription1 = new com.vf.uk.dal.device.model.solr.Media();
-						mediaLinkForDescription1.setId(hardwarePrice.getMerchandisingPromotions().getMpType()
-								+ "." + STRING_OFFERS_DESCRIPTION);
-						String type7 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&"
-								+ PROMO_TYPE_HARDWAREPROMOTION + "&&"
-								+ hardwarePrice.getMerchandisingPromotions().getTag();
+						mediaLinkForDescription1.setId(hardwarePrice.getMerchandisingPromotions().getMpType() + "."
+								+ STRING_OFFERS_DESCRIPTION);
+						String type7 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&" + PROMO_TYPE_HARDWAREPROMOTION
+								+ "&&" + hardwarePrice.getMerchandisingPromotions().getTag();
 						mediaLinkForDescription1.setType(type7);
 						mediaLinkForDescription1.setValue(description);
 						mediaLinkForDescription1.setDescription(description);
@@ -809,8 +785,7 @@ public class CacheDeviceDaoUtils {
 				}
 			}
 			MonthlyPrice mnthlyPrice = setMonthlyPriceForOfferAppliedPrice(monthlyPrice);
-			MonthlyDiscountPrice mnthlyDiscPrice = setMonthlyDiscountPriceForOfferAppliedPrice(
-					monthlyDiscountPrice);
+			MonthlyDiscountPrice mnthlyDiscPrice = setMonthlyDiscountPriceForOfferAppliedPrice(monthlyDiscountPrice);
 			com.vf.uk.dal.device.model.solr.BundlePrice bp = new com.vf.uk.dal.device.model.solr.BundlePrice();
 			bp.setBundleId(bundleId);
 			bp.setMonthlyPrice(mnthlyPrice);
@@ -831,20 +806,16 @@ public class CacheDeviceDaoUtils {
 		}
 	}
 
-	private static void setMediaLinkForPromotionMediaForHardware(
-			List<com.vf.uk.dal.device.model.solr.Media> listOfMedia, String promoCatagoery, String bundleId,
-			HardwarePrice hardwarePrice) {
-		if (StringUtils
-				.isNotBlank(hardwarePrice.getMerchandisingPromotions().getPromotionMedia())) {
+	private void setMediaLinkForPromotionMediaForHardware(List<com.vf.uk.dal.device.model.solr.Media> listOfMedia,
+			String promoCatagoery, String bundleId, HardwarePrice hardwarePrice) {
+		if (StringUtils.isNotBlank(hardwarePrice.getMerchandisingPromotions().getPromotionMedia())) {
 			com.vf.uk.dal.device.model.solr.Media mediaLinkForPromotionMedia = new com.vf.uk.dal.device.model.solr.Media();
-			mediaLinkForPromotionMedia.setId(hardwarePrice.getMerchandisingPromotions().getMpType()
-					+ "." + STRING_PRICE_PROMOTION_MEDIA);
-			String type9 = STRING_URL_ALLOWANCE + "&&" + bundleId + "&&"
-					+ PROMO_TYPE_HARDWAREPROMOTION + "&&"
+			mediaLinkForPromotionMedia
+					.setId(hardwarePrice.getMerchandisingPromotions().getMpType() + "." + STRING_PRICE_PROMOTION_MEDIA);
+			String type9 = STRING_URL_ALLOWANCE + "&&" + bundleId + "&&" + PROMO_TYPE_HARDWAREPROMOTION + "&&"
 					+ hardwarePrice.getMerchandisingPromotions().getTag();
 			mediaLinkForPromotionMedia.setType(type9);
-			mediaLinkForPromotionMedia
-					.setValue(hardwarePrice.getMerchandisingPromotions().getPromotionMedia());
+			mediaLinkForPromotionMedia.setValue(hardwarePrice.getMerchandisingPromotions().getPromotionMedia());
 			mediaLinkForPromotionMedia.setDescription(DATA_NOT_FOUND);
 			setMediaLinkDiscountIdForHardwarePrice(hardwarePrice, mediaLinkForPromotionMedia);
 			mediaLinkForPromotionMedia.setPromoCategory(promoCatagoery);
@@ -853,21 +824,17 @@ public class CacheDeviceDaoUtils {
 		}
 	}
 
-	private static void setmediaLinkForPriceEstablishedForHardware(
-			List<com.vf.uk.dal.device.model.solr.Media> listOfMedia, String promoCatagoery, String bundleId,
-			HardwarePrice hardwarePrice) {
-		if (StringUtils.isNotBlank(
-				hardwarePrice.getMerchandisingPromotions().getPriceEstablishedLabel())) {
+	private void setmediaLinkForPriceEstablishedForHardware(List<com.vf.uk.dal.device.model.solr.Media> listOfMedia,
+			String promoCatagoery, String bundleId, HardwarePrice hardwarePrice) {
+		if (StringUtils.isNotBlank(hardwarePrice.getMerchandisingPromotions().getPriceEstablishedLabel())) {
 			com.vf.uk.dal.device.model.solr.Media mediaLinkForPriceEstablished = new com.vf.uk.dal.device.model.solr.Media();
-			mediaLinkForPriceEstablished
-					.setId(hardwarePrice.getMerchandisingPromotions().getMpType() + "."
-							+ STRING_PRICE_ESTABLISHED_LABEL);
-			String type8 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&"
-					+ PROMO_TYPE_HARDWAREPROMOTION + "&&"
+			mediaLinkForPriceEstablished.setId(
+					hardwarePrice.getMerchandisingPromotions().getMpType() + "." + STRING_PRICE_ESTABLISHED_LABEL);
+			String type8 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&" + PROMO_TYPE_HARDWAREPROMOTION + "&&"
 					+ hardwarePrice.getMerchandisingPromotions().getTag();
 			mediaLinkForPriceEstablished.setType(type8);
-			mediaLinkForPriceEstablished.setValue(
-					hardwarePrice.getMerchandisingPromotions().getPriceEstablishedLabel());
+			mediaLinkForPriceEstablished
+					.setValue(hardwarePrice.getMerchandisingPromotions().getPriceEstablishedLabel());
 			mediaLinkForPriceEstablished.setDescription(DATA_NOT_FOUND);
 			setMediaLinkDiscountIdForHardwarePrice(hardwarePrice, mediaLinkForPriceEstablished);
 			mediaLinkForPriceEstablished.setPromoCategory(promoCatagoery);
@@ -876,18 +843,16 @@ public class CacheDeviceDaoUtils {
 		}
 	}
 
-	private static void setmediaLinkForPromotionMediaForBundle(List<com.vf.uk.dal.device.model.solr.Media> listOfMedia,
+	private void setmediaLinkForPromotionMediaForBundle(List<com.vf.uk.dal.device.model.solr.Media> listOfMedia,
 			String promoCatagoery, BundlePrice bundlePrice, String bundleId) {
 		if (StringUtils.isNotBlank(bundlePrice.getMerchandisingPromotions().getPromotionMedia())) {
 			com.vf.uk.dal.device.model.solr.Media mediaLinkForPromotionMedia = new com.vf.uk.dal.device.model.solr.Media();
-			mediaLinkForPromotionMedia.setId(bundlePrice.getMerchandisingPromotions().getMpType()
-					+ "." + STRING_PRICE_PROMOTION_MEDIA);
-			String type7 = STRING_URL_ALLOWANCE + "&&" + bundleId + "&&"
-					+ PROMO_TYPE_BUNDLEPROMOTION + "&&"
+			mediaLinkForPromotionMedia
+					.setId(bundlePrice.getMerchandisingPromotions().getMpType() + "." + STRING_PRICE_PROMOTION_MEDIA);
+			String type7 = STRING_URL_ALLOWANCE + "&&" + bundleId + "&&" + PROMO_TYPE_BUNDLEPROMOTION + "&&"
 					+ bundlePrice.getMerchandisingPromotions().getTag();
 			mediaLinkForPromotionMedia.setType(type7);
-			mediaLinkForPromotionMedia
-					.setValue(bundlePrice.getMerchandisingPromotions().getPromotionMedia());
+			mediaLinkForPromotionMedia.setValue(bundlePrice.getMerchandisingPromotions().getPromotionMedia());
 			mediaLinkForPromotionMedia.setDescription(DATA_NOT_FOUND);
 			setMediaLinkDiscountId(bundlePrice, mediaLinkForPromotionMedia);
 			mediaLinkForPromotionMedia.setPromoCategory(promoCatagoery);
@@ -896,17 +861,13 @@ public class CacheDeviceDaoUtils {
 		}
 	}
 
-	private static void setMediaLinkForPriceEstablishedLabelForBundle(
-			List<com.vf.uk.dal.device.model.solr.Media> listOfMedia, String promoCatagoery, BundlePrice bundlePrice,
-			String bundleId) {
-		if (StringUtils
-				.isNotBlank(bundlePrice.getMerchandisingPromotions().getPriceEstablishedLabel())) {
+	private void setMediaLinkForPriceEstablishedLabelForBundle(List<com.vf.uk.dal.device.model.solr.Media> listOfMedia,
+			String promoCatagoery, BundlePrice bundlePrice, String bundleId) {
+		if (StringUtils.isNotBlank(bundlePrice.getMerchandisingPromotions().getPriceEstablishedLabel())) {
 			com.vf.uk.dal.device.model.solr.Media mediaLinkForPriceEstablishedLabel = new com.vf.uk.dal.device.model.solr.Media();
 			mediaLinkForPriceEstablishedLabel
-					.setId(bundlePrice.getMerchandisingPromotions().getMpType() + "."
-							+ STRING_PRICE_ESTABLISHED_LABEL);
-			String type6 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&"
-					+ PROMO_TYPE_BUNDLEPROMOTION + "&&"
+					.setId(bundlePrice.getMerchandisingPromotions().getMpType() + "." + STRING_PRICE_ESTABLISHED_LABEL);
+			String type6 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&" + PROMO_TYPE_BUNDLEPROMOTION + "&&"
 					+ bundlePrice.getMerchandisingPromotions().getTag();
 			mediaLinkForPriceEstablishedLabel.setType(type6);
 			mediaLinkForPriceEstablishedLabel
@@ -919,17 +880,15 @@ public class CacheDeviceDaoUtils {
 		}
 	}
 
-	private static void setMediaLinkForDescriptionForBundlePrice(
-			List<com.vf.uk.dal.device.model.solr.Media> listOfMedia, String promoCatagoery, BundlePrice bundlePrice,
-			String bundleId) {
-		String description=null;
+	private void setMediaLinkForDescriptionForBundlePrice(List<com.vf.uk.dal.device.model.solr.Media> listOfMedia,
+			String promoCatagoery, BundlePrice bundlePrice, String bundleId) {
+		String description = null;
 		if (bundlePrice.getMerchandisingPromotions().getDescription() != null) {
 			description = bundlePrice.getMerchandisingPromotions().getDescription();
 			com.vf.uk.dal.device.model.solr.Media mediaLinkForDescription = new com.vf.uk.dal.device.model.solr.Media();
-			mediaLinkForDescription.setId(bundlePrice.getMerchandisingPromotions().getMpType() + "."
-					+ STRING_OFFERS_DESCRIPTION);
-			String type5 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&"
-					+ PROMO_TYPE_BUNDLEPROMOTION + "&&"
+			mediaLinkForDescription
+					.setId(bundlePrice.getMerchandisingPromotions().getMpType() + "." + STRING_OFFERS_DESCRIPTION);
+			String type5 = STRING_TEXT_ALLOWANCE + "&&" + bundleId + "&&" + PROMO_TYPE_BUNDLEPROMOTION + "&&"
 					+ bundlePrice.getMerchandisingPromotions().getTag();
 			mediaLinkForDescription.setType(type5);
 			mediaLinkForDescription.setValue(description);
@@ -941,7 +900,7 @@ public class CacheDeviceDaoUtils {
 		}
 	}
 
-	private static List<PriceForBundleAndHardware> getPriceForBundleAndHardwareWithOfferCodeList(String deviceId,
+	private List<PriceForBundleAndHardware> getPriceForBundleAndHardwareWithOfferCodeList(String deviceId,
 			Map<String, List<PriceForBundleAndHardware>> offeredPriceMap) {
 		List<PriceForBundleAndHardware> priceForBundleAndHardwareWithOfferCodeList = null;
 		if (offeredPriceMap.containsKey(deviceId)) {
@@ -950,7 +909,7 @@ public class CacheDeviceDaoUtils {
 		return priceForBundleAndHardwareWithOfferCodeList;
 	}
 
-	private static String getPromoCategory(String journeyType) {
+	private String getPromoCategory(String journeyType) {
 		String promoCatagoery = null;
 		if (StringUtils.equalsIgnoreCase(journeyType, JOURNEY_TYPE_UPGRADE)) {
 			promoCatagoery = PROMO_CATEGORY_PRICING_UPGRADE_DISCOUNT;
@@ -966,7 +925,7 @@ public class CacheDeviceDaoUtils {
 	 * @param preCalcPlanList
 	 * @return DevicePreCalculatedData
 	 */
-	public static List<com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData> convertDevicePreCalDataToSolrData(
+	public List<com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData> convertDevicePreCalDataToSolrData(
 			List<DevicePreCalculatedData> preCalcPlanList) {
 		List<com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData> deviceListObjectList = new ArrayList<>();
 
@@ -1018,8 +977,7 @@ public class CacheDeviceDaoUtils {
 	 * @param listOfMedia
 	 * @return List<Media>
 	 */
-	public static List<com.vf.uk.dal.device.model.merchandisingpromotion.Media> getListOfSolrMedia(
-			List<Media> listOfMedia) {
+	public List<com.vf.uk.dal.device.model.merchandisingpromotion.Media> getListOfSolrMedia(List<Media> listOfMedia) {
 		List<com.vf.uk.dal.device.model.merchandisingpromotion.Media> mediaList = new ArrayList<>();
 		listOfMedia.forEach(media -> {
 			com.vf.uk.dal.device.model.merchandisingpromotion.Media mediaObject = new com.vf.uk.dal.device.model.merchandisingpromotion.Media();
@@ -1044,7 +1002,7 @@ public class CacheDeviceDaoUtils {
 	 * @param priceInfo
 	 * @return
 	 */
-	public static com.vf.uk.dal.device.model.merchandisingpromotion.PriceInfo getPriceForSolr(
+	public com.vf.uk.dal.device.model.merchandisingpromotion.PriceInfo getPriceForSolr(
 			com.vf.uk.dal.device.model.solr.PriceInfo priceInfo) {
 		com.vf.uk.dal.device.model.merchandisingpromotion.PriceInfo priceInfoObject = new com.vf.uk.dal.device.model.merchandisingpromotion.PriceInfo();
 
@@ -1123,7 +1081,7 @@ public class CacheDeviceDaoUtils {
 		return priceInfoObject;
 	}
 
-	private static com.vf.uk.dal.device.model.merchandisingpromotion.BundlePrice setBundlePrice(
+	private com.vf.uk.dal.device.model.merchandisingpromotion.BundlePrice setBundlePrice(
 			com.vf.uk.dal.device.model.solr.PriceInfo priceInfo) {
 		com.vf.uk.dal.device.model.solr.BundlePrice bundlePrice1 = priceInfo.getBundlePrice();
 		com.vf.uk.dal.device.model.merchandisingpromotion.BundlePrice bundlePrice = new com.vf.uk.dal.device.model.merchandisingpromotion.BundlePrice();
@@ -1154,7 +1112,7 @@ public class CacheDeviceDaoUtils {
 	 * @param offerAppliedPriceList
 	 * @return List<OfferAppliedPriceDetails>
 	 */
-	public static List<com.vf.uk.dal.device.model.merchandisingpromotion.OfferAppliedPriceDetails> getListOfOfferAppliedPriceDetails(
+	public List<com.vf.uk.dal.device.model.merchandisingpromotion.OfferAppliedPriceDetails> getListOfOfferAppliedPriceDetails(
 			List<OfferAppliedPriceDetails> offerAppliedPriceList) {
 		List<com.vf.uk.dal.device.model.merchandisingpromotion.OfferAppliedPriceDetails> OfferAppliedListForSolr = new ArrayList<>();
 		for (OfferAppliedPriceDetails offerAppliedPrice : offerAppliedPriceList) {
@@ -1238,7 +1196,7 @@ public class CacheDeviceDaoUtils {
 		return OfferAppliedListForSolr;
 	}
 
-	private static com.vf.uk.dal.device.model.merchandisingpromotion.MonthlyDiscountPrice setMonthlyDiscountPriceForAppliedPrice(
+	private com.vf.uk.dal.device.model.merchandisingpromotion.MonthlyDiscountPrice setMonthlyDiscountPriceForAppliedPrice(
 			com.vf.uk.dal.device.model.solr.BundlePrice bundlePrice1,
 			com.vf.uk.dal.device.model.merchandisingpromotion.BundlePrice bundlePrice) {
 		com.vf.uk.dal.device.model.merchandisingpromotion.MonthlyDiscountPrice monthlyDiscountPrice = new com.vf.uk.dal.device.model.merchandisingpromotion.MonthlyDiscountPrice();
@@ -1256,7 +1214,7 @@ public class CacheDeviceDaoUtils {
 		return monthlyDiscountPrice;
 	}
 
-	private static void setMonthlyPriceForOfferAppliedPrice(com.vf.uk.dal.device.model.solr.BundlePrice bundlePrice1,
+	private void setMonthlyPriceForOfferAppliedPrice(com.vf.uk.dal.device.model.solr.BundlePrice bundlePrice1,
 			com.vf.uk.dal.device.model.merchandisingpromotion.MonthlyPrice monthlyPrice) {
 		MonthlyPrice mnthlyPrice = bundlePrice1.getMonthlyPrice();
 

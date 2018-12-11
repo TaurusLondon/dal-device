@@ -73,14 +73,23 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 	DeviceESHelper deviceEs;
 
 	@Autowired
+	DeviceUtils deviceUtils;
+	
+	@Autowired
 	DeviceTileCacheDAO deviceTileCacheDAO;
 
+	@Autowired
+	CacheDeviceDaoUtils cacheDeviceDaoUtils;
+	
 	@Autowired
 	DeviceDao deviceDao;
 
 	@Autowired
 	DeviceServiceCommonUtility deviceServiceCommonUtility;
 
+	@Autowired
+	DeviceServiceImplUtility deviceServiceImplUtility;
+	
 	@Autowired
 	CommonUtility commonUtility;
 
@@ -175,16 +184,16 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 							null, JOURNEY_TYPE_SECONDLINE, groupType);
 
 			Map<String, Map<String, List<PriceForBundleAndHardware>>> mapOfIlsPriceWithoutOfferCode = new ConcurrentHashMap<>();
-			mapOfIlsPriceWithoutOfferCode.put(JOURNEY_TYPE_UPGRADE, CacheDeviceDaoUtils
+			mapOfIlsPriceWithoutOfferCode.put(JOURNEY_TYPE_UPGRADE, cacheDeviceDaoUtils
 					.getILSPriceWithoutOfferCode(listOfPriceForBundleAndHardwareWithoutOfferCodeForUpgrade));
-			mapOfIlsPriceWithoutOfferCode.put(JOURNEY_TYPE_SECONDLINE, CacheDeviceDaoUtils
+			mapOfIlsPriceWithoutOfferCode.put(JOURNEY_TYPE_SECONDLINE, cacheDeviceDaoUtils
 					.getILSPriceWithoutOfferCode(listOfPriceForBundleAndHardwareWithoutOfferCodeForSecondLine));
 
 			/** Ratings population logic */
 			Map<String, String> ratingsReviewMap = deviceServiceCommonUtility
 					.getDeviceReviewRatingImplementation(deviceIds);
 			listOfProductGroupRepository.forEach(
-					deviceDataRating -> DeviceUtils.updateDevicePrecaldataBasedOnIlsPriceAndRating(minimumPriceMap,
+					deviceDataRating -> deviceUtils.updateDevicePrecaldataBasedOnIlsPriceAndRating(minimumPriceMap,
 							ilsOfferPriceWithJourneyAware, mapOfIlsPriceWithoutOfferCode, ratingsReviewMap,
 							deviceDataRating));
 		} else {
@@ -205,10 +214,10 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 
 		}
 		if (!ilsPriceForJourneyAwareOfferCodeMap.isEmpty()) {
-			DeviceUtils.getEntireIlsJourneyAwareMap(ilsOfferPriceWithJourneyAware, ilsPriceForJourneyAwareOfferCodeMap);
+			deviceUtils.getEntireIlsJourneyAwareMap(ilsOfferPriceWithJourneyAware, ilsPriceForJourneyAwareOfferCodeMap);
 		}
 		if (!groupNamePriceMap.isEmpty()) {
-			DeviceUtils.getMinimumPriceMap(minimumPriceMap, groupNamePriceMap);
+			deviceUtils.getMinimumPriceMap(minimumPriceMap, groupNamePriceMap);
 
 		}
 	}
@@ -231,7 +240,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			Set<BundleAndHardwareTuple> bundleAndHardwareTupleListJourneyAware, Map<String, String> listOfLeadPlanId,
 			Map<String, List<String>> listOfCimpatiblePlanMap, List<CommercialProduct> listOfCommercialProduct) {
 		if (listOfCommercialProduct != null && !listOfCommercialProduct.isEmpty()) {
-			DeviceUtils.getBundleharwareTrupleForPaymCacheDevice(setOfCompatiblePlanIds, bundleAndHardwareTupleList,
+			deviceUtils.getBundleharwareTrupleForPaymCacheDevice(setOfCompatiblePlanIds, bundleAndHardwareTupleList,
 					bundleAndHardwareTupleListForNonLeanPlanId, bundleAndHardwareTupleListJourneyAware,
 					listOfLeadPlanId, listOfCimpatiblePlanMap, listOfCommercialProduct);
 		}
@@ -253,12 +262,12 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		for (Entry<String, List<BundleAndHardwareTuple>> entry : bundleHardwareTroupleMap.entrySet()) {
 			if (entry.getValue() != null && !entry.getValue().isEmpty()) {
 				Map<String, List<PriceForBundleAndHardware>> iLSPriceMapLocalMain = new ConcurrentHashMap<>();
-				jouneyType = DeviceUtils.getJourneybasedOnOfferCode(listOfOfferCodesForUpgrade,
+				jouneyType = deviceUtils.getJourneybasedOnOfferCode(listOfOfferCodesForUpgrade,
 						listOfSecondLineOfferCode, entry);
 				List<PriceForBundleAndHardware> listOfPriceForBundleAndHardwareForOffer = commonUtility
 						.getPriceDetailsUsingBundleHarwareTrouple(entry.getValue(), entry.getKey(), jouneyType,
 								groupType);
-				DeviceUtils.getIlsPriceForJourneyAwareOfferCodeMap(ilsPriceForJourneyAwareOfferCodeMap, jouneyType,
+				deviceUtils.getIlsPriceForJourneyAwareOfferCodeMap(ilsPriceForJourneyAwareOfferCodeMap, jouneyType,
 						entry, iLSPriceMapLocalMain, listOfPriceForBundleAndHardwareForOffer);
 			}
 		}
@@ -341,7 +350,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			// ILS OfferCode
 			getILSPriceMap(listOfOfferCodes, commercialBundleMap, listOfCimpatiblePlanMap, bundleHardwareTroupleMap,
 					deviceId, nonUpgradeLeadPlanId);
-			productGroupForDeviceListing = CacheDeviceDaoUtils
+			productGroupForDeviceListing = cacheDeviceDaoUtils
 					.convertBundleHeaderForDeviceToProductGroupForDeviceListing(deviceId, nonUpgradeLeadPlanId,
 							groupname, groupId, listOfPriceForBundleAndHardware, leadMemberMap,
 							leadMemberMapForUpgrade, upgradeLeadPlanId, groupType);
@@ -368,7 +377,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			Map<String, List<BundleAndHardwareTuple>> bundleHardwareTroupleMap, String deviceId,
 			String nonUpgradeLeadPlanId) {
 		if (nonUpgradeLeadPlanId != null && listOfCimpatiblePlanMap.containsKey(deviceId)) {
-			DeviceUtils.getIlsPriceMap(listOfOfferCodes, commercialBundleMap, listOfCimpatiblePlanMap,
+			deviceUtils.getIlsPriceMap(listOfOfferCodes, commercialBundleMap, listOfCimpatiblePlanMap,
 					bundleHardwareTroupleMap, deviceId);
 		}
 	}
@@ -379,7 +388,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			PriceForBundleAndHardware bundleHeaderForDevice, String groupname) {
 		String nonUpgradeLeadPlanIdLocal = null;
 		if (bundleHeaderForDevice != null) {
-			nonUpgradeLeadPlanIdLocal = DeviceUtils.getGroupNamePriceMap(groupNamePriceMap,
+			nonUpgradeLeadPlanIdLocal = deviceUtils.getGroupNamePriceMap(groupNamePriceMap,
 					listOfPriceForBundleAndHardware, bundleHeaderForDevice, groupname);
 		}
 		return nonUpgradeLeadPlanIdLocal;
@@ -399,7 +408,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			String nonUpgradeLeadPlanId) {
 		if (StringUtils.isNotBlank(nonUpgradeLeadPlanId) && !leadPlanIdPriceMap.isEmpty()
 				&& leadPlanIdPriceMap.containsKey(deviceId)) {
-			DeviceUtils.getLeadPlanGroupPriceMap(leadPlanIdPriceMap, groupNamePriceMap, listOfPriceForBundleAndHardware,
+			deviceUtils.getLeadPlanGroupPriceMap(leadPlanIdPriceMap, groupNamePriceMap, listOfPriceForBundleAndHardware,
 					deviceId, groupname);
 		}
 	}
@@ -431,7 +440,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 
 	private String getUpgradeLeadPlanId(String bundleId, CommercialBundle coommercialbundle) {
 		String upgradeLeadPlanIdLocal = null;
-		if (DeviceServiceImplUtility.isSellable(JOURNEY_TYPE_UPGRADE, coommercialbundle)) {
+		if (deviceServiceImplUtility.isSellable(JOURNEY_TYPE_UPGRADE, coommercialbundle)) {
 			upgradeLeadPlanIdLocal = bundleId;
 		}
 		return upgradeLeadPlanIdLocal;
@@ -439,7 +448,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 
 	private String getNonUpgradeLeadPlanId(String bundleId, CommercialBundle coommercialbundle) {
 		String nonUpgradeLeadPlanIdLocal = null;
-		if (DeviceServiceImplUtility.isSellable(JOURNEY_TYPE_ACQUISITION, coommercialbundle)) {
+		if (deviceServiceImplUtility.isSellable(JOURNEY_TYPE_ACQUISITION, coommercialbundle)) {
 			nonUpgradeLeadPlanIdLocal = bundleId;
 		}
 		return nonUpgradeLeadPlanIdLocal;
@@ -502,7 +511,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 				bundleAndHardwareTupleListForNonLeanPlanId, null, null, groupType);
 		if (listOfPriceForBundleAndHardwareForNonLeadPlanIds != null
 				&& !listOfPriceForBundleAndHardwareForNonLeadPlanIds.isEmpty()) {
-			DeviceUtils.getNonLeadPlanMap(nonLeadPlanIdPriceMap, listOfPriceForBundleAndHardwareForNonLeadPlanIds);
+			deviceUtils.getNonLeadPlanMap(nonLeadPlanIdPriceMap, listOfPriceForBundleAndHardwareForNonLeadPlanIds);
 		}
 	}
 
@@ -571,7 +580,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		String groupId = String.valueOf(productGroup.getGroupId());
 		String groupname = productGroup.getName();
 		if (productGroup.getMembers() != null && !productGroup.getMembers().isEmpty()) {
-			DeviceUtils.getMemberForCaceDevice(listOfDeviceId, groupIdAndNameMap, productGroup, listOfDeviceGroupMember,
+			deviceUtils.getMemberForCaceDevice(listOfDeviceId, groupIdAndNameMap, productGroup, listOfDeviceGroupMember,
 					groupId, groupname);
 		}
 		String leadMemberId = null;
@@ -648,7 +657,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 					.getDeviceReviewRatingImplementation(deviceIds);
 			listOfProductGroupRepository.forEach(deviceDataRating -> {
 				setMinimumCost(minimumPriceMap, deviceDataRating);
-				DeviceUtils.updateDeviceratingForCacheDevice(ratingsReviewMap, deviceDataRating);
+				deviceUtils.updateDeviceratingForCacheDevice(ratingsReviewMap, deviceDataRating);
 			});
 		} else {
 			log.error("Receieved Null Values for the given product group type");
@@ -680,7 +689,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 				try {
 					getLeadPlanGroupPriceMapForPayg(leadPlanIdPriceMap, groupNamePriceMap,
 							listOfPriceForBundleAndHardware, deviceId, groupname);
-					productGroupForDeviceListing = CacheDeviceDaoUtils
+					productGroupForDeviceListing = cacheDeviceDaoUtils
 							.convertBundleHeaderForDeviceToProductGroupForDeviceListing(deviceId, null, groupname,
 									groupId, listOfPriceForBundleAndHardware, leadMemberMap, null, null,
 									groupType);
@@ -705,7 +714,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 	private void getMinimumPriceMapForPayG(Map<String, String> minimumPriceMap,
 			Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap) {
 		if (!groupNamePriceMap.isEmpty()) {
-			DeviceUtils.getMinimumPriceMapForPayG(minimumPriceMap, groupNamePriceMap);
+			deviceUtils.getMinimumPriceMapForPayG(minimumPriceMap, groupNamePriceMap);
 		}
 	}
 
@@ -713,7 +722,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap,
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware, String deviceId, String groupname) {
 		if (!leadPlanIdPriceMap.isEmpty() && leadPlanIdPriceMap.containsKey(deviceId)) {
-			DeviceUtils.getLeadPlanGroupPriceMap(leadPlanIdPriceMap, groupNamePriceMap, listOfPriceForBundleAndHardware,
+			deviceUtils.getLeadPlanGroupPriceMap(leadPlanIdPriceMap, groupNamePriceMap, listOfPriceForBundleAndHardware,
 					deviceId, groupname);
 		}
 	}
@@ -751,7 +760,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		String groupId = String.valueOf(productGroup.getGroupId());
 		String groupname = productGroup.getName();
 		if (productGroup.getMembers() != null && !productGroup.getMembers().isEmpty()) {
-			DeviceUtils.getMemberForCaceDevice(listOfDeviceId, groupIdAndNameMap, productGroup, listOfDeviceGroupMember,
+			deviceUtils.getMemberForCaceDevice(listOfDeviceId, groupIdAndNameMap, productGroup, listOfDeviceGroupMember,
 					groupId, groupname);
 		}
 		String leadMemberId = null;
@@ -1176,7 +1185,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 				throw new ApplicationException(ExceptionMessages.NO_DEVICE_PRE_CALCULATED_DATA);
 			}
 			saveDeviceMediaData(i, devicePreCalculatedData);
-			List<com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData> deviceListObjectList = CacheDeviceDaoUtils
+			List<com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData> deviceListObjectList = cacheDeviceDaoUtils
 					.convertDevicePreCalDataToSolrData(devicePreCalculatedData);
 			indexPrecalData(deviceListObjectList);
 		} catch (Exception e) {
@@ -1229,11 +1238,11 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 	@Override
 	public JSONObject getDeviceReviewDetails(String deviceId) {
 		JSONObject jsonObject = null;
-		String deviceIdMdfd = CommonUtility.appendPrefixString(deviceId);
+		String deviceIdMdfd = commonUtility.appendPrefixString(deviceId);
 		log.info("::::: deviceIdMdfd :: " + deviceIdMdfd + ":::::");
 		String response = deviceDao.getDeviceReviewDetails(deviceIdMdfd);
 		if (StringUtils.isNotBlank(response)) {
-			jsonObject = CommonUtility.getJSONFromString(response);
+			jsonObject = commonUtility.getJSONFromString(response);
 		} else {
 			log.error("No reviews found");
 			throw new ApplicationException(ExceptionMessages.NO_REVIEWS_FOUND);

@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.vf.uk.dal.device.model.Member;
 import com.vf.uk.dal.device.model.ProductGroup;
 import com.vf.uk.dal.device.model.productgroups.ProductGroupModel;
@@ -12,6 +14,7 @@ import com.vf.uk.dal.device.model.productgroups.ProductGroupModel;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Component
 public class ListOfDeviceDetailsDaoUtils {
 
 	// For price API
@@ -224,7 +227,7 @@ public class ListOfDeviceDetailsDaoUtils {
 	 * @param cohProduct
 	 * @return List<ProductGroup>
 	 */
-	public static List<ProductGroup> convertGroupProductToProductGroupDetails(
+	public List<ProductGroup> convertGroupProductToProductGroupDetails(
 			List<ProductGroupModel> sohProductGroupList) {
 
 		List<ProductGroup> productGroupList;

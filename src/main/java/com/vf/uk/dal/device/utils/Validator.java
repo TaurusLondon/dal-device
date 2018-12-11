@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.exception.SystemException;
@@ -12,10 +13,12 @@ import com.vf.uk.dal.common.exception.SystemException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Component
 public class Validator {
 
-	private Validator() {
-		/** constructor */
+	public Validator() {
+		/**
+		 *  constructor */
 	};
 
 	public static final String JOURNEY_TYPE_UPGRADE = "Upgrade";
@@ -41,11 +44,11 @@ public class Validator {
 	 * 
 	 * @param deviceId
 	 */
-	public static void validateDeviceId(String deviceId) {
+	public void validateDeviceId(String deviceId) {
 		if (StringUtils.isBlank(deviceId)) {
 			log.error("DeviceId is null");
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
-		} else if (Validator.validateId(deviceId)) {
+		} else if (validateId(deviceId)) {
 			log.error("DeviceId is Invalid");
 			throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
 		}
@@ -56,7 +59,7 @@ public class Validator {
 	 * @param productId
 	 * @return
 	 */
-	public static boolean validateId(String productId) {
+	public boolean validateId(String productId) {
 		return !productId.matches("[0-9]{6}") || productId.matches("[0]*");
 	}
 
@@ -65,7 +68,7 @@ public class Validator {
 	 * @param queryParams
 	 * @return
 	 */
-	public static boolean validateGetListOfDeviceTile(Map<String, String> queryParams) {
+	public boolean validateGetListOfDeviceTile(Map<String, String> queryParams) {
 		List<String> validParams = Arrays.asList("make", "model", GROUP_TYPE, "creditLimit", JOURNEY_TYPE, DEVICE_ID,
 				OFFER_CODE, "bundleId", "sort", "pageSize", "pageNumber");
 
@@ -77,7 +80,7 @@ public class Validator {
 	 * @param queryParams
 	 * @return
 	 */
-	public static boolean validateDeviceId(Map<String, String> queryParams) {
+	public boolean validateDeviceId(Map<String, String> queryParams) {
 		List<String> validParams = Arrays.asList(DEVICE_ID, OFFER_CODE, JOURNEY_TYPE);
 
 		return validateParams(queryParams, validParams);
@@ -88,7 +91,7 @@ public class Validator {
 	 * @param queryParams
 	 * @return
 	 */
-	public static boolean validateGetDeviceList(Map<String, String> queryParams) {
+	public boolean validateGetDeviceList(Map<String, String> queryParams) {
 		List<String> validParams = Arrays.asList(GROUP_TYPE, "productClass", "creditLimit", "make", "model", "capacity",
 				"colour", "operatingSystem", JOURNEY_TYPE, OFFER_CODE, "sort", "mustHaveFeatures", "pageSize",
 				"pageNumber", "msisdn", "includeRecommendations");
@@ -102,7 +105,7 @@ public class Validator {
 	 * @param validParams
 	 * @return
 	 */
-	private static boolean validateParams(Map<String, String> queryParams, List<String> validParams) {
+	private boolean validateParams(Map<String, String> queryParams, List<String> validParams) {
 		for (String key : queryParams.keySet()) {
 			boolean found = false;
 			for (String param : validParams) {
@@ -122,7 +125,7 @@ public class Validator {
 	 * @param journeyType
 	 * @return
 	 */
-	public static boolean validateJourneyType(String journeyType) {
+	public boolean validateJourneyType(String journeyType) {
 		List<String> journeyList = Arrays.asList("acquisition", "upgrade", "secondline");
 		return journeyList.contains(journeyType.toLowerCase()) ? true : false;
 	}
@@ -132,7 +135,7 @@ public class Validator {
 	 * @param sortCriteria
 	 * @return
 	 */
-	public static boolean validateSortCriteria(String sortCriteria) {
+	public boolean validateSortCriteria(String sortCriteria) {
 		List<String> sortCriteriaList = Arrays.asList("Rating", "Priority", "EquipmentMake", "ReccuringCharge");
 		return sortCriteriaList.contains(sortCriteria) ? true : false;
 	}
@@ -141,7 +144,7 @@ public class Validator {
 	 * @author suranjit_kashyap
 	 * @Sprint 6.6 Validator Start
 	 */
-	public static void validatePageSize(int pageSize, int pageNumber) {
+	public void validatePageSize(int pageSize, int pageNumber) {
 		if (pageSize < 0) {
 			throw new SystemException(ExceptionMessages.PAGESIZE_NEGATIVE_ERROR);
 		}
@@ -154,7 +157,7 @@ public class Validator {
 	 * 
 	 * @param showRecommendations
 	 */
-	public static void validateIncludeRecommendation(String showRecommendations) {
+	public void validateIncludeRecommendation(String showRecommendations) {
 		if (!showRecommendations.equalsIgnoreCase(STRING_TRUE) && !showRecommendations.equalsIgnoreCase(STRING_FALSE)) {
 			throw new ApplicationException(ExceptionMessages.INVALID_INCLUDERECOMMENDATION);
 		}
@@ -165,7 +168,7 @@ public class Validator {
 	 * @param msisdn
 	 * @param includeRecommendations
 	 */
-	public static void validateMSISDN(String msisdn, String includeRecommendations) {
+	public void validateMSISDN(String msisdn, String includeRecommendations) {
 		if (!msisdn.matches("[0-9]{10}") && STRING_TRUE.equalsIgnoreCase(includeRecommendations)) {
 			throw new ApplicationException(ExceptionMessages.INVALID_MSISDN);
 		}
@@ -176,7 +179,7 @@ public class Validator {
 	 * @param groupType
 	 * @return
 	 */
-	public static boolean validateGroupType(String groupType) {
+	public boolean validateGroupType(String groupType) {
 		boolean result = !groupType.equalsIgnoreCase(STRING_DEVICE_PAYM)
 				&& !groupType.equalsIgnoreCase(STRING_DEVICE_PAYG);
 		return result && !groupType.equalsIgnoreCase(STRING_DATA_DEVICE_PAYM)
@@ -188,7 +191,7 @@ public class Validator {
 	 * @param creditLimit
 	 * @return
 	 */
-	public static boolean validateCreditLimitValue(String creditLimit) {
+	public boolean validateCreditLimitValue(String creditLimit) {
 		return creditLimit.matches("[0-9]") ? true : false;
 	}
 
@@ -197,7 +200,7 @@ public class Validator {
 	 * @param queryParams
 	 * @return
 	 */
-	public static boolean validateProduct(Map<String, String> queryParams) {
+	public boolean validateProduct(Map<String, String> queryParams) {
 		List<String> validParams = Arrays.asList("productId", "productName");
 		return validateParams(queryParams, validParams);
 	}
@@ -207,7 +210,7 @@ public class Validator {
 	 * @param queryParams
 	 * @return
 	 */
-	public static boolean validateProductGroup(Map<String, String> queryParams) {
+	public boolean validateProductGroup(Map<String, String> queryParams) {
 		List<String> validParams = Arrays.asList(GROUP_TYPE);
 
 		return validateParams(queryParams, validParams);
@@ -218,7 +221,7 @@ public class Validator {
 	 * @param creditLimit
 	 * @return
 	 */
-	public static Float validateForCreditLimit(String creditLimit) {
+	public Float validateForCreditLimit(String creditLimit) {
 		Float creditLimitparam = null;
 		if (StringUtils.isNotBlank(creditLimit)) {
 			if (!creditLimit.matches(creditLimitExp)) {
@@ -244,13 +247,13 @@ public class Validator {
 	 * @param groupType
 	 * @param productClass
 	 */
-	public static void validateForDeviceList(String sortCriteria, String sortCriteriaLocal, String groupType,
+	public void validateForDeviceList(String sortCriteria, String sortCriteriaLocal, String groupType,
 			String productClass) {
 		if (sortCriteria == null || sortCriteria.isEmpty()) {
 			log.error("sortCriteria is null");
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_SORT);
 		}
-		if (StringUtils.isNotBlank(sortCriteriaLocal) && !Validator.validateSortCriteria(sortCriteriaLocal)) {
+		if (StringUtils.isNotBlank(sortCriteriaLocal) && !validateSortCriteria(sortCriteriaLocal)) {
 			log.error("Received sortCriteria is invalid.");
 			throw new ApplicationException(ExceptionMessages.RECEVIED_INVALID_SORTCRITERIA);
 		}
@@ -279,7 +282,7 @@ public class Validator {
 	 * @param journeytype
 	 * @param offerCode
 	 */
-	public static void validateForPAYG(String journeytype, String offerCode) {
+	public void validateForPAYG(String journeytype, String offerCode) {
 		if (StringUtils.equalsIgnoreCase(JOURNEY_TYPE_UPGRADE, journeytype)
 				|| StringUtils.equalsIgnoreCase(JOURNEY_TYPE_SECONDLINE, journeytype)) {
 			log.error("JourneyType is not compatible for given GroupType");
@@ -298,7 +301,7 @@ public class Validator {
 	 * @param journeyType
 	 * @return
 	 */
-	public static String validateAllParameters(String make, String model, String groupType, String journeyType) {
+	public String validateAllParameters(String make, String model, String groupType, String journeyType) {
 		String journeyTypeLocal = null;
 		if (make == null || make.isEmpty()) {
 			log.error("make is null");
@@ -312,7 +315,7 @@ public class Validator {
 		if (groupType == null || groupType.isEmpty()) {
 			log.error(" Group Type is null ");
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_GROUPTYPE);
-		} else if (!Validator.validateGroupType(groupType)) {
+		} else if (!validateGroupType(groupType)) {
 			log.error("Invalid Group Type");
 			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_GROUP_TYPE);
 		} else if (groupType.equalsIgnoreCase(STRING_DEVICE_PAYG)
@@ -337,7 +340,7 @@ public class Validator {
 	 * @param creditLimitParam
 	 * @return creditLimitParam
 	 */
-	public static Double validateCreditLimitAndIds(String make, String model, String bundleId, String deviceId,
+	public Double validateCreditLimitAndIds(String make, String model, String bundleId, String deviceId,
 			String creditLimit) {
 		Double creditLimitParam;
 		if (deviceId != null && !deviceId.matches(numberExp)) {
@@ -366,7 +369,7 @@ public class Validator {
 	 * @param creditLimit
 	 * @return
 	 */
-	private static Double validateCreditValue(String creditLimit) {
+	private Double validateCreditValue(String creditLimit) {
 		Double creditLimitParam = null;
 		if (creditLimit != null) {
 			Float creditValue = validateForCreditLimit(creditLimit);
@@ -381,7 +384,7 @@ public class Validator {
 	 * 
 	 * @param deviceId
 	 */
-	public static void validateAccessoryFields(String deviceId) {
+	public void validateAccessoryFields(String deviceId) {
 		if (StringUtils.isNotBlank(deviceId)) {
 			if (!deviceId.matches(numberExp)) {
 				log.error(ExceptionMessages.INVALID_DEVICE);
@@ -398,7 +401,7 @@ public class Validator {
 	 * 
 	 * @param deviceId
 	 */
-	public static void validateInsuranceDetails(String deviceId) {
+	public void validateInsuranceDetails(String deviceId) {
 		if (StringUtils.isNotBlank(deviceId)) {
 			if (!deviceId.matches(numberExp)) {
 				log.error(ExceptionMessages.INVALID_DEVICE);
@@ -415,7 +418,7 @@ public class Validator {
 	 * @param deviceId
 	 * @param journeyType
 	 */
-	public static void validateDeviceDetails(String deviceId) {
+	public void validateDeviceDetails(String deviceId) {
 		if (StringUtils.isNotBlank(deviceId)) {
 			if (!deviceId.matches(numberExp)) {
 				log.error(ExceptionMessages.INVALID_DEVICE);
@@ -432,7 +435,7 @@ public class Validator {
 	 * @param offerCode
 	 * @param journeyType
 	 */
-	public static void getJourneyAndOfferCodeValidationForPAYG(String offerCode, String journeyType) {
+	public void getJourneyAndOfferCodeValidationForPAYG(String offerCode, String journeyType) {
 		if (StringUtils.isNotBlank(journeyType) && (journeyType.equalsIgnoreCase(JOURNEY_TYPE_SECONDLINE)
 				|| journeyType.equalsIgnoreCase(JOURNEY_TYPE_UPGRADE))) {
 			log.error("JourneyType is not compatible for given DeviceId");

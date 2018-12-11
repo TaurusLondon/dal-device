@@ -52,6 +52,9 @@ public class CacheDeviceAndReviewController {
 	public static final String STRING_DEVICE_NEARLY_NEW = "DEVICE_NEARLY_NEW";
 	@Autowired
 	CacheDeviceService cacheDeviceService;
+	
+	@Autowired
+	Validator validator;
 
 	/**
 	 * Handles requests for getDeviceTile Service with input as
@@ -143,7 +146,7 @@ public class CacheDeviceAndReviewController {
 	public JSONObject getDeviceReviewDetails(
 			@NotNull @ApiParam(value = "Unique Id of the device for which the review is being requested", required = true) @PathVariable(DEVICE_ID) String deviceId) {
 
-		Validator.validateDeviceId(deviceId);
+		validator.validateDeviceId(deviceId);
 		log.info("Start -->  calling  getDeviceReviewDetails");
 		return cacheDeviceService.getDeviceReviewDetails(deviceId);
 	}

@@ -74,13 +74,18 @@ import com.vf.uk.dal.device.service.DeviceDetailsServiceImpl;
 import com.vf.uk.dal.device.service.DeviceMakeAndModelServiceImpl;
 import com.vf.uk.dal.device.service.DeviceRecommendationService;
 import com.vf.uk.dal.device.service.DeviceService;
+import com.vf.uk.dal.device.utils.AccessoriesAndInsurancedaoUtils;
+import com.vf.uk.dal.device.utils.CacheDeviceDaoUtils;
 import com.vf.uk.dal.device.utils.CommonUtility;
 import com.vf.uk.dal.device.utils.DeviceConditionallHelper;
 import com.vf.uk.dal.device.utils.DeviceDetailsMakeAndModelVaiantDaoUtils;
+import com.vf.uk.dal.device.utils.DeviceESHelper;
 import com.vf.uk.dal.device.utils.DeviceServiceCommonUtility;
 import com.vf.uk.dal.device.utils.DeviceServiceImplUtility;
+import com.vf.uk.dal.device.utils.DeviceTilesDaoUtils;
 import com.vf.uk.dal.device.utils.DeviceUtils;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
+import com.vf.uk.dal.device.utils.ListOfDeviceDetailsDaoUtils;
 import com.vf.uk.dal.device.utils.Validator;
 
 @RunWith(SpringRunner.class)
@@ -98,6 +103,38 @@ public class DeviceServiceImplTest {
 	@Autowired
 	DeviceMakeAndModelServiceImpl deviceMakeAndModelServiceImpl;
 
+	@Autowired
+	CacheDeviceDaoUtils cacheDeviceDaoUtils;
+
+	@Autowired
+	AccessoriesAndInsurancedaoUtils accessoriesAndInsurancedaoUtils;
+
+	@Autowired
+	CommonUtility commonUtility;
+
+	@Autowired
+	ListOfDeviceDetailsDaoUtils listOfDeviceDetailsDaoUtils;
+	
+	@Autowired
+	CommonMethods commonMethods;
+	
+	@Autowired
+	DeviceServiceImplUtility deviceServiceImplUtility;
+
+	@Autowired
+	DeviceDetailsMakeAndModelVaiantDaoUtils deviceDetailsMakeAndModelVaiantDaoUtils;
+
+	@Autowired
+	Validator validator;
+
+	@Autowired
+	AccessoriesAndInsurancedaoUtils AccessoriesAndInsurancedaoUtils;
+	
+	@Autowired
+	DeviceTilesDaoUtils deviceTilesDaoUtils;
+
+	@Autowired
+	DeviceESHelper deviceESHelper;
 	@Autowired
 	DeviceServiceCommonUtility utility;
 
@@ -129,16 +166,13 @@ public class DeviceServiceImplTest {
 	CatalogServiceAspect aspect;
 
 	@Autowired
-	AccessoryInsuranceServiceImpl accessoryInsuranceService;
+	AccessoryInsuranceServiceImpl accessoryInsuranceServiceImpl;
 
 	@Autowired
 	DeviceDetailsServiceImpl deviceDetailsService;
 
 	@Autowired
 	DeviceService deviceService;
-
-	@Autowired
-	CommonUtility commonUtility;
 
 	@Autowired
 	DeviceUtils deviceUtils;
@@ -202,7 +236,7 @@ public class DeviceServiceImplTest {
 	// accessory test cases start
 	@Test
 	public void getAccessoriesOfDevice() {
-		List<AccessoryTileGroup> list = accessoryInsuranceService.getAccessoriesOfDevice("093353", "Acquisition",
+		List<AccessoryTileGroup> list = accessoryInsuranceServiceImpl.getAccessoriesOfDevice("093353", "Acquisition",
 				"abc");
 		Assert.assertNotNull(list);
 		Assert.assertEquals( "093329",list.get(0).getAccessories().get(0).getSkuId());
@@ -225,7 +259,7 @@ public class DeviceServiceImplTest {
 	public void getAccessoriesOfDeviceCPNull() {
 		try {
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(null);
-			Assert.assertNull(accessoryInsuranceService.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
+			Assert.assertNull(accessoryInsuranceServiceImpl.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
 		} catch (Exception e) {
 			Assert.assertEquals( "Received Null Values for the given device id",e.getMessage());
 		}
@@ -237,7 +271,7 @@ public class DeviceServiceImplTest {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			cp.setId(null);
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
-			Assert.assertNull(accessoryInsuranceService.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
+			Assert.assertNull(accessoryInsuranceServiceImpl.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
 		} catch (Exception e) {
 			Assert.assertEquals( "Received Null Values for the given device id",e.getMessage());
 		}
@@ -249,7 +283,7 @@ public class DeviceServiceImplTest {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			cp.setProductClass("abc");
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
-			Assert.assertNull(accessoryInsuranceService.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
+			Assert.assertNull(accessoryInsuranceServiceImpl.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
 		} catch (Exception e) {
 			Assert.assertEquals( "Given DeviceId is not ProductClass Handset",e.getMessage());
 		}
@@ -261,7 +295,7 @@ public class DeviceServiceImplTest {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			cp.setIsDeviceProduct(false);
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
-			List<AccessoryTileGroup> accessory = accessoryInsuranceService.getAccessoriesOfDevice("093353",
+			List<AccessoryTileGroup> accessory = accessoryInsuranceServiceImpl.getAccessoriesOfDevice("093353",
 					"Acquisition", "abc");
 			Assert.assertNotNull(accessory);
 			Assert.assertEquals( "093329",accessory.get(0).getAccessories().get(0).getSkuId());
@@ -279,7 +313,7 @@ public class DeviceServiceImplTest {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			cp.setProductGroups(null);
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
-			Assert.assertNull(accessoryInsuranceService.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
+			Assert.assertNull(accessoryInsuranceServiceImpl.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
 		} catch (Exception e) {
 			Assert.assertEquals( "No Compatible Accessories found for given device Id",e.getMessage());
 		}
@@ -293,7 +327,7 @@ public class DeviceServiceImplTest {
 			pg.setProductGroup(null);
 			cp.setProductGroups(pg);
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
-			Assert.assertNull(accessoryInsuranceService.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
+			Assert.assertNull(accessoryInsuranceServiceImpl.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
 		} catch (Exception e) {
 			Assert.assertEquals( "No Compatible Accessories found for given device Id",e.getMessage());
 		}
@@ -308,7 +342,7 @@ public class DeviceServiceImplTest {
 			pg.setProductGroup(pgg);
 			cp.setProductGroups(pg);
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
-			Assert.assertNull(accessoryInsuranceService.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
+			Assert.assertNull(accessoryInsuranceServiceImpl.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
 		} catch (Exception e) {
 			Assert.assertEquals( "No Compatible Accessories found for given device Id",e.getMessage());
 		}
@@ -329,7 +363,7 @@ public class DeviceServiceImplTest {
 			pg.setProductGroup(pgg);
 			cp.setProductGroups(pg);
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
-			Assert.assertNull(accessoryInsuranceService.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
+			Assert.assertNull(accessoryInsuranceServiceImpl.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
 		} catch (Exception e) {
 			Assert.assertEquals( "No Compatible Accessories found for given device Id",e.getMessage());
 		}
@@ -339,7 +373,7 @@ public class DeviceServiceImplTest {
 	public void getAccessoriesOfDeviceCPProductGroupInvalid() {
 		try {
 			given(response.getListOfGroupFromJson(ArgumentMatchers.any())).willReturn(CommonMethods.getGroup_Two());
-			Assert.assertNull(accessoryInsuranceService.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
+			Assert.assertNull(accessoryInsuranceServiceImpl.getAccessoriesOfDevice("093353", "Acquisition", "abc"));
 		} catch (Exception e) {
 			Assert.assertEquals( "No Compatible Accessories found for given device Id",e.getMessage());
 		}
@@ -349,7 +383,7 @@ public class DeviceServiceImplTest {
 	public void getFinalAccessoryListInvalid() {
 		List<String> finalAccessoryList = new ArrayList<>();
 		Map<String, List<String>> mapForGroupName = new HashMap<>();
-		AccessoryInsuranceServiceImpl.getFinalAccessoryList(finalAccessoryList, mapForGroupName, null);
+		accessoryInsuranceServiceImpl.getFinalAccessoryList(finalAccessoryList, mapForGroupName, null);
 	}
 
 	@Test
@@ -357,7 +391,7 @@ public class DeviceServiceImplTest {
 		List<String> finalAccessoryList = new ArrayList<>();
 		Map<String, List<String>> mapForGroupName = new HashMap<>();
 		Group productGroup = new Group();
-		AccessoryInsuranceServiceImpl.getFinalAccessoryList(finalAccessoryList, mapForGroupName, productGroup);
+		accessoryInsuranceServiceImpl.getFinalAccessoryList(finalAccessoryList, mapForGroupName, productGroup);
 	}
 
 	@Test
@@ -365,7 +399,7 @@ public class DeviceServiceImplTest {
 		given(response.getCommercialProductFromJson(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getCommercialProductsListOfAccessoriesWithEndDate());
 		List<String> finalAccessoryList = new ArrayList<>();
-		List<CommercialProduct> commercialProduct = accessoryInsuranceService
+		List<CommercialProduct> commercialProduct = accessoryInsuranceServiceImpl
 				.getListOfFilteredAccessories("Acquisition", finalAccessoryList);
 		Assert.assertNotNull(commercialProduct);
 	}
@@ -375,7 +409,7 @@ public class DeviceServiceImplTest {
 		try {
 			PriceForProduct pc = new PriceForProduct();
 			pc.setPriceForAccessoryes(null);
-			Assert.assertNull(AccessoryInsuranceServiceImpl.setMapForCommercialData(null, null, pc, null));
+			Assert.assertNull(accessoryInsuranceServiceImpl.setMapForCommercialData(null, null, pc, null));
 		} catch (Exception e) {
 			Assert.assertEquals( "Null value received from Pricing API",e.getMessage());
 		}
@@ -385,7 +419,7 @@ public class DeviceServiceImplTest {
 
 	@Test
 	public void getInsuranceByDeviceId() {
-		Insurances insurances = accessoryInsuranceService.getInsuranceByDeviceId("093353", "Acquisition");
+		Insurances insurances = accessoryInsuranceServiceImpl.getInsuranceByDeviceId("093353", "Acquisition");
 		Assert.assertNotNull(insurances);
 		Assert.assertEquals( "093329",insurances.getInsuranceList().get(0).getId());
 		Assert.assertEquals(
@@ -406,7 +440,7 @@ public class DeviceServiceImplTest {
 			pgg.addAll(pgc);
 			pg.setProductGroup(pgg);
 			cp.setProductGroups(pg);
-			Assert.assertNull(accessoryInsuranceService.getInsurance("acquisition", cp));
+			Assert.assertNull(accessoryInsuranceServiceImpl.getInsurance("acquisition", cp));
 		} catch (Exception e) {
 		}
 	}
@@ -425,7 +459,7 @@ public class DeviceServiceImplTest {
 			pgg.addAll(pgc);
 			pg.setProductGroup(pgg);
 			cp.setProductGroups(pg);
-			Assert.assertNull(accessoryInsuranceService.getInsurance("acquisition", cp));
+			Assert.assertNull(accessoryInsuranceServiceImpl.getInsurance("acquisition", cp));
 		} catch (Exception e) {
 		}
 	}
@@ -441,7 +475,7 @@ public class DeviceServiceImplTest {
 		members.add(member);
 		gp.setMembers(members);
 		List<Member> listOfInsuranceMembers = new ArrayList<>();
-		List<String> insurance = AccessoryInsuranceServiceImpl.getInsuranceProductList(listOfInsuranceMembers, gp);
+		List<String> insurance = accessoryInsuranceServiceImpl.getInsuranceProductList(listOfInsuranceMembers, gp);
 		Assert.assertNotNull(insurance);
 		Assert.assertEquals( "123",insurance.get(0));
 	}
@@ -458,7 +492,7 @@ public class DeviceServiceImplTest {
 		gp.setMembers(members);
 		List<Member> listOfInsuranceMembers = new ArrayList<>();
 		listOfInsuranceMembers.add(member);
-		List<String> insurance = AccessoryInsuranceServiceImpl.getInsuranceProductList(listOfInsuranceMembers, gp);
+		List<String> insurance = accessoryInsuranceServiceImpl.getInsuranceProductList(listOfInsuranceMembers, gp);
 		Assert.assertNotNull(insurance);
 		Assert.assertEquals( "123",insurance.get(0));
 	}
@@ -475,13 +509,13 @@ public class DeviceServiceImplTest {
 		gp.setMembers(members);
 		List<Member> listOfInsuranceMembers = new ArrayList<>();
 		listOfInsuranceMembers.add(member);
-		List<String> insurance = AccessoryInsuranceServiceImpl.getInsuranceProductList(listOfInsuranceMembers, gp);
+		List<String> insurance = accessoryInsuranceServiceImpl.getInsuranceProductList(listOfInsuranceMembers, gp);
 		Assert.assertNotNull(insurance);
 	}
 
 	@Test
 	public void testAssembleMechandisingPromotionsPackageGeneric() {
-		MerchandisingPromotionsPackage mpPackage = DeviceDetailsMakeAndModelVaiantDaoUtils
+		MerchandisingPromotionsPackage mpPackage = deviceDetailsMakeAndModelVaiantDaoUtils
 				.assembleMechandisingPromotionsPackageGeneric(
 						CommonMethods.getListOfBundleAndHardwarePromotions().get(0),
 						CommonMethods.getPriceForBundleAndHardware().get(0));
@@ -501,7 +535,7 @@ public class DeviceServiceImplTest {
 		members.add(member);
 		gp.setMembers(members);
 		List<Member> listOfInsuranceMembers = new ArrayList<>();
-		Assert.assertNotNull(AccessoryInsuranceServiceImpl.getInsuranceProductList(listOfInsuranceMembers, gp));
+		Assert.assertNotNull(accessoryInsuranceServiceImpl.getInsuranceProductList(listOfInsuranceMembers, gp));
 	}
 
 	@Test
@@ -515,7 +549,7 @@ public class DeviceServiceImplTest {
 			member.setPriority((long) 12);
 			members.add(member);
 			gp.setMembers(members);
-			Assert.assertNotNull(AccessoryInsuranceServiceImpl.getInsuranceProductList(null, gp));
+			Assert.assertNotNull(accessoryInsuranceServiceImpl.getInsuranceProductList(null, gp));
 		} catch (Exception e) {
 
 		}
@@ -526,13 +560,13 @@ public class DeviceServiceImplTest {
 		Group gp = new Group();
 		gp.setGroupType("acd");
 		List<Member> listOfInsuranceMembers = new ArrayList<>();
-		Assert.assertNotNull(AccessoryInsuranceServiceImpl.getInsuranceProductList(listOfInsuranceMembers, gp));
+		Assert.assertNotNull(accessoryInsuranceServiceImpl.getInsuranceProductList(listOfInsuranceMembers, gp));
 	}
 
 	@Test
 	public void testValidateInsuranceNullable() {
 		try {
-			AccessoryInsuranceServiceImpl.validateInsuranceNullable(null, null);
+			accessoryInsuranceServiceImpl.validateInsuranceNullable(null, null);
 		} catch (Exception e) {
 			Assert.assertEquals( "No Compatible Insurances found for given device Id",e.getMessage());
 		}
@@ -544,7 +578,7 @@ public class DeviceServiceImplTest {
 			Insurances insurance = new Insurances();
 			List<Insurance> insuranceList = new ArrayList<>();
 			insurance.setInsuranceList(insuranceList);
-			AccessoryInsuranceServiceImpl.validateInsuranceNullable(null, insurance);
+			accessoryInsuranceServiceImpl.validateInsuranceNullable(null, insurance);
 		} catch (Exception e) {
 			Assert.assertEquals( "No Compatible Insurances found for given device Id",e.getMessage());
 		}
@@ -556,7 +590,7 @@ public class DeviceServiceImplTest {
 			Group gp = new Group();
 			gp.setGroupType(null);
 			List<Member> listOfInsuranceMembers = new ArrayList<>();
-			Assert.assertNotNull(AccessoryInsuranceServiceImpl.getInsuranceProductList(listOfInsuranceMembers, gp));
+			Assert.assertNotNull(accessoryInsuranceServiceImpl.getInsuranceProductList(listOfInsuranceMembers, gp));
 		} catch (Exception e) {
 			Assert.assertEquals( "No Compatible Insurances found for given device Id",e.getMessage());
 		}
@@ -568,7 +602,7 @@ public class DeviceServiceImplTest {
 			Group gp = new Group();
 			gp.setGroupType(null);
 			List<Member> listOfInsuranceMembers = new ArrayList<>();
-			Assert.assertNotNull(AccessoryInsuranceServiceImpl.getInsuranceProductList(listOfInsuranceMembers, null));
+			Assert.assertNotNull(accessoryInsuranceServiceImpl.getInsuranceProductList(listOfInsuranceMembers, null));
 		} catch (Exception e) {
 			Assert.assertEquals("No Compatible Insurances found for given device Id",e.getMessage());
 		}
@@ -577,7 +611,7 @@ public class DeviceServiceImplTest {
 	@Test
 	public void getInsuranceByDeviceIdNull() {
 		try {
-			Assert.assertNotNull(accessoryInsuranceService.getInsuranceByDeviceId(null, "Acquisition"));
+			Assert.assertNotNull(accessoryInsuranceServiceImpl.getInsuranceByDeviceId(null, "Acquisition"));
 		} catch (Exception e) {
 			Assert.assertEquals( "No Compatible Insurances found for given device Id",e.getMessage());
 		}
@@ -586,7 +620,7 @@ public class DeviceServiceImplTest {
 	@Test
 	public void getInsuranceByDeviceIdInvalid() {
 		try {
-			Assert.assertNotNull(accessoryInsuranceService.getInsuranceByDeviceId("098578", "Acquisition"));
+			Assert.assertNotNull(accessoryInsuranceServiceImpl.getInsuranceByDeviceId("098578", "Acquisition"));
 		} catch (Exception e) {
 			Assert.assertEquals( "No Compatible Insurances found for given device Id",e.getMessage());
 		}
@@ -595,7 +629,7 @@ public class DeviceServiceImplTest {
 	@Test
 	public void getInsuranceByDeviceIdInvalidDevice() {
 		try {
-			Assert.assertNotNull(accessoryInsuranceService.getInsuranceByDeviceId("098578asa", "Acquisition"));
+			Assert.assertNotNull(accessoryInsuranceServiceImpl.getInsuranceByDeviceId("098578asa", "Acquisition"));
 		} catch (Exception e) {
 			Assert.assertEquals( "No Compatible Insurances found for given device Id",e.getMessage());
 		}
@@ -607,7 +641,7 @@ public class DeviceServiceImplTest {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			cp.setIsDeviceProduct(false);
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
-			Assert.assertNotNull(accessoryInsuranceService.getInsuranceByDeviceId("098578asa", "Acquisition"));
+			Assert.assertNotNull(accessoryInsuranceServiceImpl.getInsuranceByDeviceId("098578asa", "Acquisition"));
 		} catch (Exception e) {
 			Assert.assertEquals( "Given DeviceId is not ProductClass Handset",e.getMessage());
 		}
@@ -619,7 +653,7 @@ public class DeviceServiceImplTest {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			cp.setProductClass("abc");
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
-			Assert.assertNotNull(accessoryInsuranceService.getInsuranceByDeviceId("098578asa", "Acquisition"));
+			Assert.assertNotNull(accessoryInsuranceServiceImpl.getInsuranceByDeviceId("098578asa", "Acquisition"));
 		} catch (Exception e) {
 			Assert.assertEquals( "Given DeviceId is not ProductClass Handset",e.getMessage());
 		}
@@ -631,7 +665,7 @@ public class DeviceServiceImplTest {
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353_PAYG();
 			cp.setProductGroups(null);
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
-			Assert.assertNotNull(accessoryInsuranceService.getInsuranceByDeviceId("098578asa", "Acquisition"));
+			Assert.assertNotNull(accessoryInsuranceServiceImpl.getInsuranceByDeviceId("098578asa", "Acquisition"));
 		} catch (Exception e) {
 			Assert.assertEquals( "No Compatible Insurances found for given device Id",e.getMessage());
 		}
@@ -645,7 +679,7 @@ public class DeviceServiceImplTest {
 			pg.setProductGroup(null);
 			cp.setProductGroups(pg);
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
-			Assert.assertNull(accessoryInsuranceService.getInsuranceByDeviceId("098578asa", "Acquisition"));
+			Assert.assertNull(accessoryInsuranceServiceImpl.getInsuranceByDeviceId("098578asa", "Acquisition"));
 		} catch (Exception e) {
 			Assert.assertEquals( "No Compatible Insurances found for given device Id",e.getMessage());
 		}
@@ -660,7 +694,7 @@ public class DeviceServiceImplTest {
 			pg.setProductGroup(pgg);
 			cp.setProductGroups(pg);
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
-			Assert.assertNull(accessoryInsuranceService.getInsuranceByDeviceId("098578asa", "Acquisition"));
+			Assert.assertNull(accessoryInsuranceServiceImpl.getInsuranceByDeviceId("098578asa", "Acquisition"));
 		} catch (Exception e) {
 			Assert.assertEquals( "No Compatible Insurances found for given device Id",e.getMessage());
 		}
@@ -670,7 +704,7 @@ public class DeviceServiceImplTest {
 	public void getInsuranceCPNull() {
 		try {
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(null);
-			Assert.assertNotNull(accessoryInsuranceService.getInsuranceByDeviceId("098578asa", "Acquisition"));
+			Assert.assertNotNull(accessoryInsuranceServiceImpl.getInsuranceByDeviceId("098578asa", "Acquisition"));
 		} catch (Exception e) {
 			Assert.assertEquals( "No Compatible Insurances found for given device Id",e.getMessage());
 		}
@@ -691,7 +725,7 @@ public class DeviceServiceImplTest {
 			pg.setProductGroup(pgg);
 			cp.setProductGroups(pg);
 			given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
-			Assert.assertNotNull(accessoryInsuranceService.getInsuranceByDeviceId("098578asa", "Acquisition"));
+			Assert.assertNotNull(accessoryInsuranceServiceImpl.getInsuranceByDeviceId("098578asa", "Acquisition"));
 		} catch (Exception e) {
 			Assert.assertEquals( "No Compatible Insurances found for given device Id",e.getMessage());
 		}
@@ -1040,7 +1074,7 @@ public class DeviceServiceImplTest {
 	@Test
 	public void testGetJourneyAndOfferCodeValidationForPAYG() {
 		try {
-			Validator.getJourneyAndOfferCodeValidationForPAYG("", JOURNEY_TYPE_ACQUISITION);
+			validator.getJourneyAndOfferCodeValidationForPAYG("", JOURNEY_TYPE_ACQUISITION);
 		} catch (Exception e) {
 			Assert.assertEquals( null,e.getMessage());
 		}
@@ -1049,7 +1083,7 @@ public class DeviceServiceImplTest {
 	@Test
 	public void testGetJourneyAndOfferCodeValidationForPAYGNull() {
 		try {
-			Validator.getJourneyAndOfferCodeValidationForPAYG("", "");
+			validator.getJourneyAndOfferCodeValidationForPAYG("", "");
 		} catch (Exception e) {
 			Assert.assertEquals( null,e.getMessage());
 		}
@@ -1597,7 +1631,7 @@ public class DeviceServiceImplTest {
 
 	@Test
 	public void testGetDoubleFrmString() {
-		Double price = DeviceUtils.getDoubleFrmString("2.5");
+		Double price = deviceUtils.getDoubleFrmString("2.5");
 		Assert.assertNotNull(price);
 		Assert.assertEquals( 2.5,price, 0);
 	}
@@ -1608,7 +1642,7 @@ public class DeviceServiceImplTest {
 		minimumPriceMap.put("093353", "12.8");
 		Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap = new HashMap<>();
 		groupNamePriceMap.put("093353", CommonMethods.getPriceForBundleAndHardwareListFromTupleList());
-		DeviceUtils.getMinimumPriceMapForPayG(minimumPriceMap, groupNamePriceMap);
+		deviceUtils.getMinimumPriceMapForPayG(minimumPriceMap, groupNamePriceMap);
 	}
 
 	@Test
@@ -1622,9 +1656,9 @@ public class DeviceServiceImplTest {
 		monthlyPrice.setVat("11");
 		bundlePrice.setMonthlyPrice(monthlyPrice);
 		Assert.assertNotNull(
-				DeviceServiceImplUtility.getDiscountTypeAndComparePriceImplementation(112.23, bundlePrice));
+				deviceServiceImplUtility.getDiscountTypeAndComparePriceImplementation(112.23, bundlePrice));
 		Assert.assertTrue(
-				DeviceServiceImplUtility.getDiscountTypeAndComparePriceImplementation(112.23, bundlePrice));
+				deviceServiceImplUtility.getDiscountTypeAndComparePriceImplementation(112.23, bundlePrice));
 	}
 
 	@Test
@@ -1639,7 +1673,7 @@ public class DeviceServiceImplTest {
 		deviceSummary.setLeadPlanDisplayName("Yearly Plan");
 		deviceSummary.setMemory("64GB");
 		deviceSummary.setPreOrderable(false);
-		DeviceServiceImplUtility.isPlanAffordableImplementation(deviceSummary, CommonMethods.getCommercialBundle(),
+		deviceServiceImplUtility.isPlanAffordableImplementation(deviceSummary, CommonMethods.getCommercialBundle(),
 				222.3, true);
 	}
 
@@ -1744,13 +1778,13 @@ public class DeviceServiceImplTest {
 
 	@Test
 	public void testSortedPriceForBundleAndHardware() {
-		Assert.assertNotNull(DeviceUtils.sortedPriceForBundleAndHardware(CommonMethods.getPriceForBundleAndHardware()));
+		Assert.assertNotNull(deviceUtils.sortedPriceForBundleAndHardware(CommonMethods.getPriceForBundleAndHardware()));
 	}
 
 	@Test
 	public void testSortedPriceForBundleAndHardwareForPayG() {
 		Assert.assertNotNull(
-				DeviceUtils.sortedPriceForBundleAndHardwareForPayG(CommonMethods.getPriceForBundleAndHardware()));
+				deviceUtils.sortedPriceForBundleAndHardwareForPayG(CommonMethods.getPriceForBundleAndHardware()));
 	}
 
 	// getIlsBundleHardwarePriceMap
@@ -1761,7 +1795,7 @@ public class DeviceServiceImplTest {
 		Map<String, List<BundleAndHardwareTuple>> bundleHardwareTroupleMap = new HashMap<>();
 		bundleHardwareTroupleMap.put("093353", CommonMethods.getBundleAndHardwareTuple());
 
-		DeviceUtils.getIlsBundleHardwarePriceMap(setOffer, bundleHardwareTroupleMap, "093353", "110154",
+		deviceUtils.getIlsBundleHardwarePriceMap(setOffer, bundleHardwareTroupleMap, "093353", "110154",
 				Arrays.asList("promoteAs"));
 	}
 
@@ -1785,13 +1819,13 @@ public class DeviceServiceImplTest {
 
 	@Test
 	public void getDecimalFormat() {
-		CommonUtility.getDecimalFormat();
+		commonUtility.getDecimalFormat();
 	}
 
 	@Test
 	public void getJSONFromString() {
 		try {
-			CommonUtility.getJSONFromString("dasdasd3123");
+			commonUtility.getJSONFromString("dasdasd3123");
 		} catch (Exception e) {
 			Assert.assertEquals(ExceptionMessages.ERROR_STRING_TO_JSONOBJECT, e.getMessage());
 		}
@@ -1826,14 +1860,14 @@ public class DeviceServiceImplTest {
 	@Test
 	public void isProductJourneySpecific() {
 		CommercialProduct cp = CommonMethods.getCommercialProduct();
-		Assert.assertNotNull(CommonUtility.isProductJourneySpecific(cp, JOURNEYTYPE_UPGRADE));
-		Assert.assertTrue(CommonUtility.isProductJourneySpecific(cp, JOURNEYTYPE_UPGRADE));
+		Assert.assertNotNull(commonUtility.isProductJourneySpecific(cp, JOURNEYTYPE_UPGRADE));
+		Assert.assertTrue(commonUtility.isProductJourneySpecific(cp, JOURNEYTYPE_UPGRADE));
 	}
 
 	@Test
 	public void isProductJourneySpecificJTBlank() {
 		CommercialProduct cp = CommonMethods.getCommercialProduct();
-		Assert.assertNotNull(CommonUtility.isProductJourneySpecific(cp, ""));
+		Assert.assertNotNull(commonUtility.isProductJourneySpecific(cp, ""));
 	}
 
 	@Test
@@ -1850,13 +1884,13 @@ public class DeviceServiceImplTest {
 		mp.setGross("20");
 		bp.setMonthlyDiscountPrice(mp);
 		price.setBundlePrice(bp);
-		Assert.assertNotNull(DeviceUtils.getmonthlyPriceFormPrice(price));
+		Assert.assertNotNull(deviceUtils.getmonthlyPriceFormPrice(price));
 	}
 
 	@Test
 	public void getmonthlyPriceFormPriceNull() {
 		try {
-			DeviceUtils.getmonthlyPriceFormPrice(null);
+			deviceUtils.getmonthlyPriceFormPrice(null);
 		} catch (Exception e) {
 			Assert.assertEquals( null,e.getMessage());
 		}
@@ -1867,7 +1901,7 @@ public class DeviceServiceImplTest {
 		try {
 			PriceForBundleAndHardware price = CommonMethods.getUtilityPriceForBundleAndHardware();
 			price.setBundlePrice(null);
-			DeviceUtils.getmonthlyPriceFormPrice(price);
+			deviceUtils.getmonthlyPriceFormPrice(price);
 		} catch (Exception e) {
 			Assert.assertEquals( null,e.getMessage());
 		}
@@ -1880,7 +1914,7 @@ public class DeviceServiceImplTest {
 			BundlePrice bp = price.getBundlePrice();
 			bp.setMonthlyDiscountPrice(null);
 			price.setBundlePrice(bp);
-			DeviceUtils.getmonthlyPriceFormPrice(price);
+			deviceUtils.getmonthlyPriceFormPrice(price);
 		} catch (Exception e) {
 			Assert.assertEquals( null,e.getMessage());
 		}
@@ -1895,7 +1929,7 @@ public class DeviceServiceImplTest {
 			mp.setGross(null);
 			bp.setMonthlyDiscountPrice(mp);
 			price.setBundlePrice(bp);
-			DeviceUtils.getmonthlyPriceFormPrice(price);
+			deviceUtils.getmonthlyPriceFormPrice(price);
 		} catch (Exception e) {
 			Assert.assertEquals( null,e.getMessage());
 		}
@@ -1907,7 +1941,7 @@ public class DeviceServiceImplTest {
 			PriceForBundleAndHardware price = CommonMethods.getUtilityPriceForBundleAndHardware();
 			List<PriceForBundleAndHardware> priceList = new ArrayList<>();
 			priceList.add(price);
-			DeviceUtils.leastMonthlyPrice(priceList);
+			deviceUtils.leastMonthlyPrice(priceList);
 		}
 
 		catch (Exception e) {
@@ -1920,7 +1954,7 @@ public class DeviceServiceImplTest {
 		PriceForBundleAndHardware price = CommonMethods.getUtilityPriceForBundleAndHardware();
 		List<PriceForBundleAndHardware> priceList = new ArrayList<>();
 		priceList.add(price);
-		Assert.assertNotNull(DeviceUtils.sortedPriceForBundleAndHardware(priceList));
+		Assert.assertNotNull(deviceUtils.sortedPriceForBundleAndHardware(priceList));
 	}
 
 	@Test
@@ -1928,13 +1962,13 @@ public class DeviceServiceImplTest {
 		PriceForBundleAndHardware price = CommonMethods.getUtilityPriceForBundleAndHardware();
 		List<PriceForBundleAndHardware> priceList = new ArrayList<>();
 		priceList.add(price);
-		Assert.assertNotNull(DeviceUtils.sortedPriceForBundleAndHardwareForPayG(priceList));
+		Assert.assertNotNull(deviceUtils.sortedPriceForBundleAndHardwareForPayG(priceList));
 	}
 
 	@Test
 	public void getmonthlyPriceFormPriceForPayGNulll() {
 		try {
-			DeviceUtils.getmonthlyPriceFormPriceForPayG(null);
+			deviceUtils.getmonthlyPriceFormPriceForPayG(null);
 		} catch (Exception e) {
 			Assert.assertEquals( null,e.getMessage());
 		}
@@ -1945,7 +1979,7 @@ public class DeviceServiceImplTest {
 		try {
 			PriceForBundleAndHardware price = CommonMethods.getUtilityPriceForBundleAndHardware();
 			price.setHardwarePrice(null);
-			DeviceUtils.getmonthlyPriceFormPriceForPayG(price);
+			deviceUtils.getmonthlyPriceFormPriceForPayG(price);
 		} catch (Exception e) {
 			Assert.assertEquals( null,e.getMessage());
 		}
@@ -1958,7 +1992,7 @@ public class DeviceServiceImplTest {
 			HardwarePrice bp = price.getHardwarePrice();
 			bp.setOneOffDiscountPrice(null);
 			price.setHardwarePrice(bp);
-			DeviceUtils.getmonthlyPriceFormPrice(price);
+			deviceUtils.getmonthlyPriceFormPrice(price);
 		} catch (Exception e) {
 			Assert.assertEquals( null,e.getMessage());
 		}
@@ -1973,14 +2007,14 @@ public class DeviceServiceImplTest {
 			mp.setGross(null);
 			bp.setOneOffDiscountPrice(mp);
 			price.setHardwarePrice(bp);
-			DeviceUtils.getmonthlyPriceFormPrice(price);
+			deviceUtils.getmonthlyPriceFormPrice(price);
 		} catch (Exception e) {
 			Assert.assertEquals( null,e.getMessage());
 		}
 	}
 	@Test
 	public void getMemberForCaceDevice() {
-		DeviceUtils.getMemberForCaceDevice(CommonMethods.getListOfProducts(), CommonMethods.getleadMemberMap(),
+		deviceUtils.getMemberForCaceDevice(CommonMethods.getListOfProducts(), CommonMethods.getleadMemberMap(),
 				CommonMethods.getGroupp(), CommonMethods.getMemberListPojo(), "1231", "abc");
 	}
 
@@ -1990,7 +2024,7 @@ public class DeviceServiceImplTest {
 		Set<BundleAndHardwareTuple> bundleAndHardwareTuple = new HashSet<>();
 		bundleAndHardwareTuple.add(CommonMethods.getBundleAndHardwareTuplee());
 		bundleIds.add("1231");
-		DeviceUtils.getBundleharwareTrupleForPaymCacheDevice(bundleIds, CommonMethods.getBundleAndHardwareTuple(),
+		deviceUtils.getBundleharwareTrupleForPaymCacheDevice(bundleIds, CommonMethods.getBundleAndHardwareTuple(),
 				CommonMethods.getBundleAndHardwareTuple(), bundleAndHardwareTuple, CommonMethods.getleadMemberMap(),
 				CommonMethods.getleadMemberMapp(), CommonMethods.getCommercialProductsListOfAccessories());
 	}
@@ -2016,7 +2050,7 @@ public class DeviceServiceImplTest {
 	}
 	@Test
 	public void testconvertCoherenceDeviceToDeviceTile_PAYG() {
-		DeviceSummary deviceSummary = DeviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceTilePAYG(
+		DeviceSummary deviceSummary = deviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceTilePAYG(
 				Long.valueOf(1), CommonMethods.getCommercialProduct(),
 				CommonMethods.getPriceForBundleAndHardware().get(0),
 				CommonMethods.getListOfBundleAndHardwarePromotions().get(0), cdnDomain);
@@ -2027,7 +2061,7 @@ public class DeviceServiceImplTest {
 
 	@Test
 	public void testconvertCoherenceDeviceToDeviceTile() {
-		DeviceSummary deviceSummary = DeviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceTile(null,
+		DeviceSummary deviceSummary = deviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceTile(null,
 				CommonMethods.getCommercialProduct(), CommonMethods.getCommercialBundle(),
 				CommonMethods.getUtilityPriceForBundleAndHardware(),
 				CommonMethods.getListOfBundleAndHardwarePromotions(), "DEVICE_PAYG", true, null, cdnDomain);
@@ -2036,7 +2070,7 @@ public class DeviceServiceImplTest {
 	}
 	@Test
 	public void testappendPrefixString() {
-		String deviceId = CommonUtility.appendPrefixString("093353");
+		String deviceId = commonUtility.appendPrefixString("093353");
 		Assert.assertNotNull(deviceId);
 		Assert.assertEquals( "sku93353",deviceId);
 	}

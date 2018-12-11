@@ -35,6 +35,9 @@ public class DeviceEntityServiceImpl implements DeviceEntityService {
 	@Autowired
 	DeviceESHelper deviceEs;
 	
+	@Autowired
+	DeviceServiceImplUtility deviceServiceImplUtility;
+	
 	DeviceUtils deviceUtils = new DeviceUtils();
 
 	/**
@@ -46,7 +49,7 @@ public class DeviceEntityServiceImpl implements DeviceEntityService {
 	 */
 	@Override
 	public List<CommercialProduct> getCommercialProductDetails(String productIdOrName) {
-		List<String> listOfProdIdsOrNames = DeviceServiceImplUtility.getListOfProductIdsOrNames(productIdOrName);
+		List<String> listOfProdIdsOrNames = deviceServiceImplUtility.getListOfProductIdsOrNames(productIdOrName);
 		List<CommercialProduct> listOfCommercialProduct = deviceEs.getListOfCommercialProduct(listOfProdIdsOrNames);
 		if (CollectionUtils.isEmpty(listOfCommercialProduct)) {
 			log.error( ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID + " : " + productIdOrName);

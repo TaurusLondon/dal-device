@@ -8,6 +8,8 @@ import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.device.client.entity.bundle.BundleModel;
 import com.vf.uk.dal.device.client.entity.bundle.CommercialBundle;
@@ -50,6 +52,7 @@ import lombok.extern.slf4j.Slf4j;
  **/
 
 @Slf4j
+@Component
 public class DeviceTilesDaoUtils {
 
 	public static final String DATA_NOT_FOUND = "NA";
@@ -102,6 +105,9 @@ public class DeviceTilesDaoUtils {
 	public static final String STRING_FOR_IMAGE_SUPPORT = "imageURLs.support";
 	public static final String STRING_FOR_IMAGE_ICON = "imageURLs.icon";
 
+	@Autowired
+	CommonUtility commonUtility;
+	
 	/**
 	 * @author manoj.bera
 	 * @param priceForBundleAndHardware
@@ -110,7 +116,7 @@ public class DeviceTilesDaoUtils {
 	 * @param comBundle
 	 * @return PriceForBundleAndHardware
 	 */
-	public static PriceForBundleAndHardware getBundleAndHardwarePrice(
+	public PriceForBundleAndHardware getBundleAndHardwarePrice(
 			PriceForBundleAndHardware priceForBundleAndHardware, String deviceId, boolean isConditionalAcceptJourney,
 			CommercialBundle comBundle) {
 		PriceForBundleAndHardware priceForBundleAndHardware1 = null;
@@ -132,7 +138,7 @@ public class DeviceTilesDaoUtils {
 		return priceForBundleAndHardware1;
 	}
 
-	private static boolean checkHardwarePriceNull(PriceForBundleAndHardware priceForBundleAndHardware) {
+	private boolean checkHardwarePriceNull(PriceForBundleAndHardware priceForBundleAndHardware) {
 		return priceForBundleAndHardware.getHardwarePrice() != null
 				&& priceForBundleAndHardware.getHardwarePrice().getOneOffPrice() != null
 				&& priceForBundleAndHardware.getHardwarePrice().getOneOffDiscountPrice() != null
@@ -144,7 +150,7 @@ public class DeviceTilesDaoUtils {
 	 * @param priceForBundleAndHardware1
 	 * @return PriceForBundleAndHardware
 	 */
-	public static PriceForBundleAndHardware getCalculatedPrice(PriceForBundleAndHardware priceForBundleAndHardware1) {
+	public PriceForBundleAndHardware getCalculatedPrice(PriceForBundleAndHardware priceForBundleAndHardware1) {
 		if (priceForBundleAndHardware1.getHardwarePrice() != null && checkOeOnffPriceNull(priceForBundleAndHardware1)
 				&& priceForBundleAndHardware1.getHardwarePrice().getOneOffPrice().getGross().equalsIgnoreCase(
 						priceForBundleAndHardware1.getHardwarePrice().getOneOffDiscountPrice().getGross())) {
@@ -168,14 +174,14 @@ public class DeviceTilesDaoUtils {
 		return priceForBundleAndHardware1;
 	}
 
-	private static boolean checkMonthlyPriceNull(PriceForBundleAndHardware priceForBundleAndHardware1) {
+	private boolean checkMonthlyPriceNull(PriceForBundleAndHardware priceForBundleAndHardware1) {
 		return priceForBundleAndHardware1.getBundlePrice().getMonthlyDiscountPrice() != null
 				&& priceForBundleAndHardware1.getBundlePrice().getMonthlyPrice() != null
 				&& priceForBundleAndHardware1.getBundlePrice().getMonthlyDiscountPrice().getGross() != null
 				&& priceForBundleAndHardware1.getBundlePrice().getMonthlyPrice().getGross() != null;
 	}
 
-	private static boolean checkOeOnffPriceNull(PriceForBundleAndHardware priceForBundleAndHardware1) {
+	private boolean checkOeOnffPriceNull(PriceForBundleAndHardware priceForBundleAndHardware1) {
 		return priceForBundleAndHardware1.getHardwarePrice().getOneOffPrice() != null
 				&& priceForBundleAndHardware1.getOneOffDiscountPrice() != null
 				&& priceForBundleAndHardware1.getOneOffDiscountPrice().getGross() != null
@@ -190,7 +196,7 @@ public class DeviceTilesDaoUtils {
 	 * @param preOrderableFlag
 	 * @return flag
 	 */
-	public static Boolean dateValidation(Date startDateTime, Date endDateTime, boolean preOrderableFlag) {
+	public Boolean dateValidation(Date startDateTime, Date endDateTime, boolean preOrderableFlag) {
 		Date currentDate = new Date();
 		boolean flag = false;
 
@@ -247,7 +253,7 @@ public class DeviceTilesDaoUtils {
 	 * @param plans
 	 * @return List<PriceForBundleAndHardware>
 	 */
-	public static List<PriceForBundleAndHardware> sortPlansBasedOnMonthlyPrice(List<PriceForBundleAndHardware> plans) {
+	public List<PriceForBundleAndHardware> sortPlansBasedOnMonthlyPrice(List<PriceForBundleAndHardware> plans) {
 		Collections.sort(plans, (PriceForBundleAndHardware plans1, PriceForBundleAndHardware plans2) -> {
 			Double gross1 = null;
 			if (null != plans1.getBundlePrice()) {
@@ -271,7 +277,7 @@ public class DeviceTilesDaoUtils {
 	 * @param discountType
 	 * @return monthlyPrice
 	 */
-	public static Double getBundlePriceBasedOnDiscountDuration(
+	public Double getBundlePriceBasedOnDiscountDuration(
 			com.vf.uk.dal.device.client.entity.price.BundlePrice bundlePrice, String discountType) {
 		Double monthlyPrice = null;
 		if (null != discountType && discountType.equals(FULL_DURATION_DISCOUNT)) {
@@ -293,7 +299,7 @@ public class DeviceTilesDaoUtils {
 	 * @param bundlePrice
 	 * @return
 	 */
-	public static String isPartialOrFullTenureDiscount(
+	public String isPartialOrFullTenureDiscount(
 			com.vf.uk.dal.device.client.entity.price.BundlePrice bundlePrice) {
 		if (null != bundlePrice.getMerchandisingPromotions()
 				&& null != bundlePrice.getMerchandisingPromotions().getMpType()) {
@@ -320,7 +326,7 @@ public class DeviceTilesDaoUtils {
 	 * @param bundleModelMap
 	 * @return FacetedDevice
 	 */
-	public static FacetedDevice convertProductModelListToDeviceList(List<ProductModel> listOfProductModel,
+	public FacetedDevice convertProductModelListToDeviceList(List<ProductModel> listOfProductModel,
 			List<String> listOfProducts, List<FacetField> facetFieldList, String groupType,
 			Map<String, BundleModel> bundleModelMap, Map<String, List<OfferAppliedPriceModel>> listOfOfferAppliedPrice,
 			String offerCode1, Map<String, String> groupNameWithProdId, Map<String, BundlePrice> bundleModelAndPriceMap,
@@ -1002,7 +1008,7 @@ public class DeviceTilesDaoUtils {
 							&& promotionmap.containsKey(productModel.getProductId())) {
 
 						BundleAndHardwarePromotions promotions = promotionmap.get(productModel.getProductId());
-						merchandisingPromotionsPackage = CommonUtility.getNonPricingPromotions(promotions, mediaList);
+						merchandisingPromotionsPackage = commonUtility.getNonPricingPromotions(promotions, mediaList);
 
 					}
 					if (StringUtils.isNotBlank(productModel.getImageURLsThumbsFront())) {
@@ -1010,7 +1016,7 @@ public class DeviceTilesDaoUtils {
 						mediaThumbsFrontLink.setId(STRING_FOR_IMAGE_THUMBS_FRONT);
 						mediaThumbsFrontLink.setType(STRING_FOR_MEDIA_TYPE);
 						mediaThumbsFrontLink.setValue(
-								CommonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsThumbsFront()));
+								commonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsThumbsFront()));
 						mediaList.add(mediaThumbsFrontLink);
 					}
 
@@ -1019,7 +1025,7 @@ public class DeviceTilesDaoUtils {
 						mediaThumbsLeftLink.setId(STRING_FOR_IMAGE_THUMBS_LEFT);
 						mediaThumbsLeftLink.setType(STRING_FOR_MEDIA_TYPE);
 						mediaThumbsLeftLink.setValue(
-								CommonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsThumbsLeft()));
+								commonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsThumbsLeft()));
 						mediaList.add(mediaThumbsLeftLink);
 					}
 
@@ -1028,7 +1034,7 @@ public class DeviceTilesDaoUtils {
 						mediaThumbsRightLink.setId(STRING_FOR_IMAGE_THUMBS_RIGHT);
 						mediaThumbsRightLink.setType(STRING_FOR_MEDIA_TYPE);
 						mediaThumbsRightLink.setValue(
-								CommonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsThumbsRight()));
+								commonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsThumbsRight()));
 						mediaList.add(mediaThumbsRightLink);
 					}
 
@@ -1037,7 +1043,7 @@ public class DeviceTilesDaoUtils {
 						mediaThumbsSideLink.setId(STRING_FOR_IMAGE_THUMBS_SIDE);
 						mediaThumbsSideLink.setType(STRING_FOR_MEDIA_TYPE);
 						mediaThumbsSideLink.setValue(
-								CommonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsThumbsSide()));
+								commonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsThumbsSide()));
 						mediaList.add(mediaThumbsSideLink);
 					}
 
@@ -1046,7 +1052,7 @@ public class DeviceTilesDaoUtils {
 						mediaFullLeftLink.setId(STRING_FOR_IMAGE_FULL_LEFT);
 						mediaFullLeftLink.setType(STRING_FOR_MEDIA_TYPE);
 						mediaFullLeftLink.setValue(
-								CommonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsFullLeft()));
+								commonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsFullLeft()));
 						mediaList.add(mediaFullLeftLink);
 					}
 
@@ -1055,7 +1061,7 @@ public class DeviceTilesDaoUtils {
 						mediaFullRightLink.setId(STRING_FOR_IMAGE_FULL_RIGHT);
 						mediaFullRightLink.setType(STRING_FOR_MEDIA_TYPE);
 						mediaFullRightLink.setValue(
-								CommonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsFullRight()));
+								commonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsFullRight()));
 						mediaList.add(mediaFullRightLink);
 					}
 
@@ -1064,7 +1070,7 @@ public class DeviceTilesDaoUtils {
 						mediaFullSideLink.setId(STRING_FOR_IMAGE_FULL_SIDE);
 						mediaFullSideLink.setType(STRING_FOR_MEDIA_TYPE);
 						mediaFullSideLink.setValue(
-								CommonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsFullSide()));
+								commonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsFullSide()));
 						mediaList.add(mediaFullSideLink);
 					}
 
@@ -1073,7 +1079,7 @@ public class DeviceTilesDaoUtils {
 						mediaFullBackLink.setId(STRING_FOR_IMAGE_FULL_BACK);
 						mediaFullBackLink.setType(STRING_FOR_MEDIA_TYPE);
 						mediaFullBackLink.setValue(
-								CommonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsFullBack()));
+								commonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsFullBack()));
 						mediaList.add(mediaFullBackLink);
 					}
 
@@ -1082,7 +1088,7 @@ public class DeviceTilesDaoUtils {
 						mediaGridLink.setId(STRING_FOR_IMAGE_GRID);
 						mediaGridLink.setType(STRING_FOR_MEDIA_TYPE);
 						mediaGridLink
-								.setValue(CommonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsGrid()));
+								.setValue(commonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsGrid()));
 						mediaList.add(mediaGridLink);
 					}
 
@@ -1091,7 +1097,7 @@ public class DeviceTilesDaoUtils {
 						mediaSmallLink.setId(STRING_FOR_IMAGE_SMALL);
 						mediaSmallLink.setType(STRING_FOR_MEDIA_TYPE);
 						mediaSmallLink
-								.setValue(CommonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsSmall()));
+								.setValue(commonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsSmall()));
 						mediaList.add(mediaSmallLink);
 					}
 
@@ -1100,7 +1106,7 @@ public class DeviceTilesDaoUtils {
 						mediaStickerLink.setId(STRING_FOR_IMAGE_STICKER);
 						mediaStickerLink.setType(STRING_FOR_MEDIA_TYPE);
 						mediaStickerLink.setValue(
-								CommonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsSticker()));
+								commonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsSticker()));
 						mediaList.add(mediaStickerLink);
 					}
 
@@ -1109,7 +1115,7 @@ public class DeviceTilesDaoUtils {
 						mediaIconLink.setId(STRING_FOR_IMAGE_ICON);
 						mediaIconLink.setType(STRING_FOR_MEDIA_TYPE);
 						mediaIconLink
-								.setValue(CommonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsIcon()));
+								.setValue(commonUtility.getImageMediaUrl(cdnDomain, productModel.getImageURLsIcon()));
 						mediaList.add(mediaIconLink);
 					}
 
@@ -1118,7 +1124,7 @@ public class DeviceTilesDaoUtils {
 						media3DSpinLink.setId(STRING_FOR_IMAGE_3DSPIN);
 						media3DSpinLink.setType(STRING_FOR_MEDIA_TYPE);
 						media3DSpinLink
-								.setValue(CommonUtility.getImageMediaUrl(cdnDomain, productModel.getThreeDSpin()));
+								.setValue(commonUtility.getImageMediaUrl(cdnDomain, productModel.getThreeDSpin()));
 						mediaList.add(media3DSpinLink);
 					}
 
@@ -1126,7 +1132,7 @@ public class DeviceTilesDaoUtils {
 						MediaLink mediaSupportLink = new MediaLink();
 						mediaSupportLink.setId(STRING_FOR_IMAGE_SUPPORT);
 						mediaSupportLink.setType(STRING_FOR_MEDIA_TYPE);
-						mediaSupportLink.setValue(CommonUtility.getImageMediaUrl(cdnDomain, productModel.getSupport()));
+						mediaSupportLink.setValue(commonUtility.getImageMediaUrl(cdnDomain, productModel.getSupport()));
 						mediaList.add(mediaSupportLink);
 					}
 
@@ -1168,7 +1174,7 @@ public class DeviceTilesDaoUtils {
 		return facetedDevice;
 	}
 
-	private static boolean checkOfferCodNullForMedia(String offerCode, String leadPlanId, boolean offerFlag,
+	private boolean checkOfferCodNullForMedia(String offerCode, String leadPlanId, boolean offerFlag,
 			String[] mediaStrList, int i, String[] typeArray) {
 		return !DATA_NOT_FOUND.equalsIgnoreCase(mediaStrList[i + 4])
 				&& PROMO_CATEGORY_PRICING_DISCOUNT.equalsIgnoreCase(mediaStrList[i + 3])
@@ -1176,25 +1182,25 @@ public class DeviceTilesDaoUtils {
 				&& leadPlanId.equalsIgnoreCase(typeArray[1]);
 	}
 
-	private static boolean checkPriceInfoNull(Device deviceDetails) {
+	private boolean checkPriceInfoNull(Device deviceDetails) {
 		return deviceDetails.getPriceInfo() == null
 				|| (deviceDetails.getPriceInfo() != null && deviceDetails.getPriceInfo().getBundlePrice() == null
 						&& deviceDetails.getPriceInfo().getHardwarePrice() == null);
 	}
 
-	private static boolean checkAcqJourney(String journeyType, String offerCode) {
+	private boolean checkAcqJourney(String journeyType, String offerCode) {
 		return StringUtils.isBlank(offerCode)
 				&& (StringUtils.isNotBlank(journeyType) && !StringUtils.equals(JOURNEY_TYPE_ACQUISITION, journeyType));
 	}
 
-	private static void setOrderPreorderableAndAvailableFrom(ProductModel productModel,
+	private void setOrderPreorderableAndAvailableFrom(ProductModel productModel,
 			MerchandisingControl merchandisingControl) {
 		if (productModel.getOrder() != null) {
 			merchandisingControl.setOrder(productModel.getOrder());
 		}
 		if (getPreOrBackOderable(productModel.getPreOrderable())) {
 			if (productModel.getAvailableFrom() != null
-					&& CommonUtility.dateValidationForProduct(productModel.getAvailableFrom(), DATE_FORMAT_SOLR)) {
+					&& commonUtility.dateValidationForProduct(productModel.getAvailableFrom(), DATE_FORMAT_SOLR)) {
 				merchandisingControl.setPreorderable(true);
 				merchandisingControl.setAvailableFrom(productModel.getAvailableFrom());
 			} else {
@@ -1205,7 +1211,7 @@ public class DeviceTilesDaoUtils {
 		}
 	}
 
-	private static void setDeviceDetailsRating(Device deviceDetails, ProductModel productModel) {
+	private void setDeviceDetailsRating(Device deviceDetails, ProductModel productModel) {
 		if (productModel.getRating() != null && productModel.getRating() > 0.0) {
 			deviceDetails.setRating(String.valueOf(productModel.getRating()));
 		} else {
@@ -1213,7 +1219,7 @@ public class DeviceTilesDaoUtils {
 		}
 	}
 
-	private static void setDeviceDetailsName(Map<String, String> groupNameWithProdId, Device deviceDetails,
+	private void setDeviceDetailsName(Map<String, String> groupNameWithProdId, Device deviceDetails,
 			ProductModel productModel) {
 		if (productModel.getProductGroupName() != null) {
 			deviceDetails.setName(productModel.getProductGroupName());
@@ -1224,7 +1230,7 @@ public class DeviceTilesDaoUtils {
 		}
 	}
 
-	private static String setLeadPlanId(String journeyType, ProductModel productModel) {
+	private String setLeadPlanId(String journeyType, ProductModel productModel) {
 		String leadPlanId;
 		if (StringUtils.isNotBlank(journeyType) && StringUtils.equalsIgnoreCase(journeyType, JOURNEY_TYPE_UPGRADE)) {
 			leadPlanId = productModel.getUpgradeLeadPlanId();
@@ -1234,7 +1240,7 @@ public class DeviceTilesDaoUtils {
 		return leadPlanId;
 	}
 
-	private static void setDeviceDetailsColourSizeGroupId(Device deviceDetails,
+	private void setDeviceDetailsColourSizeGroupId(Device deviceDetails,
 			ProductGroupDetailsForDeviceList groupdeatils) {
 		if (groupdeatils != null) {
 			deviceDetails.setColor(groupdeatils.getColor());
@@ -1244,7 +1250,7 @@ public class DeviceTilesDaoUtils {
 		}
 	}
 
-	private static List<NewFacet> setListOfNewFacet(List<FacetField> facetFieldList) {
+	private List<NewFacet> setListOfNewFacet(List<FacetField> facetFieldList) {
 		List<NewFacet> listOfNewFacet = new ArrayList<>();
 		if (facetFieldList != null && !facetFieldList.isEmpty()) {
 			for (FacetField facetFields : facetFieldList) {
@@ -1254,7 +1260,7 @@ public class DeviceTilesDaoUtils {
 		return listOfNewFacet;
 	}
 
-	private static List<FacetWithCount> setListOfNewFacett(List<NewFacet> listOfNewFacet, FacetField facetFields) {
+	private List<FacetWithCount> setListOfNewFacett(List<NewFacet> listOfNewFacet, FacetField facetFields) {
 		NewFacet newFacet;
 		List<FacetWithCount> listOfFacetWithCount = null;
 		FacetWithCount facetWithCount;
@@ -1277,7 +1283,7 @@ public class DeviceTilesDaoUtils {
 		return listOfFacetWithCount;
 	}
 
-	private static boolean checkFacetFieldNames(FacetField facetFields) {
+	private boolean checkFacetFieldNames(FacetField facetFields) {
 		return facetFields.getName().equalsIgnoreCase(STRING_FACET_OPERATING_SYSYTEM)
 				|| facetFields.getName().equalsIgnoreCase(STRING_MUST_HAVE_FEATURES)
 				|| facetFields.getName().equalsIgnoreCase(STRING_EQUIPMENT_MAKE);
@@ -1289,7 +1295,7 @@ public class DeviceTilesDaoUtils {
 	 * @param priceForBundleAndHardware
 	 * @param bundlePrice
 	 */
-	public static void populateMerchandisingPromotions(PriceForBundleAndHardware priceForBundleAndHardware,
+	public void populateMerchandisingPromotions(PriceForBundleAndHardware priceForBundleAndHardware,
 			BundlePrice bundlePrice) {
 		if (null != priceForBundleAndHardware && null != bundlePrice
 				&& null != priceForBundleAndHardware.getBundlePrice()
@@ -1332,7 +1338,7 @@ public class DeviceTilesDaoUtils {
 	 * @param priceForBundleAndHardware
 	 * @param bundlePrice
 	 */
-	private static void mapDiscountMonthlyPrice(PriceForBundleAndHardware priceForBundleAndHardware,
+	private void mapDiscountMonthlyPrice(PriceForBundleAndHardware priceForBundleAndHardware,
 			BundlePrice bundlePrice) {
 		if (null != bundlePrice.getMonthlyDiscountPrice() && null != bundlePrice.getMonthlyDiscountPrice().getGross()) {
 			Price price = new Price();
@@ -1351,7 +1357,7 @@ public class DeviceTilesDaoUtils {
 	 * @param deviceFinancingOption
 	 * @return List <DeviceFinancingOption>
 	 */
-	public static List<com.vf.uk.dal.device.client.entity.price.DeviceFinancingOption> getDeviceFinaceOptions(
+	public List<com.vf.uk.dal.device.client.entity.price.DeviceFinancingOption> getDeviceFinaceOptions(
 			List<DeviceFinancingOption> deviceFinancingOption) {
 		List<com.vf.uk.dal.device.client.entity.price.DeviceFinancingOption> financeOptions = null;
 		if (deviceFinancingOption != null && !deviceFinancingOption.isEmpty()) {
@@ -1386,7 +1392,7 @@ public class DeviceTilesDaoUtils {
 	 * @param bundleModel
 	 * @return PriceForBundleAndHardware
 	 */
-	public static PriceForBundleAndHardware getBundleAndHardwarePriceFromSolrUtils(List<OfferAppliedPriceModel> offers,
+	public PriceForBundleAndHardware getBundleAndHardwarePriceFromSolrUtils(List<OfferAppliedPriceModel> offers,
 			String leadPlanId) {
 		PriceForBundleAndHardware priceForBundleAndHardware = new PriceForBundleAndHardware();
 		HardwarePrice hardwarePrice = new HardwarePrice();
@@ -1404,7 +1410,7 @@ public class DeviceTilesDaoUtils {
 
 	}
 
-	private static void setBundlePriceForOffer(PriceForBundleAndHardware priceForBundleAndHardware,
+	private void setBundlePriceForOffer(PriceForBundleAndHardware priceForBundleAndHardware,
 			com.vf.uk.dal.device.client.entity.price.BundlePrice bundlePrice, OfferAppliedPriceModel offer) {
 		if (offer.getMonthlyDiscountedGrossPrice() != null && offer.getMonthlyGrossPrice() != null
 				&& offer.getMonthlyDiscountedGrossPrice().equals(offer.getMonthlyGrossPrice())) {
@@ -1414,9 +1420,9 @@ public class DeviceTilesDaoUtils {
 			monthlyDiscountPrice.setVat(null);
 			Price monthlyPrice = new Price();
 
-			monthlyPrice.setGross(CommonUtility.getpriceFormat(offer.getMonthlyGrossPrice()));
-			monthlyPrice.setNet(CommonUtility.getpriceFormat(offer.getMonthlyNetPrice()));
-			monthlyPrice.setVat(CommonUtility.getpriceFormat(offer.getMonthlyVatPrice()));
+			monthlyPrice.setGross(commonUtility.getpriceFormat(offer.getMonthlyGrossPrice()));
+			monthlyPrice.setNet(commonUtility.getpriceFormat(offer.getMonthlyNetPrice()));
+			monthlyPrice.setVat(commonUtility.getpriceFormat(offer.getMonthlyVatPrice()));
 			bundlePrice.setMonthlyPrice(monthlyPrice);
 			bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
 			bundlePrice.setBundleId(offer.getBundleId());
@@ -1427,14 +1433,14 @@ public class DeviceTilesDaoUtils {
 			Price monthlyDiscountPrice = new Price();
 
 			monthlyDiscountPrice
-					.setGross(CommonUtility.getpriceFormat(offer.getMonthlyDiscountedGrossPrice()));
-			monthlyDiscountPrice.setNet(CommonUtility.getpriceFormat(offer.getMonthlyDiscountedNetPrice()));
-			monthlyDiscountPrice.setVat(CommonUtility.getpriceFormat(offer.getMonthlyDiscountedVatPrice()));
+					.setGross(commonUtility.getpriceFormat(offer.getMonthlyDiscountedGrossPrice()));
+			monthlyDiscountPrice.setNet(commonUtility.getpriceFormat(offer.getMonthlyDiscountedNetPrice()));
+			monthlyDiscountPrice.setVat(commonUtility.getpriceFormat(offer.getMonthlyDiscountedVatPrice()));
 			Price monthlyPrice = new Price();
 
-			monthlyPrice.setGross(CommonUtility.getpriceFormat(offer.getMonthlyGrossPrice()));
-			monthlyPrice.setNet(CommonUtility.getpriceFormat(offer.getMonthlyNetPrice()));
-			monthlyPrice.setVat(CommonUtility.getpriceFormat(offer.getMonthlyVatPrice()));
+			monthlyPrice.setGross(commonUtility.getpriceFormat(offer.getMonthlyGrossPrice()));
+			monthlyPrice.setNet(commonUtility.getpriceFormat(offer.getMonthlyNetPrice()));
+			monthlyPrice.setVat(commonUtility.getpriceFormat(offer.getMonthlyVatPrice()));
 			bundlePrice.setMonthlyPrice(monthlyPrice);
 			bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
 			bundlePrice.setBundleId(offer.getBundleId());
@@ -1444,7 +1450,7 @@ public class DeviceTilesDaoUtils {
 		}
 	}
 
-	private static void setHardwarePriceForOffer(PriceForBundleAndHardware priceForBundleAndHardware,
+	private void setHardwarePriceForOffer(PriceForBundleAndHardware priceForBundleAndHardware,
 			HardwarePrice hardwarePrice, OfferAppliedPriceModel offer) {
 		if (offer.getOneOffDiscountedGrossPrice() != null && offer.getOneOffGrossPrice() != null
 				&& offer.getOneOffGrossPrice().equals(offer.getOneOffDiscountedGrossPrice())) {
@@ -1454,9 +1460,9 @@ public class DeviceTilesDaoUtils {
 			oneOffDiscountPrice.setVat(null);
 			Price oneOffPrice = new Price();
 
-			oneOffPrice.setGross(CommonUtility.getpriceFormat(offer.getOneOffGrossPrice()));
-			oneOffPrice.setNet(CommonUtility.getpriceFormat(offer.getOneOffNetPrice()));
-			oneOffPrice.setVat(CommonUtility.getpriceFormat(offer.getOneOffVatPrice()));
+			oneOffPrice.setGross(commonUtility.getpriceFormat(offer.getOneOffGrossPrice()));
+			oneOffPrice.setNet(commonUtility.getpriceFormat(offer.getOneOffNetPrice()));
+			oneOffPrice.setVat(commonUtility.getpriceFormat(offer.getOneOffVatPrice()));
 			hardwarePrice.setOneOffPrice(oneOffPrice);
 			hardwarePrice.setOneOffDiscountPrice(oneOffDiscountPrice);
 			hardwarePrice.setHardwareId(offer.getProductId());
@@ -1467,14 +1473,14 @@ public class DeviceTilesDaoUtils {
 			Price oneOffDiscountPrice = new Price();
 
 			oneOffDiscountPrice
-					.setGross(CommonUtility.getpriceFormat(offer.getOneOffDiscountedGrossPrice()));
-			oneOffDiscountPrice.setNet(CommonUtility.getpriceFormat(offer.getOneOffDiscountedNetPrice()));
-			oneOffDiscountPrice.setVat(CommonUtility.getpriceFormat(offer.getOneOffDiscountedVatPrice()));
+					.setGross(commonUtility.getpriceFormat(offer.getOneOffDiscountedGrossPrice()));
+			oneOffDiscountPrice.setNet(commonUtility.getpriceFormat(offer.getOneOffDiscountedNetPrice()));
+			oneOffDiscountPrice.setVat(commonUtility.getpriceFormat(offer.getOneOffDiscountedVatPrice()));
 			Price oneOffPrice = new Price();
 
-			oneOffPrice.setGross(CommonUtility.getpriceFormat(offer.getOneOffGrossPrice()));
-			oneOffPrice.setNet(CommonUtility.getpriceFormat(offer.getOneOffNetPrice()));
-			oneOffPrice.setVat(CommonUtility.getpriceFormat(offer.getOneOffVatPrice()));
+			oneOffPrice.setGross(commonUtility.getpriceFormat(offer.getOneOffGrossPrice()));
+			oneOffPrice.setNet(commonUtility.getpriceFormat(offer.getOneOffNetPrice()));
+			oneOffPrice.setVat(commonUtility.getpriceFormat(offer.getOneOffVatPrice()));
 			hardwarePrice.setOneOffPrice(oneOffPrice);
 			hardwarePrice.setOneOffDiscountPrice(oneOffDiscountPrice);
 			hardwarePrice.setHardwareId(offer.getProductId());
@@ -1492,7 +1498,7 @@ public class DeviceTilesDaoUtils {
 	 * @param leadPlanId
 	 * @return PriceForBundleAndHardware
 	 */
-	public static PriceForBundleAndHardware getBundleAndHardwarePriceFromSolrWithoutOfferCode(ProductModel productModel,
+	public PriceForBundleAndHardware getBundleAndHardwarePriceFromSolrWithoutOfferCode(ProductModel productModel,
 			BundleModel bundleModel, String leadPlanId, String groupType) {
 		PriceForBundleAndHardware priceForBundleAndHardware = new PriceForBundleAndHardware();
 		HardwarePrice hardwarePrice = new HardwarePrice();
@@ -1511,7 +1517,7 @@ public class DeviceTilesDaoUtils {
 		return priceForBundleAndHardware;
 	}
 
-	private static void setPriceForPayg(ProductModel productModel, PriceForBundleAndHardware priceForBundleAndHardware,
+	private void setPriceForPayg(ProductModel productModel, PriceForBundleAndHardware priceForBundleAndHardware,
 			HardwarePrice hardwarePrice) {
 		if (productModel.getPaygOneOffDiscountedGrossPrice() != null
 				&& productModel.getPaygOneOffGrossPrice() != null && productModel.getPaygOneOffGrossPrice()
@@ -1526,9 +1532,9 @@ public class DeviceTilesDaoUtils {
 			oneOffDiscountPrice.setVat(null);
 			Price oneOffPrice = new Price();
 
-			oneOffPrice.setGross(CommonUtility.getpriceFormat(productModel.getPaygOneOffGrossPrice()));
-			oneOffPrice.setNet(CommonUtility.getpriceFormat(productModel.getPaygOneOffNetPrice()));
-			oneOffPrice.setVat(CommonUtility.getpriceFormat(productModel.getPaygOneOffVatPrice()));
+			oneOffPrice.setGross(commonUtility.getpriceFormat(productModel.getPaygOneOffGrossPrice()));
+			oneOffPrice.setNet(commonUtility.getpriceFormat(productModel.getPaygOneOffNetPrice()));
+			oneOffPrice.setVat(commonUtility.getpriceFormat(productModel.getPaygOneOffVatPrice()));
 			hardwarePrice.setOneOffPrice(oneOffPrice);
 			hardwarePrice.setOneOffDiscountPrice(oneOffDiscountPrice);
 			hardwarePrice.setHardwareId(productModel.getProductId());
@@ -1546,15 +1552,15 @@ public class DeviceTilesDaoUtils {
 			bundlePriceLocal.setMonthlyDiscountPrice(monthlyPrice);
 			Price oneOffDiscountPrice = new Price();
 			oneOffDiscountPrice
-					.setGross(CommonUtility.getpriceFormat(productModel.getPaygOneOffDiscountedGrossPrice()));
+					.setGross(commonUtility.getpriceFormat(productModel.getPaygOneOffDiscountedGrossPrice()));
 			oneOffDiscountPrice
-					.setNet(CommonUtility.getpriceFormat(productModel.getPaygOneOffDiscountedNetPrice()));
+					.setNet(commonUtility.getpriceFormat(productModel.getPaygOneOffDiscountedNetPrice()));
 			oneOffDiscountPrice
-					.setVat(CommonUtility.getpriceFormat(productModel.getPaygOneOffDiscountedVatPrice()));
+					.setVat(commonUtility.getpriceFormat(productModel.getPaygOneOffDiscountedVatPrice()));
 			Price oneOffPrice = new Price();
-			oneOffPrice.setGross(CommonUtility.getpriceFormat(productModel.getPaygOneOffGrossPrice()));
-			oneOffPrice.setNet(CommonUtility.getpriceFormat(productModel.getPaygOneOffNetPrice()));
-			oneOffPrice.setVat(CommonUtility.getpriceFormat(productModel.getPaygOneOffVatPrice()));
+			oneOffPrice.setGross(commonUtility.getpriceFormat(productModel.getPaygOneOffGrossPrice()));
+			oneOffPrice.setNet(commonUtility.getpriceFormat(productModel.getPaygOneOffNetPrice()));
+			oneOffPrice.setVat(commonUtility.getpriceFormat(productModel.getPaygOneOffVatPrice()));
 			hardwarePrice.setOneOffPrice(oneOffPrice);
 			hardwarePrice.setOneOffDiscountPrice(oneOffDiscountPrice);
 			hardwarePrice.setHardwareId(productModel.getProductId());
@@ -1566,7 +1572,7 @@ public class DeviceTilesDaoUtils {
 		}
 	}
 
-	private static void setMonthlyDiscountPriceBundle(BundleModel bundleModel,
+	private void setMonthlyDiscountPriceBundle(BundleModel bundleModel,
 			PriceForBundleAndHardware priceForBundleAndHardware,
 			com.vf.uk.dal.device.client.entity.price.BundlePrice bundlePrice) {
 		if (bundleModel.getMonthlyDiscountedGrossPrice() != null
@@ -1577,9 +1583,9 @@ public class DeviceTilesDaoUtils {
 			monthlyDiscountPrice.setNet(null);
 			monthlyDiscountPrice.setVat(null);
 			Price monthlyPrice = new Price();
-			monthlyPrice.setGross(CommonUtility.getpriceFormat(bundleModel.getMonthlyGrossPrice()));
-			monthlyPrice.setNet(CommonUtility.getpriceFormat(bundleModel.getMonthlyNetPrice()));
-			monthlyPrice.setVat(CommonUtility.getpriceFormat(bundleModel.getMonthlyVatPrice()));
+			monthlyPrice.setGross(commonUtility.getpriceFormat(bundleModel.getMonthlyGrossPrice()));
+			monthlyPrice.setNet(commonUtility.getpriceFormat(bundleModel.getMonthlyNetPrice()));
+			monthlyPrice.setVat(commonUtility.getpriceFormat(bundleModel.getMonthlyVatPrice()));
 			bundlePrice.setMonthlyPrice(monthlyPrice);
 			bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
 			bundlePrice.setBundleId(bundleModel.getBundleId());
@@ -1589,15 +1595,15 @@ public class DeviceTilesDaoUtils {
 		} else {
 			Price monthlyDiscountPrice = new Price();
 			monthlyDiscountPrice
-					.setGross(CommonUtility.getpriceFormat(bundleModel.getMonthlyDiscountedGrossPrice()));
+					.setGross(commonUtility.getpriceFormat(bundleModel.getMonthlyDiscountedGrossPrice()));
 			monthlyDiscountPrice
-					.setNet(CommonUtility.getpriceFormat(bundleModel.getMonthlyDiscountedNetPrice()));
+					.setNet(commonUtility.getpriceFormat(bundleModel.getMonthlyDiscountedNetPrice()));
 			monthlyDiscountPrice
-					.setVat(CommonUtility.getpriceFormat(bundleModel.getMonthlyDiscountedVatPrice()));
+					.setVat(commonUtility.getpriceFormat(bundleModel.getMonthlyDiscountedVatPrice()));
 			Price monthlyPrice = new Price();
-			monthlyPrice.setGross(CommonUtility.getpriceFormat(bundleModel.getMonthlyGrossPrice()));
-			monthlyPrice.setNet(CommonUtility.getpriceFormat(bundleModel.getMonthlyNetPrice()));
-			monthlyPrice.setVat(CommonUtility.getpriceFormat(bundleModel.getMonthlyVatPrice()));
+			monthlyPrice.setGross(commonUtility.getpriceFormat(bundleModel.getMonthlyGrossPrice()));
+			monthlyPrice.setNet(commonUtility.getpriceFormat(bundleModel.getMonthlyNetPrice()));
+			monthlyPrice.setVat(commonUtility.getpriceFormat(bundleModel.getMonthlyVatPrice()));
 			bundlePrice.setMonthlyPrice(monthlyPrice);
 			bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
 			bundlePrice.setBundleId(bundleModel.getBundleId());
@@ -1607,7 +1613,7 @@ public class DeviceTilesDaoUtils {
 		}
 	}
 
-	private static void setBundlePricePaym(ProductModel productModel, String leadPlanId,
+	private void setBundlePricePaym(ProductModel productModel, String leadPlanId,
 			PriceForBundleAndHardware priceForBundleAndHardware,
 			com.vf.uk.dal.device.client.entity.price.BundlePrice bundlePrice) {
 		if (productModel.getBundleMonthlyDiscPriceGross() != null
@@ -1618,9 +1624,9 @@ public class DeviceTilesDaoUtils {
 			monthlyDiscountPrice.setNet(null);
 			monthlyDiscountPrice.setVat(null);
 			Price monthlyPrice = new Price();
-			monthlyPrice.setGross(CommonUtility.getpriceFormat(productModel.getBundleMonthlyPriceGross()));
-			monthlyPrice.setNet(CommonUtility.getpriceFormat(productModel.getBundleMonthlyPriceNet()));
-			monthlyPrice.setVat(CommonUtility.getpriceFormat(productModel.getBundleMonthlyPriceVat()));
+			monthlyPrice.setGross(commonUtility.getpriceFormat(productModel.getBundleMonthlyPriceGross()));
+			monthlyPrice.setNet(commonUtility.getpriceFormat(productModel.getBundleMonthlyPriceNet()));
+			monthlyPrice.setVat(commonUtility.getpriceFormat(productModel.getBundleMonthlyPriceVat()));
 			bundlePrice.setMonthlyPrice(monthlyPrice);
 			bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
 			bundlePrice.setBundleId(leadPlanId);
@@ -1630,15 +1636,15 @@ public class DeviceTilesDaoUtils {
 		} else {
 			Price monthlyDiscountPrice = new Price();
 			monthlyDiscountPrice
-					.setGross(CommonUtility.getpriceFormat(productModel.getBundleMonthlyDiscPriceGross()));
+					.setGross(commonUtility.getpriceFormat(productModel.getBundleMonthlyDiscPriceGross()));
 			monthlyDiscountPrice
-					.setNet(CommonUtility.getpriceFormat(productModel.getBundleMonthlyDiscPriceNet()));
+					.setNet(commonUtility.getpriceFormat(productModel.getBundleMonthlyDiscPriceNet()));
 			monthlyDiscountPrice
-					.setVat(CommonUtility.getpriceFormat(productModel.getBundleMonthlyDiscPriceVat()));
+					.setVat(commonUtility.getpriceFormat(productModel.getBundleMonthlyDiscPriceVat()));
 			Price monthlyPrice = new Price();
-			monthlyPrice.setGross(CommonUtility.getpriceFormat(productModel.getBundleMonthlyPriceGross()));
-			monthlyPrice.setNet(CommonUtility.getpriceFormat(productModel.getBundleMonthlyPriceNet()));
-			monthlyPrice.setVat(CommonUtility.getpriceFormat(productModel.getBundleMonthlyPriceVat()));
+			monthlyPrice.setGross(commonUtility.getpriceFormat(productModel.getBundleMonthlyPriceGross()));
+			monthlyPrice.setNet(commonUtility.getpriceFormat(productModel.getBundleMonthlyPriceNet()));
+			monthlyPrice.setVat(commonUtility.getpriceFormat(productModel.getBundleMonthlyPriceVat()));
 			bundlePrice.setMonthlyPrice(monthlyPrice);
 			bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
 			bundlePrice.setBundleId(leadPlanId);
@@ -1648,7 +1654,7 @@ public class DeviceTilesDaoUtils {
 		}
 	}
 
-	private static void setHardwarePricePaym(ProductModel productModel,
+	private void setHardwarePricePaym(ProductModel productModel,
 			PriceForBundleAndHardware priceForBundleAndHardware, HardwarePrice hardwarePrice) {
 		if (productModel.getOneOffDiscountedGrossPrice() != null && productModel.getOneOffGrossPrice() != null
 				&& productModel.getOneOffGrossPrice().equals(productModel.getOneOffDiscountedGrossPrice())) {
@@ -1658,9 +1664,9 @@ public class DeviceTilesDaoUtils {
 			oneOffDiscountPrice.setVat(null);
 			Price oneOffPrice = new Price();
 
-			oneOffPrice.setGross(CommonUtility.getpriceFormat(productModel.getOneOffGrossPrice()));
-			oneOffPrice.setNet(CommonUtility.getpriceFormat(productModel.getOneOffNetPrice()));
-			oneOffPrice.setVat(CommonUtility.getpriceFormat(productModel.getOneOffVatPrice()));
+			oneOffPrice.setGross(commonUtility.getpriceFormat(productModel.getOneOffGrossPrice()));
+			oneOffPrice.setNet(commonUtility.getpriceFormat(productModel.getOneOffNetPrice()));
+			oneOffPrice.setVat(commonUtility.getpriceFormat(productModel.getOneOffVatPrice()));
 			hardwarePrice.setOneOffPrice(oneOffPrice);
 			hardwarePrice.setOneOffDiscountPrice(oneOffDiscountPrice);
 			hardwarePrice.setHardwareId(productModel.getProductId());
@@ -1672,15 +1678,15 @@ public class DeviceTilesDaoUtils {
 				&& !productModel.getOneOffGrossPrice().equals(productModel.getOneOffDiscountedGrossPrice())) {
 			Price oneOffDiscountPrice = new Price();
 			oneOffDiscountPrice
-					.setGross(CommonUtility.getpriceFormat(productModel.getOneOffDiscountedGrossPrice()));
+					.setGross(commonUtility.getpriceFormat(productModel.getOneOffDiscountedGrossPrice()));
 			oneOffDiscountPrice
-					.setNet(CommonUtility.getpriceFormat(productModel.getOneOffDiscountedNetPrice()));
+					.setNet(commonUtility.getpriceFormat(productModel.getOneOffDiscountedNetPrice()));
 			oneOffDiscountPrice
-					.setVat(CommonUtility.getpriceFormat(productModel.getOneOffDiscountedVatPrice()));
+					.setVat(commonUtility.getpriceFormat(productModel.getOneOffDiscountedVatPrice()));
 			Price oneOffPrice = new Price();
-			oneOffPrice.setGross(CommonUtility.getpriceFormat(productModel.getOneOffGrossPrice()));
-			oneOffPrice.setNet(CommonUtility.getpriceFormat(productModel.getOneOffNetPrice()));
-			oneOffPrice.setVat(CommonUtility.getpriceFormat(productModel.getOneOffVatPrice()));
+			oneOffPrice.setGross(commonUtility.getpriceFormat(productModel.getOneOffGrossPrice()));
+			oneOffPrice.setNet(commonUtility.getpriceFormat(productModel.getOneOffNetPrice()));
+			oneOffPrice.setVat(commonUtility.getpriceFormat(productModel.getOneOffVatPrice()));
 			hardwarePrice.setOneOffPrice(oneOffPrice);
 			hardwarePrice.setOneOffDiscountPrice(oneOffDiscountPrice);
 			hardwarePrice.setHardwareId(productModel.getProductId());
@@ -1691,7 +1697,7 @@ public class DeviceTilesDaoUtils {
 		}
 	}
 
-	public static Boolean getPreOrBackOderable(String preOrderable) {
+	public Boolean getPreOrBackOderable(String preOrderable) {
 		Boolean result;
 		if (IS_PREORDERABLE_YES.equalsIgnoreCase(preOrderable)) {
 			result = true;
@@ -1718,7 +1724,7 @@ public class DeviceTilesDaoUtils {
 	 * @param freeAccForHardwares
 	 * @return MerchandisingPromotionsPackage
 	 */
-	public static MerchandisingPromotionsPackage assembleMerchandisingPromotion(BundleAndHardwarePromotions promotions,
+	public MerchandisingPromotionsPackage assembleMerchandisingPromotion(BundleAndHardwarePromotions promotions,
 			List<CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks> entertainmentPacks,
 			List<CataloguepromotionqueriesForBundleAndHardwareDataAllowances> dataAllowances,
 			List<CataloguepromotionqueriesForBundleAndHardwareSash> sash,
@@ -1813,7 +1819,7 @@ public class DeviceTilesDaoUtils {
 
 	}
 
-	private static void setConditionalSashBannerPromo(
+	private void setConditionalSashBannerPromo(
 			List<CataloguepromotionqueriesForBundleAndHardwareSash> sashBundleConditional,
 			MerchandisingPromotionsWrapper hardwarePromotions) {
 		if (CollectionUtils.isNotEmpty(sashBundleConditional)) {
@@ -1836,7 +1842,7 @@ public class DeviceTilesDaoUtils {
 		}
 	}
 
-	private static void setFreeExtraPromo(List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtrasForPlans,
+	private void setFreeExtraPromo(List<CataloguepromotionqueriesForBundleAndHardwareExtras> freeExtrasForPlans,
 			MerchandisingPromotionsWrapper bundlePromotions) {
 		if (CollectionUtils.isNotEmpty(freeExtrasForPlans)) {
 			/* Assembly of FreeExtrasForPlan */
@@ -1859,7 +1865,7 @@ public class DeviceTilesDaoUtils {
 		}
 	}
 
-	private static void setEntertainmentPackPromo(
+	private void setEntertainmentPackPromo(
 			List<CataloguepromotionqueriesForBundleAndHardwareEntertainmentPacks> entertainmentPacks,
 			MerchandisingPromotionsWrapper bundlePromotions) {
 		if (CollectionUtils.isNotEmpty(entertainmentPacks)) {
@@ -1881,7 +1887,7 @@ public class DeviceTilesDaoUtils {
 		}
 	}
 
-	private static void setSashBannerPromo(List<CataloguepromotionqueriesForBundleAndHardwareSash> sash,
+	private void setSashBannerPromo(List<CataloguepromotionqueriesForBundleAndHardwareSash> sash,
 			MerchandisingPromotionsWrapper bundlePromotions) {
 		if (CollectionUtils.isNotEmpty(sash)) {
 			/* Assembly of sashBannerPromotion */
@@ -1903,7 +1909,7 @@ public class DeviceTilesDaoUtils {
 		}
 	}
 
-	private static void setSecureNetPromo(List<CataloguepromotionqueriesForBundleAndHardwareSecureNet> secureNet,
+	private void setSecureNetPromo(List<CataloguepromotionqueriesForBundleAndHardwareSecureNet> secureNet,
 			MerchandisingPromotionsWrapper bundlePromotions) {
 		if (CollectionUtils.isNotEmpty(secureNet)) {
 			/* Assembly of secureNetPromotion */
@@ -1925,7 +1931,7 @@ public class DeviceTilesDaoUtils {
 		}
 	}
 
-	private static void setDataPromo(List<CataloguepromotionqueriesForBundleAndHardwareDataAllowances> dataAllowances,
+	private void setDataPromo(List<CataloguepromotionqueriesForBundleAndHardwareDataAllowances> dataAllowances,
 			MerchandisingPromotionsWrapper bundlePromotions) {
 		if (CollectionUtils.isNotEmpty(dataAllowances)) {
 

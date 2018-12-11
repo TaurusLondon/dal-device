@@ -51,6 +51,9 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 	DeviceDao deviceDao;
 
 	@Autowired
+	Validator validator;
+	
+	@Autowired
 	DeviceESHelper deviceEs;
 
 	@Autowired
@@ -87,12 +90,12 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 	public DeviceDetails getDeviceDetailsImplementation(String deviceId, String journeyTypeInput, String offerCode) {
 		log.info("Start -->  calling  CommercialProductRepository.get");
 		String journeyType;
-		journeyType = DeviceServiceImplUtility.getJourneyForVariant(journeyTypeInput);
+		journeyType = deviceServiceImplUtility.getJourneyForVariant(journeyTypeInput);
 		CommercialProduct commercialProduct = deviceEs.getCommercialProduct(deviceId);
 		log.info("End -->  After calling  CommercialProductRepository.get");
 		DeviceDetails deviceDetails;
 		if (commercialProduct != null && commercialProduct.getId() != null && commercialProduct.getIsDeviceProduct()
-				&& DeviceServiceImplUtility.getProductclassValidation(commercialProduct)) {
+				&& deviceServiceImplUtility.getProductclassValidation(commercialProduct)) {
 			deviceDetails = getDeviceDetailsResponse(deviceId, offerCode, journeyType, commercialProduct);
 		} else {
 			log.error("No data found for given Device Id :" + deviceId);
@@ -117,7 +120,7 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 		List<BundleAndHardwareTuple> bundleAndHardwareTupleList;
 		if (commercialProduct.getProductLines() != null && !commercialProduct.getProductLines().isEmpty()
 				&& commercialProduct.getProductLines().contains(PAYG_DEVICE)) {
-			Validator.getJourneyAndOfferCodeValidationForPAYG(offerCode, journeyType);
+			validator.getJourneyAndOfferCodeValidationForPAYG(offerCode, journeyType);
 			journeyTypeLocal = JOURNEY_TYPE_ACQUISITION;
 			bundleAndHardwareTupleList = new ArrayList<>();
 			BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
@@ -132,7 +135,7 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 		}
 		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = deviceServiceImplUtility
 				.getListOfBundleAndHardwareTuple(offerCode, journeyTypeLocal, bundleAndHardwareTupleList);
-		String leadPlanId = DeviceServiceImplUtility.getLeadPlanId(bundleAndHardwareTupleList);
+		String leadPlanId = deviceServiceImplUtility.getLeadPlanId(bundleAndHardwareTupleList);
 		log.info("Start -->  calling  bundleRepository.get");
 		CommercialBundle commercialBundle = null;
 		if (StringUtils.isNotBlank(leadPlanId)) {
@@ -140,7 +143,7 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 			log.info("End -->  After calling  bundleRepository.get");
 
 		}
-		List<BundleAndHardwareTuple> bundleHardwareTupleList = DeviceServiceImplUtility
+		List<BundleAndHardwareTuple> bundleHardwareTupleList = deviceServiceImplUtility
 				.getBundleAndHardwareTuple(deviceId, commercialProduct, commercialBundle);
 		deviceDetails = deviceServiceImplUtility.getDeviceDetailsFinal(deviceId, journeyTypeLocal, commercialProduct,
 				listOfPriceForBundleAndHardware, bundleHardwareTupleList);
@@ -166,11 +169,11 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 		} else if (StringUtils.isNotBlank(commercialProduct.getLeadPlanId())) {
 			commercialBundle = deviceEs.getCommercialBundle(commercialProduct.getLeadPlanId());
 		}
-		boolean sellableCheck = DeviceServiceImplUtility.isSellable(journeyType, commercialBundle);
+		boolean sellableCheck = deviceServiceImplUtility.isSellable(journeyType, commercialBundle);
 		if (commercialProduct.getLeadPlanId() != null
 				&& commercialProduct.getListOfCompatiblePlanIds().contains(commercialProduct.getLeadPlanId())
 				&& sellableCheck) {
-			DeviceServiceImplUtility.getBundleHardwareTrupleList(commercialProduct, bundleAndHardwareTupleList);
+			deviceServiceImplUtility.getBundleHardwareTrupleList(commercialProduct, bundleAndHardwareTupleList);
 		} else {
 			try {
 				deviceServiceCommonUtility.getTupleList(commercialProduct, journeyType, bundleAndHardwareTupleList,
@@ -212,9 +215,9 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 	private void setOffreCodesList(String journeyType, List<String> offerCodes, String promotionName,
 			MerchandisingPromotion merchandisingPromotion) {
 		if (merchandisingPromotion != null) {
-			String startDateTime = CommonUtility.getDateToString(merchandisingPromotion.getStartDateTime(),
+			String startDateTime = commonUtility.getDateToString(merchandisingPromotion.getStartDateTime(),
 					DATE_FORMAT_COHERENCE);
-			String endDateTime = CommonUtility.getDateToString(merchandisingPromotion.getEndDateTime(),
+			String endDateTime = commonUtility.getDateToString(merchandisingPromotion.getEndDateTime(),
 					DATE_FORMAT_COHERENCE);
 			String promotionPackageType = merchandisingPromotion.getCondition().getPackageType();
 			List<String> promotionPackagesList = new ArrayList<>();
@@ -225,7 +228,7 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 			log.info(":::::::: MERCHE_PROMOTION_TAG :::: " + merchandisingPromotion.getTag()
 					+ "::::: START DATE :: " + startDateTime + ":::: END DATE ::: " + endDateTime + " :::: ");
 			if (promotionName != null && promotionName.equals(merchandisingPromotion.getTag())
-					&& DeviceServiceImplUtility.dateValidationForOffersImplementation(startDateTime,
+					&& deviceServiceImplUtility.dateValidationForOffersImplementation(startDateTime,
 							endDateTime, DATE_FORMAT_COHERENCE)
 					&& promotionPackagesList.contains(journeyType.toLowerCase())) {
 				offerCodes.add(promotionName);
@@ -411,11 +414,11 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 				if (merchandisingPromotion != null
 						&& !"conditional_full_discount".equalsIgnoreCase(merchandisingPromotion.getType())
 						&& checkMerchandisingPromotionsType(merchandisingPromotion)) {
-					String startDateTime = CommonUtility.getDateToString(merchandisingPromotion.getStartDateTime(),
+					String startDateTime = commonUtility.getDateToString(merchandisingPromotion.getStartDateTime(),
 							DATE_FORMAT_COHERENCE);
-					String endDateTime = CommonUtility.getDateToString(merchandisingPromotion.getEndDateTime(),
+					String endDateTime = commonUtility.getDateToString(merchandisingPromotion.getEndDateTime(),
 							DATE_FORMAT_COHERENCE);
-					if (promotionName != null && promotionName.equals(merchandisingPromotion.getTag()) && CommonUtility
+					if (promotionName != null && promotionName.equals(merchandisingPromotion.getTag()) && commonUtility
 							.dateValidationForOffers(startDateTime, endDateTime, DATE_FORMAT_COHERENCE)) {
 						listOfMediaLink.addAll(listOfMediaLinkBasedOnMerchandising(merchandisingPromotion));
 					}
@@ -476,11 +479,11 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 			for (String promotionName : commercialProduct.getPromoteAs().getPromotionName()) {
 				MerchandisingPromotion merchandisingPromotion = deviceEs.getMerchandisingPromotion(promotionName);
 				if (merchandisingPromotion != null && checkMerchandisingPromotionsType(merchandisingPromotion)) {
-					String startDateTime = CommonUtility.getDateToString(merchandisingPromotion.getStartDateTime(),
+					String startDateTime = commonUtility.getDateToString(merchandisingPromotion.getStartDateTime(),
 							DATE_FORMAT_COHERENCE);
-					String endDateTime = CommonUtility.getDateToString(merchandisingPromotion.getEndDateTime(),
+					String endDateTime = commonUtility.getDateToString(merchandisingPromotion.getEndDateTime(),
 							DATE_FORMAT_COHERENCE);
-					if (promotionName.equals(merchandisingPromotion.getTag()) && CommonUtility
+					if (promotionName.equals(merchandisingPromotion.getTag()) && commonUtility
 							.dateValidationForOffers(startDateTime, endDateTime, DATE_FORMAT_COHERENCE)) {
 						listOfMediaLink.addAll(listOfMediaLinkBasedOnMerchandising(merchandisingPromotion));
 					}

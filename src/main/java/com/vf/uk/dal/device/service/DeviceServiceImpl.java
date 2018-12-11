@@ -83,17 +83,29 @@ public class DeviceServiceImpl implements DeviceService {
 	ResponseMappingHelper response;
 
 	@Autowired
+	DeviceDetailsMakeAndModelVaiantDaoUtils deviceDetailsMakeAndModelVaiantDaoUtils;
+	
+	@Autowired
 	DeviceESHelper deviceEs;
 
 	@Autowired
 	DeviceRecommendationService deviceRecommendationService;
 
 	@Autowired
+	Validator validator;
+	
+	@Autowired
+	DeviceTilesDaoUtils deviceTilesDaoUtils;
+	
+	@Autowired
 	DeviceServiceCommonUtility deviceServiceCommonUtility;
 
 	@Autowired
 	DeviceConditionallHelper deviceHelper;
 
+	@Autowired
+	DeviceServiceImplUtility deviceServiceImplUtility;
+	
 	@Autowired
 	CommonUtility commonUtility;
 
@@ -128,14 +140,14 @@ public class DeviceServiceImpl implements DeviceService {
 	 */
 	public List<DeviceTile> getDeviceTileByIdForVariant(String id, String offerCode, String journeyTypeInput) {
 		String journeyType;
-		journeyType = DeviceServiceImplUtility.getJourneyTypeForVariantAndList(journeyTypeInput);
+		journeyType = deviceServiceImplUtility.getJourneyTypeForVariantAndList(journeyTypeInput);
 		log.info("Start  -->  calling  CommercialProductRepository.get");
 		CommercialProduct commercialProduct = deviceEs.getCommercialProduct(id);
 		log.info("End  -->  After calling  CommercialProductRepository.get");
 
 		List<DeviceTile> listOfDeviceTile;
 		if (commercialProduct != null && commercialProduct.getId() != null && commercialProduct.getIsDeviceProduct()
-				&& DeviceServiceImplUtility.getProductclassValidation(commercialProduct)) {
+				&& deviceServiceImplUtility.getProductclassValidation(commercialProduct)) {
 			listOfDeviceTile = getDeviceTileListOfVariant(id, offerCode, journeyType, commercialProduct);
 		} else {
 			log.error(ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID + id);
@@ -167,11 +179,11 @@ public class DeviceServiceImpl implements DeviceService {
 
 		FacetedDevice facetedDevice;
 		String sortCriteriaLocal = null;
-		sortCriteriaLocal = DeviceServiceImplUtility.getSortCriteria(sortCriteria);
-		Validator.validateForDeviceList(sortCriteria, sortCriteriaLocal, groupType, productClass);
-		String journeytype = DeviceServiceImplUtility.getJourney(journeyType);
+		sortCriteriaLocal = deviceServiceImplUtility.getSortCriteria(sortCriteria);
+		validator.validateForDeviceList(sortCriteria, sortCriteriaLocal, groupType, productClass);
+		String journeytype = deviceServiceImplUtility.getJourney(journeyType);
 		if (StringUtils.isNotBlank(groupType) && groupType.equalsIgnoreCase(STRING_DEVICE_PAYG)) {
-			Validator.validateForPAYG(journeytype, offerCode);
+			validator.validateForPAYG(journeytype, offerCode);
 			journeytype = JOURNEY_TYPE_ACQUISITION;
 		}
 		log.info("Start -->  calling  getDeviceList in ServiceImpl");
@@ -245,13 +257,13 @@ public class DeviceServiceImpl implements DeviceService {
 		if (facetedDevice.getDevice() != null && !facetedDevice.getDevice().isEmpty()) {
 			List<Device> deviceList = facetedDevice.getDevice();
 			List<String> promoteAsTags = new ArrayList<>();
-			DeviceServiceImplUtility.getPromoteAsForDevice(deviceList, promoteAsTags);
+			deviceServiceImplUtility.getPromoteAsForDevice(deviceList, promoteAsTags);
 			if (CollectionUtils.isNotEmpty(promoteAsTags)) {
 				Map<String, com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion> promotionMap = getMerchandisingPromotionsEntityFromRepo(
 						promoteAsTags);
 				deviceList.forEach(device -> {
 					if (device.getPromotionsPackage() != null) {
-						DeviceServiceImplUtility.getPromotionForDeviceList(promotionMap, device);
+						deviceServiceImplUtility.getPromotionForDeviceList(promotionMap, device);
 					}
 				});
 			}
@@ -321,7 +333,7 @@ public class DeviceServiceImpl implements DeviceService {
 		log.info("End -->  After calling  productGroupRepository.getProductGroupsByType");
 
 		if (listOfProductGroup != null && !listOfProductGroup.isEmpty()) {
-			memberPriority = DeviceServiceImplUtility.getDevicevariantMemberPriority(id, deviceTile,
+			memberPriority = deviceServiceImplUtility.getDevicevariantMemberPriority(id, deviceTile,
 					listOfProductGroup);
 		}
 		List<BundleAndHardwareTuple> bundleAndHardwareTupleList;
@@ -394,11 +406,11 @@ public class DeviceServiceImpl implements DeviceService {
 		if (listOfPriceForBundleAndHardware != null && !listOfPriceForBundleAndHardware.isEmpty()) {
 			priceForBundleAndHardware = listOfPriceForBundleAndHardware.get(0);
 		}
-		if ((DeviceServiceImplUtility.isUpgrade(journeyType)
-				&& DeviceServiceImplUtility.isUpgradeFromCommercialProduct(commercialProduct))
-				|| (DeviceServiceImplUtility.isNonUpgrade(journeyType)
-						&& DeviceServiceImplUtility.isNonUpgradeCommercialProduct(commercialProduct))) {
-			deviceSummary = DeviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceTile(memberPriority,
+		if ((deviceServiceImplUtility.isUpgrade(journeyType)
+				&& deviceServiceImplUtility.isUpgradeFromCommercialProduct(commercialProduct))
+				|| (deviceServiceImplUtility.isNonUpgrade(journeyType)
+						&& deviceServiceImplUtility.isNonUpgradeCommercialProduct(commercialProduct))) {
+			deviceSummary = deviceDetailsMakeAndModelVaiantDaoUtils.convertCoherenceDeviceToDeviceTile(memberPriority,
 					commercialProduct, comBundle, priceForBundleAndHardware, promotions, null, false, null, cdnDomain);
 		} else {
 			log.error("No data found for given criteria :" + id);
@@ -422,13 +434,13 @@ public class DeviceServiceImpl implements DeviceService {
 		if (StringUtils.isNotBlank(commercialProduct.getLeadPlanId())) {
 			commercialBundle = deviceEs.getCommercialBundle(commercialProduct.getLeadPlanId());
 		}
-		boolean sellableCheck = DeviceServiceImplUtility.isSellable(journeyType, commercialBundle);
+		boolean sellableCheck = deviceServiceImplUtility.isSellable(journeyType, commercialBundle);
 		List<String> compatiblePlans = commercialProduct.getListOfCompatiblePlanIds() == null
 				|| commercialProduct.getListOfCompatiblePlanIds().isEmpty() ? Collections.emptyList()
 						: commercialProduct.getListOfCompatiblePlanIds();
 		if (StringUtils.isNotBlank(commercialProduct.getLeadPlanId())
 				&& compatiblePlans.contains(commercialProduct.getLeadPlanId()) && sellableCheck) {
-			DeviceServiceImplUtility.getBundleHardwareTrupleList(commercialProduct, bundleAndHardwareTupleList);
+			deviceServiceImplUtility.getBundleHardwareTrupleList(commercialProduct, bundleAndHardwareTupleList);
 		} else {
 
 			try {
@@ -466,7 +478,7 @@ public class DeviceServiceImpl implements DeviceService {
 			String mustHaveFeatures, String journeyType, String offerCode) {
 		FacetedDevice facetedDevice;
 		Map<String, ProductGroupDetailsForDeviceList> productGroupdetailsMap = new HashMap<>();
-		List<String> criteriaOfSort = DeviceServiceImplUtility.getSortCriteriaForList(sortCriteria);
+		List<String> criteriaOfSort = deviceServiceImplUtility.getSortCriteriaForList(sortCriteria);
 		String sortOption = criteriaOfSort.get(0);
 		String sortBy = criteriaOfSort.get(1);
 		Map<String, Object> productGroupFacetMap = getProductGroupFacetMap(groupType, make, capacity, colour,
@@ -512,7 +524,7 @@ public class DeviceServiceImpl implements DeviceService {
 
 			List<FacetField> facetFields = (null != productGroupFacetModelForFacets)
 					? productGroupFacetModelForFacets.getListOfFacetsFields() : null;
-			facetedDevice = DeviceTilesDaoUtils.convertProductModelListToDeviceList(listOfProductModel, listOfProducts,
+			facetedDevice = deviceTilesDaoUtils.convertProductModelListToDeviceList(listOfProductModel, listOfProducts,
 					facetFields, groupType,  null, offerPriceMap, offerCode, groupNameWithProdId, null,
 					promotionmap, isLeadMemberFromSolr, withoutOfferPriceMap, journeyType, productGroupdetailsMap,
 					cdnDomain);
@@ -550,7 +562,7 @@ public class DeviceServiceImpl implements DeviceService {
 		Map<String, com.vf.uk.dal.device.client.entity.price.BundlePrice> bundleModelAndPriceMap = new HashMap<>();
 		List<ProductModel> listOfProductModel = new ArrayList<>();
 		List<String> listOfProducts = new ArrayList<>();
-		List<String> criteriaOfSort = DeviceServiceImplUtility.getSortCriteriaForList(sortCriteria);
+		List<String> criteriaOfSort = deviceServiceImplUtility.getSortCriteriaForList(sortCriteria);
 		String sortOption = criteriaOfSort.get(0);
 		String sortBy = criteriaOfSort.get(1);
 		Map<String, Object> productGroupFacetMap = getProductGroupFacetMap(groupType, make, capacity, colour,
@@ -582,7 +594,7 @@ public class DeviceServiceImpl implements DeviceService {
 				listOfFacetField = productGroupFacetModelForFacets.getListOfFacetsFields() == null
 						? Collections.emptyList() : productGroupFacetModelForFacets.getListOfFacetsFields();
 			}
-			facetedDevice = DeviceTilesDaoUtils.convertProductModelListToDeviceList(listOfProductModel, listOfProducts,
+			facetedDevice = deviceTilesDaoUtils.convertProductModelListToDeviceList(listOfProductModel, listOfProducts,
 					listOfFacetField, groupType, bundleModelMap, null, null, groupNameWithProdId,
 					bundleModelAndPriceMap, null, isLeadMemberFromSolr, null, journeyType, Collections.emptyMap(),
 					cdnDomain);
@@ -657,7 +669,7 @@ public class DeviceServiceImpl implements DeviceService {
 		List<ProductModel> listOfProductModelLocal = deviceUtils.sortListForProductModel(listOfProductModel,
 				listOfProducts);
 
-		listOfProductModelLocal.forEach(productModel -> DeviceServiceImplUtility.getBundleAndHardwareList(groupType,
+		listOfProductModelLocal.forEach(productModel -> deviceServiceImplUtility.getBundleAndHardwareList(groupType,
 				journeyType, bundleHardwareTupleList, productModel));
 		getPromotionMapForDeviceList(journeyType, bundleHardwareTupleList, promotionmap);
 		if (groupType.equalsIgnoreCase(STRING_DEVICE_PAYM)) {
@@ -762,25 +774,25 @@ public class DeviceServiceImpl implements DeviceService {
 						&& !StringUtils.equalsIgnoreCase(journeyType, JOURNEY_TYPE_UPGRADE)))) {
 			listOfProducts.add(productGroupModel.getNonUpgradeLeadDeviceId());
 			isLeadMemberFromSolr.put(LEAD_MEMBER, true);
-			DeviceServiceImplUtility.getProductGroupdetailsMap(productGroupModel, productGroupdetailsMap,
+			deviceServiceImplUtility.getProductGroupdetailsMap(productGroupModel, productGroupdetailsMap,
 					productGroupModel.getNonUpgradeLeadDeviceId());
 		} else if (StringUtils.isNotBlank(productGroupModel.getUpgradeLeadDeviceId())
 				&& StringUtils.isNotBlank(journeyType)
 				&& StringUtils.equalsIgnoreCase(journeyType, JOURNEY_TYPE_UPGRADE)) {
 			listOfProducts.add(productGroupModel.getUpgradeLeadDeviceId());
 			isLeadMemberFromSolr.put(LEAD_MEMBER, true);
-			DeviceServiceImplUtility.getProductGroupdetailsMap(productGroupModel, productGroupdetailsMap,
+			deviceServiceImplUtility.getProductGroupdetailsMap(productGroupModel, productGroupdetailsMap,
 					productGroupModel.getUpgradeLeadDeviceId());
 		} else {
 			List<String> variantsList = productGroupModel.getListOfVariants();
 			if (variantsList != null && !variantsList.isEmpty()) {
-				List<com.vf.uk.dal.device.model.Member> listOfMember = DeviceServiceImplUtility
+				List<com.vf.uk.dal.device.model.Member> listOfMember = deviceServiceImplUtility
 						.getListOfMembers(variantsList);
 				String leadMember = getMemeberBasedOnRules1(listOfMember, journeyType);
 				if (StringUtils.isNotBlank(leadMember)) {
 					groupNameWithProdId.put(leadMember, productGroupModel.getName());
 					listOfProducts.add(leadMember);
-					DeviceServiceImplUtility.getProductGroupdetailsMap(productGroupModel, productGroupdetailsMap,
+					deviceServiceImplUtility.getProductGroupdetailsMap(productGroupModel, productGroupdetailsMap,
 							leadMember);
 				}
 			}
@@ -866,11 +878,11 @@ public class DeviceServiceImpl implements DeviceService {
 		List<ProductModel> productModel = deviceEs.getListOfProductModel(listOfProduct);
 		if (productModel != null && !productModel.isEmpty()) {
 			for (ProductModel productModel2 : productModel) {
-				startDateTime = DeviceServiceImplUtility.getStartdateFromProductModel(productModel2);
-				endDateTime = DeviceServiceImplUtility.getEndDateFromProductModel(productModel2);
+				startDateTime = deviceServiceImplUtility.getStartdateFromProductModel(productModel2);
+				endDateTime = deviceServiceImplUtility.getEndDateFromProductModel(productModel2);
 				boolean preOrderableFlag = Boolean.parseBoolean(productModel2.getPreOrderable());
 
-				memberFlag = DeviceServiceImplUtility.isMember(journeyType, startDateTime, endDateTime, productModel2,
+				memberFlag = deviceServiceImplUtility.isMember(journeyType, startDateTime, endDateTime, productModel2,
 						preOrderableFlag);
 			}
 		}
@@ -933,7 +945,7 @@ public class DeviceServiceImpl implements DeviceService {
 			Map<String, String> groupNameWithProdId, ProductGroupModel productGroupModel,
 			List<String> listOfProductsNew) {
 		if (listOfProductVariants != null && !listOfProductVariants.isEmpty()) {
-			List<com.vf.uk.dal.device.model.Member> listOfMember = DeviceServiceImplUtility
+			List<com.vf.uk.dal.device.model.Member> listOfMember = deviceServiceImplUtility
 					.getListOfMembers(listOfProductVariants);
 
 			if (listOfMember != null && listOfMember.size() > 1) {

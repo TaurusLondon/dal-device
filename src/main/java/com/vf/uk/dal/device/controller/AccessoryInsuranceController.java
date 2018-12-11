@@ -45,6 +45,8 @@ public class AccessoryInsuranceController {
 	@Autowired
 	AccessoryInsuranceService accessoryInsuranceService;
 
+	@Autowired
+	Validator validator;
 	/**
 	 * Handles requests for getDeviceTile Service with input as
 	 * GROUP_NAME,GROUP_TYPE in URL as query. performance improved by @author
@@ -83,7 +85,7 @@ public class AccessoryInsuranceController {
 			@ApiParam(value = "The journey that the user undertakes") @RequestParam(value = "journeyType", required = false) String journeyType,
 			@ApiParam(value = "Promotional offer applicable") @RequestParam(value = "offerCode", required = false) String offerCode) {
 		List<AccessoryTileGroup> listOfAccessoryTileGroup;
-		Validator.validateAccessoryFields(deviceId);
+		validator.validateAccessoryFields(deviceId);
 		log.info("Start -->  calling  getAccessoriesOfDevice");
 		listOfAccessoryTileGroup = accessoryInsuranceService.getAccessoriesOfDevice(deviceId, journeyType, offerCode);
 		log.info("End -->  calling  getAccessoriesOfDevice");
@@ -111,7 +113,7 @@ public class AccessoryInsuranceController {
 
 		Insurances insurance;
 		log.info("Start -->  calling  getInusranceByDeviceId");
-		Validator.validateInsuranceDetails(deviceId);
+		validator.validateInsuranceDetails(deviceId);
 		log.info("End -->  calling  getInsuranceDeviceId");
 		insurance = accessoryInsuranceService.getInsuranceByDeviceId(deviceId, journeyType);
 		return insurance;

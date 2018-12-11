@@ -56,6 +56,8 @@ public class DeviceDetailsController {
 	@Autowired
 	DeviceDetailsService deviceDetailsService;
 
+	@Autowired
+	Validator validator;
 	/**
 	 * Handles requests for getDeviceTile Service with input as
 	 * GROUP_NAME,GROUP_TYPE in URL as query. performance improved by @author
@@ -95,7 +97,7 @@ public class DeviceDetailsController {
 			@ApiParam(value = "Offer code that defines what type of promotional discount needs to be displaced.") @RequestParam(value = "offerCode", required = false) String offerCode) {
 		DeviceDetails deviceDetails;
 		log.info(":::::::Test Logger for VSTS migration And Validate Pipeline Validation::::::::");
-		Validator.validateDeviceDetails(deviceId);
+		validator.validateDeviceDetails(deviceId);
 		String journeyTypeLocal = StringUtils.isNotBlank(journeyType) ? journeyType : JOURNEY_TYPE_ACQUISITION;
 		deviceDetails = deviceDetailsService.getDeviceDetails(deviceId, journeyTypeLocal, offerCode);
 
@@ -112,7 +114,7 @@ public class DeviceDetailsController {
 	@GetMapping(value = "/device/", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public List<DeviceDetails> getListOfDeviceDetails(@RequestParam Map<String, String> queryParams) {
 
-		if (!queryParams.isEmpty() && Validator.validateDeviceId(queryParams)) {
+		if (!queryParams.isEmpty() && validator.validateDeviceId(queryParams)) {
 
 			log.info("Query parameter(s) passed in the request " + queryParams);
 			List<DeviceDetails> listOfDeviceDetails;

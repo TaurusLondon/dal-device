@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.device.client.entity.price.Price;
 import com.vf.uk.dal.device.client.entity.price.PriceForAccessory;
@@ -19,6 +21,7 @@ import com.vf.uk.dal.device.model.SpecificationGroup;
 import com.vf.uk.dal.device.model.product.CommercialProduct;
 import com.vf.uk.dal.device.model.product.ItemAttribute;
 
+@Component
 public class AccessoriesAndInsurancedaoUtils {
 
 	public static final String STRING_PRICE_ESTABLISHED_LABEL = "merchandisingPromotions.merchandisingPromotion.priceEstablishedLabel";
@@ -27,16 +30,21 @@ public class AccessoriesAndInsurancedaoUtils {
 	public static final String STRING_COLOUR = "Colour";
 	public static final String STRING_TEXT = "TEXT";
 
-	AccessoriesAndInsurancedaoUtils() {
+	public AccessoriesAndInsurancedaoUtils() {
+		/**
+		 * 
+		 *  constructor 
+		 * */
 	}
-
+	@Autowired
+	CommonUtility commonUtility;
 	/**
 	 * 
 	 * @param commercialProduct
 	 * @param priceForAccessory
 	 * @return Accessory
 	 */
-	public static Accessory convertCoherenceAccesoryToAccessory(CommercialProduct commercialProduct,
+	public Accessory convertCoherenceAccesoryToAccessory(CommercialProduct commercialProduct,
 			PriceForAccessory priceForAccessory, String cdnDomain) {
 		Accessory accessory = null;
 		List<MediaLink> merchandisingMedia = new ArrayList<>();
@@ -51,7 +59,7 @@ public class AccessoriesAndInsurancedaoUtils {
 						.getSpecificationGroups();
 				setColourForAccessory(accessory, listOfSpecificationGroups);
 
-				CommonUtility.getImageMediaLink(commercialProduct, merchandisingMedia, cdnDomain);
+				commonUtility.getImageMediaLink(commercialProduct, merchandisingMedia, cdnDomain);
 				/**
 				 * @author manoj.bera below for loop not required Null check
 				 *         done before
@@ -66,7 +74,7 @@ public class AccessoriesAndInsurancedaoUtils {
 		return accessory;
 	}
 
-	private static void setAttributesForAccessory(CommercialProduct commercialProduct, Accessory accessory,
+	private void setAttributesForAccessory(CommercialProduct commercialProduct, Accessory accessory,
 			List<Attributes> attList) {
 		Attributes attribute;
 		if (commercialProduct.getMisc() != null && commercialProduct.getMisc().getItemAttribute() != null
@@ -85,7 +93,7 @@ public class AccessoriesAndInsurancedaoUtils {
 		}
 	}
 
-	private static void setColourForAccessory(Accessory accessory,
+	private void setColourForAccessory(Accessory accessory,
 			List<com.vf.uk.dal.device.model.product.Group> listOfSpecificationGroups) {
 		if (listOfSpecificationGroups != null && !listOfSpecificationGroups.isEmpty()) {
 			for (com.vf.uk.dal.device.model.product.Group specificationGroup : listOfSpecificationGroups) {
@@ -98,7 +106,7 @@ public class AccessoriesAndInsurancedaoUtils {
 		}
 	}
 
-	private static void setColour(Accessory accessory,
+	private void setColour(Accessory accessory,
 			List<com.vf.uk.dal.device.model.product.Specification> listOfSpec) {
 		if (listOfSpec != null && !listOfSpec.isEmpty()) {
 			for (com.vf.uk.dal.device.model.product.Specification spec : listOfSpec) {
@@ -110,7 +118,7 @@ public class AccessoriesAndInsurancedaoUtils {
 		}
 	}
 
-	private static Accessory setMerchandisingMediaListAndAccessory(CommercialProduct commercialProduct,
+	private Accessory setMerchandisingMediaListAndAccessory(CommercialProduct commercialProduct,
 			PriceForAccessory priceForAccessory, List<MediaLink> merchandisingMedia,
 			com.vf.uk.dal.device.client.entity.price.HardwarePrice hardwarePrice) {
 		Accessory accessory = null;
@@ -136,7 +144,7 @@ public class AccessoriesAndInsurancedaoUtils {
 	 * @param hardwarePrice
 	 * @return List<MediaLink>
 	 */
-	public static List<MediaLink> setPriceMerchandisingPromotion(
+	public List<MediaLink> setPriceMerchandisingPromotion(
 			com.vf.uk.dal.device.client.entity.price.HardwarePrice hardwarePrice) {
 		List<MediaLink> merchandisingMedia = new ArrayList<>();
 		com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion merchandisingPromotions = hardwarePrice
@@ -175,7 +183,7 @@ public class AccessoriesAndInsurancedaoUtils {
 	 * @param priceForAccessory
 	 * @return PriceForAccessory
 	 */
-	public static PriceForAccessory getPriceForAccessory(PriceForAccessory priceForAccessory) {
+	public PriceForAccessory getPriceForAccessory(PriceForAccessory priceForAccessory) {
 		if (priceForAccessory != null && priceForAccessory.getHardwarePrice() != null
 				&& getOneOffPriceCheck(priceForAccessory)
 				&& priceForAccessory.getHardwarePrice().getOneOffPrice().getGross()
@@ -192,7 +200,7 @@ public class AccessoriesAndInsurancedaoUtils {
 	 * @param priceForAccessory
 	 * @return
 	 */
-	public static boolean getOneOffPriceCheck(PriceForAccessory priceForAccessory) {
+	public boolean getOneOffPriceCheck(PriceForAccessory priceForAccessory) {
 		return priceForAccessory.getHardwarePrice().getOneOffPrice() != null
 				&& priceForAccessory.getHardwarePrice().getOneOffDiscountPrice() != null
 				&& priceForAccessory.getHardwarePrice().getOneOffPrice().getGross() != null
@@ -204,7 +212,7 @@ public class AccessoriesAndInsurancedaoUtils {
 	 * @param insuranceProductList
 	 * @return Insurances
 	 */
-	public static Insurances convertCommercialProductToInsurance(List<CommercialProduct> insuranceProductList,
+	public Insurances convertCommercialProductToInsurance(List<CommercialProduct> insuranceProductList,
 			String cdnDomain) {
 		List<Double> minPrice = new ArrayList<>();
 		List<Insurance> insuranceList = new ArrayList<>();
@@ -222,7 +230,7 @@ public class AccessoriesAndInsurancedaoUtils {
 			price.setNet(String.valueOf(insuranceProduct.getPriceDetail().getPriceNet()));
 			insurance.setPrice(price);
 			List<MediaLink> merchandisingMedia = new ArrayList<>();
-			CommonUtility.getImageMediaLink(insuranceProduct, merchandisingMedia, cdnDomain);
+			commonUtility.getImageMediaLink(insuranceProduct, merchandisingMedia, cdnDomain);
 
 			insurance.setMerchandisingMedia(merchandisingMedia);
 
@@ -254,7 +262,7 @@ public class AccessoriesAndInsurancedaoUtils {
 		return insurances;
 	}
 
-	private static void setSpecificationGroup(List<Specification> listOfSpecification,
+	private void setSpecificationGroup(List<Specification> listOfSpecification,
 			SpecificationGroup specificationGroups, List<com.vf.uk.dal.device.model.product.Specification> listOfSpec) {
 		Specification specification;
 		if (listOfSpec != null && !listOfSpec.isEmpty()) {
@@ -275,7 +283,7 @@ public class AccessoriesAndInsurancedaoUtils {
 		}
 	}
 
-	private static void setMinPriceList(List<Double> minPrice, CommercialProduct insuranceProduct) {
+	private void setMinPriceList(List<Double> minPrice, CommercialProduct insuranceProduct) {
 		if (insuranceProduct.getPriceDetail() != null && insuranceProduct.getPriceDetail().getPriceGross() != null) {
 			minPrice.add(insuranceProduct.getPriceDetail().getPriceGross());
 		}
