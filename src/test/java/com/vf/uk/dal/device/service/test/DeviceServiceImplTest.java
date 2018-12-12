@@ -213,6 +213,9 @@ public class DeviceServiceImplTest {
 		given(restTemplate.postForObject("http://PRICE-V1/price/product",
 				CommonMethods.bundleDeviceAndProductsList_For_GetAccessoriesOfDevice(), PriceForProduct.class))
 						.willReturn(CommonMethods.getPriceForProduct_For_GetAccessoriesForDevice());
+		given(restTemplate.postForObject("http://PRICE-V1/price/calculateForBundleAndHardware",
+				CommonMethods.requestForPriceOfBundleAndHardware(), PriceForBundleAndHardware[].class))
+						.willReturn(CommonMethods.getPriceForBundleAndHardwareArray());
 		given(response.getMerchandisingPromotion(ArgumentMatchers.any())).willReturn(CommonMethods.getMemPro());
 		given(restTemplate.getForObject(
 				"http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=093353&journeyType=Acquisition",
@@ -740,11 +743,17 @@ public class DeviceServiceImplTest {
 
 		given(response.getCommercialProduct(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getCommercialProductByDeviceId_093353_PAYG());
-		given(response.getListOfGroupFromJson(ArgumentMatchers.any()))
-				.willReturn(CommonMethods.getListOfProductGroupFromProductGroupRepository());
+		List<Group> groupList = CommonMethods.getListOfProductGroupFromProductGroupRepository();
+		Group group = groupList.get(0);
+		group.setEquipmentMake("apple");
+		group.setEquipmentModel("iPhone-7");
+		groupList.add(0, group);
+		given(response.getListOfGroupFromJson(ArgumentMatchers.any())).willReturn(groupList);
 		given(response.getCommercialProductFromJson(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getCommercialProductsListOfMakeAndModel());
-		given(response.getCommercialBundle(ArgumentMatchers.any())).willReturn(CommonMethods.getCommercialBundle());
+		CommercialBundle comBundle = CommonMethods.getCommercialBundle();
+		comBundle.setId("110075");
+		given(response.getCommercialBundle(ArgumentMatchers.any())).willReturn(comBundle);
 		given(response.getListOfCommercialBundleFromJson(ArgumentMatchers.any()))
 				.willReturn(Arrays.asList(CommonMethods.getCommercialBundle()));
 		given(deviceDAOMock.getPriceForBundleAndHardwareListFromTupleListAsync(ArgumentMatchers.anyList(),
@@ -1328,6 +1337,7 @@ public class DeviceServiceImplTest {
 			Assert.assertEquals(null, e.getMessage());
 		}
 	}
+
 	public void testSettingPriceAndPromotionsToListOfDevicesWithEmptyList() {
 		try {
 			DeviceDetails dd = CommonMethods.getDevice_One("093353");
@@ -1343,7 +1353,7 @@ public class DeviceServiceImplTest {
 			Assert.assertEquals(null, e.getMessage());
 		}
 	}
-	
+
 	@Test
 	public void testSettingPriceAndPromotionsToListOfDevicesMPNull() {
 		try {
@@ -1671,7 +1681,7 @@ public class DeviceServiceImplTest {
 		given(response.getCommercialProduct(ArgumentMatchers.any())).willReturn(cp);
 		String leadId = deviceDetailsService.getLeadPlanIdForDeviceId("093353", "Acquisition");
 		assertNotNull(leadId);
-		assertEquals("110298",leadId);
+		assertEquals("110298", leadId);
 	}
 
 	@Test
