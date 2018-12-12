@@ -225,6 +225,7 @@
 			**/DeviceApplication.java,
 			**/model/**,
 			**/entity/**,
+			**/exception/**
 		</sonar.coverage.exclusions>
 		<swaggerVersion>10.2.0</swaggerVersion>
 	</properties>
