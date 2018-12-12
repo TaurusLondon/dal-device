@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vf.uk.dal.common.exception.ApplicationException;
+import com.vf.uk.dal.device.exception.DeviceCustomException;
 import com.vf.uk.dal.device.model.product.CommercialProduct;
 import com.vf.uk.dal.device.model.productgroups.Group;
 import com.vf.uk.dal.device.model.productgroups.ProductGroupModelMap;
@@ -47,6 +47,7 @@ import lombok.extern.slf4j.Slf4j;
 public class DeviceEntityController {
 	@Autowired
 	DeviceEntityService deviceEntiryService;
+	private static final String ERROR_CODE_ENTITY = "error_device_entity_failed";
 
 	/**
 	 * Handles requests for getDeviceTile Service with input as
@@ -92,7 +93,7 @@ public class DeviceEntityController {
 
 		if (StringUtils.isBlank(productId) && StringUtils.isBlank(productName)) {
 			log.error("Query parameter(s) passed in the request is invalid " + ExceptionMessages.INVALID_QUERY_PARAMS);
-			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
+			throw new DeviceCustomException(ERROR_CODE_ENTITY,ExceptionMessages.INVALID_QUERY_PARAMS,"404");
 		} else if (StringUtils.isNotBlank(productName)) {
 			log.info("Get the list of Product Details for the Product Name passed as request params: " + productName);
 			commProductDetails = deviceEntiryService.getCommercialProductDetails(productName);
@@ -129,7 +130,7 @@ public class DeviceEntityController {
 			groupDetails = deviceEntiryService.getProductGroupByType(groupType);
 		} else {
 			log.error(" Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
-			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
+			throw new DeviceCustomException(ERROR_CODE_ENTITY,ExceptionMessages.INVALID_QUERY_PARAMS,"404");
 		}
 		return groupDetails;
 	}
@@ -158,7 +159,7 @@ public class DeviceEntityController {
 
 		if (StringUtils.isBlank(productId)) {
 			log.error("Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
-			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
+			throw new DeviceCustomException(ERROR_CODE_ENTITY,ExceptionMessages.INVALID_QUERY_PARAMS,"404");
 		} else {
 			log.info("Get the list of Product Details for the Product Id (s) passed as request params: " + productId);
 			productGroupModelDetails = deviceEntiryService.getMapOfProductModelForGetDeliveryMethod(productId);

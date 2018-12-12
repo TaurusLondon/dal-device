@@ -10,7 +10,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.client.entity.bundle.BundleDetailsForAppSrv;
 import com.vf.uk.dal.device.client.entity.bundle.BundleHeader;
 import com.vf.uk.dal.device.client.entity.bundle.CommercialBundle;
@@ -18,6 +17,7 @@ import com.vf.uk.dal.device.client.entity.bundle.CoupleRelation;
 import com.vf.uk.dal.device.client.entity.price.BundleAndHardwareTuple;
 import com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware;
 import com.vf.uk.dal.device.dao.DeviceDao;
+import com.vf.uk.dal.device.exception.DeviceCustomException;
 import com.vf.uk.dal.device.model.DeviceDetails;
 import com.vf.uk.dal.device.model.MediaLink;
 import com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotion;
@@ -35,6 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 public class DeviceDetailsServiceImpl implements DeviceDetailsService {
+	private static final String ERROR_CODE_SELECT_DEVICE_DETAIL = "error_device_detail_failed";
 	public static final String PAYG_DEVICE = "Mobile Phones, Data Devices";
 	public static final String DATE_FORMAT_COHERENCE = "yyyy-MM-dd HH:mm:ss.SSS";
 	public static final String STRING_HANDSET = "Handset";
@@ -99,7 +100,7 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 			deviceDetails = getDeviceDetailsResponse(deviceId, offerCode, journeyType, commercialProduct);
 		} else {
 			log.error("No data found for given Device Id :" + deviceId);
-			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID);
+			throw new DeviceCustomException(ERROR_CODE_SELECT_DEVICE_DETAIL,ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID,"404");
 		}
 		return deviceDetails;
 	}
@@ -599,7 +600,7 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 		}
 		if (listOfDevices == null || listOfDevices.isEmpty()) {
 			log.error("Invalid Device Id" + ExceptionMessages.INVALID_DEVICE_ID);
-			throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
+			throw new DeviceCustomException(ERROR_CODE_SELECT_DEVICE_DETAIL,ExceptionMessages.INVALID_DEVICE_ID,"404");
 		}
 		return listOfDevices;
 	}

@@ -18,13 +18,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
 import com.vf.uk.dal.device.client.entity.bundle.CommercialBundle;
 import com.vf.uk.dal.device.client.entity.price.BundleAndHardwareTuple;
 import com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware;
 import com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwarePromotions;
 import com.vf.uk.dal.device.dao.DeviceDao;
+import com.vf.uk.dal.device.exception.DeviceCustomException;
 import com.vf.uk.dal.device.model.DeviceSummary;
 import com.vf.uk.dal.device.model.DeviceTile;
 import com.vf.uk.dal.device.model.product.CommercialProduct;
@@ -44,7 +44,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService {
-
+	private static final String ERROR_CODE_DEVICE_MAKE_MODEL = "error_device_make_failed";
 	private static final String AND = " and ";
 	private static final String NO_DATA_FOUND_FOR_GIVEN_MAKE_AND_MMODEL = "No data found for given make and mmodel :";
 	private static final String NO_DATA_FOUND_FOR_GIVEN_MAKE_AND_MMODEL2 = NO_DATA_FOUND_FOR_GIVEN_MAKE_AND_MMODEL;
@@ -153,7 +153,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 		}
 		if (CollectionUtils.isEmpty(listOfDeviceTile)) {
 			log.error(NO_DATA_FOUND_FOR_GIVEN_MAKE_AND_MMODEL2 + make + AND + model);
-			throw new ApplicationException(ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_MAKE_MODEL,ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST,"404");
 		}
 		return listOfDeviceTile;
 
@@ -182,17 +182,17 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 					listOfDeviceSummary = future1.get();
 				} catch (Exception e) {
 					log.error(EXCEPTION_OCCURED_WHILE_EXECUTING_THREAD_POOL + e);
-					throw new ApplicationException(ExceptionMessages.ERROR_IN_FUTURE_TASK);
+					throw new DeviceCustomException(ERROR_CODE_DEVICE_MAKE_MODEL,ExceptionMessages.ERROR_IN_FUTURE_TASK,"404");
 				}
 				resetDeviceIdImplementation(isConditionalAcceptJourney, deviceTile, listOfDeviceSummary, deviceId);
 				setListOfDeviceTile(isConditionalAcceptJourney, listOfDeviceTile, deviceTile, listOfDeviceSummary);
 			} else {
 				log.error("Requested Make and Model Not found in given group type:" + groupType);
-				throw new ApplicationException(ExceptionMessages.MAKE_AND_MODEL_NOT_FOUND_IN_GROUPTYPE);
+				throw new DeviceCustomException(ERROR_CODE_DEVICE_MAKE_MODEL,ExceptionMessages.MAKE_AND_MODEL_NOT_FOUND_IN_GROUPTYPE,"404");
 			}
 		} else {
 			log.error(NO_DATA_FOUND_FOR_GIVEN_MAKE_AND_MMODEL2 + make + AND + model);
-			throw new ApplicationException(ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_MAKE_MODEL,ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST,"404");
 		}
 	}
 
@@ -222,7 +222,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 				listOfBundleAndHardPromo = promotionTask.get();
 			} catch (Exception e) {
 				log.error(EXCEPTION_OCCURED_WHILE_EXECUTING_THREAD_POOL + e);
-				throw new ApplicationException(ExceptionMessages.ERROR_IN_FUTURE_TASK);
+				throw new DeviceCustomException(ERROR_CODE_DEVICE_MAKE_MODEL,ExceptionMessages.ERROR_IN_FUTURE_TASK,"404");
 			}
 		}
 
@@ -302,7 +302,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 
 		} else {
 			log.error(NO_DATA_FOUND_FOR_GROUP_TYPE + groupType);
-			throw new ApplicationException(ExceptionMessages.NULL_VALUE_GROUP_TYPE);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_MAKE_MODEL,ExceptionMessages.NULL_VALUE_GROUP_TYPE,"404");
 		}
 		return listOfCommercialProducts;
 	}
@@ -481,7 +481,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 					new ArrayList<>(listOfDeviceGroupMember), commerProdMemMapPAYG, bundleAndHardwareTupleListPAYG);
 		} else {
 			log.error(NO_DATA_FOUND_FOR_GIVEN_MAKE_AND_MMODEL2 + make + AND + model);
-			throw new ApplicationException(ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_MAKE_MODEL,ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST,"404");
 		}
 		return listOfDeviceTile;
 
@@ -579,13 +579,13 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 				listOfDeviceSummary = future1.get();
 			} catch (Exception e) {
 				log.error(EXCEPTION_OCCURED_WHILE_EXECUTING_THREAD_POOL + e);
-				throw new ApplicationException(ExceptionMessages.ERROR_IN_FUTURE_TASK);
+				throw new DeviceCustomException(ERROR_CODE_DEVICE_MAKE_MODEL,ExceptionMessages.ERROR_IN_FUTURE_TASK,"404");
 			}
 			deviceTile.setDeviceSummary(listOfDeviceSummary);
 			listOfDeviceTile.add(deviceTile);
 		} else {
 			log.error("Requested Make and Model Not found in given group type:" + groupType);
-			throw new ApplicationException(ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_MAKE_MODEL,ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST,"404");
 		}
 	}
 

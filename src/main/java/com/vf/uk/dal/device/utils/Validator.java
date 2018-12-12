@@ -21,6 +21,7 @@ public class Validator {
 		/**
 		 *  constructor */
 	};
+	private static final String ERROR_CODE_DEVICE_MAKE_MODEL = "error_device_make_failed";
 	private static final String ERROR_CODE_SELECT_DEVICE_INSURANCE = "error_device_insurance_failed";
 	private static final String ERROR_CODE_SELECT_DEVICE_DETAILS = "error_device_details_failed";
 	private static final String ERROR_CODE_SELECT_DEVICE = "error_device_accessory_failed";
@@ -353,11 +354,11 @@ public class Validator {
 		creditLimitParam = validateCreditValue(creditLimit);
 		if ((StringUtils.isBlank(make) || "\"\"".equals(make))
 				&& (StringUtils.isBlank(model) || "\"\"".equals(model))) {
-			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_MAKE_MODEL);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_MAKE_MODEL,ExceptionMessages.INVALID_INPUT_MISSING_MAKE_MODEL,"404");
 		} else if (StringUtils.isBlank(make) || "\"\"".equals(make)) {
-			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_MAKE);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_MAKE_MODEL,ExceptionMessages.INVALID_INPUT_MISSING_MAKE,"404");
 		} else if (StringUtils.isBlank(model) || "\"\"".equals(model)) {
-			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_MODEL);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_MAKE_MODEL,ExceptionMessages.INVALID_INPUT_MISSING_MODEL,"404");
 		}
 
 		if (bundleId != null && (!bundleId.matches(numberExp) || bundleId.matches("[0]*"))) {

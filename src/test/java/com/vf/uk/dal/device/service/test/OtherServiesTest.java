@@ -29,7 +29,6 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
 import com.vf.uk.dal.device.beans.test.DeviceTestBeans;
 import com.vf.uk.dal.device.client.converter.ResponseMappingHelper;
@@ -48,6 +47,7 @@ import com.vf.uk.dal.device.controller.DeviceDetailsController;
 import com.vf.uk.dal.device.controller.DeviceEntityController;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.dao.DeviceTileCacheDAOImpl;
+import com.vf.uk.dal.device.exception.DeviceCustomException;
 import com.vf.uk.dal.device.model.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.model.Device;
 import com.vf.uk.dal.device.model.DeviceDetails;
@@ -278,7 +278,7 @@ public class OtherServiesTest {
 		try {
 			deviceDetailsController
 					.getListOfDeviceDetails(CommonMethods.getQueryParamsMapForDeviceDetails("093353,090572"));
-		} catch (ApplicationException e) {
+		} catch (DeviceCustomException e) {
 			Assert.assertEquals("Invalid Device Id Sent In Request", e.getMessage());
 		}
 	}
@@ -353,7 +353,7 @@ public class OtherServiesTest {
 		try {
 			given(response.getCommercialProductFromJson(ArgumentMatchers.any())).willReturn(Collections.emptyList());
 			deviceEntityController.getCommercialProduct("093353", null);
-		} catch (ApplicationException e) {
+		} catch (DeviceCustomException e) {
 			Assert.assertEquals("Received Null Values for the given device id", e.getMessage());
 		}
 	}

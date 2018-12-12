@@ -225,7 +225,7 @@ public class DeviceIntegrationTest {
 		});
 		assertNotNull(error);
 		assertEquals("No Devices Found for the given input search criteria", error.getMessage());
-		assertEquals("DEVICE_INVALID_INPUT_013", error.getCode());
+		assertEquals("error_device_make_failed", error.getCode());
 	}
 
 	@Test
