@@ -66,6 +66,7 @@ import com.vf.uk.dal.device.model.MetaData;
 import com.vf.uk.dal.device.model.ProductGroupDetailsForDeviceList;
 import com.vf.uk.dal.device.model.Specification;
 import com.vf.uk.dal.device.model.SpecificationGroup;
+import com.vf.uk.dal.device.model.merchandisingpromotion.Condition;
 import com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotionModel;
 import com.vf.uk.dal.device.model.merchandisingpromotion.OfferAppliedPriceModel;
 import com.vf.uk.dal.device.model.product.BazaarVoice;
@@ -182,7 +183,6 @@ public class CommonMethods {
 		metaData.setSeoDescription("Description");
 		metaData.setSeoIndex("Index");
 		metaData.setSeoKeyWords("keywords");
-
 		deviceDetails.setMetaData(metaData);
 
 		return deviceDetails;
@@ -1415,7 +1415,14 @@ public class CommonMethods {
 		com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotion mem = new com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotion();
 		mem.setTag("handset.limited.GBP");
 		mem.setType("full_duration");
+		mem.setCondition(getCondition());
 		return mem;
+	}
+
+	private static Condition getCondition() {
+		Condition condition = new Condition();
+		condition.setPackageType("bundle");
+		return condition;
 	}
 
 	/**
