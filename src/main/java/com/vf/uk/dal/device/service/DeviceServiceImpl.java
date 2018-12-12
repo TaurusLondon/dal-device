@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.client.converter.ResponseMappingHelper;
 import com.vf.uk.dal.device.client.entity.bundle.BundleModel;
 import com.vf.uk.dal.device.client.entity.bundle.BundleModelAndPrice;
@@ -25,6 +24,7 @@ import com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion;
 import com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware;
 import com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwarePromotions;
 import com.vf.uk.dal.device.dao.DeviceDao;
+import com.vf.uk.dal.device.exception.DeviceCustomException;
 import com.vf.uk.dal.device.model.Device;
 import com.vf.uk.dal.device.model.DeviceSummary;
 import com.vf.uk.dal.device.model.DeviceTile;
@@ -62,6 +62,8 @@ import lombok.extern.slf4j.Slf4j;
 @Component("deviceService")
 public class DeviceServiceImpl implements DeviceService {
 
+	private static final String ERROR_CODE_DEVICE_LIST = "error_device_list_failed";
+	private static final String ERROR_CODE_DEVICETILE_BY_ID = "error_device_entity_failed";
 	private static final String LEAD_MEMBER = "leadMember";
 	private static final String PRODUCT_GROUP_FACET_MODEL_FOR_FACETS = "productGroupFacetModelForFacets";
 	private static final String PRODUCT_GROUP_FACET_MODEL = "productGroupFacetModel";
@@ -125,7 +127,7 @@ public class DeviceServiceImpl implements DeviceService {
 		List<DeviceTile> deviceTileList;
 		deviceTileList = getDeviceTileByIdForVariant(id, offerCode, journeyType);
 		if (deviceTileList == null || deviceTileList.isEmpty()) {
-			throw new ApplicationException(ExceptionMessages.NO_DATA_FOR_GIVEN_SEARCH_CRITERIA);
+			throw new DeviceCustomException(ERROR_CODE_DEVICETILE_BY_ID,ExceptionMessages.NO_DATA_FOR_GIVEN_SEARCH_CRITERIA,"404");
 		} else {
 			return deviceTileList;
 		}
@@ -151,7 +153,7 @@ public class DeviceServiceImpl implements DeviceService {
 			listOfDeviceTile = getDeviceTileListOfVariant(id, offerCode, journeyType, commercialProduct);
 		} else {
 			log.error(ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID + id);
-			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID);
+			throw new DeviceCustomException(ERROR_CODE_DEVICETILE_BY_ID,ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID,"404");
 		}
 
 		return listOfDeviceTile;
@@ -189,7 +191,7 @@ public class DeviceServiceImpl implements DeviceService {
 		log.info("Start -->  calling  getDeviceList in ServiceImpl");
 		if (includeRecommendations && StringUtils.isBlank(msisdn)) {
 			log.error("Invalid MSISDN provided. MSISDN is required for retrieving recommendations.");
-			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MSISDN);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_LIST,ExceptionMessages.INVALID_INPUT_MSISDN,"404");
 		} else {
 			if (creditLimit != null) {
 				log.info("Getting devices for conditional Accept, with credit limit :" + creditLimit);
@@ -414,7 +416,7 @@ public class DeviceServiceImpl implements DeviceService {
 					commercialProduct, comBundle, priceForBundleAndHardware, promotions, null, false, null, cdnDomain);
 		} else {
 			log.error("No data found for given criteria :" + id);
-			throw new ApplicationException(ExceptionMessages.NO_DATA_FOR_GIVEN_SEARCH_CRITERIA);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_LIST,ExceptionMessages.NO_DATA_FOR_GIVEN_SEARCH_CRITERIA,"404");
 		}
 		return deviceSummary;
 	}
@@ -503,7 +505,7 @@ public class DeviceServiceImpl implements DeviceService {
 			}
 			if (listOfProducts.isEmpty()) {
 				log.error("Empty Lead DeviceId List Coming From Solr :  " + listOfProducts);
-				throw new ApplicationException(ExceptionMessages.NO_LEAD_MEMBER_ID_COMING_FROM_SOLR);
+				throw new DeviceCustomException(ERROR_CODE_DEVICE_LIST,ExceptionMessages.NO_LEAD_MEMBER_ID_COMING_FROM_SOLR,"404");
 			}
 			log.error("Lead DeviceId List Coming From Solr------------:  " + listOfProducts);
 			List<ProductModel> listOfProductModel = deviceEs.getListOfProductModel(listOfProducts);
@@ -519,7 +521,7 @@ public class DeviceServiceImpl implements DeviceService {
 						withoutOfferPriceMap, promotionmap);
 			} else {
 				log.error("No Data Found for the given list of Products : " + listOfProductModel);
-				throw new ApplicationException(ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_PRODUCT_LIST);
+				throw new DeviceCustomException(ERROR_CODE_DEVICE_LIST,ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_PRODUCT_LIST,"404");
 			}
 
 			List<FacetField> facetFields = (null != productGroupFacetModelForFacets)
@@ -531,7 +533,7 @@ public class DeviceServiceImpl implements DeviceService {
 
 		} else {
 			log.error("No ProductGroups Found for the given search criteria: ");
-			throw new ApplicationException(ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_LIST,ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST,"404");
 		}
 		return facetedDevice;
 	}
@@ -603,7 +605,7 @@ public class DeviceServiceImpl implements DeviceService {
 
 		} else {
 			log.error("No ProductGroups Found for the given search criteria: ");
-			throw new ApplicationException(ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_LIST,ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST,"404");
 		}
 
 		log.info("exiting getDeviceListForConditionalAccept ");

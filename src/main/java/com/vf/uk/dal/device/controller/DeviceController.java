@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vf.uk.dal.common.exception.ApplicationException;
+import com.vf.uk.dal.device.exception.DeviceCustomException;
 import com.vf.uk.dal.device.model.DeviceTile;
 import com.vf.uk.dal.device.model.FacetedDevice;
 import com.vf.uk.dal.device.service.DeviceService;
@@ -46,6 +46,7 @@ import lombok.extern.slf4j.Slf4j;
 public class DeviceController {
 
 	public static final String NUMBEREXP = "[0-9]{6}";
+	private static final String ERROR_CODE_DEVICETILE_BY_ID = "error_device_entity_failed";
 	@Autowired
 	DeviceService deviceService;
 
@@ -93,7 +94,7 @@ public class DeviceController {
 		List<DeviceTile> listOfDeviceTile;
 		if (!deviceId.matches(NUMBEREXP)) {
 			log.error(ExceptionMessages.INVALID_DEVICE);
-			throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
+			throw new DeviceCustomException(ERROR_CODE_DEVICETILE_BY_ID,ExceptionMessages.INVALID_DEVICE_ID,"404");
 		}
 		listOfDeviceTile = deviceService.getDeviceTileById(deviceId, offerCode, journeyType);
 

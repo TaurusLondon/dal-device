@@ -43,6 +43,7 @@ public class Validator {
 	public static final String STRING_HANDSET = "Handset";
 	public static final String JOURNEY_TYPE_ACQUISITION = "Acquisition";
 	public static final String DEVICE_ID_IS_EMPTY = "Device Id is Empty";
+	private static final String ERROR_CODE_DEVICE_LIST = "error_device_list_failed";
 
 	/**
 	 * 
@@ -163,7 +164,7 @@ public class Validator {
 	 */
 	public void validateIncludeRecommendation(String showRecommendations) {
 		if (!showRecommendations.equalsIgnoreCase(STRING_TRUE) && !showRecommendations.equalsIgnoreCase(STRING_FALSE)) {
-			throw new ApplicationException(ExceptionMessages.INVALID_INCLUDERECOMMENDATION);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_LIST,ExceptionMessages.INVALID_INCLUDERECOMMENDATION,"404");
 		}
 	}
 
@@ -174,7 +175,7 @@ public class Validator {
 	 */
 	public void validateMSISDN(String msisdn, String includeRecommendations) {
 		if (!msisdn.matches("[0-9]{10}") && STRING_TRUE.equalsIgnoreCase(includeRecommendations)) {
-			throw new ApplicationException(ExceptionMessages.INVALID_MSISDN);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_LIST,ExceptionMessages.INVALID_MSISDN,"404");
 		}
 	}
 
@@ -229,17 +230,17 @@ public class Validator {
 		Float creditLimitparam = null;
 		if (StringUtils.isNotBlank(creditLimit)) {
 			if (!creditLimit.matches(creditLimitExp)) {
-				throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
+				throw new DeviceCustomException(ERROR_CODE_DEVICE_LIST,ExceptionMessages.INVALID_CREDIT_LIMIT,"404");
 			} else {
 				try {
 					creditLimitparam = Float.parseFloat(creditLimit);
 				} catch (NumberFormatException ex) {
 					log.error("Credit limit value not correct " + ex);
-					throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
+					throw new DeviceCustomException(ERROR_CODE_DEVICE_LIST,ExceptionMessages.INVALID_CREDIT_LIMIT,"404");
 				}
 			}
 		} else if (StringUtils.isBlank(creditLimit)) {
-			throw new ApplicationException(ExceptionMessages.INVALID_CREDIT_LIMIT);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_LIST,ExceptionMessages.INVALID_CREDIT_LIMIT,"404");
 		}
 		return creditLimitparam;
 	}
