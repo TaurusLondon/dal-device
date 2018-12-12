@@ -220,6 +220,11 @@ public class DeviceServiceImplTest {
 		given(restTemplate.getForObject(
 				"http://BUNDLES-V1/bundles/catalogue/bundle/queries/byCoupledBundleList/?deviceId=093353&journeyType=Acquisition",
 				BundleDetailsForAppSrv.class)).willReturn(CommonMethods.getCoupledBundleListForDevice());
+		given(response.getListOfProductModel(ArgumentMatchers.any())).willReturn(CommonMethods.getProductModel());
+		given(response.getListOfBundleModel(ArgumentMatchers.any()))
+				.willReturn(CommonMethods.getBundleModelListForBundleListForConditional());
+		given(deviceDAOMock.getBundleDetailsFromComplansListingAPI(ArgumentMatchers.anyString(),
+				ArgumentMatchers.anyString())).willReturn(CommonMethods.getCompatibleBundleListJson());
 	}
 
 	@Test
@@ -1231,13 +1236,24 @@ public class DeviceServiceImplTest {
 				CommonMethods.getCompatibleBundleListJson(), modelPrice);
 		List<String> listOfProductsNew = new ArrayList<>();
 		listOfProductsNew.add("093353");
+		Assert.assertNotNull(
+				conditionalHelper.calculatePlan((float) 10, listOfProductsNew, CommonMethods.getProductModel()));
 		given(response.getListOfProductModel(ArgumentMatchers.any())).willReturn(CommonMethods.getProductModel());
 		given(response.getListOfBundleModel(ArgumentMatchers.any()))
 				.willReturn(CommonMethods.getBundleModelListForBundleListForConditional());
-		given(deviceDAOMock.getBundleDetailsFromComplansListingAPI(ArgumentMatchers.anyString(),
-				ArgumentMatchers.anyString())).willReturn(CommonMethods.getCompatibleBundleListJson());
+		BundleDetails bundleDetails = CommonMethods.getCompatibleBundleListJson();
+		List<BundleHeader> bundleHeaderlist =bundleDetails.getPlanList();
+		BundleHeader bundleHeader = bundleHeaderlist.get(0);
+		bundleHeader.setSkuId("110151");
+		bundleHeaderlist.clear();
+		bundleHeaderlist.add(bundleHeader);
+		bundleDetails.setPlanList(bundleHeaderlist);
+		given(deviceDAOMock.getBundleDetailsFromComplansListingAPI("093353",
+				null)).willReturn(bundleDetails);
 		Assert.assertNotNull(
 				conditionalHelper.calculatePlan((float) 10, listOfProductsNew, CommonMethods.getProductModel()));
+		Assert.assertNotNull(
+				conditionalHelper.calculatePlan((float) 6, listOfProductsNew, CommonMethods.getProductModel()));
 	}
 
 	@Test
