@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.client.converter.ResponseMappingHelper;
 import com.vf.uk.dal.device.client.entity.price.BundleDeviceAndProductsList;
 import com.vf.uk.dal.device.client.entity.price.Price;
@@ -23,6 +22,7 @@ import com.vf.uk.dal.device.client.entity.price.PriceForAccessory;
 import com.vf.uk.dal.device.client.entity.price.PriceForProduct;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.dao.DeviceTileCacheDAO;
+import com.vf.uk.dal.device.exception.DeviceCustomException;
 import com.vf.uk.dal.device.model.Accessory;
 import com.vf.uk.dal.device.model.AccessoryTileGroup;
 import com.vf.uk.dal.device.model.Insurance;
@@ -51,6 +51,8 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	public static final String STRING_COMPATIBLE_INSURANCE = "Compatible Insurance";
 	public static final String STRING_ACCESSORY = "Accessory,Compatible Accessories";
 	public static final String STRING_COMPATIBLE_ACCESSORIES = "Compatible Accessories";
+	private static final String ERROR_CODE_SELECT_DEVICE = "error_device_accessory_failed";
+	private static final String ERROR_CODE_SELECT_DEVICE_INSURANCE = "error_device_insurance_failed";
 
 	@Autowired
 	DeviceDao deviceDao;
@@ -122,20 +124,20 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 							listOfDeviceGroupName, finalAccessoryList);
 				} else {
 					log.error("No Compatible Accessories found for given device Id:" + deviceId);
-					throw new ApplicationException(ExceptionMessages.NULL_COMPATIBLE_VALUE_FOR_DEVICE_ID);
+					throw new DeviceCustomException(ERROR_CODE_SELECT_DEVICE,ExceptionMessages.NULL_COMPATIBLE_VALUE_FOR_DEVICE_ID,"404");
 				}
 
 			} else {
 				log.error("Given DeviceId is not ProductClass Handset  :" + deviceId);
-				throw new ApplicationException(ExceptionMessages.DEVICE_ID_NOT_HANDSET);
+				throw new DeviceCustomException(ERROR_CODE_SELECT_DEVICE,ExceptionMessages.DEVICE_ID_NOT_HANDSET,"404");
 			}
 		} else {
 			log.error("No data found for given device Id:" + deviceId);
-			throw new ApplicationException(ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID);
+			throw new DeviceCustomException(ERROR_CODE_SELECT_DEVICE,ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID,"404");
 		}
 		if (listOfAccessoryTile.isEmpty()) {
 			log.error("No Compatible Accessories found for given device Id:" + deviceId);
-			throw new ApplicationException(ExceptionMessages.NULL_COMPATIBLE_VALUE_FOR_DEVICE_ID);
+			throw new DeviceCustomException(ERROR_CODE_SELECT_DEVICE,ExceptionMessages.NULL_COMPATIBLE_VALUE_FOR_DEVICE_ID,"404");
 		}
 		return listOfAccessoryTile;
 	}
@@ -211,7 +213,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 			insurance = getInsuranceResponse(deviceId, journeyType, cohProduct);
 		} else {
 			log.error("No data found for given Device Id :" + deviceId);
-			throw new ApplicationException(ExceptionMessages.NULL_COMPATIBLE_INSURANCES_FOR_DEVICE_ID);
+			throw new DeviceCustomException(ERROR_CODE_SELECT_DEVICE_INSURANCE,ExceptionMessages.NULL_COMPATIBLE_INSURANCES_FOR_DEVICE_ID,"404");
 		}
 		validateInsuranceNullable(deviceId, insurance);
 		return insurance;
@@ -230,7 +232,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 			insurance = getInsurance(journeyType, cohProduct);
 		} else {
 			log.error("Given DeviceId is not ProductClass Handset  :" + deviceId);
-			throw new ApplicationException(ExceptionMessages.DEVICE_ID_NOT_HANDSET);
+			throw new DeviceCustomException(ERROR_CODE_SELECT_DEVICE_INSURANCE,ExceptionMessages.DEVICE_ID_NOT_HANDSET,"404");
 		}
 		return insurance;
 	}
@@ -439,7 +441,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 			}
 		} else {
 			log.info("Null values received from Price API");
-			throw new ApplicationException(ExceptionMessages.NULL_VALUES_FROM_PRICING_API);
+			throw new DeviceCustomException(ERROR_CODE_SELECT_DEVICE,ExceptionMessages.NULL_VALUES_FROM_PRICING_API,"404");
 		}
 
 		Map<String, CommercialProduct> mapforCommercialProduct = new HashMap<>();
@@ -467,7 +469,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 
 		if (listOfDeviceGroupName.isEmpty()) {
 			log.error(" No Compatible Accessories found for given device Id:" + deviceId);
-			throw new ApplicationException(ExceptionMessages.NULL_COMPATIBLE_VALUE_FOR_DEVICE_ID);
+			throw new DeviceCustomException(ERROR_CODE_SELECT_DEVICE,ExceptionMessages.NULL_COMPATIBLE_VALUE_FOR_DEVICE_ID,"404");
 		}
 	}
 
@@ -482,7 +484,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 			insurance.setMinCost(formatPrice(insurance.getMinCost()));
 		} else {
 			log.error("No Compatible Insurances found for given device Id" + deviceId);
-			throw new ApplicationException(ExceptionMessages.NULL_COMPATIBLE_INSURANCES_FOR_DEVICE_ID);
+			throw new DeviceCustomException(ERROR_CODE_SELECT_DEVICE,ExceptionMessages.NULL_COMPATIBLE_INSURANCES_FOR_DEVICE_ID,"404");
 		}
 	}
 

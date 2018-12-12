@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.exception.SystemException;
+import com.vf.uk.dal.device.exception.DeviceCustomException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,7 +21,9 @@ public class Validator {
 		/**
 		 *  constructor */
 	};
-
+	private static final String ERROR_CODE_SELECT_DEVICE_INSURANCE = "error_device_insurance_failed";
+	private static final String ERROR_CODE_SELECT_DEVICE_DETAILS = "error_device_details_failed";
+	private static final String ERROR_CODE_SELECT_DEVICE = "error_device_accessory_failed";
 	public static final String JOURNEY_TYPE_UPGRADE = "Upgrade";
 	public static final String JOURNEY_TYPE_SECONDLINE = "SecondLine";
 	public static final String DEVICE_ID = "deviceId";
@@ -388,12 +391,12 @@ public class Validator {
 		if (StringUtils.isNotBlank(deviceId)) {
 			if (!deviceId.matches(numberExp)) {
 				log.error(ExceptionMessages.INVALID_DEVICE);
-				throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
+				throw new DeviceCustomException(ERROR_CODE_SELECT_DEVICE,ExceptionMessages.INVALID_DEVICE_ID,"404");
 			}
 
 		} else {
 			log.error(DEVICE_ID_IS_EMPTY);
-			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
+			throw new DeviceCustomException(ERROR_CODE_SELECT_DEVICE,ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID,"404");
 		}
 	}
 
@@ -405,11 +408,11 @@ public class Validator {
 		if (StringUtils.isNotBlank(deviceId)) {
 			if (!deviceId.matches(numberExp)) {
 				log.error(ExceptionMessages.INVALID_DEVICE);
-				throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
+				throw new DeviceCustomException(ERROR_CODE_SELECT_DEVICE_INSURANCE,ExceptionMessages.INVALID_DEVICE_ID,"404");
 			}
 		} else {
 			log.error(DEVICE_ID_IS_EMPTY);
-			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
+			throw new DeviceCustomException(ERROR_CODE_SELECT_DEVICE_INSURANCE,ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID,"404");
 		}
 	}
 
@@ -422,11 +425,11 @@ public class Validator {
 		if (StringUtils.isNotBlank(deviceId)) {
 			if (!deviceId.matches(numberExp)) {
 				log.error(ExceptionMessages.INVALID_DEVICE);
-				throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
+				throw new DeviceCustomException(ERROR_CODE_SELECT_DEVICE_DETAILS,ExceptionMessages.INVALID_DEVICE_ID,"404");
 			}
 		} else {
 			log.error(DEVICE_ID_IS_EMPTY);
-			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
+			throw new DeviceCustomException(ERROR_CODE_SELECT_DEVICE_DETAILS,ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID,"404");
 		}
 	}
 
@@ -439,6 +442,7 @@ public class Validator {
 		if (StringUtils.isNotBlank(journeyType) && (journeyType.equalsIgnoreCase(JOURNEY_TYPE_SECONDLINE)
 				|| journeyType.equalsIgnoreCase(JOURNEY_TYPE_UPGRADE))) {
 			log.error("JourneyType is not compatible for given DeviceId");
+			
 			throw new ApplicationException(ExceptionMessages.INVALID_DEVICEID_JOURNEY_TYPE);
 		} else if (StringUtils.isNotBlank(offerCode)) {
 			log.error("offerCode is not compatible for given DeviceId");

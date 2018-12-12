@@ -179,7 +179,7 @@ public class DeviceIntegrationTest {
 		});
 		assertNotNull(error);
 		assertEquals("No Compatible Accessories found for given device Id", error.getMessage());
-		assertEquals("DEVICE_INVALID_INPUT_011", error.getCode());
+		assertEquals("error_device_accessory_failed", error.getCode());
 	}
 
 	@Test
@@ -210,7 +210,7 @@ public class DeviceIntegrationTest {
 		});
 		assertNotNull(error);
 		assertEquals("No Compatible Insurances found for given device Id", error.getMessage());
-		assertEquals("DEVICE_INVALID_INPUT_052", error.getCode());
+		assertEquals("error_device_accessory_failed", error.getCode());
 	}
 
 	@Test
