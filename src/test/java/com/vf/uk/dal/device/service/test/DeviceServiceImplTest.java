@@ -2158,5 +2158,5 @@ public class DeviceServiceImplTest {
 		String deviceId = commonUtility.appendPrefixString("093353");
 		Assert.assertNotNull(deviceId);
 		Assert.assertEquals("sku93353", deviceId);
-	}
+	} 
 }
