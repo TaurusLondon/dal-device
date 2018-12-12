@@ -51,6 +51,8 @@ import com.vf.uk.dal.device.client.entity.customer.RecommendedProductListRespons
 import com.vf.uk.dal.device.client.entity.customer.SourcePackageSummary;
 import com.vf.uk.dal.device.client.entity.price.BundleAndHardwareTuple;
 import com.vf.uk.dal.device.client.entity.price.BundleDeviceAndProductsList;
+import com.vf.uk.dal.device.client.entity.price.HardwarePrice;
+import com.vf.uk.dal.device.client.entity.price.Price;
 import com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware;
 import com.vf.uk.dal.device.client.entity.price.PriceForProduct;
 import com.vf.uk.dal.device.client.entity.price.RequestForBundleAndHardware;
@@ -1109,6 +1111,9 @@ public class DeviceTest {
 		commercialBundleMap.put("110163", CommonMethods.getCommercialBundleForcacheDevice());
 		String leadId = CacheDeviceService.getNonUpgradeLeadPlanIdForPaymCacheDevice(nonLeadPlanIdPriceMap,
 				new HashMap<>(), commercialBundleMap, new ArrayList<>(), "093353", "Apple-Iphone");
+		nonLeadPlanIdPriceMap.put("Apple-Iphone", CommonMethods.getPriceForBundleAndHardwareForCacheDeviceTile());
+		CacheDeviceService.getNonUpgradeLeadPlanIdForPaymCacheDevice(nonLeadPlanIdPriceMap,
+				nonLeadPlanIdPriceMap, commercialBundleMap, new ArrayList<>(), "093353", "Apple-Iphone");
 		assertNotNull(leadId);
 		assertEquals("110163", leadId);
 	}
@@ -1133,6 +1138,7 @@ public class DeviceTest {
 		listOfOfferCodes.add("W_HH_OC_02");
 		listOfOfferCodes.add("W_HH_OC_Paym_01");
 		listOfOfferCodes.add("W_HH_OC_Paym_02");
+		listOfOfferCodes.add("W_HH_PAYM_OC_01");
 		Map<String, List<PriceForBundleAndHardware>> nonLeadPlanIdPriceMap = new HashMap<>();
 		nonLeadPlanIdPriceMap.put("093353", CommonMethods.getPriceForBundleAndHardwareForCacheDeviceTile());
 		Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap = new HashMap<>();
@@ -1173,6 +1179,27 @@ public class DeviceTest {
 				listOfLeadPlanId, listOfCimpatiblePlanMap,
 				CommonMethods.getPriceForBundleAndHardwareForCacheDeviceTile(), bundleHardwareTroupleMap,
 				nonLeadPlanIdPriceMap, "093353");
+		Map<String, List<PriceForBundleAndHardware>> priceMap = new HashMap<>();
+		priceMap.put("apple-iphone", CommonMethods.getPriceForBundleAndHardwareForCacheDeviceTile());
+		deviceUtils.getLeadPlanGroupPriceMap(leadPlanIdPriceMap, priceMap, CommonMethods.getPrice(), "093353", "apple-iphone");
+		priceMap.put("093353", CommonMethods.getPriceForBundleAndHardwareForCacheDeviceTile());
+		deviceUtils.getLeadPlanGroupPriceMap(leadPlanIdPriceMap, priceMap, CommonMethods.getPrice(), "093353", "apple-iphone");
+		deviceUtils.getIlsPriceMap(listOfOfferCodes, commercialBundleMap, listOfCimpatiblePlanMap, bundleHardwareTroupleMap, "093353");
+		Map<String, String> minimumPriceMap = new HashMap<>();
+		minimumPriceMap.put("093353", "10");
+		Map<String, Map<String, List<PriceForBundleAndHardware>>> map1 = new HashMap<>();
+		map1.put("offeredPrice", priceMap);
+		Map<String, Map<String, Map<String, List<PriceForBundleAndHardware>>>> ilsOfferPriceWithJourneyAware = new HashMap<>();
+		ilsOfferPriceWithJourneyAware.put("093353", map1);
+		Map<String, Map<String, List<PriceForBundleAndHardware>>> mapOfIlsPriceWithoutOfferCode = new HashMap<>();
+		mapOfIlsPriceWithoutOfferCode.put("093353", priceMap);
+		DevicePreCalculatedData deviceDataRating = new DevicePreCalculatedData();
+		deviceDataRating.setDeviceId("093353");
+		deviceDataRating.setProductGroupName("093353");
+		deviceUtils.updateDevicePrecaldataBasedOnIlsPriceAndRating(minimumPriceMap, ilsOfferPriceWithJourneyAware, mapOfIlsPriceWithoutOfferCode, groupMap, deviceDataRating);
+		deviceDataRating.setPriceInfo(CommonMethods.getPriceinforForSorl());
+		deviceDataRating.setMedia(CommonMethods.getmediaForSorl());
+		deviceUtils.updateDevicePrecaldataBasedOnIlsPriceAndRating(minimumPriceMap, ilsOfferPriceWithJourneyAware, mapOfIlsPriceWithoutOfferCode, groupMap, deviceDataRating);
 	}
 
 	@Test
@@ -1556,6 +1583,17 @@ public class DeviceTest {
 	public void testForLeastMonthlyPriceForpayG() {
 		String leastPrice = deviceUtils
 				.leastMonthlyPriceForpayG(CommonMethods.getPriceForBundleAndHardwareListFromTupleList());
+		List<PriceForBundleAndHardware> priceList = CommonMethods.getPriceForBundleAndHardwareListFromTupleList();
+		PriceForBundleAndHardware price = priceList.get(0);
+		priceList.add(price);
+		deviceUtils.leastMonthlyPriceForpayG(priceList);
+		HardwarePrice bprice = price.getHardwarePrice();
+		Price mdp = bprice.getOneOffDiscountPrice();
+		mdp.setGross(null);
+		bprice.setOneOffDiscountPrice(mdp);
+		price.setHardwarePrice(bprice);
+		priceList.add(0,price);
+		deviceUtils.leastMonthlyPriceForpayG(priceList);
 		assertNotNull(leastPrice);
 		assertEquals("0", leastPrice);
 	}

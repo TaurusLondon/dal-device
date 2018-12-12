@@ -2023,6 +2023,15 @@ public class DeviceServiceImplTest {
 			List<PriceForBundleAndHardware> priceList = new ArrayList<>();
 			priceList.add(price);
 			deviceUtils.leastMonthlyPrice(priceList);
+			priceList.add(price);
+			deviceUtils.leastMonthlyPrice(priceList);
+			BundlePrice bprice = price.getBundlePrice();
+			Price mdp = bprice.getMonthlyDiscountPrice();
+			mdp.setGross(null);
+			bprice.setMonthlyDiscountPrice(mdp);
+			price.setBundlePrice(bprice);
+			priceList.add(price);
+			deviceUtils.leastMonthlyPrice(priceList);
 		}
 
 		catch (Exception e) {
