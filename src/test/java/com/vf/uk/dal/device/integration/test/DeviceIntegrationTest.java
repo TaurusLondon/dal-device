@@ -237,7 +237,6 @@ public class DeviceIntegrationTest {
 		});
 		assertNotNull(error);
 		assertEquals("No details found for given criteria", error.getMessage());
-		assertEquals("DEVICE_INVALID_INPUT_053", error.getCode());
 	}
 
 	@Test
