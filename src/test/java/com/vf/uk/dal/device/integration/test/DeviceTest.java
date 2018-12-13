@@ -78,6 +78,7 @@ import com.vf.uk.dal.device.model.merchandisingpromotion.OfferAppliedPriceModel;
 import com.vf.uk.dal.device.model.product.CommercialProduct;
 import com.vf.uk.dal.device.model.solr.DevicePreCalculatedData;
 import com.vf.uk.dal.device.service.CacheDeviceService;
+import com.vf.uk.dal.device.service.CacheDeviceServiceImpl;
 import com.vf.uk.dal.device.service.DeviceRecommendationService;
 import com.vf.uk.dal.device.service.DeviceService;
 import com.vf.uk.dal.device.utils.AccessoriesAndInsurancedaoUtils;
@@ -178,7 +179,10 @@ public class DeviceTest {
 	CacheDeviceAndReviewController cacheDeviceAndReviewController;
 
 	@Autowired
-	CacheDeviceService CacheDeviceService;
+	CacheDeviceService cacheDeviceService;
+	
+	@Autowired
+	CacheDeviceServiceImpl cacheDeviceServiceImpl;
 
 	@Autowired
 	DeviceServiceCommonUtility deviceServiceCommonUtility;
@@ -1085,7 +1089,7 @@ public class DeviceTest {
 			PriceForBundleAndHardware[] obj = mapper.readValue(jsonString, PriceForBundleAndHardware[].class);
 			given(restTemplate.postForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(),
 					ArgumentMatchers.any())).willReturn(obj);
-			CacheDeviceService.getIlsPriceWithOfferCodeAndJourney(listOfOfferCodesForUpgrade, listOfSecondLineOfferCode,
+			cacheDeviceService.getIlsPriceWithOfferCodeAndJourney(listOfOfferCodesForUpgrade, listOfSecondLineOfferCode,
 					bundleHardwareTroupleMap, new HashMap<>(), "DEVICE_PAYM");
 		} catch (IOException e) {
 		}
@@ -1093,13 +1097,94 @@ public class DeviceTest {
 	}
 
 	@Test
+	public void testForgetMinimumPriceMap() throws IOException{
+		List<String> listOfOfferCodesForUpgrade = new ArrayList<>();
+		listOfOfferCodesForUpgrade.add("W_HH_OC_01");
+		listOfOfferCodesForUpgrade.add("W_HH_OC_02");
+		List<String> listOfSecondLineOfferCode = new ArrayList<>();
+		listOfSecondLineOfferCode.add("W_HH_OC_Paym_01");
+		listOfSecondLineOfferCode.add("W_HH_OC_Paym_02");
+		Map<String, List<BundleAndHardwareTuple>> bundleHardwareTroupleMap = new HashMap<>();
+		List<BundleAndHardwareTuple> listOfBundleHardwareTruple = new ArrayList<>();
+		BundleAndHardwareTuple bundleAndHardwareTuple = new BundleAndHardwareTuple();
+		bundleAndHardwareTuple.setBundleId("110154");
+		bundleAndHardwareTuple.setHardwareId("093353");
+		BundleAndHardwareTuple bundleAndHardwareTuple1 = new BundleAndHardwareTuple();
+		bundleAndHardwareTuple1.setBundleId("110163");
+		bundleAndHardwareTuple1.setHardwareId("095552");
+		listOfBundleHardwareTruple.add(bundleAndHardwareTuple);
+		listOfBundleHardwareTruple.add(bundleAndHardwareTuple1);
+		bundleHardwareTroupleMap.put("W_HH_OC_01", listOfBundleHardwareTruple);
+		bundleHardwareTroupleMap.put("W_HH_OC_02", listOfBundleHardwareTruple);
+		bundleHardwareTroupleMap.put("W_HH_OC_Paym_01", listOfBundleHardwareTruple);
+		bundleHardwareTroupleMap.put("W_HH_OC_Paym_02", listOfBundleHardwareTruple);
+
+		String jsonString = new String(CommonMethods.readFile("\\rest-mock\\PRICE-V1.json"));
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+		PriceForBundleAndHardware[] obj = mapper.readValue(jsonString, PriceForBundleAndHardware[].class);
+		given(restTemplate.postForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(),
+				ArgumentMatchers.any())).willReturn(obj);
+		Map<String, Map<String, Map<String, List<PriceForBundleAndHardware>>>> map = new HashMap<>();
+		Map<String, Map<String, List<PriceForBundleAndHardware>>> ilsPriceForBundleAndHardwareMap = new HashMap<>();
+		Map<String, List<PriceForBundleAndHardware>> iLSPriceMap = new HashMap<>();
+		iLSPriceMap.put("093353", CommonMethods.getOfferAppliedPrice());
+		ilsPriceForBundleAndHardwareMap.put("SecondLine", iLSPriceMap);
+		iLSPriceMap.put("Apple", CommonMethods.getOfferAppliedPrice());
+		cacheDeviceServiceImpl.getMinimumPriceMap("DEVICE_PAYM", new HashMap<>(), 
+				listOfOfferCodesForUpgrade, listOfSecondLineOfferCode, map, iLSPriceMap, bundleHardwareTroupleMap, ilsPriceForBundleAndHardwareMap);
+		cacheDeviceServiceImpl.setLeadNonLeadPriceMap(null, null, null, null, null);
+		List<BundleAndHardwareTuple> bundleAndHardwareTupleListForNonLeanPlanId = new ArrayList<>();
+		cacheDeviceServiceImpl.setLeadNonLeadPriceMap(null, null, null, null, null);
+		cacheDeviceServiceImpl.setLeadNonLeadPriceMap(null, null, null, null, bundleAndHardwareTupleListForNonLeanPlanId);
+		cacheDeviceServiceImpl.setBundleAndHardwareTupleListJourneyAware(null, null, null, null, null,null,null);
+		List<CommercialProduct> listOfCommercialProduct = new ArrayList<>();
+		cacheDeviceServiceImpl.setBundleAndHardwareTupleListJourneyAware(null, null, null, null, null,null,listOfCommercialProduct);
+		cacheDeviceServiceImpl.setListOfProductGroupRepository(null, null, null);
+		Set<String> listOfOfferCodes = new HashSet<>();
+		listOfOfferCodes.add("W_HH_OC_01");
+		listOfOfferCodes.add("W_HH_OC_02");
+		listOfOfferCodes.add("W_HH_OC_Paym_01");
+		listOfOfferCodes.add("W_HH_OC_Paym_02");
+		listOfOfferCodes.add("W_HH_PAYM_OC_01");
+		List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = new ArrayList<>();
+		Map<String, List<PriceForBundleAndHardware>> nonLeadPlanIdPriceMap = new HashMap<>();
+		nonLeadPlanIdPriceMap.put("093353", CommonMethods.getPriceForBundleAndHardwareForCacheDeviceTile());
+		Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap = new HashMap<>();
+		leadPlanIdPriceMap.put("093353", CommonMethods.getPriceForBundleAndHardwareForCacheDeviceTile().get(0));
+		Map<String, CommercialBundle> commercialBundleMap = new HashMap<>();
+		commercialBundleMap.put("110154", CommonMethods.getCommercialBundle());
+		commercialBundleMap.put("110163", CommonMethods.getCommercialBundleForcacheDevice());
+		Map<String, String> listOfLeadPlanId = new HashMap<>();
+		listOfLeadPlanId.put("093353", "110163");
+		Map<String, List<String>> listOfCimpatiblePlanMap = new HashMap<>();
+		List<String> compatiblePlans = new ArrayList<>();
+		compatiblePlans.add("110154");
+		compatiblePlans.add("110163");
+		listOfCimpatiblePlanMap.put("093353", compatiblePlans);
+		List<String> l = new ArrayList<>();
+		l.add("093353");
+		Map<String, String> groupMap = new HashMap<>();
+		groupMap.put("093353", "Apple-iphone&&2");
+		Map<String, List<PriceForBundleAndHardware>> priceMap = new HashMap<>();
+		priceMap.put("apple-iphone", CommonMethods.getPriceForBundleAndHardwareForCacheDeviceTile());
+		deviceUtils.getLeadPlanGroupPriceMap(leadPlanIdPriceMap, priceMap, CommonMethods.getPrice(), "093353", "apple-iphone");
+		priceMap.put("093353", CommonMethods.getPriceForBundleAndHardwareForCacheDeviceTile());
+		cacheDeviceServiceImpl.getILSPriceMap(listOfOfferCodes, commercialBundleMap, listOfCimpatiblePlanMap, bundleHardwareTroupleMap, "093353", "110015");
+		cacheDeviceServiceImpl.getLeadPlanGroupPriceMap(leadPlanIdPriceMap, priceMap, listOfPriceForBundleAndHardware, "093353", "apple-iphone", "110015");
+		cacheDeviceServiceImpl.getUpgradeLeadPlanIdForPaymDevice(priceMap, commercialBundleMap, "093353", "");
+		cacheDeviceServiceImpl.getNonUpgradeLeadPlanIdForPaymDevice(priceMap,priceMap, commercialBundleMap,listOfPriceForBundleAndHardware, "093353","apple-iphone", "");
+	}
+	@Test
 	public void testForDb() {
-		CacheDeviceService.updateCacheDeviceToDb("12055", "457892");
+		cacheDeviceService.updateCacheDeviceToDb("12055", "457892");
+		cacheDeviceServiceImpl.getCoomercialBundleMapForPaymCacheDevice(null, new HashSet<>());
 	}
 
 	@Test
 	public void testForIndexPrecalData() {
-		CacheDeviceService.indexPrecalData(CommonMethods.getDevicePreCalculatedDataFromSolr());
+		cacheDeviceService.indexPrecalData(CommonMethods.getDevicePreCalculatedDataFromSolr());
 	}
 
 	@Test
@@ -1109,10 +1194,10 @@ public class DeviceTest {
 		Map<String, CommercialBundle> commercialBundleMap = new HashMap<>();
 		commercialBundleMap.put("110154", CommonMethods.getCommercialBundle());
 		commercialBundleMap.put("110163", CommonMethods.getCommercialBundleForcacheDevice());
-		String leadId = CacheDeviceService.getNonUpgradeLeadPlanIdForPaymCacheDevice(nonLeadPlanIdPriceMap,
+		String leadId = cacheDeviceService.getNonUpgradeLeadPlanIdForPaymCacheDevice(nonLeadPlanIdPriceMap,
 				new HashMap<>(), commercialBundleMap, new ArrayList<>(), "093353", "Apple-Iphone");
 		nonLeadPlanIdPriceMap.put("Apple-Iphone", CommonMethods.getPriceForBundleAndHardwareForCacheDeviceTile());
-		CacheDeviceService.getNonUpgradeLeadPlanIdForPaymCacheDevice(nonLeadPlanIdPriceMap,
+		cacheDeviceService.getNonUpgradeLeadPlanIdForPaymCacheDevice(nonLeadPlanIdPriceMap,
 				nonLeadPlanIdPriceMap, commercialBundleMap, new ArrayList<>(), "093353", "Apple-Iphone");
 		assertNotNull(leadId);
 		assertEquals("110163", leadId);
@@ -1125,7 +1210,7 @@ public class DeviceTest {
 		Map<String, CommercialBundle> commercialBundleMap = new HashMap<>();
 		commercialBundleMap.put("110154", CommonMethods.getCommercialBundle());
 		commercialBundleMap.put("110163", CommonMethods.getCommercialBundleForcacheDevice());
-		String leadId = CacheDeviceService.getUpgradeLeadPlanIdForCacheDevice(nonLeadPlanIdPriceMap,
+		String leadId = cacheDeviceService.getUpgradeLeadPlanIdForCacheDevice(nonLeadPlanIdPriceMap,
 				commercialBundleMap, "093353");
 		assertNotNull(leadId);
 		assertEquals("110163", leadId);
@@ -1174,7 +1259,7 @@ public class DeviceTest {
 		List<DevicePreCalculatedData> d = new ArrayList<>();
 		Map<String, String> groupMap = new HashMap<>();
 		groupMap.put("093353", "Apple-iphone&&2");
-		CacheDeviceService.getDevicePrecaldataForPaymCacheDeviceTile("DEVICE_PAYM", l, d, listOfOfferCodes, map, map,
+		cacheDeviceService.getDevicePrecaldataForPaymCacheDeviceTile("DEVICE_PAYM", l, d, listOfOfferCodes, map, map,
 				groupMap, leadPlanIdPriceMap, nonLeadPlanIdPriceMap, nonLeadPlanIdPriceMap, commercialBundleMap,
 				listOfLeadPlanId, listOfCimpatiblePlanMap,
 				CommonMethods.getPriceForBundleAndHardwareForCacheDeviceTile(), bundleHardwareTroupleMap,
@@ -1200,6 +1285,12 @@ public class DeviceTest {
 		deviceDataRating.setPriceInfo(CommonMethods.getPriceinforForSorl());
 		deviceDataRating.setMedia(CommonMethods.getmediaForSorl());
 		deviceUtils.updateDevicePrecaldataBasedOnIlsPriceAndRating(minimumPriceMap, ilsOfferPriceWithJourneyAware, mapOfIlsPriceWithoutOfferCode, groupMap, deviceDataRating);
+		listOfLeadPlanId.clear();
+		cacheDeviceService.getDevicePrecaldataForPaymCacheDeviceTile("DEVICE_PAYM", l, d, listOfOfferCodes, map, map,
+				groupMap, leadPlanIdPriceMap, nonLeadPlanIdPriceMap, nonLeadPlanIdPriceMap, commercialBundleMap,
+				listOfLeadPlanId, listOfCimpatiblePlanMap,
+				CommonMethods.getPriceForBundleAndHardwareForCacheDeviceTile(), bundleHardwareTroupleMap,
+				nonLeadPlanIdPriceMap, "093353");
 	}
 
 	@Test

@@ -106,6 +106,25 @@ public class DeviceRecommendationServiceTest {
 		Assert.assertTrue(fd.getNoOfRecordsFound() > 0);
 		Assert.assertNotNull(fd);
 		Assert.assertEquals( "109382",fd.getDevice().get(0).getDeviceId());
+		deviceRecommendationService.getRecommendedDeviceList(null, null, fd);
+		deviceList.add(d);
+		deviceRecommendationService.getRecommendedDeviceList(msisdn, deviceId, fd);
+		d.setDeviceId(null);
+		deviceList.add(0,d);
+		deviceRecommendationService.getRecommendedDeviceList(msisdn, deviceId, fd);
+		deviceList.clear();
+		d.setDeviceId("093353");
+		deviceList.add(d);
+		Device d1 = new Device();
+		deviceList.add(d1);
+		deviceRecommendationService.getRecommendedDeviceList(msisdn, deviceId, fd);
+		deviceList.clear();
+		Device d2 = new Device();
+		d2.setDeviceId("093353");
+		deviceList.add(d2);
+		deviceList.add(d1);
+		
+		deviceRecommendationService.getRecommendedDeviceList(msisdn, deviceId, fd);
 	}
 
 }

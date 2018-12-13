@@ -123,7 +123,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 
 	}
 
-	private void setListOfProductGroupRepository(String groupType, List<String> deviceIds,
+	public  void setListOfProductGroupRepository(String groupType, List<String> deviceIds,
 			Map<String, String> minimumPriceMap, List<DevicePreCalculatedData> listOfProductGroupRepository,
 			List<Group> listOfProductGroup, List<String> listOfDeviceId, List<String> listOfOfferCodesForUpgrade,
 			List<String> listOfSecondLineOfferCode, Set<String> listOfOfferCodes, Map<String, String> leadMemberMap,
@@ -202,7 +202,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		}
 	}
 
-	private void getMinimumPriceMap(String groupType, Map<String, String> minimumPriceMap,
+	public  void getMinimumPriceMap(String groupType, Map<String, String> minimumPriceMap,
 			List<String> listOfOfferCodesForUpgrade, List<String> listOfSecondLineOfferCode,
 			Map<String, Map<String, Map<String, List<PriceForBundleAndHardware>>>> ilsOfferPriceWithJourneyAware,
 			Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap,
@@ -222,7 +222,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		}
 	}
 
-	private void setLeadNonLeadPriceMap(String groupType, Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap,
+	public  void setLeadNonLeadPriceMap(String groupType, Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap,
 			Map<String, List<PriceForBundleAndHardware>> nonLeadPlanIdPriceMap,
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList,
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleListForNonLeanPlanId) {
@@ -234,7 +234,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		}
 	}
 
-	private void setBundleAndHardwareTupleListJourneyAware(Set<String> setOfCompatiblePlanIds,
+	public  void setBundleAndHardwareTupleListJourneyAware(Set<String> setOfCompatiblePlanIds,
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList,
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleListForNonLeanPlanId,
 			Set<BundleAndHardwareTuple> bundleAndHardwareTupleListJourneyAware, Map<String, String> listOfLeadPlanId,
@@ -363,7 +363,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		}
 	}
 
-	private void setListOfProductGroupRepository(List<String> deviceIds,
+	public  void setListOfProductGroupRepository(List<String> deviceIds,
 			List<DevicePreCalculatedData> listOfProductGroupRepository,
 			DevicePreCalculatedData productGroupForDeviceListing) {
 		if (productGroupForDeviceListing != null) {
@@ -372,7 +372,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		}
 	}
 
-	private void getILSPriceMap(Set<String> listOfOfferCodes, Map<String, CommercialBundle> commercialBundleMap,
+	public  void getILSPriceMap(Set<String> listOfOfferCodes, Map<String, CommercialBundle> commercialBundleMap,
 			Map<String, List<String>> listOfCimpatiblePlanMap,
 			Map<String, List<BundleAndHardwareTuple>> bundleHardwareTroupleMap, String deviceId,
 			String nonUpgradeLeadPlanId) {
@@ -402,7 +402,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		return upgradeLeadPlanIdLocal;
 	}
 
-	private void getLeadPlanGroupPriceMap(Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap,
+	public  void getLeadPlanGroupPriceMap(Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap,
 			Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap,
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware, String deviceId, String groupname,
 			String nonUpgradeLeadPlanId) {
@@ -413,7 +413,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		}
 	}
 
-	private String getUpgradeLeadPlanIdForPaymDevice(Map<String, List<PriceForBundleAndHardware>> nonLeadPlanIdPriceMap,
+	public  String getUpgradeLeadPlanIdForPaymDevice(Map<String, List<PriceForBundleAndHardware>> nonLeadPlanIdPriceMap,
 			Map<String, CommercialBundle> commercialBundleMap, String deviceId, String upgradeLeadPlanId) {
 		String upgradeLeadPlanIdLocal = null;
 		if (StringUtils.isBlank(upgradeLeadPlanId) && nonLeadPlanIdPriceMap.containsKey(deviceId)) {
@@ -424,7 +424,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		return upgradeLeadPlanIdLocal;
 	}
 
-	private String getNonUpgradeLeadPlanIdForPaymDevice(
+	public  String getNonUpgradeLeadPlanIdForPaymDevice(
 			Map<String, List<PriceForBundleAndHardware>> nonLeadPlanIdPriceMap,
 			Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap,
 			Map<String, CommercialBundle> commercialBundleMap,

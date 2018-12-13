@@ -1524,6 +1524,9 @@ public class DeviceTilesDaoUtils {
 						.equals(productModel.getPaygOneOffDiscountedGrossPrice())) {
 			BundlePrice bundlePriceLocal = new BundlePrice();
 			Price monthlyPrice = new Price();
+			monthlyPrice.setGross(null);
+			monthlyPrice.setNet(null);
+			monthlyPrice.setVat(null);
 			bundlePriceLocal.setMonthlyPrice(monthlyPrice);
 			bundlePriceLocal.setMonthlyDiscountPrice(monthlyPrice);
 			Price oneOffDiscountPrice = new Price();
@@ -1548,6 +1551,9 @@ public class DeviceTilesDaoUtils {
 						.equals(productModel.getPaygOneOffDiscountedGrossPrice())) {
 			BundlePrice bundlePriceLocal = new BundlePrice();
 			Price monthlyPrice = new Price();
+			monthlyPrice.setGross(null);
+			monthlyPrice.setNet(null);
+			monthlyPrice.setVat(null);
 			bundlePriceLocal.setMonthlyPrice(monthlyPrice);
 			bundlePriceLocal.setMonthlyDiscountPrice(monthlyPrice);
 			Price oneOffDiscountPrice = new Price();
