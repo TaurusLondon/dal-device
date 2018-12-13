@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vf.uk.dal.common.exception.ApplicationException;
+import com.vf.uk.dal.device.exception.DeviceCustomException;
 import com.vf.uk.dal.device.model.DeviceDetails;
 import com.vf.uk.dal.device.service.DeviceDetailsService;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
@@ -48,6 +48,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @Slf4j
 public class DeviceDetailsController {
 
+	private static final String ERROR_CODE_DETAILS_LIST_DEVICE = "error_device_details_list_failed";
 	public static final String JOURNEY_TYPE_ACQUISITION = "Acquisition";
 	public static final String DEVICE_ID = "deviceId";
 	public static final String JOURNEY_TYPE = "journeyType";
@@ -130,12 +131,12 @@ public class DeviceDetailsController {
 				log.info("End -->  calling  getListofDeviceDetails");
 			} else {
 				log.error(DEVICE_ID_IS_EMPTY);
-				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
+				throw new DeviceCustomException(ERROR_CODE_DETAILS_LIST_DEVICE,ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID,"404");
 			}
 			return listOfDeviceDetails;
 		} else {
 			log.error(ExceptionMessages.INVALID_QUERY_PARAMS);
-			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
+			throw new DeviceCustomException(ERROR_CODE_DETAILS_LIST_DEVICE,ExceptionMessages.INVALID_QUERY_PARAMS,"404");
 		}
 
 	}

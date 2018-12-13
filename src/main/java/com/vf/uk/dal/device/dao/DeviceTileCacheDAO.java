@@ -2,7 +2,6 @@ package com.vf.uk.dal.device.dao;
 
 import java.util.List;
 
-import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.model.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.model.solr.DevicePreCalculatedData;
 import com.vf.uk.dal.device.model.solr.Media;
@@ -37,7 +36,7 @@ public interface DeviceTileCacheDAO {
 	 * @param jobId
 	 *            the job id
 	 * @return the cache device job status
-	 * @throws ApplicationException
+	 * @throws DeviceCustomException
 	 *             the application exception
 	 */
 	public CacheDeviceTileResponse getCacheDeviceJobStatus(String jobId);
