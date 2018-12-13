@@ -1181,7 +1181,7 @@ public class DeviceTest {
 		cacheDeviceService.updateCacheDeviceToDb("12055", "457892");
 		cacheDeviceServiceImpl.getCoomercialBundleMapForPaymCacheDevice(null, new HashSet<>());
 	}
-
+ 
 	@Test
 	public void testForIndexPrecalData() {
 		cacheDeviceService.indexPrecalData(CommonMethods.getDevicePreCalculatedDataFromSolr());
