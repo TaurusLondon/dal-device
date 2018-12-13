@@ -1626,6 +1626,8 @@ public class DeviceTilesDaoUtils {
 					priceForBundleAndHardware.setOneOffPrice(oneOffPrice);
 					priceForBundleAndHardware.setHardwarePrice(hardwarePrice);
 					priceForBundleAndHardware.setBundlePrice(bundlePriceLocal);
+					priceForBundleAndHardware.setMonthlyPrice(monthlyPrice);
+					priceForBundleAndHardware.setMonthlyDiscountPrice(monthlyPrice);
 				} else if (productModel.getPaygOneOffDiscountedGrossPrice() != null
 						&& productModel.getPaygOneOffGrossPrice() != null
 						&& !productModel.getPaygOneOffGrossPrice().equals(productModel.getPaygOneOffDiscountedGrossPrice())) {
@@ -1652,6 +1654,8 @@ public class DeviceTilesDaoUtils {
 					priceForBundleAndHardware.setOneOffPrice(oneOffPrice);
 					priceForBundleAndHardware.setHardwarePrice(hardwarePrice);
 					priceForBundleAndHardware.setBundlePrice(bundlePriceLocal);
+					priceForBundleAndHardware.setMonthlyPrice(monthlyPrice);
+					priceForBundleAndHardware.setMonthlyDiscountPrice(monthlyPrice);
 				}
 			}
 		}
