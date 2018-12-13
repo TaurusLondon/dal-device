@@ -9,13 +9,13 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
 import com.vf.uk.dal.device.client.entity.price.BundleAndHardwareTuple;
 import com.vf.uk.dal.device.client.entity.price.BundleDeviceAndProductsList;
 import com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware;
 import com.vf.uk.dal.device.client.entity.price.PriceForProduct;
 import com.vf.uk.dal.device.client.entity.price.RequestForBundleAndHardware;
+import com.vf.uk.dal.device.exception.DeviceCustomException;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ public class PriceServiceClient {
 
 	@Autowired
 	RestTemplate restTemplate;
-
+	private static final String ERROR_CODE_DEVICE = "error_device_failed";
 	public List<PriceForBundleAndHardware> getPriceDetails(RequestForBundleAndHardware requestForBundleAndHardware) {
 		PriceForBundleAndHardware[] client = new PriceForBundleAndHardware[7000];
 		try {
@@ -36,7 +36,7 @@ public class PriceServiceClient {
 			log.info("End --> Calling  Price.calculateForBundleAndHardware");
 		} catch (Exception e) {
 			log.error("PRICE API of PriceForBundleAndHardware Exception---------------" + e);
-			throw new ApplicationException(ExceptionMessages.PRICING_API_EXCEPTION);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE,ExceptionMessages.PRICING_API_EXCEPTION,"404");
 		}
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.convertValue(client, new TypeReference<List<PriceForBundleAndHardware>>() {
@@ -58,7 +58,7 @@ public class PriceServiceClient {
 			log.info("End -->  calling  Price.product");
 		} catch (Exception e) {
 			log.error("getAccessoryPriceDetails API Exception---------------" + e);
-			throw new ApplicationException(ExceptionMessages.PRICING_API_EXCEPTION);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE,ExceptionMessages.PRICING_API_EXCEPTION,"404");
 		}
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.convertValue(client, new TypeReference<PriceForProduct>() {
@@ -102,7 +102,7 @@ public class PriceServiceClient {
 			});
 		} catch (Exception e) {
 			log.error("" + e);
-			throw new ApplicationException(ExceptionMessages.PRICING_API_EXCEPTION);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE,ExceptionMessages.PRICING_API_EXCEPTION,"404");
 		} finally {
 			factory.setConnectTimeout(61000);
 			restTemplate.setRequestFactory(factory);

@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
+import com.vf.uk.dal.device.exception.DeviceCustomException;
 import com.vf.uk.dal.device.model.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.service.CacheDeviceService;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
@@ -44,7 +44,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class CacheDeviceAndReviewController {
-
+	private static final String ERROR_CODE_SELECT_CAHCE_DEVICE = "error_device_cache_device_failed";
 	public static final String DEVICE_ID = "deviceId";
 	public static final String GROUP_TYPE = "groupType";
 	public static final String STRING_DEVICE_PAYM = "DEVICE_PAYM";
@@ -103,10 +103,10 @@ public class CacheDeviceAndReviewController {
 
 				return response;
 			} else {
-				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_GROUP_TYPE);
+				throw new DeviceCustomException(ERROR_CODE_SELECT_CAHCE_DEVICE,ExceptionMessages.INVALID_INPUT_GROUP_TYPE,"404");
 			}
 		} else {
-			throw new ApplicationException(ExceptionMessages.NULL_OR_EMPTY_GROUP_TYPE);
+			throw new DeviceCustomException(ERROR_CODE_SELECT_CAHCE_DEVICE,ExceptionMessages.NULL_OR_EMPTY_GROUP_TYPE,"404");
 		}
 	}
 

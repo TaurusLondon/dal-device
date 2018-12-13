@@ -9,7 +9,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.client.entity.bundle.Allowance;
 import com.vf.uk.dal.device.client.entity.bundle.CommercialBundle;
 import com.vf.uk.dal.device.client.entity.price.HardwarePrice;
@@ -25,6 +24,7 @@ import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesFor
 import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesForBundleAndHardwareSash;
 import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesForBundleAndHardwareSecureNet;
 import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesForHardwareSash;
+import com.vf.uk.dal.device.exception.DeviceCustomException;
 import com.vf.uk.dal.device.model.DeviceDetails;
 import com.vf.uk.dal.device.model.DeviceSummary;
 import com.vf.uk.dal.device.model.Equipment;
@@ -45,6 +45,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 
+	private static final String ERROR_CODE_DEVICE_MAKE_MODEL = "error_device_make_failed";
 	public static final String STRING_PRICE_ESTABLISHED_LABEL = "merchandisingPromotions.merchandisingPromotion.priceEstablishedLabel";
 	public static final String STRING_PRICE_PROMOTION_MEDIA = "merchandisingPromotions.merchandisingPromotion.promotionMedia";
 	public static final String DATE_FORMAT_COHERENCE = "yyyy-MM-dd HH:mm:ss.SSS";
@@ -146,7 +147,7 @@ public class DeviceDetailsMakeAndModelVaiantDaoUtils {
 			priceForBundleAndHardware = listOfPriceForBundleAndHardware.get(0);
 			if (priceForBundleAndHardware.getHardwarePrice() == null) {
 				log.error("PRICE API of PriceForBundleAndHardware Exception---------------");
-				throw new ApplicationException(ExceptionMessages.PRICING_API_EXCEPTION);
+				throw new DeviceCustomException(ERROR_CODE_DEVICE_MAKE_MODEL,ExceptionMessages.PRICING_API_EXCEPTION,"404");
 			}
 			if (cohProduct.getId().equalsIgnoreCase(priceForBundleAndHardware.getHardwarePrice().getHardwareId())) {
 				if (priceForBundleAndHardware.getHardwarePrice() != null

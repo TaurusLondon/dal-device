@@ -31,7 +31,6 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vf.uk.dal.common.configuration.ConfigHelper;
-import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
 import com.vf.uk.dal.device.beans.test.DeviceTestBeans;
 import com.vf.uk.dal.device.client.BundleServiceClient;
@@ -56,6 +55,7 @@ import com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwareRequest;
 import com.vf.uk.dal.device.common.test.CommonMethods;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.dao.DeviceTileCacheDAO;
+import com.vf.uk.dal.device.exception.DeviceCustomException;
 import com.vf.uk.dal.device.model.AccessoryTileGroup;
 import com.vf.uk.dal.device.model.DeviceDetails;
 import com.vf.uk.dal.device.model.DeviceSummary;
@@ -1293,7 +1293,7 @@ public class DeviceServiceImplTest {
 	@Test
 	public void testgetReviewRatingListImplementation() {
 
-		given(deviceDAOMock.getBazaarVoice(ArgumentMatchers.anyString())).willThrow(new ApplicationException(""));
+		given(deviceDAOMock.getBazaarVoice(ArgumentMatchers.anyString())).willThrow(new DeviceCustomException("","",""));
 		try {
 			utility.getReviewRatingListImplementation(Arrays.asList("093353"));
 		} catch (Exception e) {

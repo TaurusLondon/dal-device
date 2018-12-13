@@ -7,9 +7,9 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.client.entity.bundle.BundleDetails;
 import com.vf.uk.dal.device.client.entity.bundle.BundleDetailsForAppSrv;
+import com.vf.uk.dal.device.exception.DeviceCustomException;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BundleServiceClient {
 
+	private static final String ERROR_CODE_DEVICE = "error_device_failed";
+	
 	@Autowired
 	RestTemplate restTemplate;
 
@@ -42,7 +44,7 @@ public class BundleServiceClient {
 			log.info("End -->  calling  Bundle.GetCompatibleListAPI");
 		} catch (Exception e) {
 			log.error("getBundleDetailsFromGetCompatibleListAPI API Exception---------------" + e);
-			throw new ApplicationException(ExceptionMessages.BUNDLECOMPATIBLELIST_API_EXCEPTION);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE,ExceptionMessages.BUNDLECOMPATIBLELIST_API_EXCEPTION,"404");
 		}
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.convertValue(client, new TypeReference<BundleDetails>() {
@@ -64,7 +66,7 @@ public class BundleServiceClient {
 							+ deviceId + "&journeyType=" + journeyType, BundleDetailsForAppSrv.class);
 		} catch (Exception e) {
 			log.error("" + e);
-			throw new ApplicationException(ExceptionMessages.COUPLEBUNDLELIST_API_EXCEPTION);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE,ExceptionMessages.COUPLEBUNDLELIST_API_EXCEPTION,"404");
 		}
 	}
 }

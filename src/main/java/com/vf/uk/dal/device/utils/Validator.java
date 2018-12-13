@@ -7,7 +7,6 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
-import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.common.exception.SystemException;
 import com.vf.uk.dal.device.exception.DeviceCustomException;
 
@@ -21,6 +20,7 @@ public class Validator {
 		/**
 		 *  constructor */
 	};
+	private static final String ERROR_CODE_SELECT_DEVICE_DETAIL = "error_device_detail_failed";
 	private static final String ERROR_CODE_DEVICE_MAKE_MODEL = "error_device_make_failed";
 	private static final String ERROR_CODE_SELECT_DEVICE_INSURANCE = "error_device_insurance_failed";
 	private static final String ERROR_CODE_SELECT_DEVICE_DETAILS = "error_device_details_failed";
@@ -44,6 +44,7 @@ public class Validator {
 	public static final String JOURNEY_TYPE_ACQUISITION = "Acquisition";
 	public static final String DEVICE_ID_IS_EMPTY = "Device Id is Empty";
 	private static final String ERROR_CODE_DEVICE_LIST = "error_device_list_failed";
+	private static final String ERROR_CODE_SELECT_REVIEW = "error_device_review_failed";
 
 	/**
 	 * 
@@ -52,10 +53,10 @@ public class Validator {
 	public void validateDeviceId(String deviceId) {
 		if (StringUtils.isBlank(deviceId)) {
 			log.error("DeviceId is null");
-			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID);
+			throw new DeviceCustomException(ERROR_CODE_SELECT_REVIEW,ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID,"404");
 		} else if (validateId(deviceId)) {
 			log.error("DeviceId is Invalid");
-			throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
+			throw new DeviceCustomException(ERROR_CODE_SELECT_REVIEW,ExceptionMessages.INVALID_DEVICE_ID,"404");
 		}
 	}
 
@@ -256,28 +257,28 @@ public class Validator {
 			String productClass) {
 		if (sortCriteria == null || sortCriteria.isEmpty()) {
 			log.error("sortCriteria is null");
-			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_SORT);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_LIST,ExceptionMessages.INVALID_INPUT_MISSING_SORT,"404");
 		}
 		if (StringUtils.isNotBlank(sortCriteriaLocal) && !validateSortCriteria(sortCriteriaLocal)) {
 			log.error("Received sortCriteria is invalid.");
-			throw new ApplicationException(ExceptionMessages.RECEVIED_INVALID_SORTCRITERIA);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_LIST,ExceptionMessages.RECEVIED_INVALID_SORTCRITERIA,"404");
 		}
 
 		if (groupType == null || groupType.isEmpty()) {
 			log.error("Group Type is null");
-			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_GROUPTYPE);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_LIST,ExceptionMessages.INVALID_INPUT_MISSING_GROUPTYPE,"404");
 		}
 		if (productClass == null || productClass.isEmpty()) {
 			log.error("productClass is null");
-			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_PRODUCT_CLASS);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_LIST,ExceptionMessages.INVALID_INPUT_MISSING_PRODUCT_CLASS,"404");
 		}
 		if (!productClass.equalsIgnoreCase(STRING_HANDSET)) {
 			log.error("Invalid Product class");
-			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_PRODUCT_CLASS);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_LIST,ExceptionMessages.INVALID_INPUT_PRODUCT_CLASS,"404");
 		}
 		if (!groupType.equalsIgnoreCase(STRING_DEVICE_PAYM) && !groupType.equalsIgnoreCase(STRING_DEVICE_PAYG)) {
 			log.error("Invalid Group Type");
-			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_GROUP_TYPE);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_LIST,ExceptionMessages.INVALID_INPUT_GROUP_TYPE,"404");
 		}
 
 	}
@@ -291,10 +292,10 @@ public class Validator {
 		if (StringUtils.equalsIgnoreCase(JOURNEY_TYPE_UPGRADE, journeytype)
 				|| StringUtils.equalsIgnoreCase(JOURNEY_TYPE_SECONDLINE, journeytype)) {
 			log.error("JourneyType is not compatible for given GroupType");
-			throw new ApplicationException(ExceptionMessages.INVALID_GROUP_TYPE_JOURNEY_TYPE);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_LIST,ExceptionMessages.INVALID_GROUP_TYPE_JOURNEY_TYPE,"404");
 		} else if (StringUtils.isNotBlank(offerCode)) {
 			log.error("offerCode is not compatible for given GroupType");
-			throw new ApplicationException(ExceptionMessages.INVALID_GROUP_TYPE_OFFER_CODE);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_LIST,ExceptionMessages.INVALID_GROUP_TYPE_OFFER_CODE,"404");
 		}
 	}
 
@@ -310,24 +311,24 @@ public class Validator {
 		String journeyTypeLocal = null;
 		if (make == null || make.isEmpty()) {
 			log.error("make is null");
-			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_MAKE);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_MAKE_MODEL,ExceptionMessages.INVALID_INPUT_MISSING_MAKE,"404");
 		}
 		if (model == null || model.isEmpty()) {
 			log.error("model is null");
-			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_MODEL);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_MAKE_MODEL,ExceptionMessages.INVALID_INPUT_MISSING_MODEL,"404");
 		}
 
 		if (groupType == null || groupType.isEmpty()) {
 			log.error(" Group Type is null ");
-			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_MISSING_GROUPTYPE);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_MAKE_MODEL,ExceptionMessages.INVALID_INPUT_MISSING_GROUPTYPE,"404");
 		} else if (!validateGroupType(groupType)) {
 			log.error("Invalid Group Type");
-			throw new ApplicationException(ExceptionMessages.INVALID_INPUT_GROUP_TYPE);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_MAKE_MODEL,ExceptionMessages.INVALID_INPUT_GROUP_TYPE,"404");
 		} else if (groupType.equalsIgnoreCase(STRING_DEVICE_PAYG)
 				&& (StringUtils.isNotBlank(journeyType) && (journeyType.equalsIgnoreCase(JOURNEY_TYPE_SECONDLINE)
 						|| journeyType.equalsIgnoreCase(JOURNEY_TYPE_UPGRADE)))) {
 			log.error("JourneyType is Not Compatible with given GroupType");
-			throw new ApplicationException(ExceptionMessages.INVALID_GROUP_TYPE_JOURNEY_TYPE);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_MAKE_MODEL,ExceptionMessages.INVALID_GROUP_TYPE_JOURNEY_TYPE,"404");
 		} else if (groupType.equalsIgnoreCase(STRING_DEVICE_PAYM)) {
 			journeyTypeLocal = journeyType;
 		} else if (groupType.equalsIgnoreCase(STRING_DEVICE_PAYG)) {
@@ -350,7 +351,7 @@ public class Validator {
 		Double creditLimitParam;
 		if (deviceId != null && !deviceId.matches(numberExp)) {
 			log.error(ExceptionMessages.INVALID_DEVICE);
-			throw new ApplicationException(ExceptionMessages.INVALID_DEVICE_ID);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_MAKE_MODEL,ExceptionMessages.INVALID_DEVICE_ID,"404");
 		}
 		creditLimitParam = validateCreditValue(creditLimit);
 		if ((StringUtils.isBlank(make) || "\"\"".equals(make))
@@ -364,7 +365,7 @@ public class Validator {
 
 		if (bundleId != null && (!bundleId.matches(numberExp) || bundleId.matches("[0]*"))) {
 			log.error(ExceptionMessages.INVALID_BUNDLE);
-			throw new ApplicationException(ExceptionMessages.INVALID_BUNDLE_ID);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_MAKE_MODEL,ExceptionMessages.INVALID_BUNDLE_ID,"404");
 		}
 		return creditLimitParam;
 	}
@@ -444,11 +445,10 @@ public class Validator {
 		if (StringUtils.isNotBlank(journeyType) && (journeyType.equalsIgnoreCase(JOURNEY_TYPE_SECONDLINE)
 				|| journeyType.equalsIgnoreCase(JOURNEY_TYPE_UPGRADE))) {
 			log.error("JourneyType is not compatible for given DeviceId");
-			
-			throw new ApplicationException(ExceptionMessages.INVALID_DEVICEID_JOURNEY_TYPE);
+			throw new DeviceCustomException(ERROR_CODE_SELECT_DEVICE_DETAIL,ExceptionMessages.INVALID_DEVICEID_JOURNEY_TYPE,"404");
 		} else if (StringUtils.isNotBlank(offerCode)) {
 			log.error("offerCode is not compatible for given DeviceId");
-			throw new ApplicationException(ExceptionMessages.INVALID_DEVICEID_OFFER_CODE);
+			throw new DeviceCustomException(ERROR_CODE_SELECT_DEVICE_DETAIL,ExceptionMessages.INVALID_DEVICEID_OFFER_CODE,"404");
 		}
 	}
 }

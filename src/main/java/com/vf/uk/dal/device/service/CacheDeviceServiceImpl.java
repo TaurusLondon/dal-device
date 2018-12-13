@@ -21,13 +21,13 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
 import com.vf.uk.dal.device.client.entity.bundle.CommercialBundle;
 import com.vf.uk.dal.device.client.entity.price.BundleAndHardwareTuple;
 import com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.dao.DeviceTileCacheDAO;
+import com.vf.uk.dal.device.exception.DeviceCustomException;
 import com.vf.uk.dal.device.model.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.model.merchandisingpromotion.DeviceFinancingOption;
 import com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotionModel;
@@ -58,6 +58,8 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class CacheDeviceServiceImpl implements CacheDeviceService {
 
+	private static final String ERROR_CODE_SELECT_CAHCE_DEVICE = "error_device_cache_device_failed";
+	private static final String ERROR_CODE_SELECT_REVIEW = "error_device_review_failed";
 	public static final String JOURNEY_TYPE_ACQUISITION = "Acquisition";
 	public static final String JOURNEY_TYPE_UPGRADE = "Upgrade";
 	public static final String JOURNEY_TYPE_SECONDLINE = "SecondLine";
@@ -198,7 +200,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 							deviceDataRating));
 		} else {
 			log.error("Receieved Null Values for the given product group type");
-			throw new ApplicationException(ExceptionMessages.NULL_VALUE_GROUP_TYPE);
+			throw new DeviceCustomException(ERROR_CODE_SELECT_CAHCE_DEVICE,ExceptionMessages.NULL_VALUE_GROUP_TYPE,"404");
 		}
 	}
 
@@ -1182,7 +1184,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			} else {
 				log.error(jobId + "==>No Device Pre Calculated Data found To Store");
 				exceptionFlag = true;
-				throw new ApplicationException(ExceptionMessages.NO_DEVICE_PRE_CALCULATED_DATA);
+				throw new DeviceCustomException(ERROR_CODE_SELECT_CAHCE_DEVICE,ExceptionMessages.NO_DEVICE_PRE_CALCULATED_DATA,"404");
 			}
 			saveDeviceMediaData(i, devicePreCalculatedData);
 			List<com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData> deviceListObjectList = cacheDeviceDaoUtils
@@ -1245,7 +1247,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			jsonObject = commonUtility.getJSONFromString(response);
 		} else {
 			log.error("No reviews found");
-			throw new ApplicationException(ExceptionMessages.NO_REVIEWS_FOUND);
+			throw new DeviceCustomException(ERROR_CODE_SELECT_REVIEW,ExceptionMessages.NO_REVIEWS_FOUND,"404");
 		}
 		return jsonObject;
 	}

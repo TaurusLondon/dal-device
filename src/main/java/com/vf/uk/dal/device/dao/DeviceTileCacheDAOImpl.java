@@ -19,7 +19,7 @@ import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.configuration.DataSourceInitializer;
-import com.vf.uk.dal.common.exception.ApplicationException;
+import com.vf.uk.dal.device.exception.DeviceCustomException;
 import com.vf.uk.dal.device.model.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.model.solr.BundlePrice;
 import com.vf.uk.dal.device.model.solr.DevicePreCalculatedData;
@@ -45,6 +45,8 @@ import lombok.extern.slf4j.Slf4j;
 public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 	@Autowired
 	DataSourceInitializer dataSourceInitializer;
+	
+	private static final String ERROR_CODE_DEVICE = "error_device_failed";
 
 	@Autowired
 	JdbcTemplate jdbcTemplate;
@@ -500,7 +502,7 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 			Object[] params = new Object[] { jobId };
 			jobStatus = jdbcTemplate.queryForObject(query, String.class, params);
 			if (StringUtils.isEmpty(jobStatus) || StringUtils.isBlank(jobStatus)) {
-				throw new ApplicationException(ExceptionMessages.INVALID_JOB_ID);
+				throw new DeviceCustomException(ERROR_CODE_DEVICE,ExceptionMessages.INVALID_JOB_ID,"404");
 			} else {
 				response.setJobId(jobId);
 				response.setJobStatus(jobStatus);
@@ -508,7 +510,7 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 
 		} catch (Exception exception) {
 			log.error( jobId + "==>" + exception);
-			throw new ApplicationException(ExceptionMessages.INVALID_JOB_ID);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE,ExceptionMessages.INVALID_JOB_ID,"404");
 		}
 		return response;
 	}
