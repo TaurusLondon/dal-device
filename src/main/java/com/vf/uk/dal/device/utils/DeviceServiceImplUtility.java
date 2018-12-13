@@ -19,11 +19,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.client.entity.bundle.CommercialBundle;
 import com.vf.uk.dal.device.client.entity.price.BundleAndHardwareTuple;
 import com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware;
 import com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwarePromotions;
+import com.vf.uk.dal.device.exception.DeviceCustomException;
 import com.vf.uk.dal.device.model.Colour;
 import com.vf.uk.dal.device.model.Device;
 import com.vf.uk.dal.device.model.DeviceDetails;
@@ -45,7 +45,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 public class DeviceServiceImplUtility {
-	
+	private static final String ERROR_CODE_SELECT_DEVICE_DETAIL = "error_device_detail_failed";
 	public static final String JOURNEY_TYPE_ACQUISITION = "Acquisition";
 	public static final String JOURNEY_TYPE_UPGRADE = "Upgrade";
 	public static final String JOURNEY_TYPE_SECONDLINE = "SecondLine";
@@ -1017,7 +1017,7 @@ public class DeviceServiceImplUtility {
 					commercialProduct, listOfPriceForBundleAndHardware, promotions,cdnDomain);
 		} else {
 			log.error( "No data found for given journeyType :" + deviceId);
-			throw new ApplicationException(ExceptionMessages.NO_DATA_FOR_GIVEN_SEARCH_CRITERIA);
+			throw new DeviceCustomException(ERROR_CODE_SELECT_DEVICE_DETAIL,ExceptionMessages.NO_DATA_FOR_GIVEN_SEARCH_CRITERIA,"404");
 		}
 		return deviceDetails;
 	}

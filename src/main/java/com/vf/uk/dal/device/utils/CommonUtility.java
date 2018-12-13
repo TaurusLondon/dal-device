@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.client.BundleServiceClient;
 import com.vf.uk.dal.device.client.CustomerServiceClient;
 import com.vf.uk.dal.device.client.PriceServiceClient;
@@ -41,6 +40,7 @@ import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesFor
 import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesForBundleAndHardwareSash;
 import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesForBundleAndHardwareSecureNet;
 import com.vf.uk.dal.device.client.entity.promotion.CataloguepromotionqueriesForHardwareSash;
+import com.vf.uk.dal.device.exception.DeviceCustomException;
 import com.vf.uk.dal.device.model.MediaLink;
 import com.vf.uk.dal.device.model.MerchandisingPromotionsPackage;
 import com.vf.uk.dal.device.model.product.CommercialProduct;
@@ -56,6 +56,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class CommonUtility {
 	public static final String PREFIX_SKU = "sku";
+	private static final String ERROR_CODE_SELECT_REVIEW = "error_device_review_failed";
 	public static final String ZERO = "0";
 	public static final String STRING_TEXT_ALLOWANCE = "TEXT";
 	public static final String DATE_FORMAT_COHERENCE = "yyyy-MM-dd HH:mm:ss.SSS";
@@ -180,7 +181,7 @@ public class CommonUtility {
 			jsonObject = (JSONObject) parser.parse(strTobeConverted);
 		} catch (org.json.simple.parser.ParseException exception) {
 			log.error("Error while parsing string to JSONObject " + exception);
-			throw new ApplicationException(ExceptionMessages.ERROR_STRING_TO_JSONOBJECT);
+			throw new DeviceCustomException(ERROR_CODE_SELECT_REVIEW,ExceptionMessages.ERROR_STRING_TO_JSONOBJECT,"404");
 		}
 		return jsonObject;
 	}

@@ -16,13 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.client.entity.bundle.BundleDetailsForAppSrv;
 import com.vf.uk.dal.device.client.entity.bundle.CommercialBundle;
 import com.vf.uk.dal.device.client.entity.bundle.CoupleRelation;
 import com.vf.uk.dal.device.client.entity.price.BundleAndHardwareTuple;
 import com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware;
 import com.vf.uk.dal.device.dao.DeviceDao;
+import com.vf.uk.dal.device.exception.DeviceCustomException;
 import com.vf.uk.dal.device.model.product.BazaarVoice;
 import com.vf.uk.dal.device.model.product.CommercialProduct;
 
@@ -36,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 public class DeviceServiceCommonUtility {
-
+	private static final String ERROR_CODE_DEVICE = "error_device_failed";
 	public static final String STRING_MOBILE_PHONE_SERVICE_SELLABLE = "Mobile Phone Service Sellable";
 	public static final String STRING_MBB_SELLABLE = "MBB Sellable";
 	
@@ -97,7 +97,7 @@ public class DeviceServiceCommonUtility {
 			}
 		} catch (Exception e) {
 			log.error( "Failed to get device review ratings, Exception: " + e);
-			throw new ApplicationException(ExceptionMessages.BAZAARVOICE_RESPONSE_EXCEPTION);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE,ExceptionMessages.BAZAARVOICE_RESPONSE_EXCEPTION,"404");
 		}
 		return bvReviewAndRateMap;
 	}
@@ -148,7 +148,7 @@ public class DeviceServiceCommonUtility {
 			return response;
 		} catch (Exception e) {
 			log.error( "Bazar Voice Exception: " + e);
-			throw new ApplicationException(ExceptionMessages.BAZARVOICE_SERVICE_EXCEPTION);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE,ExceptionMessages.BAZARVOICE_SERVICE_EXCEPTION,"404");
 		}
 	}
 
