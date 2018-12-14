@@ -46,11 +46,13 @@ import com.vf.uk.dal.device.beans.test.DeviceTestBeans;
 import com.vf.uk.dal.device.client.converter.ResponseMappingHelper;
 import com.vf.uk.dal.device.client.entity.bundle.BundleDetailsForAppSrv;
 import com.vf.uk.dal.device.client.entity.bundle.BundleHeader;
+import com.vf.uk.dal.device.client.entity.bundle.BundleModel;
 import com.vf.uk.dal.device.client.entity.bundle.CommercialBundle;
 import com.vf.uk.dal.device.client.entity.customer.RecommendedProductListResponse;
 import com.vf.uk.dal.device.client.entity.customer.SourcePackageSummary;
 import com.vf.uk.dal.device.client.entity.price.BundleAndHardwareTuple;
 import com.vf.uk.dal.device.client.entity.price.BundleDeviceAndProductsList;
+import com.vf.uk.dal.device.client.entity.price.BundlePrice;
 import com.vf.uk.dal.device.client.entity.price.HardwarePrice;
 import com.vf.uk.dal.device.client.entity.price.Price;
 import com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware;
@@ -1425,6 +1427,23 @@ public class DeviceTest {
 				CommonMethods.getProductGroupFacetModel_One().getListOfFacetsFields(), "DEVICE_PAYM", null,
 				listOfOfferAppliedPrice, "W_HH_OC_02", groupNameWithProdId, null, null, isLeadMemberFromSolr,
 				listOfOfferAppliedPrice, "Upgrade", productGroupdetailsMap, cdnDomain);
+		Map<String, BundleModel> bundleModelMap = new HashMap<>();
+		bundleModelMap.put("110154", CommonMethods.getBundleModelListForBundleList().get(0));
+		Map<String, BundlePrice> bundleModelAndPriceMap = new HashMap<>();
+		bundleModelAndPriceMap.put("110154", CommonMethods.getBundlePrice());
+		deviceTilesDaoUtils.convertProductModelListToDeviceList(
+				CommonMethods.getProductModel(), CommonMethods.getListOfProducts(),
+				CommonMethods.getProductGroupFacetModel_One().getListOfFacetsFields(), "DEVICE_PAYM", bundleModelMap,
+				listOfOfferAppliedPrice, "W_HH_OC_02", groupNameWithProdId, bundleModelAndPriceMap, null, isLeadMemberFromSolr,
+				listOfOfferAppliedPrice, "Upgrade", productGroupdetailsMap, cdnDomain);
+		bundleModelMap.clear();
+		bundleModelAndPriceMap.put("121212", CommonMethods.getBundlePrice());
+		bundleModelMap.put("121212", CommonMethods.getBundleModelListForBundleList().get(0));
+		deviceTilesDaoUtils.convertProductModelListToDeviceList(
+				CommonMethods.getProductModel(), CommonMethods.getListOfProducts(),
+				CommonMethods.getProductGroupFacetModel_One().getListOfFacetsFields(), "DEVICE_PAYM", bundleModelMap,
+				listOfOfferAppliedPrice, "W_HH_OC_02", groupNameWithProdId, bundleModelAndPriceMap, null, isLeadMemberFromSolr,
+				listOfOfferAppliedPrice, "Upgrade", productGroupdetailsMap, cdnDomain);
 		Assert.assertNotNull(deviceList);
 		assertEquals("093353", deviceList.getDevice().get(0).getDeviceId());
 		assertEquals("HANDSET", deviceList.getDevice().get(0).getProductClass());
@@ -1614,6 +1633,12 @@ public class DeviceTest {
 		PriceForBundleAndHardware price = deviceTilesDaoUtils.getBundleAndHardwarePriceFromSolrWithoutOfferCode(
 				CommonMethods.getProductModel().get(0),
 				CommonMethods.getBundleModelListForBundleListForDeviceList().get(1), "110154", "DEVICE_PAYM");
+		deviceTilesDaoUtils.getBundleAndHardwarePriceFromSolrWithoutOfferCode(
+				CommonMethods.getProductModel().get(2),
+				CommonMethods.getBundleModelListForBundleListForDeviceList().get(1), "110154", "DEVICE_PAYG");
+		deviceTilesDaoUtils.getBundleAndHardwarePriceFromSolrWithoutOfferCode(
+				CommonMethods.getProductModel().get(1),
+				CommonMethods.getBundleModelListForBundleListForDeviceList().get(1), "110154", "DEVICE_PAYG");
 		deviceTilesDaoUtils.getBundleAndHardwarePriceFromSolrWithoutOfferCode(null,
 				CommonMethods.getBundleModelListForBundleListForDeviceList().get(0), "110154", "DEVICE_PAYG");
 		deviceTilesDaoUtils.getBundleAndHardwarePriceFromSolrWithoutOfferCode(null,

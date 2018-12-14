@@ -2168,4 +2168,23 @@ public class DeviceServiceImplTest {
 		Assert.assertNotNull(deviceId);
 		Assert.assertEquals("sku93353", deviceId);
 	} 
+	@Test
+	public void testgetBundleAndHardwarePrice() {
+		PriceForBundleAndHardware priceForBundleAndHardware = CommonMethods.getUtilityPriceForBundleAndHardware();
+		priceForBundleAndHardware.setMonthlyDiscountPrice(priceForBundleAndHardware.getMonthlyPrice());
+		priceForBundleAndHardware.setOneOffDiscountPrice(priceForBundleAndHardware.getOneOffPrice());
+		BundlePrice bp = new BundlePrice();
+		deviceTilesDaoUtils.getBundleAndHardwarePrice(priceForBundleAndHardware, "093353", false, CommonMethods.getCommercialBundle());
+		com.vf.uk.dal.device.client.entity.price.Price price = new com.vf.uk.dal.device.client.entity.price.Price();
+		price.setGross("22");
+		price.setNet("20");
+		price.setVat("2");
+		bp.setMonthlyDiscountPrice(price);
+		bp.setMonthlyPrice(price);
+		priceForBundleAndHardware.setBundlePrice(bp);
+		deviceTilesDaoUtils.getBundleAndHardwarePrice(priceForBundleAndHardware, "093353", false, CommonMethods.getCommercialBundle());
+		bp.setMerchandisingPromotions(CommonMethods.getMP());
+		priceForBundleAndHardware.setBundlePrice(bp);
+	} 
+	
 }
