@@ -310,6 +310,9 @@ public class CommonMethods {
 		model.setLeadPlanIdNew("110154");
 		model.setUpgradeLeadPlanId("110154");
 		model.setNonUpgradeLeadPlanId("110154");
+		List<String> listOfCompatibleBundles = new ArrayList<>();
+		listOfCompatibleBundles.add("121212");
+		model.setListOfCompatibleBundles(listOfCompatibleBundles);
 		model.setFinancingOptions(getDeviceFinaceOptions());
 		List<String> merchedn = new ArrayList<>();
 		merchedn.add(
@@ -346,7 +349,12 @@ public class CommonMethods {
 				"hardware_discount.merchandisingPromotions.merchandisingPromotion.priceEstablishedLabel|WAS|TEXT&&110154&&HW&&handset.conditional.full.GBP|Pricing_Upgrade_Discount|NA|For 3 Months, then|095597");
 		merchedn.add(
 				"hardware_discount.merchandisingPromotions.merchandisingPromotion.description|For 3 Months, then|TEXT&&110154&&HW&&handset.conditional.full.GBP|Pricing_Upgrade_Discount|NA|For 3 Months, then|095597");
+		merchedn.add(
+				"hardware_discount.merchandisingPromotions.merchandisingPromotion.promotionMedia|For 3 Months, then|TEXT&&110154&&BP&&handset.conditional.full.GBP|Pricing_Upgrade_Discount|NA|For 3 Months, then|095597");
+		merchedn.add(
+				"hardware_discount.merchandisingPromotions.merchandisingPromotion.promotionMedia|For 3 Months, then|TEXT&&110154&&HW&&handset.conditional.full.GBP|Pricing_Upgrade_Discount|NA|For 3 Months, then|095597");
 
+		
 		merchedn.add(
 				"hardware_discount.merchandisingPromotions.merchandisingPromotion.label|40% off the phone|TEXT&&110154&&BP&&handset.conditional.full.GBP|Pricing_Upgrade_Discount|NA|For 3 Months, then|095597");
 		merchedn.add(
@@ -405,9 +413,64 @@ public class CommonMethods {
 		model1.setUpgradeLeadPlanId("110154");
 		model1.setNonUpgradeLeadPlanId("110154");
 		model1.setMerchandisingMedia(merchedn);
+		model1.setListOfCompatibleBundles(listOfCompatibleBundles);
 		model1.setFinancingOptions(getDeviceFinaceOptions());
+		model1.setPaygOneOffDiscountedGrossPrice((float) 10);
+		model1.setPaygOneOffGrossPrice((float) 5);
+		ProductModel model2 = new ProductModel();
+		model2.setProductGroups(list);
+		model2.setProductId("092660");
+		model2.setPreDesc("preDesc");
+		model2.setProductClass("HANDSET");
+		model2.setPreOrderable("true");
+		model2.setIsDisplayableEcare("true");
+		model2.setIsSellableECare("true");
+		model2.setIsDisplayableAcq("true");
+		model2.setIsSellableRet("true");
+		model2.setIsDisplayableRet("true");
+		model2.setIsSellableAcq("true");
+		model2.setIsDisplaybaleSavedBasket("true");
+		model2.setOrder(12);
+		model2.setPreOrderable("true");
+		model2.setAvailableFrom("Available From");
+		model2.setBackOrderable("true");
+		model2.setImageURLsThumbsFront("ThumbsFront");
+		model2.setImageURLsThumbsLeft("Thumbs Left");
+		model2.setImageURLsThumbsRight("ThumnsLeft");
+		model2.setImageURLsThumbsSide("ThumbsSide");
+		model2.setImageURLsFullLeft("Full Left");
+		model2.setImageURLsFullRight("Full Right");
+		model2.setImageURLsFullSide("Full Side");
+		model2.setImageURLsFullBack("Full Back");
+		model2.setImageURLsGrid("ImageURLs Grid");
+		model2.setImageURLsSmall("URLs Small");
+		model2.setImageURLsSticker("URLs Sticker");
+		model2.setImageURLsIcon("URLsIcon");
+		model2.setThreeDSpin("ThreeDSpin");
+		model2.setSupport("Support");
+		model2.setOneOffDiscountedGrossPrice(54.0f);
+		model2.setOneOffDiscountedNetPrice(46.0f);
+		model2.setOneOffDiscountedVatPrice(9.0f);
+		model2.setOneOffGrossPrice(55.0f);
+		model2.setOneOffNetPrice(46.0f);
+		model2.setOneOffVatPrice(9.0f);
+		model2.setBundleMonthlyDiscPriceGross(53.0f);
+		model2.setBundleMonthlyDiscPriceNet(44.0f);
+		model2.setBundleMonthlyDiscPriceVat(9.0f);
+		model2.setBundleMonthlyPriceGross(54.0f);
+		model2.setBundleMonthlyPriceNet(46.0f);
+		model2.setBundleMonthlyPriceVat(9.0f);
+		model2.setLeadPlanId("110154");
+		model2.setLeadPlanIdNew("110154");
+		model2.setUpgradeLeadPlanId("110154");
+		model2.setNonUpgradeLeadPlanId("110154");
+		model2.setFinancingOptions(getDeviceFinaceOptions());
+		model2.setListOfCompatibleBundles(listOfCompatibleBundles);
+		model2.setPaygOneOffDiscountedGrossPrice((float) 10);
+		model2.setPaygOneOffGrossPrice((float) 10);
 		productModelList.add(model);
 		productModelList.add(model1);
+		productModelList.add(model2);
 		return productModelList;
 	}
 
