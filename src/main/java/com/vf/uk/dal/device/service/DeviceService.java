@@ -25,14 +25,6 @@ public interface DeviceService {
 	 * @return List<DeviceTile>
 	 */
 	public List<DeviceTile> getDeviceTileById(String id, String offerCode, String journeyType);
-	/**
-	 * 
-	 * @param groupType
-	 * @param groupName
-	 * @return
-	 */
-	// public List<ProductGroup> getProductGroupByGroupTypeGroupName(String
-	// groupType,String groupName);
 
 	/**
 	 * 

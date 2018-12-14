@@ -27,13 +27,19 @@ import com.vf.uk.dal.device.service.DeviceMakeAndModelServiceImpl;
 import com.vf.uk.dal.device.service.DeviceRecommendationService;
 import com.vf.uk.dal.device.service.DeviceRecommendationServiceImpl;
 import com.vf.uk.dal.device.service.DeviceServiceImpl;
+import com.vf.uk.dal.device.utils.AccessoriesAndInsurancedaoUtils;
+import com.vf.uk.dal.device.utils.CacheDeviceDaoUtils;
 import com.vf.uk.dal.device.utils.CommonUtility;
 import com.vf.uk.dal.device.utils.DeviceConditionallHelper;
+import com.vf.uk.dal.device.utils.DeviceDetailsMakeAndModelVaiantDaoUtils;
 import com.vf.uk.dal.device.utils.DeviceESHelper;
 import com.vf.uk.dal.device.utils.DeviceServiceCommonUtility;
 import com.vf.uk.dal.device.utils.DeviceServiceImplUtility;
+import com.vf.uk.dal.device.utils.DeviceTilesDaoUtils;
 import com.vf.uk.dal.device.utils.DeviceUtils;
 import com.vf.uk.dal.device.utils.ElasticSearchUtils;
+import com.vf.uk.dal.device.utils.ListOfDeviceDetailsDaoUtils;
+import com.vf.uk.dal.device.utils.Validator;
 
  public class DeviceTestBeans {
 	// ** Bean for the controller class is created here **//*
@@ -181,5 +187,22 @@ import com.vf.uk.dal.device.utils.ElasticSearchUtils;
 	{
 		return new PromotionServiceClient();
 	}
-	
+	@Bean public AccessoriesAndInsurancedaoUtils getAccessoriesAndInsurancedaoUtils() {
+		return new AccessoriesAndInsurancedaoUtils();
+	}
+	@Bean public CacheDeviceDaoUtils getCacheDeviceDaoUtils() {
+		return new CacheDeviceDaoUtils();
+	}
+	@Bean public DeviceDetailsMakeAndModelVaiantDaoUtils getDeviceDetailsMakeAndModelVaiantDaoUtils() {
+		return new DeviceDetailsMakeAndModelVaiantDaoUtils();
+	}
+	@Bean public DeviceTilesDaoUtils getDeviceTilesDaoUtils() {
+		return new DeviceTilesDaoUtils();
+	}
+	@Bean public ListOfDeviceDetailsDaoUtils getListOfDeviceDetailsDaoUtils() {
+		return new ListOfDeviceDetailsDaoUtils();
+	}
+	@Bean public Validator getValidator() {
+		return new Validator();
+	}
 }

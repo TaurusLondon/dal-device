@@ -51,6 +51,7 @@ import com.vf.uk.dal.device.service.DeviceRecommendationService;
 import com.vf.uk.dal.device.service.DeviceService;
 import com.vf.uk.dal.device.utils.DeviceESHelper;
 import com.vf.uk.dal.device.utils.DeviceServiceCommonUtility;
+import com.vf.uk.dal.device.utils.Validator;
 
 /**
  * In order to run the controller class a bean of the ProductController is
@@ -105,6 +106,9 @@ public class DeviceIntegrationTest {
 	@Autowired
 	DeviceServiceCommonUtility deviceServiceCommonUtility;
 
+	@Autowired
+	Validator validator; 
+	
 	@Autowired
 	private WebApplicationContext WebApplicationContext;
 
@@ -175,7 +179,7 @@ public class DeviceIntegrationTest {
 		});
 		assertNotNull(error);
 		assertEquals("No Compatible Accessories found for given device Id", error.getMessage());
-		assertEquals("DEVICE_INVALID_INPUT_011", error.getCode());
+		assertEquals("error_device_accessory_failed", error.getCode());
 	}
 
 	@Test
@@ -206,7 +210,7 @@ public class DeviceIntegrationTest {
 		});
 		assertNotNull(error);
 		assertEquals("No Compatible Insurances found for given device Id", error.getMessage());
-		assertEquals("DEVICE_INVALID_INPUT_052", error.getCode());
+		assertEquals("error_device_accessory_failed", error.getCode());
 	}
 
 	@Test
@@ -221,7 +225,7 @@ public class DeviceIntegrationTest {
 		});
 		assertNotNull(error);
 		assertEquals("No Devices Found for the given input search criteria", error.getMessage());
-		assertEquals("DEVICE_INVALID_INPUT_013", error.getCode());
+		assertEquals("error_device_make_failed", error.getCode());
 	}
 
 	@Test
@@ -233,7 +237,6 @@ public class DeviceIntegrationTest {
 		});
 		assertNotNull(error);
 		assertEquals("No details found for given criteria", error.getMessage());
-		assertEquals("DEVICE_INVALID_INPUT_053", error.getCode());
 	}
 
 	@Test

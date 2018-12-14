@@ -14,6 +14,6 @@ import lombok.Data;
 public class CoupleRelation {
 	
 	@JsonProperty("planList")
-	private List<BundleHeader> planList = new ArrayList<BundleHeader>();
+	private List<BundleHeader> planList = new ArrayList<>();
 
 }

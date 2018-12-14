@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.vf.uk.dal.device.model.Member;
 import com.vf.uk.dal.device.model.ProductGroup;
 import com.vf.uk.dal.device.model.productgroups.ProductGroupModel;
@@ -12,6 +14,7 @@ import com.vf.uk.dal.device.model.productgroups.ProductGroupModel;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Component
 public class ListOfDeviceDetailsDaoUtils {
 
 	// For price API
@@ -32,39 +35,11 @@ public class ListOfDeviceDetailsDaoUtils {
 				List<com.vf.uk.dal.device.client.entity.bundle.BundleHeader> listOfOneOffPriceForBundleHeader = getAscendingOrderForOneoffPrice1(
 						listOfPriceForBundleHeader);
 				if (listOfOneOffPriceForBundleHeader != null && !listOfOneOffPriceForBundleHeader.isEmpty()) {
-					if (listOfOneOffPriceForBundleHeader.get(0).getPriceInfo().getHardwarePrice()
-							.getOneOffDiscountPrice().getGross() != null) {
-						gross = listOfOneOffPriceForBundleHeader.get(0).getPriceInfo().getHardwarePrice()
-								.getOneOffDiscountPrice().getGross();
-					} else {
-						gross = listOfOneOffPriceForBundleHeader.get(0).getPriceInfo().getHardwarePrice()
-								.getOneOffPrice().getGross();
-					}
-					List<com.vf.uk.dal.device.client.entity.bundle.BundleHeader> listOfEqualOneOffPriceForBundleHeader = new ArrayList<>();
-					for (com.vf.uk.dal.device.client.entity.bundle.BundleHeader bundleHeaderForDevice : listOfOneOffPriceForBundleHeader) {
-						if (bundleHeaderForDevice.getPriceInfo() != null
-								&& bundleHeaderForDevice.getPriceInfo().getHardwarePrice() != null
-								&& (bundleHeaderForDevice.getPriceInfo().getHardwarePrice()
-										.getOneOffDiscountPrice() != null
-										|| bundleHeaderForDevice.getPriceInfo().getHardwarePrice()
-												.getOneOffPrice() != null)
-								&& gross != null) {
-							if ((bundleHeaderForDevice.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice()
-									.getGross() != null
-									|| bundleHeaderForDevice.getPriceInfo().getHardwarePrice().getOneOffPrice()
-											.getGross() != null)
-									&& (gross
-											.equalsIgnoreCase(bundleHeaderForDevice.getPriceInfo().getHardwarePrice()
-													.getOneOffDiscountPrice().getGross())
-											|| gross.equalsIgnoreCase(bundleHeaderForDevice.getPriceInfo()
-													.getHardwarePrice().getOneOffPrice().getGross()))) {
-								listOfEqualOneOffPriceForBundleHeader.add(bundleHeaderForDevice);
-							}
-						}
-					}
+					gross = setGross(listOfOneOffPriceForBundleHeader);
+					List<com.vf.uk.dal.device.client.entity.bundle.BundleHeader> listOfEqualOneOffPriceForBundleHeader = setListOfOneOffPrice(
+							gross, listOfOneOffPriceForBundleHeader);
 					String bundleId = null;
-					if (listOfEqualOneOffPriceForBundleHeader != null
-							&& !listOfEqualOneOffPriceForBundleHeader.isEmpty()) {
+					if (!listOfEqualOneOffPriceForBundleHeader.isEmpty()) {
 						listOfBundelMonthlyPriceForBundleHeader = getAscendingOrderForBundlePrice1(
 								listOfEqualOneOffPriceForBundleHeader);
 						if (listOfBundelMonthlyPriceForBundleHeader != null
@@ -73,9 +48,8 @@ public class ListOfDeviceDetailsDaoUtils {
 						}
 					}
 					log.info("Compatible Id:" + bundleId);
-					if (bundleId != null && !bundleId.isEmpty()) {
-						bundleHeaderForDevice1 = listOfBundelMonthlyPriceForBundleHeader.get(0);
-					}
+					bundleHeaderForDevice1 = setBundleHeaderForDevice(listOfBundelMonthlyPriceForBundleHeader,
+							bundleId);
 
 				}
 			}
@@ -85,6 +59,64 @@ public class ListOfDeviceDetailsDaoUtils {
 
 		return bundleHeaderForDevice1;
 
+	}
+
+	private String setGross(
+			List<com.vf.uk.dal.device.client.entity.bundle.BundleHeader> listOfOneOffPriceForBundleHeader) {
+		String gross;
+		if (listOfOneOffPriceForBundleHeader.get(0).getPriceInfo().getHardwarePrice()
+				.getOneOffDiscountPrice().getGross() != null) {
+			gross = listOfOneOffPriceForBundleHeader.get(0).getPriceInfo().getHardwarePrice()
+					.getOneOffDiscountPrice().getGross();
+		} else {
+			gross = listOfOneOffPriceForBundleHeader.get(0).getPriceInfo().getHardwarePrice()
+					.getOneOffPrice().getGross();
+		}
+		return gross;
+	}
+
+	private List<com.vf.uk.dal.device.client.entity.bundle.BundleHeader> setListOfOneOffPrice(String gross,
+			List<com.vf.uk.dal.device.client.entity.bundle.BundleHeader> listOfOneOffPriceForBundleHeader) {
+		List<com.vf.uk.dal.device.client.entity.bundle.BundleHeader> listOfEqualOneOffPriceForBundleHeader = new ArrayList<>();
+		for (com.vf.uk.dal.device.client.entity.bundle.BundleHeader bundleHeaderForDevice : listOfOneOffPriceForBundleHeader) {
+			if (bundleHeaderForDevice.getPriceInfo() != null
+					&& bundleHeaderForDevice.getPriceInfo().getHardwarePrice() != null
+					&& (bundleHeaderForDevice.getPriceInfo().getHardwarePrice()
+							.getOneOffDiscountPrice() != null
+							|| bundleHeaderForDevice.getPriceInfo().getHardwarePrice()
+									.getOneOffPrice() != null)
+					&& gross != null) {
+				setlistOfEqualOneOffPriceForBundleHeader(gross, listOfEqualOneOffPriceForBundleHeader,
+						bundleHeaderForDevice);
+			}
+		}
+		return listOfEqualOneOffPriceForBundleHeader;
+	}
+
+	private com.vf.uk.dal.device.client.entity.bundle.BundleHeader setBundleHeaderForDevice(
+			List<com.vf.uk.dal.device.client.entity.bundle.BundleHeader> listOfBundelMonthlyPriceForBundleHeader,
+			 String bundleId) {
+		com.vf.uk.dal.device.client.entity.bundle.BundleHeader bundleHeaderForDevice1= null;
+		if (bundleId != null && !bundleId.isEmpty()) {
+			bundleHeaderForDevice1 = listOfBundelMonthlyPriceForBundleHeader.get(0);
+		}
+		return bundleHeaderForDevice1;
+	}
+
+	private void setlistOfEqualOneOffPriceForBundleHeader(String gross,
+			List<com.vf.uk.dal.device.client.entity.bundle.BundleHeader> listOfEqualOneOffPriceForBundleHeader,
+			com.vf.uk.dal.device.client.entity.bundle.BundleHeader bundleHeaderForDevice) {
+		if ((bundleHeaderForDevice.getPriceInfo().getHardwarePrice().getOneOffDiscountPrice()
+				.getGross() != null
+				|| bundleHeaderForDevice.getPriceInfo().getHardwarePrice().getOneOffPrice()
+						.getGross() != null)
+				&& (gross
+						.equalsIgnoreCase(bundleHeaderForDevice.getPriceInfo().getHardwarePrice()
+								.getOneOffDiscountPrice().getGross())
+						|| gross.equalsIgnoreCase(bundleHeaderForDevice.getPriceInfo()
+								.getHardwarePrice().getOneOffPrice().getGross()))) {
+			listOfEqualOneOffPriceForBundleHeader.add(bundleHeaderForDevice);
+		}
 	}
 
 	/**
@@ -125,13 +157,15 @@ public class ListOfDeviceDetailsDaoUtils {
 				}
 				if (Double.parseDouble(gross) < Double.parseDouble(gross1)) {
 					return -1;
-				} else
+				} else{
 					return 1;
+				}
 
 			}
 
-			else
+			else{
 				return -1;
+			}
 		}
 
 	}
@@ -175,10 +209,12 @@ public class ListOfDeviceDetailsDaoUtils {
 
 				if (Double.parseDouble(gross) < Double.parseDouble(gross1)) {
 					return -1;
-				} else
+				} else{
 					return 1;
-			} else
+				}
+			} else{
 				return -1;
+			}
 		}
 	}
 
@@ -191,7 +227,7 @@ public class ListOfDeviceDetailsDaoUtils {
 	 * @param cohProduct
 	 * @return List<ProductGroup>
 	 */
-	public static List<ProductGroup> convertGroupProductToProductGroupDetails(
+	public List<ProductGroup> convertGroupProductToProductGroupDetails(
 			List<ProductGroupModel> sohProductGroupList) {
 
 		List<ProductGroup> productGroupList;

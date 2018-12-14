@@ -11,15 +11,16 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
+import com.vf.uk.dal.device.exception.DeviceCustomException;
 import com.vf.uk.dal.device.model.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.service.CacheDeviceService;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
@@ -32,7 +33,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 
-@Api(tags="DeviceCacheAndReview")
+@Api(tags = "DeviceCacheAndReview")
 @RestController
 @RequestMapping(value = "")
 @EnableAspectJAutoProxy(proxyTargetClass = true)
@@ -43,7 +44,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class CacheDeviceAndReviewController {
-
+	private static final String ERROR_CODE_SELECT_CAHCE_DEVICE = "error_device_cache_device_failed";
 	public static final String DEVICE_ID = "deviceId";
 	public static final String GROUP_TYPE = "groupType";
 	public static final String STRING_DEVICE_PAYM = "DEVICE_PAYM";
@@ -51,6 +52,9 @@ public class CacheDeviceAndReviewController {
 	public static final String STRING_DEVICE_NEARLY_NEW = "DEVICE_NEARLY_NEW";
 	@Autowired
 	CacheDeviceService cacheDeviceService;
+	
+	@Autowired
+	Validator validator;
 
 	/**
 	 * Handles requests for getDeviceTile Service with input as
@@ -83,10 +87,10 @@ public class CacheDeviceAndReviewController {
 			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.model.Error.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.model.Error.class) })
 
-	@RequestMapping(value = "/deviceTile/cacheDeviceTile", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/deviceTile/cacheDeviceTile", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CacheDeviceTileResponse> cacheDeviceTile(
 			@ApiParam(value = "Device group Type", required = true) @RequestParam("groupType") String groupType) {
-		
+
 		if (StringUtils.isNotBlank(groupType)) {
 			if (StringUtils.containsIgnoreCase(groupType, STRING_DEVICE_PAYG)
 					|| StringUtils.containsIgnoreCase(groupType, STRING_DEVICE_PAYM)
@@ -99,10 +103,11 @@ public class CacheDeviceAndReviewController {
 
 				return response;
 			} else {
-				throw new ApplicationException(ExceptionMessages.INVALID_INPUT_GROUP_TYPE);
+				throw new DeviceCustomException(ERROR_CODE_SELECT_CAHCE_DEVICE,ExceptionMessages.INVALID_INPUT_GROUP_TYPE,"404");
 			}
-		} else
-			throw new ApplicationException(ExceptionMessages.NULL_OR_EMPTY_GROUP_TYPE);
+		} else {
+			throw new DeviceCustomException(ERROR_CODE_SELECT_CAHCE_DEVICE,ExceptionMessages.NULL_OR_EMPTY_GROUP_TYPE,"404");
+		}
 	}
 
 	/**
@@ -117,8 +122,7 @@ public class CacheDeviceAndReviewController {
 			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.model.Error.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.model.Error.class) })
 
-	@RequestMapping(value = "/deviceTile/cacheDeviceTile/{jobId}/status", method = RequestMethod.GET, produces = {
-			MediaType.APPLICATION_JSON_VALUE })
+	@GetMapping(value = "/deviceTile/cacheDeviceTile/{jobId}/status", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public CacheDeviceTileResponse getCacheDeviceJobStatus(
 			@ApiParam(value = "Device group Type", required = true) @PathVariable("jobId") String jobId) {
 
@@ -138,13 +142,12 @@ public class CacheDeviceAndReviewController {
 			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.model.Error.class),
 			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.model.Error.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.model.Error.class) })
-	@RequestMapping(value = "/device/{deviceId}/review", method = RequestMethod.GET, produces = {
-			MediaType.APPLICATION_JSON_VALUE })
+	@GetMapping(value = "/device/{deviceId}/review", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public JSONObject getDeviceReviewDetails(
 			@NotNull @ApiParam(value = "Unique Id of the device for which the review is being requested", required = true) @PathVariable(DEVICE_ID) String deviceId) {
 
-		Validator.validateDeviceId(deviceId);
-		log.info( "Start -->  calling  getDeviceReviewDetails");
+		validator.validateDeviceId(deviceId);
+		log.info("Start -->  calling  getDeviceReviewDetails");
 		return cacheDeviceService.getDeviceReviewDetails(deviceId);
 	}
 }

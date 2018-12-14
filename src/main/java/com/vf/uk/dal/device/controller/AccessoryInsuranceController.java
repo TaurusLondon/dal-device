@@ -10,8 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
  * services inside the controller.
  * 
  */
-@Api(tags="DeviceAccessoryInsurance")
+@Api(tags = "DeviceAccessoryInsurance")
 @RestController
 @RequestMapping(value = "")
 @EnableAspectJAutoProxy(proxyTargetClass = true)
@@ -45,6 +45,8 @@ public class AccessoryInsuranceController {
 	@Autowired
 	AccessoryInsuranceService accessoryInsuranceService;
 
+	@Autowired
+	Validator validator;
 	/**
 	 * Handles requests for getDeviceTile Service with input as
 	 * GROUP_NAME,GROUP_TYPE in URL as query. performance improved by @author
@@ -77,16 +79,16 @@ public class AccessoryInsuranceController {
 			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.model.Error.class),
 			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.model.Error.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.model.Error.class) })
-	@RequestMapping(value = "/accessory/queries/byDeviceId/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/accessory/queries/byDeviceId/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<AccessoryTileGroup> getAccessoriesOfDevice(
 			@NotNull @ApiParam(value = "Unique Id of the device being requested", required = true) @RequestParam(value = "deviceId", required = true) String deviceId,
 			@ApiParam(value = "The journey that the user undertakes") @RequestParam(value = "journeyType", required = false) String journeyType,
 			@ApiParam(value = "Promotional offer applicable") @RequestParam(value = "offerCode", required = false) String offerCode) {
 		List<AccessoryTileGroup> listOfAccessoryTileGroup;
-		Validator.validateAccessoryFields(deviceId);
-		log.info( "Start -->  calling  getAccessoriesOfDevice");
+		validator.validateAccessoryFields(deviceId);
+		log.info("Start -->  calling  getAccessoriesOfDevice");
 		listOfAccessoryTileGroup = accessoryInsuranceService.getAccessoriesOfDevice(deviceId, journeyType, offerCode);
-		log.info( "End -->  calling  getAccessoriesOfDevice");
+		log.info("End -->  calling  getAccessoriesOfDevice");
 		return listOfAccessoryTileGroup;
 
 	}
@@ -104,15 +106,15 @@ public class AccessoryInsuranceController {
 			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.model.Error.class),
 			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.model.Error.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.model.Error.class) })
-	@RequestMapping(value = "/insurance/queries/byDeviceId/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/insurance/queries/byDeviceId/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Insurances getInsuranceById(
 			@NotNull @ApiParam(value = "Values based on which inssurnace will be fetched.", required = true) @RequestParam(value = "deviceId", required = true) String deviceId,
 			@ApiParam(value = "user journey") @RequestParam(value = "journeyType", required = false) String journeyType) {
 
 		Insurances insurance;
-		log.info( "Start -->  calling  getInusranceByDeviceId");
-		Validator.validateInsuranceDetails(deviceId);
-		log.info( "End -->  calling  getInsuranceDeviceId");
+		log.info("Start -->  calling  getInusranceByDeviceId");
+		validator.validateInsuranceDetails(deviceId);
+		log.info("End -->  calling  getInsuranceDeviceId");
 		insurance = accessoryInsuranceService.getInsuranceByDeviceId(deviceId, journeyType);
 		return insurance;
 

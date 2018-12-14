@@ -19,7 +19,7 @@ import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Component;
 
 import com.vf.uk.dal.common.configuration.DataSourceInitializer;
-import com.vf.uk.dal.common.exception.ApplicationException;
+import com.vf.uk.dal.device.exception.DeviceCustomException;
 import com.vf.uk.dal.device.model.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.model.solr.BundlePrice;
 import com.vf.uk.dal.device.model.solr.DevicePreCalculatedData;
@@ -45,6 +45,8 @@ import lombok.extern.slf4j.Slf4j;
 public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 	@Autowired
 	DataSourceInitializer dataSourceInitializer;
+	
+	private static final String ERROR_CODE_DEVICE = "error_device_failed";
 
 	@Autowired
 	JdbcTemplate jdbcTemplate;
@@ -408,7 +410,7 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 			log.error( "Exception occurred while persisting data in intermediate tables" + e);
 		} finally {
 			try {
-				if (conn != null && !conn.isClosed()) {
+				if (!conn.isClosed()) {
 					conn.close();
 				}
 			} catch (SQLException e) {
@@ -426,7 +428,7 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 			log.error( "Exception occurred while persisting data in intermediate tables" + e);
 		} finally {
 			try {
-				if (conn != null && !conn.isClosed()) {
+				if (!conn.isClosed()) {
 					conn.close();
 				}
 			} catch (SQLException e) {
@@ -469,16 +471,16 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 	@Override
 	public void updateCacheDeviceToDb(String jobId, String jobStatus) {
 		jdbcTemplate.setDataSource(datasource);
-		try(Connection conn = DataSourceUtils.getConnection(jdbcTemplate.getDataSource());) {
+		try(Connection connection = DataSourceUtils.getConnection(jdbcTemplate.getDataSource());) {
 			
-			conn.setAutoCommit(false);
+			connection.setAutoCommit(false);
 			String query = "UPDATE DALMS_CACHE_SERVICES SET JOB_STATUS = ?, JOB_END = ?, JOB_LAST_UPDATED = ? WHERE JOB_ID = ?";
 			Object[] params = new Object[] { jobStatus, new Timestamp(new Date().getTime()),
 					new Timestamp(new Date().getTime()), jobId };
 			jdbcTemplate.update(query, params);
 
 			log.info(jobId + " updated with status " + jobStatus + " in DALMS_CACHE_SERVICES_TABLE");
-			conn.commit();
+			connection.commit();
 		} catch (DataAccessException | SQLException e) {
 			log.error( jobId + "==> " + e);
 		}
@@ -490,7 +492,7 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 	 * @return CacheDeviceTileResponse
 	 */
 	@Override
-	public CacheDeviceTileResponse getCacheDeviceJobStatus(String jobId) throws ApplicationException {
+	public CacheDeviceTileResponse getCacheDeviceJobStatus(String jobId){
 
 		CacheDeviceTileResponse response = new CacheDeviceTileResponse();
 		String jobStatus = null;
@@ -500,7 +502,7 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 			Object[] params = new Object[] { jobId };
 			jobStatus = jdbcTemplate.queryForObject(query, String.class, params);
 			if (StringUtils.isEmpty(jobStatus) || StringUtils.isBlank(jobStatus)) {
-				throw new ApplicationException(ExceptionMessages.INVALID_JOB_ID);
+				throw new DeviceCustomException(ERROR_CODE_DEVICE,ExceptionMessages.INVALID_JOB_ID,"404");
 			} else {
 				response.setJobId(jobId);
 				response.setJobStatus(jobStatus);
@@ -508,7 +510,7 @@ public class DeviceTileCacheDAOImpl implements DeviceTileCacheDAO {
 
 		} catch (Exception exception) {
 			log.error( jobId + "==>" + exception);
-			throw new ApplicationException(ExceptionMessages.INVALID_JOB_ID);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE,ExceptionMessages.INVALID_JOB_ID,"404");
 		}
 		return response;
 	}

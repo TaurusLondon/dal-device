@@ -16,11 +16,11 @@ import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
 import com.vf.uk.dal.device.client.entity.bundle.BundleDetails;
 import com.vf.uk.dal.device.client.entity.price.BundleAndHardwareTuple;
 import com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware;
+import com.vf.uk.dal.device.exception.DeviceCustomException;
 import com.vf.uk.dal.device.model.product.BazaarVoice;
 import com.vf.uk.dal.device.utils.BazaarVoiceCache;
 import com.vf.uk.dal.device.utils.CommonUtility;
@@ -41,6 +41,7 @@ import lombok.extern.slf4j.Slf4j;
 public class DeviceDaoImpl implements DeviceDao {
 
 	public static final String STRING_MODELS = "models";
+	private static final String ERROR_CODE_DEVICE = "error_device_failed";
 	@Autowired
 	CommonUtility commonUtility;
 
@@ -65,7 +66,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		try {
 			log.info( "Getting Compatible bundle details by calling Compatible Plan List API");
 			bundleDetails = commonUtility.getBundleDetailsFromComplansListingAPI(deviceId, sortCriteria);
-		} catch (ApplicationException e) {
+		} catch (DeviceCustomException e) {
 			log.error( "No Compatible bundle Found By Given Bundle Id " + e);
 			bundleDetails = null;
 		}
@@ -116,7 +117,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	public BazaarVoice getBazaarVoice(String skuId) {
 		BazaarVoice bazaarVoice = new BazaarVoice();
 		bazaarVoice.setSkuId(skuId);
-		bazaarVoice.setJsonsource(getDeviceReviewDetails(CommonUtility.appendPrefixString(skuId)));
+		bazaarVoice.setJsonsource(getDeviceReviewDetails(commonUtility.appendPrefixString(skuId)));
 		return bazaarVoice;
 	}
 
@@ -173,9 +174,9 @@ public class DeviceDaoImpl implements DeviceDao {
 		try {
 			response = restClient.search(searchRequest, RequestOptions.DEFAULT);
 		} catch (Exception e) {
-			if (StringUtils.containsIgnoreCase(e.getMessage(), ExceptionMessages.Index_NOT_FOUND_EXCEPTION)) {
-				log.error( ExceptionMessages.Index_NOT_FOUND_EXCEPTION);
-				throw new ApplicationException(ExceptionMessages.Index_NOT_FOUND_EXCEPTION);
+			if (StringUtils.containsIgnoreCase(e.getMessage(), ExceptionMessages.INDEX_NOT_FOUND_EXCEPTION)) {
+				log.error( ExceptionMessages.INDEX_NOT_FOUND_EXCEPTION);
+				throw new DeviceCustomException(ERROR_CODE_DEVICE,ExceptionMessages.INDEX_NOT_FOUND_EXCEPTION,"404");
 			}
 			log.error( "::::::Exception occured while querieng bundle models from ES " + e);
 		}

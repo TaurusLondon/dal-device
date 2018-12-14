@@ -17,5 +17,5 @@ public class StatusInfo {
 	private String status = null;
 
 	@JsonProperty("errorCodes")
-	private List<String> errorCodes = new ArrayList<String>();
+	private List<String> errorCodes = new ArrayList<>();
 }

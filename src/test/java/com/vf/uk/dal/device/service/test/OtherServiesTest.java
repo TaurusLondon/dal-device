@@ -17,7 +17,9 @@ import java.util.Map;
 import org.json.simple.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
 import com.vf.uk.dal.device.beans.test.DeviceTestBeans;
+import com.vf.uk.dal.device.client.PromotionServiceClient;
 import com.vf.uk.dal.device.client.converter.ResponseMappingHelper;
 import com.vf.uk.dal.device.client.entity.bundle.BundleDetailsForAppSrv;
 import com.vf.uk.dal.device.client.entity.bundle.BundleModelAndPrice;
@@ -48,6 +51,7 @@ import com.vf.uk.dal.device.controller.DeviceDetailsController;
 import com.vf.uk.dal.device.controller.DeviceEntityController;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.dao.DeviceTileCacheDAOImpl;
+import com.vf.uk.dal.device.exception.DeviceCustomException;
 import com.vf.uk.dal.device.model.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.model.Device;
 import com.vf.uk.dal.device.model.DeviceDetails;
@@ -55,10 +59,20 @@ import com.vf.uk.dal.device.model.DeviceSummary;
 import com.vf.uk.dal.device.model.product.CommercialProduct;
 import com.vf.uk.dal.device.model.product.ProductControl;
 import com.vf.uk.dal.device.model.product.ProductModel;
+import com.vf.uk.dal.device.model.productgroups.Group;
+import com.vf.uk.dal.device.service.CacheDeviceServiceImpl;
 import com.vf.uk.dal.device.service.DeviceService;
+import com.vf.uk.dal.device.utils.AccessoriesAndInsurancedaoUtils;
+import com.vf.uk.dal.device.utils.CacheDeviceDaoUtils;
+import com.vf.uk.dal.device.utils.CommonUtility;
 import com.vf.uk.dal.device.utils.DeviceConditionallHelper;
+import com.vf.uk.dal.device.utils.DeviceDetailsMakeAndModelVaiantDaoUtils;
+import com.vf.uk.dal.device.utils.DeviceESHelper;
+import com.vf.uk.dal.device.utils.DeviceServiceCommonUtility;
 import com.vf.uk.dal.device.utils.DeviceServiceImplUtility;
+import com.vf.uk.dal.device.utils.DeviceTilesDaoUtils;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
+import com.vf.uk.dal.device.utils.ListOfDeviceDetailsDaoUtils;
 import com.vf.uk.dal.device.utils.Validator;
 
 @RunWith(SpringRunner.class)
@@ -82,6 +96,38 @@ public class OtherServiesTest {
 	@MockBean
 	DeviceTileCacheDAOImpl deviceCacheDAOMock;
 
+	@Autowired
+	CacheDeviceDaoUtils cacheDeviceDaoUtils;
+
+	@Autowired
+	AccessoriesAndInsurancedaoUtils accessoriesAndInsurancedaoUtils;
+
+	@Autowired
+	CommonUtility commonUtility;
+
+	@Autowired
+	ListOfDeviceDetailsDaoUtils listOfDeviceDetailsDaoUtils;
+
+	@Autowired
+	DeviceServiceImplUtility deviceServiceImplUtility;
+
+	@Autowired
+	DeviceDetailsMakeAndModelVaiantDaoUtils deviceDetailsMakeAndModelVaiantDaoUtils;
+
+	@Autowired
+	Validator validator;
+
+	@Autowired
+	AccessoriesAndInsurancedaoUtils AccessoriesAndInsurancedaoUtils;
+
+	@Autowired
+	DeviceTilesDaoUtils deviceTilesDaoUtils;
+
+	@Autowired
+	DeviceESHelper deviceESHelper;
+
+	@Autowired
+	DeviceServiceCommonUtility utility;
 	@MockBean
 	DeviceDao deviceDAOMock;
 
@@ -111,6 +157,15 @@ public class OtherServiesTest {
 
 	@Autowired
 	DeviceService deviceService;
+
+	@Autowired
+	CacheDeviceServiceImpl cacheDeviceService;
+
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
+
+	@Autowired
+	PromotionServiceClient promotionServiceClient;
 
 	@Before
 	public void setupMockBehaviour() throws Exception {
@@ -167,6 +222,23 @@ public class OtherServiesTest {
 	}
 
 	@Test
+	public void testCacheDeviceTileServiceNull() {
+		thrown.expect(ApplicationException.class);
+		thrown.expectMessage(ExceptionMessages.NULL_VALUE_GROUP_TYPE);
+		cacheDeviceService.setListOfProductGroupRepository(null, null, null, null, null, null, null, null,
+				null, null, null, null, null);
+	}
+	
+	@Test
+	public void testCacheDeviceTileServicEmpty() {
+		thrown.expect(ApplicationException.class);
+		thrown.expectMessage(ExceptionMessages.NULL_VALUE_GROUP_TYPE);
+		List<Group> listOfProductGroup = new ArrayList<>();
+		cacheDeviceService.setListOfProductGroupRepository(null, null, null, null, listOfProductGroup, null, null, null,
+				null, null, null, null, null);
+	}
+
+	@Test
 	public void nulltestGetListOfDeviceDetailsForExceptionWithOffer() {
 		Map<String, String> queryparams = new HashMap<>();
 		queryparams.put("journeyType", "journeyType");
@@ -174,7 +246,7 @@ public class OtherServiesTest {
 		queryparams.put("deviceId", "093353");
 		List<DeviceDetails> device = deviceDetailsController.getListOfDeviceDetails(queryparams);
 		assertNotNull(device);
-		assertEquals( "092572",device.get(0).getDeviceId());
+		assertEquals("092572", device.get(0).getDeviceId());
 	}
 
 	@Test
@@ -185,7 +257,7 @@ public class OtherServiesTest {
 		queryparams.put("deviceId", "093353");
 		List<DeviceDetails> device = deviceDetailsController.getListOfDeviceDetails(queryparams);
 		assertNotNull(device);
-		assertEquals( "092572",device.get(0).getDeviceId());
+		assertEquals("092572", device.get(0).getDeviceId());
 	}
 
 	@Test
@@ -196,7 +268,7 @@ public class OtherServiesTest {
 			queryparams.put("offerCode", "W_HH_OC_01");
 			deviceDetailsController.getListOfDeviceDetails(queryparams);
 		} catch (Exception e) {
-			assertEquals( "Invalid input request received. Missing Device Id",e.getMessage());
+			assertEquals("Invalid input request received. Missing Device Id", e.getMessage());
 		}
 	}
 
@@ -209,7 +281,7 @@ public class OtherServiesTest {
 		deviceDetails = deviceDetailsController
 				.getListOfDeviceDetails(CommonMethods.getQueryParamsMapForDeviceDetails("093353"));
 		Assert.assertNotNull(deviceDetails);
-		assertEquals("092572",deviceDetails.get(0).getDeviceId());
+		assertEquals("092572", deviceDetails.get(0).getDeviceId());
 	}
 
 	@Test
@@ -226,7 +298,7 @@ public class OtherServiesTest {
 		deviceDetails = deviceDetailsController
 				.getListOfDeviceDetails(CommonMethods.getQueryParamsMapForDeviceDetails("093353"));
 		Assert.assertNotNull(deviceDetails);
-		assertEquals( "093353",deviceDetails.get(0).getDeviceId());
+		assertEquals("093353", deviceDetails.get(0).getDeviceId());
 	}
 
 	@Test
@@ -238,7 +310,7 @@ public class OtherServiesTest {
 		try {
 			deviceDetailsController
 					.getListOfDeviceDetails(CommonMethods.getQueryParamsMapForDeviceDetails("093353,090572"));
-		} catch (ApplicationException e) {
+		} catch (DeviceCustomException e) {
 			Assert.assertEquals("Invalid Device Id Sent In Request", e.getMessage());
 		}
 	}
@@ -250,7 +322,7 @@ public class OtherServiesTest {
 			Map<String, String> map = new HashMap<>();
 			deviceDetails = deviceDetailsController.getListOfDeviceDetails(map);
 		} catch (Exception e) {
-			Assert.assertEquals( "Invalid query parameters",e.getMessage());
+			Assert.assertEquals("Invalid query parameters", e.getMessage());
 		}
 		Assert.assertNull(deviceDetails);
 	}
@@ -262,7 +334,7 @@ public class OtherServiesTest {
 			deviceDetails = deviceDetailsController
 					.getListOfDeviceDetails(CommonMethods.getQueryParamsMapForDeviceDetails(null, null));
 		} catch (Exception e) {
-			Assert.assertEquals( "Invalid input request received. Missing Device Id",e.getMessage());
+			Assert.assertEquals("Invalid input request received. Missing Device Id", e.getMessage());
 		}
 		Assert.assertNull(deviceDetails);
 	}
@@ -292,7 +364,7 @@ public class OtherServiesTest {
 			given(this.deviceDAOMock.getDeviceReviewDetails("093353")).willReturn(null);
 			cacheDeviceAndReviewController.getDeviceReviewDetails("093353");
 		} catch (Exception exception) {
-			assertEquals( "No reviews found for the given deviceId",exception.getMessage());
+			assertEquals("No reviews found for the given deviceId", exception.getMessage());
 		}
 	}
 
@@ -301,19 +373,19 @@ public class OtherServiesTest {
 		List<CommercialProduct> cp = deviceEntityController.getCommercialProduct("093353", null);
 		Assert.assertNotNull(deviceEntityController.getCommercialProduct("093353,093329", null));
 		Assert.assertNotNull(deviceEntityController.getCommercialProduct(null, "iPhone 7 Silicone Case mid blue"));
-		assertEquals( "093329",cp.get(0).getId());
-		assertEquals( 179050,cp.get(0).getOrder(), 0);
-		assertEquals( "iPhone 7 Silicone Case mid blue",cp.get(0).getName());
-		assertEquals( "Accessories",cp.get(0).getProductClass());
+		assertEquals("093329", cp.get(0).getId());
+		assertEquals(179050, cp.get(0).getOrder(), 0);
+		assertEquals("iPhone 7 Silicone Case mid blue", cp.get(0).getName());
+		assertEquals("Accessories", cp.get(0).getProductClass());
 		try {
 			deviceEntityController.getCommercialProduct(null, null);
 		} catch (Exception e) {
-			assertEquals( "Invalid query parameters",e.getMessage());
+			assertEquals("Invalid query parameters", e.getMessage());
 		}
 		try {
 			given(response.getCommercialProductFromJson(ArgumentMatchers.any())).willReturn(Collections.emptyList());
 			deviceEntityController.getCommercialProduct("093353", null);
-		} catch (ApplicationException e) {
+		} catch (DeviceCustomException e) {
 			Assert.assertEquals("Received Null Values for the given device id", e.getMessage());
 		}
 	}
@@ -323,19 +395,19 @@ public class OtherServiesTest {
 		List<com.vf.uk.dal.device.model.productgroups.Group> group = deviceEntityController
 				.getProductGroupByGroupType("DEVICE_PAYM");
 		assertNotNull(group);
-		assertEquals( "Apple iPhone 6s",group.get(0).getName());
-		assertEquals( 3,group.get(0).getGroupPriority(), 0);
-		assertEquals( "DEVICE",group.get(0).getGroupType());
+		assertEquals("Apple iPhone 6s", group.get(0).getName());
+		assertEquals(3, group.get(0).getGroupPriority(), 0);
+		assertEquals("DEVICE", group.get(0).getGroupType());
 		try {
 			deviceEntityController.getProductGroupByGroupType(null);
 		} catch (Exception e) {
-			assertEquals( "Invalid query parameters",e.getMessage());
+			assertEquals("Invalid query parameters", e.getMessage());
 		}
 		try {
 			given(response.getListOfGroupFromJson(ArgumentMatchers.any())).willReturn(Collections.emptyList());
 			deviceEntityController.getProductGroupByGroupType("DEVICE_PAYM");
 		} catch (Exception e) {
-			assertEquals( "Received Null Values for the given product group type",e.getMessage());
+			assertEquals("Received Null Values for the given product group type", e.getMessage());
 		}
 	}
 
@@ -348,36 +420,36 @@ public class OtherServiesTest {
 		try {
 			deviceEntityController.getProductGroupModel(null);
 		} catch (Exception e) {
-			assertEquals( "Invalid query parameters",e.getMessage());
+			assertEquals("Invalid query parameters", e.getMessage());
 		}
 		try {
 			given(response.getListOfProductModel(ArgumentMatchers.any())).willReturn(CommonMethods.getProductModel());
 			given(response.getListOfProductGroupModel(ArgumentMatchers.any())).willReturn(new ArrayList<>());
 			deviceEntityController.getProductGroupModel("093353,092660");
 		} catch (Exception e) {
-			assertEquals("Received Null Values for the given device id",e.getMessage());
+			assertEquals("Received Null Values for the given device id", e.getMessage());
 		}
 	}
 
 	@Test
 	public void testDeviceServiceImplUtility() {
-		String journey = DeviceServiceImplUtility.getJourney("");
+		String journey = deviceServiceImplUtility.getJourney("");
 		assertNotNull(journey);
-		assertEquals("Acquisition",journey);
+		assertEquals("Acquisition", journey);
 	}
 
 	@Test
 	public void testDeviceServiceImplUtilitySecondLine() {
-		String journey = DeviceServiceImplUtility.getJourney(JOURNEY_TYPE_SECONDLINE);
+		String journey = deviceServiceImplUtility.getJourney(JOURNEY_TYPE_SECONDLINE);
 		assertNotNull(journey);
-		assertEquals( JOURNEY_TYPE_SECONDLINE,journey);
+		assertEquals(JOURNEY_TYPE_SECONDLINE, journey);
 	}
 
 	@Test
 	public void testDeviceServiceImplUtilityGetPromotion() {
 		Device device = CommonMethods.getDevice();
 		Map<String, MerchandisingPromotion> map = new HashMap<>();
-		DeviceServiceImplUtility.getPromotionForDeviceList(map, device);
+		deviceServiceImplUtility.getPromotionForDeviceList(map, device);
 	}
 
 	@Test
@@ -385,7 +457,7 @@ public class OtherServiesTest {
 		Map<String, MerchandisingPromotion> map = new HashMap<>();
 		map.put("1234", CommonMethods.getMP());
 		Device device2 = CommonMethods.getDevice_Two();
-		DeviceServiceImplUtility.getPromotionForDeviceList(map, device2);
+		deviceServiceImplUtility.getPromotionForDeviceList(map, device2);
 	}
 
 	@Test
@@ -393,14 +465,14 @@ public class OtherServiesTest {
 		Map<String, MerchandisingPromotion> map = new HashMap<>();
 		map.put("1234", CommonMethods.getMP());
 		Device device1 = CommonMethods.getDevice_One();
-		DeviceServiceImplUtility.getPromotionForDeviceList(map, device1);
+		deviceServiceImplUtility.getPromotionForDeviceList(map, device1);
 	}
 
 	@Test
 	public void testDeviceServiceImplUtilityGetPromotionWithHardwareDevice() {
 		Device device = CommonMethods.getDeviceHW();
 		Map<String, MerchandisingPromotion> map = new HashMap<>();
-		DeviceServiceImplUtility.getPromotionForDeviceList(map, device);
+		deviceServiceImplUtility.getPromotionForDeviceList(map, device);
 	}
 
 	@Test
@@ -408,7 +480,7 @@ public class OtherServiesTest {
 		Map<String, MerchandisingPromotion> map = new HashMap<>();
 		map.put("1234", CommonMethods.getMP());
 		Device device2 = CommonMethods.getDeviceHW_Two();
-		DeviceServiceImplUtility.getPromotionForDeviceList(map, device2);
+		deviceServiceImplUtility.getPromotionForDeviceList(map, device2);
 	}
 
 	@Test
@@ -416,7 +488,7 @@ public class OtherServiesTest {
 		Map<String, MerchandisingPromotion> map = new HashMap<>();
 		map.put("1234", CommonMethods.getMP());
 		Device device1 = CommonMethods.getDeviceHW_One();
-		DeviceServiceImplUtility.getPromotionForDeviceList(map, device1);
+		deviceServiceImplUtility.getPromotionForDeviceList(map, device1);
 	}
 
 	@Test
@@ -424,7 +496,7 @@ public class OtherServiesTest {
 		Map<String, MerchandisingPromotion> map = new HashMap<>();
 		map.put("1234", CommonMethods.getMP());
 		Device device1 = CommonMethods.getDeviceWithDetails_One();
-		DeviceServiceImplUtility.getPromotionForDeviceList(map, device1);
+		deviceServiceImplUtility.getPromotionForDeviceList(map, device1);
 	}
 
 	@Test
@@ -432,7 +504,7 @@ public class OtherServiesTest {
 		Device device = CommonMethods.getDeviceWithDetails_Two();
 		Map<String, MerchandisingPromotion> map = new HashMap<>();
 		map.put("1234", CommonMethods.getMP());
-		DeviceServiceImplUtility.getPromotionForDeviceList(map, device);
+		deviceServiceImplUtility.getPromotionForDeviceList(map, device);
 	}
 
 	@Test
@@ -442,7 +514,7 @@ public class OtherServiesTest {
 		List<Device> deviceList = new ArrayList<>();
 		deviceList.add(device);
 		List<String> promoteAsTags = new ArrayList<>();
-		DeviceServiceImplUtility.getPromoteAsForDevice(deviceList, promoteAsTags);
+		deviceServiceImplUtility.getPromoteAsForDevice(deviceList, promoteAsTags);
 	}
 
 	@Test
@@ -451,7 +523,7 @@ public class OtherServiesTest {
 		pm.setUpgradeLeadPlanId("");
 		pm.setNonUpgradeLeadPlanId("");
 		List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
-		DeviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYM, "", bundleHardwareTupleList, pm);
+		deviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYM, "", bundleHardwareTupleList, pm);
 	}
 
 	@Test
@@ -460,7 +532,7 @@ public class OtherServiesTest {
 		pm.setUpgradeLeadPlanId("1212");
 		pm.setNonUpgradeLeadPlanId("1212");
 		List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
-		DeviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYM, "", bundleHardwareTupleList, pm);
+		deviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYM, "", bundleHardwareTupleList, pm);
 	}
 
 	@Test
@@ -469,7 +541,7 @@ public class OtherServiesTest {
 		pm.setUpgradeLeadPlanId("1212");
 		pm.setNonUpgradeLeadPlanId("1212");
 		List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
-		DeviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYM, "Acquisition", bundleHardwareTupleList,
+		deviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYM, "Acquisition", bundleHardwareTupleList,
 				pm);
 	}
 
@@ -479,7 +551,7 @@ public class OtherServiesTest {
 		pm.setUpgradeLeadPlanId("1212");
 		pm.setNonUpgradeLeadPlanId("1212");
 		List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
-		DeviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYM, JOURNEY_TYPE_UPGRADE,
+		deviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYM, JOURNEY_TYPE_UPGRADE,
 				bundleHardwareTupleList, pm);
 	}
 
@@ -489,7 +561,7 @@ public class OtherServiesTest {
 		pm.setUpgradeLeadPlanId("");
 		pm.setNonUpgradeLeadPlanId("");
 		List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
-		DeviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYM, JOURNEY_TYPE_UPGRADE,
+		deviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYM, JOURNEY_TYPE_UPGRADE,
 				bundleHardwareTupleList, pm);
 	}
 
@@ -499,7 +571,7 @@ public class OtherServiesTest {
 		pm.setUpgradeLeadPlanId("1212");
 		pm.setNonUpgradeLeadPlanId("1212");
 		List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
-		DeviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYG, JOURNEY_TYPE_ACQUISITION,
+		deviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYG, JOURNEY_TYPE_ACQUISITION,
 				bundleHardwareTupleList, pm);
 	}
 
@@ -509,7 +581,7 @@ public class OtherServiesTest {
 		pm.setUpgradeLeadPlanId("1212");
 		pm.setNonUpgradeLeadPlanId("1212");
 		List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
-		DeviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYM, JOURNEY_TYPE_ACQUISITION,
+		deviceServiceImplUtility.getBundleAndHardwareList(STRING_DEVICE_PAYM, JOURNEY_TYPE_ACQUISITION,
 				bundleHardwareTupleList, pm);
 	}
 
@@ -517,45 +589,45 @@ public class OtherServiesTest {
 	public void testGetStartdateFromProductModelNull() {
 		ProductModel pm = new ProductModel();
 		pm.setProductStartDate(null);
-		DeviceServiceImplUtility.getStartdateFromProductModel(pm);
+		deviceServiceImplUtility.getStartdateFromProductModel(pm);
 	}
 
 	@Test
 	public void testGetStartdateFromProductModel() {
 		ProductModel pm = new ProductModel();
 		pm.setProductStartDate("12-11-2017");
-		Date date = DeviceServiceImplUtility.getStartdateFromProductModel(pm);
+		Date date = deviceServiceImplUtility.getStartdateFromProductModel(pm);
 		assertNotNull(date);
-		assertEquals( "Tue May 10 00:00:00 UTC 18",date.toString());
+		assertEquals("Tue May 10 00:00:00 UTC 18", date.toString());
 	}
 
 	@Test
 	public void testGetStartdateFromProductModelInvalid() {
 		ProductModel pm = new ProductModel();
 		pm.setProductStartDate("adasdasd");
-		DeviceServiceImplUtility.getStartdateFromProductModel(pm);
+		deviceServiceImplUtility.getStartdateFromProductModel(pm);
 	}
 
 	@Test
 	public void testGetEnddateFromProductModelNull() {
 		ProductModel pm = new ProductModel();
 		pm.setProductEndDate(null);
-		DeviceServiceImplUtility.getEndDateFromProductModel(pm);
+		deviceServiceImplUtility.getEndDateFromProductModel(pm);
 	}
 
 	@Test
 	public void testGetEnddateFromProductModel() {
 		ProductModel pm = new ProductModel();
 		pm.setProductEndDate("12-11-2017");
-		Date date = DeviceServiceImplUtility.getEndDateFromProductModel(pm);
-		assertEquals( "Tue May 10 00:00:00 UTC 18",date.toString());
+		Date date = deviceServiceImplUtility.getEndDateFromProductModel(pm);
+		assertEquals("Tue May 10 00:00:00 UTC 18", date.toString());
 	}
 
 	@Test
 	public void testGetEnddateFromProductModelInvalid() {
 		ProductModel pm = new ProductModel();
 		pm.setProductEndDate("adasdasd");
-		DeviceServiceImplUtility.getEndDateFromProductModel(pm);
+		deviceServiceImplUtility.getEndDateFromProductModel(pm);
 	}
 
 	@Test
@@ -563,76 +635,76 @@ public class OtherServiesTest {
 		try {
 			Date startDate = new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017");
 			Date endDate = new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000");
-			assertTrue(DeviceServiceImplUtility.dateValidation(null, null, false));
-			assertTrue(DeviceServiceImplUtility.dateValidation(null, null, true));
-			assertTrue(DeviceServiceImplUtility.dateValidation(startDate, null, true));
-			assertTrue(DeviceServiceImplUtility.dateValidation(startDate, null, false));
-			assertFalse(DeviceServiceImplUtility.dateValidation(startDate, endDate, true));
-			assertFalse(DeviceServiceImplUtility.dateValidation(startDate, endDate, false));
-			assertFalse(DeviceServiceImplUtility.dateValidation(null, endDate, true));
-			assertFalse(DeviceServiceImplUtility.dateValidation(null, endDate, false));
-			assertTrue(DeviceServiceImplUtility.dateValidation(endDate, null, true));
-			assertTrue(DeviceServiceImplUtility.dateValidation(endDate, null, false));
-			assertFalse(DeviceServiceImplUtility.dateValidation(endDate, startDate, false));
-			assertFalse(DeviceServiceImplUtility.dateValidation(null, startDate, false));
-			assertFalse(DeviceServiceImplUtility.dateValidation(null, startDate, true));
-			assertFalse(DeviceServiceImplUtility.dateValidation(new SimpleDateFormat(DATE_FORMAT).parse("21-11-2018"),
+			assertTrue(deviceServiceImplUtility.dateValidation(null, null, false));
+			assertTrue(deviceServiceImplUtility.dateValidation(null, null, true));
+			assertTrue(deviceServiceImplUtility.dateValidation(startDate, null, true));
+			assertTrue(deviceServiceImplUtility.dateValidation(startDate, null, false));
+			assertFalse(deviceServiceImplUtility.dateValidation(startDate, endDate, true));
+			assertFalse(deviceServiceImplUtility.dateValidation(startDate, endDate, false));
+			assertFalse(deviceServiceImplUtility.dateValidation(null, endDate, true));
+			assertFalse(deviceServiceImplUtility.dateValidation(null, endDate, false));
+			assertTrue(deviceServiceImplUtility.dateValidation(endDate, null, true));
+			assertTrue(deviceServiceImplUtility.dateValidation(endDate, null, false));
+			assertFalse(deviceServiceImplUtility.dateValidation(endDate, startDate, false));
+			assertFalse(deviceServiceImplUtility.dateValidation(null, startDate, false));
+			assertFalse(deviceServiceImplUtility.dateValidation(null, startDate, true));
+			assertFalse(deviceServiceImplUtility.dateValidation(new SimpleDateFormat(DATE_FORMAT).parse("21-11-2018"),
 					startDate, true));
-			assertFalse(DeviceServiceImplUtility.dateValidation(new SimpleDateFormat(DATE_FORMAT).parse("21-11-2018"),
+			assertFalse(deviceServiceImplUtility.dateValidation(new SimpleDateFormat(DATE_FORMAT).parse("21-11-2018"),
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"), true));
-			assertFalse(DeviceServiceImplUtility.dateValidation(new SimpleDateFormat(DATE_FORMAT).parse("21-11-2018"),
+			assertFalse(deviceServiceImplUtility.dateValidation(new SimpleDateFormat(DATE_FORMAT).parse("21-11-2018"),
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2019"), true));
 			Date currentDate = new Date();
-			assertFalse(DeviceServiceImplUtility.getDateForValidation(currentDate, startDate, endDate));
-			assertFalse(DeviceServiceImplUtility.getDateForValidation(currentDate, startDate, endDate));
-			assertFalse(DeviceServiceImplUtility.getDateForValidation(currentDate, endDate, startDate));
-			assertFalse(DeviceServiceImplUtility.getDateForValidation(currentDate, currentDate, startDate));
-			assertTrue(DeviceServiceImplUtility.getDateForValidation(currentDate, currentDate, currentDate));
-			assertTrue(DeviceServiceImplUtility.getDateForValidation(currentDate, startDate, currentDate));
-			assertFalse(DeviceServiceImplUtility.getDateForValidation(currentDate, startDate, endDate));
-			assertFalse(DeviceServiceImplUtility.getDateForValidation(currentDate,
+			assertFalse(deviceServiceImplUtility.getDateForValidation(currentDate, startDate, endDate));
+			assertFalse(deviceServiceImplUtility.getDateForValidation(currentDate, startDate, endDate));
+			assertFalse(deviceServiceImplUtility.getDateForValidation(currentDate, endDate, startDate));
+			assertFalse(deviceServiceImplUtility.getDateForValidation(currentDate, currentDate, startDate));
+			assertTrue(deviceServiceImplUtility.getDateForValidation(currentDate, currentDate, currentDate));
+			assertTrue(deviceServiceImplUtility.getDateForValidation(currentDate, startDate, currentDate));
+			assertFalse(deviceServiceImplUtility.getDateForValidation(currentDate, startDate, endDate));
+			assertFalse(deviceServiceImplUtility.getDateForValidation(currentDate,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), startDate));
-			assertFalse(DeviceServiceImplUtility.getDateForValidation(currentDate,
+			assertFalse(deviceServiceImplUtility.getDateForValidation(currentDate,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"),
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017")));
-			assertFalse(DeviceServiceImplUtility.getDateForValidation(currentDate,
+			assertFalse(deviceServiceImplUtility.getDateForValidation(currentDate,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"),
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000")));
-			assertTrue(DeviceServiceImplUtility.getDateForValidation(currentDate,
+			assertTrue(deviceServiceImplUtility.getDateForValidation(currentDate,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), currentDate));
 
-			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, null, "//"));
-			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, null, "//"));
-			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-2017", null, "//"));
-			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-2017", null, "//"));
+			assertTrue(deviceServiceImplUtility.dateValidationForOffersImplementation(null, null, "//"));
+			assertTrue(deviceServiceImplUtility.dateValidationForOffersImplementation(null, null, "//"));
+			assertTrue(deviceServiceImplUtility.dateValidationForOffersImplementation("21-11-2017", null, "//"));
+			assertTrue(deviceServiceImplUtility.dateValidationForOffersImplementation("21-11-2017", null, "//"));
 			assertTrue(
-					DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-2017", "21-11-3000", "//"));
+					deviceServiceImplUtility.dateValidationForOffersImplementation("21-11-2017", "21-11-3000", "//"));
 			assertTrue(
-					DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-2017", "21-11-3000", "//"));
-			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, "21-11-3000", "//"));
-			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, "21-11-3000", "//"));
-			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-3000", null, "//"));
-			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-3000", null, "//"));
+					deviceServiceImplUtility.dateValidationForOffersImplementation("21-11-2017", "21-11-3000", "//"));
+			assertTrue(deviceServiceImplUtility.dateValidationForOffersImplementation(null, "21-11-3000", "//"));
+			assertTrue(deviceServiceImplUtility.dateValidationForOffersImplementation(null, "21-11-3000", "//"));
+			assertTrue(deviceServiceImplUtility.dateValidationForOffersImplementation("21-11-3000", null, "//"));
+			assertTrue(deviceServiceImplUtility.dateValidationForOffersImplementation("21-11-3000", null, "//"));
 			assertTrue(
-					DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-3000", "21-11-2017", "//"));
-			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, "21-11-2017", "//"));
-			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, "21-11-2017", "//"));
+					deviceServiceImplUtility.dateValidationForOffersImplementation("21-11-3000", "21-11-2017", "//"));
+			assertTrue(deviceServiceImplUtility.dateValidationForOffersImplementation(null, "21-11-2017", "//"));
+			assertTrue(deviceServiceImplUtility.dateValidationForOffersImplementation(null, "21-11-2017", "//"));
 			assertTrue(
-					DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-2018", "21-11-2017", "//"));
+					deviceServiceImplUtility.dateValidationForOffersImplementation("21-11-2018", "21-11-2017", "//"));
 			assertTrue(
-					DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-2018", "21-11-2017", "//"));
+					deviceServiceImplUtility.dateValidationForOffersImplementation("21-11-2018", "21-11-2017", "//"));
 			assertTrue(
-					DeviceServiceImplUtility.dateValidationForOffers_Implementation("21-11-2018", "21-11-2019", "//"));
-			assertTrue(DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, null, "//"));
+					deviceServiceImplUtility.dateValidationForOffersImplementation("21-11-2018", "21-11-2019", "//"));
+			assertTrue(deviceServiceImplUtility.dateValidationForOffersImplementation(null, null, "//"));
 
 		} catch (Exception e) {
 		}
 		try {
-			DeviceServiceImplUtility.dateValidationForOffers_Implementation("adasdas", null, "//");
+			deviceServiceImplUtility.dateValidationForOffersImplementation("adasdas", null, "//");
 		} catch (Exception e) {
 		}
 		try {
-			DeviceServiceImplUtility.dateValidationForOffers_Implementation(null, "adasdas", "//");
+			deviceServiceImplUtility.dateValidationForOffersImplementation(null, "adasdas", "//");
 		} catch (Exception e) {
 		}
 		try {
@@ -641,7 +713,7 @@ public class OtherServiesTest {
 			Map<String, String> leadPlanIdMap = new HashMap<>();
 			List<String> listofLeadPlan = new ArrayList<>();
 			CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353();
-			DeviceServiceImplUtility.getPricingMap(bundleAndHardwareTupleList, fromPricingMap, leadPlanIdMap,
+			deviceServiceImplUtility.getPricingMap(bundleAndHardwareTupleList, fromPricingMap, leadPlanIdMap,
 					listofLeadPlan, cp);
 		} catch (Exception e) {
 		}
@@ -655,7 +727,7 @@ public class OtherServiesTest {
 			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("true");
 			pm.setIsSellableRet("true");
-			assertFalse(DeviceServiceImplUtility.isMember(JOURNEY_TYPE_UPGRADE,
+			assertFalse(deviceServiceImplUtility.isMember(JOURNEY_TYPE_UPGRADE,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true));
 		} catch (Exception e) {
@@ -669,7 +741,7 @@ public class OtherServiesTest {
 			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("true");
 			pm.setIsSellableRet("true");
-			assertFalse(DeviceServiceImplUtility.isMember(JOURNEY_TYPE_ACQUISITION,
+			assertFalse(deviceServiceImplUtility.isMember(JOURNEY_TYPE_ACQUISITION,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true));
 		} catch (Exception e) {
@@ -683,7 +755,7 @@ public class OtherServiesTest {
 			pm.setProductClass(STRING_ACCESSORY);
 			pm.setIsDisplayableRet("true");
 			pm.setIsSellableRet("true");
-			assertFalse(DeviceServiceImplUtility.isMember(JOURNEY_TYPE_UPGRADE,
+			assertFalse(deviceServiceImplUtility.isMember(JOURNEY_TYPE_UPGRADE,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true));
 		} catch (Exception e) {
@@ -697,7 +769,7 @@ public class OtherServiesTest {
 			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("false");
 			pm.setIsSellableRet("true");
-			assertFalse(DeviceServiceImplUtility.isMember(JOURNEY_TYPE_UPGRADE,
+			assertFalse(deviceServiceImplUtility.isMember(JOURNEY_TYPE_UPGRADE,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true));
 		} catch (Exception e) {
@@ -711,7 +783,7 @@ public class OtherServiesTest {
 			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("true");
 			pm.setIsSellableRet("true");
-			assertFalse(DeviceServiceImplUtility.isUpgradeCheck(JOURNEY_TYPE_UPGRADE,
+			assertFalse(deviceServiceImplUtility.isUpgradeCheck(JOURNEY_TYPE_UPGRADE,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true));
 		} catch (Exception e) {
@@ -725,7 +797,7 @@ public class OtherServiesTest {
 			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("true");
 			pm.setIsSellableRet("true");
-			assertFalse(DeviceServiceImplUtility.isUpgradeCheck(JOURNEY_TYPE_ACQUISITION,
+			assertFalse(deviceServiceImplUtility.isUpgradeCheck(JOURNEY_TYPE_ACQUISITION,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true));
 		} catch (Exception e) {
@@ -739,7 +811,7 @@ public class OtherServiesTest {
 			pm.setProductClass(STRING_ACCESSORY);
 			pm.setIsDisplayableRet("true");
 			pm.setIsSellableRet("true");
-			assertFalse(DeviceServiceImplUtility.isUpgradeCheck(JOURNEY_TYPE_UPGRADE,
+			assertFalse(deviceServiceImplUtility.isUpgradeCheck(JOURNEY_TYPE_UPGRADE,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true));
 		} catch (Exception e) {
@@ -753,7 +825,7 @@ public class OtherServiesTest {
 			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("false");
 			pm.setIsSellableRet("true");
-			assertFalse(DeviceServiceImplUtility.isUpgradeCheck(JOURNEY_TYPE_UPGRADE,
+			assertFalse(deviceServiceImplUtility.isUpgradeCheck(JOURNEY_TYPE_UPGRADE,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true));
 		} catch (Exception e) {
@@ -767,7 +839,7 @@ public class OtherServiesTest {
 			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("false");
 			pm.setIsSellableRet("false");
-			assertFalse(DeviceServiceImplUtility.isUpgradeCheck(JOURNEY_TYPE_UPGRADE,
+			assertFalse(deviceServiceImplUtility.isUpgradeCheck(JOURNEY_TYPE_UPGRADE,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"),
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"), pm, true));
 		} catch (Exception e) {
@@ -781,7 +853,7 @@ public class OtherServiesTest {
 			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("true");
 			pm.setIsSellableRet("true");
-			assertFalse(DeviceServiceImplUtility.isNonUpgradeCheck(JOURNEY_TYPE_ACQUISITION,
+			assertFalse(deviceServiceImplUtility.isNonUpgradeCheck(JOURNEY_TYPE_ACQUISITION,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true));
 		} catch (Exception e) {
@@ -795,7 +867,7 @@ public class OtherServiesTest {
 			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableRet("true");
 			pm.setIsSellableRet("true");
-			assertFalse(DeviceServiceImplUtility.isNonUpgradeCheck(JOURNEY_TYPE_UPGRADE,
+			assertFalse(deviceServiceImplUtility.isNonUpgradeCheck(JOURNEY_TYPE_UPGRADE,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true));
 		} catch (Exception e) {
@@ -809,7 +881,7 @@ public class OtherServiesTest {
 			pm.setProductClass(STRING_ACCESSORY);
 			pm.setIsDisplayableAcq("true");
 			pm.setIsSellableAcq("true");
-			assertFalse(DeviceServiceImplUtility.isNonUpgradeCheck(JOURNEY_TYPE_ACQUISITION,
+			assertFalse(deviceServiceImplUtility.isNonUpgradeCheck(JOURNEY_TYPE_ACQUISITION,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true));
 		} catch (Exception e) {
@@ -823,7 +895,7 @@ public class OtherServiesTest {
 			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableAcq("false");
 			pm.setIsSellableAcq("true");
-			assertFalse(DeviceServiceImplUtility.isNonUpgradeCheck(JOURNEY_TYPE_ACQUISITION,
+			assertFalse(deviceServiceImplUtility.isNonUpgradeCheck(JOURNEY_TYPE_ACQUISITION,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"),
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"), pm, true));
 		} catch (Exception e) {
@@ -837,7 +909,7 @@ public class OtherServiesTest {
 			pm.setProductClass(STRING_HANDSET);
 			pm.setIsDisplayableAcq("false");
 			pm.setIsSellableAcq("true");
-			assertFalse(DeviceServiceImplUtility.isNonUpgradeCheck(JOURNEY_TYPE_ACQUISITION,
+			assertFalse(deviceServiceImplUtility.isNonUpgradeCheck(JOURNEY_TYPE_ACQUISITION,
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-3000"),
 					new SimpleDateFormat(DATE_FORMAT).parse("21-11-2017"), pm, true));
 		} catch (Exception e) {
@@ -850,7 +922,7 @@ public class OtherServiesTest {
 		pm.setProductClass(STRING_HANDSET);
 		pm.setIsDisplayableRet("true");
 		pm.setIsSellableRet("true");
-		assertTrue(DeviceServiceImplUtility.isRet(pm));
+		assertTrue(deviceServiceImplUtility.isRet(pm));
 	}
 
 	@Test
@@ -859,7 +931,7 @@ public class OtherServiesTest {
 		pm.setProductClass(STRING_HANDSET);
 		pm.setIsDisplayableRet("true");
 		pm.setIsSellableRet("false");
-		assertFalse(DeviceServiceImplUtility.isRet(pm));
+		assertFalse(deviceServiceImplUtility.isRet(pm));
 	}
 
 	@Test
@@ -868,7 +940,7 @@ public class OtherServiesTest {
 		pm.setProductClass(STRING_HANDSET);
 		pm.setIsDisplayableRet("false");
 		pm.setIsSellableRet("false");
-		DeviceServiceImplUtility.isRet(pm);
+		deviceServiceImplUtility.isRet(pm);
 	}
 
 	@Test
@@ -877,7 +949,7 @@ public class OtherServiesTest {
 		pm.setProductClass(STRING_HANDSET);
 		pm.setIsDisplayableRet("false");
 		pm.setIsSellableRet("true");
-		assertFalse(DeviceServiceImplUtility.isRet(pm));
+		assertFalse(deviceServiceImplUtility.isRet(pm));
 	}
 
 	@Test
@@ -886,7 +958,7 @@ public class OtherServiesTest {
 		pm.setProductClass(STRING_HANDSET);
 		pm.setIsDisplayableAcq("true");
 		pm.setIsSellableAcq("true");
-		assertTrue(DeviceServiceImplUtility.isAcq(pm));
+		assertTrue(deviceServiceImplUtility.isAcq(pm));
 	}
 
 	@Test
@@ -895,7 +967,7 @@ public class OtherServiesTest {
 		pm.setProductClass(STRING_HANDSET);
 		pm.setIsDisplayableAcq("true");
 		pm.setIsSellableAcq("false");
-		assertFalse(DeviceServiceImplUtility.isAcq(pm));
+		assertFalse(deviceServiceImplUtility.isAcq(pm));
 	}
 
 	@Test
@@ -904,7 +976,7 @@ public class OtherServiesTest {
 		pm.setProductClass(STRING_HANDSET);
 		pm.setIsDisplayableAcq("false");
 		pm.setIsSellableAcq("false");
-		assertFalse(DeviceServiceImplUtility.isAcq(pm));
+		assertFalse(deviceServiceImplUtility.isAcq(pm));
 	}
 
 	@Test
@@ -913,94 +985,94 @@ public class OtherServiesTest {
 		pm.setProductClass(STRING_HANDSET);
 		pm.setIsDisplayableAcq("false");
 		pm.setIsSellableAcq("true");
-		assertFalse(DeviceServiceImplUtility.isAcq(pm));
+		assertFalse(deviceServiceImplUtility.isAcq(pm));
 	}
 
 	@Test
 	public void testIsNonUpgradeSort() {
-		assertTrue(DeviceServiceImplUtility.isNonUpgrade(""));
-		assertTrue(DeviceServiceImplUtility.isNonUpgrade("asa"));
-		DeviceServiceImplUtility.getSortCriteriaForList(null);
-		List<String> sort = DeviceServiceImplUtility.getSortCriteriaForList("++adadad");
-		List<String> sorthyphen = DeviceServiceImplUtility.getSortCriteriaForList("-");
+		assertTrue(deviceServiceImplUtility.isNonUpgrade(""));
+		assertTrue(deviceServiceImplUtility.isNonUpgrade("asa"));
+		deviceServiceImplUtility.getSortCriteriaForList(null);
+		List<String> sort = deviceServiceImplUtility.getSortCriteriaForList("++adadad");
+		List<String> sorthyphen = deviceServiceImplUtility.getSortCriteriaForList("-");
 		assertNotNull(sort);
 		assertNotNull(sorthyphen);
-		assertEquals( "asc",sort.get(0));
-		assertEquals( "++adadad",sort.get(1));
-		assertEquals( "desc",sorthyphen.get(0));
-		assertEquals( "",sorthyphen.get(1));
+		assertEquals("asc", sort.get(0));
+		assertEquals("++adadad", sort.get(1));
+		assertEquals("desc", sorthyphen.get(0));
+		assertEquals("", sorthyphen.get(1));
 	}
 
 	@Test
 	public void testValidateGroupType() {
-		assertTrue(DeviceServiceImplUtility.validateGroupType(STRING_DEVICE_PAYM));
-		assertTrue(DeviceServiceImplUtility.validateGroupType(STRING_DEVICE_PAYG));
-		assertFalse(DeviceServiceImplUtility.validateGroupType("abc"));
-		assertTrue(DeviceServiceImplUtility.validateGroupType(STRING_DEVICE_NEARLY_NEW));
-		assertTrue(DeviceServiceImplUtility.validateGroupType(STRING_DATADEVICE_PAYM));
-		assertTrue(DeviceServiceImplUtility.validateGroupType(STRING_DATADEVICE_PAYG));
-		assertTrue(DeviceServiceImplUtility.getJourneyForMakeAndModel(""));
-		assertFalse(DeviceServiceImplUtility.getJourneyForMakeAndModel(JOURNEY_TYPE_ACQUISITION));
-		assertFalse(DeviceServiceImplUtility.getJourneyForMakeAndModel(JOURNEY_TYPE_UPGRADE));
-		assertFalse(DeviceServiceImplUtility.getJourneyForMakeAndModel(JOURNEY_TYPE_SECONDLINE));
-		assertTrue(DeviceServiceImplUtility.getJourneyForMakeAndModel("avcv"));
+		assertTrue(deviceServiceImplUtility.validateGroupType(STRING_DEVICE_PAYM));
+		assertTrue(deviceServiceImplUtility.validateGroupType(STRING_DEVICE_PAYG));
+		assertFalse(deviceServiceImplUtility.validateGroupType("abc"));
+		assertTrue(deviceServiceImplUtility.validateGroupType(STRING_DEVICE_NEARLY_NEW));
+		assertTrue(deviceServiceImplUtility.validateGroupType(STRING_DATADEVICE_PAYM));
+		assertTrue(deviceServiceImplUtility.validateGroupType(STRING_DATADEVICE_PAYG));
+		assertTrue(deviceServiceImplUtility.getJourneyForMakeAndModel(""));
+		assertFalse(deviceServiceImplUtility.getJourneyForMakeAndModel(JOURNEY_TYPE_ACQUISITION));
+		assertFalse(deviceServiceImplUtility.getJourneyForMakeAndModel(JOURNEY_TYPE_UPGRADE));
+		assertFalse(deviceServiceImplUtility.getJourneyForMakeAndModel(JOURNEY_TYPE_SECONDLINE));
+		assertTrue(deviceServiceImplUtility.getJourneyForMakeAndModel("avcv"));
 		CommercialProduct cp = CommonMethods.getCommercialProductByDeviceId_093353();
 		cp.setProductControl(null);
-		assertFalse(DeviceServiceImplUtility.isNonUpgradeCommercialProduct(cp));
+		assertFalse(deviceServiceImplUtility.isNonUpgradeCommercialProduct(cp));
 		ProductControl pc = new ProductControl();
 		pc.setDisplayableAcq(false);
 		pc.setSellableAcq(false);
 		cp.setProductControl(pc);
-		assertFalse(DeviceServiceImplUtility.isNonUpgradeCommercialProduct(cp));
+		assertFalse(deviceServiceImplUtility.isNonUpgradeCommercialProduct(cp));
 		pc.setDisplayableAcq(true);
 		pc.setSellableAcq(false);
 		cp.setProductControl(pc);
-		assertFalse(DeviceServiceImplUtility.isNonUpgradeCommercialProduct(cp));
+		assertFalse(deviceServiceImplUtility.isNonUpgradeCommercialProduct(cp));
 		pc.setDisplayableAcq(true);
 		pc.setSellableAcq(true);
 		cp.setProductControl(pc);
-		assertTrue(DeviceServiceImplUtility.isNonUpgradeCommercialProduct(cp));
+		assertTrue(deviceServiceImplUtility.isNonUpgradeCommercialProduct(cp));
 		pc.setDisplayableAcq(false);
 		pc.setSellableAcq(true);
 		cp.setProductControl(pc);
-		assertFalse(DeviceServiceImplUtility.isNonUpgradeCommercialProduct(cp));
+		assertFalse(deviceServiceImplUtility.isNonUpgradeCommercialProduct(cp));
 
 		cp.setProductControl(null);
-		assertFalse(DeviceServiceImplUtility.isUpgradeFromCommercialProduct(cp));
+		assertFalse(deviceServiceImplUtility.isUpgradeFromCommercialProduct(cp));
 		pc.setDisplayableRet(false);
 		pc.setSellableRet(false);
 		cp.setProductControl(pc);
-		assertFalse(DeviceServiceImplUtility.isUpgradeFromCommercialProduct(cp));
+		assertFalse(deviceServiceImplUtility.isUpgradeFromCommercialProduct(cp));
 		pc.setDisplayableRet(true);
 		pc.setSellableRet(false);
 		cp.setProductControl(pc);
-		assertFalse(DeviceServiceImplUtility.isUpgradeFromCommercialProduct(cp));
+		assertFalse(deviceServiceImplUtility.isUpgradeFromCommercialProduct(cp));
 		pc.setDisplayableRet(true);
 		pc.setSellableRet(true);
 		cp.setProductControl(pc);
-		assertTrue(DeviceServiceImplUtility.isUpgradeFromCommercialProduct(cp));
+		assertTrue(deviceServiceImplUtility.isUpgradeFromCommercialProduct(cp));
 		pc.setDisplayableRet(false);
 		pc.setSellableRet(true);
 		cp.setProductControl(pc);
-		assertFalse(DeviceServiceImplUtility.isUpgradeFromCommercialProduct(cp));
+		assertFalse(deviceServiceImplUtility.isUpgradeFromCommercialProduct(cp));
 	}
 
 	@Test
-	public void testGetBundlePriceBasedOnDiscountDuration_Implementation() {
+	public void testgetBundlePriceBasedOnDiscountDurationImplementation() {
 		try {
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(null, null);
+			deviceServiceImplUtility.getBundlePriceBasedOnDiscountDurationImplementation(null, null);
 		} catch (Exception e) {
 		}
 		try {
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(null, FULL_DURATION_DISCOUNT);
+			deviceServiceImplUtility.getBundlePriceBasedOnDiscountDurationImplementation(null, FULL_DURATION_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(null, LIMITED_TIME_DISCOUNT);
+			deviceServiceImplUtility.getBundlePriceBasedOnDiscountDurationImplementation(null, LIMITED_TIME_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(null, "abc");
+			deviceServiceImplUtility.getBundlePriceBasedOnDiscountDurationImplementation(null, "abc");
 		} catch (Exception e) {
 		}
 		try {
@@ -1010,7 +1082,7 @@ public class OtherServiesTest {
 			bp.setMonthlyDiscountPrice(null);
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds, FULL_DURATION_DISCOUNT);
+			deviceServiceImplUtility.getBundlePriceBasedOnDiscountDurationImplementation(ds, FULL_DURATION_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
@@ -1022,7 +1094,7 @@ public class OtherServiesTest {
 			bp.setMonthlyDiscountPrice(mp);
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds, FULL_DURATION_DISCOUNT);
+			deviceServiceImplUtility.getBundlePriceBasedOnDiscountDurationImplementation(ds, FULL_DURATION_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
@@ -1034,9 +1106,10 @@ public class OtherServiesTest {
 			bp.setMonthlyDiscountPrice(mp);
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
-			Double price = DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds, FULL_DURATION_DISCOUNT);
+			Double price = deviceServiceImplUtility.getBundlePriceBasedOnDiscountDurationImplementation(ds,
+					FULL_DURATION_DISCOUNT);
 			assertNotNull(price);
-			assertEquals(1212.0,price,0);
+			assertEquals(1212.0, price, 0);
 		} catch (Exception e) {
 		}
 		try {
@@ -1048,7 +1121,7 @@ public class OtherServiesTest {
 			bp.setMonthlyDiscountPrice(mp);
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds, LIMITED_TIME_DISCOUNT);
+			deviceServiceImplUtility.getBundlePriceBasedOnDiscountDurationImplementation(ds, LIMITED_TIME_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
@@ -1058,7 +1131,7 @@ public class OtherServiesTest {
 			bp.setMonthlyDiscountPrice(null);
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds, LIMITED_TIME_DISCOUNT);
+			deviceServiceImplUtility.getBundlePriceBasedOnDiscountDurationImplementation(ds, LIMITED_TIME_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
@@ -1070,7 +1143,7 @@ public class OtherServiesTest {
 			bp.setMonthlyDiscountPrice(mp);
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds, LIMITED_TIME_DISCOUNT);
+			deviceServiceImplUtility.getBundlePriceBasedOnDiscountDurationImplementation(ds, LIMITED_TIME_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
@@ -1082,7 +1155,7 @@ public class OtherServiesTest {
 			bp.setMonthlyDiscountPrice(mp);
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds, LIMITED_TIME_DISCOUNT);
+			deviceServiceImplUtility.getBundlePriceBasedOnDiscountDurationImplementation(ds, LIMITED_TIME_DISCOUNT);
 		} catch (Exception e) {
 		}
 		try {
@@ -1094,7 +1167,7 @@ public class OtherServiesTest {
 			bp.setMonthlyDiscountPrice(mp);
 			pb.setBundlePrice(bp);
 			ds.setPriceInfo(pb);
-			DeviceServiceImplUtility.getBundlePriceBasedOnDiscountDuration_Implementation(ds, LIMITED_TIME_DISCOUNT);
+			deviceServiceImplUtility.getBundlePriceBasedOnDiscountDurationImplementation(ds, LIMITED_TIME_DISCOUNT);
 		} catch (Exception e) {
 		}
 	}
@@ -1102,44 +1175,43 @@ public class OtherServiesTest {
 	@Test
 	public void testvalidateDeviceId() {
 		try {
-			Validator.validateDeviceId("");
+			validator.validateDeviceId("");
 		} catch (Exception e) {
-			Assert.assertEquals( ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID,e.getMessage());
+			Assert.assertEquals(ExceptionMessages.INVALID_INPUT_MISSING_DEVICEID, e.getMessage());
 		}
 		try {
-			Validator.validateDeviceId("9854");
+			validator.validateDeviceId("9854");
 		} catch (Exception e) {
-			Assert.assertEquals( ExceptionMessages.INVALID_DEVICE_ID,e.getMessage());
+			Assert.assertEquals(ExceptionMessages.INVALID_DEVICE_ID, e.getMessage());
 		}
 		try {
-			Validator.validateDeviceId("09854");
+			validator.validateDeviceId("09854");
 		} catch (Exception e) {
-			Assert.assertEquals( ExceptionMessages.INVALID_DEVICE_ID,e.getMessage());
+			Assert.assertEquals(ExceptionMessages.INVALID_DEVICE_ID, e.getMessage());
 		}
 		try {
-			Validator.validateDeviceId("093353");
-		} catch (Exception e) {
-		}
-		try {
-			Validator.validateDeviceId("985451");
-		} catch (Exception e) {
-			Assert.assertEquals( ExceptionMessages.INVALID_DEVICE_ID,e.getMessage());
-		}
-		try {
-			Validator.validateIncludeRecommendation("false");
-		} catch (Exception e) {
-			Assert.assertEquals( ExceptionMessages.INVALID_INCLUDERECOMMENDATION,e.getMessage());
-		}
-		try {
-			Validator.validateMSISDN("1312312312", "false");
+			validator.validateDeviceId("093353");
 		} catch (Exception e) {
 		}
 		try {
-			Validator.validateForCreditLimit("07896das");
+			validator.validateDeviceId("985451");
 		} catch (Exception e) {
-			Assert.assertEquals( ExceptionMessages.INVALID_CREDIT_LIMIT,e.getMessage());
+			Assert.assertEquals(ExceptionMessages.INVALID_DEVICE_ID, e.getMessage());
+		}
+		try {
+			validator.validateIncludeRecommendation("false");
+		} catch (Exception e) {
+			Assert.assertEquals(ExceptionMessages.INVALID_INCLUDERECOMMENDATION, e.getMessage());
+		}
+		try {
+			validator.validateMSISDN("1312312312", "false");
+		} catch (Exception e) {
+		}
+		try {
+			validator.validateForCreditLimit("07896das");
+		} catch (Exception e) {
+			Assert.assertEquals(ExceptionMessages.INVALID_CREDIT_LIMIT, e.getMessage());
 		}
 
 	}
-
 }

@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class CataloguepromotionqueriesForBundleAndHardwareSecureNet.
  */

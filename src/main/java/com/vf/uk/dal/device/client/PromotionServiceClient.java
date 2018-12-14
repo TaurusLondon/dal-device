@@ -9,9 +9,9 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwarePromotions;
 import com.vf.uk.dal.device.client.entity.promotion.BundleAndHardwareRequest;
+import com.vf.uk.dal.device.exception.DeviceCustomException;
 import com.vf.uk.dal.device.utils.ExceptionMessages;
 
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +22,8 @@ public class PromotionServiceClient {
 	
 	@Autowired
 	RestTemplate restTemplate;
+	
+	private static final String ERROR_CODE_DEVICE = "error_device_failed";
 	
 	public List<BundleAndHardwarePromotions> getPromotionsForBundleAndHardWarePromotions(BundleAndHardwareRequest request)
 	{
@@ -34,7 +36,7 @@ public class PromotionServiceClient {
 		} catch (RestClientException e) {
 			// Stanley - Added error logging
 			log.error(e + "");
-			throw new ApplicationException(ExceptionMessages.PROMOTION_API_EXCEPTION);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE,ExceptionMessages.PROMOTION_API_EXCEPTION,"404");
 		}
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.convertValue(response, new TypeReference<List<BundleAndHardwarePromotions>>() {
