@@ -31,7 +31,6 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vf.uk.dal.common.exception.ApplicationException;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
 import com.vf.uk.dal.device.beans.test.DeviceTestBeans;
 import com.vf.uk.dal.device.client.PromotionServiceClient;
@@ -223,7 +222,7 @@ public class OtherServiesTest {
 
 	@Test
 	public void testCacheDeviceTileServiceNull() {
-		thrown.expect(ApplicationException.class);
+		thrown.expect(DeviceCustomException.class);
 		thrown.expectMessage(ExceptionMessages.NULL_VALUE_GROUP_TYPE);
 		cacheDeviceService.setListOfProductGroupRepository(null, null, null, null, null, null, null, null,
 				null, null, null, null, null);
@@ -231,7 +230,7 @@ public class OtherServiesTest {
 	
 	@Test
 	public void testCacheDeviceTileServicEmpty() {
-		thrown.expect(ApplicationException.class);
+		thrown.expect(DeviceCustomException.class);
 		thrown.expectMessage(ExceptionMessages.NULL_VALUE_GROUP_TYPE);
 		List<Group> listOfProductGroup = new ArrayList<>();
 		cacheDeviceService.setListOfProductGroupRepository(null, null, null, null, listOfProductGroup, null, null, null,
