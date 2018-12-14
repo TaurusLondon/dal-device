@@ -14,8 +14,8 @@ import lombok.Data;
 public class BundleDetailsForAppSrv {
 
 	@JsonProperty("couplePlansList")
-	private List<CoupleRelation> couplePlansList = new ArrayList<CoupleRelation>();
+	private List<CoupleRelation> couplePlansList = new ArrayList<>();
 
 	@JsonProperty("standalonePlansList")
-	private List<BundleHeader> standalonePlansList = new ArrayList<BundleHeader>();
+	private List<BundleHeader> standalonePlansList = new ArrayList<>();
 }

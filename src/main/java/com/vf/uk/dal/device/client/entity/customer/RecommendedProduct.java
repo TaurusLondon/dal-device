@@ -28,7 +28,7 @@ public class RecommendedProduct {
 	private String content = null;
 
 	@JsonProperty("recommendationReasons")
-	private List<Reason> recommendationReasons = new ArrayList<Reason>();
+	private List<Reason> recommendationReasons = new ArrayList<>();
 
 	@JsonProperty("anyTimeUpgradeAmount")
 	private String anyTimeUpgradeAmount = null;

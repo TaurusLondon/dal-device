@@ -11,13 +11,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vf.uk.dal.common.exception.ApplicationException;
+import com.vf.uk.dal.device.exception.DeviceCustomException;
 import com.vf.uk.dal.device.model.product.CommercialProduct;
 import com.vf.uk.dal.device.model.productgroups.Group;
 import com.vf.uk.dal.device.model.productgroups.ProductGroupModelMap;
@@ -47,6 +47,7 @@ import lombok.extern.slf4j.Slf4j;
 public class DeviceEntityController {
 	@Autowired
 	DeviceEntityService deviceEntiryService;
+	private static final String ERROR_CODE_ENTITY = "error_device_entity_failed";
 
 	/**
 	 * Handles requests for getDeviceTile Service with input as
@@ -84,7 +85,7 @@ public class DeviceEntityController {
 			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.model.Error.class),
 			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.model.Error.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.model.Error.class) })
-	@RequestMapping(value = "/product", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@GetMapping(value = "/product", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public List<CommercialProduct> getCommercialProduct(
 			@ApiParam(value = "Device Id for getting commercial product to displayed. possible value can be comma separated device Id like 093353,080004") @RequestParam(value = "productId", required = false) String productId,
 			@ApiParam(value = "Product Name for getting commercial product to displayed. possible value can be comma separated product names are like Fibre Activation Fee,ATA Device") @RequestParam(value = "productName", required = false) String productName) {
@@ -92,7 +93,7 @@ public class DeviceEntityController {
 
 		if (StringUtils.isBlank(productId) && StringUtils.isBlank(productName)) {
 			log.error("Query parameter(s) passed in the request is invalid " + ExceptionMessages.INVALID_QUERY_PARAMS);
-			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
+			throw new DeviceCustomException(ERROR_CODE_ENTITY,ExceptionMessages.INVALID_QUERY_PARAMS,"404");
 		} else if (StringUtils.isNotBlank(productName)) {
 			log.info("Get the list of Product Details for the Product Name passed as request params: " + productName);
 			commProductDetails = deviceEntiryService.getCommercialProductDetails(productName);
@@ -119,8 +120,7 @@ public class DeviceEntityController {
 			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.model.Error.class),
 			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.model.Error.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.model.Error.class) })
-	@RequestMapping(value = "/productGroup", method = RequestMethod.GET, produces = {
-			MediaType.APPLICATION_JSON_VALUE })
+	@GetMapping(value = "/productGroup", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public List<Group> getProductGroupByGroupType(
 			@NotNull @ApiParam(value = "Product group Type for getting product group to displayed. possible value can be like DEVICE_PAYM or DEVICE_PAYG") @RequestParam(value = "groupType", required = true) String groupType) {
 		List<Group> groupDetails;
@@ -130,7 +130,7 @@ public class DeviceEntityController {
 			groupDetails = deviceEntiryService.getProductGroupByType(groupType);
 		} else {
 			log.error(" Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
-			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
+			throw new DeviceCustomException(ERROR_CODE_ENTITY,ExceptionMessages.INVALID_QUERY_PARAMS,"404");
 		}
 		return groupDetails;
 	}
@@ -151,7 +151,7 @@ public class DeviceEntityController {
 			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.model.Error.class),
 			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.model.Error.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.model.Error.class) })
-	@RequestMapping(value = "/device/getDeliveryMethod/getProductGroupModel", method = RequestMethod.GET, produces = {
+	@GetMapping(value = "/device/getDeliveryMethod/getProductGroupModel", produces = {
 			MediaType.APPLICATION_JSON_VALUE })
 	public ProductGroupModelMap getProductGroupModel(
 			@NotNull @ApiParam(value = "Device Id for getting product Group to displayed. possible value can be comma separated device Id like 093353,080004") @RequestParam(value = "productId", required = true) String productId) {
@@ -159,7 +159,7 @@ public class DeviceEntityController {
 
 		if (StringUtils.isBlank(productId)) {
 			log.error("Query parameter(s) passed in the request is invalid" + ExceptionMessages.INVALID_QUERY_PARAMS);
-			throw new ApplicationException(ExceptionMessages.INVALID_QUERY_PARAMS);
+			throw new DeviceCustomException(ERROR_CODE_ENTITY,ExceptionMessages.INVALID_QUERY_PARAMS,"404");
 		} else {
 			log.info("Get the list of Product Details for the Product Id (s) passed as request params: " + productId);
 			productGroupModelDetails = deviceEntiryService.getMapOfProductModelForGetDeliveryMethod(productId);

@@ -10,8 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,11 +27,12 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 /**
- * This is DeviceMakeAndModelController which takes input as make and model 
+ * This is DeviceMakeAndModelController which takes input as make and model
+ * 
  * @author manoj.bera
  *
  */
-@Api(tags="DeviceMakeAndModel")
+@Api(tags = "DeviceMakeAndModel")
 @RestController
 @RequestMapping(value = "")
 @EnableAspectJAutoProxy(proxyTargetClass = true)
@@ -39,6 +40,9 @@ public class DeviceMakeAndModelController {
 
 	@Autowired
 	DeviceMakeAndModelService deviceMakeAndModelService;
+
+	@Autowired
+	Validator validator;
 	/**
 	 * Handles requests for getDeviceTile Service with input as
 	 * GROUP_NAME,GROUP_TYPE in URL as query. performance improved by @author
@@ -76,7 +80,7 @@ public class DeviceMakeAndModelController {
 			@ApiResponse(code = 405, message = "Method not allowed", response = com.vf.uk.dal.device.model.Error.class),
 			@ApiResponse(code = 404, message = "Not found", response = com.vf.uk.dal.device.model.Error.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = com.vf.uk.dal.device.model.Error.class) })
-	@RequestMapping(value = "/deviceTile/queries/byMakeModel/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/deviceTile/queries/byMakeModel/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<DeviceTile> getListOfDeviceTile(
 			@NotNull @ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"apple\".", required = true) @RequestParam(value = "make", required = true) String make,
 			@NotNull @ApiParam(value = "Values on which the attributes should be filtered upon. Possible values are \"iphone7\".", required = true) @RequestParam(value = "model", required = true) String model,
@@ -88,9 +92,9 @@ public class DeviceMakeAndModelController {
 			@ApiParam(value = "creditLimit applicable for the customer in case of conditional accept state") @RequestParam(value = "creditLimit", required = false) String creditLimit) {
 
 		List<DeviceTile> listOfDeviceTile;
-		Double creditLimitParam = Validator.validateCreditLimitAndIds(make, model, bundleId, deviceId, creditLimit);
-		listOfDeviceTile = deviceMakeAndModelService.getListOfDeviceTile(make, model, groupType, deviceId, creditLimitParam,
-				journeyType, offerCode, bundleId);
+		Double creditLimitParam = validator.validateCreditLimitAndIds(make, model, bundleId, deviceId, creditLimit);
+		listOfDeviceTile = deviceMakeAndModelService.getListOfDeviceTile(make, model, groupType, deviceId,
+				creditLimitParam, journeyType, offerCode, bundleId);
 		return listOfDeviceTile;
 
 	}
