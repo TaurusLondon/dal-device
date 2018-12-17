@@ -18,7 +18,9 @@ import java.util.concurrent.CompletableFuture;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +79,7 @@ import com.vf.uk.dal.device.service.DeviceDetailsServiceImpl;
 import com.vf.uk.dal.device.service.DeviceMakeAndModelServiceImpl;
 import com.vf.uk.dal.device.service.DeviceRecommendationService;
 import com.vf.uk.dal.device.service.DeviceService;
+import com.vf.uk.dal.device.service.DeviceServiceImpl;
 import com.vf.uk.dal.device.utils.AccessoriesAndInsurancedaoUtils;
 import com.vf.uk.dal.device.utils.CacheDeviceDaoUtils;
 import com.vf.uk.dal.device.utils.CommonUtility;
@@ -109,6 +112,9 @@ public class DeviceServiceImplTest {
 	@Autowired
 	CacheDeviceDaoUtils cacheDeviceDaoUtils;
 
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
+	
 	@Autowired
 	AccessoriesAndInsurancedaoUtils accessoriesAndInsurancedaoUtils;
 
@@ -183,6 +189,9 @@ public class DeviceServiceImplTest {
 	@Autowired
 	PriceServiceClient priceServiceClient;
 
+	@Autowired
+	DeviceServiceImpl deviceServiceImpl;
+	
 	@Value("${cdn.domain.host}")
 	private String cdnDomain;
 
@@ -238,8 +247,13 @@ public class DeviceServiceImplTest {
 								"", 1, 9, "wrtety"));
 		FacetedDevice facetedDevice = deviceService.getConditionalForDeviceList("7741655542",
 				CommonMethods.getFacetedDeviceList("HANDSET", "Apple", "iPhone-7", "DEVICE_PAYM", "", 1, 9, "wrtety"));
+		given(deviceRecomServiceMock.getRecommendedDeviceList(ArgumentMatchers.anyString(),
+				ArgumentMatchers.anyString(), ArgumentMatchers.any()))
+						.willReturn(null);
+		deviceService.getConditionalForDeviceList("7741655542",
+				new FacetedDevice());
 		Assert.assertNotNull(facetedDevice);
-		Assert.assertEquals("01234", facetedDevice.getDevice().get(0).getDeviceId());
+		Assert.assertEquals("093353", facetedDevice.getDevice().get(0).getDeviceId());
 		Assert.assertEquals("Apple", facetedDevice.getDevice().get(0).getMake());
 		Assert.assertEquals("iphone7", facetedDevice.getDevice().get(0).getModel());
 	}
@@ -1188,7 +1202,16 @@ public class DeviceServiceImplTest {
 		deviceMakeAndModelServiceImpl.getPriceAndPromotionMap("Upgrade", commercialBundleMap1, leadPlanIdMap,
 				listOfLeadPlanId, bundleAndHardwarePromotionsMap, priceMapForParticularDevice, promotionsMap, priceMap,
 				"093353", true);
-
+		deviceMakeAndModelServiceImpl
+		.getDeviceSummeryImplementation(member, CommonMethods.getPriceForBundleAndHardware(), commerProdMemMap,
+				false, "Upgrade", 40.00, commercialBundleMap, bundleIdMap, "110154",
+				bundleAndHardwarePromotionsMap, leadPlanIdMap, "DEVICE_PAYM", priceMapForParticularDevice,
+				fromPricingMap, "1");
+		deviceMakeAndModelServiceImpl
+		.getDeviceSummeryImplementation(member, CommonMethods.getPriceForBundleAndHardware(), commerProdMemMap,
+				false, "Upgrade", 40.00, commercialBundleMap, bundleIdMap, "",
+				bundleAndHardwarePromotionsMap, leadPlanIdMap, "DEVICE_PAYM", priceMapForParticularDevice,
+				fromPricingMap, "1");
 		deviceMakeAndModelServiceImpl.getListOfLeadPlan("110154", bundleAndHardwareTupleList, bundleIdMap,
 				fromPricingMap, leadPlanIdMap, listOfLeadPlanId, CommonMethods.getMemberList().get(0),
 				CommonMethods.getCommercialProduct());
@@ -1851,7 +1874,23 @@ public class DeviceServiceImplTest {
 				CommonMethods.getMemberListPojo(), commerProdMemMapPAYG,
 				new HashSet<>(CommonMethods.getBundleAndHardwareTuple()));
 	}
-
+	@Test
+	public void getMemberByRulesNull() {
+		thrown.expect(DeviceCustomException.class);
+		thrown.expectMessage(ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST);
+		List<com.vf.uk.dal.device.model.Member> listOfDeviceGroupMember = new ArrayList<>();
+		Map<String, CommercialProduct> commerProdMemMapPAYG = new HashMap<>();
+		commerProdMemMapPAYG.put("123", CommonMethods.getCommercialProduct());
+		deviceMakeAndModelServiceImpl.getMemberByRules("DEVICE_PAYG",
+				CommonMethods.getDeviceTile("apple", "iphone 7", "groupType"), CommonMethods.getDeviceTilee(), "PAYG",
+				listOfDeviceGroupMember, commerProdMemMapPAYG,
+				new HashSet<>(CommonMethods.getBundleAndHardwareTuple()));
+	}
+	@Test
+	public void testSetPriceMapForParticularDevice() {
+		Map<String, PriceForBundleAndHardware> priceMapForParticularDevice = new HashMap<>();
+		deviceMakeAndModelServiceImpl.setPriceMapForParticularDevice(CommonMethods.getForUtilityPriceForBundleAndHardware(), priceMapForParticularDevice);
+	}
 	@Test
 	public void testGetBundleDetailsFromComplansListingAPI() {
 		commonUtility.getBundleDetailsFromComplansListingAPI("093353", "-sort");
@@ -2186,5 +2225,18 @@ public class DeviceServiceImplTest {
 		bp.setMerchandisingPromotions(CommonMethods.getMP());
 		priceForBundleAndHardware.setBundlePrice(bp);
 	} 
-	
+	@Test
+	public void testGetDeviceTileByIdForVariantCpNull() {
+		thrown.expect(DeviceCustomException.class);
+		thrown.expectMessage(ExceptionMessages.NULL_VALUE_FROM_COHERENCE_FOR_DEVICE_ID);
+		given(response.getCommercialProduct(ArgumentMatchers.any()))
+		.willReturn(null);
+		deviceServiceImpl.getDeviceTileByIdForVariant("093353", "", "");
+	} 
+	@Test
+	public void testGetFacetDeviceForPromotion() {
+		given(deviceDAOMock.getMerchandisingPromotionsEntityFromRepo(ArgumentMatchers.any())).willReturn(CommonMethods.getMerchandisingPromotion_One());
+		FacetedDevice facetDevice = CommonMethods.getFacetedDeviceList("Handset", "apple", "iphone-7", "DEVICE_PAYM", "sort", 1, 10, "12121");
+		deviceServiceImpl.getFacetDeviceForPromotion(facetDevice);
+	}
 }

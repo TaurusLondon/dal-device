@@ -879,7 +879,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		}
 	}
 
-	private void setFinanceOptions(CacheOfferAppliedPriceModel offerPrice,
+	public  void setFinanceOptions(CacheOfferAppliedPriceModel offerPrice,
 			List<DeviceFinancingOption> deviceFinancingOption) {
 		List<com.vf.uk.dal.device.model.product.DeviceFinancingOption> financeOptions = null;
 		if (deviceFinancingOption != null && !deviceFinancingOption.isEmpty()) {
@@ -998,7 +998,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		productModelMap.put(productGroupId, productgroupModel);
 	}
 
-	private String setProductGroupId(
+	public  String setProductGroupId(
 			com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData deviceListObject) {
 		String productGroupId = null;
 		if (deviceListObject.getPaymProductGroupId() != null
@@ -1053,7 +1053,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		}
 	}
 
-	private void setFinancingOptions(
+	public  void setFinancingOptions(
 			com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData deviceListObject,
 			CacheProductModel productModel) {
 		if (deviceListObject.getPriceInfo() != null && deviceListObject.getPriceInfo().getHardwarePrice() != null) {
@@ -1088,7 +1088,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		}
 	}
 
-	private void setPaygOneOffDiscountedPrice(
+	public  void setPaygOneOffDiscountedPrice(
 			com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData deviceListObject,
 			CacheProductModel productModel) {
 		if (deviceListObject.getPriceInfo() != null && deviceListObject.getPriceInfo().getHardwarePrice() != null
@@ -1111,7 +1111,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		}
 	}
 
-	private void setPaygOneOffPrice(
+	public  void setPaygOneOffPrice(
 			com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData deviceListObject,
 			CacheProductModel productModel) {
 		if (deviceListObject.getPriceInfo() != null && deviceListObject.getPriceInfo().getHardwarePrice() != null
@@ -1134,7 +1134,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		}
 	}
 
-	private void setPaygProductGroupId(
+	public  void setPaygProductGroupId(
 			com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData deviceListObject,
 			CacheProductModel productModel) {
 		if (StringUtils.equalsIgnoreCase(deviceListObject.getGroupType(), STRING_DEVICE_PAYM)) {
@@ -1205,7 +1205,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		return CompletableFuture.completedFuture(i);
 	}
 
-	private void saveDeviceMediaData(int i, List<DevicePreCalculatedData> devicePreCalculatedData) {
+	public  void saveDeviceMediaData(int i, List<DevicePreCalculatedData> devicePreCalculatedData) {
 		if (i > 0) {
 			devicePreCalculatedData.forEach(deviceData -> {
 				if (deviceData.getMedia() != null && !deviceData.getMedia().isEmpty()) {

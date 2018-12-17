@@ -589,7 +589,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 		}
 	}
 
-	private void setPriceMapForParticularDevice(List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware,
+	public  void setPriceMapForParticularDevice(List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware,
 			Map<String, PriceForBundleAndHardware> priceMapForParticularDevice) {
 		if (listOfPriceForBundleAndHardware != null && !listOfPriceForBundleAndHardware.isEmpty()) {
 			listOfPriceForBundleAndHardware.forEach(priceForBundleAndHardware -> {

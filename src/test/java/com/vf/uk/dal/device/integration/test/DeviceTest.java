@@ -86,6 +86,7 @@ import com.vf.uk.dal.device.service.DeviceService;
 import com.vf.uk.dal.device.utils.AccessoriesAndInsurancedaoUtils;
 import com.vf.uk.dal.device.utils.CacheDeviceDaoUtils;
 import com.vf.uk.dal.device.utils.CommonUtility;
+import com.vf.uk.dal.device.utils.DeviceConditionallHelper;
 import com.vf.uk.dal.device.utils.DeviceDetailsMakeAndModelVaiantDaoUtils;
 import com.vf.uk.dal.device.utils.DeviceESHelper;
 import com.vf.uk.dal.device.utils.DeviceServiceCommonUtility;
@@ -174,6 +175,9 @@ public class DeviceTest {
 	@Autowired
 	DeviceService deviceService;
 
+	@MockBean
+	DeviceConditionallHelper deviceConditionallHelper;
+	
 	@MockBean
 	DeviceRecommendationService deviceRecomServiceMock;
 
@@ -744,10 +748,13 @@ public class DeviceTest {
 		FacetedDevice deviceLists = null;
 		deviceLists = deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYM", "Priority", 0, 9,
 				"32 GB", "White", "iOS", "Great Camera", null, null, null, "447582367723", true);
+		deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYG", "Priority", 0, 9,
+				"32 GB", "White", "iOS", "Great Camera", null, null, null, "447582367723", true);
 		Assert.assertNotNull(deviceLists);
 		assertEquals("093353", deviceLists.getDevice().get(0).getDeviceId());
 		assertEquals("HANDSET", deviceLists.getDevice().get(0).getProductClass());
 		assertEquals("na", deviceLists.getDevice().get(0).getRating());
+		
 	}
 
 	@Test
