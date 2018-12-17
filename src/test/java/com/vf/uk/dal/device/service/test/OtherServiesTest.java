@@ -55,6 +55,9 @@ import com.vf.uk.dal.device.model.CacheDeviceTileResponse;
 import com.vf.uk.dal.device.model.Device;
 import com.vf.uk.dal.device.model.DeviceDetails;
 import com.vf.uk.dal.device.model.DeviceSummary;
+import com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData;
+import com.vf.uk.dal.device.model.product.CacheOfferAppliedPriceModel;
+import com.vf.uk.dal.device.model.product.CacheProductModel;
 import com.vf.uk.dal.device.model.product.CommercialProduct;
 import com.vf.uk.dal.device.model.product.ProductControl;
 import com.vf.uk.dal.device.model.product.ProductModel;
@@ -236,7 +239,27 @@ public class OtherServiesTest {
 		cacheDeviceService.setListOfProductGroupRepository(null, null, null, null, listOfProductGroup, null, null, null,
 				null, null, null, null, null);
 	}
-
+	@Test
+	public void testSetFinancingOptions() {
+		cacheDeviceService.setFinancingOptions(CommonMethods.getDeviceListObject(), new CacheProductModel());
+		cacheDeviceService.setFinanceOptions(new CacheOfferAppliedPriceModel(), CommonMethods.getDeviceFinaceOptionsMp());
+	}
+	
+	@Test
+	public void testsetPaygOneOffDiscountedPrice() {
+		DevicePreCalculatedData deviceData = CommonMethods.getDeviceListObject();
+		deviceData.setGroupType("DEVICE_PAYM");
+		cacheDeviceService.setPaygOneOffDiscountedPrice(deviceData, new CacheProductModel());
+		cacheDeviceService.setPaygOneOffPrice(deviceData, new CacheProductModel());
+		cacheDeviceService.setPaygProductGroupId(deviceData, new CacheProductModel());
+		deviceData.setGroupType("DEVICE_PAYG");
+		cacheDeviceService.setPaygOneOffDiscountedPrice(deviceData, new CacheProductModel());
+		cacheDeviceService.setPaygOneOffPrice(deviceData, new CacheProductModel());
+		cacheDeviceService.setPaygProductGroupId(deviceData, new CacheProductModel());
+		deviceData.setPaygProductGroupId("110121");
+		cacheDeviceService.setPaygProductGroupId(deviceData, new CacheProductModel());
+	}
+	
 	@Test
 	public void nulltestGetListOfDeviceDetailsForExceptionWithOffer() {
 		Map<String, String> queryparams = new HashMap<>();

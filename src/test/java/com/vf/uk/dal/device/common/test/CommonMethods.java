@@ -607,46 +607,60 @@ public class CommonMethods {
 		deviceList.setPriceInfo(getPriceForBundleAndHardware().get(0));
 
 		Device deviceList1 = new Device();
-		deviceList.setDeviceId("092660");
-		deviceList.setMake("Apple");
-		deviceList.setModel("iphone7");
-		deviceList.setGroupType("DEVICE_PAYM");
-		deviceList.setRating("4");
-		deviceList.setDescription("Description");
-		deviceList.setProductClass("HANDSET");
-		deviceList.setMerchandisingControl(merchandisingControl);
-		deviceList.setMedia(merchandisingMedia);
-		deviceList.setPriceInfo(getPriceForBundleAndHardware().get(0));
+		deviceList1.setDeviceId("092660");
+		deviceList1.setMake("Apple");
+		deviceList1.setModel("iphone7");
+		deviceList1.setGroupType("DEVICE_PAYM");
+		deviceList1.setRating("4");
+		deviceList1.setDescription("Description");
+		deviceList1.setProductClass("HANDSET");
+		deviceList1.setMerchandisingControl(merchandisingControl);
+		deviceList1.setMedia(merchandisingMedia);
+		deviceList1.setPriceInfo(getPriceForBundleAndHardware().get(0));
 
 		Device deviceList2 = new Device();
-		deviceList.setDeviceId("094127");
-		deviceList.setMake("Apple");
-		deviceList.setModel("iphone7");
-		deviceList.setGroupType("DEVICE_PAYM");
-		deviceList.setRating("4");
-		deviceList.setDescription("Description");
-		deviceList.setProductClass("HANDSET");
-		deviceList.setMerchandisingControl(merchandisingControl);
-		deviceList.setMedia(merchandisingMedia);
-		deviceList.setPriceInfo(getPriceForBundleAndHardware().get(0));
+		deviceList2.setDeviceId("094127");
+		deviceList2.setMake("Apple");
+		deviceList2.setModel("iphone7");
+		deviceList2.setGroupType("DEVICE_PAYM");
+		deviceList2.setRating("4");
+		deviceList2.setDescription("Description");
+		deviceList2.setProductClass("HANDSET");
+		deviceList2.setMerchandisingControl(merchandisingControl);
+		deviceList2.setMedia(merchandisingMedia);
+		deviceList2.setPriceInfo(getPriceForBundleAndHardware().get(0));
 
 		Device deviceList3 = new Device();
-		deviceList.setDeviceId("01234");
-		deviceList.setMake("Apple");
-		deviceList.setModel("iphone7");
-		deviceList.setGroupType("DEVICE_PAYM");
-		deviceList.setRating("4");
-		deviceList.setDescription("Description");
-		deviceList.setProductClass("HANDSET");
-		deviceList.setMerchandisingControl(merchandisingControl);
-		deviceList.setMedia(merchandisingMedia);
-		deviceList.setPriceInfo(getPriceForBundleAndHardware().get(0));
+		deviceList3.setDeviceId("01234");
+		deviceList3.setMake("Apple");
+		deviceList3.setModel("iphone7");
+		deviceList3.setGroupType("DEVICE_PAYM");
+		deviceList3.setRating("4");
+		deviceList3.setDescription("Description");
+		deviceList3.setProductClass("HANDSET");
+		deviceList3.setMerchandisingControl(merchandisingControl);
+		deviceList3.setMedia(merchandisingMedia);
+		deviceList3.setPriceInfo(getPriceForBundleAndHardware().get(0));
+		deviceList3.setPromotionsPackage(getMerchandisingPromotionsPackage());
 		deviceLists.add(deviceList);
 		deviceLists.add(deviceList1);
 		deviceLists.add(deviceList2);
 		deviceLists.add(deviceList3);
 
 		return deviceLists;
+	}
+
+	private static MerchandisingPromotionsPackage getMerchandisingPromotionsPackage() {
+		MerchandisingPromotionsPackage merchandisingPromotionsPackage = new MerchandisingPromotionsPackage();
+		merchandisingPromotionsPackage.setBundlePromotions(getMerchandisingPromotionsWrapper());
+		merchandisingPromotionsPackage.setHardwarePromotions(getMerchandisingPromotionsWrapper());
+		return merchandisingPromotionsPackage;
+	}
+
+	private static MerchandisingPromotionsWrapper getMerchandisingPromotionsWrapper() {
+		MerchandisingPromotionsWrapper merchandisingPromotionsWrapper = new MerchandisingPromotionsWrapper();
+		merchandisingPromotionsWrapper.setPricePromotion(getMP());
+		return merchandisingPromotionsWrapper;
 	}
 
 	public static List<DeviceTile> getDeviceTile(String make, String model, String groupType) {
@@ -2903,6 +2917,8 @@ public class CommonMethods {
 		merchandisingPromotions.setPriority(Long.valueOf(1));
 		merchandisingPromotions.setLabel("Label");
 		merchandisingPromotions.setVersion("Version");
+		merchandisingPromotions.setCondition(getCondition());
+		merchandisingPromotions.setFootNoteKey("footNote");
 		merchandisingPromotionsList.add(merchandisingPromotions);
 		return merchandisingPromotionsList;
 	}
@@ -3994,7 +4010,26 @@ public class CommonMethods {
 		financeOptions.add(finance);
 		return financeOptions;
 	}
-
+	public static List<com.vf.uk.dal.device.model.merchandisingpromotion.DeviceFinancingOption> getDeviceFinaceOptionsMp() {
+		List<com.vf.uk.dal.device.model.merchandisingpromotion.DeviceFinancingOption> financeOptions = new ArrayList<>();
+		com.vf.uk.dal.device.model.merchandisingpromotion.DeviceFinancingOption finance = new com.vf.uk.dal.device.model.merchandisingpromotion.DeviceFinancingOption();
+		finance.setApr("16.9");
+		finance.setDeviceFinancingId("OVCTYUVZRR");
+		finance.setFinanceProvider("PayPal");
+		finance.setFinanceTerm("24");
+		com.vf.uk.dal.device.model.merchandisingpromotion.Price deviceMonthlyPrice = new com.vf.uk.dal.device.model.merchandisingpromotion.Price();
+		deviceMonthlyPrice.setGross("14.41");
+		deviceMonthlyPrice.setNet("12");
+		deviceMonthlyPrice.setVat("2.40");
+		finance.setMonthlyPrice(deviceMonthlyPrice);
+		com.vf.uk.dal.device.model.merchandisingpromotion.Price totalPriceWithInterest = new com.vf.uk.dal.device.model.merchandisingpromotion.Price();
+		totalPriceWithInterest.setGross("345.68");
+		totalPriceWithInterest.setNet("288.07");
+		totalPriceWithInterest.setVat("57.61");
+		finance.setTotalPriceWithInterest(totalPriceWithInterest);
+		financeOptions.add(finance);
+		return financeOptions;
+	}
 	public static List<com.vf.uk.dal.device.client.entity.price.DeviceFinancingOption> getDeviceFinaceOptions1() {
 		List<com.vf.uk.dal.device.client.entity.price.DeviceFinancingOption> financeOptions = new ArrayList<>();
 		com.vf.uk.dal.device.client.entity.price.DeviceFinancingOption finance = new com.vf.uk.dal.device.client.entity.price.DeviceFinancingOption();
@@ -4264,5 +4299,25 @@ public class CommonMethods {
 		list.add(bundleAndHardwareTuple);
 		requestForBundleAndHardware.setBundleAndHardwareList(list);
 		return requestForBundleAndHardware;
+	}
+	public static com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData getDeviceListObject() {
+		com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData deviceListObject = new com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData();
+		com.vf.uk.dal.device.model.merchandisingpromotion.PriceInfo priceInfo = new com.vf.uk.dal.device.model.merchandisingpromotion.PriceInfo();
+		com.vf.uk.dal.device.model.merchandisingpromotion.HardwarePrice hardware = new com.vf.uk.dal.device.model.merchandisingpromotion.HardwarePrice();
+		hardware.setHardwareId("092660");
+		com.vf.uk.dal.device.model.merchandisingpromotion.OneOffDiscountPrice oneOff = new com.vf.uk.dal.device.model.merchandisingpromotion.OneOffDiscountPrice();
+		oneOff.setGross((float)10.00);
+		oneOff.setNet((float)11.3);
+		oneOff.setVat((float)12.5);
+		hardware.setOneOffDiscountPrice(oneOff);
+		com.vf.uk.dal.device.model.merchandisingpromotion.OneOffPrice oneOffPrice = new com.vf.uk.dal.device.model.merchandisingpromotion.OneOffPrice();
+		oneOffPrice.setGross((float)9);
+		oneOffPrice.setNet((float)12.6);
+		oneOffPrice.setVat((float)6.6);
+		hardware.setOneOffPrice(oneOffPrice);
+		hardware.setFinancingOptions(CommonMethods.getDeviceFinaceOptionsMp());
+		priceInfo.setHardwarePrice(hardware);
+		deviceListObject.setPriceInfo(priceInfo);
+		return deviceListObject;
 	}
 }
