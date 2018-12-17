@@ -4010,7 +4010,26 @@ public class CommonMethods {
 		financeOptions.add(finance);
 		return financeOptions;
 	}
-
+	public static List<com.vf.uk.dal.device.model.merchandisingpromotion.DeviceFinancingOption> getDeviceFinaceOptionsMp() {
+		List<com.vf.uk.dal.device.model.merchandisingpromotion.DeviceFinancingOption> financeOptions = new ArrayList<>();
+		com.vf.uk.dal.device.model.merchandisingpromotion.DeviceFinancingOption finance = new com.vf.uk.dal.device.model.merchandisingpromotion.DeviceFinancingOption();
+		finance.setApr("16.9");
+		finance.setDeviceFinancingId("OVCTYUVZRR");
+		finance.setFinanceProvider("PayPal");
+		finance.setFinanceTerm("24");
+		com.vf.uk.dal.device.model.merchandisingpromotion.Price deviceMonthlyPrice = new com.vf.uk.dal.device.model.merchandisingpromotion.Price();
+		deviceMonthlyPrice.setGross("14.41");
+		deviceMonthlyPrice.setNet("12");
+		deviceMonthlyPrice.setVat("2.40");
+		finance.setMonthlyPrice(deviceMonthlyPrice);
+		com.vf.uk.dal.device.model.merchandisingpromotion.Price totalPriceWithInterest = new com.vf.uk.dal.device.model.merchandisingpromotion.Price();
+		totalPriceWithInterest.setGross("345.68");
+		totalPriceWithInterest.setNet("288.07");
+		totalPriceWithInterest.setVat("57.61");
+		finance.setTotalPriceWithInterest(totalPriceWithInterest);
+		financeOptions.add(finance);
+		return financeOptions;
+	}
 	public static List<com.vf.uk.dal.device.client.entity.price.DeviceFinancingOption> getDeviceFinaceOptions1() {
 		List<com.vf.uk.dal.device.client.entity.price.DeviceFinancingOption> financeOptions = new ArrayList<>();
 		com.vf.uk.dal.device.client.entity.price.DeviceFinancingOption finance = new com.vf.uk.dal.device.client.entity.price.DeviceFinancingOption();
@@ -4280,5 +4299,25 @@ public class CommonMethods {
 		list.add(bundleAndHardwareTuple);
 		requestForBundleAndHardware.setBundleAndHardwareList(list);
 		return requestForBundleAndHardware;
+	}
+	public static com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData getDeviceListObject() {
+		com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData deviceListObject = new com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData();
+		com.vf.uk.dal.device.model.merchandisingpromotion.PriceInfo priceInfo = new com.vf.uk.dal.device.model.merchandisingpromotion.PriceInfo();
+		com.vf.uk.dal.device.model.merchandisingpromotion.HardwarePrice hardware = new com.vf.uk.dal.device.model.merchandisingpromotion.HardwarePrice();
+		hardware.setHardwareId("092660");
+		com.vf.uk.dal.device.model.merchandisingpromotion.OneOffDiscountPrice oneOff = new com.vf.uk.dal.device.model.merchandisingpromotion.OneOffDiscountPrice();
+		oneOff.setGross((float)10.00);
+		oneOff.setNet((float)11.3);
+		oneOff.setVat((float)12.5);
+		hardware.setOneOffDiscountPrice(oneOff);
+		com.vf.uk.dal.device.model.merchandisingpromotion.OneOffPrice oneOffPrice = new com.vf.uk.dal.device.model.merchandisingpromotion.OneOffPrice();
+		oneOffPrice.setGross((float)9);
+		oneOffPrice.setNet((float)12.6);
+		oneOffPrice.setVat((float)6.6);
+		hardware.setOneOffPrice(oneOffPrice);
+		hardware.setFinancingOptions(CommonMethods.getDeviceFinaceOptionsMp());
+		priceInfo.setHardwarePrice(hardware);
+		deviceListObject.setPriceInfo(priceInfo);
+		return deviceListObject;
 	}
 }
