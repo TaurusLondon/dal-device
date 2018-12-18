@@ -674,7 +674,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap,
 			Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap,
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList) {
-		DevicePreCalculatedData productGroupForDeviceListing;
+		DevicePreCalculatedData productGroupForDeviceListing=null;
 		if (!listOfDeviceId.isEmpty()) {
 			List<CommercialProduct> listOfCommercialProduct = deviceEs.getListOfCommercialProduct(listOfDeviceId);
 			setBundleAndHardwareTupleListForPayg(bundleAndHardwareTupleList, listOfCommercialProduct);
@@ -689,12 +689,15 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 					groupId = groupDetails[1];
 				}
 				try {
-					getLeadPlanGroupPriceMapForPayg(leadPlanIdPriceMap, groupNamePriceMap,
-							listOfPriceForBundleAndHardware, deviceId, groupname);
-					productGroupForDeviceListing = cacheDeviceDaoUtils
-							.convertBundleHeaderForDeviceToProductGroupForDeviceListing(deviceId, null, groupname,
-									groupId, listOfPriceForBundleAndHardware, leadMemberMap, null, null,
-									groupType);
+					if (!leadPlanIdPriceMap.isEmpty() && leadPlanIdPriceMap.containsKey(deviceId)) {
+						deviceUtils.getLeadPlanGroupPriceMap(leadPlanIdPriceMap, groupNamePriceMap, listOfPriceForBundleAndHardware,
+								deviceId, groupname);
+						productGroupForDeviceListing = cacheDeviceDaoUtils
+								.convertBundleHeaderForDeviceToProductGroupForDeviceListing(deviceId, null, groupname,
+										groupId, listOfPriceForBundleAndHardware, leadMemberMap, null, null,
+										groupType);
+					}
+					
 					setListOfProductGroupRepository(deviceIds, listOfProductGroupRepository,
 							productGroupForDeviceListing);
 					listOfPriceForBundleAndHardware.clear();
@@ -720,14 +723,6 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		}
 	}
 
-	private void getLeadPlanGroupPriceMapForPayg(Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap,
-			Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap,
-			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware, String deviceId, String groupname) {
-		if (!leadPlanIdPriceMap.isEmpty() && leadPlanIdPriceMap.containsKey(deviceId)) {
-			deviceUtils.getLeadPlanGroupPriceMap(leadPlanIdPriceMap, groupNamePriceMap, listOfPriceForBundleAndHardware,
-					deviceId, groupname);
-		}
-	}
 
 	private void getLeadPlanMapForPaymCacheDeviceForPayg(String groupType,
 			Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap,
