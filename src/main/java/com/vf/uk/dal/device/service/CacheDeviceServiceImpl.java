@@ -58,6 +58,8 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class CacheDeviceServiceImpl implements CacheDeviceService {
 
+	private static final String START_PREPARING_DEVICE_PRECAL_DATA_MODEL = "Start Preparing Device Precal data model {}";
+	private static final String START_PREPARING_GROUP_DETAILS = "Start Preparing Group details {}";
 	private static final String ERROR_CODE_SELECT_CAHCE_DEVICE = "error_device_cache_device_failed";
 	private static final String ERROR_CODE_SELECT_REVIEW = "error_device_review_failed";
 	public static final String JOURNEY_TYPE_ACQUISITION = "Acquisition";
@@ -76,13 +78,13 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 
 	@Autowired
 	DeviceUtils deviceUtils;
-	
+
 	@Autowired
 	DeviceTileCacheDAO deviceTileCacheDAO;
 
 	@Autowired
 	CacheDeviceDaoUtils cacheDeviceDaoUtils;
-	
+
 	@Autowired
 	DeviceDao deviceDao;
 
@@ -91,7 +93,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 
 	@Autowired
 	DeviceServiceImplUtility deviceServiceImplUtility;
-	
+
 	@Autowired
 	CommonUtility commonUtility;
 
@@ -125,7 +127,23 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 
 	}
 
-	public  void setListOfProductGroupRepository(String groupType, List<String> deviceIds,
+	/**
+	 * 
+	 * @param groupType
+	 * @param deviceIds
+	 * @param minimumPriceMap
+	 * @param listOfProductGroupRepository
+	 * @param listOfProductGroup
+	 * @param listOfDeviceId
+	 * @param listOfOfferCodesForUpgrade
+	 * @param listOfSecondLineOfferCode
+	 * @param listOfOfferCodes
+	 * @param leadMemberMap
+	 * @param leadMemberMapForUpgrade
+	 * @param groupIdAndNameMap
+	 * @param ilsOfferPriceWithJourneyAware
+	 */
+	public void setListOfProductGroupRepository(String groupType, List<String> deviceIds,
 			Map<String, String> minimumPriceMap, List<DevicePreCalculatedData> listOfProductGroupRepository,
 			List<Group> listOfProductGroup, List<String> listOfDeviceId, List<String> listOfOfferCodesForUpgrade,
 			List<String> listOfSecondLineOfferCode, Set<String> listOfOfferCodes, Map<String, String> leadMemberMap,
@@ -133,9 +151,10 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			Map<String, Map<String, Map<String, List<PriceForBundleAndHardware>>>> ilsOfferPriceWithJourneyAware) {
 		if (listOfProductGroup != null && !listOfProductGroup.isEmpty()) {
 			for (Group productGroup : listOfProductGroup) {
-
+				log.info(START_PREPARING_GROUP_DETAILS, productGroup.getName());
 				getMemberForPayMCacheDevice(listOfDeviceId, leadMemberMap, leadMemberMapForUpgrade, groupIdAndNameMap,
 						productGroup);
+				log.info("End Preparing Group details {}", productGroup.getName());
 			}
 			Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap = new ConcurrentHashMap<>();
 			Map<String, List<PriceForBundleAndHardware>> nonLeadPlanIdPriceMap = new ConcurrentHashMap<>();
@@ -159,11 +178,13 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 				Map<String, List<BundleAndHardwareTuple>> bundleHardwareTroupleMap = new HashMap<>();
 				Map<String, List<PriceForBundleAndHardware>> iLSPriceMap = new ConcurrentHashMap<>();
 				for (String deviceId : listOfDeviceId) {
+					log.info(START_PREPARING_DEVICE_PRECAL_DATA_MODEL, deviceId);
 					getDevicePrecaldataForPaymCacheDeviceTile(groupType, deviceIds, listOfProductGroupRepository,
 							listOfOfferCodes, leadMemberMap, leadMemberMapForUpgrade, groupIdAndNameMap,
 							leadPlanIdPriceMap, nonLeadPlanIdPriceMap, groupNamePriceMap, commercialBundleMap,
 							listOfLeadPlanId, listOfCimpatiblePlanMap, listOfPriceForBundleAndHardware,
 							bundleHardwareTroupleMap, iLSPriceMap, deviceId);
+					log.info("End Preparing Device Precal data model {}", deviceId);
 				}
 				Map<String, Map<String, List<PriceForBundleAndHardware>>> ilsPriceForJourneyAwareOfferCodeMap = new ConcurrentHashMap<>();
 				getMinimumPriceMap(groupType, minimumPriceMap, listOfOfferCodesForUpgrade, listOfSecondLineOfferCode,
@@ -200,11 +221,12 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 							deviceDataRating));
 		} else {
 			log.error("Receieved Null Values for the given product group type");
-			throw new DeviceCustomException(ERROR_CODE_SELECT_CAHCE_DEVICE,ExceptionMessages.NULL_VALUE_GROUP_TYPE,"404");
+			throw new DeviceCustomException(ERROR_CODE_SELECT_CAHCE_DEVICE, ExceptionMessages.NULL_VALUE_GROUP_TYPE,
+					"404");
 		}
 	}
 
-	public  void getMinimumPriceMap(String groupType, Map<String, String> minimumPriceMap,
+	public void getMinimumPriceMap(String groupType, Map<String, String> minimumPriceMap,
 			List<String> listOfOfferCodesForUpgrade, List<String> listOfSecondLineOfferCode,
 			Map<String, Map<String, Map<String, List<PriceForBundleAndHardware>>>> ilsOfferPriceWithJourneyAware,
 			Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap,
@@ -224,7 +246,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		}
 	}
 
-	public  void setLeadNonLeadPriceMap(String groupType, Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap,
+	public void setLeadNonLeadPriceMap(String groupType, Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap,
 			Map<String, List<PriceForBundleAndHardware>> nonLeadPlanIdPriceMap,
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList,
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleListForNonLeanPlanId) {
@@ -236,7 +258,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		}
 	}
 
-	public  void setBundleAndHardwareTupleListJourneyAware(Set<String> setOfCompatiblePlanIds,
+	public void setBundleAndHardwareTupleListJourneyAware(Set<String> setOfCompatiblePlanIds,
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList,
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleListForNonLeanPlanId,
 			Set<BundleAndHardwareTuple> bundleAndHardwareTupleListJourneyAware, Map<String, String> listOfLeadPlanId,
@@ -354,8 +376,8 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 					deviceId, nonUpgradeLeadPlanId);
 			productGroupForDeviceListing = cacheDeviceDaoUtils
 					.convertBundleHeaderForDeviceToProductGroupForDeviceListing(deviceId, nonUpgradeLeadPlanId,
-							groupname, groupId, listOfPriceForBundleAndHardware, leadMemberMap,
-							leadMemberMapForUpgrade, upgradeLeadPlanId, groupType);
+							groupname, groupId, listOfPriceForBundleAndHardware, leadMemberMap, leadMemberMapForUpgrade,
+							upgradeLeadPlanId, groupType);
 			setListOfProductGroupRepository(deviceIds, listOfProductGroupRepository, productGroupForDeviceListing);
 		} catch (Exception e) {
 			listOfPriceForBundleAndHardware.clear();
@@ -365,7 +387,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		}
 	}
 
-	public  void setListOfProductGroupRepository(List<String> deviceIds,
+	public void setListOfProductGroupRepository(List<String> deviceIds,
 			List<DevicePreCalculatedData> listOfProductGroupRepository,
 			DevicePreCalculatedData productGroupForDeviceListing) {
 		if (productGroupForDeviceListing != null) {
@@ -374,7 +396,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		}
 	}
 
-	public  void getILSPriceMap(Set<String> listOfOfferCodes, Map<String, CommercialBundle> commercialBundleMap,
+	public void getILSPriceMap(Set<String> listOfOfferCodes, Map<String, CommercialBundle> commercialBundleMap,
 			Map<String, List<String>> listOfCimpatiblePlanMap,
 			Map<String, List<BundleAndHardwareTuple>> bundleHardwareTroupleMap, String deviceId,
 			String nonUpgradeLeadPlanId) {
@@ -404,7 +426,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		return upgradeLeadPlanIdLocal;
 	}
 
-	public  void getLeadPlanGroupPriceMap(Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap,
+	public void getLeadPlanGroupPriceMap(Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap,
 			Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap,
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware, String deviceId, String groupname,
 			String nonUpgradeLeadPlanId) {
@@ -415,7 +437,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		}
 	}
 
-	public  String getUpgradeLeadPlanIdForPaymDevice(Map<String, List<PriceForBundleAndHardware>> nonLeadPlanIdPriceMap,
+	public String getUpgradeLeadPlanIdForPaymDevice(Map<String, List<PriceForBundleAndHardware>> nonLeadPlanIdPriceMap,
 			Map<String, CommercialBundle> commercialBundleMap, String deviceId, String upgradeLeadPlanId) {
 		String upgradeLeadPlanIdLocal = null;
 		if (StringUtils.isBlank(upgradeLeadPlanId) && nonLeadPlanIdPriceMap.containsKey(deviceId)) {
@@ -426,7 +448,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		return upgradeLeadPlanIdLocal;
 	}
 
-	public  String getNonUpgradeLeadPlanIdForPaymDevice(
+	public String getNonUpgradeLeadPlanIdForPaymDevice(
 			Map<String, List<PriceForBundleAndHardware>> nonLeadPlanIdPriceMap,
 			Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap,
 			Map<String, CommercialBundle> commercialBundleMap,
@@ -646,7 +668,9 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		Map<String, String> groupIdAndNameMap = new HashMap<>();
 		if (listOfProductGroup != null && !listOfProductGroup.isEmpty()) {
 			for (Group productGroup : listOfProductGroup) {
+				log.info(START_PREPARING_GROUP_DETAILS, productGroup.getName());
 				getLeadMembermapForCacheDevicePayg(listOfDeviceId, leadMemberMap, groupIdAndNameMap, productGroup);
+				log.info(START_PREPARING_GROUP_DETAILS, productGroup.getName());
 			}
 			Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap = Collections.synchronizedMap(new HashMap<>());
 			Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap = Collections
@@ -674,7 +698,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap,
 			Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap,
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList) {
-		DevicePreCalculatedData productGroupForDeviceListing=null;
+		DevicePreCalculatedData productGroupForDeviceListing = null;
 		if (!listOfDeviceId.isEmpty()) {
 			List<CommercialProduct> listOfCommercialProduct = deviceEs.getListOfCommercialProduct(listOfDeviceId);
 			setBundleAndHardwareTupleListForPayg(bundleAndHardwareTupleList, listOfCommercialProduct);
@@ -690,14 +714,15 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 				}
 				try {
 					if (!leadPlanIdPriceMap.isEmpty() && leadPlanIdPriceMap.containsKey(deviceId)) {
-						deviceUtils.getLeadPlanGroupPriceMap(leadPlanIdPriceMap, groupNamePriceMap, listOfPriceForBundleAndHardware,
-								deviceId, groupname);
+						deviceUtils.getLeadPlanGroupPriceMap(leadPlanIdPriceMap, groupNamePriceMap,
+								listOfPriceForBundleAndHardware, deviceId, groupname);
+						log.info(START_PREPARING_DEVICE_PRECAL_DATA_MODEL, deviceId);
 						productGroupForDeviceListing = cacheDeviceDaoUtils
 								.convertBundleHeaderForDeviceToProductGroupForDeviceListing(deviceId, null, groupname,
-										groupId, listOfPriceForBundleAndHardware, leadMemberMap, null, null,
-										groupType);
+										groupId, listOfPriceForBundleAndHardware, leadMemberMap, null, null, groupType);
+						log.info(START_PREPARING_DEVICE_PRECAL_DATA_MODEL, deviceId);
 					}
-					
+
 					setListOfProductGroupRepository(deviceIds, listOfProductGroupRepository,
 							productGroupForDeviceListing);
 					listOfPriceForBundleAndHardware.clear();
@@ -722,7 +747,6 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			deviceUtils.getMinimumPriceMapForPayG(minimumPriceMap, groupNamePriceMap);
 		}
 	}
-
 
 	private void getLeadPlanMapForPaymCacheDeviceForPayg(String groupType,
 			Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap,
@@ -874,7 +898,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		}
 	}
 
-	public  void setFinanceOptions(CacheOfferAppliedPriceModel offerPrice,
+	public void setFinanceOptions(CacheOfferAppliedPriceModel offerPrice,
 			List<DeviceFinancingOption> deviceFinancingOption) {
 		List<com.vf.uk.dal.device.model.product.DeviceFinancingOption> financeOptions = null;
 		if (deviceFinancingOption != null && !deviceFinancingOption.isEmpty()) {
@@ -993,7 +1017,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		productModelMap.put(productGroupId, productgroupModel);
 	}
 
-	public  String setProductGroupId(
+	public String setProductGroupId(
 			com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData deviceListObject) {
 		String productGroupId = null;
 		if (deviceListObject.getPaymProductGroupId() != null
@@ -1048,7 +1072,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		}
 	}
 
-	public  void setFinancingOptions(
+	public void setFinancingOptions(
 			com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData deviceListObject,
 			CacheProductModel productModel) {
 		if (deviceListObject.getPriceInfo() != null && deviceListObject.getPriceInfo().getHardwarePrice() != null) {
@@ -1083,7 +1107,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		}
 	}
 
-	public  void setPaygOneOffDiscountedPrice(
+	public void setPaygOneOffDiscountedPrice(
 			com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData deviceListObject,
 			CacheProductModel productModel) {
 		if (deviceListObject.getPriceInfo() != null && deviceListObject.getPriceInfo().getHardwarePrice() != null
@@ -1106,7 +1130,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		}
 	}
 
-	public  void setPaygOneOffPrice(
+	public void setPaygOneOffPrice(
 			com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData deviceListObject,
 			CacheProductModel productModel) {
 		if (deviceListObject.getPriceInfo() != null && deviceListObject.getPriceInfo().getHardwarePrice() != null
@@ -1129,7 +1153,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		}
 	}
 
-	public  void setPaygProductGroupId(
+	public void setPaygProductGroupId(
 			com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData deviceListObject,
 			CacheProductModel productModel) {
 		if (StringUtils.equalsIgnoreCase(deviceListObject.getGroupType(), STRING_DEVICE_PAYM)) {
@@ -1179,7 +1203,8 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			} else {
 				log.error(jobId + "==>No Device Pre Calculated Data found To Store");
 				exceptionFlag = true;
-				throw new DeviceCustomException(ERROR_CODE_SELECT_CAHCE_DEVICE,ExceptionMessages.NO_DEVICE_PRE_CALCULATED_DATA,"404");
+				throw new DeviceCustomException(ERROR_CODE_SELECT_CAHCE_DEVICE,
+						ExceptionMessages.NO_DEVICE_PRE_CALCULATED_DATA, "404");
 			}
 			saveDeviceMediaData(i, devicePreCalculatedData);
 			List<com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData> deviceListObjectList = cacheDeviceDaoUtils
@@ -1200,7 +1225,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		return CompletableFuture.completedFuture(i);
 	}
 
-	public  void saveDeviceMediaData(int i, List<DevicePreCalculatedData> devicePreCalculatedData) {
+	public void saveDeviceMediaData(int i, List<DevicePreCalculatedData> devicePreCalculatedData) {
 		if (i > 0) {
 			devicePreCalculatedData.forEach(deviceData -> {
 				if (deviceData.getMedia() != null && !deviceData.getMedia().isEmpty()) {
@@ -1242,7 +1267,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			jsonObject = commonUtility.getJSONFromString(response);
 		} else {
 			log.error("No reviews found");
-			throw new DeviceCustomException(ERROR_CODE_SELECT_REVIEW,ExceptionMessages.NO_REVIEWS_FOUND,"404");
+			throw new DeviceCustomException(ERROR_CODE_SELECT_REVIEW, ExceptionMessages.NO_REVIEWS_FOUND, "404");
 		}
 		return jsonObject;
 	}
