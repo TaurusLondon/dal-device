@@ -193,15 +193,19 @@ public class DeviceUtils {
 	public void getMemberForCaceDevice(List<String> listOfDeviceId, Map<String, String> groupIdAndNameMap,
 			Group productGroup, List<com.vf.uk.dal.device.model.Member> listOfDeviceGroupMember, String groupId,
 			String groupname) {
+		log.info("Start store member's belonging group name and id {}",groupname + "&&" + groupId);
 		com.vf.uk.dal.device.model.Member entityMember;
-		for (Member member : productGroup.getMembers()) {
-			entityMember = new com.vf.uk.dal.device.model.Member();
-			entityMember.setId(member.getId());
-			entityMember.setPriority(String.valueOf(member.getPriority()));
-			listOfDeviceGroupMember.add(entityMember);
-			listOfDeviceId.add(member.getId());
-			groupIdAndNameMap.put(member.getId(), groupname + "&&" + groupId);
+		if (productGroup.getMembers()!=null) {
+			for (Member member : productGroup.getMembers()) {
+				entityMember = new com.vf.uk.dal.device.model.Member();
+				entityMember.setId(member.getId());
+				entityMember.setPriority(String.valueOf(member.getPriority()));
+				listOfDeviceGroupMember.add(entityMember);
+				listOfDeviceId.add(member.getId());
+				groupIdAndNameMap.put(member.getId(), groupname + "&&" + groupId);
+			} 
 		}
+		log.info("End store member's belonging group name and id {}",groupname + "&&" + groupId);
 	}
 
 	/**

@@ -184,12 +184,12 @@ public class DeviceServiceCommonUtility {
 	public Boolean validateMemeberImplementation(String memberId, String journeyType) {
 		Boolean memberFlag = false;
 		boolean preOrderableFlag = false;
-		log.info( " Start -->  calling  CommercialProductRepository.get");
+		log.info( " Start -->  calling  CommercialProductRepository.get {}",memberId);
 		CommercialProduct comProduct = deviceEs.getCommercialProduct(memberId);
-		log.info( " End -->  After calling  CommercialProductRepository.get");
+		log.info( " End -->  After calling  CommercialProductRepository.get {}",memberId);
 
-		Date startDateTime = comProduct.getProductAvailability().getStart();
-		Date endDateTime = comProduct.getProductAvailability().getEnd();
+		Date startDateTime = comProduct.getProductAvailability()!=null?comProduct.getProductAvailability().getStart():null;
+		Date endDateTime = comProduct.getProductAvailability()!=null?comProduct.getProductAvailability().getEnd():null;
 		preOrderableFlag = comProduct.getProductControl()==null?preOrderableFlag:comProduct.getProductControl().isPreOrderable();
 		boolean isUpgrade = deviceServiceImplUtility.isUpgrade(journeyType)
 				&& deviceServiceImplUtility.getProductclassValidation(comProduct)
