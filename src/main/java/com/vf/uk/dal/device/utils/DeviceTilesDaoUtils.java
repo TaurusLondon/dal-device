@@ -1439,7 +1439,7 @@ public class DeviceTilesDaoUtils {
 				mediaLink.setValue(imageURL.getImageURL());
 				mediaList.add(mediaLink);
 			});
-		}
+		} 
 		if (productModel.getListOfMediaURLs() != null
 				&& CollectionUtils.isNotEmpty(productModel.getListOfMediaURLs())) {
 			productModel.getListOfMediaURLs().forEach(mediaURL -> {
