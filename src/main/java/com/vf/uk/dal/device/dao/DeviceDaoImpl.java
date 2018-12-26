@@ -221,4 +221,20 @@ public class DeviceDaoImpl implements DeviceDao {
 			log.error( "::::::Exception From es ::::::" + e);
 		}
 	}
+	
+	/**
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@Override
+	public SearchResponse getResponseFromElasticSearch(SearchRequest request) {
+		SearchResponse response = null;
+		try {
+			response = restClient.search(request, RequestOptions.DEFAULT);
+		} catch (IOException e) {
+			log.error("IOException:: {}", e);
+		}
+		return response;
+	}
 }

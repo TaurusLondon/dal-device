@@ -13,6 +13,7 @@ import com.vf.uk.dal.device.client.converter.ResponseMappingHelper;
 import com.vf.uk.dal.device.client.entity.bundle.BundleModel;
 import com.vf.uk.dal.device.client.entity.bundle.CommercialBundle;
 import com.vf.uk.dal.device.dao.DeviceDao;
+import com.vf.uk.dal.device.model.PricePromotionHandsetPlanModel;
 import com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotionModel;
 import com.vf.uk.dal.device.model.merchandisingpromotion.OfferAppliedPriceModel;
 import com.vf.uk.dal.device.model.product.CommercialProduct;
@@ -289,5 +290,13 @@ public class DeviceESHelper {
 		SearchResponse bundleResponse = deviceDao.getResponseFromDataSource(queryContextMap);
 		log.info( "converting elasticsearch response into standard json object response");
 		return response.getListOfMerchandisingPromotionFromJson(bundleResponse);
+	}
+
+	public List<PricePromotionHandsetPlanModel> getPriceForBundleAndHardwareJourneySpecificMap(List<String> iDs) {
+		SearchRequest queryContextMap = DeviceQueryBuilderHelper.searchQueryForPriceForBundleAndHardware(iDs);
+		SearchResponse priceAndHardwareList = deviceDao.getResponseFromElasticSearch(queryContextMap);
+		log.info("converting elasticsearch response into List Of Device Online Model object response");
+		return response.getModelFromElasticSearchResponseForPrice(priceAndHardwareList);
+ 
 	}
 }

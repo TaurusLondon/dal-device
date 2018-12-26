@@ -178,6 +178,40 @@ public class DeviceUtils {
 		});
 		return objectsToOrder;
 	}
+	
+	/**
+	 * 
+	 * @param objectsToOrder
+	 * @param orderedObjects
+	 * @return List<ProductModel>
+	 */
+	public List<com.vf.uk.dal.device.client.entity.catalogue.Device> sortListForProductModelForHandsetOnlineModel(List<com.vf.uk.dal.device.client.entity.catalogue.Device> objectsToOrder, List<String> orderedObjects) {
+		HashMap<String, Integer> indexMap = new HashMap<>();
+		int index = 0;
+		for (String object : orderedObjects) {
+			indexMap.put(object, index);
+			index++;
+		}
+		Collections.sort(objectsToOrder, (com.vf.uk.dal.device.client.entity.catalogue.Device left, com.vf.uk.dal.device.client.entity.catalogue.Device right) -> {
+			Integer leftIndex = indexMap.get(left.getDeviceId());
+			Integer rightIndex = indexMap.get(right.getDeviceId());
+			if (leftIndex == null && rightIndex == null) {
+
+				return 1;
+			}
+			if (leftIndex == null) {
+
+				return 1;
+			}
+			if (rightIndex == null) {
+
+				return -1;
+			}
+			return Integer.compare(leftIndex, rightIndex);
+
+		});
+		return objectsToOrder;
+	}
 
 	
 

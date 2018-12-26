@@ -4,11 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vf.uk.dal.device.client.entity.bundle.BundleModel;
 import com.vf.uk.dal.device.client.entity.bundle.CommercialBundle;
+import com.vf.uk.dal.device.model.PricePromotionHandsetPlanModel;
 import com.vf.uk.dal.device.model.merchandisingpromotion.MerchandisingPromotionModel;
 import com.vf.uk.dal.device.model.merchandisingpromotion.OfferAppliedPriceModel;
 import com.vf.uk.dal.device.model.product.CommercialProduct;
@@ -27,6 +31,7 @@ public class ResponseMappingHelper {
 	@Autowired
 	ElasticSearchUtils esUtils;
 
+	ObjectMapper mapper = SingletonMapperUtility.getObjectMapper();
 	/**
 	 * 
 	 * @param response
@@ -281,5 +286,16 @@ public class ResponseMappingHelper {
 		}
 		return facetField;
 
+	}
+	public List<PricePromotionHandsetPlanModel> getModelFromElasticSearchResponseForPrice(SearchResponse response) {
+		List<PricePromotionHandsetPlanModel> modelList=new ArrayList<>();
+		if (response != null && response.getHits() != null) {
+			for (SearchHit hit : response.getHits().getHits()) {
+				mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+				PricePromotionHandsetPlanModel model = esUtils.getModelFromElasticSearchResponseForPrice(mapper, hit);
+				modelList.add(model);
+			}
+		}
+		return modelList;
 	}
 }
