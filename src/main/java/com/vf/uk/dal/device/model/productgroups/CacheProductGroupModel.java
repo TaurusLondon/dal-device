@@ -1,5 +1,7 @@
 package com.vf.uk.dal.device.model.productgroups;
 
+import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
@@ -38,6 +40,11 @@ public class CacheProductGroupModel {
 
 	@JsonProperty("nonUpgradeLeadPlanId")
 	private String nonUpgradeLeadPlanId;
+	
+	Set<String> acqColor;
+	Set<String> upgradeColor; 
+	Set<String> acqCapacity; 
+	Set<String> upgradeCapacity;
 
 	
 }

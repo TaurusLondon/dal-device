@@ -45,6 +45,14 @@ public class DevicePreCalculatedData {
 	private String paymProductGroupId;
 	@JsonProperty("paygProductGroupId")
 	private String paygProductGroupId;
+	/** Size of devices if eligible acquisition */
+	private String size;
+	/** Size of devices if eligible upgrade */
+	private String sizeUpgrade;
+	/** colour Name And Hex of device if eligible acquisition */
+	private String colorNameAndHex;
+	/** colour Name And Hex of device if eligible upgrade */
+	private String colorNameAndHexUpgrade;
 
 
 	
