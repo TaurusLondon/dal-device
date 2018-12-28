@@ -18,6 +18,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -1268,11 +1270,14 @@ public class DeviceTest {
 		List<DevicePreCalculatedData> d = new ArrayList<>();
 		Map<String, String> groupMap = new HashMap<>();
 		groupMap.put("093353", "Apple-iphone&&2");
+		
+		
+		
 		cacheDeviceService.getDevicePrecaldataForPaymCacheDeviceTile("DEVICE_PAYM", l, d, listOfOfferCodes, map, map,
 				groupMap, leadPlanIdPriceMap, nonLeadPlanIdPriceMap, nonLeadPlanIdPriceMap, commercialBundleMap,
 				listOfLeadPlanId, listOfCimpatiblePlanMap,
 				CommonMethods.getPriceForBundleAndHardwareForCacheDeviceTile(), bundleHardwareTroupleMap,
-				nonLeadPlanIdPriceMap, "093353");
+				nonLeadPlanIdPriceMap, "093353",CommonMethods.getCommercialProduct());
 		Map<String, List<PriceForBundleAndHardware>> priceMap = new HashMap<>();
 		priceMap.put("apple-iphone", CommonMethods.getPriceForBundleAndHardwareForCacheDeviceTile());
 		deviceUtils.getLeadPlanGroupPriceMap(leadPlanIdPriceMap, priceMap, CommonMethods.getPrice(), "093353", "apple-iphone");
@@ -1299,7 +1304,7 @@ public class DeviceTest {
 				groupMap, leadPlanIdPriceMap, nonLeadPlanIdPriceMap, nonLeadPlanIdPriceMap, commercialBundleMap,
 				listOfLeadPlanId, listOfCimpatiblePlanMap,
 				CommonMethods.getPriceForBundleAndHardwareForCacheDeviceTile(), bundleHardwareTroupleMap,
-				nonLeadPlanIdPriceMap, "093353");
+				nonLeadPlanIdPriceMap, "093353",CommonMethods.getCommercialProduct());
 	}
 
 	@Test
@@ -1307,7 +1312,7 @@ public class DeviceTest {
 		DevicePreCalculatedData productGroupForDeviceListing = cacheDeviceDaoUtils
 				.convertBundleHeaderForDeviceToProductGroupForDeviceListing("093353", null, "groupname", "groupId",
 						CommonMethods.getPrice(), CommonMethods.getleadMemberMap(), CommonMethods.getleadMemberMap(),
-						null, STRING_DEVICE_PAYG);
+						null, STRING_DEVICE_PAYG,CommonMethods.getCommercialProduct());
 
 		Assert.assertNotNull(productGroupForDeviceListing);
 		assertEquals("093353", productGroupForDeviceListing.getDeviceId());
@@ -1322,7 +1327,7 @@ public class DeviceTest {
 		DevicePreCalculatedData productGroupForDeviceListing = cacheDeviceDaoUtils
 				.convertBundleHeaderForDeviceToProductGroupForDeviceListing("093353", "leadPlanId", "groupname",
 						"groupId", CommonMethods.getPrice(), CommonMethods.getleadMemberMap(),
-						CommonMethods.getleadMemberMap(), "upgradeLeadPlanId", STRING_DEVICE_PAYM);
+						CommonMethods.getleadMemberMap(), "upgradeLeadPlanId", STRING_DEVICE_PAYM,CommonMethods.getCommercialProduct());
 		Assert.assertNotNull(productGroupForDeviceListing);
 		assertEquals("093353", productGroupForDeviceListing.getDeviceId());
 		assertEquals("groupname", productGroupForDeviceListing.getProductGroupName());

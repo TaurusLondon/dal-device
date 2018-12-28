@@ -10,6 +10,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -72,6 +74,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 	public static final String OFFERCODE_PAYM = "PAYM";
 	public static final String STRING_OPT = "opt_";
 	public static final String STRING_PRODUCT = "product";
+
 
 	@Autowired
 	DeviceESHelper deviceEs;
@@ -167,7 +170,10 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			if (!listOfDeviceId.isEmpty()) {
 				Map<String, String> listOfLeadPlanId = new HashMap<>();
 				Map<String, List<String>> listOfCimpatiblePlanMap = new HashMap<>();
-				List<CommercialProduct> listOfCommercialProduct = deviceEs.getListOfCommercialProduct(listOfDeviceId);
+				List<CommercialProduct> listOfCommercialProduct = deviceEs.getListOfCommercialProduct(new ArrayList<>(new HashSet<>(listOfDeviceId)));
+				Map<String, CommercialProduct> commercialProductMap =
+						listOfCommercialProduct.stream().collect(Collectors.toMap(CommercialProduct::getId,
+					                                              Function.identity()));
 				setBundleAndHardwareTupleListJourneyAware(setOfCompatiblePlanIds, bundleAndHardwareTupleList,
 						bundleAndHardwareTupleListForNonLeanPlanId, bundleAndHardwareTupleListJourneyAware,
 						listOfLeadPlanId, listOfCimpatiblePlanMap, listOfCommercialProduct);
@@ -179,11 +185,12 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 				Map<String, List<PriceForBundleAndHardware>> iLSPriceMap = new ConcurrentHashMap<>();
 				for (String deviceId : listOfDeviceId) {
 					log.info(START_PREPARING_DEVICE_PRECAL_DATA_MODEL, deviceId);
+					CommercialProduct commerciaPproduct=commercialProductMap.containsKey(deviceId)?commercialProductMap.get(deviceId):null;
 					getDevicePrecaldataForPaymCacheDeviceTile(groupType, deviceIds, listOfProductGroupRepository,
 							listOfOfferCodes, leadMemberMap, leadMemberMapForUpgrade, groupIdAndNameMap,
 							leadPlanIdPriceMap, nonLeadPlanIdPriceMap, groupNamePriceMap, commercialBundleMap,
 							listOfLeadPlanId, listOfCimpatiblePlanMap, listOfPriceForBundleAndHardware,
-							bundleHardwareTroupleMap, iLSPriceMap, deviceId);
+							bundleHardwareTroupleMap, iLSPriceMap, deviceId,commerciaPproduct);
 					log.info("End Preparing Device Precal data model {}", deviceId);
 				}
 				Map<String, Map<String, List<PriceForBundleAndHardware>>> ilsPriceForJourneyAwareOfferCodeMap = new ConcurrentHashMap<>();
@@ -328,7 +335,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			Map<String, List<String>> listOfCimpatiblePlanMap,
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware,
 			Map<String, List<BundleAndHardwareTuple>> bundleHardwareTroupleMap,
-			Map<String, List<PriceForBundleAndHardware>> iLSPriceMap, String deviceId) {
+			Map<String, List<PriceForBundleAndHardware>> iLSPriceMap, String deviceId, CommercialProduct commercialProduct) {
 		DevicePreCalculatedData productGroupForDeviceListing;
 		PriceForBundleAndHardware bundleHeaderForDevice;
 		String groupId = null;
@@ -377,7 +384,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			productGroupForDeviceListing = cacheDeviceDaoUtils
 					.convertBundleHeaderForDeviceToProductGroupForDeviceListing(deviceId, nonUpgradeLeadPlanId,
 							groupname, groupId, listOfPriceForBundleAndHardware, leadMemberMap, leadMemberMapForUpgrade,
-							upgradeLeadPlanId, groupType);
+							upgradeLeadPlanId, groupType,commercialProduct);
 			setListOfProductGroupRepository(deviceIds, listOfProductGroupRepository, productGroupForDeviceListing);
 		} catch (Exception e) {
 			listOfPriceForBundleAndHardware.clear();
@@ -700,11 +707,15 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList) {
 		DevicePreCalculatedData productGroupForDeviceListing = null;
 		if (!listOfDeviceId.isEmpty()) {
-			List<CommercialProduct> listOfCommercialProduct = deviceEs.getListOfCommercialProduct(listOfDeviceId);
+			List<CommercialProduct> listOfCommercialProduct = deviceEs.getListOfCommercialProduct(new ArrayList<>(new HashSet<>(listOfDeviceId)));
+			Map<String, CommercialProduct> commercialProductMap =
+					listOfCommercialProduct.stream().collect(Collectors.toMap(CommercialProduct::getId,
+				                                              Function.identity()));
 			setBundleAndHardwareTupleListForPayg(bundleAndHardwareTupleList, listOfCommercialProduct);
 			getLeadPlanMapForPaymCacheDeviceForPayg(groupType, leadPlanIdPriceMap, bundleAndHardwareTupleList);
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = new ArrayList<>();
 			for (String deviceId : listOfDeviceId) {
+				CommercialProduct commerciaPproduct=commercialProductMap.containsKey(deviceId)?commercialProductMap.get(deviceId):null;
 				String groupId = null;
 				String groupname = null;
 				if (groupIdAndNameMap.containsKey(deviceId)) {
@@ -719,7 +730,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 						log.info(START_PREPARING_DEVICE_PRECAL_DATA_MODEL, deviceId);
 						productGroupForDeviceListing = cacheDeviceDaoUtils
 								.convertBundleHeaderForDeviceToProductGroupForDeviceListing(deviceId, null, groupname,
-										groupId, listOfPriceForBundleAndHardware, leadMemberMap, null, null, groupType);
+										groupId, listOfPriceForBundleAndHardware, leadMemberMap, null, null, groupType,commerciaPproduct);
 						log.info(START_PREPARING_DEVICE_PRECAL_DATA_MODEL, deviceId);
 					}
 
@@ -968,6 +979,30 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData deviceListObject,
 			String productGroupId) {
 		CacheProductGroupModel productgroupModel = new CacheProductGroupModel();
+		Set<String> acqColor= new HashSet<>();
+		Set<String> upgradeColor= new HashSet<>();
+		Set<String> acqCapacity= new HashSet<>(); 
+		Set<String> upgradeCapacity= new HashSet<>();
+		if(StringUtils.isNotBlank(deviceListObject.getSize()))
+		{
+			acqCapacity.add(deviceListObject.getSize());
+		}if(StringUtils.isNotBlank(deviceListObject.getSizeUpgrade()))
+		{
+			upgradeCapacity.add(deviceListObject.getSizeUpgrade());
+		}if(StringUtils.isNotBlank(deviceListObject.getColorNameAndHex()))
+		{
+			acqColor.add(deviceListObject.getColorNameAndHex());
+		}if(StringUtils.isNotBlank(deviceListObject.getColorNameAndHexUpgrade()))
+		{
+			upgradeColor.add(deviceListObject.getColorNameAndHexUpgrade());
+		}
+		
+		productgroupModel.setAcqCapacity(acqCapacity);
+		productgroupModel.setUpgradeCapacity(upgradeCapacity);
+		productgroupModel.setAcqColor(acqColor);
+		productgroupModel.setUpgradeCapacity(upgradeCapacity);
+		productModelMap.put(productGroupId, productgroupModel);
+		
 		productgroupModel.setId(productGroupId);
 		productgroupModel.setLeadPlanId(deviceListObject.getLeadPlanId());
 		productgroupModel.setMinimumCost(deviceListObject.getMinimumCost());
@@ -977,13 +1012,37 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		productgroupModel.setNonUpgradeLeadDeviceId(deviceListObject.getNonUpgradeLeadDeviceId());
 		productgroupModel.setUpgradeLeadPlanId(deviceListObject.getUpgradeLeadPlanId());
 		productgroupModel.setNonUpgradeLeadPlanId(deviceListObject.getNonUpgradeLeadPlanId());
-		productModelMap.put(productGroupId, productgroupModel);
+		
+		
 	}
 
 	private void setProductGroupmodelMapWhenContainsKey(Map<String, CacheProductGroupModel> productModelMap,
 			com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData deviceListObject,
 			String productGroupId) {
 		CacheProductGroupModel productgroupModel = productModelMap.get(productGroupId);
+
+		Set<String> acqColor = productgroupModel.getAcqColor();
+		Set<String> upgradeColor = productgroupModel.getUpgradeColor();
+		Set<String> acqCapacity = productgroupModel.getAcqCapacity();
+		Set<String> upgradeCapacity = productgroupModel.getUpgradeCapacity();
+		if (StringUtils.isNotBlank(deviceListObject.getSize())) {
+			acqCapacity.add(deviceListObject.getSize());
+		}
+		if (StringUtils.isNotBlank(deviceListObject.getSizeUpgrade())) {
+			upgradeCapacity.add(deviceListObject.getSizeUpgrade());
+		}
+		if (StringUtils.isNotBlank(deviceListObject.getColorNameAndHex())) {
+			acqColor.add(deviceListObject.getColorNameAndHex());
+		}
+		if (StringUtils.isNotBlank(deviceListObject.getColorNameAndHexUpgrade())) {
+			upgradeColor.add(deviceListObject.getColorNameAndHexUpgrade());
+		}
+
+		productgroupModel.setAcqCapacity(acqCapacity);
+		productgroupModel.setUpgradeCapacity(upgradeCapacity);
+		productgroupModel.setAcqColor(acqColor);
+		productgroupModel.setUpgradeCapacity(upgradeCapacity);
+		productModelMap.put(productGroupId, productgroupModel);
 		if (StringUtils.isNotBlank(deviceListObject.getLeadPlanId())) {
 			productgroupModel.setLeadPlanId(deviceListObject.getLeadPlanId());
 		}
