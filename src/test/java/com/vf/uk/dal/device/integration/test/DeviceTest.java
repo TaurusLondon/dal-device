@@ -783,16 +783,18 @@ public class DeviceTest {
 
 	@Test
 	public void nullTestForGetDeviceListForPaygGroupType() throws IOException {
-		String jsonString = new String(CommonMethods.readFile("\\rest-mock\\DEVICEENTITY-V1.json"));
-		DeviceEntityModel obj = new ObjectMapper().readValue(jsonString, DeviceEntityModel.class);
-		given(restTemplate.getForObject(
-				"http://CATALOGUE-V1/productCatalog/device?make=" + ArgumentMatchers.any() + "&model="
-						+ ArgumentMatchers.any() + "&groupType=DEVICE_PAYG" + "&deviceId=" + null + "&packageType="
-						+ null + "&sort=" + null + "&pageNumber=" + null + "&pageSize=" + null + "&color=" + null
-						+ "&operatingSystem=" + null + "&capacity=" + null + "&mustHaveFeatures=" + null,
-				DeviceEntityModel.class)).willReturn(obj);
-		deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYG", "Priority", 0, 9, "32 GB", "White",
-				"iOS", "Great Camera", null, null, null, "447582367723", true);
+		if (handsetOnlineModelEnabled) {
+			String jsonString = new String(CommonMethods.readFile("\\rest-mock\\DEVICEENTITY-V1.json"));
+			DeviceEntityModel obj = new ObjectMapper().readValue(jsonString, DeviceEntityModel.class);
+			given(restTemplate.getForObject(
+					"http://CATALOGUE-V1/productCatalog/device?make=" + ArgumentMatchers.any() + "&model="
+							+ ArgumentMatchers.any() + "&groupType=DEVICE_PAYG" + "&deviceId=" + null + "&packageType="
+							+ null + "&sort=" + null + "&pageNumber=" + null + "&pageSize=" + null + "&color=" + null
+							+ "&operatingSystem=" + null + "&capacity=" + null + "&mustHaveFeatures=" + null,
+					DeviceEntityModel.class)).willReturn(obj);
+			deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYG", "Priority", 0, 9, "32 GB",
+					"White", "iOS", "Great Camera", null, null, null, "447582367723", true);
+		}
 	}
 
 	@Test
@@ -807,7 +809,7 @@ public class DeviceTest {
 
 				deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYM", "Priority", 0, 9, "32 GB",
 						"White", "iOS", "Great Camera", null, null, null, "447582367723", true);
-			}else{
+			} else {
 				String jsonString = new String(CommonMethods.readFile("\\rest-mock\\DEVICEENTITY-V1.json"));
 				DeviceEntityModel obj = new ObjectMapper().readValue(jsonString, DeviceEntityModel.class);
 				given(restTemplate.getForObject("http://CATALOGUE-V1/productCatalog/device?make="
@@ -816,13 +818,13 @@ public class DeviceTest {
 						+ "&pageSize=" + null + "&color=" + null + "&operatingSystem=" + null + "&capacity=" + null
 						+ "&mustHaveFeatures=" + null, DeviceEntityModel.class)).willReturn(obj);
 				given(response.getListOfProductGroupModel(ArgumentMatchers.any()))
-				.willReturn(CommonMethods.getListOfProductGroupModeForNullLeadPlan());
-		given(response.getFacetField(ArgumentMatchers.any())).willReturn(CommonMethods.getListOfFacetField());
-		given(response.getListOfProductModel(ArgumentMatchers.any()))
-				.willReturn(CommonMethods.getProductModel());
+						.willReturn(CommonMethods.getListOfProductGroupModeForNullLeadPlan());
+				given(response.getFacetField(ArgumentMatchers.any())).willReturn(CommonMethods.getListOfFacetField());
+				given(response.getListOfProductModel(ArgumentMatchers.any()))
+						.willReturn(CommonMethods.getProductModel());
 
-		deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYM", "Priority", 0, 9, "32 GB",
-				"White", "iOS", "Great Camera", null, null, null, "447582367723", true);
+				deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYM", "Priority", 0, 9, "32 GB",
+						"White", "iOS", "Great Camera", null, null, null, "447582367723", true);
 			}
 		} catch (Exception e) {
 			assertEquals("Empty Lead DeviceId List Coming From Solr", e.getMessage());
@@ -835,21 +837,20 @@ public class DeviceTest {
 				given(response.getListOfProductModel(ArgumentMatchers.any())).willReturn(Collections.emptyList());
 				deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYM", "Priority", 0, 9, "32 GB",
 						"White", "iOS", "Great Camera", null, null, null, "447582367723", true);
-			}else{
+			} else {
 				String jsonString = new String(CommonMethods.readFile("\\rest-mock\\DEVICEENTITY-V1.json"));
 				DeviceEntityModel obj = new ObjectMapper().readValue(jsonString, DeviceEntityModel.class);
-				given(restTemplate.getForObject(
-						"http://CATALOGUE-V1/productCatalog/device?make=" + ArgumentMatchers.any() + "&model="
-								+ ArgumentMatchers.any() + "&groupType=DEVICE_PAYM" + "&deviceId=" + null + "&packageType="
-								+ null + "&sort=" + null + "&pageNumber=" + null + "&pageSize=" + null + "&color=" + null
-								+ "&operatingSystem=" + null + "&capacity=" + null + "&mustHaveFeatures=" + null,
-						DeviceEntityModel.class)).willReturn(obj);
+				given(restTemplate.getForObject("http://CATALOGUE-V1/productCatalog/device?make="
+						+ ArgumentMatchers.any() + "&model=" + ArgumentMatchers.any() + "&groupType=DEVICE_PAYM"
+						+ "&deviceId=" + null + "&packageType=" + null + "&sort=" + null + "&pageNumber=" + null
+						+ "&pageSize=" + null + "&color=" + null + "&operatingSystem=" + null + "&capacity=" + null
+						+ "&mustHaveFeatures=" + null, DeviceEntityModel.class)).willReturn(obj);
 				given(response.getListOfProductGroupModel(ArgumentMatchers.any()))
-				.willReturn(CommonMethods.getListOfProductGroupMode());
-		given(response.getFacetField(ArgumentMatchers.any())).willReturn(CommonMethods.getListOfFacetField());
-		given(response.getListOfProductModel(ArgumentMatchers.any())).willReturn(Collections.emptyList());
-		deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYM", "Priority", 0, 9, "32 GB",
-				"White", "iOS", "Great Camera", null, null, null, "447582367723", true);
+						.willReturn(CommonMethods.getListOfProductGroupMode());
+				given(response.getFacetField(ArgumentMatchers.any())).willReturn(CommonMethods.getListOfFacetField());
+				given(response.getListOfProductModel(ArgumentMatchers.any())).willReturn(Collections.emptyList());
+				deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYM", "Priority", 0, 9, "32 GB",
+						"White", "iOS", "Great Camera", null, null, null, "447582367723", true);
 			}
 		} catch (Exception e) {
 			assertEquals("No Data Found for the given product list", e.getMessage());
@@ -857,7 +858,8 @@ public class DeviceTest {
 	}
 
 	@Test
-	public void nullTestForGetDeviceListForGroupTypeWithOutConditionalAcceptanceUpgrade() throws JsonParseException, JsonMappingException, IOException {
+	public void nullTestForGetDeviceListForGroupTypeWithOutConditionalAcceptanceUpgrade()
+			throws JsonParseException, JsonMappingException, IOException {
 		if (!handsetOnlineModelEnabled) {
 			given(response.getListOfProductGroupModel(ArgumentMatchers.any()))
 					.willReturn(CommonMethods.getListOfProductGroupMode());
@@ -874,7 +876,7 @@ public class DeviceTest {
 			assertEquals("093353", deviceLists.getDevice().get(0).getDeviceId());
 			assertEquals("HANDSET", deviceLists.getDevice().get(0).getProductClass());
 			assertEquals("na", deviceLists.getDevice().get(0).getRating());
-		}else{
+		} else {
 			String jsonString = new String(CommonMethods.readFile("\\rest-mock\\DEVICEENTITY-V1.json"));
 			DeviceEntityModel obj = new ObjectMapper().readValue(jsonString, DeviceEntityModel.class);
 			given(restTemplate.getForObject(
@@ -884,19 +886,19 @@ public class DeviceTest {
 							+ "&operatingSystem=" + null + "&capacity=" + null + "&mustHaveFeatures=" + null,
 					DeviceEntityModel.class)).willReturn(obj);
 			given(response.getListOfProductGroupModel(ArgumentMatchers.any()))
-			.willReturn(CommonMethods.getListOfProductGroupMode());
-	given(response.getFacetField(ArgumentMatchers.any())).willReturn(CommonMethods.getListOfFacetField());
-	given(response.getListOfProductModel(ArgumentMatchers.any())).willReturn(CommonMethods.getProductModel());
-	given(response.getListOfOfferAppliedPriceModel(ArgumentMatchers.any()))
-			.willReturn(CommonMethods.getOfferAppliedPriceModel());
-	given(this.response.getListOfMerchandisingPromotionModelFromJson(ArgumentMatchers.any()))
-			.willReturn(CommonMethods.getMerChandisingPromotion_One());
-	FacetedDevice deviceLists = deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYM",
-			"Priority", 0, 9, "32 GB", "White", "iOS", "Great Camera", "Upgrade", null, "W_HH_PAYM_OC_01",
-			"447582367723", true);
-	Assert.assertNotNull(deviceLists);
-	assertEquals("088410", deviceLists.getDevice().get(0).getDeviceId());
-	assertEquals("Handset", deviceLists.getDevice().get(0).getProductClass());
+					.willReturn(CommonMethods.getListOfProductGroupMode());
+			given(response.getFacetField(ArgumentMatchers.any())).willReturn(CommonMethods.getListOfFacetField());
+			given(response.getListOfProductModel(ArgumentMatchers.any())).willReturn(CommonMethods.getProductModel());
+			given(response.getListOfOfferAppliedPriceModel(ArgumentMatchers.any()))
+					.willReturn(CommonMethods.getOfferAppliedPriceModel());
+			given(this.response.getListOfMerchandisingPromotionModelFromJson(ArgumentMatchers.any()))
+					.willReturn(CommonMethods.getMerChandisingPromotion_One());
+			FacetedDevice deviceLists = deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYM",
+					"Priority", 0, 9, "32 GB", "White", "iOS", "Great Camera", "Upgrade", null, "W_HH_PAYM_OC_01",
+					"447582367723", true);
+			Assert.assertNotNull(deviceLists);
+			assertEquals("088410", deviceLists.getDevice().get(0).getDeviceId());
+			assertEquals("Handset", deviceLists.getDevice().get(0).getProductClass());
 		}
 	}
 
@@ -1232,23 +1234,25 @@ public class DeviceTest {
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 		PriceForBundleAndHardware[] obj = mapper.readValue(jsonString, PriceForBundleAndHardware[].class);
-		given(restTemplate.postForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(),
-				ArgumentMatchers.any())).willReturn(obj);
+		given(restTemplate.postForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(), ArgumentMatchers.any()))
+				.willReturn(obj);
 		Map<String, Map<String, Map<String, List<PriceForBundleAndHardware>>>> map = new HashMap<>();
 		Map<String, Map<String, List<PriceForBundleAndHardware>>> ilsPriceForBundleAndHardwareMap = new HashMap<>();
 		Map<String, List<PriceForBundleAndHardware>> iLSPriceMap = new HashMap<>();
 		iLSPriceMap.put("093353", CommonMethods.getOfferAppliedPrice());
 		ilsPriceForBundleAndHardwareMap.put("SecondLine", iLSPriceMap);
 		iLSPriceMap.put("Apple", CommonMethods.getOfferAppliedPrice());
-		cacheDeviceServiceImpl.getMinimumPriceMap("DEVICE_PAYM", new HashMap<>(), 
-				listOfOfferCodesForUpgrade, listOfSecondLineOfferCode, map, iLSPriceMap, bundleHardwareTroupleMap, ilsPriceForBundleAndHardwareMap);
+		cacheDeviceServiceImpl.getMinimumPriceMap("DEVICE_PAYM", new HashMap<>(), listOfOfferCodesForUpgrade,
+				listOfSecondLineOfferCode, map, iLSPriceMap, bundleHardwareTroupleMap, ilsPriceForBundleAndHardwareMap);
 		cacheDeviceServiceImpl.setLeadNonLeadPriceMap(null, null, null, null, null);
 		List<BundleAndHardwareTuple> bundleAndHardwareTupleListForNonLeanPlanId = new ArrayList<>();
 		cacheDeviceServiceImpl.setLeadNonLeadPriceMap(null, null, null, null, null);
-		cacheDeviceServiceImpl.setLeadNonLeadPriceMap(null, null, null, null, bundleAndHardwareTupleListForNonLeanPlanId);
-		cacheDeviceServiceImpl.setBundleAndHardwareTupleListJourneyAware(null, null, null, null, null,null,null);
+		cacheDeviceServiceImpl.setLeadNonLeadPriceMap(null, null, null, null,
+				bundleAndHardwareTupleListForNonLeanPlanId);
+		cacheDeviceServiceImpl.setBundleAndHardwareTupleListJourneyAware(null, null, null, null, null, null, null);
 		List<CommercialProduct> listOfCommercialProduct = new ArrayList<>();
-		cacheDeviceServiceImpl.setBundleAndHardwareTupleListJourneyAware(null, null, null, null, null,null,listOfCommercialProduct);
+		cacheDeviceServiceImpl.setBundleAndHardwareTupleListJourneyAware(null, null, null, null, null, null,
+				listOfCommercialProduct);
 		cacheDeviceServiceImpl.setListOfProductGroupRepository(null, null, null);
 		Set<String> listOfOfferCodes = new HashSet<>();
 		listOfOfferCodes.add("W_HH_OC_01");
@@ -1277,13 +1281,18 @@ public class DeviceTest {
 		groupMap.put("093353", "Apple-iphone&&2");
 		Map<String, List<PriceForBundleAndHardware>> priceMap = new HashMap<>();
 		priceMap.put("apple-iphone", CommonMethods.getPriceForBundleAndHardwareForCacheDeviceTile());
-		deviceUtils.getLeadPlanGroupPriceMap(leadPlanIdPriceMap, priceMap, CommonMethods.getPrice(), "093353", "apple-iphone");
+		deviceUtils.getLeadPlanGroupPriceMap(leadPlanIdPriceMap, priceMap, CommonMethods.getPrice(), "093353",
+				"apple-iphone");
 		priceMap.put("093353", CommonMethods.getPriceForBundleAndHardwareForCacheDeviceTile());
-		cacheDeviceServiceImpl.getILSPriceMap(listOfOfferCodes, commercialBundleMap, listOfCimpatiblePlanMap, bundleHardwareTroupleMap, "093353", "110015");
-		cacheDeviceServiceImpl.getLeadPlanGroupPriceMap(leadPlanIdPriceMap, priceMap, listOfPriceForBundleAndHardware, "093353", "apple-iphone", "110015");
+		cacheDeviceServiceImpl.getILSPriceMap(listOfOfferCodes, commercialBundleMap, listOfCimpatiblePlanMap,
+				bundleHardwareTroupleMap, "093353", "110015");
+		cacheDeviceServiceImpl.getLeadPlanGroupPriceMap(leadPlanIdPriceMap, priceMap, listOfPriceForBundleAndHardware,
+				"093353", "apple-iphone", "110015");
 		cacheDeviceServiceImpl.getUpgradeLeadPlanIdForPaymDevice(priceMap, commercialBundleMap, "093353", "");
-		cacheDeviceServiceImpl.getNonUpgradeLeadPlanIdForPaymDevice(priceMap,priceMap, commercialBundleMap,listOfPriceForBundleAndHardware, "093353","apple-iphone", "");
+		cacheDeviceServiceImpl.getNonUpgradeLeadPlanIdForPaymDevice(priceMap, priceMap, commercialBundleMap,
+				listOfPriceForBundleAndHardware, "093353", "apple-iphone", "");
 	}
+
 	@Test
 	public void testForDb() {
 		cacheDeviceService.updateCacheDeviceToDb("12055", "457892");
@@ -1305,8 +1314,8 @@ public class DeviceTest {
 		String leadId = cacheDeviceService.getNonUpgradeLeadPlanIdForPaymCacheDevice(nonLeadPlanIdPriceMap,
 				new HashMap<>(), commercialBundleMap, new ArrayList<>(), "093353", "Apple-Iphone");
 		nonLeadPlanIdPriceMap.put("Apple-Iphone", CommonMethods.getPriceForBundleAndHardwareForCacheDeviceTile());
-		cacheDeviceService.getNonUpgradeLeadPlanIdForPaymCacheDevice(nonLeadPlanIdPriceMap,
-				nonLeadPlanIdPriceMap, commercialBundleMap, new ArrayList<>(), "093353", "Apple-Iphone");
+		cacheDeviceService.getNonUpgradeLeadPlanIdForPaymCacheDevice(nonLeadPlanIdPriceMap, nonLeadPlanIdPriceMap,
+				commercialBundleMap, new ArrayList<>(), "093353", "Apple-Iphone");
 		assertNotNull(leadId);
 		assertEquals("110163", leadId);
 	}
@@ -1367,20 +1376,21 @@ public class DeviceTest {
 		List<DevicePreCalculatedData> d = new ArrayList<>();
 		Map<String, String> groupMap = new HashMap<>();
 		groupMap.put("093353", "Apple-iphone&&2");
-		
-		
-		
+
 		cacheDeviceService.getDevicePrecaldataForPaymCacheDeviceTile("DEVICE_PAYM", l, d, listOfOfferCodes, map, map,
 				groupMap, leadPlanIdPriceMap, nonLeadPlanIdPriceMap, nonLeadPlanIdPriceMap, commercialBundleMap,
 				listOfLeadPlanId, listOfCimpatiblePlanMap,
 				CommonMethods.getPriceForBundleAndHardwareForCacheDeviceTile(), bundleHardwareTroupleMap,
-				nonLeadPlanIdPriceMap, "093353",CommonMethods.getCommercialProduct());
+				nonLeadPlanIdPriceMap, "093353", CommonMethods.getCommercialProduct());
 		Map<String, List<PriceForBundleAndHardware>> priceMap = new HashMap<>();
 		priceMap.put("apple-iphone", CommonMethods.getPriceForBundleAndHardwareForCacheDeviceTile());
-		deviceUtils.getLeadPlanGroupPriceMap(leadPlanIdPriceMap, priceMap, CommonMethods.getPrice(), "093353", "apple-iphone");
+		deviceUtils.getLeadPlanGroupPriceMap(leadPlanIdPriceMap, priceMap, CommonMethods.getPrice(), "093353",
+				"apple-iphone");
 		priceMap.put("093353", CommonMethods.getPriceForBundleAndHardwareForCacheDeviceTile());
-		deviceUtils.getLeadPlanGroupPriceMap(leadPlanIdPriceMap, priceMap, CommonMethods.getPrice(), "093353", "apple-iphone");
-		deviceUtils.getIlsPriceMap(listOfOfferCodes, commercialBundleMap, listOfCimpatiblePlanMap, bundleHardwareTroupleMap, "093353");
+		deviceUtils.getLeadPlanGroupPriceMap(leadPlanIdPriceMap, priceMap, CommonMethods.getPrice(), "093353",
+				"apple-iphone");
+		deviceUtils.getIlsPriceMap(listOfOfferCodes, commercialBundleMap, listOfCimpatiblePlanMap,
+				bundleHardwareTroupleMap, "093353");
 		Map<String, String> minimumPriceMap = new HashMap<>();
 		minimumPriceMap.put("093353", "10");
 		Map<String, Map<String, List<PriceForBundleAndHardware>>> map1 = new HashMap<>();
@@ -1392,16 +1402,18 @@ public class DeviceTest {
 		DevicePreCalculatedData deviceDataRating = new DevicePreCalculatedData();
 		deviceDataRating.setDeviceId("093353");
 		deviceDataRating.setProductGroupName("093353");
-		deviceUtils.updateDevicePrecaldataBasedOnIlsPriceAndRating(minimumPriceMap, ilsOfferPriceWithJourneyAware, mapOfIlsPriceWithoutOfferCode, groupMap, deviceDataRating);
+		deviceUtils.updateDevicePrecaldataBasedOnIlsPriceAndRating(minimumPriceMap, ilsOfferPriceWithJourneyAware,
+				mapOfIlsPriceWithoutOfferCode, groupMap, deviceDataRating);
 		deviceDataRating.setPriceInfo(CommonMethods.getPriceinforForSorl());
 		deviceDataRating.setMedia(CommonMethods.getmediaForSorl());
-		deviceUtils.updateDevicePrecaldataBasedOnIlsPriceAndRating(minimumPriceMap, ilsOfferPriceWithJourneyAware, mapOfIlsPriceWithoutOfferCode, groupMap, deviceDataRating);
+		deviceUtils.updateDevicePrecaldataBasedOnIlsPriceAndRating(minimumPriceMap, ilsOfferPriceWithJourneyAware,
+				mapOfIlsPriceWithoutOfferCode, groupMap, deviceDataRating);
 		listOfLeadPlanId.clear();
 		cacheDeviceService.getDevicePrecaldataForPaymCacheDeviceTile("DEVICE_PAYM", l, d, listOfOfferCodes, map, map,
 				groupMap, leadPlanIdPriceMap, nonLeadPlanIdPriceMap, nonLeadPlanIdPriceMap, commercialBundleMap,
 				listOfLeadPlanId, listOfCimpatiblePlanMap,
 				CommonMethods.getPriceForBundleAndHardwareForCacheDeviceTile(), bundleHardwareTroupleMap,
-				nonLeadPlanIdPriceMap, "093353",CommonMethods.getCommercialProduct());
+				nonLeadPlanIdPriceMap, "093353", CommonMethods.getCommercialProduct());
 	}
 
 	@Test
@@ -1409,7 +1421,7 @@ public class DeviceTest {
 		DevicePreCalculatedData productGroupForDeviceListing = cacheDeviceDaoUtils
 				.convertBundleHeaderForDeviceToProductGroupForDeviceListing("093353", null, "groupname", "groupId",
 						CommonMethods.getPrice(), CommonMethods.getleadMemberMap(), CommonMethods.getleadMemberMap(),
-						null, STRING_DEVICE_PAYG,CommonMethods.getCommercialProduct());
+						null, STRING_DEVICE_PAYG, CommonMethods.getCommercialProduct());
 
 		Assert.assertNotNull(productGroupForDeviceListing);
 		assertEquals("093353", productGroupForDeviceListing.getDeviceId());
@@ -1424,7 +1436,8 @@ public class DeviceTest {
 		DevicePreCalculatedData productGroupForDeviceListing = cacheDeviceDaoUtils
 				.convertBundleHeaderForDeviceToProductGroupForDeviceListing("093353", "leadPlanId", "groupname",
 						"groupId", CommonMethods.getPrice(), CommonMethods.getleadMemberMap(),
-						CommonMethods.getleadMemberMap(), "upgradeLeadPlanId", STRING_DEVICE_PAYM,CommonMethods.getCommercialProduct());
+						CommonMethods.getleadMemberMap(), "upgradeLeadPlanId", STRING_DEVICE_PAYM,
+						CommonMethods.getCommercialProduct());
 		Assert.assertNotNull(productGroupForDeviceListing);
 		assertEquals("093353", productGroupForDeviceListing.getDeviceId());
 		assertEquals("groupname", productGroupForDeviceListing.getProductGroupName());
@@ -1540,19 +1553,19 @@ public class DeviceTest {
 		bundleModelMap.put("110154", CommonMethods.getBundleModelListForBundleList().get(0));
 		Map<String, BundlePrice> bundleModelAndPriceMap = new HashMap<>();
 		bundleModelAndPriceMap.put("110154", CommonMethods.getBundlePrice());
-		deviceTilesDaoUtils.convertProductModelListToDeviceList(
-				CommonMethods.getProductModel(), CommonMethods.getListOfProducts(),
+		deviceTilesDaoUtils.convertProductModelListToDeviceList(CommonMethods.getProductModel(),
+				CommonMethods.getListOfProducts(),
 				CommonMethods.getProductGroupFacetModel_One().getListOfFacetsFields(), "DEVICE_PAYM", bundleModelMap,
-				listOfOfferAppliedPrice, "W_HH_OC_02", groupNameWithProdId, bundleModelAndPriceMap, null, isLeadMemberFromSolr,
-				listOfOfferAppliedPrice, "Upgrade", productGroupdetailsMap, cdnDomain);
+				listOfOfferAppliedPrice, "W_HH_OC_02", groupNameWithProdId, bundleModelAndPriceMap, null,
+				isLeadMemberFromSolr, listOfOfferAppliedPrice, "Upgrade", productGroupdetailsMap, cdnDomain);
 		bundleModelMap.clear();
 		bundleModelAndPriceMap.put("121212", CommonMethods.getBundlePrice());
 		bundleModelMap.put("121212", CommonMethods.getBundleModelListForBundleList().get(0));
-		deviceTilesDaoUtils.convertProductModelListToDeviceList(
-				CommonMethods.getProductModel(), CommonMethods.getListOfProducts(),
+		deviceTilesDaoUtils.convertProductModelListToDeviceList(CommonMethods.getProductModel(),
+				CommonMethods.getListOfProducts(),
 				CommonMethods.getProductGroupFacetModel_One().getListOfFacetsFields(), "DEVICE_PAYM", bundleModelMap,
-				listOfOfferAppliedPrice, "W_HH_OC_02", groupNameWithProdId, bundleModelAndPriceMap, null, isLeadMemberFromSolr,
-				listOfOfferAppliedPrice, "Upgrade", productGroupdetailsMap, cdnDomain);
+				listOfOfferAppliedPrice, "W_HH_OC_02", groupNameWithProdId, bundleModelAndPriceMap, null,
+				isLeadMemberFromSolr, listOfOfferAppliedPrice, "Upgrade", productGroupdetailsMap, cdnDomain);
 		Assert.assertNotNull(deviceList);
 		assertEquals("093353", deviceList.getDevice().get(0).getDeviceId());
 		assertEquals("HANDSET", deviceList.getDevice().get(0).getProductClass());
@@ -1742,11 +1755,9 @@ public class DeviceTest {
 		PriceForBundleAndHardware price = deviceTilesDaoUtils.getBundleAndHardwarePriceFromSolrWithoutOfferCode(
 				CommonMethods.getProductModel().get(0),
 				CommonMethods.getBundleModelListForBundleListForDeviceList().get(1), "110154", "DEVICE_PAYM");
-		deviceTilesDaoUtils.getBundleAndHardwarePriceFromSolrWithoutOfferCode(
-				CommonMethods.getProductModel().get(2),
+		deviceTilesDaoUtils.getBundleAndHardwarePriceFromSolrWithoutOfferCode(CommonMethods.getProductModel().get(2),
 				CommonMethods.getBundleModelListForBundleListForDeviceList().get(1), "110154", "DEVICE_PAYG");
-		deviceTilesDaoUtils.getBundleAndHardwarePriceFromSolrWithoutOfferCode(
-				CommonMethods.getProductModel().get(1),
+		deviceTilesDaoUtils.getBundleAndHardwarePriceFromSolrWithoutOfferCode(CommonMethods.getProductModel().get(1),
 				CommonMethods.getBundleModelListForBundleListForDeviceList().get(1), "110154", "DEVICE_PAYG");
 		deviceTilesDaoUtils.getBundleAndHardwarePriceFromSolrWithoutOfferCode(null,
 				CommonMethods.getBundleModelListForBundleListForDeviceList().get(0), "110154", "DEVICE_PAYG");
