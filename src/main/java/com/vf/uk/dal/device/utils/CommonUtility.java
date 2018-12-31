@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import com.vf.uk.dal.device.cache.bazaarvoice.BazaarVoiceCacheImplementation;
 import com.vf.uk.dal.device.client.BundleServiceClient;
 import com.vf.uk.dal.device.client.CustomerServiceClient;
 import com.vf.uk.dal.device.client.PriceServiceClient;
@@ -72,6 +73,9 @@ public class CommonUtility {
 	@Autowired
 	RestTemplate restTemplate;
 
+	@Autowired
+	BazaarVoiceCacheImplementation bazaarVoice;
+	
 	@Autowired
 	BundleServiceClient bundleServiceClient;
 
@@ -995,5 +999,14 @@ public class CommonUtility {
 		} else {
 			return "paym";
 		}
+	}
+	/**
+	 * 
+	 * @param leadNonUpgradeLeadPlanId
+	 * @return
+	 */
+	public String getRating(String leadNonUpgradeLeadPlanId) {
+
+		return bazaarVoice.getDeviceRating(leadNonUpgradeLeadPlanId);
 	}
 }

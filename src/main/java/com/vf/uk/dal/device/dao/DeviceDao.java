@@ -115,4 +115,11 @@ public interface DeviceDao {
 	 * @param data
 	 */
 	public void getIndexElasticSearch(String id, String data);
+	
+	/**
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public SearchResponse getResponseFromElasticSearch(SearchRequest request);
 }

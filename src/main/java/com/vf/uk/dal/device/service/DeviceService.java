@@ -44,6 +44,7 @@ public interface DeviceService {
 	 * @param offerCode
 	 * @param msisdn
 	 * @param includeRecommendations
+	 * @param handsetOnlineModelEnabled
 	 * @return FacetedDevice
 	 */
 	public FacetedDevice getDeviceList(String productClass, String listOfMake, String model, String groupType,
