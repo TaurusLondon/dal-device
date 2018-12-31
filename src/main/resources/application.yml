@@ -50,6 +50,9 @@ endpoints:
    enabled: false
  trace:
    enabled: true
+cacheDevice:
+ handsetOnlineModel:
+   enabled: false
 cloud:
   aws:
     cloudwatch:
