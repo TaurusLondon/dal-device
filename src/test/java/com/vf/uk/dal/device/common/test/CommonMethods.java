@@ -64,6 +64,7 @@ import com.vf.uk.dal.device.model.MerchandisingControl;
 import com.vf.uk.dal.device.model.MerchandisingPromotionsPackage;
 import com.vf.uk.dal.device.model.MerchandisingPromotionsWrapper;
 import com.vf.uk.dal.device.model.MetaData;
+import com.vf.uk.dal.device.model.PricePromotionHandsetPlanModel;
 import com.vf.uk.dal.device.model.ProductGroupDetailsForDeviceList;
 import com.vf.uk.dal.device.model.Specification;
 import com.vf.uk.dal.device.model.SpecificationGroup;
@@ -108,6 +109,106 @@ public class CommonMethods {
 	public static final String PREFERENCE_NAME_SEGMENT = "SEGMENT";
 	public static final String PREFERENCE_NAME_UPGRADE = "UPGRADE_TYPE";
 	public static final String PREFERENCE_DATATYPE_CODE_GENERAL = "GENERAL";
+	private static final String BUNDLE_ID = "102821";
+
+	private static final String HARDWARE_ID = "093353";
+
+	public static List<PricePromotionHandsetPlanModel> getPricePromoModel() {
+		List<PricePromotionHandsetPlanModel> pricePromo = new ArrayList<>();
+		PricePromotionHandsetPlanModel pricePromoModel = new PricePromotionHandsetPlanModel();
+		pricePromoModel.setBundlePrice(getBundlePriceModel());
+		pricePromoModel.setHardwareId(HARDWARE_ID);
+		pricePromoModel.setHardwarePrice(getHardwarePrice());
+		pricePromoModel.setJourneyType("Acq");
+		pricePromoModel.setPlanHardwarePricePromokey("promoKey");
+		pricePromoModel.setPlanId(BUNDLE_ID);
+		pricePromoModel.setPromotionCode("promoCode");
+		pricePromoModel.setPromotionsPackage(getMerchandisingPromoPackage());
+		pricePromo.add(pricePromoModel);
+		return pricePromo;
+	}
+	public static MerchandisingPromotionsPackage getMerchandisingPromoPackage() {
+		MerchandisingPromotionsPackage mpPackage = new MerchandisingPromotionsPackage();
+		mpPackage.setHardwareId(HARDWARE_ID);
+		mpPackage.setPlanId(BUNDLE_ID);
+		mpPackage.setBundlePromotions(getPromotionsWrapper());
+		mpPackage.setHardwarePromotions(getPromotionsWrapper());
+		return mpPackage;
+	}
+
+	private static MerchandisingPromotionsWrapper getPromotionsWrapper() {
+		MerchandisingPromotionsWrapper promoWrapper = new MerchandisingPromotionsWrapper();
+		promoWrapper.setConditionalSashBannerPromotion(getMPModel());
+		promoWrapper.setDataPromotion(getMPModel());
+		promoWrapper.setEntertainmentPackPromotion(getMPModel());
+		promoWrapper.setFreeAccessoryPromotion(getMPModel());
+		promoWrapper.setFreeExtraPromotion(getMPModel());
+		promoWrapper.setPricePromotion(getMPModel());
+		promoWrapper.setSashBannerPromotion(getMPModel());
+		promoWrapper.setSecureNetPromotion(getMPModel());
+		return promoWrapper;
+	}
+
+	public static MerchandisingPromotion getMPModel() {
+		MerchandisingPromotion merchandisingPromotions = new MerchandisingPromotion();
+		merchandisingPromotions.setDiscountId("107531");
+		merchandisingPromotions.setLabel("20% off with any handset");
+		merchandisingPromotions.setTag("AllPhone.full.2017");
+		merchandisingPromotions.setPriceEstablishedLabel("WAS");
+		merchandisingPromotions.setDescription("3 months free data for e more");
+		merchandisingPromotions.setMpType("full_duration");
+		List<String> footNotes = new ArrayList<>();
+		footNotes.add("promo1");
+		footNotes.add("promo2");
+		merchandisingPromotions.setFootNotes(footNotes);
+		merchandisingPromotions.setPackageType(footNotes);
+		merchandisingPromotions.setPriority(1);
+		merchandisingPromotions.setPromotionMedia("media");
+		return merchandisingPromotions;
+	}
+	public static com.vf.uk.dal.device.model.solr.HardwarePrice getHardwarePrice() {
+		com.vf.uk.dal.device.model.solr.HardwarePrice bPrice = new com.vf.uk.dal.device.model.solr.HardwarePrice();
+		bPrice.setHardwareId(HARDWARE_ID);
+		bPrice.setFinancingOptions(getFinancingOptions());
+		OneOffDiscountPrice oneOffDiscPrice = new OneOffDiscountPrice();
+		oneOffDiscPrice.setGross("30");
+		oneOffDiscPrice.setNet("30");
+		oneOffDiscPrice.setVat("30");
+		OneOffPrice oneOffPrice = new OneOffPrice();
+		oneOffPrice.setGross("30");
+		oneOffPrice.setNet("30");
+		oneOffPrice.setVat("30");
+		bPrice.setOneOffDiscountPrice(oneOffDiscPrice);
+		bPrice.setOneOffPrice(oneOffPrice);
+		return bPrice;
+	}
+
+	public static List<com.vf.uk.dal.device.model.solr.DeviceFinancingOption> getFinancingOptions() {
+		List<com.vf.uk.dal.device.model.solr.DeviceFinancingOption> financingOptionList = new ArrayList<>();
+		com.vf.uk.dal.device.model.solr.DeviceFinancingOption financingOption = new com.vf.uk.dal.device.model.solr.DeviceFinancingOption();
+		financingOption.setApr("apr");
+		financingOption.setDeviceFinancingId("12312");
+		financingOption.setFinanceProvider("Paypal");
+		financingOption.setFinanceTerm("monthly");
+		financingOptionList.add(financingOption);
+
+		return financingOptionList;
+	}
+	public static com.vf.uk.dal.device.model.solr.BundlePrice getBundlePriceModel() {
+		com.vf.uk.dal.device.model.solr.BundlePrice bPrice = new com.vf.uk.dal.device.model.solr.BundlePrice();
+		bPrice.setBundleId(BUNDLE_ID);
+		com.vf.uk.dal.device.model.solr.MonthlyDiscountPrice monthlydiscPrice = new com.vf.uk.dal.device.model.solr.MonthlyDiscountPrice();
+		monthlydiscPrice.setGross("10");
+		monthlydiscPrice.setNet("10");
+		monthlydiscPrice.setVat("10");
+		com.vf.uk.dal.device.model.solr.MonthlyPrice monthlyPrice = new com.vf.uk.dal.device.model.solr.MonthlyPrice();
+		monthlyPrice.setGross("10");
+		monthlyPrice.setNet("10");
+		monthlyPrice.setVat("10");
+		bPrice.setMonthlyDiscountPrice(monthlydiscPrice);
+		bPrice.setMonthlyPrice(monthlyPrice);
+		return bPrice;
+	}
 
 	public static byte[] readFile(String filename) throws IOException {
 		String fileData = null;

@@ -1,8 +1,8 @@
 package com.vf.uk.dal.device.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.vf.uk.dal.device.client.entity.price.BundlePrice;
-import com.vf.uk.dal.device.client.entity.price.HardwarePrice;
+import com.vf.uk.dal.device.model.solr.BundlePrice;
+import com.vf.uk.dal.device.model.solr.HardwarePrice;
 
 import lombok.Data;
 

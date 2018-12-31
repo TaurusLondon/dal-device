@@ -1178,12 +1178,13 @@ public class DeviceTilesDaoUtils {
 	}
 
 	/**
-	 * @author manoj.bera
 	 * @param listOfProductModel
 	 * @param listOfProducts
 	 * @param facetFieldList
 	 * @param groupType
+	 * @param mapForDeviceAndPriceForBAndWWIthoutOffer
 	 * @param productGroupModelList
+	 * @param offerCode
 	 * @param ls
 	 * @param bundleModelMap
 	 * @return FacetedDevice
@@ -1192,85 +1193,20 @@ public class DeviceTilesDaoUtils {
 			List<com.vf.uk.dal.device.client.entity.catalogue.Device> listOfProductModel, List<String> listOfProducts,
 			List<FacetField> facetList, String groupType, String journeyType,
 			Map<String, ProductGroupDetailsForDeviceList> productGroupdetailsMap, String cdnDomain,
-			Map<String, PricePromotionHandsetPlanModel> mapForDeviceAndPriceForBAndW,
-			List<DeviceOnlineModel> productGroupModelList) {
+			Map<String, PricePromotionHandsetPlanModel> mapForDeviceAndPriceForBAndWWIthOffer,
+			Map<String, PricePromotionHandsetPlanModel> mapForDeviceAndPriceForBAndWWIthoutOffer,
+			List<DeviceOnlineModel> productGroupModelList, String offerCode) {
 		List<Device> deviceList = new ArrayList<>();
 		FacetedDevice facetedDevice = new FacetedDevice();
-		MerchandisingPromotionsPackage merchandisingPromotionsPackage = null;
-		Facet facet = new Facet();
-		List<Make> listOfMake = new ArrayList<>();
 		List<NewFacet> listOfNewFacet = setListOfNewFacetForHandsetOnlineModel(facetList);
-		facet.setMakeList(listOfMake);
 		facetedDevice.setNewFacet(listOfNewFacet);
 		int count = 0;
-		Device deviceDetails;
 		if (listOfProducts != null && !listOfProducts.isEmpty()) {
 			for (com.vf.uk.dal.device.client.entity.catalogue.Device productModel : listOfProductModel) {
-				if (listOfProducts.contains(productModel.getDeviceId())
-						&& productModel.getProductClass().equalsIgnoreCase(STRING_PRODUCT_MODEL)) {
-					String leadPlanId = null;
-					deviceDetails = new Device();
-					ProductGroupDetailsForDeviceList groupdeatils = productGroupdetailsMap.containsKey(
-							productModel.getDeviceId()) ? productGroupdetailsMap.get(productModel.getDeviceId()) : null;
-					setDeviceDetailsColourSizeGroupId(deviceDetails, groupdeatils);
-					leadPlanId = setLeadPlanIdForHandsetOnlineModel(journeyType, productModel);
-					merchandisingPromotionsPackage = new MerchandisingPromotionsPackage();
-					deviceDetails.setDeviceId(productModel.getDeviceId());
-					deviceDetails.setDescription(productModel.getDisplayDescription());
-					deviceDetails.setName(deviceDetails.getProductGroupName());
-					deviceDetails.setProductClass(productModel.getProductClass());
-					setDeviceDetailsRatingForHandsetOnlineModel(deviceDetails, productGroupModelList);
-					deviceDetails.setMake(productModel.getMake());
-					deviceDetails.setModel(productModel.getModel());
-					deviceDetails.setGroupType(groupType);
-
-					// Added MerchandisingControl to Device
-
-					MerchandisingControl merchandisingControl;
-					merchandisingControl = new MerchandisingControl();
-					merchandisingControl
-							.setIsDisplayableECare(productModel.getMerchandisingControl().getIsDisplayableECare());
-					merchandisingControl
-							.setIsSellableECare(productModel.getMerchandisingControl().getIsSellableECare());
-					merchandisingControl
-							.setIsDisplayableAcq(productModel.getMerchandisingControl().getIsDisplayableAcq());
-					merchandisingControl.setIsSellableRet(productModel.getMerchandisingControl().getIsSellableRet());
-					merchandisingControl
-							.setIsDisplayableRet(productModel.getMerchandisingControl().getIsDisplayableRet());
-					merchandisingControl.setIsSellableAcq(productModel.getMerchandisingControl().getIsSellableAcq());
-					merchandisingControl.setIsDisplayableSavedBasket(
-							productModel.getMerchandisingControl().getIsDisplayableSavedBasket());
-					setOrderPreorderableAndAvailableFromForHandsetOnlineModel(productModel, merchandisingControl);
-					merchandisingControl.setBackorderable(productModel.getMerchandisingControl().getBackorderable());
-					deviceDetails.setMerchandisingControl(merchandisingControl);
-
-					// Price Info Device
-					if (mapForDeviceAndPriceForBAndW != null
-							&& mapForDeviceAndPriceForBAndW.containsKey(productModel.getDeviceId())) {
-						PriceForBundleAndHardware priceForOfferCode = getBundleAndHardwarePriceFromSolrUtilsForHandsetOnlineModel(
-								mapForDeviceAndPriceForBAndW.get(productModel.getDeviceId()), leadPlanId);
-						if (priceForOfferCode.getBundlePrice() != null
-								&& priceForOfferCode.getHardwarePrice() != null) {
-							deviceDetails.setPriceInfo(priceForOfferCode);
-						}
-					}
-					// Media Link
-					PricePromotionHandsetPlanModel promotions = null;
-					if (mapForDeviceAndPriceForBAndW != null && !mapForDeviceAndPriceForBAndW.isEmpty()
-							&& mapForDeviceAndPriceForBAndW.containsKey(productModel.getDeviceId())) {
-
-						promotions = mapForDeviceAndPriceForBAndW.get(productModel.getDeviceId());
-						merchandisingPromotionsPackage
-								.setBundlePromotions(promotions.getPromotionsPackage().getBundlePromotions());
-						merchandisingPromotionsPackage
-								.setHardwarePromotions(promotions.getPromotionsPackage().getHardwarePromotions());
-						merchandisingPromotionsPackage.setHardwareId(promotions.getHardwareId());
-						merchandisingPromotionsPackage.setPlanId(promotions.getPlanId());
-					}
-					setMediaLinkAndPromotions(productModel, promotions, deviceDetails, merchandisingPromotionsPackage);
-					deviceList.add(deviceDetails);
-					count++;
-				}
+				setDeviceDetailsList(listOfProducts, groupType, journeyType, productGroupdetailsMap,
+						mapForDeviceAndPriceForBAndWWIthOffer, mapForDeviceAndPriceForBAndWWIthoutOffer,
+						productGroupModelList, offerCode, deviceList, productModel, cdnDomain);
+				count++;
 			}
 		} else {
 			log.info("Products not provided while converting ProductModelListToDeviceList.");
@@ -1278,6 +1214,114 @@ public class DeviceTilesDaoUtils {
 		facetedDevice.setDevice(deviceList);
 		facetedDevice.setNoOfRecordsFound(count);
 		return facetedDevice;
+	}
+
+	private void setDeviceDetailsList(List<String> listOfProducts, String groupType, String journeyType,
+			Map<String, ProductGroupDetailsForDeviceList> productGroupdetailsMap,
+			Map<String, PricePromotionHandsetPlanModel> mapForDeviceAndPriceForBAndWWIthOffer,
+			Map<String, PricePromotionHandsetPlanModel> mapForDeviceAndPriceForBAndWWIthoutOffer,
+			List<DeviceOnlineModel> productGroupModelList, String offerCode, List<Device> deviceList,
+			com.vf.uk.dal.device.client.entity.catalogue.Device productModel, String cdnDomain) {
+		MerchandisingPromotionsPackage merchandisingPromotionsPackage = null;
+		Device deviceDetails;
+		if (listOfProducts.contains(productModel.getDeviceId())
+				&& productModel.getProductClass().equalsIgnoreCase(STRING_PRODUCT_MODEL)) {
+			String leadPlanId = null;
+			deviceDetails = new Device();
+			ProductGroupDetailsForDeviceList groupdeatils = productGroupdetailsMap.containsKey(
+					productModel.getDeviceId()) ? productGroupdetailsMap.get(productModel.getDeviceId()) : null;
+			setDeviceDetailsColourSizeGroupId(deviceDetails, groupdeatils);
+			leadPlanId = setLeadPlanIdForHandsetOnlineModel(journeyType, productModel);
+			merchandisingPromotionsPackage = new MerchandisingPromotionsPackage();
+			deviceDetails.setDeviceId(productModel.getDeviceId());
+			deviceDetails.setDescription(productModel.getDisplayDescription());
+			deviceDetails.setName(deviceDetails.getProductGroupName());
+			deviceDetails.setProductClass(productModel.getProductClass());
+			setDeviceDetailsRatingForHandsetOnlineModel(deviceDetails, productGroupModelList);
+			deviceDetails.setMake(productModel.getMake());
+			deviceDetails.setModel(productModel.getModel());
+			deviceDetails.setGroupType(groupType);
+
+			MerchandisingControl merchandisingControl;
+			merchandisingControl = new MerchandisingControl();
+			merchandisingControl.setIsDisplayableECare(productModel.getMerchandisingControl().getIsDisplayableECare());
+			merchandisingControl.setIsSellableECare(productModel.getMerchandisingControl().getIsSellableECare());
+			merchandisingControl.setIsDisplayableAcq(productModel.getMerchandisingControl().getIsDisplayableAcq());
+			merchandisingControl.setIsSellableRet(productModel.getMerchandisingControl().getIsSellableRet());
+			merchandisingControl.setIsDisplayableRet(productModel.getMerchandisingControl().getIsDisplayableRet());
+			merchandisingControl.setIsSellableAcq(productModel.getMerchandisingControl().getIsSellableAcq());
+			merchandisingControl
+					.setIsDisplayableSavedBasket(productModel.getMerchandisingControl().getIsDisplayableSavedBasket());
+			setOrderPreorderableAndAvailableFromForHandsetOnlineModel(productModel, merchandisingControl);
+			merchandisingControl.setBackorderable(productModel.getMerchandisingControl().getBackorderable());
+			deviceDetails.setMerchandisingControl(merchandisingControl);
+
+			setPriceInfoForDeviceDetails(groupType, journeyType, mapForDeviceAndPriceForBAndWWIthOffer,
+					mapForDeviceAndPriceForBAndWWIthoutOffer, offerCode, deviceDetails, productModel, leadPlanId,
+					merchandisingPromotionsPackage, cdnDomain);
+			deviceList.add(deviceDetails);
+		}
+	}
+
+	private void setPriceInfoForDeviceDetails(String groupType, String journeyType,
+			Map<String, PricePromotionHandsetPlanModel> mapForDeviceAndPriceForBAndWWIthOffer,
+			Map<String, PricePromotionHandsetPlanModel> mapForDeviceAndPriceForBAndWWIthoutOffer, String offerCode,
+			Device deviceDetails, com.vf.uk.dal.device.client.entity.catalogue.Device productModel, String leadPlanId,
+			MerchandisingPromotionsPackage merchandisingPromotionsPackage, String cdnDomain) {
+		PricePromotionHandsetPlanModel promotions = null;
+		if (groupType.equalsIgnoreCase(STRING_DEVICE_PAYM)
+				&& ((StringUtils.isNotBlank(offerCode) && StringUtils.isNotBlank(journeyType))
+						|| checkAcqJourney(journeyType, offerCode))) {
+			if (StringUtils.isNotBlank(offerCode)
+					&& mapForDeviceAndPriceForBAndWWIthOffer.containsKey(productModel.getDeviceId())) {
+				PriceForBundleAndHardware priceForOfferCode = getBundleAndHardwarePriceFromSolrUtilsForHandsetOnlineModel(
+						mapForDeviceAndPriceForBAndWWIthOffer.get(productModel.getDeviceId()), leadPlanId);
+				if (priceForOfferCode.getBundlePrice() != null && priceForOfferCode.getHardwarePrice() != null) {
+					deviceDetails.setPriceInfo(priceForOfferCode);
+					promotions = mapForDeviceAndPriceForBAndWWIthOffer.get(productModel.getDeviceId());
+				}
+			}
+			promotions = setPriceInfoWithoutOffer(journeyType, mapForDeviceAndPriceForBAndWWIthoutOffer, deviceDetails,
+					productModel, leadPlanId, promotions);
+			if (deviceDetails.getPriceInfo() == null && mapForDeviceAndPriceForBAndWWIthoutOffer != null
+					&& mapForDeviceAndPriceForBAndWWIthoutOffer.containsKey(productModel.getDeviceId())) {
+				PriceForBundleAndHardware priceForWithOutOfferCode = getBundleAndHardwarePriceFromSolrWithoutOfferCodeForHandsetOnlineModel(
+						mapForDeviceAndPriceForBAndWWIthoutOffer.get(productModel.getDeviceId()), leadPlanId,
+						groupType);
+				deviceDetails.setPriceInfo(priceForWithOutOfferCode);
+				promotions = mapForDeviceAndPriceForBAndWWIthoutOffer.get(productModel.getDeviceId());
+			}
+		} else {
+			PriceForBundleAndHardware priceForBundleAndHardware = getBundleAndHardwarePriceFromSolrWithoutOfferCodeForHandsetOnlineModel(
+					mapForDeviceAndPriceForBAndWWIthoutOffer.get(productModel.getDeviceId()), leadPlanId, groupType);
+			deviceDetails.setPriceInfo(priceForBundleAndHardware);
+			promotions = mapForDeviceAndPriceForBAndWWIthoutOffer.get(productModel.getDeviceId());
+		}
+		setPromoPackage(deviceDetails, promotions);
+		setMediaLinkAndPromotions(productModel, promotions, deviceDetails, merchandisingPromotionsPackage, cdnDomain);
+	}
+
+	private void setPromoPackage(Device deviceDetails, PricePromotionHandsetPlanModel promotions) {
+		if (promotions != null) {
+			deviceDetails.setPromotionsPackage(promotions.getPromotionsPackage());
+		}
+	}
+
+	private PricePromotionHandsetPlanModel setPriceInfoWithoutOffer(String journeyType,
+			Map<String, PricePromotionHandsetPlanModel> mapForDeviceAndPriceForBAndWWIthoutOffer, Device deviceDetails,
+			com.vf.uk.dal.device.client.entity.catalogue.Device productModel, String leadPlanId,
+			PricePromotionHandsetPlanModel promotions) {
+		if (StringUtils.isNotBlank(journeyType) && checkPriceInfoNull(deviceDetails)
+				&& mapForDeviceAndPriceForBAndWWIthoutOffer != null
+				&& mapForDeviceAndPriceForBAndWWIthoutOffer.containsKey(productModel.getDeviceId())) {
+			PriceForBundleAndHardware priceForOfferCode = getBundleAndHardwarePriceFromSolrUtilsForHandsetOnlineModel(
+					mapForDeviceAndPriceForBAndWWIthoutOffer.get(productModel.getDeviceId()), leadPlanId);
+			if (priceForOfferCode.getBundlePrice() != null && priceForOfferCode.getHardwarePrice() != null) {
+				deviceDetails.setPriceInfo(priceForOfferCode);
+				promotions = mapForDeviceAndPriceForBAndWWIthoutOffer.get(productModel.getDeviceId());
+			}
+		}
+		return promotions;
 	}
 
 	/**
@@ -1347,42 +1391,7 @@ public class DeviceTilesDaoUtils {
 	public void setPromotionsMediaList(MerchandisingPromotionsWrapper promotion, List<MediaLink> mediaList,
 			MerchandisingPromotionsWrapper merchandisingPromotionsWrapper) {
 
-		if (promotion.getConditionalSashBannerPromotion() != null) {
-			setMediaLinkForPromotions(promotion.getConditionalSashBannerPromotion(), mediaList);
-			merchandisingPromotionsWrapper
-					.setConditionalSashBannerPromotion(promotion.getConditionalSashBannerPromotion());
-			if (CollectionUtils.isEmpty(promotion.getConditionalSashBannerPromotion().getFootNotes())) {
-				merchandisingPromotionsWrapper.getConditionalSashBannerPromotion().setFootNotes(null);
-			}
-		}
-		if (promotion.getDataPromotion() != null) {
-			setMediaLinkForPromotions(promotion.getDataPromotion(), mediaList);
-			merchandisingPromotionsWrapper.setDataPromotion(promotion.getDataPromotion());
-			if (CollectionUtils.isEmpty(promotion.getDataPromotion().getFootNotes())) {
-				merchandisingPromotionsWrapper.getDataPromotion().setFootNotes(null);
-			}
-		}
-		if (promotion.getEntertainmentPackPromotion() != null) {
-			setMediaLinkForPromotions(promotion.getEntertainmentPackPromotion(), mediaList);
-			merchandisingPromotionsWrapper.setEntertainmentPackPromotion(promotion.getEntertainmentPackPromotion());
-			if (CollectionUtils.isEmpty(promotion.getEntertainmentPackPromotion().getFootNotes())) {
-				merchandisingPromotionsWrapper.getEntertainmentPackPromotion().setFootNotes(null);
-			}
-		}
-		if (promotion.getFreeAccessoryPromotion() != null) {
-			setMediaLinkForPromotions(promotion.getFreeAccessoryPromotion(), mediaList);
-			merchandisingPromotionsWrapper.setFreeAccessoryPromotion(promotion.getFreeAccessoryPromotion());
-			if (CollectionUtils.isEmpty(promotion.getFreeAccessoryPromotion().getFootNotes())) {
-				merchandisingPromotionsWrapper.getFreeAccessoryPromotion().setFootNotes(null);
-			}
-		}
-		if (promotion.getFreeExtraPromotion() != null) {
-			setMediaLinkForPromotions(promotion.getFreeExtraPromotion(), mediaList);
-			merchandisingPromotionsWrapper.setFreeExtraPromotion(promotion.getFreeExtraPromotion());
-			if (CollectionUtils.isEmpty(promotion.getFreeExtraPromotion().getFootNotes())) {
-				merchandisingPromotionsWrapper.getFreeExtraPromotion().setFootNotes(null);
-			}
-		}
+		setPromotionsMediaForDataEnter(promotion, mediaList, merchandisingPromotionsWrapper);
 		if (promotion.getPricePromotion() != null) {
 			setMediaLinkForPromotions(promotion.getPricePromotion(), mediaList);
 			merchandisingPromotionsWrapper.setPricePromotion(promotion.getPricePromotion());
@@ -1420,21 +1429,65 @@ public class DeviceTilesDaoUtils {
 		}
 	}
 
+	private void setPromotionsMediaForDataEnter(MerchandisingPromotionsWrapper promotion, List<MediaLink> mediaList,
+			MerchandisingPromotionsWrapper merchandisingPromotionsWrapper) {
+		if (promotion.getConditionalSashBannerPromotion() != null) {
+			setMediaLinkForPromotions(promotion.getConditionalSashBannerPromotion(), mediaList);
+			merchandisingPromotionsWrapper
+					.setConditionalSashBannerPromotion(promotion.getConditionalSashBannerPromotion());
+			if (CollectionUtils.isEmpty(promotion.getConditionalSashBannerPromotion().getFootNotes())) {
+				merchandisingPromotionsWrapper.getConditionalSashBannerPromotion().setFootNotes(null);
+			}
+		}
+		if (promotion.getDataPromotion() != null) {
+			setMediaLinkForPromotions(promotion.getDataPromotion(), mediaList);
+			merchandisingPromotionsWrapper.setDataPromotion(promotion.getDataPromotion());
+			if (CollectionUtils.isEmpty(promotion.getDataPromotion().getFootNotes())) {
+				merchandisingPromotionsWrapper.getDataPromotion().setFootNotes(null);
+			}
+		}
+		if (promotion.getEntertainmentPackPromotion() != null) {
+			setMediaLinkForPromotions(promotion.getEntertainmentPackPromotion(), mediaList);
+			merchandisingPromotionsWrapper.setEntertainmentPackPromotion(promotion.getEntertainmentPackPromotion());
+			if (CollectionUtils.isEmpty(promotion.getEntertainmentPackPromotion().getFootNotes())) {
+				merchandisingPromotionsWrapper.getEntertainmentPackPromotion().setFootNotes(null);
+			}
+		}
+		if (promotion.getFreeAccessoryPromotion() != null) {
+			setMediaLinkForPromotions(promotion.getFreeAccessoryPromotion(), mediaList);
+			merchandisingPromotionsWrapper.setFreeAccessoryPromotion(promotion.getFreeAccessoryPromotion());
+			if (CollectionUtils.isEmpty(promotion.getFreeAccessoryPromotion().getFootNotes())) {
+				merchandisingPromotionsWrapper.getFreeAccessoryPromotion().setFootNotes(null);
+			}
+		}
+		if (promotion.getFreeExtraPromotion() != null) {
+			setMediaLinkForPromotions(promotion.getFreeExtraPromotion(), mediaList);
+			merchandisingPromotionsWrapper.setFreeExtraPromotion(promotion.getFreeExtraPromotion());
+			if (CollectionUtils.isEmpty(promotion.getFreeExtraPromotion().getFootNotes())) {
+				merchandisingPromotionsWrapper.getFreeExtraPromotion().setFootNotes(null);
+			}
+		}
+	}
+
 	private void setMediaLinkAndPromotions(com.vf.uk.dal.device.client.entity.catalogue.Device productModel,
 			PricePromotionHandsetPlanModel promotions, Device deviceDetails,
-			MerchandisingPromotionsPackage merchandisingPromotionsPackage) {
+			MerchandisingPromotionsPackage merchandisingPromotionsPackage, String cdnDomain) {
 		MerchandisingPromotionsWrapper bundlePromotions = new MerchandisingPromotionsWrapper();
 		MerchandisingPromotionsWrapper hardwarePromotions = new MerchandisingPromotionsWrapper();
 		List<MediaLink> mediaList = new ArrayList<>();
-		setDevicePromoMedia(promotions, mediaList, bundlePromotions);
-		setBundlePromoMedia(promotions, mediaList, hardwarePromotions);
+		setDevicePromoMedia(promotions, mediaList, hardwarePromotions);
+		setBundlePromoMedia(promotions, mediaList, bundlePromotions);
 		if (productModel.getListOfimageURLs() != null
 				&& CollectionUtils.isNotEmpty(productModel.getListOfimageURLs())) {
 			productModel.getListOfimageURLs().forEach(imageURL -> {
 				MediaLink mediaLink = new MediaLink();
 				mediaLink.setId(imageURL.getImageName());
 				mediaLink.setType("URL");
-				mediaLink.setValue(imageURL.getImageURL());
+				if (imageURL.getImageName().contains("image")) {
+					mediaLink.setValue(commonUtility.getImageMediaUrl(cdnDomain, imageURL.getImageURL()));
+				} else {
+					mediaLink.setValue(imageURL.getImageURL());
+				}
 				mediaList.add(mediaLink);
 			});
 		}
@@ -1444,9 +1497,20 @@ public class DeviceTilesDaoUtils {
 				MediaLink mediaLink = new MediaLink();
 				mediaLink.setId(mediaURL.getMediaName());
 				mediaLink.setType("URL");
-				mediaLink.setValue(mediaURL.getMediaURL());
+				if (mediaURL.getMediaName().contains("image")) {
+					mediaLink.setValue(commonUtility.getImageMediaUrl(cdnDomain, mediaURL.getMediaURL()));
+				} else {
+					mediaLink.setValue(mediaURL.getMediaURL());
+				}
+
 				mediaList.add(mediaLink);
 			});
+		}
+		merchandisingPromotionsPackage.setBundlePromotions(bundlePromotions);
+		merchandisingPromotionsPackage.setHardwarePromotions(hardwarePromotions);
+		if (promotions != null) {
+			merchandisingPromotionsPackage.setHardwareId(promotions.getHardwareId());
+			merchandisingPromotionsPackage.setPlanId(promotions.getPlanId());
 		}
 		deviceDetails.setPromotionsPackage(merchandisingPromotionsPackage);
 		deviceDetails.setMedia(mediaList);
@@ -1803,6 +1867,40 @@ public class DeviceTilesDaoUtils {
 
 	/**
 	 * 
+	 * @param financeOption
+	 * @return List <DeviceFinancingOption>
+	 */
+	public List<com.vf.uk.dal.device.client.entity.price.DeviceFinancingOption> getDeviceFinaceOptionsForHandsetOnlineModel(
+			List<com.vf.uk.dal.device.model.solr.DeviceFinancingOption> financeOption) {
+		List<com.vf.uk.dal.device.client.entity.price.DeviceFinancingOption> financeOptions = null;
+		if (financeOption != null && !financeOption.isEmpty()) {
+			financeOptions = new ArrayList<>();
+			for (com.vf.uk.dal.device.model.solr.DeviceFinancingOption financsOption : financeOption) {
+				com.vf.uk.dal.device.client.entity.price.DeviceFinancingOption finance = new com.vf.uk.dal.device.client.entity.price.DeviceFinancingOption();
+				finance.setApr(financsOption.getApr());
+				finance.setDeviceFinancingId(financsOption.getDeviceFinancingId());
+				finance.setFinanceProvider(financsOption.getFinanceProvider());
+				finance.setFinanceTerm(financsOption.getFinanceTerm());
+				com.vf.uk.dal.device.model.solr.Price monthly = financsOption.getMonthlyPrice();
+				com.vf.uk.dal.device.client.entity.price.Price deviceMonthlyPrice = new com.vf.uk.dal.device.client.entity.price.Price();
+				deviceMonthlyPrice.setGross(monthly.getGross());
+				deviceMonthlyPrice.setNet(monthly.getNet());
+				deviceMonthlyPrice.setVat(monthly.getVat());
+				finance.setMonthlyPrice(deviceMonthlyPrice);
+				com.vf.uk.dal.device.model.solr.Price totalInterest = financsOption.getTotalPriceWithInterest();
+				com.vf.uk.dal.device.client.entity.price.Price totalPriceWithInterest = new com.vf.uk.dal.device.client.entity.price.Price();
+				totalPriceWithInterest.setGross(totalInterest.getGross());
+				totalPriceWithInterest.setNet(totalInterest.getNet());
+				totalPriceWithInterest.setVat(totalInterest.getVat());
+				finance.setTotalPriceWithInterest(totalPriceWithInterest);
+				financeOptions.add(finance);
+			}
+		}
+		return financeOptions;
+	}
+
+	/**
+	 * 
 	 * @param productModel
 	 * @param bundleModel
 	 * @return PriceForBundleAndHardware
@@ -1838,9 +1936,9 @@ public class DeviceTilesDaoUtils {
 		com.vf.uk.dal.device.client.entity.price.BundlePrice bundlePrice = new com.vf.uk.dal.device.client.entity.price.BundlePrice();
 		if (pricePromotionHandsetPlanModel != null && pricePromotionHandsetPlanModel.getPlanId().equals(leadPlanId)) {
 			setHardwarePriceForOfferForHandsetOnlineModel(priceForBundleAndHardware, hardwarePrice,
-					pricePromotionHandsetPlanModel);
+					pricePromotionHandsetPlanModel, pricePromotionHandsetPlanModel.getHardwarePrice());
 			setBundlePriceForOfferForHandsetOnlineModel(priceForBundleAndHardware, bundlePrice,
-					pricePromotionHandsetPlanModel);
+					pricePromotionHandsetPlanModel, pricePromotionHandsetPlanModel.getBundlePrice());
 		}
 
 		return priceForBundleAndHardware;
@@ -1928,102 +2026,131 @@ public class DeviceTilesDaoUtils {
 
 	private void setBundlePriceForOfferForHandsetOnlineModel(PriceForBundleAndHardware priceForBundleAndHardware,
 			com.vf.uk.dal.device.client.entity.price.BundlePrice bundlePrice,
+			PricePromotionHandsetPlanModel pricePromotionHandsetPlanModel,
+			com.vf.uk.dal.device.model.solr.BundlePrice bundlePriceFromMap) {
+		if (bundlePriceFromMap != null && bundlePriceFromMap.getMonthlyDiscountPrice() != null
+				&& bundlePriceFromMap.getMonthlyPrice() != null) {
+			if (bundlePriceFromMap.getMonthlyDiscountPrice().getGross()
+					.equals(bundlePriceFromMap.getMonthlyPrice().getGross())) {
+				Price monthlyDiscountPrice = new Price();
+				monthlyDiscountPrice.setGross(null);
+				monthlyDiscountPrice.setNet(null);
+				monthlyDiscountPrice.setVat(null);
+				Price monthlyPrice = new Price();
+
+				monthlyPrice.setGross(
+						commonUtility.getpriceFormat(Float.valueOf(bundlePriceFromMap.getMonthlyPrice().getGross())));
+				monthlyPrice.setNet(
+						commonUtility.getpriceFormat(Float.valueOf(bundlePriceFromMap.getMonthlyPrice().getNet())));
+				monthlyPrice.setVat(
+						commonUtility.getpriceFormat(Float.valueOf(bundlePriceFromMap.getMonthlyPrice().getVat())));
+				bundlePrice.setMonthlyPrice(monthlyPrice);
+				bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
+				bundlePrice.setBundleId(bundlePriceFromMap.getBundleId());
+				setPricePromotionBundle(bundlePrice, pricePromotionHandsetPlanModel);
+				priceForBundleAndHardware.setMonthlyPrice(monthlyPrice);
+				priceForBundleAndHardware.setMonthlyDiscountPrice(monthlyDiscountPrice);
+				priceForBundleAndHardware.setBundlePrice(bundlePrice);
+			} else {
+				Price monthlyDiscountPrice = new Price();
+
+				monthlyDiscountPrice.setGross(commonUtility
+						.getpriceFormat(Float.valueOf(bundlePriceFromMap.getMonthlyDiscountPrice().getGross())));
+				monthlyDiscountPrice.setNet(commonUtility
+						.getpriceFormat(Float.valueOf(bundlePriceFromMap.getMonthlyDiscountPrice().getNet())));
+				monthlyDiscountPrice.setVat(commonUtility
+						.getpriceFormat(Float.valueOf(bundlePriceFromMap.getMonthlyDiscountPrice().getVat())));
+				Price monthlyPrice = new Price();
+
+				monthlyPrice.setGross(
+						commonUtility.getpriceFormat(Float.valueOf(bundlePriceFromMap.getMonthlyPrice().getGross())));
+				monthlyPrice.setNet(
+						commonUtility.getpriceFormat(Float.valueOf(bundlePriceFromMap.getMonthlyPrice().getNet())));
+				monthlyPrice.setVat(
+						commonUtility.getpriceFormat(Float.valueOf(bundlePriceFromMap.getMonthlyPrice().getVat())));
+				bundlePrice.setMonthlyPrice(monthlyPrice);
+				bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
+				bundlePrice.setBundleId(bundlePriceFromMap.getBundleId());
+				setPricePromotionBundle(bundlePrice, pricePromotionHandsetPlanModel);
+				priceForBundleAndHardware.setMonthlyPrice(monthlyPrice);
+				priceForBundleAndHardware.setMonthlyDiscountPrice(monthlyDiscountPrice);
+				priceForBundleAndHardware.setBundlePrice(bundlePrice);
+			}
+		}
+	}
+
+	private void setPricePromotionBundle(com.vf.uk.dal.device.client.entity.price.BundlePrice bundlePrice,
 			PricePromotionHandsetPlanModel pricePromotionHandsetPlanModel) {
-		if (pricePromotionHandsetPlanModel.getBundlePrice().getMonthlyDiscountPrice().getGross() != null
-				&& pricePromotionHandsetPlanModel.getBundlePrice().getMonthlyPrice().getGross() != null
-				&& pricePromotionHandsetPlanModel.getBundlePrice().getMonthlyDiscountPrice().getGross()
-						.equals(pricePromotionHandsetPlanModel.getBundlePrice().getMonthlyPrice().getGross())) {
-			Price monthlyDiscountPrice = new Price();
-			monthlyDiscountPrice.setGross(null);
-			monthlyDiscountPrice.setNet(null);
-			monthlyDiscountPrice.setVat(null);
-			Price monthlyPrice = new Price();
-
-			monthlyPrice.setGross(commonUtility.getpriceFormat(
-					Float.valueOf(pricePromotionHandsetPlanModel.getBundlePrice().getMonthlyPrice().getGross())));
-			monthlyPrice.setNet(commonUtility.getpriceFormat(
-					Float.valueOf(pricePromotionHandsetPlanModel.getBundlePrice().getMonthlyPrice().getNet())));
-			monthlyPrice.setVat(commonUtility.getpriceFormat(
-					Float.valueOf(pricePromotionHandsetPlanModel.getBundlePrice().getMonthlyPrice().getVat())));
-			bundlePrice.setMonthlyPrice(monthlyPrice);
-			bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
-			bundlePrice.setBundleId(pricePromotionHandsetPlanModel.getPlanId());
-			priceForBundleAndHardware.setMonthlyPrice(monthlyPrice);
-			priceForBundleAndHardware.setMonthlyDiscountPrice(monthlyDiscountPrice);
-			priceForBundleAndHardware.setBundlePrice(bundlePrice);
-		} else {
-			Price monthlyDiscountPrice = new Price();
-
-			monthlyDiscountPrice.setGross(commonUtility.getpriceFormat(Float
-					.valueOf(pricePromotionHandsetPlanModel.getBundlePrice().getMonthlyDiscountPrice().getGross())));
-			monthlyDiscountPrice.setNet(commonUtility.getpriceFormat(
-					Float.valueOf(pricePromotionHandsetPlanModel.getBundlePrice().getMonthlyDiscountPrice().getNet())));
-			monthlyDiscountPrice.setVat(commonUtility.getpriceFormat(
-					Float.valueOf(pricePromotionHandsetPlanModel.getBundlePrice().getMonthlyDiscountPrice().getVat())));
-			Price monthlyPrice = new Price();
-
-			monthlyPrice.setGross(commonUtility.getpriceFormat(
-					Float.valueOf(pricePromotionHandsetPlanModel.getBundlePrice().getMonthlyPrice().getGross())));
-			monthlyPrice.setNet(commonUtility.getpriceFormat(
-					Float.valueOf(pricePromotionHandsetPlanModel.getBundlePrice().getMonthlyPrice().getNet())));
-			monthlyPrice.setVat(commonUtility.getpriceFormat(
-					Float.valueOf(pricePromotionHandsetPlanModel.getBundlePrice().getMonthlyPrice().getVat())));
-			bundlePrice.setMonthlyPrice(monthlyPrice);
-			bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
-			bundlePrice.setBundleId(pricePromotionHandsetPlanModel.getPlanId());
-			priceForBundleAndHardware.setMonthlyPrice(monthlyPrice);
-			priceForBundleAndHardware.setMonthlyDiscountPrice(monthlyDiscountPrice);
-			priceForBundleAndHardware.setBundlePrice(bundlePrice);
+		if (pricePromotionHandsetPlanModel.getPromotionsPackage() != null
+				&& pricePromotionHandsetPlanModel.getPromotionsPackage().getBundlePromotions() != null
+				&& pricePromotionHandsetPlanModel.getPromotionsPackage().getBundlePromotions()
+						.getPricePromotion() != null) {
+			bundlePrice.setMerchandisingPromotions(
+					pricePromotionHandsetPlanModel.getPromotionsPackage().getBundlePromotions().getPricePromotion());
 		}
 	}
 
 	private void setHardwarePriceForOfferForHandsetOnlineModel(PriceForBundleAndHardware priceForBundleAndHardware,
-			HardwarePrice hardwarePrice, PricePromotionHandsetPlanModel pricePromotionHandsetPlanModel) {
-		if (pricePromotionHandsetPlanModel.getHardwarePrice().getOneOffDiscountPrice().getGross() != null
-				&& pricePromotionHandsetPlanModel.getHardwarePrice().getOneOffPrice().getGross() != null
-				&& pricePromotionHandsetPlanModel.getHardwarePrice().getOneOffPrice().getGross().equals(
-						pricePromotionHandsetPlanModel.getHardwarePrice().getOneOffDiscountPrice().getGross())) {
-			Price oneOffDiscountPrice = new Price();
-			oneOffDiscountPrice.setGross(null);
-			oneOffDiscountPrice.setNet(null);
-			oneOffDiscountPrice.setVat(null);
-			Price oneOffPrice = new Price();
+			HardwarePrice hardwarePrice, PricePromotionHandsetPlanModel pricePromotionHandsetPlanModel,
+			com.vf.uk.dal.device.model.solr.HardwarePrice hardwarePriceFromMap) {
+		if (hardwarePriceFromMap != null && hardwarePriceFromMap.getOneOffDiscountPrice() != null
+				&& hardwarePriceFromMap.getOneOffPrice() != null) {
+			if (hardwarePriceFromMap.getOneOffPrice().getGross()
+					.equals(hardwarePriceFromMap.getOneOffDiscountPrice().getGross())) {
+				Price oneOffDiscountPrice = new Price();
+				oneOffDiscountPrice.setGross(null);
+				oneOffDiscountPrice.setNet(null);
+				oneOffDiscountPrice.setVat(null);
+				Price oneOffPrice = new Price();
 
-			oneOffPrice.setGross(commonUtility.getpriceFormat(
-					Float.valueOf(pricePromotionHandsetPlanModel.getHardwarePrice().getOneOffPrice().getGross())));
-			oneOffPrice.setNet(commonUtility.getpriceFormat(
-					Float.valueOf(pricePromotionHandsetPlanModel.getHardwarePrice().getOneOffPrice().getNet())));
-			oneOffPrice.setVat(commonUtility.getpriceFormat(
-					Float.valueOf(pricePromotionHandsetPlanModel.getHardwarePrice().getOneOffPrice().getVat())));
-			hardwarePrice.setOneOffPrice(oneOffPrice);
-			hardwarePrice.setOneOffDiscountPrice(oneOffDiscountPrice);
-			hardwarePrice.setHardwareId(pricePromotionHandsetPlanModel.getHardwareId());
-			priceForBundleAndHardware.setOneOffDiscountPrice(oneOffDiscountPrice);
-			priceForBundleAndHardware.setOneOffPrice(oneOffPrice);
-			priceForBundleAndHardware.setHardwarePrice(hardwarePrice);
-		} else {
-			Price oneOffDiscountPrice = new Price();
+				oneOffPrice.setGross(
+						commonUtility.getpriceFormat(Float.valueOf(hardwarePriceFromMap.getOneOffPrice().getGross())));
+				oneOffPrice.setNet(
+						commonUtility.getpriceFormat(Float.valueOf(hardwarePriceFromMap.getOneOffPrice().getNet())));
+				oneOffPrice.setVat(
+						commonUtility.getpriceFormat(Float.valueOf(hardwarePriceFromMap.getOneOffPrice().getVat())));
+				hardwarePrice.setOneOffPrice(oneOffPrice);
+				hardwarePrice.setOneOffDiscountPrice(oneOffDiscountPrice);
+				hardwarePrice.setHardwareId(hardwarePriceFromMap.getHardwareId());
+				setPricePromotionHardware(hardwarePrice, pricePromotionHandsetPlanModel);
+				priceForBundleAndHardware.setOneOffDiscountPrice(oneOffDiscountPrice);
+				priceForBundleAndHardware.setOneOffPrice(oneOffPrice);
+				priceForBundleAndHardware.setHardwarePrice(hardwarePrice);
+			} else {
+				Price oneOffDiscountPrice = new Price();
 
-			oneOffDiscountPrice.setGross(commonUtility.getpriceFormat(Float
-					.valueOf(pricePromotionHandsetPlanModel.getHardwarePrice().getOneOffDiscountPrice().getGross())));
-			oneOffDiscountPrice.setNet(commonUtility.getpriceFormat(Float
-					.valueOf(pricePromotionHandsetPlanModel.getHardwarePrice().getOneOffDiscountPrice().getNet())));
-			oneOffDiscountPrice.setVat(commonUtility.getpriceFormat(Float
-					.valueOf(pricePromotionHandsetPlanModel.getHardwarePrice().getOneOffDiscountPrice().getVat())));
-			Price oneOffPrice = new Price();
-			oneOffPrice.setGross(commonUtility.getpriceFormat(
-					Float.valueOf(pricePromotionHandsetPlanModel.getHardwarePrice().getOneOffPrice().getGross())));
-			oneOffPrice.setNet(commonUtility.getpriceFormat(
-					Float.valueOf(pricePromotionHandsetPlanModel.getHardwarePrice().getOneOffPrice().getNet())));
-			oneOffPrice.setVat(commonUtility.getpriceFormat(
-					Float.valueOf(pricePromotionHandsetPlanModel.getHardwarePrice().getOneOffPrice().getVat())));
-			hardwarePrice.setOneOffPrice(oneOffPrice);
-			hardwarePrice.setOneOffDiscountPrice(oneOffDiscountPrice);
-			hardwarePrice.setHardwareId(pricePromotionHandsetPlanModel.getHardwareId());
-			priceForBundleAndHardware.setOneOffDiscountPrice(oneOffDiscountPrice);
-			priceForBundleAndHardware.setOneOffPrice(oneOffPrice);
-			priceForBundleAndHardware.setHardwarePrice(hardwarePrice);
+				oneOffDiscountPrice.setGross(commonUtility
+						.getpriceFormat(Float.valueOf(hardwarePriceFromMap.getOneOffDiscountPrice().getGross())));
+				oneOffDiscountPrice.setNet(commonUtility
+						.getpriceFormat(Float.valueOf(hardwarePriceFromMap.getOneOffDiscountPrice().getNet())));
+				oneOffDiscountPrice.setVat(commonUtility
+						.getpriceFormat(Float.valueOf(hardwarePriceFromMap.getOneOffDiscountPrice().getVat())));
+				Price oneOffPrice = new Price();
+				oneOffPrice.setGross(
+						commonUtility.getpriceFormat(Float.valueOf(hardwarePriceFromMap.getOneOffPrice().getGross())));
+				oneOffPrice.setNet(
+						commonUtility.getpriceFormat(Float.valueOf(hardwarePriceFromMap.getOneOffPrice().getNet())));
+				oneOffPrice.setVat(
+						commonUtility.getpriceFormat(Float.valueOf(hardwarePriceFromMap.getOneOffPrice().getVat())));
+				hardwarePrice.setOneOffPrice(oneOffPrice);
+				hardwarePrice.setOneOffDiscountPrice(oneOffDiscountPrice);
+				hardwarePrice.setHardwareId(hardwarePriceFromMap.getHardwareId());
+				setPricePromotionHardware(hardwarePrice, pricePromotionHandsetPlanModel);
+				priceForBundleAndHardware.setOneOffDiscountPrice(oneOffDiscountPrice);
+				priceForBundleAndHardware.setOneOffPrice(oneOffPrice);
+				priceForBundleAndHardware.setHardwarePrice(hardwarePrice);
+			}
+		}
+	}
 
+	private void setPricePromotionHardware(HardwarePrice hardwarePrice,
+			PricePromotionHandsetPlanModel pricePromotionHandsetPlanModel) {
+		if (pricePromotionHandsetPlanModel.getPromotionsPackage() != null
+				&& pricePromotionHandsetPlanModel.getPromotionsPackage().getHardwarePromotions() != null
+				&& pricePromotionHandsetPlanModel.getPromotionsPackage().getHardwarePromotions()
+						.getPricePromotion() != null) {
+			hardwarePrice.setMerchandisingPromotions(
+					pricePromotionHandsetPlanModel.getPromotionsPackage().getHardwarePromotions().getPricePromotion());
 		}
 	}
 
@@ -2485,4 +2612,207 @@ public class DeviceTilesDaoUtils {
 		}
 	}
 
+	/**
+	 * 
+	 * @param pricePromotionHandsetPlanModel
+	 * @param bundleModel
+	 * @param leadPlanId
+	 * @return PriceForBundleAndHardware
+	 */
+	public PriceForBundleAndHardware getBundleAndHardwarePriceFromSolrWithoutOfferCodeForHandsetOnlineModel(
+			PricePromotionHandsetPlanModel pricePromotionHandsetPlanModel, String leadPlanId, String groupType) {
+		PriceForBundleAndHardware priceForBundleAndHardware = new PriceForBundleAndHardware();
+		HardwarePrice hardwarePrice = new HardwarePrice();
+		com.vf.uk.dal.device.client.entity.price.BundlePrice bundlePrice = new com.vf.uk.dal.device.client.entity.price.BundlePrice();
+		if (pricePromotionHandsetPlanModel != null) {
+			if (StringUtils.equalsIgnoreCase(groupType, STRING_DEVICE_PAYM)) {
+				setHardwarePricePaymForHandsetOnlineModel(pricePromotionHandsetPlanModel.getHardwarePrice(),
+						pricePromotionHandsetPlanModel, priceForBundleAndHardware, hardwarePrice);
+				setBundlePricePaymForHandsetOnlineModel(pricePromotionHandsetPlanModel.getBundlePrice(), leadPlanId,
+						pricePromotionHandsetPlanModel, priceForBundleAndHardware, bundlePrice);
+			} else if (StringUtils.equalsIgnoreCase(groupType, STRING_DEVICE_PAYG)) {
+				setPriceForPaygForHandsetOnlineModel(pricePromotionHandsetPlanModel.getHardwarePrice(),
+						priceForBundleAndHardware, hardwarePrice);
+			}
+		}
+		return priceForBundleAndHardware;
+	}
+
+	private void setHardwarePricePaymForHandsetOnlineModel(
+			com.vf.uk.dal.device.model.solr.HardwarePrice hardwarePriceFromMap,
+			PricePromotionHandsetPlanModel pricePromotionHandsetPlanModel,
+			PriceForBundleAndHardware priceForBundleAndHardware, HardwarePrice hardwarePrice) {
+		if (hardwarePriceFromMap != null && hardwarePriceFromMap.getOneOffDiscountPrice() != null
+				&& hardwarePriceFromMap.getOneOffPrice() != null) {
+			if (hardwarePriceFromMap.getOneOffPrice().getGross()
+					.equals(hardwarePriceFromMap.getOneOffDiscountPrice().getGross())) {
+				Price oneOffDiscountPrice = new Price();
+				oneOffDiscountPrice.setGross(null);
+				oneOffDiscountPrice.setNet(null);
+				oneOffDiscountPrice.setVat(null);
+				Price oneOffPrice = new Price();
+
+				oneOffPrice.setGross(
+						commonUtility.getpriceFormat(Float.valueOf(hardwarePriceFromMap.getOneOffPrice().getGross())));
+				oneOffPrice.setNet(
+						commonUtility.getpriceFormat(Float.valueOf(hardwarePriceFromMap.getOneOffPrice().getNet())));
+				oneOffPrice.setVat(
+						commonUtility.getpriceFormat(Float.valueOf(hardwarePriceFromMap.getOneOffPrice().getVat())));
+				hardwarePrice.setOneOffPrice(oneOffPrice);
+				hardwarePrice.setOneOffDiscountPrice(oneOffDiscountPrice);
+				hardwarePrice.setHardwareId(hardwarePriceFromMap.getHardwareId());
+				setPricePromotionHardware(hardwarePrice, pricePromotionHandsetPlanModel);
+				priceForBundleAndHardware.setOneOffDiscountPrice(oneOffDiscountPrice);
+				priceForBundleAndHardware.setOneOffPrice(oneOffPrice);
+				priceForBundleAndHardware.setHardwarePrice(hardwarePrice);
+			} else {
+				Price oneOffDiscountPrice = new Price();
+				oneOffDiscountPrice.setGross(commonUtility
+						.getpriceFormat(Float.valueOf(hardwarePriceFromMap.getOneOffDiscountPrice().getGross())));
+				oneOffDiscountPrice.setNet(commonUtility
+						.getpriceFormat(Float.valueOf(hardwarePriceFromMap.getOneOffDiscountPrice().getNet())));
+				oneOffDiscountPrice.setVat(commonUtility
+						.getpriceFormat(Float.valueOf(hardwarePriceFromMap.getOneOffDiscountPrice().getVat())));
+				Price oneOffPrice = new Price();
+				oneOffPrice.setGross(
+						commonUtility.getpriceFormat(Float.valueOf(hardwarePriceFromMap.getOneOffPrice().getGross())));
+				oneOffPrice.setNet(
+						commonUtility.getpriceFormat(Float.valueOf(hardwarePriceFromMap.getOneOffPrice().getNet())));
+				oneOffPrice.setVat(
+						commonUtility.getpriceFormat(Float.valueOf(hardwarePriceFromMap.getOneOffPrice().getVat())));
+				hardwarePrice.setOneOffPrice(oneOffPrice);
+				hardwarePrice.setOneOffDiscountPrice(oneOffDiscountPrice);
+				hardwarePrice.setHardwareId(hardwarePriceFromMap.getHardwareId());
+				setPricePromotionHardware(hardwarePrice, pricePromotionHandsetPlanModel);
+				priceForBundleAndHardware.setOneOffDiscountPrice(oneOffDiscountPrice);
+				priceForBundleAndHardware.setOneOffPrice(oneOffPrice);
+				priceForBundleAndHardware.setHardwarePrice(hardwarePrice);
+			}
+		}
+	}
+
+	private void setBundlePricePaymForHandsetOnlineModel(com.vf.uk.dal.device.model.solr.BundlePrice bundlePriceFromMap,
+			String leadPlanId, PricePromotionHandsetPlanModel pricePromotionHandsetPlanModel,
+			PriceForBundleAndHardware priceForBundleAndHardware,
+			com.vf.uk.dal.device.client.entity.price.BundlePrice bundlePrice) {
+		if (bundlePriceFromMap != null && bundlePriceFromMap.getMonthlyDiscountPrice() != null
+				&& bundlePriceFromMap.getMonthlyPrice() != null) {
+			if (bundlePriceFromMap.getMonthlyPrice().getGross()
+					.equals(bundlePriceFromMap.getMonthlyDiscountPrice().getGross())) {
+				Price monthlyDiscountPrice = new Price();
+				monthlyDiscountPrice.setGross(null);
+				monthlyDiscountPrice.setNet(null);
+				monthlyDiscountPrice.setVat(null);
+				Price monthlyPrice = new Price();
+				monthlyPrice.setGross(
+						commonUtility.getpriceFormat(Float.valueOf(bundlePriceFromMap.getMonthlyPrice().getGross())));
+				monthlyPrice.setNet(
+						commonUtility.getpriceFormat(Float.valueOf(bundlePriceFromMap.getMonthlyPrice().getNet())));
+				monthlyPrice.setVat(
+						commonUtility.getpriceFormat(Float.valueOf(bundlePriceFromMap.getMonthlyPrice().getVat())));
+				bundlePrice.setMonthlyPrice(monthlyPrice);
+				bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
+				bundlePrice.setBundleId(leadPlanId);
+				setPricePromotionBundle(bundlePrice, pricePromotionHandsetPlanModel);
+				priceForBundleAndHardware.setMonthlyPrice(monthlyPrice);
+				priceForBundleAndHardware.setMonthlyDiscountPrice(monthlyDiscountPrice);
+				priceForBundleAndHardware.setBundlePrice(bundlePrice);
+			} else {
+				Price monthlyDiscountPrice = new Price();
+				monthlyDiscountPrice.setGross(commonUtility
+						.getpriceFormat(Float.valueOf(bundlePriceFromMap.getMonthlyDiscountPrice().getGross())));
+				monthlyDiscountPrice.setNet(commonUtility
+						.getpriceFormat(Float.valueOf(bundlePriceFromMap.getMonthlyDiscountPrice().getNet())));
+				monthlyDiscountPrice.setVat(commonUtility
+						.getpriceFormat(Float.valueOf(bundlePriceFromMap.getMonthlyDiscountPrice().getVat())));
+				Price monthlyPrice = new Price();
+				monthlyPrice.setGross(
+						commonUtility.getpriceFormat(Float.valueOf(bundlePriceFromMap.getMonthlyPrice().getGross())));
+				monthlyPrice.setNet(
+						commonUtility.getpriceFormat(Float.valueOf(bundlePriceFromMap.getMonthlyPrice().getNet())));
+				monthlyPrice.setVat(
+						commonUtility.getpriceFormat(Float.valueOf(bundlePriceFromMap.getMonthlyPrice().getVat())));
+				bundlePrice.setMonthlyPrice(monthlyPrice);
+				bundlePrice.setMonthlyDiscountPrice(monthlyDiscountPrice);
+				bundlePrice.setBundleId(leadPlanId);
+				setPricePromotionBundle(bundlePrice, pricePromotionHandsetPlanModel);
+				priceForBundleAndHardware.setMonthlyPrice(monthlyPrice);
+				priceForBundleAndHardware.setMonthlyDiscountPrice(monthlyDiscountPrice);
+				priceForBundleAndHardware.setBundlePrice(bundlePrice);
+			}
+		}
+	}
+
+	private void setPriceForPaygForHandsetOnlineModel(
+			com.vf.uk.dal.device.model.solr.HardwarePrice hardwarePriceFromMap,
+			PriceForBundleAndHardware priceForBundleAndHardware, HardwarePrice hardwarePrice) {
+		if (hardwarePriceFromMap != null && hardwarePriceFromMap.getOneOffDiscountPrice() != null
+				&& hardwarePriceFromMap.getOneOffPrice() != null) {
+			if (hardwarePriceFromMap.getOneOffPrice().getGross()
+					.equals(hardwarePriceFromMap.getOneOffDiscountPrice().getGross())) {
+				BundlePrice bundlePriceLocal = new BundlePrice();
+				Price monthlyPrice = new Price();
+				monthlyPrice.setGross(null);
+				monthlyPrice.setNet(null);
+				monthlyPrice.setVat(null);
+				bundlePriceLocal.setMonthlyPrice(monthlyPrice);
+				bundlePriceLocal.setMonthlyDiscountPrice(monthlyPrice);
+				Price oneOffDiscountPrice = new Price();
+				oneOffDiscountPrice.setGross(null);
+				oneOffDiscountPrice.setNet(null);
+				oneOffDiscountPrice.setVat(null);
+				Price oneOffPrice = new Price();
+				oneOffPrice.setGross(
+						commonUtility.getpriceFormat(Float.valueOf(hardwarePriceFromMap.getOneOffPrice().getGross())));
+				oneOffPrice.setNet(
+						commonUtility.getpriceFormat(Float.valueOf(hardwarePriceFromMap.getOneOffPrice().getNet())));
+				oneOffPrice.setVat(
+						commonUtility.getpriceFormat(Float.valueOf(hardwarePriceFromMap.getOneOffPrice().getVat())));
+				hardwarePrice.setOneOffPrice(oneOffPrice);
+				hardwarePrice.setOneOffDiscountPrice(oneOffDiscountPrice);
+				hardwarePrice.setHardwareId(hardwarePriceFromMap.getHardwareId());
+				hardwarePrice.setFinancingOptions(
+						getDeviceFinaceOptionsForHandsetOnlineModel(hardwarePriceFromMap.getFinancingOptions()));
+				priceForBundleAndHardware.setOneOffDiscountPrice(oneOffDiscountPrice);
+				priceForBundleAndHardware.setOneOffPrice(oneOffPrice);
+				priceForBundleAndHardware.setHardwarePrice(hardwarePrice);
+				priceForBundleAndHardware.setBundlePrice(bundlePriceLocal);
+				priceForBundleAndHardware.setMonthlyPrice(monthlyPrice);
+				priceForBundleAndHardware.setMonthlyDiscountPrice(monthlyPrice);
+			} else {
+				BundlePrice bundlePriceLocal = new BundlePrice();
+				Price monthlyPrice = new Price();
+				monthlyPrice.setGross(null);
+				monthlyPrice.setNet(null);
+				monthlyPrice.setVat(null);
+				bundlePriceLocal.setMonthlyPrice(monthlyPrice);
+				bundlePriceLocal.setMonthlyDiscountPrice(monthlyPrice);
+				Price oneOffDiscountPrice = new Price();
+				oneOffDiscountPrice.setGross(commonUtility
+						.getpriceFormat(Float.valueOf(hardwarePriceFromMap.getOneOffDiscountPrice().getGross())));
+				oneOffDiscountPrice.setNet(commonUtility
+						.getpriceFormat(Float.valueOf(hardwarePriceFromMap.getOneOffDiscountPrice().getNet())));
+				oneOffDiscountPrice.setVat(commonUtility
+						.getpriceFormat(Float.valueOf(hardwarePriceFromMap.getOneOffDiscountPrice().getVat())));
+				Price oneOffPrice = new Price();
+				oneOffPrice.setGross(
+						commonUtility.getpriceFormat(Float.valueOf(hardwarePriceFromMap.getOneOffPrice().getGross())));
+				oneOffPrice.setNet(
+						commonUtility.getpriceFormat(Float.valueOf(hardwarePriceFromMap.getOneOffPrice().getNet())));
+				oneOffPrice.setVat(
+						commonUtility.getpriceFormat(Float.valueOf(hardwarePriceFromMap.getOneOffPrice().getVat())));
+				hardwarePrice.setOneOffPrice(oneOffPrice);
+				hardwarePrice.setOneOffDiscountPrice(oneOffDiscountPrice);
+				hardwarePrice.setHardwareId(hardwarePriceFromMap.getHardwareId());
+				hardwarePrice.setFinancingOptions(
+						getDeviceFinaceOptionsForHandsetOnlineModel(hardwarePriceFromMap.getFinancingOptions()));
+				priceForBundleAndHardware.setOneOffDiscountPrice(oneOffDiscountPrice);
+				priceForBundleAndHardware.setOneOffPrice(oneOffPrice);
+				priceForBundleAndHardware.setHardwarePrice(hardwarePrice);
+				priceForBundleAndHardware.setBundlePrice(bundlePriceLocal);
+				priceForBundleAndHardware.setMonthlyPrice(monthlyPrice);
+				priceForBundleAndHardware.setMonthlyDiscountPrice(monthlyPrice);
+			}
+		}
+	}
 }

@@ -276,24 +276,33 @@ public class DeviceServiceImpl implements DeviceService {
 				throw new DeviceCustomException(ERROR_CODE_DEVICE_LIST,
 						ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_PRODUCT_LIST, "404");
 			}
-			List<String> pricePromoIds = new ArrayList<>();
-			getPricePromoIds(listOfProductModel, pricePromoIds, groupType, journeytype, offerCode);
-			List<PricePromotionHandsetPlanModel> priceForBundleAndHardware = null;
-			if (CollectionUtils.isNotEmpty(pricePromoIds)) {
-				priceForBundleAndHardware = getPrices(pricePromoIds);
+			List<String> pricePromoIdsWithOfferCode = new ArrayList<>();
+			List<String> pricePromoIdsWithoutOfferCode = new ArrayList<>();
+			getPricePromoIds(listOfProductModel, pricePromoIdsWithOfferCode, pricePromoIdsWithoutOfferCode, groupType,
+					journeytype, offerCode);
+			List<PricePromotionHandsetPlanModel> priceForBundleAndHardwareWithOffer = null;
+			List<PricePromotionHandsetPlanModel> priceForBundleAndHardwareWithoutOffer = null;
+			Map<String, PricePromotionHandsetPlanModel> mapForDeviceAndPriceForBAndWWIthOffer = null;
+			Map<String, PricePromotionHandsetPlanModel> mapForDeviceAndPriceForBAndWWIthoutOffer = null;
+			if (CollectionUtils.isNotEmpty(pricePromoIdsWithOfferCode)) {
+				priceForBundleAndHardwareWithOffer = getPrices(pricePromoIdsWithOfferCode);
+				mapForDeviceAndPriceForBAndWWIthOffer = priceForBundleAndHardwareWithOffer.stream()
+						.collect(Collectors.toMap(priceForBAndH -> priceForBAndH.getHardwarePrice().getHardwareId(),
+								priceForBAndH -> priceForBAndH, (priceForBAndH1, priceForBAndH2) -> priceForBAndH1));
 			}
-			if (priceForBundleAndHardware == null) {
-				log.error("No Data Found for the given list of Products : " + listOfProductModel);
-				throw new DeviceCustomException(ERROR_CODE_DEVICE_LIST, "No response from price", "404");
+			if (CollectionUtils.isNotEmpty(pricePromoIdsWithoutOfferCode)) {
+				priceForBundleAndHardwareWithoutOffer = getPrices(pricePromoIdsWithoutOfferCode);
+				mapForDeviceAndPriceForBAndWWIthoutOffer = priceForBundleAndHardwareWithoutOffer.stream()
+						.collect(Collectors.toMap(priceForBAndH -> priceForBAndH.getHardwarePrice().getHardwareId(),
+								priceForBAndH -> priceForBAndH, (priceForBAndH1, priceForBAndH2) -> priceForBAndH1));
 			}
-			Map<String, PricePromotionHandsetPlanModel> mapForDeviceAndPriceForBAndW = null;
-			mapForDeviceAndPriceForBAndW = priceForBundleAndHardware.stream()
-					.collect(Collectors.toMap(priceForBAndH -> priceForBAndH.getHardwarePrice().getHardwareId(),
-							priceForBAndH -> priceForBAndH, (priceForBAndH1, priceForBAndH2) -> priceForBAndH1));
+			throwExceptionIfPriceNull(listOfProductModel, priceForBundleAndHardwareWithOffer,
+					priceForBundleAndHardwareWithoutOffer);
 			facetList = deviceEntityModel.getFacetField();
 			facetedDevice = deviceTilesDaoUtils.convertProductModelListToDeviceListForHandsetOnlineModel(
 					listOfProductModel, listOfProducts, facetList, groupType, journeytype, productGroupdetailsMap,
-					cdnDomain, mapForDeviceAndPriceForBAndW, productGroupModelList);
+					cdnDomain, mapForDeviceAndPriceForBAndWWIthOffer, mapForDeviceAndPriceForBAndWWIthoutOffer,
+					productGroupModelList, offerCode);
 
 		} else {
 			log.error("No ProductGroups Found for the given search criteria : ");
@@ -301,6 +310,15 @@ public class DeviceServiceImpl implements DeviceService {
 					ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_SEARCH_CRITERIA_FOR_DEVICELIST, "404");
 		}
 		return facetedDevice;
+	}
+
+	private void throwExceptionIfPriceNull(List<com.vf.uk.dal.device.client.entity.catalogue.Device> listOfProductModel,
+			List<PricePromotionHandsetPlanModel> priceForBundleAndHardwareWithOffer,
+			List<PricePromotionHandsetPlanModel> priceForBundleAndHardwareWithoutOffer) {
+		if (priceForBundleAndHardwareWithOffer == null && priceForBundleAndHardwareWithoutOffer == null) {
+			log.error("No Data Found for the given list of Products : " + listOfProductModel);
+			throw new DeviceCustomException(ERROR_CODE_DEVICE_LIST, "No response from price", "404");
+		}
 	}
 
 	/**
@@ -460,14 +478,17 @@ public class DeviceServiceImpl implements DeviceService {
 	 * @param deviceOnlineModel
 	 * @param mapForDeviceAndColor
 	 * @param pricePromoIds
+	 * @param pricePromoIdsWithoutOfferCode
 	 * @param groupType
 	 * @param offerCode
 	 */
 	private void getPricePromoIds(List<com.vf.uk.dal.device.client.entity.catalogue.Device> listOfProductModel,
-			List<String> pricePromoIds, String groupType, String journeyContextLocal, String offerCode) {
+			List<String> pricePromoIdsWithOfferCode, List<String> pricePromoIdsWithoutOfferCode, String groupType,
+			String journeyContextLocal, String offerCode) {
 		listOfProductModel.stream().forEach(device -> {
 			if (isCompatibleProductLine(device.getProductLines(), groupType)) {
-				getPricePromoIdsForJourneys(pricePromoIds, device, journeyContextLocal, offerCode);
+				getPricePromoIdsForJourneys(pricePromoIdsWithOfferCode, pricePromoIdsWithoutOfferCode, device,
+						journeyContextLocal, offerCode, groupType);
 			}
 		});
 	}
@@ -475,31 +496,38 @@ public class DeviceServiceImpl implements DeviceService {
 	/**
 	 * 
 	 * @param pricePromoIds
+	 * @param pricePromoIdsWithoutOfferCode
 	 * @param device
 	 * @param journeyContextLocal
 	 * @param offerCode
+	 * @param groupType
 	 */
-	public void getPricePromoIdsForJourneys(List<String> pricePromoIds,
-			com.vf.uk.dal.device.client.entity.catalogue.Device device, String journeyContextLocal, String offerCode) {
+	public void getPricePromoIdsForJourneys(List<String> pricePromoIdsWithOfferCode,
+			List<String> pricePromoIdsWithoutOfferCode, com.vf.uk.dal.device.client.entity.catalogue.Device device,
+			String journeyContextLocal, String offerCode, String groupType) {
 		if (device.getNonUpgradeLeadPlanDetails() != null || device.getUpgradeLeadPlanDetails() != null) {
 			if (StringUtils.equalsIgnoreCase(journeyContextLocal, JOURNEY_TYPE_ACQUISITION)) {
-				pricePromoIds.add(getPricePromoIds(device.getDeviceId(),
-						device.getNonUpgradeLeadPlanDetails().getLeadPlanId(), JOURNEY_TYPE_ACQUISITION, "NA"));
+				pricePromoIdsWithoutOfferCode.add(
+						getPricePromoIds(device.getDeviceId(), device.getNonUpgradeLeadPlanDetails().getLeadPlanId(),
+								JOURNEY_TYPE_ACQUISITION, "NA", groupType));
 			} else if (StringUtils.equalsIgnoreCase(journeyContextLocal, JOURNEY_TYPE_UPGRADE)) {
 				if (StringUtils.isNotBlank(offerCode)) {
-					pricePromoIds.add(getPricePromoIds(device.getDeviceId(),
-							device.getUpgradeLeadPlanDetails().getLeadPlanId(), JOURNEY_TYPE_UPGRADE, offerCode));
+					pricePromoIdsWithOfferCode.add(
+							getPricePromoIds(device.getDeviceId(), device.getUpgradeLeadPlanDetails().getLeadPlanId(),
+									JOURNEY_TYPE_UPGRADE, offerCode, groupType));
 				} else {
-					pricePromoIds.add(getPricePromoIds(device.getDeviceId(),
-							device.getUpgradeLeadPlanDetails().getLeadPlanId(), JOURNEY_TYPE_UPGRADE, "NA"));
+					pricePromoIdsWithoutOfferCode.add(getPricePromoIds(device.getDeviceId(),
+							device.getUpgradeLeadPlanDetails().getLeadPlanId(), JOURNEY_TYPE_UPGRADE, "NA", groupType));
 				}
 			} else if (StringUtils.equalsIgnoreCase(journeyContextLocal, JOURNEY_TYPE_SECONDLINE)) {
 				if (StringUtils.isNotBlank(offerCode)) {
-					pricePromoIds.add(getPricePromoIds(device.getDeviceId(),
-							device.getNonUpgradeLeadPlanDetails().getLeadPlanId(), JOURNEY_TYPE_SECONDLINE, offerCode));
+					pricePromoIdsWithOfferCode.add(getPricePromoIds(device.getDeviceId(),
+							device.getNonUpgradeLeadPlanDetails().getLeadPlanId(), JOURNEY_TYPE_SECONDLINE, offerCode,
+							groupType));
 				} else {
-					pricePromoIds.add(getPricePromoIds(device.getDeviceId(),
-							device.getNonUpgradeLeadPlanDetails().getLeadPlanId(), JOURNEY_TYPE_SECONDLINE, "NA"));
+					pricePromoIdsWithoutOfferCode.add(getPricePromoIds(device.getDeviceId(),
+							device.getNonUpgradeLeadPlanDetails().getLeadPlanId(), JOURNEY_TYPE_SECONDLINE, "NA",
+							groupType));
 				}
 			}
 		}
@@ -513,9 +541,13 @@ public class DeviceServiceImpl implements DeviceService {
 	 * @param offerCode
 	 * @return
 	 */
-	public String getPricePromoIds(String deviceId, String leadPlanId, String journeyType, String offerCode) {
-
-		return "PricePromotionHandset_" + deviceId + "_" + leadPlanId + "_" + journeyType + "_" + offerCode;
+	public String getPricePromoIds(String deviceId, String leadPlanId, String journeyType, String offerCode,
+			String groupType) {
+		if (StringUtils.equalsIgnoreCase(STRING_DEVICE_PAYG, groupType)) {
+			return "PricePromotionHandset_" + deviceId + "_" + "NA" + "_" + journeyType + "_" + offerCode;
+		} else {
+			return "PricePromotionHandset_" + deviceId + "_" + leadPlanId + "_" + journeyType + "_" + offerCode;
+		}
 
 	}
 
