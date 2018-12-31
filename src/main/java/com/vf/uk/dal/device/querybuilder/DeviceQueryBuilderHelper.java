@@ -7,6 +7,7 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.IdsQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
@@ -641,4 +642,21 @@ public class DeviceQueryBuilderHelper {
 		}
 		return searchRequest;
 	}
+	public static SearchRequest searchQueryForPriceForBundleAndHardware(List<String> compatibleIds) {
+		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
+		try {
+			IdsQueryBuilder queryBuilder = QueryBuilders.idsQuery();
+			queryBuilder.ids().addAll(compatibleIds);
+			SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+			sourceBuilder.from(0);
+			sourceBuilder.size(compatibleIds.size());
+			sourceBuilder.query(queryBuilder);
+			searchRequest.source(sourceBuilder);
+		} catch (Exception e) {
+			log.error("::::::Exception in using Elasticsearch QueryBuilder :::::: " + e);
+		}
+		return searchRequest;
+
+	}
+	
 }

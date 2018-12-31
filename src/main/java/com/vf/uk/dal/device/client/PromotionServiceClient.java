@@ -34,7 +34,6 @@ public class PromotionServiceClient {
 			response = restTemplate.postForObject("http://PROMOTION-V1/promotion/queries/ForBundleAndHardware", request,
 					BundleAndHardwarePromotions[].class);
 		} catch (RestClientException e) {
-			// Stanley - Added error logging
 			log.error(e + "");
 			throw new DeviceCustomException(ERROR_CODE_DEVICE,ExceptionMessages.PROMOTION_API_EXCEPTION,"404");
 		}

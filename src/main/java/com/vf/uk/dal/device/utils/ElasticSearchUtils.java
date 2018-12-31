@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vf.uk.dal.device.client.converter.SingletonMapperUtility;
+import com.vf.uk.dal.device.model.PricePromotionHandsetPlanModel;
 import com.vf.uk.dal.device.model.productgroups.Count;
 import com.vf.uk.dal.device.model.productgroups.FacetField;
 
@@ -119,5 +120,16 @@ public class ElasticSearchUtils {
 			log.error("Exception occured while executing thread pool :" + e);
 		}
 		return res;
+	}
+	
+	public PricePromotionHandsetPlanModel getModelFromElasticSearchResponseForPrice(ObjectMapper objectMapper,
+			SearchHit hit) {
+		PricePromotionHandsetPlanModel model = null;
+		try {
+			model = objectMapper.readValue(hit.getSourceAsString(), PricePromotionHandsetPlanModel.class);
+		} catch (IOException e) {
+			log.error("Exception Inside getModelFromElasticSearchResponse ::" + e);
+		}
+		return model;
 	}
 }

@@ -5,7 +5,9 @@ import org.springframework.context.annotation.Bean;
 import com.vf.uk.dal.common.beans.Environment;
 import com.vf.uk.dal.common.configuration.DataSourceInitializer;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
+import com.vf.uk.dal.device.cache.bazaarvoice.BazaarVoiceCacheImplementation;
 import com.vf.uk.dal.device.client.BundleServiceClient;
+import com.vf.uk.dal.device.client.CatalogueServiceClient;
 import com.vf.uk.dal.device.client.CustomerServiceClient;
 import com.vf.uk.dal.device.client.PriceServiceClient;
 import com.vf.uk.dal.device.client.PromotionServiceClient;
@@ -28,6 +30,7 @@ import com.vf.uk.dal.device.service.DeviceRecommendationService;
 import com.vf.uk.dal.device.service.DeviceRecommendationServiceImpl;
 import com.vf.uk.dal.device.service.DeviceServiceImpl;
 import com.vf.uk.dal.device.utils.AccessoriesAndInsurancedaoUtils;
+import com.vf.uk.dal.device.utils.BazaarVoiceCache;
 import com.vf.uk.dal.device.utils.CacheDeviceDaoUtils;
 import com.vf.uk.dal.device.utils.CommonUtility;
 import com.vf.uk.dal.device.utils.DeviceConditionallHelper;
@@ -173,16 +176,26 @@ import com.vf.uk.dal.device.utils.Validator;
 		return new BundleServiceClient();
 	}
 	
+	@Bean public CatalogueServiceClient getCatalogueServiceClient()
+	{
+		return new CatalogueServiceClient();
+	}
 	@Bean public CustomerServiceClient getCustomerServiceClient()
 	{
 		return new CustomerServiceClient();
 	}
-	
 	@Bean public PriceServiceClient getPriceServiceClient()
 	{
 		return new PriceServiceClient();
 	}
-	
+	@Bean public BazaarVoiceCacheImplementation getBazaarVoiceCacheImplementation()
+	{
+		return new BazaarVoiceCacheImplementation();
+	}
+	@Bean public BazaarVoiceCache getBazaarVoiceCache()
+	{
+		return new BazaarVoiceCache();
+	}
 	@Bean public PromotionServiceClient getPromotionServiceClient()
 	{
 		return new PromotionServiceClient();
