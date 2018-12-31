@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ import com.vf.uk.dal.device.client.entity.price.DeviceFinancingOption;
 import com.vf.uk.dal.device.client.entity.price.HardwarePrice;
 import com.vf.uk.dal.device.client.entity.price.Price;
 import com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware;
+import com.vf.uk.dal.device.model.product.CommercialProduct;
 import com.vf.uk.dal.device.model.solr.DevicePreCalculatedData;
 import com.vf.uk.dal.device.model.solr.Media;
 import com.vf.uk.dal.device.model.solr.MonthlyDiscountPrice;
@@ -57,6 +59,9 @@ public class CacheDeviceDaoUtils {
 	public static final String PROMO_CATEGORY_PRICING_SECONDLINE_DISCOUNT = "Pricing_SecondLine_Discount";
 	public static final String JOURNEY_TYPE_UPGRADE = "Upgrade";
 	public static final String JOURNEY_TYPE_SECONDLINE = "SecondLine";
+	public static final String STRING_COLOUR = "Colour";
+	public static final String STRING_HEXVALUE = "HexValue";
+	public static final String STRING_CAPACITY = "Capacity";
 
 	/**
 	 * @author krishna.reddy @Sprint-6.6
@@ -95,13 +100,16 @@ public class CacheDeviceDaoUtils {
 	public DevicePreCalculatedData convertBundleHeaderForDeviceToProductGroupForDeviceListing(String deviceId,
 			String leadPlanId, String groupname, String groupId,
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware, Map<String, String> leadMemberMap,
-			Map<String, String> leadMemberMapForUpgrade, String upgradeLeadPlanId, String groupType) {
+			Map<String, String> leadMemberMapForUpgrade, String upgradeLeadPlanId, String groupType,CommercialProduct commercialProduct) {
 		DevicePreCalculatedData productGroupForDeviceListing = null;
 		productGroupForDeviceListing = new DevicePreCalculatedData();
 		productGroupForDeviceListing.setDeviceId(deviceId);
 		productGroupForDeviceListing.setGroupType(groupType);
 		productGroupForDeviceListing.setProductGroupName(groupname);
-
+		String acqColor=null;
+		String upgradeColor=null;
+		String acqCapacity=null;
+		String upgradeCapacity=null;
 		if (StringUtils.equalsIgnoreCase(groupType, STRING_DEVICE_PAYM)) {
 			productGroupForDeviceListing.setPaymProductGroupId(groupId);
 		}
@@ -119,6 +127,14 @@ public class CacheDeviceDaoUtils {
 				&& leadMemberMapForUpgrade.containsKey(deviceId)) {
 			productGroupForDeviceListing.setUpgradeLeadDeviceId(deviceId);
 		}
+		/*** newly added logic for capacity and colour*/
+		getColorAndCapacityBasedOnJourney(commercialProduct, acqColor,
+				 upgradeColor, acqCapacity, upgradeCapacity);
+		productGroupForDeviceListing.setColorNameAndHex(acqColor);
+		productGroupForDeviceListing.setColorNameAndHexUpgrade(upgradeColor);
+		productGroupForDeviceListing.setSize(acqCapacity);
+		productGroupForDeviceListing.setSizeUpgrade(upgradeCapacity);
+		/** new added logic end*/
 		if ((StringUtils.isNotBlank(leadPlanId) && StringUtils.equalsIgnoreCase(groupType, STRING_DEVICE_PAYM))
 				|| StringUtils.equalsIgnoreCase(groupType, STRING_DEVICE_PAYG)) {
 			PriceForBundleAndHardware priceForBundleAndHardware1 = listOfPriceForBundleAndHardware.get(0);
@@ -964,6 +980,11 @@ public class CacheDeviceDaoUtils {
 			deviceListObject.setNonUpgradeLeadDeviceId(preCalList.getNonUpgradeLeadDeviceId());
 			deviceListObject.setUpgradeLeadDeviceId(preCalList.getUpgradeLeadDeviceId());
 			deviceListObject.setIsLeadMember(preCalList.getIsLeadMember());
+			/** newly added logic for colour and capacity*/
+			deviceListObject.setColorNameAndHex(preCalList.getColorNameAndHex());
+			deviceListObject.setColorNameAndHexUpgrade(preCalList.getColorNameAndHexUpgrade());
+			deviceListObject.setSize(preCalList.getSize());
+			deviceListObject.setSizeUpgrade(preCalList.getSizeUpgrade());
 			if (preCalList.getMinimumCost() != null) {
 				deviceListObject.setMinimumCost(Float.valueOf(preCalList.getMinimumCost()));
 			}
@@ -1226,5 +1247,87 @@ public class CacheDeviceDaoUtils {
 			monthlyPrice.setVat(Float.valueOf(mnthlyPrice.getVat()));
 		}
 	}
+	private void getColorAndCapacityBasedOnJourney(CommercialProduct commercialProduct, String acqColor,
+			String upgradeColor, String acqCapacity, String upgradeCapacity) {
+		boolean isAcqSecnd = false;
+		boolean isUpgrade = false;
+		if (commercialProduct.getProductControl() != null) {
+			boolean disPlayableAcq = commercialProduct.getProductControl().isDisplayableAcq();
+			boolean sellableAcq = commercialProduct.getProductControl().isSellableAcq() ;
+			boolean disPlayableRet = commercialProduct.getProductControl().isDisplayableRet();
+			boolean sellableRet = commercialProduct.getProductControl().isSellableRet();
+			isAcqSecnd = disPlayableAcq && sellableAcq;
+			isUpgrade = disPlayableRet && sellableRet;
+		}
+		if (commercialProduct.getSpecificationGroups() != null
+				&& CollectionUtils.isNotEmpty(commercialProduct.getSpecificationGroups())) {
 
+			for (com.vf.uk.dal.device.model.product.Group specificationGroup : commercialProduct
+					.getSpecificationGroups()) {
+				if (specificationGroup.getGroupName().equalsIgnoreCase(STRING_COLOUR)) {
+					List<com.vf.uk.dal.device.model.product.Specification> listOfSpec = specificationGroup
+							.getSpecifications();
+
+					if (listOfSpec != null && !listOfSpec.isEmpty()) {
+						String colorHexAcq = null;
+						String colorValueAcq = null;
+						String colorHexUpgrd = null;
+						String colorValueUpgrd = null;
+						for (com.vf.uk.dal.device.model.product.Specification spec : listOfSpec) {
+							if (commercialProduct.getProductControl() != null) {
+								if (spec.getName().equalsIgnoreCase(STRING_COLOUR)) {
+									if (isAcqSecnd) {
+										colorValueAcq = spec.getValue();
+									}
+									if (isUpgrade) {
+										colorValueUpgrd = spec.getValue();
+									}
+								}
+								if (spec.getName().equalsIgnoreCase(STRING_HEXVALUE)) {
+									if (isAcqSecnd) {
+										colorHexAcq = spec.getValue();
+									}
+									if (isUpgrade) {
+										colorHexUpgrd = spec.getValue();
+									}
+
+								}
+							}
+						}
+						if (StringUtils.isNotBlank(colorHexAcq) && StringUtils.isNotBlank(colorValueAcq)) {
+							acqColor=colorValueAcq + "|" + colorHexAcq;
+						}
+						if (StringUtils.isNotBlank(colorHexUpgrd) && StringUtils.isNotBlank(colorValueUpgrd)) {
+							upgradeColor=colorValueAcq + "|" + colorHexAcq;
+						}
+					}
+				}
+				if (specificationGroup.getGroupName().equalsIgnoreCase(STRING_CAPACITY)) {
+					List<com.vf.uk.dal.device.model.product.Specification> listOfSpec = specificationGroup
+							.getSpecifications();
+					if (listOfSpec != null && !listOfSpec.isEmpty()) {
+						String capacityAcq = null;
+						String capacityUpgrd = null;
+						for (com.vf.uk.dal.device.model.product.Specification spec : listOfSpec) {
+							if (spec.getName().equalsIgnoreCase(STRING_CAPACITY)) {
+								if (isAcqSecnd) {
+									capacityAcq = spec.getValue() + " " + spec.getValueUOM();
+								}
+								if (isUpgrade) {
+									capacityUpgrd = spec.getValue() + " " + spec.getValueUOM();
+								}
+							}
+						}
+						if (StringUtils.isNotBlank(capacityAcq)) {
+							acqCapacity=capacityAcq;
+						}
+						if (StringUtils.isNotBlank(capacityUpgrd)) {
+							upgradeCapacity=capacityUpgrd;
+						}
+					}
+				}
+
+			}
+		}
+	}
 }

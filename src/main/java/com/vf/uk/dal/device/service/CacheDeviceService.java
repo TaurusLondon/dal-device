@@ -11,6 +11,7 @@ import com.vf.uk.dal.device.client.entity.bundle.CommercialBundle;
 import com.vf.uk.dal.device.client.entity.price.BundleAndHardwareTuple;
 import com.vf.uk.dal.device.client.entity.price.PriceForBundleAndHardware;
 import com.vf.uk.dal.device.model.CacheDeviceTileResponse;
+import com.vf.uk.dal.device.model.product.CommercialProduct;
 import com.vf.uk.dal.device.model.solr.DevicePreCalculatedData;
 /**
  * 
@@ -129,5 +130,5 @@ public interface CacheDeviceService {
 			Map<String, List<String>> listOfCimpatiblePlanMap,
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware,
 			Map<String, List<BundleAndHardwareTuple>> bundleHardwareTroupleMap,
-			Map<String, List<PriceForBundleAndHardware>> iLSPriceMap, String deviceId);
+			Map<String, List<PriceForBundleAndHardware>> iLSPriceMap, String deviceId,CommercialProduct commercialProduct);
 }
