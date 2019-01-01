@@ -91,6 +91,9 @@ Parameters:
     Type: String  
   springmetricsexportenabled:
     Description: Flag to disable export of spring boot metrics to CloudWatch!
+    Type: String
+  cacheDevicehandsetOnlineModelenabled:
+    Description: Flag to disable handset online model
     Type: String  
 Resources:
   ListenerRule:
@@ -165,7 +168,9 @@ Resources:
             - Name: cloud_aws_cloudwatch_namespace
               Value: !Ref 'AWS::StackName'
             - Name: spring_metrics_export_enabled
-              Value: !Ref 'springmetricsexportenabled'  
+              Value: !Ref 'springmetricsexportenabled'
+            - Name: cacheDevice_handsetOnlineModel_enabled
+              Value: !Ref 'cacheDevicehandsetOnlineModelenabled'  
           Memory: !Ref 'Memory'
           MemoryReservation: !Ref 'MemoryReservation'
           Image: !Sub '${EcrLocation}/${BuildName}:${BuildID}'
