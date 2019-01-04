@@ -369,20 +369,6 @@ public class DeviceServiceImpl implements DeviceService {
 				}
 			}
 		}
-		/*
-		 * else { List<String> variantsList =
-		 * productGroupModel.getListOfVariants(); if (variantsList != null &&
-		 * !variantsList.isEmpty()) { List<com.vf.uk.dal.device.model.Member>
-		 * listOfMember = deviceServiceImplUtility
-		 * .getListOfMembers(variantsList); String leadMember =
-		 * getMemeberBasedOnRules1(listOfMember, journeyType); if
-		 * (StringUtils.isNotBlank(leadMember)) {
-		 * groupNameWithProdId.put(leadMember,
-		 * productGroupModel.getProductGroupName());
-		 * listOfProducts.add(leadMember); deviceServiceImplUtility.
-		 * getProductGroupdetailsMapForHandsetOnlineModel(productGroupModel,
-		 * productGroupdetailsMap, leadMember); } } }
-		 */
 	}
 
 	/**
