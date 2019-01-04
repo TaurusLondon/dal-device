@@ -167,11 +167,20 @@ public class DeviceServiceImplUtility {
 	 * @param productGroupModel
 	 * @param productGroupdetailsMap
 	 * @param deviceId
+	 * @param journeyType 
 	 */
 	public void getProductGroupdetailsMap(ProductGroupModel productGroupModel,
-			Map<String, ProductGroupDetailsForDeviceList> productGroupdetailsMap, String deviceId) {
+			Map<String, ProductGroupDetailsForDeviceList> productGroupdetailsMap, String deviceId, String journeyType) {
 		ProductGroupDetailsForDeviceList groupDetails = new ProductGroupDetailsForDeviceList();
-		List<String> colourHex = productGroupModel.getHexCode();
+		List<String> colourHex = new ArrayList<>();
+		List<String> size = new ArrayList<>();
+		if (StringUtils.equalsIgnoreCase(journeyType, JOURNEY_TYPE_UPGRADE)) {
+			colourHex.addAll(productGroupModel.getUpgradeColor());
+			size.addAll(productGroupModel.getUpgradeCapacity());
+		} else {
+			colourHex.addAll(productGroupModel.getAcqColor());
+			size.addAll(productGroupModel.getAcqCapacity());
+		}
 		List<Colour> colours = new ArrayList<>();
 		if (CollectionUtils.isNotEmpty(colourHex)) {
 			colourHex.forEach(colour -> {
@@ -187,7 +196,7 @@ public class DeviceServiceImplUtility {
 		groupDetails.setGroupName(productGroupModel.getName());
 		groupDetails.setGroupId(productGroupModel.getId());
 		groupDetails.setColor(colours);
-		groupDetails.setSize(productGroupModel.getCapacity());
+		groupDetails.setSize(size);
 		productGroupdetailsMap.put(deviceId, groupDetails);
 
 	}
@@ -197,22 +206,32 @@ public class DeviceServiceImplUtility {
 	 * @param productGroupModel
 	 * @param productGroupdetailsMap
 	 * @param deviceId
+	 * @param journeyType
 	 */
 	public void getProductGroupdetailsMapForHandsetOnlineModel(DeviceOnlineModel productGroupModel,
-			Map<String, ProductGroupDetailsForDeviceList> productGroupdetailsMap, String deviceId) {
+			Map<String, ProductGroupDetailsForDeviceList> productGroupdetailsMap, String deviceId, String journeyType) {
 		ProductGroupDetailsForDeviceList groupDetails = new ProductGroupDetailsForDeviceList();
 		List<Colour> colours = new ArrayList<>();
-		productGroupModel.getColorNameAndHex().stream().forEach(colourHex->{
-			Colour color = new Colour();
-			color.setColorName(colourHex.getColorName());
-			color.setColorHex(colourHex.getColorHex());
-			colours.add(color);
-		});
-		
+		if (StringUtils.equalsIgnoreCase(journeyType, JOURNEY_TYPE_UPGRADE)) {
+			productGroupModel.getColorNameAndHexUpgrade().stream().forEach(colourHex -> {
+				Colour color = new Colour();
+				color.setColorName(colourHex.getColorName());
+				color.setColorHex(colourHex.getColorHex());
+				colours.add(color);
+			});
+			groupDetails.setSize(productGroupModel.getSizeUpgrade());
+		} else {
+			productGroupModel.getColorNameAndHex().stream().forEach(colourHex -> {
+				Colour color = new Colour();
+				color.setColorName(colourHex.getColorName());
+				color.setColorHex(colourHex.getColorHex());
+				colours.add(color);
+			});
+			groupDetails.setSize(productGroupModel.getSize());
+		}
 		groupDetails.setGroupName(productGroupModel.getProductGroupName());
 		groupDetails.setGroupId(productGroupModel.getProductGroupId().toString());
 		groupDetails.setColor(colours);
-		groupDetails.setSize(productGroupModel.getSize());
 		productGroupdetailsMap.put(deviceId, groupDetails);
 
 	}
@@ -266,6 +285,7 @@ public class DeviceServiceImplUtility {
 			bundleHardwareTupleList.add(bundleAndHardwareTuple);
 		}
 	}
+
 	/**
 	 * 
 	 * @param journeyType

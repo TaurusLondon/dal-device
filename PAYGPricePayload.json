@@ -1,0 +1,326 @@
+{
+  "offerCode" : null,
+  "packageType" : null,
+  "bundleAndHardwareList" : [ {
+    "hardwareId" : "095523",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "090860",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "090849",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "094665",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "094676",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "094864",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "090408",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "090397",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "200394",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "095392",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "096286",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "097500",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "097661",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "202804",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "202824",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "092612",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "096195",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "097442",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "091272",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "200406",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "200490",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "097673",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "097697",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "202844",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "202868",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "200382",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "095455",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "095466",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "092623",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "092656",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "097478",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "088472",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "095534",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "095545",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "094371",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "094397",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "090803",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "094421",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "094985",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "089146",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "200418",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "200430",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "095009",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "089181",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "202814",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "202856",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "097709",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "095223",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "202794",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "095418",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "088439",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "094443",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "093412",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "094630",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "093423",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "094902",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "094974",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "091250",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "092579",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "091261",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "092734",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "095042",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "200514",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "097685",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "202834",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "095477",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "095488",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "088417",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "088450",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "095512",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "095501",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "094384",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "090973",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "094687",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "094915",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "094928",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "094889",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "091182",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "097490",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "097466",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "090871",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "094358",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "094410",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "094432",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "083928",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "094709",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "094998",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "092601",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "097454",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "091239",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "092590",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "092746",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "097510",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "097520",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "091377",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "200466",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "091397",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "097649",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "090318",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "090364",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "090386",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "090375",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "088281",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "095444",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "088406",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "088428",
+    "bundleId" : null
+  }, {
+    "hardwareId" : "088461",
+    "bundleId" : null
+  } ]
+}

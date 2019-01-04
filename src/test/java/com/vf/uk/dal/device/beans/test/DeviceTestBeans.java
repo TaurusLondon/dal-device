@@ -21,6 +21,7 @@ import com.vf.uk.dal.device.controller.DeviceMakeAndModelController;
 import com.vf.uk.dal.device.dao.DeviceDao;
 import com.vf.uk.dal.device.dao.DeviceDaoImpl;
 import com.vf.uk.dal.device.dao.DeviceTileCacheDAOImpl;
+import com.vf.uk.dal.device.querybuilder.DeviceQueryBuilderHelper;
 import com.vf.uk.dal.device.service.AccessoryInsuranceServiceImpl;
 import com.vf.uk.dal.device.service.CacheDeviceServiceImpl;
 import com.vf.uk.dal.device.service.DeviceDetailsServiceImpl;
@@ -218,4 +219,9 @@ import com.vf.uk.dal.device.utils.Validator;
 	@Bean public Validator getValidator() {
 		return new Validator();
 	}
+	@Bean public DeviceQueryBuilderHelper getDeviceQueryBuilderHelper() {
+		return new DeviceQueryBuilderHelper();
+	}
+	
+	
 }

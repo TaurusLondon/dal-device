@@ -57,4 +57,8 @@ public class MerchandisingPromotion {
 	/** The promotion media. */
 	@JsonProperty("promotionMedia")
 	private String promotionMedia = null;
+    
+    private String startDate;
+    
+    private String endDate;
 }

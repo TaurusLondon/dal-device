@@ -298,7 +298,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 	 * @author manoj.bera
 	 *
 	 */
-	static class SortedExtrasGroupPriorityList implements Comparator<Group> {
+	class SortedExtrasGroupPriorityList implements Comparator<Group> {
 
 		@Override
 		public int compare(Group member1, Group member2) {
@@ -344,7 +344,7 @@ public class AccessoryInsuranceServiceImpl implements AccessoryInsuranceService 
 		return listOfDeviceGroupMember;
 	}
 
-	static class SortedAccessoryPriorityList implements Comparator<Member> {
+	class SortedAccessoryPriorityList implements Comparator<Member> {
 
 		@Override
 		public int compare(Member member1, Member member2) {

@@ -13,6 +13,7 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
+import org.springframework.stereotype.Service;
 
 import com.vf.uk.dal.common.configuration.ConfigHelper;
 import com.vf.uk.dal.device.aspect.CatalogServiceAspect;
@@ -25,10 +26,13 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Slf4j
+@Service
 public class DeviceQueryBuilderHelper {
 	
-	private DeviceQueryBuilderHelper(){
-		
+	public DeviceQueryBuilderHelper(){
+		/**
+		 * constructor
+		 */
 	}
 
 	public static final String ELASTIC_SEARCH_INDEX_SIZE = "ELASTIC_SEARCH_INDEX_SIZE";
@@ -95,7 +99,7 @@ public class DeviceQueryBuilderHelper {
 	 * @param model
 	 * @return SearchRequest
 	 */
-	public static SearchRequest searchQueryForMakeAndModel(String make, String model) {
+	public SearchRequest searchQueryForMakeAndModel(String make, String model) {
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		try {
@@ -120,7 +124,7 @@ public class DeviceQueryBuilderHelper {
 	 * @param groupType
 	 * @return SearchRequest
 	 */
-	public static SearchRequest searchQueryForProductGroup(String groupType) {
+	public SearchRequest searchQueryForProductGroup(String groupType) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
 		try {
@@ -145,7 +149,7 @@ public class DeviceQueryBuilderHelper {
 	 * @param groupType
 	 * @return SearchRequest
 	 */
-	public static SearchRequest searchQueryForProductGroupWithGroupName(String groupName, String groupType) {
+	public SearchRequest searchQueryForProductGroupWithGroupName(String groupName, String groupType) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
 		try {
@@ -171,7 +175,7 @@ public class DeviceQueryBuilderHelper {
 	 * @param type
 	 * @return
 	 */
-	public static SearchRequest searchQueryForCommercialProductAndCommercialBundle(String id, String type) {
+	public SearchRequest searchQueryForCommercialProductAndCommercialBundle(String id, String type) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
 		try {
@@ -196,7 +200,7 @@ public class DeviceQueryBuilderHelper {
 	 * @param type
 	 * @return
 	 */
-	public static SearchRequest searchQueryForListOfCommercialProductAndCommercialBundle(List<String> idsOrNames,
+	public SearchRequest searchQueryForListOfCommercialProductAndCommercialBundle(List<String> idsOrNames,
 			String type) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
@@ -227,7 +231,7 @@ public class DeviceQueryBuilderHelper {
 	 * @param listOfDeviceIds
 	 * @return SearchRequest
 	 */
-	public static SearchRequest searchQueryForProductGroupByIds(List<String> listOfDeviceIds) {
+	public SearchRequest searchQueryForProductGroupByIds(List<String> listOfDeviceIds) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
 		try {
@@ -253,7 +257,7 @@ public class DeviceQueryBuilderHelper {
 	 * @param groupType
 	 * @return SearchRequest
 	 */
-	public static SearchRequest searchQueryForProductGroupByGroupType(String groupType) {
+	public SearchRequest searchQueryForProductGroupByGroupType(String groupType) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
 		try {
@@ -278,7 +282,7 @@ public class DeviceQueryBuilderHelper {
 	 * @param promotionAsTags
 	 * @return SearchRequest
 	 */
-	public static SearchRequest searchQueryForMerchandisingByTagName(List<String> promotionAsTags) {
+	public SearchRequest searchQueryForMerchandisingByTagName(List<String> promotionAsTags) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
 		try {
@@ -303,7 +307,7 @@ public class DeviceQueryBuilderHelper {
 	 * @param promotionAsTags
 	 * @return SearchRequest
 	 */
-	public static SearchRequest searchQueryForMerchandisingBySingleTagName(String promotionAsTag) {
+	public SearchRequest searchQueryForMerchandisingBySingleTagName(String promotionAsTag) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
 		try {
@@ -327,7 +331,7 @@ public class DeviceQueryBuilderHelper {
 	 * @param groupName
 	 * @return
 	 */
-	public static SearchRequest searchQueryForMerchandisingPromotionModel(List<String> journeyType, String groupName) {
+	public SearchRequest searchQueryForMerchandisingPromotionModel(List<String> journeyType, String groupName) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
 		try {
@@ -362,7 +366,7 @@ public class DeviceQueryBuilderHelper {
 	 * @param journeyType
 	 * @return SearchRequest
 	 */
-	public static SearchRequest searchQueryForProductGroupModel(String groupType, String make, String capacity,
+	public SearchRequest searchQueryForProductGroupModel(String groupType, String make, String capacity,
 			String colour, String operatingSystem, String mustHaveFeatures, String sortBy, String sortOption,
 			Integer pageNumber, Integer pageSize, String journeyType) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
@@ -404,7 +408,7 @@ public class DeviceQueryBuilderHelper {
 	 * @param mustHaveFeatures
 	 * @return BoolQueryBuilder
 	 */
-	private static BoolQueryBuilder getFilterCriteria(String make, String capacity, String colour,
+	private BoolQueryBuilder getFilterCriteria(String make, String capacity, String colour,
 			String operatingSystem, String mustHaveFeatures) {
 		BoolQueryBuilder qb = QueryBuilders.boolQuery();
 		if (StringUtils.isNotBlank(make)) {
@@ -437,7 +441,7 @@ public class DeviceQueryBuilderHelper {
 	 * @param journeyType
 	 * @return SearchRequest
 	 */
-	public static SearchRequest searchQueryForFacetCount(String groupType, String journeyType) {
+	public SearchRequest searchQueryForFacetCount(String groupType, String journeyType) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
 		try {
@@ -484,7 +488,7 @@ public class DeviceQueryBuilderHelper {
 	 * @param deviceIds
 	 * @return SearchRequest
 	 */
-	public static SearchRequest searchQueryForProductModel(List<String> deviceIds) {
+	public SearchRequest searchQueryForProductModel(List<String> deviceIds) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
 		try {
@@ -509,7 +513,7 @@ public class DeviceQueryBuilderHelper {
 	 * @param bundleIds
 	 * @return SearchRequest
 	 */
-	public static SearchRequest searchQueryForBundleModel(List<String> bundleIds) {
+	public SearchRequest searchQueryForBundleModel(List<String> bundleIds) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
 		try {
@@ -536,7 +540,7 @@ public class DeviceQueryBuilderHelper {
 	 * @param offerCode
 	 * @return SearchRequest
 	 */
-	public static SearchRequest searchQueryForOfferAppliedPriceModel(List<String> deviceIds, String journeyType,
+	public SearchRequest searchQueryForOfferAppliedPriceModel(List<String> deviceIds, String journeyType,
 			String offerCode) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
@@ -565,7 +569,7 @@ public class DeviceQueryBuilderHelper {
 	 * @param groupType
 	 * @return SearchRequest
 	 */
-	public static SearchRequest searchQueryForProductGroupModelForDeliverMethod(Set<String> displayNames,
+	public SearchRequest searchQueryForProductGroupModelForDeliverMethod(Set<String> displayNames,
 			String groupType) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
@@ -592,7 +596,7 @@ public class DeviceQueryBuilderHelper {
 	 * @param type
 	 * @return SearchRequest
 	 */
-	public static SearchRequest searchQueryForListOfCommercialBundle(List<String> idsOrNames, String type) {
+	public SearchRequest searchQueryForListOfCommercialBundle(List<String> idsOrNames, String type) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
 		try {
@@ -622,7 +626,7 @@ public class DeviceQueryBuilderHelper {
 	 * @param type
 	 * @return SearchRequest
 	 */
-	public static SearchRequest searchQueryForCommercialBundle(String id, String type) {
+	public SearchRequest searchQueryForCommercialBundle(String id, String type) {
 		SearchSourceBuilder searchRequestBuilder = new SearchSourceBuilder();
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
 
@@ -642,7 +646,7 @@ public class DeviceQueryBuilderHelper {
 		}
 		return searchRequest;
 	}
-	public static SearchRequest searchQueryForPriceForBundleAndHardware(List<String> compatibleIds) {
+	public SearchRequest searchQueryForPriceForBundleAndHardware(List<String> compatibleIds) {
 		SearchRequest searchRequest = new SearchRequest(CatalogServiceAspect.CATALOG_VERSION.get());
 		try {
 			IdsQueryBuilder queryBuilder = QueryBuilders.idsQuery();
