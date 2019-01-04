@@ -2,6 +2,7 @@ package com.vf.uk.dal.device.model.productgroups;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -59,6 +60,15 @@ public class ProductGroupModel {
 	
 	@JsonProperty("capacity")
 	private List<String> capacity;
+	
+	/** color for acq journey */
+	Set<String> acqColor;
+	/** color for upgrade journey */
+	Set<String> upgradeColor; 
+	/** capacity for acq journey */
+	Set<String> acqCapacity; 
+	/** capacity for upgrade journey */
+	Set<String> upgradeCapacity;
 	
 	@JsonProperty("operatingSystem")
 	private List<String> operatingSystem;

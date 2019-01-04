@@ -776,7 +776,7 @@ public class DeviceTest {
 			deviceLists = deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYM", "Priority", 0, 9,
 					"32 GB", "White", "iOS", "Great Camera", null, null, null, "447582367723", true);
 			Assert.assertNotNull(deviceLists);
-			assertEquals("088410", deviceLists.getDevice().get(0).getDeviceId());
+			assertEquals("097513", deviceLists.getDevice().get(0).getDeviceId());
 			assertEquals("Handset", deviceLists.getDevice().get(0).getProductClass());
 		}
 	}
@@ -897,7 +897,7 @@ public class DeviceTest {
 					"Priority", 0, 9, "32 GB", "White", "iOS", "Great Camera", "Upgrade", null, "W_HH_PAYM_OC_01",
 					"447582367723", true);
 			Assert.assertNotNull(deviceLists);
-			assertEquals("088410", deviceLists.getDevice().get(0).getDeviceId());
+			assertEquals("097513", deviceLists.getDevice().get(0).getDeviceId());
 			assertEquals("Handset", deviceLists.getDevice().get(0).getProductClass());
 		}
 	}
@@ -1284,13 +1284,10 @@ public class DeviceTest {
 		deviceUtils.getLeadPlanGroupPriceMap(leadPlanIdPriceMap, priceMap, CommonMethods.getPrice(), "093353",
 				"apple-iphone");
 		priceMap.put("093353", CommonMethods.getPriceForBundleAndHardwareForCacheDeviceTile());
-		cacheDeviceServiceImpl.getILSPriceMap(listOfOfferCodes, commercialBundleMap, listOfCimpatiblePlanMap,
+		cacheDeviceServiceImpl.getIlsPriceMap(listOfOfferCodes, commercialBundleMap, listOfCimpatiblePlanMap,
 				bundleHardwareTroupleMap, "093353", "110015");
 		cacheDeviceServiceImpl.getLeadPlanGroupPriceMap(leadPlanIdPriceMap, priceMap, listOfPriceForBundleAndHardware,
 				"093353", "apple-iphone", "110015");
-		cacheDeviceServiceImpl.getUpgradeLeadPlanIdForPaymDevice(priceMap, commercialBundleMap, "093353", "");
-		cacheDeviceServiceImpl.getNonUpgradeLeadPlanIdForPaymDevice(priceMap, priceMap, commercialBundleMap,
-				listOfPriceForBundleAndHardware, "093353", "apple-iphone", "");
 	}
 
 	@Test

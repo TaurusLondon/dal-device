@@ -234,10 +234,13 @@ public class DeviceServiceImpl implements DeviceService {
 			int pageSize, String capacity, String colour, String operatingSystem, String mustHaveFeatures,
 			String offerCode, String journeytype) {
 		FacetedDevice facetedDevice;
+		log.info("handset Online Model Enabled Flag {}", handsetOnlineModelEnabled);
 		if (handsetOnlineModelEnabled) {
+			log.info("Start -->  calling  getDeviceList HandsetOnlineModel in ServiceImpl");
 			facetedDevice = getDeviceListofFacetedDeviceFromHandsetOnlineModel(make, groupType, sortCriteria,
 					pageNumber, pageSize, capacity, colour, operatingSystem, mustHaveFeatures, journeytype, offerCode);
 		} else {
+			log.info("Start -->  calling  getDeviceList From CacheDevice in ServiceImpl");
 			facetedDevice = getDeviceListofFacetedDevice(make, groupType, sortCriteria, pageNumber, pageSize, capacity,
 					colour, operatingSystem, mustHaveFeatures, journeytype, offerCode);
 		}
@@ -350,13 +353,13 @@ public class DeviceServiceImpl implements DeviceService {
 							&& !StringUtils.equalsIgnoreCase(journeyType, JOURNEY_TYPE_UPGRADE)))) {
 				listOfProducts.add(productGroupModelList.getLeadNonUpgradeDeviceId());
 				deviceServiceImplUtility.getProductGroupdetailsMapForHandsetOnlineModel(productGroupModelList,
-						productGroupdetailsMap, productGroupModelList.getLeadNonUpgradeDeviceId());
+						productGroupdetailsMap, productGroupModelList.getLeadNonUpgradeDeviceId(),journeyType);
 			} else if (StringUtils.isNotBlank(productGroupModelList.getLeadUpgradeDeviceId())
 					&& StringUtils.isNotBlank(journeyType)
 					&& StringUtils.equalsIgnoreCase(journeyType, JOURNEY_TYPE_UPGRADE)) {
 				listOfProducts.add(productGroupModelList.getLeadUpgradeDeviceId());
 				deviceServiceImplUtility.getProductGroupdetailsMapForHandsetOnlineModel(productGroupModelList,
-						productGroupdetailsMap, productGroupModelList.getLeadUpgradeDeviceId());
+						productGroupdetailsMap, productGroupModelList.getLeadUpgradeDeviceId(),journeyType);
 			}
 		}
 		for (DeviceOnlineModel productGroupModelList : productGroupModel) {
@@ -1046,14 +1049,14 @@ public class DeviceServiceImpl implements DeviceService {
 			listOfProducts.add(productGroupModel.getNonUpgradeLeadDeviceId());
 			isLeadMemberFromSolr.put(LEAD_MEMBER, true);
 			deviceServiceImplUtility.getProductGroupdetailsMap(productGroupModel, productGroupdetailsMap,
-					productGroupModel.getNonUpgradeLeadDeviceId());
+					productGroupModel.getNonUpgradeLeadDeviceId(),journeyType);
 		} else if (StringUtils.isNotBlank(productGroupModel.getUpgradeLeadDeviceId())
 				&& StringUtils.isNotBlank(journeyType)
 				&& StringUtils.equalsIgnoreCase(journeyType, JOURNEY_TYPE_UPGRADE)) {
 			listOfProducts.add(productGroupModel.getUpgradeLeadDeviceId());
 			isLeadMemberFromSolr.put(LEAD_MEMBER, true);
 			deviceServiceImplUtility.getProductGroupdetailsMap(productGroupModel, productGroupdetailsMap,
-					productGroupModel.getUpgradeLeadDeviceId());
+					productGroupModel.getUpgradeLeadDeviceId(),journeyType);
 		} else {
 			List<String> variantsList = productGroupModel.getListOfVariants();
 			if (variantsList != null && !variantsList.isEmpty()) {
@@ -1064,7 +1067,7 @@ public class DeviceServiceImpl implements DeviceService {
 					groupNameWithProdId.put(leadMember, productGroupModel.getName());
 					listOfProducts.add(leadMember);
 					deviceServiceImplUtility.getProductGroupdetailsMap(productGroupModel, productGroupdetailsMap,
-							leadMember);
+							leadMember, journeyType);
 				}
 			}
 		}

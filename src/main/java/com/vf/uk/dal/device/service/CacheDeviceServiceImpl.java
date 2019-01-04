@@ -75,7 +75,6 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 	public static final String STRING_OPT = "opt_";
 	public static final String STRING_PRODUCT = "product";
 
-
 	@Autowired
 	DeviceESHelper deviceEs;
 
@@ -170,10 +169,10 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			if (!listOfDeviceId.isEmpty()) {
 				Map<String, String> listOfLeadPlanId = new HashMap<>();
 				Map<String, List<String>> listOfCimpatiblePlanMap = new HashMap<>();
-				List<CommercialProduct> listOfCommercialProduct = deviceEs.getListOfCommercialProduct(new ArrayList<>(new HashSet<>(listOfDeviceId)));
-				Map<String, CommercialProduct> commercialProductMap =
-						listOfCommercialProduct.stream().collect(Collectors.toMap(CommercialProduct::getId,
-					                                              Function.identity()));
+				List<CommercialProduct> listOfCommercialProduct = deviceEs
+						.getListOfCommercialProduct(new ArrayList<>(new HashSet<>(listOfDeviceId)));
+				Map<String, CommercialProduct> commercialProductMap = listOfCommercialProduct.stream()
+						.collect(Collectors.toMap(CommercialProduct::getId, Function.identity()));
 				setBundleAndHardwareTupleListJourneyAware(setOfCompatiblePlanIds, bundleAndHardwareTupleList,
 						bundleAndHardwareTupleListForNonLeanPlanId, bundleAndHardwareTupleListJourneyAware,
 						listOfLeadPlanId, listOfCimpatiblePlanMap, listOfCommercialProduct);
@@ -184,14 +183,15 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 				Map<String, List<BundleAndHardwareTuple>> bundleHardwareTroupleMap = new HashMap<>();
 				Map<String, List<PriceForBundleAndHardware>> iLSPriceMap = new ConcurrentHashMap<>();
 				for (String deviceId : listOfDeviceId) {
-					log.info(START_PREPARING_DEVICE_PRECAL_DATA_MODEL, deviceId);
-					CommercialProduct commerciaPproduct=commercialProductMap.containsKey(deviceId)?commercialProductMap.get(deviceId):null;
-					getDevicePrecaldataForPaymCacheDeviceTile(groupType, deviceIds, listOfProductGroupRepository,
-							listOfOfferCodes, leadMemberMap, leadMemberMapForUpgrade, groupIdAndNameMap,
-							leadPlanIdPriceMap, nonLeadPlanIdPriceMap, groupNamePriceMap, commercialBundleMap,
-							listOfLeadPlanId, listOfCimpatiblePlanMap, listOfPriceForBundleAndHardware,
-							bundleHardwareTroupleMap, iLSPriceMap, deviceId,commerciaPproduct);
-					log.info("End Preparing Device Precal data model {}", deviceId);
+						log.info(START_PREPARING_DEVICE_PRECAL_DATA_MODEL, deviceId);
+						CommercialProduct commerciaPproduct = commercialProductMap.containsKey(deviceId)
+								? commercialProductMap.get(deviceId) : null;
+						getDevicePrecaldataForPaymCacheDeviceTile(groupType, deviceIds, listOfProductGroupRepository,
+								listOfOfferCodes, leadMemberMap, leadMemberMapForUpgrade, groupIdAndNameMap,
+								leadPlanIdPriceMap, nonLeadPlanIdPriceMap, groupNamePriceMap, commercialBundleMap,
+								listOfLeadPlanId, listOfCimpatiblePlanMap, listOfPriceForBundleAndHardware,
+								bundleHardwareTroupleMap, iLSPriceMap, deviceId, commerciaPproduct);
+						log.info("End Preparing Device Precal data model {}", deviceId);
 				}
 				Map<String, Map<String, List<PriceForBundleAndHardware>>> ilsPriceForJourneyAwareOfferCodeMap = new ConcurrentHashMap<>();
 				getMinimumPriceMap(groupType, minimumPriceMap, listOfOfferCodesForUpgrade, listOfSecondLineOfferCode,
@@ -335,57 +335,20 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			Map<String, List<String>> listOfCimpatiblePlanMap,
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware,
 			Map<String, List<BundleAndHardwareTuple>> bundleHardwareTroupleMap,
-			Map<String, List<PriceForBundleAndHardware>> iLSPriceMap, String deviceId, CommercialProduct commercialProduct) {
-		DevicePreCalculatedData productGroupForDeviceListing;
-		PriceForBundleAndHardware bundleHeaderForDevice;
+			Map<String, List<PriceForBundleAndHardware>> iLSPriceMap, String deviceId,
+			CommercialProduct commercialProduct) {
 		String groupId = null;
 		String groupname = null;
-		String nonUpgradeLeadPlanId = null;
-		String upgradeLeadPlanId = null;
 		if (groupIdAndNameMap.containsKey(deviceId)) {
 			String[] groupDetails = groupIdAndNameMap.get(deviceId).split("&&");
 			groupname = groupDetails[0];
 			groupId = groupDetails[1];
 		}
 		try {
-			if (!listOfLeadPlanId.isEmpty() && listOfLeadPlanId.containsKey(deviceId)) {
-				String bundleId = listOfLeadPlanId.get(deviceId);
-				CommercialBundle coommercialbundle = commercialBundleMap.containsKey(bundleId)
-						? commercialBundleMap.get(bundleId) : null;
-				nonUpgradeLeadPlanId = getNonUpgradeLeadPlanId(bundleId, coommercialbundle);
-				upgradeLeadPlanId = getUpgradeLeadPlanId(bundleId, coommercialbundle);
-			}
-			if (StringUtils.isNotBlank(nonUpgradeLeadPlanId) || StringUtils.isNotBlank(upgradeLeadPlanId)) {
-				nonUpgradeLeadPlanId = getNonUpgradeLeadPlanIdForPaymDevice(nonLeadPlanIdPriceMap, groupNamePriceMap,
-						commercialBundleMap, listOfPriceForBundleAndHardware, deviceId, groupname,
-						nonUpgradeLeadPlanId);
-				upgradeLeadPlanId = getUpgradeLeadPlanIdForPaymDevice(nonLeadPlanIdPriceMap, commercialBundleMap,
-						deviceId, upgradeLeadPlanId);
-				log.info("Lead Plan Id Present " + nonUpgradeLeadPlanId);
-				getLeadPlanGroupPriceMap(leadPlanIdPriceMap, groupNamePriceMap, listOfPriceForBundleAndHardware,
-						deviceId, groupname, nonUpgradeLeadPlanId);
-			} else {
-
-				if (nonLeadPlanIdPriceMap.containsKey(deviceId)) {
-					List<PriceForBundleAndHardware> listOfPrice = nonLeadPlanIdPriceMap.get(deviceId);
-					bundleHeaderForDevice = deviceServiceCommonUtility.identifyLowestPriceOfPlanForDevice(listOfPrice,
-							commercialBundleMap, JOURNEY_TYPE_ACQUISITION);
-					PriceForBundleAndHardware upgradeCompatiblePlan = deviceServiceCommonUtility
-							.identifyLowestPriceOfPlanForDevice(listOfPrice, commercialBundleMap, JOURNEY_TYPE_UPGRADE);
-					upgradeLeadPlanId = setUpgradeLeadPlanIdWhenListOfLeadPlanIdEmpty(upgradeCompatiblePlan);
-
-					nonUpgradeLeadPlanId = setNonUpgradeLeadPlanIdWhenListOfLeadPlanIdEmpty(groupNamePriceMap,
-							listOfPriceForBundleAndHardware, bundleHeaderForDevice, groupname);
-				}
-			}
-			// ILS OfferCode
-			getILSPriceMap(listOfOfferCodes, commercialBundleMap, listOfCimpatiblePlanMap, bundleHardwareTroupleMap,
-					deviceId, nonUpgradeLeadPlanId);
-			productGroupForDeviceListing = cacheDeviceDaoUtils
-					.convertBundleHeaderForDeviceToProductGroupForDeviceListing(deviceId, nonUpgradeLeadPlanId,
-							groupname, groupId, listOfPriceForBundleAndHardware, leadMemberMap, leadMemberMapForUpgrade,
-							upgradeLeadPlanId, groupType,commercialProduct);
-			setListOfProductGroupRepository(deviceIds, listOfProductGroupRepository, productGroupForDeviceListing);
+			getPreCalcData(groupType, deviceIds, listOfProductGroupRepository, listOfOfferCodes, leadMemberMap,
+					leadMemberMapForUpgrade, leadPlanIdPriceMap, nonLeadPlanIdPriceMap, groupNamePriceMap,
+					commercialBundleMap, listOfLeadPlanId, listOfCimpatiblePlanMap, listOfPriceForBundleAndHardware,
+					bundleHardwareTroupleMap, deviceId, commercialProduct, groupId, groupname);
 		} catch (Exception e) {
 			listOfPriceForBundleAndHardware.clear();
 			log.error(" Exception occured when call happen to compatible bundles api: " + e);
@@ -394,7 +357,98 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		}
 	}
 
-	public void setListOfProductGroupRepository(List<String> deviceIds,
+	private void getPreCalcData(String groupType, List<String> deviceIds,
+			List<DevicePreCalculatedData> listOfProductGroupRepository, Set<String> listOfOfferCodes,
+			Map<String, String> leadMemberMap, Map<String, String> leadMemberMapForUpgrade,
+			Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap,
+			Map<String, List<PriceForBundleAndHardware>> nonLeadPlanIdPriceMap,
+			Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap,
+			Map<String, CommercialBundle> commercialBundleMap, Map<String, String> listOfLeadPlanId,
+			Map<String, List<String>> listOfCimpatiblePlanMap,
+			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware,
+			Map<String, List<BundleAndHardwareTuple>> bundleHardwareTroupleMap, String deviceId,
+			CommercialProduct commercialProduct, String groupId, String groupname) {
+		DevicePreCalculatedData productGroupForDeviceListing;
+		PriceForBundleAndHardware bundleHeaderForDevice;
+		String nonUpgradeLeadPlanId = null;
+		String upgradeLeadPlanId = null;
+		if (!listOfLeadPlanId.isEmpty() && listOfLeadPlanId.containsKey(deviceId)) {
+			String bundleId = listOfLeadPlanId.get(deviceId);
+			CommercialBundle coommercialbundle = commercialBundleMap.containsKey(bundleId)
+					? commercialBundleMap.get(bundleId) : null;
+			nonUpgradeLeadPlanId = setNonUpgradeLeadPlanIdFromList(bundleId,
+					coommercialbundle);
+			upgradeLeadPlanId = setUpgradeLeadPlanIdFromList(bundleId, coommercialbundle);
+		}
+		if (StringUtils.isNotBlank(nonUpgradeLeadPlanId) || StringUtils.isNotBlank(upgradeLeadPlanId)) {
+			if (StringUtils.isBlank(nonUpgradeLeadPlanId) && nonLeadPlanIdPriceMap.containsKey(deviceId)) {
+				nonUpgradeLeadPlanId = getNonUpgradeLeadPlanIdForPaymCacheDevice(nonLeadPlanIdPriceMap,
+						groupNamePriceMap, commercialBundleMap, listOfPriceForBundleAndHardware, deviceId,
+						groupname);
+			}
+			if (StringUtils.isBlank(upgradeLeadPlanId) && nonLeadPlanIdPriceMap.containsKey(deviceId)) {
+				upgradeLeadPlanId = getUpgradeLeadPlanIdForCacheDevice(nonLeadPlanIdPriceMap, commercialBundleMap,
+						deviceId);
+
+			}
+			log.info("Lead Plan Id Present " + nonUpgradeLeadPlanId);
+			getLeadPlanGroupPriceMap(leadPlanIdPriceMap, groupNamePriceMap, listOfPriceForBundleAndHardware,
+					deviceId, groupname, nonUpgradeLeadPlanId);
+		} else {
+
+			if (nonLeadPlanIdPriceMap.containsKey(deviceId)) {
+				List<PriceForBundleAndHardware> listOfPrice = nonLeadPlanIdPriceMap.get(deviceId);
+				bundleHeaderForDevice = deviceServiceCommonUtility.identifyLowestPriceOfPlanForDevice(listOfPrice,
+						commercialBundleMap, JOURNEY_TYPE_ACQUISITION);
+				PriceForBundleAndHardware upgradeCompatiblePlan = deviceServiceCommonUtility
+						.identifyLowestPriceOfPlanForDevice(listOfPrice, commercialBundleMap, JOURNEY_TYPE_UPGRADE);
+				upgradeLeadPlanId = getUpgradeLeadPlanId(upgradeCompatiblePlan);
+
+				nonUpgradeLeadPlanId = getNonUpgradeLeadPlanId(groupNamePriceMap, listOfPriceForBundleAndHardware,
+						bundleHeaderForDevice, groupname);
+			}
+		}
+		// ILS OfferCode
+		getIlsPriceMap(listOfOfferCodes, commercialBundleMap, listOfCimpatiblePlanMap, bundleHardwareTroupleMap,
+				deviceId, nonUpgradeLeadPlanId);
+		productGroupForDeviceListing = cacheDeviceDaoUtils
+				.convertBundleHeaderForDeviceToProductGroupForDeviceListing(deviceId, nonUpgradeLeadPlanId,
+						groupname, groupId, listOfPriceForBundleAndHardware, leadMemberMap, leadMemberMapForUpgrade,
+						upgradeLeadPlanId, groupType, commercialProduct);
+		setListOfDeviceIdAndListOfProductGroupRepo(deviceIds, listOfProductGroupRepository,
+				productGroupForDeviceListing);
+	}
+
+	private String setUpgradeLeadPlanIdFromList(String bundleId,
+			CommercialBundle coommercialbundle) {
+		String upgradeLeadPlanId = null;
+		if (deviceServiceImplUtility.isSellable(JOURNEY_TYPE_UPGRADE, coommercialbundle)) {
+			upgradeLeadPlanId = bundleId;
+		}
+		return upgradeLeadPlanId;
+	}
+
+	private String setNonUpgradeLeadPlanIdFromList(String bundleId,
+			CommercialBundle coommercialbundle) {
+		String nonUpgradeLeadPlanId= null;
+		if (deviceServiceImplUtility.isSellable(JOURNEY_TYPE_ACQUISITION, coommercialbundle)) {
+			nonUpgradeLeadPlanId = bundleId;
+		}
+		return nonUpgradeLeadPlanId;
+	}
+
+	public void getLeadPlanGroupPriceMap(Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap,
+			Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap,
+			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware, String deviceId, String groupname,
+			String nonUpgradeLeadPlanId) {
+		if (StringUtils.isNotBlank(nonUpgradeLeadPlanId) && !leadPlanIdPriceMap.isEmpty()
+				&& leadPlanIdPriceMap.containsKey(deviceId)) {
+			deviceUtils.getLeadPlanGroupPriceMap(leadPlanIdPriceMap, groupNamePriceMap,
+					listOfPriceForBundleAndHardware, deviceId, groupname);
+		}
+	}
+
+	private void setListOfDeviceIdAndListOfProductGroupRepo(List<String> deviceIds,
 			List<DevicePreCalculatedData> listOfProductGroupRepository,
 			DevicePreCalculatedData productGroupForDeviceListing) {
 		if (productGroupForDeviceListing != null) {
@@ -403,7 +457,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		}
 	}
 
-	public void getILSPriceMap(Set<String> listOfOfferCodes, Map<String, CommercialBundle> commercialBundleMap,
+	public void getIlsPriceMap(Set<String> listOfOfferCodes, Map<String, CommercialBundle> commercialBundleMap,
 			Map<String, List<String>> listOfCimpatiblePlanMap,
 			Map<String, List<BundleAndHardwareTuple>> bundleHardwareTroupleMap, String deviceId,
 			String nonUpgradeLeadPlanId) {
@@ -413,76 +467,30 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		}
 	}
 
-	private String setNonUpgradeLeadPlanIdWhenListOfLeadPlanIdEmpty(
-			Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap,
+	private String getNonUpgradeLeadPlanId(Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap,
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware,
 			PriceForBundleAndHardware bundleHeaderForDevice, String groupname) {
-		String nonUpgradeLeadPlanIdLocal = null;
+		String nonUpgradeLeadPlanId = null;
 		if (bundleHeaderForDevice != null) {
-			nonUpgradeLeadPlanIdLocal = deviceUtils.getGroupNamePriceMap(groupNamePriceMap,
-					listOfPriceForBundleAndHardware, bundleHeaderForDevice, groupname);
+			nonUpgradeLeadPlanId = deviceUtils.getGroupNamePriceMap(groupNamePriceMap, listOfPriceForBundleAndHardware,
+					bundleHeaderForDevice, groupname);
 		}
-		return nonUpgradeLeadPlanIdLocal;
+		return nonUpgradeLeadPlanId;
 	}
 
-	private String setUpgradeLeadPlanIdWhenListOfLeadPlanIdEmpty(PriceForBundleAndHardware upgradeCompatiblePlan) {
-		String upgradeLeadPlanIdLocal = null;
+	private String getUpgradeLeadPlanId(PriceForBundleAndHardware upgradeCompatiblePlan) {
+		String upgradeLeadPlanId = null;
 		if (upgradeCompatiblePlan != null) {
-			upgradeLeadPlanIdLocal = upgradeCompatiblePlan.getBundlePrice().getBundleId();
+			upgradeLeadPlanId = upgradeCompatiblePlan.getBundlePrice().getBundleId();
 		}
-		return upgradeLeadPlanIdLocal;
+		return upgradeLeadPlanId;
 	}
 
-	public void getLeadPlanGroupPriceMap(Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap,
-			Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap,
-			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware, String deviceId, String groupname,
-			String nonUpgradeLeadPlanId) {
-		if (StringUtils.isNotBlank(nonUpgradeLeadPlanId) && !leadPlanIdPriceMap.isEmpty()
-				&& leadPlanIdPriceMap.containsKey(deviceId)) {
-			deviceUtils.getLeadPlanGroupPriceMap(leadPlanIdPriceMap, groupNamePriceMap, listOfPriceForBundleAndHardware,
-					deviceId, groupname);
-		}
-	}
-
-	public String getUpgradeLeadPlanIdForPaymDevice(Map<String, List<PriceForBundleAndHardware>> nonLeadPlanIdPriceMap,
-			Map<String, CommercialBundle> commercialBundleMap, String deviceId, String upgradeLeadPlanId) {
-		String upgradeLeadPlanIdLocal = null;
-		if (StringUtils.isBlank(upgradeLeadPlanId) && nonLeadPlanIdPriceMap.containsKey(deviceId)) {
-			upgradeLeadPlanIdLocal = getUpgradeLeadPlanIdForCacheDevice(nonLeadPlanIdPriceMap, commercialBundleMap,
-					deviceId);
-
-		}
-		return upgradeLeadPlanIdLocal;
-	}
-
-	public String getNonUpgradeLeadPlanIdForPaymDevice(
-			Map<String, List<PriceForBundleAndHardware>> nonLeadPlanIdPriceMap,
-			Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap,
-			Map<String, CommercialBundle> commercialBundleMap,
-			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware, String deviceId, String groupname,
-			String nonUpgradeLeadPlanId) {
-		String nonUpgradeLeadPlanIdLocal = null;
-		if (StringUtils.isBlank(nonUpgradeLeadPlanId) && nonLeadPlanIdPriceMap.containsKey(deviceId)) {
-			nonUpgradeLeadPlanIdLocal = getNonUpgradeLeadPlanIdForPaymCacheDevice(nonLeadPlanIdPriceMap,
-					groupNamePriceMap, commercialBundleMap, listOfPriceForBundleAndHardware, deviceId, groupname);
-		}
-		return nonUpgradeLeadPlanIdLocal;
-	}
-
-	private String getUpgradeLeadPlanId(String bundleId, CommercialBundle coommercialbundle) {
-		String upgradeLeadPlanIdLocal = null;
-		if (deviceServiceImplUtility.isSellable(JOURNEY_TYPE_UPGRADE, coommercialbundle)) {
-			upgradeLeadPlanIdLocal = bundleId;
-		}
-		return upgradeLeadPlanIdLocal;
-	}
-
-	private String getNonUpgradeLeadPlanId(String bundleId, CommercialBundle coommercialbundle) {
-		String nonUpgradeLeadPlanIdLocal = null;
-		if (deviceServiceImplUtility.isSellable(JOURNEY_TYPE_ACQUISITION, coommercialbundle)) {
-			nonUpgradeLeadPlanIdLocal = bundleId;
-		}
-		return nonUpgradeLeadPlanIdLocal;
+	public void setListOfProductGroupRepository(List<String> deviceIds,
+			List<DevicePreCalculatedData> listOfProductGroupRepository,
+			DevicePreCalculatedData productGroupForDeviceListing) {
+		setListOfDeviceIdAndListOfProductGroupRepo(deviceIds, listOfProductGroupRepository,
+				productGroupForDeviceListing);
 	}
 
 	/**
@@ -499,7 +507,9 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		List<PriceForBundleAndHardware> listOfPrice = nonLeadPlanIdPriceMap.get(deviceId);
 		PriceForBundleAndHardware upgradeCompatiblePlan = deviceServiceCommonUtility
 				.identifyLowestPriceOfPlanForDevice(listOfPrice, commercialBundleMap, JOURNEY_TYPE_UPGRADE);
-		upgradeLeadPlanId = setUpgradeLeadPlanIdWhenListOfLeadPlanIdEmpty(upgradeCompatiblePlan);
+		if (upgradeCompatiblePlan != null) {
+			upgradeLeadPlanId = upgradeCompatiblePlan.getBundlePrice().getBundleId();
+		}
 		return upgradeLeadPlanId;
 	}
 
@@ -525,8 +535,10 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		List<PriceForBundleAndHardware> listOfPrice = nonLeadPlanIdPriceMap.get(deviceId);
 		bundleHeaderForDevice = deviceServiceCommonUtility.identifyLowestPriceOfPlanForDevice(listOfPrice,
 				commercialBundleMap, JOURNEY_TYPE_ACQUISITION);
-		nonUpgradeLeadPlanId = setNonUpgradeLeadPlanIdWhenListOfLeadPlanIdEmpty(groupNamePriceMap,
-				listOfPriceForBundleAndHardware, bundleHeaderForDevice, groupname);
+		if (bundleHeaderForDevice != null) {
+			nonUpgradeLeadPlanId = deviceUtils.getGroupNamePriceMap(groupNamePriceMap, listOfPriceForBundleAndHardware,
+					bundleHeaderForDevice, groupname);
+		}
 		return nonUpgradeLeadPlanId;
 	}
 
@@ -707,15 +719,16 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			List<BundleAndHardwareTuple> bundleAndHardwareTupleList) {
 		DevicePreCalculatedData productGroupForDeviceListing = null;
 		if (!listOfDeviceId.isEmpty()) {
-			List<CommercialProduct> listOfCommercialProduct = deviceEs.getListOfCommercialProduct(new ArrayList<>(new HashSet<>(listOfDeviceId)));
-			Map<String, CommercialProduct> commercialProductMap =
-					listOfCommercialProduct.stream().collect(Collectors.toMap(CommercialProduct::getId,
-				                                              Function.identity()));
+			List<CommercialProduct> listOfCommercialProduct = deviceEs
+					.getListOfCommercialProduct(new ArrayList<>(new HashSet<>(listOfDeviceId)));
+			Map<String, CommercialProduct> commercialProductMap = listOfCommercialProduct.stream()
+					.collect(Collectors.toMap(CommercialProduct::getId, Function.identity()));
 			setBundleAndHardwareTupleListForPayg(bundleAndHardwareTupleList, listOfCommercialProduct);
 			getLeadPlanMapForPaymCacheDeviceForPayg(groupType, leadPlanIdPriceMap, bundleAndHardwareTupleList);
 			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware = new ArrayList<>();
 			for (String deviceId : listOfDeviceId) {
-				CommercialProduct commerciaPproduct=commercialProductMap.containsKey(deviceId)?commercialProductMap.get(deviceId):null;
+				CommercialProduct commerciaPproduct = commercialProductMap.containsKey(deviceId)
+						? commercialProductMap.get(deviceId) : null;
 				String groupId = null;
 				String groupname = null;
 				if (groupIdAndNameMap.containsKey(deviceId)) {
@@ -724,15 +737,9 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 					groupId = groupDetails[1];
 				}
 				try {
-					if (!leadPlanIdPriceMap.isEmpty() && leadPlanIdPriceMap.containsKey(deviceId)) {
-						deviceUtils.getLeadPlanGroupPriceMap(leadPlanIdPriceMap, groupNamePriceMap,
-								listOfPriceForBundleAndHardware, deviceId, groupname);
-						log.info(START_PREPARING_DEVICE_PRECAL_DATA_MODEL, deviceId);
-						productGroupForDeviceListing = cacheDeviceDaoUtils
-								.convertBundleHeaderForDeviceToProductGroupForDeviceListing(deviceId, null, groupname,
-										groupId, listOfPriceForBundleAndHardware, leadMemberMap, null, null, groupType,commerciaPproduct);
-						log.info(START_PREPARING_DEVICE_PRECAL_DATA_MODEL, deviceId);
-					}
+					productGroupForDeviceListing = getProductGroupForDEviceListing(groupType, leadMemberMap,
+							leadPlanIdPriceMap, groupNamePriceMap,
+							listOfPriceForBundleAndHardware, deviceId, commerciaPproduct, groupId, groupname);
 
 					setListOfProductGroupRepository(deviceIds, listOfProductGroupRepository,
 							productGroupForDeviceListing);
@@ -744,6 +751,25 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			}
 			getMinimumPriceMapForPayG(minimumPriceMap, groupNamePriceMap);
 		}
+	}
+
+	private DevicePreCalculatedData getProductGroupForDEviceListing(String groupType, Map<String, String> leadMemberMap,
+			Map<String, PriceForBundleAndHardware> leadPlanIdPriceMap,
+			Map<String, List<PriceForBundleAndHardware>> groupNamePriceMap,
+			List<PriceForBundleAndHardware> listOfPriceForBundleAndHardware, String deviceId,
+			CommercialProduct commerciaPproduct, String groupId, String groupname) {
+		DevicePreCalculatedData productGroupForDeviceListing = null;
+		if (!leadPlanIdPriceMap.isEmpty() && leadPlanIdPriceMap.containsKey(deviceId)) {
+			deviceUtils.getLeadPlanGroupPriceMap(leadPlanIdPriceMap, groupNamePriceMap,
+					listOfPriceForBundleAndHardware, deviceId, groupname);
+			log.info(START_PREPARING_DEVICE_PRECAL_DATA_MODEL, deviceId);
+			productGroupForDeviceListing = cacheDeviceDaoUtils
+					.convertBundleHeaderForDeviceToProductGroupForDeviceListing(deviceId, null, groupname,
+							groupId, listOfPriceForBundleAndHardware, leadMemberMap, null, null, groupType,
+							commerciaPproduct);
+			log.info(START_PREPARING_DEVICE_PRECAL_DATA_MODEL, deviceId);
+		}
+		return productGroupForDeviceListing;
 	}
 
 	private void setMinimumCost(Map<String, String> minimumPriceMap, DevicePreCalculatedData deviceDataRating) {
@@ -979,30 +1005,18 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData deviceListObject,
 			String productGroupId) {
 		CacheProductGroupModel productgroupModel = new CacheProductGroupModel();
-		Set<String> acqColor= new HashSet<>();
-		Set<String> upgradeColor= new HashSet<>();
-		Set<String> acqCapacity= new HashSet<>(); 
-		Set<String> upgradeCapacity= new HashSet<>();
-		if(StringUtils.isNotBlank(deviceListObject.getSize()))
-		{
-			acqCapacity.add(deviceListObject.getSize());
-		}if(StringUtils.isNotBlank(deviceListObject.getSizeUpgrade()))
-		{
-			upgradeCapacity.add(deviceListObject.getSizeUpgrade());
-		}if(StringUtils.isNotBlank(deviceListObject.getColorNameAndHex()))
-		{
-			acqColor.add(deviceListObject.getColorNameAndHex());
-		}if(StringUtils.isNotBlank(deviceListObject.getColorNameAndHexUpgrade()))
-		{
-			upgradeColor.add(deviceListObject.getColorNameAndHexUpgrade());
-		}
-		
+		Set<String> acqColor = new HashSet<>();
+		Set<String> upgradeColor = new HashSet<>();
+		Set<String> acqCapacity = new HashSet<>();
+		Set<String> upgradeCapacity = new HashSet<>();
+		setAcqCapacityAndUpgradeColor(deviceListObject, acqColor, upgradeColor, acqCapacity, upgradeCapacity);
+
 		productgroupModel.setAcqCapacity(acqCapacity);
 		productgroupModel.setUpgradeCapacity(upgradeCapacity);
 		productgroupModel.setAcqColor(acqColor);
-		productgroupModel.setUpgradeCapacity(upgradeCapacity);
+		productgroupModel.setUpgradeColor(upgradeColor);
 		productModelMap.put(productGroupId, productgroupModel);
-		
+
 		productgroupModel.setId(productGroupId);
 		productgroupModel.setLeadPlanId(deviceListObject.getLeadPlanId());
 		productgroupModel.setMinimumCost(deviceListObject.getMinimumCost());
@@ -1012,8 +1026,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		productgroupModel.setNonUpgradeLeadDeviceId(deviceListObject.getNonUpgradeLeadDeviceId());
 		productgroupModel.setUpgradeLeadPlanId(deviceListObject.getUpgradeLeadPlanId());
 		productgroupModel.setNonUpgradeLeadPlanId(deviceListObject.getNonUpgradeLeadPlanId());
-		
-		
+
 	}
 
 	private void setProductGroupmodelMapWhenContainsKey(Map<String, CacheProductGroupModel> productModelMap,
@@ -1025,19 +1038,7 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 		Set<String> upgradeColor = productgroupModel.getUpgradeColor();
 		Set<String> acqCapacity = productgroupModel.getAcqCapacity();
 		Set<String> upgradeCapacity = productgroupModel.getUpgradeCapacity();
-		if (StringUtils.isNotBlank(deviceListObject.getSize())) {
-			acqCapacity.add(deviceListObject.getSize());
-		}
-		if (StringUtils.isNotBlank(deviceListObject.getSizeUpgrade())) {
-			upgradeCapacity.add(deviceListObject.getSizeUpgrade());
-		}
-		if (StringUtils.isNotBlank(deviceListObject.getColorNameAndHex())) {
-			acqColor.add(deviceListObject.getColorNameAndHex());
-		}
-		if (StringUtils.isNotBlank(deviceListObject.getColorNameAndHexUpgrade())) {
-			upgradeColor.add(deviceListObject.getColorNameAndHexUpgrade());
-		}
-
+		setAcqCapacityAndUpgradeColor(deviceListObject, acqColor, upgradeColor, acqCapacity, upgradeCapacity);
 		productgroupModel.setAcqCapacity(acqCapacity);
 		productgroupModel.setUpgradeCapacity(upgradeCapacity);
 		productgroupModel.setAcqColor(acqColor);
@@ -1074,6 +1075,23 @@ public class CacheDeviceServiceImpl implements CacheDeviceService {
 			productgroupModel.setNonUpgradeLeadPlanId(deviceListObject.getNonUpgradeLeadPlanId());
 		}
 		productModelMap.put(productGroupId, productgroupModel);
+	}
+
+	private void setAcqCapacityAndUpgradeColor(
+			com.vf.uk.dal.device.model.merchandisingpromotion.DevicePreCalculatedData deviceListObject,
+			Set<String> acqColor, Set<String> upgradeColor, Set<String> acqCapacity, Set<String> upgradeCapacity) {
+		if (StringUtils.isNotBlank(deviceListObject.getSize())) {
+			acqCapacity.add(deviceListObject.getSize());
+		}
+		if (StringUtils.isNotBlank(deviceListObject.getSizeUpgrade())) {
+			upgradeCapacity.add(deviceListObject.getSizeUpgrade());
+		}
+		if (StringUtils.isNotBlank(deviceListObject.getColorNameAndHex())) {
+			acqColor.add(deviceListObject.getColorNameAndHex());
+		}
+		if (StringUtils.isNotBlank(deviceListObject.getColorNameAndHexUpgrade())) {
+			upgradeColor.add(deviceListObject.getColorNameAndHexUpgrade());
+		}
 	}
 
 	public String setProductGroupId(
