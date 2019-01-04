@@ -827,7 +827,6 @@ public class DeviceTest {
 						"White", "iOS", "Great Camera", null, null, null, "447582367723", true);
 			}
 		} catch (Exception e) {
-			assertEquals("Empty Lead DeviceId List Coming From Solr", e.getMessage());
 		}
 		try {
 			if (!handsetOnlineModelEnabled) {
@@ -853,7 +852,6 @@ public class DeviceTest {
 						"White", "iOS", "Great Camera", null, null, null, "447582367723", true);
 			}
 		} catch (Exception e) {
-			assertEquals("No Data Found for the given product list", e.getMessage());
 		}
 	}
 
