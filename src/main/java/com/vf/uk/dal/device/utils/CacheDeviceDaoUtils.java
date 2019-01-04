@@ -31,6 +31,10 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class CacheDeviceDaoUtils {
 
+	private static final String UPGRADE_CAPACITY = "upgradeCapacity";
+	private static final String ACQ_CAPACITY = "acqCapacity";
+	private static final String STRING_UPGRADE_COLOR = "upgradeColor";
+	private static final String STRING_ACQ_COLOR = "acqColor";
 	private static final String MEDIA = "media";
 
 	public CacheDeviceDaoUtils() {
@@ -106,10 +110,6 @@ public class CacheDeviceDaoUtils {
 		productGroupForDeviceListing.setDeviceId(deviceId);
 		productGroupForDeviceListing.setGroupType(groupType);
 		productGroupForDeviceListing.setProductGroupName(groupname);
-		String acqColor=null;
-		String upgradeColor=null;
-		String acqCapacity=null;
-		String upgradeCapacity=null;
 		if (StringUtils.equalsIgnoreCase(groupType, STRING_DEVICE_PAYM)) {
 			productGroupForDeviceListing.setPaymProductGroupId(groupId);
 		}
@@ -128,12 +128,11 @@ public class CacheDeviceDaoUtils {
 			productGroupForDeviceListing.setUpgradeLeadDeviceId(deviceId);
 		}
 		/*** newly added logic for capacity and colour*/
-		getColorAndCapacityBasedOnJourney(commercialProduct, acqColor,
-				 upgradeColor, acqCapacity, upgradeCapacity);
-		productGroupForDeviceListing.setColorNameAndHex(acqColor);
-		productGroupForDeviceListing.setColorNameAndHexUpgrade(upgradeColor);
-		productGroupForDeviceListing.setSize(acqCapacity);
-		productGroupForDeviceListing.setSizeUpgrade(upgradeCapacity);
+		Map<String,String> mapForColorAndCapacity =getColorAndCapacityBasedOnJourney(commercialProduct);
+		productGroupForDeviceListing.setColorNameAndHex(mapForColorAndCapacity.containsKey(STRING_ACQ_COLOR)?mapForColorAndCapacity.get(STRING_ACQ_COLOR):null);
+		productGroupForDeviceListing.setColorNameAndHexUpgrade(mapForColorAndCapacity.containsKey(STRING_UPGRADE_COLOR)?mapForColorAndCapacity.get(STRING_UPGRADE_COLOR):null);
+		productGroupForDeviceListing.setSize(mapForColorAndCapacity.containsKey(ACQ_CAPACITY)?mapForColorAndCapacity.get(ACQ_CAPACITY):null);
+		productGroupForDeviceListing.setSizeUpgrade(mapForColorAndCapacity.containsKey(UPGRADE_CAPACITY)?mapForColorAndCapacity.get(UPGRADE_CAPACITY):null);
 		/** new added logic end*/
 		if ((StringUtils.isNotBlank(leadPlanId) && StringUtils.equalsIgnoreCase(groupType, STRING_DEVICE_PAYM))
 				|| StringUtils.equalsIgnoreCase(groupType, STRING_DEVICE_PAYG)) {
@@ -1247,10 +1246,14 @@ public class CacheDeviceDaoUtils {
 			monthlyPrice.setVat(Float.valueOf(mnthlyPrice.getVat()));
 		}
 	}
-	private void getColorAndCapacityBasedOnJourney(CommercialProduct commercialProduct, String acqColor,
-			String upgradeColor, String acqCapacity, String upgradeCapacity) {
+	private Map<String,String> getColorAndCapacityBasedOnJourney(CommercialProduct commercialProduct) {
 		boolean isAcqSecnd = false;
 		boolean isUpgrade = false;
+		String acqColor=null;
+		String upgradeColor=null;
+		String acqCapacity=null;
+		String upgradeCapacity=null;
+		Map<String,String> mapForColorAndCapacity = new HashMap<>();
 		if (commercialProduct.getProductControl() != null) {
 			boolean disPlayableAcq = commercialProduct.getProductControl().isDisplayableAcq();
 			boolean sellableAcq = commercialProduct.getProductControl().isSellableAcq() ;
@@ -1296,9 +1299,11 @@ public class CacheDeviceDaoUtils {
 						}
 						if (StringUtils.isNotBlank(colorHexAcq) && StringUtils.isNotBlank(colorValueAcq)) {
 							acqColor=colorValueAcq + "|" + colorHexAcq;
+							mapForColorAndCapacity.put(STRING_ACQ_COLOR, acqColor);
 						}
 						if (StringUtils.isNotBlank(colorHexUpgrd) && StringUtils.isNotBlank(colorValueUpgrd)) {
 							upgradeColor=colorValueAcq + "|" + colorHexAcq;
+							mapForColorAndCapacity.put(STRING_UPGRADE_COLOR, upgradeColor);
 						}
 					}
 				}
@@ -1320,14 +1325,17 @@ public class CacheDeviceDaoUtils {
 						}
 						if (StringUtils.isNotBlank(capacityAcq)) {
 							acqCapacity=capacityAcq;
+							mapForColorAndCapacity.put(ACQ_CAPACITY, acqCapacity);
 						}
 						if (StringUtils.isNotBlank(capacityUpgrd)) {
 							upgradeCapacity=capacityUpgrd;
+							mapForColorAndCapacity.put(UPGRADE_CAPACITY, upgradeCapacity);
 						}
 					}
 				}
 
 			}
 		}
+		return mapForColorAndCapacity;
 	}
 }

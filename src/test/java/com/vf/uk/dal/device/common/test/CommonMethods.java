@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import org.springframework.core.io.ClassPathResource;
@@ -3167,6 +3169,11 @@ public class CommonMethods {
 	public static List<ProductGroupModel> getListOfProductGroupMode() {
 		List<ProductGroupModel> groupList = new ArrayList<>();
 		ProductGroupModel group = new ProductGroupModel();
+		Set<String> color = new HashSet<>();
+		Set<String> size = new HashSet<>();
+		size.add("32 GB");
+		size.add("64 GB");
+		color.addAll(getColourHes());
 		group.setId("093353");
 		group.setLeadDeviceId("093353");
 		group.setUpgradeLeadDeviceId("093353");
@@ -3176,6 +3183,14 @@ public class CommonMethods {
 		group1.setLeadDeviceId(null);
 		group1.setListOfVariants(Arrays.asList("092660|1"));
 		group.setHexCode(getColourHes());
+		group.setUpgradeCapacity(size);
+		group.setUpgradeColor(color);
+		group.setAcqCapacity(size);
+		group.setAcqColor(color);
+		group1.setUpgradeCapacity(size);
+		group1.setUpgradeColor(color);
+		group1.setAcqCapacity(size);
+		group1.setAcqColor(color);
 		group1.setHexCode(getColourHes());
 		groupList.add(group);
 		groupList.add(group1);

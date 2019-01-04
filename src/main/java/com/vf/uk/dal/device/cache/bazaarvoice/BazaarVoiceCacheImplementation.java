@@ -49,7 +49,7 @@ public class BazaarVoiceCacheImplementation {
 	 * @param deviceId
 	 * @return
 	 */
-	public static String appendPrefixString(String deviceId) {
+	public String appendPrefixString(String deviceId) {
 		StringBuilder target = new StringBuilder(PREFIX_SKU);
 		String leadingZero = deviceId.substring(0, 1);
 		if (leadingZero.equals(ZERO)) {

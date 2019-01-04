@@ -96,7 +96,7 @@ public class DeviceTilesDaoUtils {
 	public static final String STRING_FOR_IMAGE_THUMBS_FRONT = "imageURLs.thumbs.front";
 	public static final String STRING_FOR_IMAGE_THUMBS_LEFT = "imageURLs.thumbs.left";
 	public static final String STRING_FOR_IMAGE_THUMBS_RIGHT = "imageURLs.thumbs.right";
-
+	public static final String DATE_FORMAT_COHERENCE = "dd/MM/yyyy HH:mm:ss";
 	public static final String STRING_FOR_IMAGE_FULL_FRONT = "imageURLs.full.front";
 	public static final String STRING_FOR_IMAGE_FULL_LEFT = "imageURLs.full.left";
 	public static final String STRING_FOR_IMAGE_FULL_RIGHT = "imageURLs.full.right";
@@ -1222,7 +1222,6 @@ public class DeviceTilesDaoUtils {
 			Map<String, PricePromotionHandsetPlanModel> mapForDeviceAndPriceForBAndWWIthoutOffer,
 			List<DeviceOnlineModel> productGroupModelList, String offerCode, List<Device> deviceList,
 			com.vf.uk.dal.device.client.entity.catalogue.Device productModel, String cdnDomain) {
-		MerchandisingPromotionsPackage merchandisingPromotionsPackage = null;
 		Device deviceDetails;
 		if (listOfProducts.contains(productModel.getDeviceId())
 				&& productModel.getProductClass().equalsIgnoreCase(STRING_PRODUCT_MODEL)) {
@@ -1232,7 +1231,6 @@ public class DeviceTilesDaoUtils {
 					productModel.getDeviceId()) ? productGroupdetailsMap.get(productModel.getDeviceId()) : null;
 			setDeviceDetailsColourSizeGroupId(deviceDetails, groupdeatils);
 			leadPlanId = setLeadPlanIdForHandsetOnlineModel(journeyType, productModel);
-			merchandisingPromotionsPackage = new MerchandisingPromotionsPackage();
 			deviceDetails.setDeviceId(productModel.getDeviceId());
 			deviceDetails.setDescription(productModel.getDisplayDescription());
 			deviceDetails.setName(deviceDetails.getProductGroupName());
@@ -1258,7 +1256,7 @@ public class DeviceTilesDaoUtils {
 
 			setPriceInfoForDeviceDetails(groupType, journeyType, mapForDeviceAndPriceForBAndWWIthOffer,
 					mapForDeviceAndPriceForBAndWWIthoutOffer, offerCode, deviceDetails, productModel, leadPlanId,
-					merchandisingPromotionsPackage, cdnDomain);
+					cdnDomain);
 			deviceList.add(deviceDetails);
 		}
 	}
@@ -1267,50 +1265,36 @@ public class DeviceTilesDaoUtils {
 			Map<String, PricePromotionHandsetPlanModel> mapForDeviceAndPriceForBAndWWIthOffer,
 			Map<String, PricePromotionHandsetPlanModel> mapForDeviceAndPriceForBAndWWIthoutOffer, String offerCode,
 			Device deviceDetails, com.vf.uk.dal.device.client.entity.catalogue.Device productModel, String leadPlanId,
-			MerchandisingPromotionsPackage merchandisingPromotionsPackage, String cdnDomain) {
+			String cdnDomain) {
 		PricePromotionHandsetPlanModel promotions = null;
 		if (groupType.equalsIgnoreCase(STRING_DEVICE_PAYM)
 				&& ((StringUtils.isNotBlank(offerCode) && StringUtils.isNotBlank(journeyType))
 						|| checkAcqJourney(journeyType, offerCode))) {
-			if (StringUtils.isNotBlank(offerCode)
-					&& mapForDeviceAndPriceForBAndWWIthOffer.containsKey(productModel.getDeviceId())) {
-				PriceForBundleAndHardware priceForOfferCode = getBundleAndHardwarePriceFromSolrUtilsForHandsetOnlineModel(
-						mapForDeviceAndPriceForBAndWWIthOffer.get(productModel.getDeviceId()), leadPlanId);
-				if (priceForOfferCode.getBundlePrice() != null && priceForOfferCode.getHardwarePrice() != null) {
-					deviceDetails.setPriceInfo(priceForOfferCode);
-					promotions = mapForDeviceAndPriceForBAndWWIthOffer.get(productModel.getDeviceId());
-				}
-			}
-			promotions = setPriceInfoWithoutOffer(journeyType, mapForDeviceAndPriceForBAndWWIthoutOffer, deviceDetails,
-					productModel, leadPlanId, promotions);
-			if (deviceDetails.getPriceInfo() == null && mapForDeviceAndPriceForBAndWWIthoutOffer != null
-					&& mapForDeviceAndPriceForBAndWWIthoutOffer.containsKey(productModel.getDeviceId())) {
-				PriceForBundleAndHardware priceForWithOutOfferCode = getBundleAndHardwarePriceFromSolrWithoutOfferCodeForHandsetOnlineModel(
-						mapForDeviceAndPriceForBAndWWIthoutOffer.get(productModel.getDeviceId()), leadPlanId,
-						groupType);
-				deviceDetails.setPriceInfo(priceForWithOutOfferCode);
-				promotions = mapForDeviceAndPriceForBAndWWIthoutOffer.get(productModel.getDeviceId());
-			}
+			promotions = setPriceInfoAndPromotion(groupType, journeyType, mapForDeviceAndPriceForBAndWWIthOffer,
+					mapForDeviceAndPriceForBAndWWIthoutOffer, offerCode, deviceDetails, productModel, leadPlanId);
 		} else {
 			PriceForBundleAndHardware priceForBundleAndHardware = getBundleAndHardwarePriceFromSolrWithoutOfferCodeForHandsetOnlineModel(
 					mapForDeviceAndPriceForBAndWWIthoutOffer.get(productModel.getDeviceId()), leadPlanId, groupType);
 			deviceDetails.setPriceInfo(priceForBundleAndHardware);
 			promotions = mapForDeviceAndPriceForBAndWWIthoutOffer.get(productModel.getDeviceId());
 		}
-		setPromoPackage(deviceDetails, promotions);
-		setMediaLinkAndPromotions(productModel, promotions, deviceDetails, merchandisingPromotionsPackage, cdnDomain);
+		setMediaLinkAndPromotions(productModel, promotions, deviceDetails, cdnDomain);
 	}
 
-	private void setPromoPackage(Device deviceDetails, PricePromotionHandsetPlanModel promotions) {
-		if (promotions != null) {
-			deviceDetails.setPromotionsPackage(promotions.getPromotionsPackage());
+	private PricePromotionHandsetPlanModel setPriceInfoAndPromotion(String groupType, String journeyType,
+			Map<String, PricePromotionHandsetPlanModel> mapForDeviceAndPriceForBAndWWIthOffer,
+			Map<String, PricePromotionHandsetPlanModel> mapForDeviceAndPriceForBAndWWIthoutOffer, String offerCode,
+			Device deviceDetails, com.vf.uk.dal.device.client.entity.catalogue.Device productModel, String leadPlanId) {
+		PricePromotionHandsetPlanModel promotions = null;
+		if (StringUtils.isNotBlank(offerCode)
+				&& mapForDeviceAndPriceForBAndWWIthOffer.containsKey(productModel.getDeviceId())) {
+			PriceForBundleAndHardware priceForOfferCode = getBundleAndHardwarePriceFromSolrUtilsForHandsetOnlineModel(
+					mapForDeviceAndPriceForBAndWWIthOffer.get(productModel.getDeviceId()), leadPlanId);
+			if (priceForOfferCode.getBundlePrice() != null && priceForOfferCode.getHardwarePrice() != null) {
+				deviceDetails.setPriceInfo(priceForOfferCode);
+				promotions = mapForDeviceAndPriceForBAndWWIthOffer.get(productModel.getDeviceId());
+			}
 		}
-	}
-
-	private PricePromotionHandsetPlanModel setPriceInfoWithoutOffer(String journeyType,
-			Map<String, PricePromotionHandsetPlanModel> mapForDeviceAndPriceForBAndWWIthoutOffer, Device deviceDetails,
-			com.vf.uk.dal.device.client.entity.catalogue.Device productModel, String leadPlanId,
-			PricePromotionHandsetPlanModel promotions) {
 		if (StringUtils.isNotBlank(journeyType) && checkPriceInfoNull(deviceDetails)
 				&& mapForDeviceAndPriceForBAndWWIthoutOffer != null
 				&& mapForDeviceAndPriceForBAndWWIthoutOffer.containsKey(productModel.getDeviceId())) {
@@ -1321,62 +1305,40 @@ public class DeviceTilesDaoUtils {
 				promotions = mapForDeviceAndPriceForBAndWWIthoutOffer.get(productModel.getDeviceId());
 			}
 		}
+		if (deviceDetails.getPriceInfo() == null && mapForDeviceAndPriceForBAndWWIthoutOffer != null
+				&& mapForDeviceAndPriceForBAndWWIthoutOffer.containsKey(productModel.getDeviceId())) {
+			PriceForBundleAndHardware priceForWithOutOfferCode = getBundleAndHardwarePriceFromSolrWithoutOfferCodeForHandsetOnlineModel(
+					mapForDeviceAndPriceForBAndWWIthoutOffer.get(productModel.getDeviceId()), leadPlanId, groupType);
+			deviceDetails.setPriceInfo(priceForWithOutOfferCode);
+			promotions = mapForDeviceAndPriceForBAndWWIthoutOffer.get(productModel.getDeviceId());
+		}
 		return promotions;
 	}
 
 	/**
 	 * 
 	 * @param sizeVariant
-	 * @param price
+	 * @param promotions
+	 * @param deviceDetails
 	 * @param footNotes
 	 */
-	public void setDevicePromoMedia(PricePromotionHandsetPlanModel price, List<MediaLink> mediaList,
+	public void setDevicePromoMedia(MerchandisingPromotionsWrapper promotions, List<MediaLink> mediaList,
 			MerchandisingPromotionsWrapper merchandisingPromotionsWrapper) {
-		if (price != null && price.getPromotionsPackage() != null
-				&& price.getPromotionsPackage().getHardwarePromotions() != null) {
-			MerchandisingPromotionsWrapper hardwarePromo = price.getPromotionsPackage().getHardwarePromotions();
-			if (hardwarePromo != null && (checkConditionalDataEntertainAccPromotion(hardwarePromo)
-					|| checkExtraPriceSashBannerSecureNet(hardwarePromo))) {
-				setPromotionsMediaList(hardwarePromo, mediaList, merchandisingPromotionsWrapper);
-			}
+		if (promotions != null) {
+			setPromotionsMediaList(promotions, mediaList, merchandisingPromotionsWrapper);
 		}
 	}
 
 	/**
 	 * 
-	 * @param promo
-	 * @return
-	 */
-	public boolean checkConditionalDataEntertainAccPromotion(MerchandisingPromotionsWrapper promo) {
-		return promo.getConditionalSashBannerPromotion() != null || promo.getDataPromotion() != null
-				|| promo.getEntertainmentPackPromotion() != null || promo.getFreeAccessoryPromotion() != null;
-	}
-
-	/**
-	 * 
-	 * @param promo
-	 * @return
-	 */
-	public boolean checkExtraPriceSashBannerSecureNet(MerchandisingPromotionsWrapper promo) {
-		return promo.getFreeExtraPromotion() != null || promo.getPricePromotion() != null
-				|| promo.getSashBannerPromotion() != null || promo.getSecureNetPromotion() != null;
-	}
-
-	/**
-	 * 
 	 * @param sizeVariant
-	 * @param price
+	 * @param promotions
 	 * @param footNotes
 	 */
-	public void setBundlePromoMedia(PricePromotionHandsetPlanModel price, List<MediaLink> mediaList,
+	public void setBundlePromoMedia(MerchandisingPromotionsWrapper promotions, List<MediaLink> mediaList,
 			MerchandisingPromotionsWrapper merchandisingPromotionsWrapper) {
-		if (price != null && price.getPromotionsPackage() != null
-				&& price.getPromotionsPackage().getBundlePromotions() != null) {
-			MerchandisingPromotionsWrapper planPromotion = price.getPromotionsPackage().getBundlePromotions();
-			if (planPromotion != null && (checkConditionalDataEntertainAccPromotion(planPromotion)
-					|| checkExtraPriceSashBannerSecureNet(planPromotion))) {
-				setPromotionsMediaList(planPromotion, mediaList, merchandisingPromotionsWrapper);
-			}
+		if (promotions != null) {
+			setPromotionsMediaList(promotions, mediaList, merchandisingPromotionsWrapper);
 		}
 	}
 
@@ -1391,92 +1353,200 @@ public class DeviceTilesDaoUtils {
 	public void setPromotionsMediaList(MerchandisingPromotionsWrapper promotion, List<MediaLink> mediaList,
 			MerchandisingPromotionsWrapper merchandisingPromotionsWrapper) {
 
-		setPromotionsMediaForDataEnter(promotion, mediaList, merchandisingPromotionsWrapper);
-		if (promotion.getPricePromotion() != null) {
-			setMediaLinkForPromotions(promotion.getPricePromotion(), mediaList);
-			merchandisingPromotionsWrapper.setPricePromotion(promotion.getPricePromotion());
-			if (CollectionUtils.isEmpty(promotion.getPricePromotion().getFootNotes())) {
-				merchandisingPromotionsWrapper.getPricePromotion().setFootNotes(null);
-			}
-		}
-		if (promotion.getSashBannerPromotion() != null) {
-			setMediaLinkForPromotions(promotion.getSashBannerPromotion(), mediaList);
-			merchandisingPromotionsWrapper.setSashBannerPromotion(promotion.getSashBannerPromotion());
-			if (CollectionUtils.isEmpty(promotion.getSashBannerPromotion().getFootNotes())) {
-				merchandisingPromotionsWrapper.getSashBannerPromotion().setFootNotes(null);
-			}
-		}
+		getConditionalSashBanner(promotion, mediaList, merchandisingPromotionsWrapper);
+		getDataPromotion(promotion, mediaList, merchandisingPromotionsWrapper);
+		getEntertainmentPromo(promotion, mediaList, merchandisingPromotionsWrapper);
+		getFreeAccessoryPromo(promotion, mediaList, merchandisingPromotionsWrapper);
+		setFreeExtraPromo(promotion, mediaList, merchandisingPromotionsWrapper);
+		setPricePromotion(promotion, mediaList, merchandisingPromotionsWrapper);
+		setSashBannerPromo(promotion, mediaList, merchandisingPromotionsWrapper);
+		setSecureNetPromo(promotion, mediaList, merchandisingPromotionsWrapper);
+	}
+
+	private void setSecureNetPromo(MerchandisingPromotionsWrapper promotion, List<MediaLink> mediaList,
+			MerchandisingPromotionsWrapper merchandisingPromotionsWrapper) {
+		MerchandisingPromotion promotionLocal;
 		if (promotion.getSecureNetPromotion() != null) {
-			setMediaLinkForPromotions(promotion.getSecureNetPromotion(), mediaList);
-			merchandisingPromotionsWrapper.setSecureNetPromotion(promotion.getSecureNetPromotion());
-			if (CollectionUtils.isEmpty(promotion.getSecureNetPromotion().getFootNotes())) {
-				merchandisingPromotionsWrapper.getSecureNetPromotion().setFootNotes(null);
+			promotionLocal = promotion.getSecureNetPromotion();
+			if (!commonUtility.dateValidationForOffers(promotionLocal.getStartDate(), promotionLocal.getEndDate(),
+					DATE_FORMAT_COHERENCE)) {
+				merchandisingPromotionsWrapper.setSecureNetPromotion(null);
+
+			} else {
+				merchandisingPromotionsWrapper.setSecureNetPromotion(promotionLocal);
+				if (CollectionUtils.isEmpty(promotionLocal.getFootNotes())) {
+					merchandisingPromotionsWrapper.getSecureNetPromotion().setFootNotes(null);
+				}
+				setMediaLinkForPromotions(promotionLocal, mediaList);
 			}
-		}
-		if (promotion.getTalkTimePromotion() != null) {
-			setMediaLinkForPromotions(promotion.getTalkTimePromotion(), mediaList);
-			merchandisingPromotionsWrapper.setTalkTimePromotion(promotion.getTalkTimePromotion());
-			if (CollectionUtils.isEmpty(promotion.getTalkTimePromotion().getFootNotes())) {
-				merchandisingPromotionsWrapper.getTalkTimePromotion().setFootNotes(null);
-			}
-		}
-		if (promotion.getTextPromotion() != null) {
-			setMediaLinkForPromotions(promotion.getTextPromotion(), mediaList);
-			merchandisingPromotionsWrapper.setTextPromotion(promotion.getTextPromotion());
-			if (CollectionUtils.isEmpty(promotion.getTextPromotion().getFootNotes())) {
-				merchandisingPromotionsWrapper.getTextPromotion().setFootNotes(null);
-			}
+		} else {
+			merchandisingPromotionsWrapper.setSecureNetPromotion(null);
 		}
 	}
 
-	private void setPromotionsMediaForDataEnter(MerchandisingPromotionsWrapper promotion, List<MediaLink> mediaList,
+	private void setSashBannerPromo(MerchandisingPromotionsWrapper promotion, List<MediaLink> mediaList,
 			MerchandisingPromotionsWrapper merchandisingPromotionsWrapper) {
-		if (promotion.getConditionalSashBannerPromotion() != null) {
-			setMediaLinkForPromotions(promotion.getConditionalSashBannerPromotion(), mediaList);
-			merchandisingPromotionsWrapper
-					.setConditionalSashBannerPromotion(promotion.getConditionalSashBannerPromotion());
-			if (CollectionUtils.isEmpty(promotion.getConditionalSashBannerPromotion().getFootNotes())) {
-				merchandisingPromotionsWrapper.getConditionalSashBannerPromotion().setFootNotes(null);
+		MerchandisingPromotion promotionLocal;
+		if (promotion.getSashBannerPromotion() != null) {
+			promotionLocal = promotion.getSashBannerPromotion();
+			if (!commonUtility.dateValidationForOffers(promotionLocal.getStartDate(), promotionLocal.getEndDate(),
+					DATE_FORMAT_COHERENCE)) {
+				merchandisingPromotionsWrapper.setSashBannerPromotion(null);
+
+			} else {
+				merchandisingPromotionsWrapper.setSashBannerPromotion(promotionLocal);
+				if (CollectionUtils.isEmpty(promotionLocal.getFootNotes())) {
+					merchandisingPromotionsWrapper.getSashBannerPromotion().setFootNotes(null);
+				}
+				setMediaLinkForPromotions(promotionLocal, mediaList);
 			}
+		} else {
+			merchandisingPromotionsWrapper.setSashBannerPromotion(null);
 		}
-		if (promotion.getDataPromotion() != null) {
-			setMediaLinkForPromotions(promotion.getDataPromotion(), mediaList);
-			merchandisingPromotionsWrapper.setDataPromotion(promotion.getDataPromotion());
-			if (CollectionUtils.isEmpty(promotion.getDataPromotion().getFootNotes())) {
-				merchandisingPromotionsWrapper.getDataPromotion().setFootNotes(null);
+	}
+
+	private void setPricePromotion(MerchandisingPromotionsWrapper promotion, List<MediaLink> mediaList,
+			MerchandisingPromotionsWrapper merchandisingPromotionsWrapper) {
+		MerchandisingPromotion promotionLocal;
+		if (promotion.getPricePromotion() != null) {
+			promotionLocal = promotion.getPricePromotion();
+			if (!commonUtility.dateValidationForOffers(promotionLocal.getStartDate(), promotionLocal.getEndDate(),
+					DATE_FORMAT_COHERENCE)) {
+				merchandisingPromotionsWrapper.setPricePromotion(null);
+
+			} else {
+				merchandisingPromotionsWrapper.setPricePromotion(promotionLocal);
+				if (CollectionUtils.isEmpty(promotionLocal.getFootNotes())) {
+					merchandisingPromotionsWrapper.getPricePromotion().setFootNotes(null);
+				}
+				setMediaLinkForPromotions(promotionLocal, mediaList);
 			}
+		} else {
+			merchandisingPromotionsWrapper.setPricePromotion(null);
 		}
-		if (promotion.getEntertainmentPackPromotion() != null) {
-			setMediaLinkForPromotions(promotion.getEntertainmentPackPromotion(), mediaList);
-			merchandisingPromotionsWrapper.setEntertainmentPackPromotion(promotion.getEntertainmentPackPromotion());
-			if (CollectionUtils.isEmpty(promotion.getEntertainmentPackPromotion().getFootNotes())) {
-				merchandisingPromotionsWrapper.getEntertainmentPackPromotion().setFootNotes(null);
-			}
-		}
-		if (promotion.getFreeAccessoryPromotion() != null) {
-			setMediaLinkForPromotions(promotion.getFreeAccessoryPromotion(), mediaList);
-			merchandisingPromotionsWrapper.setFreeAccessoryPromotion(promotion.getFreeAccessoryPromotion());
-			if (CollectionUtils.isEmpty(promotion.getFreeAccessoryPromotion().getFootNotes())) {
-				merchandisingPromotionsWrapper.getFreeAccessoryPromotion().setFootNotes(null);
-			}
-		}
+	}
+
+	private void setFreeExtraPromo(MerchandisingPromotionsWrapper promotion, List<MediaLink> mediaList,
+			MerchandisingPromotionsWrapper merchandisingPromotionsWrapper) {
+		MerchandisingPromotion promotionLocal;
 		if (promotion.getFreeExtraPromotion() != null) {
-			setMediaLinkForPromotions(promotion.getFreeExtraPromotion(), mediaList);
-			merchandisingPromotionsWrapper.setFreeExtraPromotion(promotion.getFreeExtraPromotion());
-			if (CollectionUtils.isEmpty(promotion.getFreeExtraPromotion().getFootNotes())) {
-				merchandisingPromotionsWrapper.getFreeExtraPromotion().setFootNotes(null);
+			promotionLocal = promotion.getFreeExtraPromotion();
+			if (!commonUtility.dateValidationForOffers(promotionLocal.getStartDate(), promotionLocal.getEndDate(),
+					DATE_FORMAT_COHERENCE)) {
+				merchandisingPromotionsWrapper.setFreeExtraPromotion(null);
+
+			} else {
+				merchandisingPromotionsWrapper.setFreeExtraPromotion(promotionLocal);
+				if (CollectionUtils.isEmpty(promotionLocal.getFootNotes())) {
+					merchandisingPromotionsWrapper.getFreeExtraPromotion().setFootNotes(null);
+				}
+				setMediaLinkForPromotions(promotionLocal, mediaList);
 			}
+		} else {
+			merchandisingPromotionsWrapper.setFreeExtraPromotion(null);
+		}
+	}
+
+	private void getFreeAccessoryPromo(MerchandisingPromotionsWrapper promotion, List<MediaLink> mediaList,
+			MerchandisingPromotionsWrapper merchandisingPromotionsWrapper) {
+		MerchandisingPromotion promotionLocal;
+		if (promotion.getFreeAccessoryPromotion() != null) {
+			promotionLocal = promotion.getFreeAccessoryPromotion();
+			if (!commonUtility.dateValidationForOffers(promotionLocal.getStartDate(), promotionLocal.getEndDate(),
+					DATE_FORMAT_COHERENCE)) {
+				merchandisingPromotionsWrapper.setFreeAccessoryPromotion(null);
+
+			} else {
+				merchandisingPromotionsWrapper.setFreeAccessoryPromotion(promotionLocal);
+				if (CollectionUtils.isEmpty(promotionLocal.getFootNotes())) {
+					merchandisingPromotionsWrapper.getFreeAccessoryPromotion().setFootNotes(null);
+				}
+				setMediaLinkForPromotions(promotionLocal, mediaList);
+			}
+		} else {
+			merchandisingPromotionsWrapper.setFreeAccessoryPromotion(null);
+		}
+	}
+
+	private void getEntertainmentPromo(MerchandisingPromotionsWrapper promotion, List<MediaLink> mediaList,
+			MerchandisingPromotionsWrapper merchandisingPromotionsWrapper) {
+		MerchandisingPromotion promotionLocal;
+		if (promotion.getEntertainmentPackPromotion() != null) {
+			promotionLocal = promotion.getEntertainmentPackPromotion();
+			if (!commonUtility.dateValidationForOffers(promotionLocal.getStartDate(), promotionLocal.getEndDate(),
+					DATE_FORMAT_COHERENCE)) {
+				merchandisingPromotionsWrapper.setEntertainmentPackPromotion(null);
+
+			} else {
+				merchandisingPromotionsWrapper.setEntertainmentPackPromotion(promotionLocal);
+				if (CollectionUtils.isEmpty(promotionLocal.getFootNotes())) {
+					merchandisingPromotionsWrapper.getEntertainmentPackPromotion().setFootNotes(null);
+				}
+				setMediaLinkForPromotions(promotionLocal, mediaList);
+			}
+		} else {
+			merchandisingPromotionsWrapper.setEntertainmentPackPromotion(null);
+		}
+	}
+
+	private void getDataPromotion(MerchandisingPromotionsWrapper promotion, List<MediaLink> mediaList,
+			MerchandisingPromotionsWrapper merchandisingPromotionsWrapper) {
+		MerchandisingPromotion promotionLocal;
+		if (promotion.getDataPromotion() != null) {
+			promotionLocal = promotion.getDataPromotion();
+			if (!commonUtility.dateValidationForOffers(promotionLocal.getStartDate(), promotionLocal.getEndDate(),
+					DATE_FORMAT_COHERENCE)) {
+				merchandisingPromotionsWrapper.setDataPromotion(null);
+
+			} else {
+				merchandisingPromotionsWrapper.setDataPromotion(promotionLocal);
+				if (CollectionUtils.isEmpty(promotionLocal.getFootNotes())) {
+					merchandisingPromotionsWrapper.getDataPromotion().setFootNotes(null);
+				}
+				setMediaLinkForPromotions(promotionLocal, mediaList);
+			}
+		} else {
+			merchandisingPromotionsWrapper.setDataPromotion(null);
+		}
+	}
+
+	private void getConditionalSashBanner(MerchandisingPromotionsWrapper promotion, List<MediaLink> mediaList,
+			MerchandisingPromotionsWrapper merchandisingPromotionsWrapper) {
+		MerchandisingPromotion promotionLocal;
+		if (promotion.getConditionalSashBannerPromotion() != null) {
+			promotionLocal = promotion.getConditionalSashBannerPromotion();
+			if (!commonUtility.dateValidationForOffers(promotionLocal.getStartDate(), promotionLocal.getEndDate(),
+					DATE_FORMAT_COHERENCE)) {
+				merchandisingPromotionsWrapper.setConditionalSashBannerPromotion(null);
+
+			} else {
+				merchandisingPromotionsWrapper.setConditionalSashBannerPromotion(promotionLocal);
+				if (CollectionUtils.isEmpty(promotionLocal.getFootNotes())) {
+					merchandisingPromotionsWrapper.getConditionalSashBannerPromotion().setFootNotes(null);
+				}
+				setMediaLinkForPromotions(promotionLocal, mediaList);
+			}
+		} else {
+			merchandisingPromotionsWrapper.setConditionalSashBannerPromotion(null);
 		}
 	}
 
 	private void setMediaLinkAndPromotions(com.vf.uk.dal.device.client.entity.catalogue.Device productModel,
-			PricePromotionHandsetPlanModel promotions, Device deviceDetails,
-			MerchandisingPromotionsPackage merchandisingPromotionsPackage, String cdnDomain) {
+			PricePromotionHandsetPlanModel promotions, Device deviceDetails, String cdnDomain) {
+		MerchandisingPromotionsPackage merchandisingPromotionsPackage = new MerchandisingPromotionsPackage();
 		MerchandisingPromotionsWrapper bundlePromotions = new MerchandisingPromotionsWrapper();
 		MerchandisingPromotionsWrapper hardwarePromotions = new MerchandisingPromotionsWrapper();
 		List<MediaLink> mediaList = new ArrayList<>();
-		setDevicePromoMedia(promotions, mediaList, hardwarePromotions);
-		setBundlePromoMedia(promotions, mediaList, bundlePromotions);
+		if (promotions != null) {
+			setDevicePromoMedia(promotions.getPromotionsPackage().getHardwarePromotions(), mediaList,
+					hardwarePromotions);
+			setBundlePromoMedia(promotions.getPromotionsPackage().getBundlePromotions(), mediaList, bundlePromotions);
+			merchandisingPromotionsPackage.setBundlePromotions(bundlePromotions);
+			merchandisingPromotionsPackage.setHardwarePromotions(hardwarePromotions);
+			merchandisingPromotionsPackage.setHardwareId(promotions.getHardwareId());
+			merchandisingPromotionsPackage.setPlanId(promotions.getPlanId());
+			deviceDetails.setPromotionsPackage(merchandisingPromotionsPackage);
+		}
 		if (productModel.getListOfimageURLs() != null
 				&& CollectionUtils.isNotEmpty(productModel.getListOfimageURLs())) {
 			productModel.getListOfimageURLs().forEach(imageURL -> {
@@ -1506,13 +1576,6 @@ public class DeviceTilesDaoUtils {
 				mediaList.add(mediaLink);
 			});
 		}
-		merchandisingPromotionsPackage.setBundlePromotions(bundlePromotions);
-		merchandisingPromotionsPackage.setHardwarePromotions(hardwarePromotions);
-		if (promotions != null) {
-			merchandisingPromotionsPackage.setHardwareId(promotions.getHardwareId());
-			merchandisingPromotionsPackage.setPlanId(promotions.getPlanId());
-		}
-		deviceDetails.setPromotionsPackage(merchandisingPromotionsPackage);
 		deviceDetails.setMedia(mediaList);
 	}
 
