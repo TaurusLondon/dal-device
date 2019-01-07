@@ -174,12 +174,25 @@ public class DeviceServiceImplUtility {
 		ProductGroupDetailsForDeviceList groupDetails = new ProductGroupDetailsForDeviceList();
 		List<String> colourHex = new ArrayList<>();
 		List<String> size = new ArrayList<>();
+		log.info("Product group ID {}",productGroupModel.getId());
 		if (StringUtils.equalsIgnoreCase(journeyType, JOURNEY_TYPE_UPGRADE)) {
-			colourHex.addAll(productGroupModel.getUpgradeColor());
-			size.addAll(productGroupModel.getUpgradeCapacity());
+			if (productGroupModel.getUpgradeColor() != null
+					&& CollectionUtils.isNotEmpty(productGroupModel.getUpgradeColor())) {
+				colourHex.addAll(productGroupModel.getUpgradeColor());
+			}
+			if (productGroupModel.getUpgradeCapacity() != null
+					&& CollectionUtils.isNotEmpty(productGroupModel.getUpgradeCapacity())) {
+				size.addAll(productGroupModel.getUpgradeCapacity());
+			}
 		} else {
-			colourHex.addAll(productGroupModel.getAcqColor());
-			size.addAll(productGroupModel.getAcqCapacity());
+			if (productGroupModel.getAcqColor() != null
+					&& CollectionUtils.isNotEmpty(productGroupModel.getAcqColor())) {
+				colourHex.addAll(productGroupModel.getAcqColor());
+			}
+			if (productGroupModel.getAcqCapacity() != null
+					&& CollectionUtils.isNotEmpty(productGroupModel.getAcqCapacity())) {
+				size.addAll(productGroupModel.getAcqCapacity());
+			}
 		}
 		List<Colour> colours = new ArrayList<>();
 		if (CollectionUtils.isNotEmpty(colourHex)) {
