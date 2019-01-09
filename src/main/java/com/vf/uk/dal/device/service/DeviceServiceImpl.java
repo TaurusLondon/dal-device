@@ -524,7 +524,7 @@ public class DeviceServiceImpl implements DeviceService {
 			return "PricePromotionHandset_" + deviceId + "_" + "NA" + "_" + journeyType + "_" + offerCode;
 		} else {
 			if (leadPlanDetails != null && leadPlanDetails.getLeadPlanId() != null) {
-				return "PricePromotionHandset_" + deviceId + "_" + leadPlanDetails + "_" + journeyType + "_"
+				return "PricePromotionHandset_" + deviceId + "_" + leadPlanDetails.getLeadPlanId() + "_" + journeyType + "_"
 						+ offerCode;
 			}
 		}
