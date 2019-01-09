@@ -1201,16 +1201,12 @@ public class DeviceTilesDaoUtils {
 		List<NewFacet> listOfNewFacet = setListOfNewFacetForHandsetOnlineModel(facetList);
 		facetedDevice.setNewFacet(listOfNewFacet);
 		int count = 0;
-		if (listOfProducts != null && !listOfProducts.isEmpty()) {
 			for (com.vf.uk.dal.device.client.entity.catalogue.Device productModel : listOfProductModel) {
 				setDeviceDetailsList(listOfProducts, groupType, journeyType, productGroupdetailsMap,
 						mapForDeviceAndPriceForBAndWWIthOffer, mapForDeviceAndPriceForBAndWWIthoutOffer,
 						productGroupModelList, offerCode, deviceList, productModel, cdnDomain);
 				count++;
 			}
-		} else {
-			log.info("Products not provided while converting ProductModelListToDeviceList.");
-		}
 		facetedDevice.setDevice(deviceList);
 		facetedDevice.setNoOfRecordsFound(count);
 		return facetedDevice;

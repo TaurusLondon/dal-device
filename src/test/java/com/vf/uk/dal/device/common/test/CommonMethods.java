@@ -111,19 +111,16 @@ public class CommonMethods {
 	public static final String PREFERENCE_NAME_SEGMENT = "SEGMENT";
 	public static final String PREFERENCE_NAME_UPGRADE = "UPGRADE_TYPE";
 	public static final String PREFERENCE_DATATYPE_CODE_GENERAL = "GENERAL";
-	private static final String BUNDLE_ID = "102821";
-
-	private static final String HARDWARE_ID = "093353";
 
 	public static List<PricePromotionHandsetPlanModel> getPricePromoModel() {
 		List<PricePromotionHandsetPlanModel> pricePromo = new ArrayList<>();
 		PricePromotionHandsetPlanModel pricePromoModel = new PricePromotionHandsetPlanModel();
 		pricePromoModel.setBundlePrice(getBundlePriceModel());
-		pricePromoModel.setHardwareId(HARDWARE_ID);
+		pricePromoModel.setHardwareId("095459");
 		pricePromoModel.setHardwarePrice(getHardwarePrice());
 		pricePromoModel.setJourneyType("Acq");
 		pricePromoModel.setPlanHardwarePricePromokey("promoKey");
-		pricePromoModel.setPlanId(BUNDLE_ID);
+		pricePromoModel.setPlanId("111189");
 		pricePromoModel.setPromotionCode("promoCode");
 		pricePromoModel.setPromotionsPackage(getMerchandisingPromoPackage());
 		pricePromo.add(pricePromoModel);
@@ -131,8 +128,8 @@ public class CommonMethods {
 	}
 	public static MerchandisingPromotionsPackage getMerchandisingPromoPackage() {
 		MerchandisingPromotionsPackage mpPackage = new MerchandisingPromotionsPackage();
-		mpPackage.setHardwareId(HARDWARE_ID);
-		mpPackage.setPlanId(BUNDLE_ID);
+		mpPackage.setHardwareId("095459");
+		mpPackage.setPlanId("111189");
 		mpPackage.setBundlePromotions(getPromotionsWrapper());
 		mpPackage.setHardwarePromotions(getPromotionsWrapper());
 		return mpPackage;
@@ -170,7 +167,7 @@ public class CommonMethods {
 	}
 	public static com.vf.uk.dal.device.model.solr.HardwarePrice getHardwarePrice() {
 		com.vf.uk.dal.device.model.solr.HardwarePrice bPrice = new com.vf.uk.dal.device.model.solr.HardwarePrice();
-		bPrice.setHardwareId(HARDWARE_ID);
+		bPrice.setHardwareId("095459");
 		bPrice.setFinancingOptions(getFinancingOptions());
 		OneOffDiscountPrice oneOffDiscPrice = new OneOffDiscountPrice();
 		oneOffDiscPrice.setGross("30");
@@ -192,13 +189,19 @@ public class CommonMethods {
 		financingOption.setDeviceFinancingId("12312");
 		financingOption.setFinanceProvider("Paypal");
 		financingOption.setFinanceTerm("monthly");
+		com.vf.uk.dal.device.model.solr.Price price = new com.vf.uk.dal.device.model.solr.Price();
+		price.setGross("30");
+		price.setNet("20");
+		price.setVat("10");
+		financingOption.setMonthlyPrice(price);
+		financingOption.setTotalPriceWithInterest(price);
 		financingOptionList.add(financingOption);
 
 		return financingOptionList;
 	}
 	public static com.vf.uk.dal.device.model.solr.BundlePrice getBundlePriceModel() {
 		com.vf.uk.dal.device.model.solr.BundlePrice bPrice = new com.vf.uk.dal.device.model.solr.BundlePrice();
-		bPrice.setBundleId(BUNDLE_ID);
+		bPrice.setBundleId("111189");
 		com.vf.uk.dal.device.model.solr.MonthlyDiscountPrice monthlydiscPrice = new com.vf.uk.dal.device.model.solr.MonthlyDiscountPrice();
 		monthlydiscPrice.setGross("10");
 		monthlydiscPrice.setNet("10");
