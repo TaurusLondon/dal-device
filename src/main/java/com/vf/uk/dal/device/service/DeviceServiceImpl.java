@@ -247,7 +247,7 @@ public class DeviceServiceImpl implements DeviceService {
 		return facetedDevice;
 	}
 
-	private FacetedDevice getDeviceListofFacetedDeviceFromHandsetOnlineModel(String make, String groupType,
+	public FacetedDevice getDeviceListofFacetedDeviceFromHandsetOnlineModel(String make, String groupType,
 			String sortCriteria, int pageNumber, int pageSize, String capacity, String colour, String operatingSystem,
 			String mustHaveFeatures, String journeytype, String offerCode) {
 		FacetedDevice facetedDevice;
@@ -270,15 +270,8 @@ public class DeviceServiceImpl implements DeviceService {
 			}
 			throwExceptionListOfProductEmpty(listOfProducts);
 			log.error("Lead DeviceId List Coming From Solr------------:  " + listOfProducts);
-
-			if (!listOfProductModel.isEmpty()) {
-				listOfProductModel = deviceUtils.sortListForProductModelForHandsetOnlineModel(listOfProductModel,
-						listOfProducts);
-			} else {
-				log.error("No Data Found for the given list of Products :  " + listOfProductModel);
-				throw new DeviceCustomException(ERROR_CODE_DEVICE_LIST,
-						ExceptionMessages.NO_DATA_FOUND_FOR_GIVEN_PRODUCT_LIST, "404");
-			}
+			listOfProductModel = deviceUtils.sortListForProductModelForHandsetOnlineModel(listOfProductModel,
+					listOfProducts);
 			List<String> pricePromoIdsWithOfferCode = new ArrayList<>();
 			List<String> pricePromoIdsWithoutOfferCode = new ArrayList<>();
 			getPricePromoIds(listOfProductModel, pricePromoIdsWithOfferCode, pricePromoIdsWithoutOfferCode, groupType,
@@ -315,7 +308,7 @@ public class DeviceServiceImpl implements DeviceService {
 		return facetedDevice;
 	}
 
-	private void throwExceptionIfPriceNull(List<com.vf.uk.dal.device.client.entity.catalogue.Device> listOfProductModel,
+	public  void throwExceptionIfPriceNull(List<com.vf.uk.dal.device.client.entity.catalogue.Device> listOfProductModel,
 			List<PricePromotionHandsetPlanModel> priceForBundleAndHardwareWithOffer,
 			List<PricePromotionHandsetPlanModel> priceForBundleAndHardwareWithoutOffer) {
 		if (priceForBundleAndHardwareWithOffer == null && priceForBundleAndHardwareWithoutOffer == null) {
@@ -335,7 +328,7 @@ public class DeviceServiceImpl implements DeviceService {
 
 	}
 
-	private void throwExceptionListOfProductEmpty(List<String> listOfProducts) {
+	public  void throwExceptionListOfProductEmpty(List<String> listOfProducts) {
 		if (listOfProducts.isEmpty()) {
 			log.error("Empty Lead DeviceId List Coming From Solr :  " + listOfProducts);
 			throw new DeviceCustomException(ERROR_CODE_DEVICE_LIST,
@@ -353,13 +346,13 @@ public class DeviceServiceImpl implements DeviceService {
 							&& !StringUtils.equalsIgnoreCase(journeyType, JOURNEY_TYPE_UPGRADE)))) {
 				listOfProducts.add(productGroupModelList.getLeadNonUpgradeDeviceId());
 				deviceServiceImplUtility.getProductGroupdetailsMapForHandsetOnlineModel(productGroupModelList,
-						productGroupdetailsMap, productGroupModelList.getLeadNonUpgradeDeviceId(),journeyType);
+						productGroupdetailsMap, productGroupModelList.getLeadNonUpgradeDeviceId(), journeyType);
 			} else if (StringUtils.isNotBlank(productGroupModelList.getLeadUpgradeDeviceId())
 					&& StringUtils.isNotBlank(journeyType)
 					&& StringUtils.equalsIgnoreCase(journeyType, JOURNEY_TYPE_UPGRADE)) {
 				listOfProducts.add(productGroupModelList.getLeadUpgradeDeviceId());
 				deviceServiceImplUtility.getProductGroupdetailsMapForHandsetOnlineModel(productGroupModelList,
-						productGroupdetailsMap, productGroupModelList.getLeadUpgradeDeviceId(),journeyType);
+						productGroupdetailsMap, productGroupModelList.getLeadUpgradeDeviceId(), journeyType);
 			}
 		}
 		for (DeviceOnlineModel productGroupModelList : productGroupModel) {
@@ -1035,14 +1028,14 @@ public class DeviceServiceImpl implements DeviceService {
 			listOfProducts.add(productGroupModel.getNonUpgradeLeadDeviceId());
 			isLeadMemberFromSolr.put(LEAD_MEMBER, true);
 			deviceServiceImplUtility.getProductGroupdetailsMap(productGroupModel, productGroupdetailsMap,
-					productGroupModel.getNonUpgradeLeadDeviceId(),journeyType);
+					productGroupModel.getNonUpgradeLeadDeviceId(), journeyType);
 		} else if (StringUtils.isNotBlank(productGroupModel.getUpgradeLeadDeviceId())
 				&& StringUtils.isNotBlank(journeyType)
 				&& StringUtils.equalsIgnoreCase(journeyType, JOURNEY_TYPE_UPGRADE)) {
 			listOfProducts.add(productGroupModel.getUpgradeLeadDeviceId());
 			isLeadMemberFromSolr.put(LEAD_MEMBER, true);
 			deviceServiceImplUtility.getProductGroupdetailsMap(productGroupModel, productGroupdetailsMap,
-					productGroupModel.getUpgradeLeadDeviceId(),journeyType);
+					productGroupModel.getUpgradeLeadDeviceId(), journeyType);
 		} else {
 			List<String> variantsList = productGroupModel.getListOfVariants();
 			if (variantsList != null && !variantsList.isEmpty()) {

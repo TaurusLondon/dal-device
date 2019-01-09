@@ -84,6 +84,7 @@ import com.vf.uk.dal.device.service.CacheDeviceService;
 import com.vf.uk.dal.device.service.CacheDeviceServiceImpl;
 import com.vf.uk.dal.device.service.DeviceRecommendationService;
 import com.vf.uk.dal.device.service.DeviceService;
+import com.vf.uk.dal.device.service.DeviceServiceImpl;
 import com.vf.uk.dal.device.utils.AccessoriesAndInsurancedaoUtils;
 import com.vf.uk.dal.device.utils.CacheDeviceDaoUtils;
 import com.vf.uk.dal.device.utils.CommonUtility;
@@ -194,6 +195,8 @@ public class DeviceTest {
 	@Autowired
 	DeviceServiceCommonUtility deviceServiceCommonUtility;
 
+	@Autowired
+	DeviceServiceImpl deviceServiceImpl;
 	@Value("${cdn.domain.host}")
 	private String cdnDomain;
 
@@ -227,7 +230,35 @@ public class DeviceTest {
 				RecommendedProductListResponse.class)).willReturn(obj1);
 		given(this.deviceDAOMock.getBundleDetailsFromComplansListingAPI("093353", null))
 				.willReturn(CommonMethods.getCompatibleBundleListJson());
-
+		given(response.getListOfProductGroupModel(ArgumentMatchers.any()))
+				.willReturn(CommonMethods.getListOfProductGroupMode());
+		given(response.getFacetField(ArgumentMatchers.any())).willReturn(CommonMethods.getListOfFacetField());
+		given(response.getListOfProductModel(ArgumentMatchers.any())).willReturn(CommonMethods.getProductModel());
+		given(this.response.getListOfMerchandisingPromotionModelFromJson(ArgumentMatchers.any()))
+				.willReturn(CommonMethods.getModel());
+		given(response.getListOfOfferAppliedPriceModel(ArgumentMatchers.any()))
+				.willReturn(CommonMethods.getOfferAppliedPriceModel());
+		List<BundleAndHardwareTuple> bundleHardwareTupleList = new ArrayList<>();
+		BundleAndHardwareTuple bundleAndHardwareTuple1 = new BundleAndHardwareTuple();
+		bundleAndHardwareTuple1.setBundleId("110154");
+		bundleAndHardwareTuple1.setHardwareId("093353");
+		BundleAndHardwareTuple bundleAndHardwareTuple2 = new BundleAndHardwareTuple();
+		bundleAndHardwareTuple2.setBundleId("110154");
+		bundleAndHardwareTuple2.setHardwareId("092660");
+		bundleHardwareTupleList.add(bundleAndHardwareTuple1);
+		bundleHardwareTupleList.add(bundleAndHardwareTuple2);
+		BundleAndHardwareRequest request = new BundleAndHardwareRequest();
+		request.setBundleAndHardwareList(bundleHardwareTupleList);
+		String jsonString = new String(CommonMethods.readFile("\\BundleandhardwarePromotuions.json"));
+		BundleAndHardwarePromotions[] obj = new ObjectMapper().readValue(jsonString,
+				BundleAndHardwarePromotions[].class);
+		given(restTemplate.postForObject("http://PROMOTION-V1/promotion/queries/ForBundleAndHardware", request,
+				BundleAndHardwarePromotions[].class)).willReturn(obj);
+		String url = "http://CUSTOMER-V1/customer/subscription/msisdn:7741655541/sourcePackageSummary";
+		given(restTemplate.getForObject(url, SourcePackageSummary.class))
+				.willReturn(CommonMethods.getSourcePackageSummary());
+		given(response.getListOfBundleModel(ArgumentMatchers.any()))
+				.willReturn(CommonMethods.getBundleModelListForBundleList());
 	}
 
 	@Test
@@ -464,14 +495,14 @@ public class DeviceTest {
 			String url = "http://CUSTOMER-V1/customer/subscription/msisdn:7741655541/sourcePackageSummary";
 			given(restTemplate.getForObject(url, SourcePackageSummary.class))
 					.willReturn(CommonMethods.getSourcePackageSummary());
+			given(response.getListOfBundleModel(ArgumentMatchers.any()))
+					.willReturn(CommonMethods.getBundleModelListForBundleList());
 			deviceDetailsList = deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple",
 					"iPhone-7", "White", "iOS 9", "32 GB", null, "Great Camera", null, null, null, null);
 			Assert.assertNotNull(deviceDetailsList);
 			assertEquals("093353", deviceDetailsList.getDevice().get(0).getDeviceId());
 			assertEquals("HANDSET", deviceDetailsList.getDevice().get(0).getProductClass());
 			assertEquals("na", deviceDetailsList.getDevice().get(0).getRating());
-			given(response.getListOfBundleModel(ArgumentMatchers.any()))
-					.willReturn(CommonMethods.getBundleModelListForBundleList());
 
 			deviceDetailsList = deviceController.getDeviceList("HANDSET", "DEVICE_PAYM", "Priority", 1, 9, "Apple",
 					"iPhone-7", "White", "iOS 9", "32 GB", null, "Great Camera", "Upgrade", null, null, "2");
@@ -762,23 +793,132 @@ public class DeviceTest {
 			assertEquals("093353", deviceLists.getDevice().get(0).getDeviceId());
 			assertEquals("HANDSET", deviceLists.getDevice().get(0).getProductClass());
 			assertEquals("na", deviceLists.getDevice().get(0).getRating());
-		} else {
-			String jsonString = new String(CommonMethods.readFile("\\rest-mock\\DEVICEENTITY-V1.json"));
-			DeviceEntityModel obj = new ObjectMapper().readValue(jsonString, DeviceEntityModel.class);
+		}
+	}
+
+	@Test
+	public void nullTestForGetDeviceList() throws IOException {
+		String jsonString = new String(CommonMethods.readFile("\\rest-mock\\DEVICEENTITY-V1.json"));
+		DeviceEntityModel obj = new ObjectMapper().readValue(jsonString, DeviceEntityModel.class);
+		given(restTemplate.getForObject(
+				"http://CATALOGUE-V1/productCatalog/device?make=" + ArgumentMatchers.any() + "&model="
+						+ ArgumentMatchers.any() + "&groupType=DEVICE_PAYM" + "&deviceId=" + null + "&packageType="
+						+ null + "&sort=" + null + "&pageNumber=" + null + "&pageSize=" + null + "&color=" + null
+						+ "&operatingSystem=" + null + "&capacity=" + null + "&mustHaveFeatures=" + null,
+				DeviceEntityModel.class)).willReturn(obj);
+		FacetedDevice deviceLists = null;
+
+		deviceLists = deviceServiceImpl.getDeviceListofFacetedDevice("apple", "DEVICE_PAYM", "Priority", 0, 9, "32 GB",
+				"White", "iOS", "Great Camera", "Acquisition", null);
+		deviceLists = deviceServiceImpl.getDeviceListofFacetedDevice("apple", "DEVICE_PAYM", "Priority", 0, 9, "32 GB",
+				"White", "iOS", "Great Camera", "Upgrade", "WH_01_00_02");
+		deviceLists = deviceServiceImpl.getDeviceListofFacetedDevice("apple", "DEVICE_PAYM", "Priority", 0, 9, "32 GB",
+				"White", "iOS", "Great Camera", "Upgrade", null);
+		deviceLists = deviceServiceImpl.getDeviceListofFacetedDevice("apple", "DEVICE_PAYM", "Priority", 0, 9, "32 GB",
+				"White", "iOS", "Great Camera", "SecondLine", "WH_01_00_02");
+		deviceLists = deviceServiceImpl.getDeviceListofFacetedDevice("apple", "DEVICE_PAYM", "Priority", 0, 9, "32 GB",
+				"White", "iOS", "Great Camera", "SecondLine", null);
+		deviceServiceImpl.getDeviceListofFacetedDevice("apple", "DEVICE_PAYG", "Priority", 0, 9, "32 GB", "White",
+				"iOS", "Great Camera", "Acquisition", null);
+		Assert.assertNotNull(deviceLists);
+		assertEquals("093353", deviceLists.getDevice().get(0).getDeviceId());
+		assertEquals("HANDSET", deviceLists.getDevice().get(0).getProductClass());
+		try {
+			given(response.getFacetField(ArgumentMatchers.any())).willReturn(null);
+			deviceServiceImpl.getDeviceListofFacetedDevice("apple", "DEVICE_PAYG", "Priority", 0, 9, "32 GB", "White",
+					"iOS", "Great Camera", "Acquisition", null);
+		} catch (Exception e) {
+			assertEquals("No Devices Found for the given input search criteria", e.getMessage());
+		}
+		try {
 			given(restTemplate.getForObject(
 					"http://CATALOGUE-V1/productCatalog/device?make=" + ArgumentMatchers.any() + "&model="
 							+ ArgumentMatchers.any() + "&groupType=DEVICE_PAYM" + "&deviceId=" + null + "&packageType="
 							+ null + "&sort=" + null + "&pageNumber=" + null + "&pageSize=" + null + "&color=" + null
 							+ "&operatingSystem=" + null + "&capacity=" + null + "&mustHaveFeatures=" + null,
-					DeviceEntityModel.class)).willReturn(obj);
-			FacetedDevice deviceLists = null;
-
-			deviceLists = deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYM", "Priority", 0, 9,
-					"32 GB", "White", "iOS", "Great Camera", null, null, null, "447582367723", true);
-			Assert.assertNotNull(deviceLists);
-			assertEquals("097513", deviceLists.getDevice().get(0).getDeviceId());
-			assertEquals("Handset", deviceLists.getDevice().get(0).getProductClass());
+					DeviceEntityModel.class)).willReturn(null);
+			deviceServiceImpl.getDeviceListofFacetedDevice("apple", "DEVICE_PAYG", "Priority", 0, 9, "32 GB", "White",
+					"iOS", "Great Camera", "Acquisition", null);
+		} catch (Exception e) {
+			assertEquals("No Devices Found for the given input search criteria", e.getMessage());
 		}
+	}
+
+	@Test
+	public void nullTestForGetDeviceListHandsetOnlineModel() throws IOException {
+		String jsonString = new String(CommonMethods.readFile("\\rest-mock\\DEVICEENTITY-V1.json"));
+		DeviceEntityModel obj = new ObjectMapper().readValue(jsonString, DeviceEntityModel.class);
+		given(restTemplate.getForObject(
+				"http://CATALOGUE-V1/productCatalog/device?make=" + ArgumentMatchers.any() + "&model="
+						+ ArgumentMatchers.any() + "&groupType=DEVICE_PAYM" + "&deviceId=" + null + "&packageType="
+						+ null + "&sort=" + null + "&pageNumber=" + null + "&pageSize=" + null + "&color=" + null
+						+ "&operatingSystem=" + null + "&capacity=" + null + "&mustHaveFeatures=" + null,
+				DeviceEntityModel.class)).willReturn(obj);
+		FacetedDevice deviceLists = null;
+
+		deviceLists = deviceServiceImpl.getDeviceListofFacetedDeviceFromHandsetOnlineModel("apple", "DEVICE_PAYM",
+				"Priority", 0, 9, "32 GB", "White", "iOS", "Great Camera", "Acquisition", null);
+		deviceLists = deviceServiceImpl.getDeviceListofFacetedDeviceFromHandsetOnlineModel("apple", "DEVICE_PAYM",
+				"Priority", 0, 9, "32 GB", "White", "iOS", "Great Camera", "Upgrade", "WH_01_00_02");
+		deviceLists = deviceServiceImpl.getDeviceListofFacetedDeviceFromHandsetOnlineModel("apple", "DEVICE_PAYM",
+				"Priority", 0, 9, "32 GB", "White", "iOS", "Great Camera", "Upgrade", null);
+		deviceLists = deviceServiceImpl.getDeviceListofFacetedDeviceFromHandsetOnlineModel("apple", "DEVICE_PAYM",
+				"Priority", 0, 9, "32 GB", "White", "iOS", "Great Camera", "SecondLine", "WH_01_00_02");
+		deviceLists = deviceServiceImpl.getDeviceListofFacetedDeviceFromHandsetOnlineModel("apple", "DEVICE_PAYM",
+				"Priority", 0, 9, "32 GB", "White", "iOS", "Great Camera", "SecondLine", null);
+		deviceServiceImpl.getDeviceListofFacetedDeviceFromHandsetOnlineModel("apple", "DEVICE_PAYG", "Priority", 0, 9,
+				"32 GB", "White", "iOS", "Great Camera", "Acquisition", null);
+		Assert.assertNotNull(deviceLists);
+		assertEquals("095459", deviceLists.getDevice().get(0).getDeviceId());
+		assertEquals("Handset", deviceLists.getDevice().get(0).getProductClass());
+		try {
+			given(deviceESHelper.getPriceForBundleAndHardwareJourneySpecificMap(ArgumentMatchers.anyList()))
+					.willReturn(CommonMethods.getPricePromoModel());
+			deviceServiceImpl.getDeviceListofFacetedDeviceFromHandsetOnlineModel("apple", "DEVICE_PAYG", "Priority", 0,
+					9, "32 GB", "White", "iOS", "Great Camera", "Acquisition", null);
+		} catch (Exception e) {
+			assertEquals("No response from price", e.getMessage());
+		}
+		try {
+			given(restTemplate.getForObject(
+					"http://CATALOGUE-V1/productCatalog/device?make=" + ArgumentMatchers.any() + "&model="
+							+ ArgumentMatchers.any() + "&groupType=DEVICE_PAYM" + "&deviceId=" + null + "&packageType="
+							+ null + "&sort=" + null + "&pageNumber=" + null + "&pageSize=" + null + "&color=" + null
+							+ "&operatingSystem=" + null + "&capacity=" + null + "&mustHaveFeatures=" + null,
+					DeviceEntityModel.class)).willReturn(null);
+			deviceServiceImpl.getDeviceListofFacetedDeviceFromHandsetOnlineModel("apple", "DEVICE_PAYG", "Priority", 0,
+					9, "32 GB", "White", "iOS", "Great Camera", "Acquisition", null);
+		} catch (Exception e) {
+			assertEquals("No Devices Found for the given input search criteria", e.getMessage());
+		}
+	}
+
+	@Test
+	public void nullTestForGetDeviceListFor() throws IOException {
+		if (!handsetOnlineModelEnabled) {
+			String jsonString = new String(CommonMethods.readFile("\\rest-mock\\DEVICEENTITY-V1.json"));
+			DeviceEntityModel obj = new ObjectMapper().readValue(jsonString, DeviceEntityModel.class);
+			given(restTemplate.getForObject(
+					"http://CATALOGUE-V1/productCatalog/device?make=" + ArgumentMatchers.any() + "&model="
+							+ ArgumentMatchers.any() + "&groupType=DEVICE_PAYG" + "&deviceId=" + null + "&packageType="
+							+ null + "&sort=" + null + "&pageNumber=" + null + "&pageSize=" + null + "&color=" + null
+							+ "&operatingSystem=" + null + "&capacity=" + null + "&mustHaveFeatures=" + null,
+					DeviceEntityModel.class)).willReturn(obj);
+			deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYG", "Priority", 0, 9, "32 GB",
+					"White", "iOS", "Great Camera", null, null, null, "447582367723", true);
+		}
+		String jsonString = new String(CommonMethods.readFile("\\rest-mock\\DEVICEENTITY-V1.json"));
+		DeviceEntityModel obj = new ObjectMapper().readValue(jsonString, DeviceEntityModel.class);
+		given(restTemplate.getForObject(
+				"http://CATALOGUE-V1/productCatalog/device?make=" + ArgumentMatchers.any() + "&model="
+						+ ArgumentMatchers.any() + "&groupType=DEVICE_PAYG" + "&deviceId=" + null + "&packageType="
+						+ null + "&sort=" + null + "&pageNumber=" + null + "&pageSize=" + null + "&color=" + null
+						+ "&operatingSystem=" + null + "&capacity=" + null + "&mustHaveFeatures=" + null,
+				DeviceEntityModel.class)).willReturn(obj);
+		deviceServiceImpl.getDeviceListofFacetedDevice("apple", "DEVICE_PAYM", "Priority", 0, 9, "32 GB", "White",
+				"iOS", "Great Camera", "Acquisition", null);
+		deviceServiceImpl.getDeviceListofFacetedDevice("apple", "DEVICE_PAYG", "Priority", 0, 9, "32 GB", "White",
+				"iOS", "Great Camera", "Acquisition", null);
 	}
 
 	@Test
@@ -795,28 +935,24 @@ public class DeviceTest {
 			deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYG", "Priority", 0, 9, "32 GB",
 					"White", "iOS", "Great Camera", null, null, null, "447582367723", true);
 		}
+		String jsonString = new String(CommonMethods.readFile("\\rest-mock\\DEVICEENTITY-V1.json"));
+		DeviceEntityModel obj = new ObjectMapper().readValue(jsonString, DeviceEntityModel.class);
+		given(restTemplate.getForObject(
+				"http://CATALOGUE-V1/productCatalog/device?make=" + ArgumentMatchers.any() + "&model="
+						+ ArgumentMatchers.any() + "&groupType=DEVICE_PAYG" + "&deviceId=" + null + "&packageType="
+						+ null + "&sort=" + null + "&pageNumber=" + null + "&pageSize=" + null + "&color=" + null
+						+ "&operatingSystem=" + null + "&capacity=" + null + "&mustHaveFeatures=" + null,
+				DeviceEntityModel.class)).willReturn(obj);
+		deviceServiceImpl.getDeviceListofFacetedDeviceFromHandsetOnlineModel("apple", "DEVICE_PAYM", "Priority", 0, 9,
+				"32 GB", "White", "iOS", "Great Camera", "Acquisition", null);
+		deviceServiceImpl.getDeviceListofFacetedDeviceFromHandsetOnlineModel("apple", "DEVICE_PAYG", "Priority", 0, 9,
+				"32 GB", "White", "iOS", "Great Camera", "Acquisition", null);
 	}
 
 	@Test
 	public void nullTestForGetDeviceListForGroupTypeWithOutConditionalAcceptanceForException() {
 		try {
 			if (!handsetOnlineModelEnabled) {
-				given(response.getListOfProductGroupModel(ArgumentMatchers.any()))
-						.willReturn(CommonMethods.getListOfProductGroupModeForNullLeadPlan());
-				given(response.getFacetField(ArgumentMatchers.any())).willReturn(CommonMethods.getListOfFacetField());
-				given(response.getListOfProductModel(ArgumentMatchers.any()))
-						.willReturn(CommonMethods.getProductModel());
-
-				deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYM", "Priority", 0, 9, "32 GB",
-						"White", "iOS", "Great Camera", null, null, null, "447582367723", true);
-			} else {
-				String jsonString = new String(CommonMethods.readFile("\\rest-mock\\DEVICEENTITY-V1.json"));
-				DeviceEntityModel obj = new ObjectMapper().readValue(jsonString, DeviceEntityModel.class);
-				given(restTemplate.getForObject("http://CATALOGUE-V1/productCatalog/device?make="
-						+ ArgumentMatchers.any() + "&model=" + ArgumentMatchers.any() + "&groupType=DEVICE_PAYM"
-						+ "&deviceId=" + null + "&packageType=" + null + "&sort=" + null + "&pageNumber=" + null
-						+ "&pageSize=" + null + "&color=" + null + "&operatingSystem=" + null + "&capacity=" + null
-						+ "&mustHaveFeatures=" + null, DeviceEntityModel.class)).willReturn(obj);
 				given(response.getListOfProductGroupModel(ArgumentMatchers.any()))
 						.willReturn(CommonMethods.getListOfProductGroupModeForNullLeadPlan());
 				given(response.getFacetField(ArgumentMatchers.any())).willReturn(CommonMethods.getListOfFacetField());
@@ -851,6 +987,150 @@ public class DeviceTest {
 				deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYM", "Priority", 0, 9, "32 GB",
 						"White", "iOS", "Great Camera", null, null, null, "447582367723", true);
 			}
+		} catch (Exception e) {
+		}
+	}
+
+	@Test
+	public void nullTestForGetDeviceListForGroupTyp() {
+		try {
+			String jsonString = new String(CommonMethods.readFile("\\rest-mock\\DEVICEENTITY-V1.json"));
+			DeviceEntityModel obj = new ObjectMapper().readValue(jsonString, DeviceEntityModel.class);
+			given(restTemplate.getForObject(
+					"http://CATALOGUE-V1/productCatalog/device?make=" + ArgumentMatchers.any() + "&model="
+							+ ArgumentMatchers.any() + "&groupType=DEVICE_PAYM" + "&deviceId=" + null + "&packageType="
+							+ null + "&sort=" + null + "&pageNumber=" + null + "&pageSize=" + null + "&color=" + null
+							+ "&operatingSystem=" + null + "&capacity=" + null + "&mustHaveFeatures=" + null,
+					DeviceEntityModel.class)).willReturn(obj);
+			given(response.getListOfProductGroupModel(ArgumentMatchers.any()))
+					.willReturn(CommonMethods.getListOfProductGroupModeForNullLeadPlan());
+			given(response.getFacetField(ArgumentMatchers.any())).willReturn(CommonMethods.getListOfFacetField());
+			given(response.getListOfProductModel(ArgumentMatchers.any())).willReturn(CommonMethods.getProductModel());
+			deviceServiceImpl.getDeviceListofFacetedDevice("apple", "DEVICE_PAYM", "Priority", 0, 9, "32 GB", "White",
+					"iOS", "Great Camera", "Acquisition", null);
+		} catch (Exception e) {
+		}
+		try {
+			String jsonString = new String(CommonMethods.readFile("\\rest-mock\\DEVICEENTITY-V1.json"));
+			DeviceEntityModel obj = new ObjectMapper().readValue(jsonString, DeviceEntityModel.class);
+			given(restTemplate.getForObject(
+					"http://CATALOGUE-V1/productCatalog/device?make=" + ArgumentMatchers.any() + "&model="
+							+ ArgumentMatchers.any() + "&groupType=DEVICE_PAYM" + "&deviceId=" + null + "&packageType="
+							+ null + "&sort=" + null + "&pageNumber=" + null + "&pageSize=" + null + "&color=" + null
+							+ "&operatingSystem=" + null + "&capacity=" + null + "&mustHaveFeatures=" + null,
+					DeviceEntityModel.class)).willReturn(obj);
+			given(response.getListOfProductGroupModel(ArgumentMatchers.any()))
+					.willReturn(CommonMethods.getListOfProductGroupMode());
+			given(response.getFacetField(ArgumentMatchers.any())).willReturn(CommonMethods.getListOfFacetField());
+			given(response.getListOfProductModel(ArgumentMatchers.any())).willReturn(Collections.emptyList());
+			deviceServiceImpl.getDeviceListofFacetedDevice("apple", "DEVICE_PAYM", "Priority", 0, 9, "32 GB", "White",
+					"iOS", "Great Camera", "Acquisition", null);
+		} catch (Exception e) {
+		}
+		try {
+			String jsonString = new String(CommonMethods.readFile("\\rest-mock\\DEVICEENTITY-V1.json"));
+			DeviceEntityModel obj = new ObjectMapper().readValue(jsonString, DeviceEntityModel.class);
+			given(restTemplate.getForObject(
+					"http://CATALOGUE-V1/productCatalog/device?make=" + ArgumentMatchers.any() + "&model="
+							+ ArgumentMatchers.any() + "&groupType=DEVICE_PAYM" + "&deviceId=" + null + "&packageType="
+							+ null + "&sort=" + null + "&pageNumber=" + null + "&pageSize=" + null + "&color=" + null
+							+ "&operatingSystem=" + null + "&capacity=" + null + "&mustHaveFeatures=" + null,
+					DeviceEntityModel.class)).willReturn(obj);
+			given(response.getListOfProductGroupModel(ArgumentMatchers.any()))
+					.willReturn(CommonMethods.getListOfProductGroupModeForNullLeadPlan());
+			given(response.getFacetField(ArgumentMatchers.any())).willReturn(CommonMethods.getListOfFacetField());
+			given(response.getListOfProductModel(ArgumentMatchers.any())).willReturn(CommonMethods.getProductModel());
+			deviceServiceImpl.getDeviceListofFacetedDevice("apple", "DEVICE_PAYG", "Priority", 0, 9, "32 GB", "White",
+					"iOS", "Great Camera", "Acquisition", null);
+		} catch (Exception e) {
+		}
+		try {
+			String jsonString = new String(CommonMethods.readFile("\\rest-mock\\DEVICEENTITY-V1.json"));
+			DeviceEntityModel obj = new ObjectMapper().readValue(jsonString, DeviceEntityModel.class);
+			given(restTemplate.getForObject(
+					"http://CATALOGUE-V1/productCatalog/device?make=" + ArgumentMatchers.any() + "&model="
+							+ ArgumentMatchers.any() + "&groupType=DEVICE_PAYM" + "&deviceId=" + null + "&packageType="
+							+ null + "&sort=" + null + "&pageNumber=" + null + "&pageSize=" + null + "&color=" + null
+							+ "&operatingSystem=" + null + "&capacity=" + null + "&mustHaveFeatures=" + null,
+					DeviceEntityModel.class)).willReturn(obj);
+			given(response.getListOfProductGroupModel(ArgumentMatchers.any()))
+					.willReturn(CommonMethods.getListOfProductGroupMode());
+			given(response.getFacetField(ArgumentMatchers.any())).willReturn(CommonMethods.getListOfFacetField());
+			given(response.getListOfProductModel(ArgumentMatchers.any())).willReturn(Collections.emptyList());
+			deviceServiceImpl.getDeviceListofFacetedDevice("apple", "DEVICE_PAYG", "Priority", 0, 9, "32 GB", "White",
+					"iOS", "Great Camera", "Acquisition", null);
+		} catch (Exception e) {
+		}
+	}
+
+	@Test
+	public void nullTestForGetDeviceListForGroupTypeHandsetOnlineModel() {
+		try {
+			String jsonString = new String(CommonMethods.readFile("\\rest-mock\\DEVICEENTITY-V1.json"));
+			DeviceEntityModel obj = new ObjectMapper().readValue(jsonString, DeviceEntityModel.class);
+			given(restTemplate.getForObject(
+					"http://CATALOGUE-V1/productCatalog/device?make=" + ArgumentMatchers.any() + "&model="
+							+ ArgumentMatchers.any() + "&groupType=DEVICE_PAYM" + "&deviceId=" + null + "&packageType="
+							+ null + "&sort=" + null + "&pageNumber=" + null + "&pageSize=" + null + "&color=" + null
+							+ "&operatingSystem=" + null + "&capacity=" + null + "&mustHaveFeatures=" + null,
+					DeviceEntityModel.class)).willReturn(obj);
+			given(response.getListOfProductGroupModel(ArgumentMatchers.any()))
+					.willReturn(CommonMethods.getListOfProductGroupModeForNullLeadPlan());
+			given(response.getFacetField(ArgumentMatchers.any())).willReturn(CommonMethods.getListOfFacetField());
+			given(response.getListOfProductModel(ArgumentMatchers.any())).willReturn(CommonMethods.getProductModel());
+			deviceServiceImpl.getDeviceListofFacetedDevice("apple", "DEVICE_PAYM", "Priority", 0, 9, "32 GB", "White",
+					"iOS", "Great Camera", "Acquisition", null);
+		} catch (Exception e) {
+		}
+		try {
+			String jsonString = new String(CommonMethods.readFile("\\rest-mock\\DEVICEENTITY-V1.json"));
+			DeviceEntityModel obj = new ObjectMapper().readValue(jsonString, DeviceEntityModel.class);
+			given(restTemplate.getForObject(
+					"http://CATALOGUE-V1/productCatalog/device?make=" + ArgumentMatchers.any() + "&model="
+							+ ArgumentMatchers.any() + "&groupType=DEVICE_PAYM" + "&deviceId=" + null + "&packageType="
+							+ null + "&sort=" + null + "&pageNumber=" + null + "&pageSize=" + null + "&color=" + null
+							+ "&operatingSystem=" + null + "&capacity=" + null + "&mustHaveFeatures=" + null,
+					DeviceEntityModel.class)).willReturn(obj);
+			given(response.getListOfProductGroupModel(ArgumentMatchers.any()))
+					.willReturn(CommonMethods.getListOfProductGroupMode());
+			given(response.getFacetField(ArgumentMatchers.any())).willReturn(CommonMethods.getListOfFacetField());
+			given(response.getListOfProductModel(ArgumentMatchers.any())).willReturn(Collections.emptyList());
+			deviceServiceImpl.getDeviceListofFacetedDevice("apple", "DEVICE_PAYM", "Priority", 0, 9, "32 GB", "White",
+					"iOS", "Great Camera", "Acquisition", null);
+		} catch (Exception e) {
+		}
+		try {
+			String jsonString = new String(CommonMethods.readFile("\\rest-mock\\DEVICEENTITY-V1.json"));
+			DeviceEntityModel obj = new ObjectMapper().readValue(jsonString, DeviceEntityModel.class);
+			given(restTemplate.getForObject(
+					"http://CATALOGUE-V1/productCatalog/device?make=" + ArgumentMatchers.any() + "&model="
+							+ ArgumentMatchers.any() + "&groupType=DEVICE_PAYM" + "&deviceId=" + null + "&packageType="
+							+ null + "&sort=" + null + "&pageNumber=" + null + "&pageSize=" + null + "&color=" + null
+							+ "&operatingSystem=" + null + "&capacity=" + null + "&mustHaveFeatures=" + null,
+					DeviceEntityModel.class)).willReturn(obj);
+			given(response.getListOfProductGroupModel(ArgumentMatchers.any()))
+					.willReturn(CommonMethods.getListOfProductGroupModeForNullLeadPlan());
+			given(response.getFacetField(ArgumentMatchers.any())).willReturn(CommonMethods.getListOfFacetField());
+			given(response.getListOfProductModel(ArgumentMatchers.any())).willReturn(CommonMethods.getProductModel());
+			deviceServiceImpl.getDeviceListofFacetedDevice("apple", "DEVICE_PAYG", "Priority", 0, 9, "32 GB", "White",
+					"iOS", "Great Camera", "Acquisition", null);
+		} catch (Exception e) {
+		}
+		try {
+			String jsonString = new String(CommonMethods.readFile("\\rest-mock\\DEVICEENTITY-V1.json"));
+			DeviceEntityModel obj = new ObjectMapper().readValue(jsonString, DeviceEntityModel.class);
+			given(restTemplate.getForObject(
+					"http://CATALOGUE-V1/productCatalog/device?make=" + ArgumentMatchers.any() + "&model="
+							+ ArgumentMatchers.any() + "&groupType=DEVICE_PAYM" + "&deviceId=" + null + "&packageType="
+							+ null + "&sort=" + null + "&pageNumber=" + null + "&pageSize=" + null + "&color=" + null
+							+ "&operatingSystem=" + null + "&capacity=" + null + "&mustHaveFeatures=" + null,
+					DeviceEntityModel.class)).willReturn(obj);
+			given(response.getListOfProductGroupModel(ArgumentMatchers.any()))
+					.willReturn(CommonMethods.getListOfProductGroupMode());
+			given(response.getFacetField(ArgumentMatchers.any())).willReturn(CommonMethods.getListOfFacetField());
+			given(response.getListOfProductModel(ArgumentMatchers.any())).willReturn(Collections.emptyList());
+			deviceServiceImpl.getDeviceListofFacetedDevice("apple", "DEVICE_PAYG", "Priority", 0, 9, "32 GB", "White",
+					"iOS", "Great Camera", "Acquisition", null);
 		} catch (Exception e) {
 		}
 	}
@@ -895,9 +1175,67 @@ public class DeviceTest {
 					"Priority", 0, 9, "32 GB", "White", "iOS", "Great Camera", "Upgrade", null, "W_HH_PAYM_OC_01",
 					"447582367723", true);
 			Assert.assertNotNull(deviceLists);
-			assertEquals("097513", deviceLists.getDevice().get(0).getDeviceId());
+			assertEquals("095459", deviceLists.getDevice().get(0).getDeviceId());
 			assertEquals("Handset", deviceLists.getDevice().get(0).getProductClass());
 		}
+	}
+
+	@Test
+	public void nullTestForGetDeviceListForGroupTypeWithOutConditional()
+			throws JsonParseException, JsonMappingException, IOException {
+
+		String jsonString = new String(CommonMethods.readFile("\\rest-mock\\DEVICEENTITY-V1.json"));
+		DeviceEntityModel obj = new ObjectMapper().readValue(jsonString, DeviceEntityModel.class);
+		given(restTemplate.getForObject(
+				"http://CATALOGUE-V1/productCatalog/device?make=" + ArgumentMatchers.any() + "&model="
+						+ ArgumentMatchers.any() + "&groupType=DEVICE_PAYM" + "&deviceId=" + null + "&packageType="
+						+ null + "&sort=" + null + "&pageNumber=" + null + "&pageSize=" + null + "&color=" + null
+						+ "&operatingSystem=" + null + "&capacity=" + null + "&mustHaveFeatures=" + null,
+				DeviceEntityModel.class)).willReturn(obj);
+		given(response.getListOfProductGroupModel(ArgumentMatchers.any()))
+				.willReturn(CommonMethods.getListOfProductGroupMode());
+		given(response.getFacetField(ArgumentMatchers.any())).willReturn(CommonMethods.getListOfFacetField());
+		given(response.getListOfProductModel(ArgumentMatchers.any())).willReturn(CommonMethods.getProductModel());
+		given(response.getListOfOfferAppliedPriceModel(ArgumentMatchers.any()))
+				.willReturn(CommonMethods.getOfferAppliedPriceModel());
+		given(this.response.getListOfMerchandisingPromotionModelFromJson(ArgumentMatchers.any()))
+				.willReturn(CommonMethods.getMerChandisingPromotion_One());
+		FacetedDevice deviceLists = deviceServiceImpl.getDeviceListofFacetedDevice("apple", "DEVICE_PAYM", "Priority",
+				0, 9, "32 GB", "White", "iOS", "Great Camera", "Acquisition", null);
+		deviceServiceImpl.getDeviceListofFacetedDevice("apple", "DEVICE_PAYG", "Priority", 0, 9, "32 GB", "White",
+				"iOS", "Great Camera", "Acquisition", null);
+		Assert.assertNotNull(deviceLists);
+		assertEquals("093353", deviceLists.getDevice().get(0).getDeviceId());
+		assertEquals("HANDSET", deviceLists.getDevice().get(0).getProductClass());
+	}
+
+	@Test
+	public void nullTestForGetDeviceListForGroupTypeWithOutConditionalAcceptanceHandsetOnlineModel()
+			throws JsonParseException, JsonMappingException, IOException {
+
+		String jsonString = new String(CommonMethods.readFile("\\rest-mock\\DEVICEENTITY-V1.json"));
+		DeviceEntityModel obj = new ObjectMapper().readValue(jsonString, DeviceEntityModel.class);
+		given(restTemplate.getForObject(
+				"http://CATALOGUE-V1/productCatalog/device?make=" + ArgumentMatchers.any() + "&model="
+						+ ArgumentMatchers.any() + "&groupType=DEVICE_PAYM" + "&deviceId=" + null + "&packageType="
+						+ null + "&sort=" + null + "&pageNumber=" + null + "&pageSize=" + null + "&color=" + null
+						+ "&operatingSystem=" + null + "&capacity=" + null + "&mustHaveFeatures=" + null,
+				DeviceEntityModel.class)).willReturn(obj);
+		given(response.getListOfProductGroupModel(ArgumentMatchers.any()))
+				.willReturn(CommonMethods.getListOfProductGroupMode());
+		given(response.getFacetField(ArgumentMatchers.any())).willReturn(CommonMethods.getListOfFacetField());
+		given(response.getListOfProductModel(ArgumentMatchers.any())).willReturn(CommonMethods.getProductModel());
+		given(response.getListOfOfferAppliedPriceModel(ArgumentMatchers.any()))
+				.willReturn(CommonMethods.getOfferAppliedPriceModel());
+		given(this.response.getListOfMerchandisingPromotionModelFromJson(ArgumentMatchers.any()))
+				.willReturn(CommonMethods.getMerChandisingPromotion_One());
+		FacetedDevice deviceLists = deviceServiceImpl.getDeviceListofFacetedDeviceFromHandsetOnlineModel("apple",
+				"DEVICE_PAYM", "Priority", 0, 9, "32 GB", "White", "iOS", "Great Camera", "Acquisition", null);
+		deviceServiceImpl.getDeviceListofFacetedDeviceFromHandsetOnlineModel("apple", "DEVICE_PAYG", "Priority", 0, 9,
+				"32 GB", "White", "iOS", "Great Camera", "Acquisition", null);
+		Assert.assertNotNull(deviceLists);
+		assertEquals("095459", deviceLists.getDevice().get(0).getDeviceId());
+		assertEquals("Handset", deviceLists.getDevice().get(0).getProductClass());
 	}
 
 	@Test
@@ -1961,5 +2299,12 @@ public class DeviceTest {
 		} catch (Exception e) {
 			assertEquals("Page Size Value cannot be negative", e.getMessage());
 		}
+	}
+
+	@Test
+	public void nullTestForPriceException() {
+		thrown.expect(Exception.class);
+		thrown.expectMessage("No response from price");
+		deviceServiceImpl.throwExceptionIfPriceNull(null, null, null);
 	}
 }
