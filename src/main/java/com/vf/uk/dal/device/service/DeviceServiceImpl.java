@@ -22,6 +22,7 @@ import com.vf.uk.dal.device.client.entity.bundle.BundleModelAndPrice;
 import com.vf.uk.dal.device.client.entity.bundle.CommercialBundle;
 import com.vf.uk.dal.device.client.entity.catalogue.DeviceEntityModel;
 import com.vf.uk.dal.device.client.entity.catalogue.DeviceOnlineModel;
+import com.vf.uk.dal.device.client.entity.catalogue.LeadPlanDetails;
 import com.vf.uk.dal.device.client.entity.price.BundleAndHardwareTuple;
 import com.vf.uk.dal.device.client.entity.price.BundlePrice;
 import com.vf.uk.dal.device.client.entity.price.MerchandisingPromotion;
@@ -308,7 +309,7 @@ public class DeviceServiceImpl implements DeviceService {
 		return facetedDevice;
 	}
 
-	public  void throwExceptionIfPriceNull(List<com.vf.uk.dal.device.client.entity.catalogue.Device> listOfProductModel,
+	public void throwExceptionIfPriceNull(List<com.vf.uk.dal.device.client.entity.catalogue.Device> listOfProductModel,
 			List<PricePromotionHandsetPlanModel> priceForBundleAndHardwareWithOffer,
 			List<PricePromotionHandsetPlanModel> priceForBundleAndHardwareWithoutOffer) {
 		if (priceForBundleAndHardwareWithOffer == null && priceForBundleAndHardwareWithoutOffer == null) {
@@ -328,7 +329,7 @@ public class DeviceServiceImpl implements DeviceService {
 
 	}
 
-	public  void throwExceptionListOfProductEmpty(List<String> listOfProducts) {
+	public void throwExceptionListOfProductEmpty(List<String> listOfProducts) {
 		if (listOfProducts.isEmpty()) {
 			log.error("Empty Lead DeviceId List Coming From Solr :  " + listOfProducts);
 			throw new DeviceCustomException(ERROR_CODE_DEVICE_LIST,
@@ -487,30 +488,24 @@ public class DeviceServiceImpl implements DeviceService {
 	public void getPricePromoIdsForJourneys(List<String> pricePromoIdsWithOfferCode,
 			List<String> pricePromoIdsWithoutOfferCode, com.vf.uk.dal.device.client.entity.catalogue.Device device,
 			String journeyContextLocal, String offerCode, String groupType) {
-		if (device.getNonUpgradeLeadPlanDetails() != null || device.getUpgradeLeadPlanDetails() != null) {
-			if (StringUtils.equalsIgnoreCase(journeyContextLocal, JOURNEY_TYPE_ACQUISITION)) {
-				pricePromoIdsWithoutOfferCode.add(
-						getPricePromoIds(device.getDeviceId(), device.getNonUpgradeLeadPlanDetails().getLeadPlanId(),
-								JOURNEY_TYPE_ACQUISITION, "NA", groupType));
-			} else if (StringUtils.equalsIgnoreCase(journeyContextLocal, JOURNEY_TYPE_UPGRADE)) {
-				if (StringUtils.isNotBlank(offerCode)) {
-					pricePromoIdsWithOfferCode.add(
-							getPricePromoIds(device.getDeviceId(), device.getUpgradeLeadPlanDetails().getLeadPlanId(),
-									JOURNEY_TYPE_UPGRADE, offerCode, groupType));
-				} else {
-					pricePromoIdsWithoutOfferCode.add(getPricePromoIds(device.getDeviceId(),
-							device.getUpgradeLeadPlanDetails().getLeadPlanId(), JOURNEY_TYPE_UPGRADE, "NA", groupType));
-				}
-			} else if (StringUtils.equalsIgnoreCase(journeyContextLocal, JOURNEY_TYPE_SECONDLINE)) {
-				if (StringUtils.isNotBlank(offerCode)) {
-					pricePromoIdsWithOfferCode.add(getPricePromoIds(device.getDeviceId(),
-							device.getNonUpgradeLeadPlanDetails().getLeadPlanId(), JOURNEY_TYPE_SECONDLINE, offerCode,
-							groupType));
-				} else {
-					pricePromoIdsWithoutOfferCode.add(getPricePromoIds(device.getDeviceId(),
-							device.getNonUpgradeLeadPlanDetails().getLeadPlanId(), JOURNEY_TYPE_SECONDLINE, "NA",
-							groupType));
-				}
+		if (StringUtils.equalsIgnoreCase(journeyContextLocal, JOURNEY_TYPE_ACQUISITION)) {
+			pricePromoIdsWithoutOfferCode.add(getPricePromoIds(device.getDeviceId(),
+					device.getNonUpgradeLeadPlanDetails(), JOURNEY_TYPE_ACQUISITION, "NA", groupType));
+		} else if (StringUtils.equalsIgnoreCase(journeyContextLocal, JOURNEY_TYPE_UPGRADE)) {
+			if (StringUtils.isNotBlank(offerCode)) {
+				pricePromoIdsWithOfferCode.add(getPricePromoIds(device.getDeviceId(),
+						device.getUpgradeLeadPlanDetails(), JOURNEY_TYPE_UPGRADE, offerCode, groupType));
+			} else {
+				pricePromoIdsWithoutOfferCode.add(getPricePromoIds(device.getDeviceId(),
+						device.getUpgradeLeadPlanDetails(), JOURNEY_TYPE_UPGRADE, "NA", groupType));
+			}
+		} else if (StringUtils.equalsIgnoreCase(journeyContextLocal, JOURNEY_TYPE_SECONDLINE)) {
+			if (StringUtils.isNotBlank(offerCode)) {
+				pricePromoIdsWithOfferCode.add(getPricePromoIds(device.getDeviceId(),
+						device.getNonUpgradeLeadPlanDetails(), JOURNEY_TYPE_SECONDLINE, offerCode, groupType));
+			} else {
+				pricePromoIdsWithoutOfferCode.add(getPricePromoIds(device.getDeviceId(),
+						device.getNonUpgradeLeadPlanDetails(), JOURNEY_TYPE_SECONDLINE, "NA", groupType));
 			}
 		}
 	}
@@ -518,19 +513,22 @@ public class DeviceServiceImpl implements DeviceService {
 	/**
 	 * 
 	 * @param deviceId
-	 * @param leadPlanId
+	 * @param leadPlanDetails
 	 * @param journeyType
 	 * @param offerCode
 	 * @return
 	 */
-	public String getPricePromoIds(String deviceId, String leadPlanId, String journeyType, String offerCode,
-			String groupType) {
+	public String getPricePromoIds(String deviceId, LeadPlanDetails leadPlanDetails, String journeyType,
+			String offerCode, String groupType) {
 		if (StringUtils.equalsIgnoreCase(STRING_DEVICE_PAYG, groupType)) {
 			return "PricePromotionHandset_" + deviceId + "_" + "NA" + "_" + journeyType + "_" + offerCode;
 		} else {
-			return "PricePromotionHandset_" + deviceId + "_" + leadPlanId + "_" + journeyType + "_" + offerCode;
+			if (leadPlanDetails != null && leadPlanDetails.getLeadPlanId() != null) {
+				return "PricePromotionHandset_" + deviceId + "_" + leadPlanDetails + "_" + journeyType + "_"
+						+ offerCode;
+			}
 		}
-
+		return null;
 	}
 
 	/**
