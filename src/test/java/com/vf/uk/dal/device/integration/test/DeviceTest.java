@@ -1240,35 +1240,39 @@ public class DeviceTest {
 
 	@Test
 	public void nullTestForGetDeviceListForException() {
-		given(this.response.getListOfMerchandisingPromotionModelFromJson(ArgumentMatchers.any()))
-				.willReturn(CommonMethods.getMerChandisingPromotion());
-		thrown.expect(Exception.class);
-		thrown.expectMessage("No Devices Found for the given input search criteria");
-		deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYM", "Priority", 0, 9, "32 GB", "White",
-				"iOS", "Great Camera", "JourneyType", null, null, "447582367723", true);
+		try {
+			given(this.response.getListOfMerchandisingPromotionModelFromJson(ArgumentMatchers.any()))
+					.willReturn(CommonMethods.getMerChandisingPromotion());
+			deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYM", "Priority", 0, 9, "32 GB",
+					"White", "iOS", "Great Camera", "JourneyType", null, null, "447582367723", true);
+		} catch (Exception e) {
+			assertEquals("No Devices Found for the given input search criteria", e.getMessage());
+		}
 
 	}
 
 	@Test
 	public void nullTestForGetDeviceListForExcptionUpgrade() {
-		given(this.response.getListOfMerchandisingPromotionModelFromJson(ArgumentMatchers.any()))
-				.willReturn(CommonMethods.getMerChandisingPromotion());
-		thrown.expect(Exception.class);
-		thrown.expectMessage("No Devices Found for the given input search criteria");
-		deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYM", "Priority", 0, 9, "32 GB", "White",
-				"iOS", "Great Camera", "Upgrade", null, "offerCode", "447582367723", true);
-
+		try {
+			given(this.response.getListOfMerchandisingPromotionModelFromJson(ArgumentMatchers.any()))
+					.willReturn(CommonMethods.getMerChandisingPromotion());
+			deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYM", "Priority", 0, 9, "32 GB",
+					"White", "iOS", "Great Camera", "Upgrade", null, "offerCode", "447582367723", true);
+		} catch (Exception e) {
+			assertEquals("No Devices Found for the given input search criteria", e.getMessage());
+		}
 	}
 
 	@Test
 	public void nullTestForGetDeviceListForExcptionWithMSISDN() {
-		given(this.response.getListOfMerchandisingPromotionModelFromJson(ArgumentMatchers.any()))
-				.willReturn(CommonMethods.getMerChandisingPromotion());
-		thrown.expect(Exception.class);
-		thrown.expectMessage("No Devices Found for the given input search criteria");
-		deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYM", "Priority", 0, 9, "32 GB", "White",
-				"iOS", "Great Camera", "SecondLine", null, "offerCode", "447582367723", true);
-
+		try {
+			given(this.response.getListOfMerchandisingPromotionModelFromJson(ArgumentMatchers.any()))
+					.willReturn(CommonMethods.getMerChandisingPromotion());
+			deviceService.getDeviceList("Handset", "apple", "iPhone 7", "DEVICE_PAYM", "Priority", 0, 9, "32 GB",
+					"White", "iOS", "Great Camera", "SecondLine", null, "offerCode", "447582367723", true);
+		} catch (Exception e) {
+			assertEquals("No Devices Found for the given input search criteria", e.getMessage());
+		}
 	}
 
 	@Test
