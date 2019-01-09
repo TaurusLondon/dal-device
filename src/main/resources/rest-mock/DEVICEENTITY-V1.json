@@ -89,7 +89,7 @@
             "priority": 1,
             "devices": [
                 {
-                    "deviceId": "097513",
+                    "deviceId": "093353",
                     "make": "apple",
                     "model": "iphone-xr",
                     "nonUpgradeLeadPlanDetails": {
@@ -113,7 +113,7 @@
                         "bundleHardwareTuple": [
                             {
                                 "hardwareId": "097513",
-                                "bundleId": "111173"
+                                "bundleId": "102821"
                             }
                         ]
                     },
