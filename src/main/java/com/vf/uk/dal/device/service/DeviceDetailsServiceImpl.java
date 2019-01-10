@@ -413,7 +413,6 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 			for (String promotionName : commercialBundle.getPromoteAs().getPromotionName()) {
 				MerchandisingPromotion merchandisingPromotion = deviceEs.getMerchandisingPromotion(promotionName);
 				if (merchandisingPromotion != null
-						&& !"conditional_full_discount".equalsIgnoreCase(merchandisingPromotion.getType())
 						&& checkMerchandisingPromotionsType(merchandisingPromotion)) {
 					String startDateTime = commonUtility.getDateToString(merchandisingPromotion.getStartDateTime(),
 							DATE_FORMAT_COHERENCE);
@@ -430,7 +429,8 @@ public class DeviceDetailsServiceImpl implements DeviceDetailsService {
 	}
 
 	private boolean checkMerchandisingPromotionsType(MerchandisingPromotion merchandisingPromotion) {
-		return !"conditional_limited_discount".equalsIgnoreCase(merchandisingPromotion.getType())
+		return  !"conditional_full_discount".equalsIgnoreCase(merchandisingPromotion.getType())
+				&& !"conditional_limited_discount".equalsIgnoreCase(merchandisingPromotion.getType())
 				&& !"full_duration".equalsIgnoreCase(merchandisingPromotion.getType())
 				&& !"limited_time".equalsIgnoreCase(merchandisingPromotion.getType());
 	}

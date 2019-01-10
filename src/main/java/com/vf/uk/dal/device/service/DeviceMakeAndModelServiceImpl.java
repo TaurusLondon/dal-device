@@ -1011,7 +1011,7 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 					groupName = getGroupName(bundleId, journeyType, listOfDeviceGroupMember,
 							commercialProductsMatchedMemList, commerProdMemMap, commerBundleIdMap,
 							bundleAndHardwareTupleList, bundleIdMap, fromPricingMap, leadPlanIdMap, listofLeadPlan,
-							productGroup, member);
+							productGroup, member,groupName);
 				}
 			}
 		}
@@ -1023,8 +1023,8 @@ public class DeviceMakeAndModelServiceImpl implements DeviceMakeAndModelService 
 			List<CommercialProduct> commercialProductsMatchedMemList, Map<String, CommercialProduct> commerProdMemMap,
 			Map<String, CommercialBundle> commerBundleIdMap, List<BundleAndHardwareTuple> bundleAndHardwareTupleList,
 			Map<String, Boolean> bundleIdMap, Map<String, Boolean> fromPricingMap, Map<String, String> leadPlanIdMap,
-			List<String> listofLeadPlan, Group productGroup, Member member) {
-		String groupName = null;
+			List<String> listofLeadPlan, Group productGroup, Member member, String groupNameLocal) {
+		String groupName = groupNameLocal;
 		com.vf.uk.dal.device.model.Member entityMember;
 		if (commerProdMemMap.containsKey(member.getId())) {
 			groupName = productGroup.getName();
