@@ -1283,7 +1283,7 @@ public class DeviceTilesDaoUtils {
 			Device deviceDetails, com.vf.uk.dal.device.client.entity.catalogue.Device productModel, String leadPlanId) {
 		PricePromotionHandsetPlanModel promotions = null;
 		if (StringUtils.isNotBlank(offerCode)
-				&& mapForDeviceAndPriceForBAndWWIthOffer.containsKey(productModel.getDeviceId())) {
+				&& mapForDeviceAndPriceForBAndWWIthOffer != null && mapForDeviceAndPriceForBAndWWIthOffer.containsKey(productModel.getDeviceId())) {
 			PriceForBundleAndHardware priceForOfferCode = getBundleAndHardwarePriceFromSolrUtilsForHandsetOnlineModel(
 					mapForDeviceAndPriceForBAndWWIthOffer.get(productModel.getDeviceId()), leadPlanId);
 			if (priceForOfferCode.getBundlePrice() != null && priceForOfferCode.getHardwarePrice() != null) {
