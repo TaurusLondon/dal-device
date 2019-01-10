@@ -167,14 +167,14 @@ public class DeviceServiceImplUtility {
 	 * @param productGroupModel
 	 * @param productGroupdetailsMap
 	 * @param deviceId
-	 * @param journeyType 
+	 * @param journeyType
 	 */
 	public void getProductGroupdetailsMap(ProductGroupModel productGroupModel,
 			Map<String, ProductGroupDetailsForDeviceList> productGroupdetailsMap, String deviceId, String journeyType) {
 		ProductGroupDetailsForDeviceList groupDetails = new ProductGroupDetailsForDeviceList();
 		List<String> colourHex = new ArrayList<>();
 		List<String> size = new ArrayList<>();
-		log.info("Product group ID {}",productGroupModel.getId());
+		log.info("Product group ID {}", productGroupModel.getId());
 		if (StringUtils.equalsIgnoreCase(journeyType, JOURNEY_TYPE_UPGRADE)) {
 			if (productGroupModel.getUpgradeColor() != null
 					&& CollectionUtils.isNotEmpty(productGroupModel.getUpgradeColor())) {
@@ -226,20 +226,24 @@ public class DeviceServiceImplUtility {
 		ProductGroupDetailsForDeviceList groupDetails = new ProductGroupDetailsForDeviceList();
 		List<Colour> colours = new ArrayList<>();
 		if (StringUtils.equalsIgnoreCase(journeyType, JOURNEY_TYPE_UPGRADE)) {
-			productGroupModel.getColorNameAndHexUpgrade().stream().forEach(colourHex -> {
-				Colour color = new Colour();
-				color.setColorName(colourHex.getColorName());
-				color.setColorHex(colourHex.getColorHex());
-				colours.add(color);
-			});
+			if (productGroupModel.getColorNameAndHexUpgrade() != null) {
+				productGroupModel.getColorNameAndHexUpgrade().stream().forEach(colourHex -> {
+					Colour color = new Colour();
+					color.setColorName(colourHex.getColorName());
+					color.setColorHex(colourHex.getColorHex());
+					colours.add(color);
+				});
+			}
 			groupDetails.setSize(productGroupModel.getSizeUpgrade());
 		} else {
-			productGroupModel.getColorNameAndHex().stream().forEach(colourHex -> {
-				Colour color = new Colour();
-				color.setColorName(colourHex.getColorName());
-				color.setColorHex(colourHex.getColorHex());
-				colours.add(color);
-			});
+			if (productGroupModel.getColorNameAndHex() != null) {
+				productGroupModel.getColorNameAndHex().stream().forEach(colourHex -> {
+					Colour color = new Colour();
+					color.setColorName(colourHex.getColorName());
+					color.setColorHex(colourHex.getColorHex());
+					colours.add(color);
+				});
+			}
 			groupDetails.setSize(productGroupModel.getSize());
 		}
 		groupDetails.setGroupName(productGroupModel.getProductGroupName());
