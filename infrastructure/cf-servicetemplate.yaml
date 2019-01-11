@@ -94,7 +94,10 @@ Parameters:
     Type: String
   cacheDevicehandsetOnlineModelenabled:
     Description: Flag to disable handset online model
-    Type: String  
+    Type: String 
+  AppDEnv:
+    Description: The name of the App Dynamics environment that is being deployed to.
+    Type: String 
 Resources:
   ListenerRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
@@ -170,7 +173,11 @@ Resources:
             - Name: spring_metrics_export_enabled
               Value: !Ref 'springmetricsexportenabled'
             - Name: cacheDevice_handsetOnlineModel_enabled
-              Value: !Ref 'cacheDevicehandsetOnlineModelenabled'  
+              Value: !Ref 'cacheDevicehandsetOnlineModelenabled'
+            - Name: Environment
+              Value: !Ref Environment
+            - Name: AppDEnv
+              Value: !Ref AppDEnv  
           Memory: !Ref 'Memory'
           MemoryReservation: !Ref 'MemoryReservation'
           Image: !Sub '${EcrLocation}/${BuildName}:${BuildID}'
