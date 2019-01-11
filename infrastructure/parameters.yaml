@@ -59,4 +59,6 @@
 - ParameterKey: springmetricsexportenabled
   ParameterValue: "${SPRINGMETRICSEXPORTENABLED}"
 - ParameterKey: cacheDevicehandsetOnlineModelenabled
-  ParameterValue: "${CACHEDEVICEHANDSETONLINEMODELENABLED}"  
+  ParameterValue: "${CACHEDEVICEHANDSETONLINEMODELENABLED}"
+- ParameterKey: AppDEnv
+  ParameterValue: "${APPDENV}"
