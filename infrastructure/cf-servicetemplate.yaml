@@ -88,16 +88,37 @@ Parameters:
     Type: String
   bazaarvoice:
     Description: Fill me in please and update my type!
-    Type: String  
+    Type: String
   springmetricsexportenabled:
     Description: Flag to disable export of spring boot metrics to CloudWatch!
+    Type: String
+  Domain:
+    Description: Domain for naming purposes.
+    Type: String
+  ListenerArn:
+    Description: ListenerArn for the Load Balancer
+    Type: String
+  ClusterName:
+    Description: Name of the cluster where this service will be deployed.
+    Type: String
+  VpcId:
+    Description: VpcId for the VPC used by the service.
+    Type: String
+  ScalableTargetRoleArn:
+    Description: Name of the service scheduler
+    Type: String
+  TaskRoleArn:
+    Description: Name of the role to be attached to the task definition on runtime
+    Type: String
+  ServiceSchedulerRoleArn:
+    Description: ame of the Service Scheduler Role ARN to be attached to the ECS Service
     Type: String
   cacheDevicehandsetOnlineModelenabled:
     Description: Flag to disable handset online model
     Type: String 
   AppDEnv:
     Description: The name of the App Dynamics environment that is being deployed to.
-    Type: String 
+    Type: String  
 Resources:
   ListenerRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
@@ -110,7 +131,7 @@ Resources:
           Values:
             - !Sub '/${ContextPath}/*'
       ListenerArn: !ImportValue
-        Fn::Sub: digitalx-${Environment}-alb-mas-Listener
+        Ref: ListenerArn
       Priority: !Ref 'Priority'
   TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
@@ -119,7 +140,7 @@ Resources:
       Name: !Ref 'AWS::StackName'
       Protocol: HTTPS
       Port: 8080
-      HealthCheckPath: !Sub '/${ContextPath}/actuator/health'
+      HealthCheckPath: !Sub '/${ContextPath}/health'
       HealthyThresholdCount: !Ref 'HealthyThresholdCount'
       UnhealthyThresholdCount: !Ref 'UnhealthyThresholdCount'
       HealthCheckTimeoutSeconds: !Ref 'HealthCheckTimeoutSeconds'
@@ -129,8 +150,16 @@ Resources:
       Tags:
         - Key: Name
           Value: !Ref 'AWS::StackName'
+        - Key: Domain
+          Value: Digital
+        - Key: Train
+          Value: Platform
+        - Key: Team
+          Value: Galaxy
+        - Key: Environment
+          Value: !Ref 'Environment'
       VpcId: !ImportValue
-        Fn::Sub: digitalx-${Environment}-vpc-VpcId
+        Ref: VpcId
       TargetGroupAttributes:
         - Key: deregistration_delay.timeout_seconds
           Value: 5
@@ -139,7 +168,7 @@ Resources:
     Properties:
       Family: !Ref 'AWS::StackName'
       TaskRoleArn: !ImportValue
-        Fn::Sub: digitalx-${Environment}-ecs-mas-DefaultTaskRoleArn
+        Ref: TaskRoleArn
       ContainerDefinitions:
         - Name: !Ref 'AWS::StackName'
           Cpu: !Ref 'Cpu'
@@ -194,7 +223,7 @@ Resources:
     Type: AWS::ECS::Service
     DependsOn: ListenerRule
     Properties:
-      Cluster: !Sub 'digitalx-${Environment}-ecs-mas'
+      Cluster: !Ref 'ClusterName'
       DeploymentConfiguration:
         MaximumPercent: 200
         MinimumHealthyPercent: 50
@@ -208,7 +237,7 @@ Resources:
           ContainerPort: 8080
           TargetGroupArn: !Ref 'TargetGroup'
       Role: !ImportValue
-        Fn::Sub: digitalx-${Environment}-ecs-mas-ServiceSchedulerRoleArn
+        Ref: ServiceSchedulerRoleArn
       TaskDefinition: !Ref 'TaskDefinition'
   LogGroup:
     Type: AWS::Logs::LogGroup
@@ -220,9 +249,9 @@ Resources:
     Properties:
       MaxCapacity: !Ref 'MaxCapacity'
       MinCapacity: !Ref 'MinCapacity'
-      ResourceId: !Sub 'service/digitalx-${Environment}-ecs-mas/${EcsService.Name}'
+      ResourceId: !Sub 'service/${ClusterName}/${EcsService.Name}'
       RoleARN: !ImportValue
-        Fn::Sub: digitalx-${Environment}-ecs-mas-ScalableTargetRoleArn
+        Ref: ScalableTargetRoleArn
       ScalableDimension: ecs:service:DesiredCount
       ServiceNamespace: ecs
   ScalingPolicyUp:
@@ -258,7 +287,7 @@ Resources:
       Namespace: AWS/ECS
       Dimensions:
         - Name: ClusterName
-          Value: !Sub 'digitalx-${Environment}-ecs-mas'
+          Value: !Ref 'ClusterName'
         - Name: ServiceName
           Value: !GetAtt 'EcsService.Name'
       MetricName: CPUUtilization
@@ -276,7 +305,7 @@ Resources:
       Namespace: AWS/ECS
       Dimensions:
         - Name: ClusterName
-          Value: !Sub 'digitalx-${Environment}-ecs-mas'
+          Value: !Ref 'ClusterName'
         - Name: ServiceName
           Value: !GetAtt 'EcsService.Name'
       MetricName: CPUUtilization
