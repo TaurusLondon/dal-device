@@ -58,6 +58,20 @@
   ParameterValue: "${BAZAARVOICE}"
 - ParameterKey: springmetricsexportenabled
   ParameterValue: "${SPRINGMETRICSEXPORTENABLED}"
+- ParameterKey: Domain
+  ParameterValue: "${DOMAIN}"
+- ParameterKey: ListenerArn
+  ParameterValue: "${LISTENERARN}"
+- ParameterKey: ClusterName
+  ParameterValue: "${CLUSTERNAME}"
+- ParameterKey: VpcId
+  ParameterValue: "${VPCID}"
+- ParameterKey: ScalableTargetRoleArn
+  ParameterValue: "${SCALABLETARGETROLEARN}"
+- ParameterKey: TaskRoleArn
+  ParameterValue: "${TASKROLEARN}"
+- ParameterKey: ServiceSchedulerRoleArn
+  ParameterValue: "${SERVICESCHEDULERROLEARN}"
 - ParameterKey: cacheDevicehandsetOnlineModelenabled
   ParameterValue: "${CACHEDEVICEHANDSETONLINEMODELENABLED}"
 - ParameterKey: AppDEnv
