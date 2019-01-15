@@ -525,8 +525,8 @@ public class DeviceServiceImplUtility {
 	 * @return
 	 */
 	public boolean getProductclassValidation(CommercialProduct comProduct) {
-		return comProduct.getProductClass().equalsIgnoreCase(STRING_HANDSET)
-				|| comProduct.getProductClass().equalsIgnoreCase(STRING_DATA_DEVICE);
+		return StringUtils.equalsIgnoreCase(comProduct.getProductClass(), STRING_HANDSET)
+				|| StringUtils.equalsIgnoreCase(comProduct.getProductClass(),STRING_DATA_DEVICE);
 	}
 
 	/**
