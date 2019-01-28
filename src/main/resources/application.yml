@@ -71,6 +71,10 @@ icp:
     jdbcUrl: jdbc:oracle:thin:@100.66.65.222:1521:oradb
     jdbcUserName: daluser
     jdbcUserPwd: simple4u
+
+logging:
+  pattern:
+    level: "%5p %clr([%mdc]){blue}"
     
   service:  
     defaultPageSize: 1000
