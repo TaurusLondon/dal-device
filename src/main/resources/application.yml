@@ -71,14 +71,14 @@ icp:
     jdbcUrl: jdbc:oracle:thin:@100.66.65.222:1521:oradb
     jdbcUserName: daluser
     jdbcUserPwd: simple4u
-
-logging:
-  pattern:
-    level: "%5p %clr([%mdc]){blue}"
     
   service:  
     defaultPageSize: 1000
-    defaultPageNumber: 0  
+    defaultPageNumber: 0
+
+logging:
+  pattern:
+    level: "%5p %clr([%mdc]){blue}"  
 
 elasticsearch:
   host: https://vpc-digitalx-dev-solr-es-hne32eyterqfesg3zzkpeg25q4.eu-west-1.es.amazonaws.com/  
